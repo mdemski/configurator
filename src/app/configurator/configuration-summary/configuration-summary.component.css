@@ -1,0 +1,20 @@
+.option-selected {
+  padding-left: 20px;
+  padding-right: 20px;
+  filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%);
+}
+
+.option-not-selected {
+  margin-left: 20px;
+  margin-right: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  filter: invert(0%) sepia(82%) saturate(7429%) hue-rotate(16deg) brightness(115%) contrast(115%);
+}
+
+.option-is-selecting {
+  padding-left: 20px;
+  padding-right: 20px;
+  filter: invert(81%) sepia(12%) saturate(18%) hue-rotate(10deg) brightness(93%) contrast(95%);
+}
+

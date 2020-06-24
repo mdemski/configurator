@@ -1,0 +1,43 @@
+div.background {
+  background-image: image('../../assets/img/architecture-2179243.jpg');
+  background-blend-mode: darken;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+div.home-cards {
+  margin: 10px 0 0px 0px;
+}
+
+img {
+  height: 820px;
+  width: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.second{
+  color: white;
+  background-color: orange;
+  position: absolute;
+  margin-left: 150px;
+  top: 61.5%;
+  text-align: center;
+}
+
+span {
+  height: 100px;
+  width: 350px;
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  right: 25%;
+  text-align: center;
+  border: 3px white solid;
+  background-color: transparent;
+  color: white;
+  font-size: xx-large;
+  font-weight: bold;
+  line-height: 100px;
+}
