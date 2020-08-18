@@ -1,1 +1,34 @@
-<p>roof-windows-config works!</p>
+<div class="configure-container">
+  <div class="configuration-summary">
+
+  </div>
+  <div class="configure-form">
+    <form [formGroup]="windowConfigurationForm" (ngSubmit)="onSubmit()">
+      <label for="category">Rodzaj okna</label>
+      <label *ngFor="let category of categories">
+      <input class="configuration-radio" value="{{category}}"
+             type="radio" id="category" formControlName="category">{{category}}</label> <br>
+      <label for="model">Model okna</label>
+      <label *ngFor="let model of windowModels" >
+      <input class="configuration-radio" value="{{model}}"
+             type="radio" id="model" formControlName="model">{{model}}</label> <br>
+      <label for="glazing">Pakiet szybowy</label>
+      <label *ngFor="let glazing of glazingUnits">
+      <input class="configuration-radio" value="{{glazing}}"
+             type="radio" id="glazing" formControlName="glazing">{{glazing}}</label> <br>
+      <label for="width">Szerokość okna</label>
+      <input class="dimensions-input" type="number" id="width" formControlName="width">
+      <label for="height">Wysokość okna</label>
+      <input class="dimensions-input" type="number" id="height" formControlName="height"> <br>
+      <label for="innerColor">Kolor okna</label>
+      <input class="inner-color-input" type="text" id="innerColor" formControlName="innerColor"><br>
+      <label for="outerColor">Kolor oblachowania (zewnętrzny)</label>
+      <input class="outer-color-input" type="text" id="outerColor" formControlName="outerColor"><br>
+      <label for="ventilation">Nawiewnik</label>
+      <label *ngFor="let ventilation of ventilationTypes">
+      <input class="configuration-radio" value="{{ventilation}}"
+             type="radio" id="ventilation" formControlName="ventilation">{{ventilation}}</label> <br>
+      <button class="configuration-submit" type="submit">Podsumowanie</button>
+    </form>
+  </div>
+</div>

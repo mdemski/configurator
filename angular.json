@@ -24,10 +24,12 @@
               "src/assets"
             ],
             "styles": [
-              "./node_modules/bootstrap/dist/css/bootstrap.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "./node_modules/jquery/dist/jquery.slim.min.js",
+              "./node_modules/popper.js/dist/umd/popper.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -120,6 +122,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "window-configurator"
+    }
+  },
+  "defaultProject": "window-configurator",
+  "cli": {
+    "analytics": false
+  }
 }

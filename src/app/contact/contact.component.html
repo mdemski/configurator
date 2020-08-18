@@ -1,1 +1,54 @@
-<p>contact works!</p>
+<div class="container">
+  <div class="contact-form">
+    <form (ngSubmit)="onSubmit()" #contactForm="ngForm">
+      <div class="name-input">
+        <label for="firstName">Imię</label>
+        <input id="firstName"
+               name="firstName"
+               ngModel
+               required
+               #firstName="ngModel">
+        <span class="invalid-contact-data" *ngIf="!firstName.valid && firstName.touched">Imię jest wymagane</span>
+      </div>
+      <div class="name-input">
+        <label for="lastName">Nazwisko</label>
+        <input id="lastName"
+               name="lastName"
+               ngModel
+               required
+               #lastName="ngModel">
+        <span class="invalid-contact-data" *ngIf="!lastName.valid && lastName.touched">Nazwisko jest wymagane</span>
+      </div>
+      <div class="email-input">
+        <label for="email">Email</label>
+        <input id="email"
+               name="email"
+               ngModel
+               required
+               email
+               #email="ngModel">
+        <span class="invalid-contact-data" *ngIf="!email.valid && email.touched">Nazwisko jest wymagane</span>
+      </div>
+      <div class="extra-input">
+        <label for="telephone">Telefon</label>
+        <input id="telephone" name="telephone">
+      </div>
+      <div class="extra-input">
+        <label for="company">Firma (opcjonalnie)</label>
+        <input id="company" name="company">
+      </div>
+      <div class="textarea">
+        <label for="message">Treść wiadomości</label>
+        <textarea id="message"
+                  name="message"
+                  ngModel
+                  required
+                  minlength="30"
+                  maxlength="500"
+                  #message="ngModel"></textarea>
+        <span class="invalid-contact-data" *ngIf="!message.valid && message.touched">Treść wiadomości jest niepoprawna - min 30 znaków, maksylanie - 500</span>
+      </div>
+      <button [disabled]="contactForm.invalid" type="submit">Wyślij</button>
+    </form>
+  </div>
+</div>

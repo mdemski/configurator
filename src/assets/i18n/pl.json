@@ -1,0 +1,26 @@
+{
+  "REGISTER": {
+    "firstName": "Imię",
+    "lastName": "Nazwisko",
+    "email": "Email",
+    "password": "Hasło",
+    "rePassword": "Powtórz hasło",
+    "privateClient": "Konto prywatne",
+    "companyClient": "Konto firmowe",
+    "companyName": "Nazwa firmy",
+    "NIP": "NIP",
+    "street": "ulica",
+    "number": "numer",
+    "zipCode": "Kod pocztowy",
+    "agent": "Przedstawiciel",
+    "register": "Zarejestruj",
+    "requiredField": "Pole jest wymagane, wprowadź poprawne dane",
+    "wrongEmail": "Podaj poprawny mail",
+    "toShortPassword": "Hasło jest za krótkie, podaj 8 znakowe",
+    "differentPasswords": "Podane hasła są różne",
+    "registrationConfirmationAlert": "Rejestracja przebiegła pomyślnie"
+  },
+  "HOME": {
+
+  }
+}

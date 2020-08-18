@@ -1,2 +1,23 @@
-<router-outlet></router-outlet>
-<p>roof-windows works!</p>
+<div class="container">
+  <div class="row">
+    <div class="col-sm" *ngFor="let roofWindow of roofWindowsList; let i = index">
+      <div class="card" style="width: 18rem;">
+        <img src="..." class="card-img-top" alt="...">
+        <ul class="list-group list-group-flush">
+          <li> Kategoria: {{roofWindow.category}} </li>
+          <li> Model: {{roofWindow.model}} </li>
+          <li> Szyba: {{roofWindow.glazing}} </li>
+          <li> Wymiary: {{roofWindow.height}}x{{roofWindow.width}} </li>
+          <li> Kolor stolarki: {{roofWindow.innerColor}} </li>
+          <li> Kolor oblachowania:{{roofWindow.outerColor}} </li>
+          <li> Nawiewnik: {{roofWindow.ventilation}}
+          <li><a (click)="onRoofReconfiguration()">Zmień konfigurację</a></li>
+        </ul>
+        <div class="card-body">
+          <a routerLink="" class="card-link">Szczegóły</a>
+          <a href="#" class="card-link">Dodaj do zamówienia</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

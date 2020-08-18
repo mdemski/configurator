@@ -15,6 +15,7 @@ import {SkylightDetailsComponent} from './shop/skylights/skylight-details/skylig
 import {AccessorieDetailsComponent} from './shop/accessories/accessorie-details/accessorie-details.component';
 import {VerticalWindowDetailsComponent} from './shop/vertical-windows/vertical-window-details/vertical-window-details.component';
 import {AuthGuardService} from './services/auth-guard.service';
+import {RoofWindowsConfigComponent} from './configurator/roof-windows-config/roof-windows-config.component';
 
 const appRoutes: Routes = [
   {path: 'sklep', component: ShopComponent, children:
@@ -30,7 +31,9 @@ const appRoutes: Routes = [
         {path: 'okna-pionowe', component: VerticalWindowsComponent, children: [
             {path: ':id', component: VerticalWindowDetailsComponent},
           ]}]},
-  {path: 'konfigurator', component: ConfiguratorComponent},
+  {path: 'konfigurator', component: ConfiguratorComponent, children: [
+      {path: 'okna-dachowe', component: RoofWindowsConfigComponent}
+    ]},
   {path: 'rejestracja', component: RegisterComponent},
   {path: 'login', component: LoginComponent},
   {path: 'moje-konto/:id', component: MyAccountComponent, canActivate: [AuthGuardService]},

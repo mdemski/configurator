@@ -1,5 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import {HeaderComponent} from './header/header.component';
@@ -28,6 +31,12 @@ import { ConfigurationSummaryComponent } from './configurator/configuration-summ
 import {AppRoutingModule} from './app-routing.module';
 import { ShoppingCartComponent } from './shop/shopping-cart/shopping-cart.component';
 import { MyAccountComponent } from './my-account/my-account.component';
+import {DatabaseService} from './services/database.service';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
 
 @NgModule({
   declarations: [
@@ -61,9 +70,19 @@ import { MyAccountComponent } from './my-account/my-account.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [DatabaseService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
