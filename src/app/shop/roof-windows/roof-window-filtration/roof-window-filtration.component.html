@@ -1,0 +1,34 @@
+<div class="row">
+  <div class="col">
+    <!--Searching by name form-->
+    <form class="form-inline md-form form-sm active-pink-2" (keyup)="emitSearchText()" #searchForm=ngForm>
+      <mdb-icon class="pr-1" fas icon="search" aria-hidden="true"></mdb-icon>
+      <input id="search"
+             name="search"
+             class="form-control form-control-sm mr-3 w-75"
+             type="text"
+             autocomplete="off"
+             placeholder="{{ 'SHOP.searchingText' | translate}}"
+             mdbInput
+             ngModel
+      >
+    </form>
+  </div>
+
+  <div class="col">
+    <!--Filtration form-->
+      <ul>
+        <li *ngFor="let glass of glassesToChoice">
+          <label>{{glass}}</label>
+          <input type="checkbox"
+                 name="glasses"
+                 value="{{glass}}"
+                 #glasses
+                 (change)="emitFilterChecks(glasses.value)"
+          />
+        </li>
+      </ul>
+  </div>
+
+</div>
+
