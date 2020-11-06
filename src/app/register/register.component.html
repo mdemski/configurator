@@ -1,137 +1,178 @@
-<div class="container">
+<div class="d-flex justify-content-center">
 
-  <div class="register-form">
-    <div class="register-form-card">
+  <div class="w-25 p-4">
 
-      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-        <!--        <label for="firstName" class="register-form-labels">{{'REGISTER.firstName' | translate}}</label>-->
-        <input type="text"
-               id="firstName"
-               formControlName="firstName"
-               class="register-form-input"
-               placeholder="{{'REGISTER.firstName' | translate}}">
-        <div
-          class="register-form-wrong-data"
-          *ngIf="registerForm.get('firstName').value != null &&
+    <div class="alert alert-danger" role="alert" *ngIf="error">
+      <p>{{error}}</p>
+    </div>
+
+    <mdb-card>
+
+      <mdb-card-header class="info-color white-text text-center py-4">
+        <h5>
+          <strong>{{'REGISTER.registerTitle' | translate}}</strong>
+        </h5>
+      </mdb-card-header>
+
+      <mdb-card-body class="px-lg-5 pt-0">
+
+        <form style="color: #757575;" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+          <!--        <label for="firstName" class="register-form-labels">{{'REGISTER.firstName' | translate}}</label>-->
+          <div class="md-form mt-3">
+            <input type="text"
+                   id="firstName"
+                   formControlName="firstName"
+                   class="register-form-input"
+                   placeholder="{{'REGISTER.firstName' | translate}}">
+          </div>
+          <div
+            class="invalid-contact-data"
+            *ngIf="registerForm.get('firstName').value != null &&
           registerForm.get('firstName').value.length == 0 &&
           registerForm.get('firstName').dirty &&
           registerForm.get('firstName').invalid">
-          {{'REGISTER.requiredField' | translate}}
-        </div>
-        <!--        <label for="lastName" class="register-form-labels">{{ 'REGISTER.lastName' | translate}}</label>-->
-        <input type="text"
-               id="lastName"
-               formControlName="lastName"
-               class="register-form-input"
-               placeholder="{{'REGISTER.lastName' | translate}}">
-        <div
-          class="register-form-wrong-data"
-          *ngIf="registerForm.get('lastName').value != null &&
+            {{'REGISTER.requiredField' | translate}}
+          </div>
+          <!--        <label for="lastName" class="register-form-labels">{{ 'REGISTER.lastName' | translate}}</label>-->
+          <div class="md-form mt-3">
+            <input type="text"
+                   id="lastName"
+                   formControlName="lastName"
+                   class="register-form-input"
+                   placeholder="{{'REGISTER.lastName' | translate}}">
+          </div>
+          <div
+            class="invalid-contact-data"
+            *ngIf="registerForm.get('lastName').value != null &&
           registerForm.get('lastName').value.length == 0 &&
           registerForm.get('lastName').dirty &&
           registerForm.get('lastName').invalid">
-          {{'REGISTER.requiredField' | translate}}
-        </div>
-        <!--        <label for="email" class="register-form-labels">{{ 'REGISTER.email' | translate}}</label>-->
-        <input type="email"
-               id="email"
-               formControlName="email"
-               class="register-form-input"
-               placeholder="{{'REGISTER.email' | translate}}">
-        <div
-          class="register-form-wrong-data"
-          *ngIf="registerForm.get('email').value != null &&
+            {{'REGISTER.requiredField' | translate}}
+          </div>
+          <!--        <label for="email" class="register-form-labels">{{ 'REGISTER.email' | translate}}</label>-->
+          <div class="md-form mt-3">
+            <input type="email"
+                   id="email"
+                   formControlName="email"
+                   class="register-form-input"
+                   placeholder="{{'REGISTER.email' | translate}}">
+          </div>
+          <div
+            class="invalid-contact-data"
+            *ngIf="registerForm.get('email').value != null &&
           registerForm.get('email').value.length == 0 &&
           registerForm.get('email').dirty &&
           registerForm.get('email').invalid">
-          {{'REGISTER.requiredField' | translate}}
-        </div>
-        <div
-          class="register-form-wrong-data"
-          *ngIf="registerForm.get('email').invalid &&
+            {{'REGISTER.requiredField' | translate}}
+          </div>
+          <div
+            class="invalid-contact-data"
+            *ngIf="registerForm.get('email').invalid &&
           registerForm.get('email').dirty">
-          {{'REGISTER.wrongEmail' | translate}}
-        </div>
-        <!--        <label for="password" class="register-form-labels">{{ 'REGISTER.password' | translate}}</label>-->
-        <input type="password"
-               id="password"
-               formControlName="password"
-               class="register-form-input"
-               placeholder="{{'REGISTER.password' | translate}}">
-        <div
-          *ngIf="registerForm.get('password').value != null &&
+            {{'REGISTER.wrongEmail' | translate}}
+          </div>
+          <!--        <label for="password" class="register-form-labels">{{ 'REGISTER.password' | translate}}</label>-->
+          <div class="md-form mt-3">
+            <input type="password"
+                   id="password"
+                   formControlName="password"
+                   class="register-form-input"
+                   placeholder="{{'REGISTER.password' | translate}}">
+          </div>
+          <div
+            class="invalid-contact-data"
+            *ngIf="registerForm.get('password').value != null &&
           registerForm.get('password').dirty &&
           registerForm.get('password').value.length == 0 &&
           registerForm.get('password').errors &&
           registerForm.get('password').errors.minlength">
-          {{'REGISTER.toShortPassword' | translate}}
-        </div>
-        <!--        <label for="rePassword" class="register-form-labels">{{ 'REGISTER.rePassword' | translate}}</label>-->
-        <input type="password"
-               id="rePassword"
-               formControlName="rePassword"
-               class="register-form-input"
-               placeholder="{{'REGISTER.rePassword' | translate}}">
-        <div *ngIf="registerForm.get('rePassword').value != null &&
+            {{'REGISTER.toShortPassword' | translate}}
+          </div>
+          <!--        <label for="rePassword" class="register-form-labels">{{ 'REGISTER.rePassword' | translate}}</label>-->
+          <div class="md-form mt-3">
+            <input type="password"
+                   id="rePassword"
+                   formControlName="rePassword"
+                   class="register-form-input"
+                   placeholder="{{'REGISTER.rePassword' | translate}}">
+          </div>
+          <div class="invalid-contact-data" *ngIf="registerForm.get('rePassword').value != null &&
         registerForm.get('rePassword').dirty &&
         registerForm.get('rePassword').value != registerForm.get('password').value&&
         registerForm.get('rePassword').invalid">
-          {{'REGISTER.differentPasswords' | translate}}
-        </div>
-        <input type="hidden"
-               id="role"
-               formControlName="role"
-               value="user">
+            {{'REGISTER.differentPasswords' | translate}}
+          </div>
+          <input type="hidden"
+                 id="role"
+                 formControlName="role"
+                 value="user">
 
-        <input type="radio" value="true" name="type"
-               (click)="setClientTypeToFalse()"> {{ 'REGISTER.privateClient' | translate}}
-        <input type="radio" value="false" name="type"
-               (click)="setClientTypeToTrue()"> {{ 'REGISTER.companyClient' | translate}}
+          <mdb-checkbox (click)="setClientTypeToTrue()">{{ 'REGISTER.companyClient' | translate}}</mdb-checkbox>
 
-        <hr class="register-horizontal-line">
-        <div class="register-company-block" *ngIf="clientType">
-          <!--          <label for="companyName" class="register-form-labels">{{ 'REGISTER.companyName' | translate}}</label>-->
-          <input type="text"
-                 id="companyName"
-                 formControlName="companyName"
-                 class="register-form-input"
-                 placeholder="{{'REGISTER.companyName' | translate}}">
-          <!--          <label for="nip" class="register-form-labels">{{ 'REGISTER.NIP' | translate}}</label>-->
-          <input type="text"
-                 id="nip"
-                 formControlName="nip"
-                 class="register-form-input"
-                 placeholder="{{'REGISTER.NIP' | translate}}">
-          <!--          <label for="street" class="register-form-labels">{{ 'REGISTER.street' | translate}}</label>-->
-          <input type="text"
-                 id="street"
-                 formControlName="street"
-                 class="register-form-input"
-                 placeholder="{{'REGISTER.street' | translate}}">
-          <!--          <label for="number" class="register-form-labels">{{ 'REGISTER.number' | translate}}</label>-->
-          <input type="text"
-                 id="number"
-                 formControlName="number"
-                 class="register-form-input"
-                 placeholder="{{'REGISTER.number' | translate}}">
-          <!--          <label for="zipCode" class="register-form-labels">{{ 'REGISTER.zipCode' | translate}}</label>-->
-          <input type="text"
-                 id="zipCode"
-                 formControlName="zipCode"
-                 class="register-form-input"
-                 placeholder="{{'REGISTER.zipCode' | translate}}">
-          <!--          <label for="agent" class="register-form-labels">{{ 'REGISTER.agent' | translate}}</label>-->
-          <input type="text"
-                 id="agent"
-                 formControlName="agent"
-                 class="register-form-input"
-                 placeholder="{{'REGISTER.agent' | translate}}">
-        </div>
+          <hr class="register-horizontal-line">
+          <div *ngIf="clientType">
+            <!--          <label for="companyName" class="register-form-labels">{{ 'REGISTER.companyName' | translate}}</label>-->
+            <div class="md-form mt-3">
+              <input type="text"
+                     id="companyName"
+                     formControlName="companyName"
+                     class="register-form-input"
+                     placeholder="{{'REGISTER.companyName' | translate}}">
+            </div>
+            <!--          <label for="nip" class="register-form-labels">{{ 'REGISTER.NIP' | translate}}</label>-->
+            <div class="md-form mt-3">
+              <input type="text"
+                     id="nip"
+                     formControlName="nip"
+                     class="register-form-input"
+                     placeholder="{{'REGISTER.NIP' | translate}}">
+            </div>
+            <!--          <label for="street" class="register-form-labels">{{ 'REGISTER.street' | translate}}</label>-->
+            <div class="md-form mt-3">
+              <input type="text"
+                     id="street"
+                     formControlName="street"
+                     class="register-form-input"
+                     placeholder="{{'REGISTER.street' | translate}}">
+            </div>
+            <!--          <label for="number" class="register-form-labels">{{ 'REGISTER.number' | translate}}</label>-->
+            <div class="md-form mt-3">
+              <input type="text"
+                     id="number"
+                     formControlName="number"
+                     class="register-form-input"
+                     placeholder="{{'REGISTER.number' | translate}}">
+            </div>
+            <!--          <label for="zipCode" class="register-form-labels">{{ 'REGISTER.zipCode' | translate}}</label>-->
+            <div class="md-form mt-3">
+              <input type="text"
+                     id="zipCode"
+                     formControlName="zipCode"
+                     class="register-form-input"
+                     placeholder="{{'REGISTER.zipCode' | translate}}">
+            </div>
+            <!--          <label for="agent" class="register-form-labels">{{ 'REGISTER.agent' | translate}}</label>-->
+            <div class="md-form mt-3">
+              <input type="text"
+                     id="agent"
+                     formControlName="agent"
+                     class="register-form-input"
+                     placeholder="{{'REGISTER.agent' | translate}}">
+            </div>
+          </div>
 
-        <button class="register-submit-button" type="submit">{{ 'REGISTER.register' | translate}}</button>
-      </form>
+          <button mdbBtn color="info"
+                  outline="true"
+                  rounded="true"
+                  block="true"
+                  class="z-depth-0 my-4 waves-effect"
+                  mdbWavesEffect type="submit">{{ 'REGISTER.register' | translate}}</button>
+        </form>
 
-    </div>
+      </mdb-card-body>
+
+    </mdb-card>
+
   </div>
 
 </div>

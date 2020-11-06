@@ -1,0 +1,10 @@
+/* TODO dlaczego te 100% nie działa poprawnie */
+.container, .container-sm, .container-md, .container-lg, .container-xl {
+  max-width: 100%;
+  flex: auto;
+}
+
+.container {
+  flex: auto;
+  max-width: 100%;
+}

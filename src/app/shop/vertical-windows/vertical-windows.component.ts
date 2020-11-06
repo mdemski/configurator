@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-vertical-windows',
   templateUrl: './vertical-windows.component.html',
-  styleUrls: ['./vertical-windows.component.css']
+  styleUrls: ['./vertical-windows.component.scss']
 })
 export class VerticalWindowsComponent implements OnInit {
 

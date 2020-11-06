@@ -1,34 +1,92 @@
 <div class="row">
   <div class="col">
-    <!--Searching by name form-->
-    <form class="form-inline md-form form-sm active-pink-2" (keyup)="emitSearchText()" #searchForm=ngForm>
-      <mdb-icon class="pr-1" fas icon="search" aria-hidden="true"></mdb-icon>
-      <input id="search"
-             name="search"
-             class="form-control form-control-sm mr-3 w-75"
-             type="text"
-             autocomplete="off"
-             placeholder="{{ 'SHOP.searchingText' | translate}}"
-             mdbInput
-             ngModel
-      >
+    <!--Searching-->
+    <form class="form-inline md-form form-sm active-pink-2">
+      <!--      Searching by name input box-->
+      <div class="searching-box">
+        <mdb-icon class="pr-1 searching-icon" fas icon="search" aria-hidden="true"></mdb-icon>
+        <input [formControl]="windowName"
+               class="form-control form-control-sm mr-3 w-75"
+               type="text"
+               autocomplete="off"
+               placeholder="{{ 'SHOP.searchingText' | translate}}"
+               (keyup)="editValueToObjectFromName(windowName)"
+        >
+      </div>
+
+      <!-- START Searching by glazing checkbox box-->
+      <div class="searching-box">
+        <label>{{ 'SHOP.glazingToFilter' | translate}}</label>
+        <div class="check-box" *ngFor="let glass of glassesToChoice">
+          <input type="checkbox"
+                 [formControl]="windowGlazing"
+                 (change)="editValueToObjectFromGlazing(glass)"
+          >{{glass}}
+        </div>
+      </div>
+      <!-- END Searching by glazing checkbox box-->
+
+      <!-- START Searching by opening box-->
+      <div class="searching-box">
+        <label>{{ 'SHOP.openingToFilter' | translate}}</label>
+        <div class="check-box" *ngFor="let opening of openingTypesToChoice">
+          <input type="checkbox"
+                 [formControl]="windowOpeningType"
+                 (change)="editValueToObjectFromOpening(opening)"
+          >{{opening}}
+        </div>
+      </div>
+      <!-- END Searching by opening box-->
+
+      <!-- START Searching by material box-->
+      <div class="searching-box">
+        <label>{{ 'SHOP.materialToFilter' | translate}}</label>
+        <div class="check-box" *ngFor="let material of materialsToChoice">
+          <input type="checkbox"
+                 [formControl]="windowMaterial"
+                 (change)="editValueToObjectFromMaterial(material)"
+          >{{material}}
+        </div>
+      </div>
+      <!-- END Searching by material box-->
+
+      <!--      Searching by width input box-->
+      <div class="searching-box dimensions-input">
+        <label>{{ 'SHOP.widthFromTo' | translate}}</label>
+        <div class="md-form md-outline">
+          <input [formControl]="windowWidthFrom"
+                 type="number"
+                 autocomplete="off"
+                 placeholder="{{ 'SHOP.from' | translate}}"
+                 (keyup)="editValueToObjectFromWidthFrom(windowWidthFrom)"
+          >
+          <input [formControl]="windowWidthTo"
+                 type="number"
+                 autocomplete="off"
+                 placeholder="{{ 'SHOP.to' | translate}}"
+                 (keyup)="editValueToObjectFromWidthTo(windowWidthTo)"
+          ></div>
+      </div>
+
+      <!--      Searching by height input box-->
+      <div class="searching-box dimensions-input">
+        <label>{{ 'SHOP.heightFromTo' | translate}}</label>
+        <div class="md-form md-outline">
+          <input [formControl]="windowHeightFrom"
+                 type="number"
+                 autocomplete="off"
+                 placeholder="{{ 'SHOP.from' | translate}}"
+                 (keyup)="editValueToObjectFromHeightFrom(windowHeightFrom)"
+          >
+          <input [formControl]="windowHeightTo"
+                 type="number"
+                 autocomplete="off"
+                 placeholder="{{ 'SHOP.to' | translate}}"
+                 (keyup)="editValueToObjectFromHeightTo(windowHeightTo)"
+          ></div>
+      </div>
+
     </form>
   </div>
-
-  <div class="col">
-    <!--Filtration form-->
-      <ul>
-        <li *ngFor="let glass of glassesToChoice">
-          <label>{{glass}}</label>
-          <input type="checkbox"
-                 name="glasses"
-                 value="{{glass}}"
-                 #glasses
-                 (change)="emitFilterChecks(glasses.value)"
-          />
-        </li>
-      </ul>
-  </div>
-
 </div>
 

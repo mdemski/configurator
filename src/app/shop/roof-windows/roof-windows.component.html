@@ -1,23 +1,92 @@
-<div class="container">
-  <div class="row">
-    <div class="col-sm" *ngFor="let roofWindow of roofWindowsList; let i = index">
-      <div class="card" style="width: 18rem;">
-        <img src="..." class="card-img-top" alt="...">
-        <ul class="list-group list-group-flush">
-          <li> Kategoria: {{roofWindow.category}} </li>
-          <li> Model: {{roofWindow.model}} </li>
-          <li> Szyba: {{roofWindow.glazing}} </li>
-          <li> Wymiary: {{roofWindow.height}}x{{roofWindow.width}} </li>
-          <li> Kolor stolarki: {{roofWindow.innerColor}} </li>
-          <li> Kolor oblachowania:{{roofWindow.outerColor}} </li>
-          <li> Nawiewnik: {{roofWindow.ventilation}}
-          <li><a (click)="onRoofReconfiguration()">Zmień konfigurację</a></li>
-        </ul>
-        <div class="card-body">
-          <a routerLink="" class="card-link">Szczegóły</a>
-          <a href="#" class="card-link">Dodaj do zamówienia</a>
+<div class="d-flex p-2 col-example" style="height: 100px; border: grey solid 2px; text-align: center">Baner</div>
+<app-roof-window-filtration (filters)="filters = $event"></app-roof-window-filtration>
+
+
+<!--TODO Menu boczne do filtrowania okien do zakupu-->
+
+<div class="all-products-container">
+
+  <div class="product-cards-container">
+    <div class="col" *ngFor="let window of filteredRoofWindowsList | filter : searchByKeyboard: 'name'">
+      <!--Card-->
+      <mdb-card class="product-card" cascade="true">
+
+        <!--Card image-->
+        <div class="view view-cascade overlay waves-light product-card-image" mdbWavesEffect>
+          <mdb-card-img src="{{window.windowUrlLink}}"></mdb-card-img>
+          <a routerLink="./{{window.windowId}}">
+            <div class="mask rgba-white-slight"></div>
+          </a>
         </div>
-      </div>
+        <!--/Card image-->
+
+        <mdb-card-body cascade="true" class="text-center pb-0 px-0">
+          <!--Card content-->
+          <h4 class="card-title">
+            <strong>{{window.windowName}}</strong>
+          </h4>
+          <h5>{{window.windowCategory}}</h5>
+
+
+          <ul class="list-group list-group-flush text-left ml-5">
+            <li> Kategoria: {{window.windowSubCategory}} </li>
+            <li> Model: {{window.windowModel}} </li>
+            <li> Szyba: {{window.windowGlazing}} </li>
+            <li> Wymiary: {{window.windowWidth}}x{{window.windowHeight}} </li>
+            <li> Kolor stolarki: {{window.windowMaterialColor}} </li>
+            <li> Kolor oblachowania:{{window.windowOuterColor}} </li>
+            <li> Nawiewnik: {{window.windowVentilation}}</li>
+          </ul>
+
+          <!-- Specification list -->
+          <mdb-card-text>
+
+          </mdb-card-text>
+
+          <!-- Card footer -->
+          <div class="card-footer text-muted text-center mt-4">
+            <!--Add to cart-->
+            <a type="button" mdbBtn floating="true" size="sm" color="red" class="waves-light" mdbWavesEffect>
+              <mdb-icon fas icon="cart-plus"></mdb-icon>
+            </a>
+            <!--More info-->
+            <a routerLink="./{{window.windowId}}" type="button" mdbBtn floating="true" size="sm" color="tw" class="waves-light" mdbWavesEffect>
+              <mdb-icon fas icon="info"></mdb-icon>
+            </a>
+            <!--Google +-->
+            <a type="button" mdbBtn floating="true" size="sm" color="dribbble" class="waves-light" mdbWavesEffect>
+              <mdb-icon fas icon="cogs"></mdb-icon>
+            </a>
+          </div>
+
+        </mdb-card-body>
+        <!--/.Card content-->
+
+      </mdb-card>
+      <!--/.Card-->
     </div>
   </div>
 </div>
+<!--<div class="container">-->
+<!--  <div class="row">-->
+<!--    <div class="col-sm" *ngFor="let roofWindow of roofWindowsList; let i = index">-->
+<!--      <div class="card" style="width: 18rem;">-->
+<!--        <img src="..." class="card-img-top" alt="...">-->
+<!--        <ul class="list-group list-group-flush">-->
+<!--          <li> Kategoria: {{roofWindow.category}} </li>-->
+<!--          <li> Model: {{roofWindow.model}} </li>-->
+<!--          <li> Szyba: {{roofWindow.glazing}} </li>-->
+<!--          <li> Wymiary: {{roofWindow.height}}x{{roofWindow.width}} </li>-->
+<!--          <li> Kolor stolarki: {{roofWindow.materialColor}} </li>-->
+<!--          <li> Kolor oblachowania:{{roofWindow.outerColor}} </li>-->
+<!--          <li> Nawiewnik: {{roofWindow.ventilation}}-->
+<!--          <li><a (click)="onRoofReconfiguration()">Zmień konfigurację</a></li>-->
+<!--        </ul>-->
+<!--        <div class="card-body">-->
+<!--          <a routerLink="" class="card-link">Szczegóły</a>-->
+<!--          <a href="#" class="card-link">Dodaj do zamówienia</a>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->

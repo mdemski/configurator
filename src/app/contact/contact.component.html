@@ -1,54 +1,157 @@
-<div class="container">
-  <div class="contact-form">
-    <form (ngSubmit)="onSubmit()" #contactForm="ngForm">
-      <div class="name-input">
-        <label for="firstName">Imię</label>
-        <input id="firstName"
-               name="firstName"
-               ngModel
-               required
-               #firstName="ngModel">
-        <span class="invalid-contact-data" *ngIf="!firstName.valid && firstName.touched">Imię jest wymagane</span>
+<div class="container my-5 py-5 z-depth-1">
+
+
+  <!--Section: Content-->
+  <section class="px-md-5 mx-md-5 text-center text-lg-left dark-grey-text">
+
+    <style>
+      .map-container {
+        height: 200px;
+        position: relative;
+      }
+
+      .map-container iframe {
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+      }
+    </style>
+
+    <!--Google map-->
+    <div id="map-container-google-1" class="z-depth-1 map-container mb-5">
+      <iframe src="https://maps.google.com/maps?q=okpol&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0"
+              style="border:0" allowfullscreen></iframe>
+    </div>
+    <!--Google Maps-->
+
+    <!--Grid row-->
+    <div class="row">
+
+      <!--Grid column-->
+      <div class="col-lg-5 col-md-12 mb-0 mb-md-0">
+
+        <h3 class="font-weight-bold">{{'CONTACT.contactUs' | translate}}</h3>
+
+        <p class="text-muted">{{'CONTACT.contactDesc' | translate}}</p>
+
+        <p><span class="font-weight-bold mr-2">{{'CONTACT.email' | translate}}</span><a href="{{'LINK.mailTo' | translate}}">{{'CONTACT.emailAddress' | translate}}</a></p>
+        <p><span class="font-weight-bold mr-2">{{'CONTACT.phone' | translate}}</span>{{'CONTACT.phoneNumberOKPOL' | translate}}</p>
+
       </div>
-      <div class="name-input">
-        <label for="lastName">Nazwisko</label>
-        <input id="lastName"
-               name="lastName"
-               ngModel
-               required
-               #lastName="ngModel">
-        <span class="invalid-contact-data" *ngIf="!lastName.valid && lastName.touched">Nazwisko jest wymagane</span>
+      <!--Grid column-->
+
+      <!--Grid column-->
+      <div class="col-lg-7 col-md-12 mb-4 mb-md-0">
+        <form (ngSubmit)="onSubmit()" #contactForm="ngForm">
+
+          <!--Grid row-->
+          <div class="row">
+
+            <!--Grid column-->
+            <div class="col-md-6">
+
+              <!-- Material outline input -->
+              <div class="md-form md-outline mb-0">
+                <input id="firstName"
+                       class="form-control"
+                       name="firstName"
+                       ngModel
+                       required
+                       placeholder="{{'CONTACT.firstName' | translate}}"
+                       #firstName="ngModel"/>
+                <div class="invalid-contact-data"
+                      *ngIf="!firstName.valid && firstName.touched">{{'CONTACT.fieldRequired' | translate}}</div>
+              </div>
+
+            </div>
+            <!--Grid column-->
+
+            <!--Grid column-->
+            <div class="col-md-6">
+
+              <!-- Material outline input -->
+              <div class="md-form md-outline mb-0">
+                <input id="lastName"
+                       class="form-control"
+                       name="lastName"
+                       ngModel
+                       required
+                       placeholder="{{'CONTACT.lastName' | translate}}"
+                       #lastName="ngModel"/>
+                <span class="invalid-contact-data"
+                      *ngIf="!lastName.valid && lastName.touched">{{'CONTACT.fieldRequired' | translate}}</span>
+              </div>
+
+            </div>
+            <!--Grid column-->
+
+          </div>
+          <!--Grid row-->
+
+          <!-- Material outline input -->
+          <div class="md-form md-outline mt-3">
+            <input id="email"
+                   class="form-control"
+                   name="email"
+                   ngModel
+                   email
+                   required
+                   placeholder="{{'CONTACT.email' | translate}}"
+                   #email="ngModel"/>
+            <span class="invalid-contact-data"
+                  *ngIf="!email.valid && email.touched">{{'CONTACT.wrongEmail' | translate}}</span>
+          </div>
+
+          <!-- Material outline input -->
+          <div class="md-form md-outline">
+            <input id="telephone"
+                   class="form-control"
+                   name="telephone"
+                   ngModel
+                   placeholder="{{'CONTACT.phone' | translate}}"/>
+          </div>
+
+          <div class="md-form md-outline">
+            <input id="company"
+                   class="form-control"
+                   name="company"
+                   ngModel
+                   placeholder="{{'CONTACT.company' | translate}}"/>
+          </div>
+
+          <!--Material textarea-->
+          <div class="md-form md-outline mb-3">
+            <textarea id="message"
+                      class="md-textarea form-control"
+                      rows="3"
+                      name="message"
+                      ngModel
+                      required
+                      minlength="30"
+                      maxlength="500"
+                      placeholder="{{'CONTACT.message' | translate}}"
+                      #message="ngModel"></textarea>
+            <span class="invalid-contact-data"
+                  *ngIf="!message.valid && message.touched">{{'CONTACT.wrongMessage' | translate}}</span>
+          </div>
+
+          <button type="submit" [disabled]="contactForm.invalid"
+                  class="btn btn-info btn-sm ml-0">{{'CONTACT.submit' | translate}}<i
+            class="far fa-paper-plane ml-2"></i></button>
+
+        </form>
+
       </div>
-      <div class="email-input">
-        <label for="email">Email</label>
-        <input id="email"
-               name="email"
-               ngModel
-               required
-               email
-               #email="ngModel">
-        <span class="invalid-contact-data" *ngIf="!email.valid && email.touched">Nazwisko jest wymagane</span>
-      </div>
-      <div class="extra-input">
-        <label for="telephone">Telefon</label>
-        <input id="telephone" name="telephone">
-      </div>
-      <div class="extra-input">
-        <label for="company">Firma (opcjonalnie)</label>
-        <input id="company" name="company">
-      </div>
-      <div class="textarea">
-        <label for="message">Treść wiadomości</label>
-        <textarea id="message"
-                  name="message"
-                  ngModel
-                  required
-                  minlength="30"
-                  maxlength="500"
-                  #message="ngModel"></textarea>
-        <span class="invalid-contact-data" *ngIf="!message.valid && message.touched">Treść wiadomości jest niepoprawna - min 30 znaków, maksylanie - 500</span>
-      </div>
-      <button [disabled]="contactForm.invalid" type="submit">Wyślij</button>
-    </form>
-  </div>
+      <!--Grid column-->
+
+    </div>
+    <!--Grid row-->
+
+
+  </section>
+  <!--Section: Content-->
+
+
 </div>

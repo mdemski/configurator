@@ -4,7 +4,7 @@ import {NgForm} from '@angular/forms';
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
-  styleUrls: ['./contact.component.css']
+  styleUrls: ['./contact.component.scss']
 })
 export class ContactComponent {
   @ViewChild('contactForm', {static: true}) contactForm: NgForm;
@@ -25,6 +25,5 @@ export class ContactComponent {
     this.telephone = this.contactForm.value.telephone;
     this.company = this.contactForm.value.company;
     this.message = this.contactForm.value.message;
-    console.log(this.contactForm);
   }
 }

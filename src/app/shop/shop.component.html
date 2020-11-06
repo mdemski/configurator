@@ -1,4 +1,172 @@
-<p>shop works!</p>
+<div class="px-5">
+  <section>
 
-<router-outlet></router-outlet>
+    <!--Section description-->
+    <p class="mt-5 grey-text pb-5 text-center">{{ 'SHOP.description' | translate}}</p>
+
+    <!--Grid row-->
+    <div class="row text-center">
+
+      <!--Grid column roof windows-->
+      <div class="col-lg-4 col-md-12 mb-4">
+
+        <!--Featured image-->
+        <div class="view overlay rounded z-depth-1 waves-light" mdbWavesEffect>
+          <img src="assets/img/menu_sklep_okna_dachowe.jpg" class="img-fluid"
+               alt="{{ 'SHOP.roofWindows' | translate}}">
+          <a routerLink="./{{ 'SHOP.roofWindowsLink' | translate}}">
+            <div class="mask rgba-white-slight"></div>
+          </a>
+        </div>
+
+        <!--Excerpt-->
+        <mdb-card-body class="mt-3">
+          <h4>
+            <strong>{{ 'SHOP.roofWindows' | translate}}</strong>
+          </h4>
+          <p class="grey-text">{{ 'SHOP.roofWindowsDesc' | translate}}</p>
+          <a routerLink="./{{ 'SHOP.roofWindowsLink' | translate}}" mdbBtn color="red" size="xl" class="waves-light" mdbWavesEffect>
+            <mdb-icon far icon="clone" class="left"></mdb-icon>
+            {{ 'SHOP.roofWindows' | translate}}</a>
+        </mdb-card-body>
+
+      </div>
+      <!--Grid column roof windows-->
+
+      <!--Grid column flashings-->
+      <div class="col-lg-4 col-md-6 mb-4">
+
+        <!--Featured image-->
+        <div class="view overlay rounded z-depth-1  waves-light" mdbWavesEffect>
+          <img src="assets/img/menu_sklep_kolnierze.jpg" class="img-fluid"
+               alt="{{ 'SHOP.flashings' | translate}}">
+          <a routerLink="./{{ 'SHOP.flashingsLink' | translate}}">
+            <div class="mask rgba-white-slight"></div>
+          </a>
+        </div>
+
+        <!--Excerpt-->
+        <mdb-card-body class="mt-3">
+          <h4>
+            <strong>{{ 'SHOP.flashings' | translate}}</strong>
+          </h4>
+          <p class="grey-text">{{ 'SHOP.flashingsDesc' | translate}}</p>
+          <a routerLink="./{{ 'SHOP.flashingsLink' | translate}}" mdbBtn color="blue-grey" size="xl" class="waves-light" mdbWavesEffect>
+            <mdb-icon far icon="clone" class="left"></mdb-icon>
+            {{ 'SHOP.flashings' | translate}}</a>
+        </mdb-card-body>
+
+      </div>
+      <!--Grid column flashings-->
+
+      <!--Grid column accessories-->
+      <div class="col-lg-4 col-md-6 mb-4">
+
+        <!--Featured image-->
+        <div class="view overlay rounded z-depth-1  waves-light" mdbWavesEffect>
+          <img src="assets/img/menu_sklep_akcesoria.jpg" class="img-fluid"
+               alt="{{ 'SHOP.accessories' | translate}}">
+          <a routerLink="./{{ 'SHOP.accessoriesLink' | translate}}">
+            <div class="mask rgba-white-slight"></div>
+          </a>
+        </div>
+
+        <!--Excerpt-->
+        <mdb-card-body class="mt-3">
+          <h4>
+            <strong>{{ 'SHOP.accessories' | translate}}</strong>
+          </h4>
+          <p class="grey-text">{{ 'SHOP.accessoriesDesc' | translate}}</p>
+          <a routerLink="./{{ 'SHOP.accessoriesLink' | translate}}" mdbBtn color="deep-orange" size="xl" class="waves-light" mdbWavesEffect>
+            <mdb-icon far icon="clone" class="left"></mdb-icon>
+            {{ 'SHOP.accessories' | translate}}</a>
+        </mdb-card-body>
+
+      </div>
+      <!--Grid column accessories-->
+
+      <!--Grid column flat roof windows windows-->
+      <div class="col-lg-4 col-md-6 mb-4">
+
+        <!--Featured image-->
+        <div class="view overlay rounded z-depth-1  waves-light" mdbWavesEffect>
+          <img src="assets/img/menu_sklep_okna_płaskie.jpg" class="img-fluid"
+               alt="{{ 'SHOP.flatRoofWindows' | translate}}">
+          <a routerLink="./{{ 'SHOP.flatRoofWindowsLink' | translate}}">
+            <div class="mask rgba-white-slight"></div>
+          </a>
+        </div>
+
+        <!--Excerpt-->
+        <mdb-card-body class="mt-3">
+          <h4>
+            <strong>{{ 'SHOP.flatRoofWindows' | translate}}</strong>
+          </h4>
+          <p class="grey-text">{{ 'SHOP.flatRoofWindowsDesc' | translate}}</p>
+          <a routerLink="./{{ 'SHOP.flatRoofWindowsLink' | translate}}" mdbBtn color="cyan" size="xl" class="waves-light" mdbWavesEffect>
+            <mdb-icon far icon="clone" class="left"></mdb-icon>
+            {{ 'SHOP.flatRoofWindows' | translate}}</a>
+        </mdb-card-body>
+
+      </div>
+      <!--Grid column vertical windows-->
+
+      <!--Grid column skylights-->
+      <div class="col-lg-4 col-md-6 mb-4">
+
+        <!--Featured image-->
+        <div class="view overlay rounded z-depth-1  waves-light" mdbWavesEffect>
+          <img src="assets/img/menu_sklep_wylazy_dachowe.jpg" class="img-fluid"
+               alt="{{ 'SHOP.skylights' | translate}}">
+          <a routerLink="./{{ 'SHOP.skylightsLink' | translate}}">
+            <div class="mask rgba-white-slight"></div>
+          </a>
+        </div>
+
+        <!--Excerpt-->
+        <mdb-card-body class="mt-3">
+          <h4>
+            <strong>{{ 'SHOP.skylights' | translate}}</strong>
+          </h4>
+          <p class="grey-text">{{ 'SHOP.skylightsDesc' | translate}}</p>
+          <a routerLink="./{{ 'SHOP.skylightsLink' | translate}}" mdbBtn color="yellow" size="xl" class="waves-light" mdbWavesEffect>
+            <mdb-icon far icon="clone" class="left"></mdb-icon>
+            {{ 'SHOP.skylights' | translate}}</a>
+        </mdb-card-body>
+
+      </div>
+      <!--Grid column skylights-->
+
+      <!--Grid column reset products-->
+      <div class="col-lg-4 col-md-6 mb-4">
+
+        <!--Featured image-->
+        <div class="view overlay rounded z-depth-1  waves-light" mdbWavesEffect>
+          <img src="assets/img/menu_sklep_reset.jpg" class="img-fluid"
+               alt="{{ 'SHOP.reset' | translate}}">
+          <a routerLink="/{{ 'SHOP.resetLink' | translate}}">
+            <div class="mask rgba-white-slight"></div>
+          </a>
+        </div>
+
+        <!--Excerpt-->
+        <mdb-card-body class="mt-3">
+          <h4>
+            <strong>{{ 'SHOP.reset' | translate}}</strong>
+          </h4>
+          <p class="grey-text">{{ 'SHOP.resetDesc' | translate}}</p>
+          <a routerLink="/{{ 'SHOP.resetLink' | translate}}" mdbBtn style="background-color:#00FF1E" size="xl" class="waves-light" mdbWavesEffect>
+            <mdb-icon far icon="clone" class="left"></mdb-icon>
+            {{ 'SHOP.reset' | translate}}</a>
+        </mdb-card-body>
+
+      </div>
+      <!--Grid column shop-->
+
+    </div>
+    <!--Grid row-->
+
+  </section>
+
+</div>
 

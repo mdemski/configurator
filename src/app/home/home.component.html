@@ -1,30 +1,98 @@
-<div class="background">
+<div class="px-5">
+  <section>
 
-  <div class="row">
-    <!--    Karta z konfiguratorem-->
-    <div class="col">
-      <div class="home-cards">
-        <a class="box-name" routerLink="konfigurator"><span>Konfigurator</span></a>
-        <p class="second">Skonfiguruj nipowtarzalny produkt.</p>
-      </div>
-    </div>
+    <!--Section heading-->
+    <h2 class="text-center h1 py-5">
+      <strong>{{ 'HOME.appName' | translate}}</strong>
+    </h2>
 
-    <!--    Karta ze sklepem-->
-    <div class="col">
-      <div class="home-cards">
-        <div class="home-cards">
-        <a class="box-name" routerLink="sklep"><span>Sklep</span></a></div>
-        <p class="second">Wybierz jedną z wielu gotowych konfiguracji</p>
-      </div>
-    </div>
+    <!--Section description-->
+    <p class="grey-text pb-5 text-center">{{ 'HOME.appDesc' | translate}}</p>
 
-    <!--    Karta z moim kontem-->
-    <div class="col">
-      <div class="home-cards">
-        <a class="box-name" routerLink="moje-konto"><span>Moje konto</span></a>
-        <p class="second">Sprawdź historię zamówień i konfiguracji</p>
+    <!--Grid row-->
+    <div class="row text-center">
+
+      <!--Grid column-->
+      <div class="col-lg-4 col-md-12 mb-4">
+
+        <!--Featured image-->
+        <div class="view overlay rounded z-depth-1 waves-light" mdbWavesEffect>
+          <img src="assets/img/1.jpg" class="img-fluid"
+               alt="{{ 'HOME.shop' | translate}}">
+          <a routerLink="/{{ 'LINK.shop' | translate}}">
+            <div class="mask rgba-white-slight"></div>
+          </a>
+        </div>
+
+        <!--Excerpt-->
+        <mdb-card-body class="mt-3">
+          <h4>
+            <strong>{{ 'HOME.shop' | translate}}</strong>
+          </h4>
+          <p class="grey-text">{{ 'HOME.shopDesc' | translate}}</p>
+          <a routerLink="/{{ 'LINK.shop' | translate}}" mdbBtn color="indigo" size="xl" class="waves-light" mdbWavesEffect>
+            <mdb-icon far icon="clone" class="left"></mdb-icon>
+            {{ 'HOME.shop' | translate}}</a>
+        </mdb-card-body>
+
       </div>
+      <!--Grid column-->
+
+      <!--Grid column-->
+      <div class="col-lg-4 col-md-6 mb-4">
+
+        <!--Featured image-->
+        <div class="view overlay rounded z-depth-1  waves-light" mdbWavesEffect>
+          <img src="assets/img/2.jpg" class="img-fluid"
+               alt="{{ 'HOME.configurator' | translate}}">
+          <a routerLink="/{{ 'LINK.configurator' | translate}}">
+            <div class="mask rgba-white-slight"></div>
+          </a>
+        </div>
+
+        <!--Excerpt-->
+        <mdb-card-body class="mt-3">
+          <h4>
+            <strong>{{ 'HOME.configurator' | translate}}</strong>
+          </h4>
+          <p class="grey-text">{{ 'HOME.configDesc' | translate}}</p>
+          <a routerLink="/{{ 'LINK.configurator' | translate}}" mdbBtn color="indigo" size="xl" class="waves-light" mdbWavesEffect>
+            <mdb-icon far icon="clone" class="left"></mdb-icon>
+            {{ 'HOME.configurator' | translate}}</a>
+        </mdb-card-body>
+
+      </div>
+      <!--Grid column-->
+
+      <!--Grid column-->
+      <div class="col-lg-4 col-md-6 mb-4">
+
+        <!--Featured image-->
+        <div class="view overlay rounded z-depth-1  waves-light" mdbWavesEffect>
+          <img src="assets/img/3.jpg" class="img-fluid"
+               alt="Sample project image">
+          <a routerLink="/{{ 'LINK.myAccount' | translate}}/{{id}}">
+            <div class="mask rgba-white-slight"></div>
+          </a>
+        </div>
+
+        <!--Excerpt-->
+        <mdb-card-body class="mt-3">
+          <h4>
+            <strong>{{ 'HOME.myAccount' | translate}}</strong>
+          </h4>
+          <p class="grey-text">{{ 'HOME.myAccountDesc' | translate}}</p>
+          <a routerLink="/{{ 'LINK.myAccount' | translate}}/{{id}}" mdbBtn color="indigo" size="xl" class="waves-light" mdbWavesEffect>
+            <mdb-icon far icon="clone" class="left"></mdb-icon>
+            {{ 'HOME.myAccount' | translate}}</a>
+        </mdb-card-body>
+
+      </div>
+      <!--Grid column-->
+
     </div>
-  </div>
+    <!--Grid row-->
+
+  </section>
 
 </div>

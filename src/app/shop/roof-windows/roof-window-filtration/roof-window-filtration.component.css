@@ -1,7 +1,41 @@
-.checkBox {
-  height: 100px;
+.searching-box {
+  display: flex;
 }
 
-li {
-  list-style-type: none;
+.searching-box {
+  display: flex;
+  position: relative;
+  flex: 1 1 auto;
+}
+
+.searching-box label {
+  position: absolute;
+  transform: translateY(-20px);
+}
+
+.check-box {
+  padding-left: 10px;
+}
+
+.check-box input {
+  margin-right: 5px;
+}
+
+.searching-icon {
+  padding-top: 12px;
+  padding-left: 30px;
+}
+
+.md-outline {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.md-outline input {
+  height: 30px;
+  width: 70px;
+}
+
+.dimensions-input {
+  transform: translateY(10px);
 }

@@ -1,16 +1,16 @@
-import {Component, DoCheck, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
 import {User} from '../models/user';
 import {Company} from '../models/company';
-import {Observable, of} from 'rxjs';
 import {UUID} from 'angular2-uuid';
 import {Router} from '@angular/router';
+import {AuthService} from '../services/auth.service';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
@@ -18,11 +18,15 @@ export class RegisterComponent implements OnInit {
   registerUser = {} as User;
   registerCompany = {} as Company;
   uuidValue: string;
+  error: string = null;
+  userBody: any;
+  companyBody: any;
 
-  //TODO sprawdzić czy ngDoCheck załaduje tłumaczenie
+  // TODO sprawdzić czy ngDoCheck załaduje tłumaczenie
   // bez dodatkowego przeładowania strony
   constructor(public translate: TranslateService,
-              private router: Router) {
+              private router: Router,
+              private authService: AuthService) {
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
     // const browserLang = translate.getBrowserLang();
@@ -35,7 +39,7 @@ export class RegisterComponent implements OnInit {
       firstName: new FormControl(null, [Validators.required]),
       lastName: new FormControl(null, [Validators.required]),
       email: new FormControl(null, [Validators.required, Validators.email]),
-      //TODO dodać warunek sprawdzający długość hasła: Validators.min(8)
+      // TODO dodać warunek sprawdzający długość hasła: Validators.min(8)
       password: new FormControl(null, [Validators.required]),
       rePassword: new FormControl(null, [Validators.required]),
       role: new FormControl(null),
@@ -57,23 +61,26 @@ export class RegisterComponent implements OnInit {
     this.registerUser.rePassword = this.registerForm.value.rePassword;
     this.registerUser.role = this.registerForm.value.role;
     this.registerUser.uuid = this.generateUUID();
+    this.userBody = JSON.stringify(this.registerUser);
     this.registerCompany.nip = this.registerForm.value.nip;
     this.registerCompany.name = this.registerForm.value.companyName;
     this.registerCompany.street = this.registerForm.value.street;
     this.registerCompany.number = this.registerForm.value.number;
     this.registerCompany.zipCode = this.registerForm.value.zipCode;
     this.registerCompany.agent = this.registerForm.value.agent;
+    this.companyBody = JSON.stringify(this.registerCompany);
+    // TODO wysłać POSTem obydwa JSONy w service
     if (this.registerForm.valid) {
-      this.translate.get('REGISTER').subscribe(text => {
-        alert(text.registrationConfirmationAlert);
+      this.authService.singIn(this.registerUser, this.registerCompany).subscribe(resData => {
+        this.translate.get('REGISTER').subscribe(text => {
+          alert(text.registrationConfirmationAlert);
+        });
+        this.router.navigate(['/']);
+        this.registerForm.reset();
+      }, errorMessage => {
+        this.error = errorMessage;
       });
-      this.router.navigate(['/sklep']);
-      this.registerForm.reset();
     }
-    console.log('co to jest ' + this.registerForm.valid);
-    console.log('Status formularza ' + this.registerForm.status);
-    console.log(this.registerUser);
-    console.log(this.registerCompany);
   }
 
   generateUUID() {
@@ -81,17 +88,13 @@ export class RegisterComponent implements OnInit {
   }
 
   setClientTypeToTrue() {
-    this.clientType = true;
-  }
-
-  setClientTypeToFalse() {
-    this.clientType = false;
+    this.clientType = !this.clientType;
   }
 
   requiredIfCompanyClient(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
       if (this.clientType) {
-        return {'required': true};
+        return {required: true};
       } else {
         return null;
       }
@@ -101,7 +104,7 @@ export class RegisterComponent implements OnInit {
   comparePasswordAndRePassword(group: FormGroup) {
     const pass = group.get('password').value;
     const rePass = group.get('rePassword').value;
-    return pass === rePass ? null : {'mismatch': true};
+    return pass === rePass ? null : {mismatch: true};
   }
 
   // getFirstNameFromTranslation() {

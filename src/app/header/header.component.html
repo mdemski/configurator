@@ -1,51 +1,306 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">
-    <img class="logo" src="../../assets/img/2015-logo-okpol-pl-217-50.png" alt="logo okpol"/>
-  </a>
-  <div class="collapse navbar-collapse">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/">Strona główna <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/o-aplikacji">O aplikacji</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/konfigurator">Konfigurator</a>
-      </li>
-      <li class="nav-item">
-        <div class="btn-group">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
-             aria-expanded="false">Sklep</a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" routerLink="/sklep/okna-dachowe">Okna dachowe</a>
-            <a class="dropdown-item" routerLink="/sklep/okna-pionowe">Okna pionowe</a>
-            <a class="dropdown-item" routerLink="/sklep/wylazy-dachowe">Wyłazy dachowe</a>
-            <a class="dropdown-item" routerLink="/sklep/kolnierze">Kołnierze do okien</a>
-            <a class="dropdown-item" routerLink="/sklep/akcesoria">Akcesoria</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" routerLink="/regulamin">Regulamin</a>
+<!--Navbar-->
+<mdb-navbar #nav SideClass="navbar navbar-expand-lg navbar-light white">
+
+    <!-- Navbar brand -->
+    <mdb-navbar-brand>
+      <a class="navbar-brand" routerLink="/">
+        <img class="logo" src="../../assets/img/2015-logo-okpol-pl-217-50.png" alt="logo okpol"/>
+      </a>
+    </mdb-navbar-brand>
+
+    <links>
+      <!-- Links -->
+      <ul class="navbar-nav mr-auto">
+        <!-- Dropdown SHOP-->
+        <li class="nav-item dropdown mega-dropdown" mdbDropdown>
+          <a mdbDropdownToggle class="nav-link dropdown-toggle">{{ 'HOME.shop' | translate}}</a>
+          <div class="dropdown-menu mega-menu row z-depth-1">
+            <div class="row">
+              <div class="col-md-5 col-xl-3 sub-menu mt-5 mb-5 pl-4">
+                <ul class="list-unstyled mx-4 pl-0 dark-grey-text">
+                  <li class="sub-title text-uppercase mt-sm">
+                    <a class="menu-item"
+                       routerLink="{{ 'HOME.shopLink' | translate}}/{{ 'SHOP.roofWindowsLink' | translate}}">{{ 'SHOP.roofWindows' | translate}}</a>
+                  </li>
+                  <li class="sub-title text-uppercase">
+                    <a class="menu-item"
+                       routerLink="{{ 'HOME.shopLink' | translate}}/{{ 'SHOP.flashingsLink' | translate}}">{{ 'SHOP.flashings' | translate}}</a>
+                  </li>
+                  <li class="sub-title text-uppercase">
+                    <a class="menu-item"
+                       routerLink="{{ 'HOME.shopLink' | translate}}/{{ 'SHOP.flatRoofWindowsLink' | translate}}">{{ 'SHOP.flatRoofWindows' | translate}}</a>
+                  </li>
+                  <li class="sub-title text-uppercase">
+                    <a class="menu-item"
+                       routerLink="{{ 'HOME.shopLink' | translate}}/{{ 'SHOP.skylightsLink' | translate}}">{{ 'SHOP.skylights' | translate}}</a>
+                  </li>
+                  <li class="sub-title text-uppercase">
+                    <a class="menu-item"
+                       routerLink="{{ 'HOME.shopLink' | translate}}/{{ 'SHOP.accessoriesLink' | translate}}">{{ 'SHOP.accessories' | translate}}</a>
+                  </li>
+                  <li class="sub-title text-uppercase">
+                    <a class="menu-item"
+                       routerLink="{{ 'HOME.shopLink' | translate}}/{{ 'SHOP.resetLink' | translate}}">{{ 'SHOP.reset' | translate}}</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-md-7 col-xl-9">
+                <div class="row">
+                  <div class="col-xl-6 mt-5 mb-4 pr-5 clearfix d-none d-block">
+                    <h6
+                      class="sub-title p-sm mb-4 text-uppercase font-weight-bold dark-grey-text">{{ 'HOME.headerMainTitleShop' | translate}}</h6>
+                    <!--Featured image roof windows-->
+                    <div class="view overlay pb-3">
+                      <img src="assets/img/menu_sklep_okna_dachowe.jpg"
+                           class="img-fluid z-depth-1" alt="First sample image">
+                      <div class="mask rgba-white-slight flex-center">
+                        <p></p>
+                      </div>
+                    </div>
+                    <h4 class="mb-2">
+                      <a class="news-title"
+                         routerLink="{{ 'HOME.shopLink' | translate}}/{{ 'SHOP.roofWindowsLink' | translate}}">{{ 'SHOP.roofWindows' | translate}}</a>
+                    </h4>
+                  </div>
+                  <div class="col-xl-6 mt-5 mb-4 pr-5 clearfix d-none d-xl-block">
+                    <h6
+                      class="sub-title p-sm mb-4 text-uppercase font-weight-bold dark-grey-text">{{ 'HOME.headerRecentTitleShop' | translate}}</h6>
+                    <div class="news-single">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <!--Image flashings-->
+                          <div class="view overlay z-depth-1">
+                            <img src="assets/img/menu_sklep_kolnierze.jpg"
+                                 class="img-fluid" alt="Minor sample post image">
+                            <div class="mask rgba-white-slight flex-center">
+                              <p></p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-8">
+                          <a class="news-title smaller mb-1"
+                             routerLink="{{ 'HOME.shopLink' | translate}}/{{ 'SHOP.flashingsLink' | translate}}">{{ 'SHOP.flashings' | translate}}</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="news-single">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <!--Image Flat Roof-->
+                          <div class="view overlay z-depth-1">
+                            <img src="assets/img/menu_sklep_okna_płaskie.jpg"
+                                 class="img-fluid" alt="Minor sample post image">
+                            <div class="mask rgba-white-slight flex-center">
+                              <p></p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-8">
+                          <a class="news-title smaller mb-1"
+                             routerLink="{{ 'HOME.shopLink' | translate}}/{{ 'SHOP.flatRoofWindowsLink' | translate}}">{{ 'SHOP.flatRoofWindows' | translate}}</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="news-single">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <!--Image RESET-->
+                          <div class="view overlay z-depth-1">
+                            <img src="assets/img/menu_sklep_reset.jpg"
+                                 class="img-fluid" alt="Minor sample post image">
+                            <div class="mask rgba-white-slight flex-center">
+                              <p></p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-8">
+                          <a class="news-title smaller mb-1"
+                             routerLink="{{ 'HOME.shopLink' | translate}}/{{ 'SHOP.resetLink' | translate}}">{{ 'SHOP.reset' | translate}}</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/kontakt">Kontakt</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/moje-konto">Moje Konto</a>
-      </li>
-    </ul>
-    <ul class="nav justify-content-end">
-      <li class="nav-item">
-        <a class="nav-link" href="/login">Zaloguj</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/rejestracja">Rejestracja</a>
-      </li>
-    </ul>
-  </div>
-  <form class="form-inline my-2 my-lg-0">
-    <input class="form-control mr-sm-2" type="search" placeholder="Szukana fraza" aria-label="Search">
-    <button class="btn btn-outline-success my-sm-0" type="submit">Szukaj</button>
-  </form>
-</nav>
+        </li>
+      </ul>
+      <!-- Links -->
+
+      <!-- Links -->
+      <ul class="navbar-nav mr-auto">
+        <!-- Dropdown CONFIGURATOR-->
+        <li class="nav-item dropdown mega-dropdown" mdbDropdown>
+          <a mdbDropdownToggle class="nav-link dropdown-toggle">{{ 'HOME.configurator' | translate}}</a>
+          <div class="dropdown-menu mega-menu row z-depth-1">
+            <div class="row">
+              <div class="col-md-5 col-xl-3 sub-menu mt-5 mb-5 pl-4">
+                <ul class="list-unstyled mx-4 pl-0 dark-grey-text">
+                  <li class="sub-title text-uppercase mt-sm">
+                    <a class="menu-item"
+                       routerLink="{{ 'HOME.configuratorLink' | translate}}/{{ 'CONFIGURATOR.roofWindowsLink' | translate}}">{{ 'CONFIGURATOR.roofWindows' | translate}}</a>
+                  </li>
+                  <li class="sub-title text-uppercase">
+                    <a class="menu-item"
+                       routerLink="{{ 'HOME.configuratorLink' | translate}}/{{ 'CONFIGURATOR.flashingsLink' | translate}}">{{ 'CONFIGURATOR.flashings' | translate}}</a>
+                  </li>
+                  <li class="sub-title text-uppercase">
+                    <a class="menu-item"
+                       routerLink="{{ 'HOME.configuratorLink' | translate}}/{{ 'CONFIGURATOR.accessoriesLink' | translate}}">{{ 'CONFIGURATOR.accessories' | translate}}</a>
+                  </li>
+                  <li class="sub-title text-uppercase">
+                    <a class="menu-item"
+                       routerLink="{{ 'HOME.configuratorLink' | translate}}/{{ 'CONFIGURATOR.verticalWindowsLink' | translate}}">{{ 'CONFIGURATOR.verticalWindows' | translate}}</a>
+                  </li>
+                  <li class="sub-title text-uppercase">
+                    <a class="menu-item"
+                       routerLink="{{ 'HOME.configuratorLink' | translate}}/{{ 'CONFIGURATOR.skylightsLink' | translate}}">{{ 'CONFIGURATOR.skylights' | translate}}</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-md-7 col-xl-9">
+                <div class="row">
+                  <div class="col-xl-6 mt-5 mb-4 pr-5 clearfix d-none d-block">
+                    <h6
+                      class="sub-title p-sm mb-4 text-uppercase font-weight-bold dark-grey-text">{{ 'HOME.headerMainTitleConfigurator' | translate}}</h6>
+                    <!--Featured image Roof windows-->
+                    <div class="view overlay pb-3">
+                      <img src="assets/img/menu_konfigurator_okna_dachowe.jpg"
+                           class="img-fluid z-depth-1" alt="First sample image">
+                      <div class="mask rgba-white-slight flex-center">
+                        <p></p>
+                      </div>
+                    </div>
+                    <h4 class="mb-2">
+                      <a class="news-title"
+                         routerLink="{{ 'HOME.configuratorLink' | translate}}/{{ 'CONFIGURATOR.roofWindowsLink' | translate}}">{{ 'CONFIGURATOR.roofWindows' | translate}}</a>
+                    </h4>
+                  </div>
+                  <div class="col-xl-6 mt-5 mb-4 pr-5 clearfix d-none d-xl-block">
+                    <h6
+                      class="sub-title p-sm mb-4 text-uppercase font-weight-bold dark-grey-text">{{ 'HOME.headerRecentTitleConfigurator' | translate}}</h6>
+                    <div class="news-single">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <!--Image vertical windows-->
+                          <div class="view overlay z-depth-1">
+                            <img src="assets/img/menu_konfigurator_okna_pionowe.jpg"
+                                 class="img-fluid" alt="Minor sample post image">
+                            <div class="mask rgba-white-slight flex-center">
+                              <p></p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-8">
+                          <a class="news-title smaller mb-1"
+                             routerLink="{{ 'HOME.configuratorLink' | translate}}/{{ 'CONFIGURATOR.verticalWindowsLink' | translate}}">{{ 'CONFIGURATOR.verticalWindows' | translate}}</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="news-single">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <!--Image accessories-->
+                          <div class="view overlay z-depth-1">
+                            <img src="assets/img/menu_konfigurator_akcesoria.jpg"
+                                 class="img-fluid" alt="Minor sample post image">
+                            <div class="mask rgba-white-slight flex-center">
+                              <p></p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-8">
+                          <a class="news-title smaller mb-1"
+                             routerLink="{{ 'HOME.configuratorLink' | translate}}/{{ 'CONFIGURATOR.accessoriesLink' | translate}}">{{ 'CONFIGURATOR.accessories' | translate}}</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="news-single">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <!--Image flashings-->
+                          <div class="view overlay z-depth-1">
+                            <img src="assets/img/menu_konfigurator_kolnierze.jpg"
+                                 class="img-fluid" alt="Minor sample post image">
+                            <div class="mask rgba-white-slight flex-center">
+                              <p></p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-8">
+                          <a class="news-title smaller mb-1"
+                             routerLink="{{ 'HOME.configuratorLink' | translate}}/{{ 'CONFIGURATOR.flashingsLink' | translate}}">{{ 'CONFIGURATOR.flashings' | translate}}</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <!-- Links -->
+
+      <!-- Links -->
+      <ul class="navbar-nav nav-flex-icons ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="{{ 'LINK.contact' | translate}}">{{ 'HOME.contact' | translate}}</a>
+        </li>
+        <ng-template [ngIf]="!isAuthenticated">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="{{ 'LINK.login' | translate}}">{{ 'HOME.login' | translate}}</a>
+          </li>
+        </ng-template>
+        <ng-template [ngIf]="isAuthenticated">
+          <li class="nav-item">
+            <a class="nav-link"
+               routerLink="{{ 'LINK.myAccount' | translate}}">{{ 'HOME.myAccount' | translate}}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"
+               (click)=logout()>{{ 'HOME.logout' | translate}}</a>
+          </li>
+        </ng-template>
+      </ul>
+
+      <ul class="navbar-nav nav-flex-icons ml-auto">
+        <!-- Search form -->
+        <form class="form-inline" #searchForm="ngForm" (ngSubmit)="onSubmit()">
+          <div class="md-form my-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="{{ 'HOME.search' | translate}}"
+                   aria-label="Search">
+          </div>
+        </form>
+      </ul>
+
+
+      <ul class="navbar-nav nav-flex-icons ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{{ 'LINK.mailTo' | translate}}">
+            <mdb-icon fas icon="envelope" aria-hidden="true"></mdb-icon>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="//{{ 'LINK.website' | translate}}">
+            <mdb-icon fas icon="home" aria-hidden="true"></mdb-icon>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <mdb-icon fas icon="shopping-cart"></mdb-icon>
+          </a>
+        </li>
+      </ul>
+
+      <!-- Links -->
+    </links>
+    <!-- Collapsible content -->
+
+    <!-- Links -->
+
+</mdb-navbar>
+<!--/.Navbar-->
+
+

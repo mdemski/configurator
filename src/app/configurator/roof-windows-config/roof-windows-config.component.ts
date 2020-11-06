@@ -1,14 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {RoofWindow} from '../../models/roof-window';
+import {RoofWindowSkylight} from '../../models/roof-window-skylight';
 
 @Component({
   selector: 'app-roof-windows-config',
   templateUrl: './roof-windows-config.component.html',
-  styleUrls: ['./roof-windows-config.component.css']
+  styleUrls: ['./roof-windows-config.component.scss']
 })
 export class RoofWindowsConfigComponent implements OnInit {
-  configuredWindow: RoofWindow;
+  configuredWindow: RoofWindowSkylight;
   windowConfigurationForm: FormGroup;
   categories = [];
   windowModels = [];
@@ -64,7 +64,7 @@ export class RoofWindowsConfigComponent implements OnInit {
   }
 
   private validateSurface(): { [s: string]: boolean } {
-    if (this.configuredWindow.width * this.configuredWindow.height > 12597) {
+    if (this.configuredWindow.windowWidth * this.configuredWindow.windowHeight > 12597) {
       return {'roofWindowToLarge': true};
     } else {
       return null;
