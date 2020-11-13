@@ -7,4 +7,5 @@ export class User {
   role: string;
   activated: boolean;
   uuid: string;
+  discount: number;
 }
