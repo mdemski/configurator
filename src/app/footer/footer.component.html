@@ -1,28 +1,26 @@
 <!-- Footer -->
-<footer class="page-footer font-small unique-color-dark pt-4">
+<footer class="md-footer-container">
 
-  <!-- Footer Elements -->
-  <div class="container">
-
-    <!-- Call to action -->
-    <ul class="list-unstyled list-inline text-center py-2">
-      <li class="list-inline-item">
-        <h5 class="mb-1">{{ 'HOME.register' | translate}}</h5>
-      </li>
-      <li class="list-inline-item">
-        <a href="{{ 'LINK.signIn' | translate}}" mdbBtn color="white" outline="true" rounded="true" class="waves-light" mdbWavesEffect>{{ 'HOME.signIn' | translate}}</a>
-      </li>
-    </ul>
-    <!-- Call to action -->
-
+  <div class="md-footer-container-register">
+    <p>{{ 'HOME.register' | translate}}</p>
+    <a routerLink="/{{ 'LINK.signIn' | translate}}" class="btn md-btn-light"></a>
   </div>
-  <!-- Footer Elements -->
 
-  <!-- Copyright -->
-  <div class="footer-copyright text-center py-3">© 2020 Copyright:
+  <div class="md-footer-container-newsletter">
+    <p>{{ 'HOME.newsletter' | translate}}</p>
+      <input type="email"
+             #newsletterEmail
+             required
+             id="newsletterEmail"
+             placeholder="{{ 'HOME.newsletterInput' | translate}}"
+             class="md-footer-container-newsletter-input">
+      <a type="button" (click)="submitNewsletter(newsletterEmail)" class="btn md-btn-light">{{ 'HOME.newsletterSignIn' | translate}}</a>
+  </div>
+
+  <div class="md-footer-container-copyrights">
+    <p>© 2020 Copyright:</p>
     <a href="https://okpol.com/">okpol.com</a>
   </div>
-  <!-- Copyright -->
 
 </footer>
 <!-- Footer -->

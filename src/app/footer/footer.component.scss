@@ -1,0 +1,6 @@
+@use 'src/sass/base/variables';
+
+.md-footer-container {
+  display: flex;
+  background-color: variables.$color-dark-blue;
+}

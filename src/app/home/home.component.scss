@@ -1,24 +1,4 @@
-//flex: flex-grow | flex-shrink | flex-basis
-
-//#f4f4f2 - lightest-grey
-//#e8e8e8 - lightgrey
-//#e8e8e8 - grey
-//#495464 - darkgrey
-
-
-//#f05454 - light-red
-//#f05454 - red
-//#af2d2d - darkred
-//#ce6262 - darkest-red
-
-
-//#bbe1fa - lightest-blue
-//#3282b8 - blue
-//#0f4c75 - darkblue
-//#1b262c - darkest-blue
-
-//#ffc93c - yellow
-
+@use '/src/sass/base/variables';
 
 //SLIDER SECTION
 
@@ -118,11 +98,11 @@ a {
 
 .md-full-offer-img-hover-button {
   border: 0;
-  background-color: #ff0000;
+  background-color: variables.$color-red;
   border-radius: 50px;
   padding: 1rem;
   font-size: 1.5rem;
-  color: #fff;
+  color: variables.$color-white;
 }
 
 //SECTION ABOUT NEW PRODUCT
@@ -133,7 +113,7 @@ a {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  background-color: #f0f0f0;
+  background-color: variables.$color-white;
 }
 
 .md-new-product-container__desc {
@@ -164,7 +144,7 @@ a {
 .md-new-product-container__button {
   border-radius: 50px;
   border: .5rem solid transparent;
-  background-color: #00FF1E;
+  background-color: variables.$color-green;
   padding: 1.5rem;
   font-size: 2rem;
   margin-top: 2rem;
@@ -172,7 +152,7 @@ a {
 }
 
 .md-new-product-container__button:hover {
-  border: .5rem solid #00FF1E;
+  border: .5rem solid variables.$color-green;
   border-radius: 50px;
   background-color: transparent;
 }
@@ -182,7 +162,7 @@ a {
   top: 21rem;
   left: 3rem;
   border-radius: 50%;
-  border: .7rem solid #00FF1E;
+  border: .7rem solid variables.$color-green;
   box-sizing: content-box;
   height: 300px;
 }
@@ -233,9 +213,9 @@ a {
 
   button {
     border: 0;
-    background-color: #f0f0f0;
+    background-color: variables.$color-white;
     border-radius: 50px;
-    color: #ff0000;
+    color: variables.$color-red;
     padding: 1.5rem;
     font-size: 2rem;
     margin-top: 2rem;
@@ -250,13 +230,13 @@ a {
     padding: 3rem;
     height: 100%;
     width: 100%;
-    background-color: rgba(255, 0, 0, .5);
+    background-color: rgba(variables.$color-red, .5);
     top: 60rem;
     transition: top 1s;
 
     p {
       font-size: 2rem;
-      color: #e8e8e8;
+      color: variables.$color-white;
     }
   }
 
@@ -306,7 +286,7 @@ a {
 }
 
 .btn-light-red {
-  background-color: #f05454;
+  background-color: variables.$color-light-red;
 
   &:hover {
     transform: translateY(-.1rem);

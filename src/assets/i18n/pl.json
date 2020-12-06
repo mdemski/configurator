@@ -26,27 +26,41 @@
     "tooManyAttempts": "Zarejestrowaliśmy zbyt dużo prób logowania z tego urządzenia, spróbuj ponownie później"
   },
   "HOME": {
+    "roofWindows": "Okna dachowe",
+    "flashings": "Kołnierze",
+    "flatRoofWindows": "Okna na dach płaski",
+    "skylights": "Wyłazy dachowe",
+    "accessories": "Akcesoria do okien",
+    "resetProducts": "Produkty z linii Reset",
+    "verticalWindows": "Okna PVC",
+    "roofWindowsShortDesc": "Bogata oferta okien dachowych w tym klasyczne okna obrotowe",
+    "flatRoofWindowsShortDesc": "Wciąż rozwijająca się grupa produktów przeznaczonych na dach płaski",
+    "resetProductsShortDesc": "Absolutna nowość w dziedzinie stolarki dachowej - wykorzystanie EPDM do połączenia dachu z oknem",
     "shop": "Sklep",
     "shopLink": "sklep",
-    "shopDesc": "Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae.",
     "about": "O aplikacji",
     "configurator": "Konfigurator",
-    "configDesc": "Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae.",
     "login": "Zaloguj",
     "logout": "Wyloguj",
     "signIn": "Rejestracja",
     "myAccount": "Moje konto",
-    "myAccountDesc": "Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae.",
     "contact": "Kontakt",
     "search": "Szukana fraza",
     "register": "Zarejestruj się już teraz",
-    "appName": "Tutaj powinna być super nazwa tego narzędzia np. Krystian",
-    "appDesc": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     "configuratorLink": "konfigurator",
     "headerMainTitleShop": "Główna grupa",
     "headerRecentTitleShop": "Ostatnio odwiedzane",
     "headerMainTitleConfigurator": "Główna grupa",
-    "headerRecentTitleConfigurator": "Ostatnio konfigurowane"
+    "headerRecentTitleConfigurator": "Ostatnio konfigurowane",
+    "allProductsTitle": "Pełna oferta firmy OKPOL",
+    "newProductHomePageTitle": "RESET Początkiem nowego.",
+    "newProductHomePageDesc": "Absolutna nowość na rynku stolarki dachowej!",
+    "newProductHomePageMore": "Zobacz więcej",
+    "addToCart": "Dodaj do koszyka",
+    "availableSellers": "Znajdź najbliższy punkt",
+    "newsletter": "Śledź zmiany na bieżąco",
+    "newsletterInput": "Podaj adres mailowy",
+    "newsletterSignIn": "Zapisz się"
   },
   "LOGIN": {
     "login": "Login",
@@ -62,7 +76,14 @@
   },
   "LINK": {
     "shop": "sklep",
+    "shopRoofWindows": "sklep/okna-dachowe",
+    "shopFlashings": "sklep/kolnierze",
+    "shopFlatRoofWindows": "sklep/okna-na-dach-plaski",
+    "shopSkylights": "sklep/wylazy-dachowe",
+    "shopAccessories": "sklep/akcesoria",
+    "shopReset": "sklep/reset",
     "configurator": "konfigurator",
+    "configuratorVertical": "konfigurator/okna-pionowe",
     "myAccount": "moje-konto",
     "contact": "kontakt",
     "signIn": "rejestracja",
@@ -72,7 +93,8 @@
     "mailTo": "mailto:okpol@okpol.pl",
     "newPassword": "/ustalanie-nowego-hasla",
     "registerLink": "rejestracja",
-    "register": "Nie masz jeszcze konta, zajerestuj się"
+    "register": "Nie masz jeszcze konta, zajerestuj się",
+    "aboutResetWebsite": "https://www.okpol.pl/linia-produktow-reset/"
   },
   "CONTACT": {
     "contactUs": "Skontaktuj się z nami",
@@ -137,9 +159,18 @@
     "glazingToFilter": "Pakiety szybowe:",
     "openingToFilter": "Sposób otwierania:",
     "materialToFilter": "Materiał:",
-    "widthFromTo": "Szerokość od-do:",
-    "heightFromTo": "Wysokość od-do:",
+    "widthFromTo": "Szerokość:",
+    "heightFromTo": "Wysokość:",
     "from": "od",
     "to": "do"
+  },
+  "SINGLE-PRODUCT": {
+    "price": "Cena detaliczna:",
+    "priceAfterDisc": "Cena po rabacie:",
+    "availableSizes": "Dostępne wymiary:",
+    "quantity": "Ilość:",
+    "addToCart": "Dodaj do koszyka",
+    "material": "Stolarka",
+    "materialDesc": "W segmencie okien obrotowych oferujemy stolarkę drewnianą oraz wykonaną z PVC, a także okna wyposażone w siłowniki elektryczne.\n\nNasze okna drewniane to synonim solidności. Tarcicę sosnową tniemy i kleimy tak, aby zachować jego równomierną strukturę – bez deformacji czy sęków. Staranna impregnacja gotowych profili zwiększa ochronę przed powstawaniem sinizn, grzybów i pleśni.\n\nOkna z PVC wyposażone są zaś w odporne na wilgoć profile wielokomorowe o bardzo dobrych parametrach termoizolacyjnych. To doskonałe rozwiązanie dla znajdującej się na poddaszu kuchni, łazienki, czy nawet sauny – wszędzie tam, gdzie mamy do czynienia z powietrzem o dużej wilgotności. Materiał, z którego wykonujemy okna obrotowe sprawia, że są one niezwykle praktyczne – nie wymagają praktycznie żadnej konserwacji po zamontowaniu.\n\nPrzyjęty standard stolarki SOLID+ to najnowocześniejsze rozwiązania mające na celu uzyskanie jak najwyższych parametrów użytkowych. Drewniane okna obrotowe malujemy aż trzykrotnie lakierem ekologicznym, co zapewnia ochronę przed najbardziej agresywnym działaniem czynników zewnętrznych. Ponadto, jako jedyni producenci na rynku oferujemy okna obrotowe PVC o profilach wypełnianych pianką poliuretanową, dodatkowo zwiększającą termikę całego układu."
   }
 }

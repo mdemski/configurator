@@ -31,7 +31,7 @@
               "node_modules/ng-uikit-pro-standard/assets/scss/bootstrap/bootstrap.scss",
               "node_modules/ng-uikit-pro-standard/assets/scss/mdb.scss",
               "node_modules/animate.css/animate.css",
-              "src/styles.scss"
+              "src/sass/styles.scss"
             ],
             "scripts": [
               "node_modules/chart.js/dist/Chart.js",
@@ -100,7 +100,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/sass/styles.scss"
             ],
             "scripts": []
           }

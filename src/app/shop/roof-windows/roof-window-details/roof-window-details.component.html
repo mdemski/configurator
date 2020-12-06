@@ -1,1 +1,121 @@
-<p>roof-window-details works and shows {{windowToShow.windowName}}</p>
+<!--{{windowToShow.windowSubCategory}}-->
+<!--{{ 'SINGLE-PRODUCT.description' | translate}}-->
+
+<section>
+  <div class="container">
+
+    <!--Icons with mini pictures of product-->
+    <div class="mini-img-of-products-container">
+      <div class="mini-picture"></div>
+      <div class="mini-picture"></div>
+      <div class="mini-picture"></div>
+      <div class="mini-picture"></div>
+    </div>
+    <!--Icons with mini pictures of product-->
+
+    <!--Main picture of product-->
+    <div class="main-picture">
+      <img src="{{windowToShow.windowUrlLink}}" alt="{{windowToShow.windowName}}">
+    </div>
+    <!--Main picture of product-->
+
+    <!--Icons with specification of product-->
+    <div class="specification-icons-container">
+      <div class="active-icon">1</div>
+      <div class="active-icon">2</div>
+      <div class="active-icon">3</div>
+      <div class="inactive-icon">4</div>
+      <div class="active-icon">5</div>
+      <div class="active-icon">6</div>
+      <div class="active-icon">7</div>
+      <div class="inactive-icon">8</div>
+    </div>
+    <!--Icons with specification of product-->
+
+    <!--Information about product-->
+    <div class="container-with-product-information">
+      <h1 class="product-name">{{windowToShow.windowName}}</h1>
+      <p class="price">{{ 'SINGLE-PRODUCT.price' | translate}} {{windowToShow.windowPrice}} zł</p>
+      <p *ngIf="logInUser" class="price">{{ 'SINGLE-PRODUCT.priceAfterDisc' | translate}} {{priceAfterDisc}}</p>
+      <div class="line"></div>
+      <p>{{ 'SINGLE-PRODUCT.availableSizes' | translate}}</p>
+      <div class="all-sizes-container">
+        <button class="btn-size-to-chose">{{availableSizes[0]}}</button>
+        <button class="btn-size-to-chose">{{availableSizes[1]}}</button>
+        <button class="btn-size-to-chose">{{availableSizes[2]}}</button>
+        <button class="btn-size-to-chose">{{availableSizes[3]}}</button>
+        <button class="btn-size-to-chose">{{availableSizes[4]}}</button>
+        <button class="btn-size-to-chose">{{availableSizes[5]}}</button>
+        <button class="btn-size-chosen">{{availableSizes[6]}}</button>
+        <button class="btn-size-to-chose">{{availableSizes[7]}}</button>
+        <button class="btn-size-to-chose">{{availableSizes[8]}}</button>
+        <button class="btn-size-to-chose">{{availableSizes[9]}}</button>
+        <button class="btn-size-to-chose">{{availableSizes[10]}}</button>
+        <button class="btn-size-to-chose">{{availableSizes[11]}}</button>
+        <button class="btn-size-to-chose">{{availableSizes[12]}}</button>
+        <button class="btn-size-to-chose">{{availableSizes[13]}}</button>
+        <button class="btn-size-to-chose">{{availableSizes[14]}}</button>
+      </div>
+      <div class="line"></div>
+      <div class="quantity-container">
+        <p class="quantity-desc">{{ 'SINGLE-PRODUCT.quantity' | translate}}</p>
+        <button class="btn-quantity" (click)="decreaseQuantity()">-</button>
+        <div class="quantity">{{quantity}}</div>
+        <button class="btn-quantity" (click)="increaseQuantity()">+</button>
+      </div>
+      <div class="line"></div>
+      <button class="add-to-cart" mdbBtn type="button" color="info" rounded="true" outline="true"
+              mdbWavesEffect>{{ 'SINGLE-PRODUCT.addToCart' | translate}}</button>
+      <div class="line"></div>
+    </div>
+    <!--Information about product-->
+
+    <!--Available extras form product-->
+    <div class="container-with-extras">
+      <div class="cards-with-extras" *ngFor="let extra of availableExtras">
+        <!--Card-->
+        <mdb-card class="product-card" cascade="true">
+
+          <!--Card image-->
+          <div class="view view-cascade overlay waves-light product-card-image" mdbWavesEffect>
+            <mdb-card-img src="{{extra.accessoryName}}"></mdb-card-img>
+            <a routerLink="./{{extra.accessoryId}}">
+              <div class="mask rgba-white-slight"></div>
+            </a>
+          </div>
+          <!--/Card image-->
+
+          <mdb-card-body cascade="true" class="text-center pb-0 px-0">
+            <!--Card content-->
+            <h4 class="card-title">
+              <strong>{{extra.accessoryName}}</strong>
+            </h4>
+            <h5>{{extra.accessorySubCategory}}</h5>
+
+            <!-- Card footer -->
+            <div class="card-footer text-muted text-center mt-4">
+              <!--Add to cart-->
+              <button class="add-to-cart" mdbBtn type="button" color="info" rounded="true" outline="true"
+                      mdbWavesEffect>{{ 'SINGLE-PRODUCT.addToCart' | translate}}</button>
+            </div>
+
+          </mdb-card-body>
+          <!--/.Card content-->
+
+        </mdb-card>
+        <!--/.Card-->
+      </div>
+    </div>
+  </div>
+  <!--Available extras form product-->
+</section>
+<!--Extra information about product-->
+<section>
+  <div class="material-info-container">
+    <p>{{ 'SINGLE-PRODUCT.materialDesc' | translate}}</p>
+    <img src="https://www.okpol.pl/wp-content/uploads/2017/03/okna-obrotowe-okpol-stolarka.png"
+         alt="{{ 'SINGLE-PRODUCT.material' | translate}}">
+  </div>
+</section>
+
+
