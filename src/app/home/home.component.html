@@ -1,52 +1,52 @@
 <div class="md-container">
-  <div class="md-home-page-slider-container">
+  <div class="slider">
     <!--First part roof windows-->
-    <div class="md-one-element-slider">
+    <div class="slider__element">
       <a routerLink="/{{ 'LINK.shopRoofWindows' | translate}}">
         <img src="assets/img/slider_pictures/slider_roof_windows.jpg" alt="{{ 'HOME.roofWindows' | translate}}"
-             class="md-photo-slider">
-        <div class="md-slider-description-container">
-          <h2 class="md-slider-element-title">{{ 'HOME.roofWindows' | translate}}</h2>
-          <p class="md-slider-element-paragraph">{{ 'HOME.roofWindowsShortDesc' | translate}}</p>
+             class="slider__element--photo">
+        <div class="slider__element__description">
+          <h2 class="slider__element__description--title">{{ 'HOME.roofWindows' | translate}}</h2>
+          <p class="slider__element__description--paragraph">{{ 'HOME.roofWindowsShortDesc' | translate}}</p>
         </div>
       </a>
     </div>
     <!--!First part roof windows-->
 
     <!--Second part flat roof windows-->
-    <div class="md-one-element-slider">
+    <div class="slider__element">
       <a routerLink="/{{ 'LINK.shopFlatRoofWindows' | translate}}">
         <img src="assets/img/slider_pictures/slider_flat_windows.jpg" alt="{{ 'HOME.flatRoofWindows' | translate}}"
-             class="md-photo-slider">
-        <div class="md-slider-description-container">
-          <h2 class="md-slider-element-title">{{ 'HOME.flatRoofWindows' | translate}}</h2>
-          <p class="md-slider-element-paragraph">{{ 'HOME.flatRoofWindowsShortDesc' | translate}}</p>
+             class="slider__element--photo">
+        <div class="slider__element__description">
+          <h2 class="slider__element__description--title">{{ 'HOME.flatRoofWindows' | translate}}</h2>
+          <p class="slider__element__description--paragraph">{{ 'HOME.flatRoofWindowsShortDesc' | translate}}</p>
         </div>
       </a>
     </div>
     <!--!Second part flat roof windows-->
 
     <!--Third part RESET products-->
-    <div class="md-one-element-slider">
+    <div class="slider__element">
       <a routerLink="/{{ 'LINK.shopReset' | translate}}">
         <img src="assets/img/slider_pictures/slider_reset.jpg" alt="{{ 'HOME.resetProducts' | translate}}"
-             class="md-photo-slider">
-        <div class="md-slider-description-container">
-          <h2 class="md-slider-element-title">{{ 'HOME.resetProducts' | translate}}</h2>
-          <p class="md-slider-element-paragraph">{{ 'HOME.resetProductsShortDesc' | translate}}<</p>
+             class="slider__element--photo">
+        <div class="slider__element__description">
+          <h2 class="slider__element__description--title">{{ 'HOME.resetProducts' | translate}}</h2>
+          <p class="slider__element__description--paragraph">{{ 'HOME.resetProductsShortDesc' | translate}}<</p>
         </div>
       </a>
     </div>
     <!--!Third part RESET products-->
 
     <!--Forth part configurator-->
-    <div class="md-one-element-slider">
+    <div class="slider__element">
       <a routerLink="/{{ 'LINK.configurator' | translate}}">
         <img src="assets/img/slider_pictures/slider_config.jpg" alt="{{ 'HOME.configurator' | translate}}"
-             class="md-photo-slider">
-        <div class="md-slider-description-container">
-          <h1 class="md-slider-element-title">{{ 'HOME.configurator' | translate}}</h1>
-          <p class="md-slider-element-paragraph">{{ 'HOME.configDesc' | translate}}<</p>
+             class="slider__element--photo">
+        <div class="slider__element__description">
+          <h1 class="slider__element__description--title">{{ 'HOME.configurator' | translate}}</h1>
+          <p class="slider__element__description--paragraph">{{ 'HOME.configDesc' | translate}}<</p>
         </div>
       </a>
     </div>
@@ -55,110 +55,110 @@
 </div>
 
 <!--Section full offer-->
-<section class="md-all-products">
-  <h1 class="md-full-offer-title">{{ 'HOME.allProductsTitle' | translate}}</h1>
-  <div class="md-all-products-container">
-    <div class="md-product-container">
-      <a routerLink="/{{ 'LINK.shopRoofWindows' | translate}}" class="md-full-offer-link">
-        <img src="assets/img/full_offer/roof_windows.jpg" alt="roofWindows" class="md-full-offer-img">
-        <div class="md-full-offer-img-hover">
-          <button class="md-full-offer-img-hover-button">{{ 'HOME.roofWindows' | translate}}</button>
+<section class="full-offer">
+  <h1 class="full-offer--title">{{ 'HOME.allProductsTitle' | translate}}</h1>
+  <div class="full-offer__container">
+    <div class="full-offer__product">
+      <a routerLink="/{{ 'LINK.shopRoofWindows' | translate}}" class="full-offer__product--link">
+        <img src="assets/img/full_offer/roof_windows.jpg" alt="roofWindows" class="full-offer__product--img">
+        <div class="full-offer__product--img--hover">
+          <button class="btn btn--red">{{ 'HOME.roofWindows' | translate}}</button>
         </div>
       </a>
-      <h3 class="md-product-disc">{{ 'HOME.roofWindows' | translate}}</h3>
+      <h3 class="full-offer__product--disc">{{ 'HOME.roofWindows' | translate}}</h3>
     </div>
 
-    <div class="md-product-container">
-      <a routerLink="/{{ 'LINK.shopFlashings' | translate}}" class="md-full-offer-link">
-        <img src="assets/img/full_offer/flashings.jpg" alt="roofWindows" class="md-full-offer-img">
-        <div class="md-full-offer-img-hover">
-          <button class="md-full-offer-img-hover-button">{{ 'HOME.flashings' | translate}}</button>
+    <div class="full-offer__product">
+      <a routerLink="/{{ 'LINK.shopFlashings' | translate}}" class="full-offer__product--link">
+        <img src="assets/img/full_offer/flashings.jpg" alt="roofWindows" class="full-offer__product--img">
+        <div class="full-offer__product--img--hover">
+          <button class="btn btn--red">{{ 'HOME.flashings' | translate}}</button>
         </div>
       </a>
-      <h3 class="md-product-disc">{{ 'HOME.flashings' | translate}}</h3>
+      <h3 class="full-offer__product--disc">{{ 'HOME.flashings' | translate}}</h3>
     </div>
 
-    <div class="md-product-container">
-      <a routerLink="/{{ 'LINK.shopFlatRoofWindows' | translate}}" class="md-full-offer-link">
-        <img src="assets/img/full_offer/flat_windows.jpg" alt="roofWindows" class="md-full-offer-img">
-        <div class="md-full-offer-img-hover">
-          <button class="md-full-offer-img-hover-button">{{ 'HOME.flatRoofWindows' | translate}}</button>
+    <div class="full-offer__product">
+      <a routerLink="/{{ 'LINK.shopFlatRoofWindows' | translate}}" class="full-offer__product--link">
+        <img src="assets/img/full_offer/flat_windows.jpg" alt="roofWindows" class="full-offer__product--img">
+        <div class="full-offer__product--img--hover">
+          <button class="btn btn--red">{{ 'HOME.flatRoofWindows' | translate}}</button>
         </div>
       </a>
-      <h3 class="md-product-disc">{{ 'HOME.flatRoofWindows' | translate}}</h3>
+      <h3 class="full-offer__product--disc">{{ 'HOME.flatRoofWindows' | translate}}</h3>
     </div>
 
-    <div class="md-product-container">
-      <a routerLink="/{{ 'LINK.shopSkylights' | translate}}" class="md-full-offer-link">
-        <img src="assets/img/full_offer/skylights.jpg" alt="roofWindows" class="md-full-offer-img">
-        <div class="md-full-offer-img-hover">
-          <button class="md-full-offer-img-hover-button">{{ 'HOME.skylights' | translate}}</button>
+    <div class="full-offer__product">
+      <a routerLink="/{{ 'LINK.shopSkylights' | translate}}" class="full-offer__product--link">
+        <img src="assets/img/full_offer/skylights.jpg" alt="roofWindows" class="full-offer__product--img">
+        <div class="full-offer__product--img--hover">
+          <button class="btn btn--red">{{ 'HOME.skylights' | translate}}</button>
         </div>
       </a>
-      <h3 class="md-product-disc">{{ 'HOME.skylights' | translate}}</h3>
+      <h3 class="full-offer__product--disc">{{ 'HOME.skylights' | translate}}</h3>
     </div>
 
-    <div class="md-product-container">
-      <a routerLink="/{{ 'LINK.shopAccessories' | translate}}" class="md-full-offer-link">
-        <img src="assets/img/full_offer/accessories.jpg" alt="roofWindows" class="md-full-offer-img">
-        <div class="md-full-offer-img-hover">
-          <button class="md-full-offer-img-hover-button">{{ 'HOME.accessories' | translate}}</button>
+    <div class="full-offer__product">
+      <a routerLink="/{{ 'LINK.shopAccessories' | translate}}" class="full-offer__product--link">
+        <img src="assets/img/full_offer/accessories.jpg" alt="roofWindows" class="full-offer__product--img">
+        <div class="full-offer__product--img--hover">
+          <button class="btn btn--red">{{ 'HOME.accessories' | translate}}</button>
         </div>
       </a>
-      <h3 class="md-product-disc">{{ 'HOME.accessories' | translate}}</h3>
+      <h3 class="full-offer__product--disc">{{ 'HOME.accessories' | translate}}</h3>
     </div>
 
-    <div class="md-product-container">
-      <a routerLink="/{{ 'LINK.shopReset' | translate}}" class="md-full-offer-link">
-        <img src="assets/img/full_offer/reset.jpg" alt="roofWindows" class="md-full-offer-img">
-        <div class="md-full-offer-img-hover">
-          <button class="md-full-offer-img-hover-button">{{ 'HOME.resetProducts' | translate}}</button>
+    <div class="full-offer__product">
+      <a routerLink="/{{ 'LINK.shopReset' | translate}}" class="full-offer__product--link">
+        <img src="assets/img/full_offer/reset.jpg" alt="roofWindows" class="full-offer__product--img">
+        <div class="full-offer__product--img--hover">
+          <button class="btn btn--red">{{ 'HOME.resetProducts' | translate}}</button>
         </div>
       </a>
-      <h3 class="md-product-disc">{{ 'HOME.resetProducts' | translate}}</h3>
+      <h3 class="full-offer__product--disc">{{ 'HOME.resetProducts' | translate}}</h3>
     </div>
 
-    <div class="md-product-container">
-      <a routerLink="/{{ 'LINK.configuratorVertical' | translate}}" class="md-full-offer-link">
-        <img src="assets/img/full_offer/vertical_windows.jpg" alt="roofWindows" class="md-full-offer-img">
-        <div class="md-full-offer-img-hover">
-          <button class="md-full-offer-img-hover-button">{{ 'HOME.verticalWindows' | translate}}</button>
+    <div class="full-offer__product">
+      <a routerLink="/{{ 'LINK.configuratorVertical' | translate}}" class="full-offer__product--link">
+        <img src="assets/img/full_offer/vertical_windows.jpg" alt="roofWindows" class="full-offer__product--img">
+        <div class="full-offer__product--img--hover">
+          <button class="btn btn--red">{{ 'HOME.verticalWindows' | translate}}</button>
         </div>
       </a>
-      <h3 class="md-product-disc">{{ 'HOME.verticalWindows' | translate}}</h3>
+      <h3 class="full-offer__product--disc">{{ 'HOME.verticalWindows' | translate}}</h3>
     </div>
   </div>
 </section>
 <!--!Section full offer-->
 
-<!--Section full offer-->
-<section class="md-new-product-container">
-  <div class="md-new-product-container__desc">
+<!--Section new product offer-->
+<section class="new-product">
+  <div class="new-product__desc">
     <p>{{ 'HOME.newProductHomePageTitle' | translate}}</p>
-    <p>{{ 'HOME.newProductHomePageDesc' | translate}}</p>
+    <p class="new-product__desc--paragraph">{{ 'HOME.newProductHomePageDesc' | translate}}</p>
     <a href="//{{ 'LINK.aboutResetWebsite' | translate}}">
-      <button class="md-new-product-container__button">{{ 'HOME.newProductHomePageMore' | translate}}</button>
+      <button class="btn btn--green">{{ 'HOME.newProductHomePageMore' | translate}}</button>
     </a>
   </div>
-  <div class="md-new-product-container__img">
-    <img src="assets/img/IGX-F1-RESET.png" alt="IGX RESET" class="md-new-product-container__img-product">
-    <img src="assets/img/Reset-zoom-epdm.jpg" alt="IGX RESET" class="md-new-product-container__img-zoom">
+  <div class="new-product__img">
+    <img src="assets/img/IGX-F1-RESET.png" alt="IGX RESET" class="new-product__img--product">
+    <img src="assets/img/Reset-zoom-epdm.jpg" alt="IGX RESET" class="new-product__img--zoom">
   </div>
 </section>
-<!--!Section full offer-->
+<!--!Section new product offer-->
 
 <!--Section most recent products-->
-<section class="md-most-recent-container">
-  <div class="md-most-recent-container__product" *ngFor="let product of mostRecentProducts; let i = index">
-    <h2 class="most-recent-container__product-title">Produkt 1</h2>
-    <figure class="md-most-recent-container__product-background">
-      <p class="most-recent-container__product-title">To jest opis tego produktu zachęcający do zakupu. Zapraszamy do
+<section class="most-recent">
+  <div class="most-recent__product" *ngFor="let product of mostRecentProducts; let i = index">
+    <h2 class="most-recent__product--title">Produkt 1</h2>
+    <figure class="most-recent__product--background">
+      <p class="most-recent__product--desc">To jest opis tego produktu zachęcający do zakupu. Zapraszamy do
         zakupu lub zapoznanie się z produktem.</p>
-      <button class="most-recent-container__product-title"
+      <button class="btn btn--white"
               (click)="addToCart(product)">{{ 'HOME.addToCart' | translate}}</button>
     </figure>
   </div>
-  <div class="md-most-recent-container__slogan">
+  <div class="most-recent__slogan">
     <h2>Skomponuj swój idealny zestaw.</h2>
   </div>
 </section>
@@ -166,11 +166,11 @@
 
 <!--Section available sellers-->
 <!--Google map-->
-<div id="map-container-google-1" class="md-available-sellers-container">
+<div id="map-container-google-1" class="available-sellers">
   <iframe src="https://maps.google.com/maps?q=okpol&t=&z=13&ie=UTF8&iwloc=&output=embed"
-          class="md-available-sellers-container-map" allowfullscreen>
+          class="available-sellers__map" allowfullscreen>
   </iframe>
-  <a href="#" class="btn btn-light-red">{{ 'HOME.availableSellers' | translate}}</a>
+  <a href="#" class="btn btn--light-red">{{ 'HOME.availableSellers' | translate}}</a>
 </div>
 <!--!Google Maps-->
 <!--!Section available sellers-->
