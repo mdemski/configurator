@@ -1,23 +1,25 @@
 <!-- Footer -->
-<footer class="md-footer-container">
+<footer class="footer">
 
-  <div class="md-footer-container-register">
+  <div class="footer__register">
     <p>{{ 'HOME.register' | translate}}</p>
-    <a routerLink="/{{ 'LINK.signIn' | translate}}" class="btn md-btn-light"></a>
+    <a routerLink="/{{ 'LINK.signIn' | translate}}"
+       class="btn-light btn-light--white">{{ 'LINK.signIn' | translate}}</a>
   </div>
 
-  <div class="md-footer-container-newsletter">
+  <div class="footer__newsletter">
     <p>{{ 'HOME.newsletter' | translate}}</p>
-      <input type="email"
-             #newsletterEmail
-             required
-             id="newsletterEmail"
-             placeholder="{{ 'HOME.newsletterInput' | translate}}"
-             class="md-footer-container-newsletter-input">
-      <a type="button" (click)="submitNewsletter(newsletterEmail)" class="btn md-btn-light">{{ 'HOME.newsletterSignIn' | translate}}</a>
+    <input type="email"
+           #newsletterEmail
+           required
+           id="newsletterEmail"
+           placeholder="{{ 'HOME.newsletterInput' | translate}}"
+           class="footer__newsletter--input">
+    <a class="btn-light btn-light--white"
+       (click)="submitNewsletter(newsletterEmail)">{{ 'HOME.newsletterSignIn' | translate}}</a>
   </div>
 
-  <div class="md-footer-container-copyrights">
+  <div class="footer__copyrights">
     <p>© 2020 Copyright:</p>
     <a href="https://okpol.com/">okpol.com</a>
   </div>

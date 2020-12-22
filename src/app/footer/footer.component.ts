@@ -1,6 +1,5 @@
-import {Component, DoCheck, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {DatabaseService} from '../services/database.service';
-import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-footer',
