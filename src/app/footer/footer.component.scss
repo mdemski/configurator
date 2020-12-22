@@ -6,7 +6,7 @@
   flex-wrap: wrap;
   align-items: flex-end;
   font-size: 1.6rem;
-  height: 20rem;
+  height: 40rem;
   color: $color-white;
   background-color: $color-darkest-blue;
 
@@ -56,7 +56,19 @@
       margin-right: 3rem;
       margin-bottom: 0;
     }
+  }
 
+  &__media-icons {
+    display: flex;
+    flex-wrap: wrap;
+    flex-basis: 100%;
+    justify-content: center;
+
+    i {
+      color: white;
+      font-size: 2.2rem;
+      padding-left: 3rem;
+    }
   }
 
   &__copyrights {
@@ -79,4 +91,8 @@
       color: $color-white;
     }
   }
+}
+
+path {
+  fill: white;
 }
