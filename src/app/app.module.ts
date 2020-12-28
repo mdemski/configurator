@@ -46,6 +46,7 @@ import {RoofWindowFiltrationComponent} from './shop/roof-windows/roof-window-fil
 import {FilterPipe} from './pipes/filter.pipe';
 import {FilterPipeModule} from 'ngx-filter-pipe';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { IonicModule } from '@ionic/angular';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -103,7 +104,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     FormsModule,
     ReactiveFormsModule,
     FilterPipeModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    IonicModule.forRoot()
   ],
   providers: [MDBSpinningPreloader, DatabaseService, AuthService],
   bootstrap: [AppComponent]

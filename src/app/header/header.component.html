@@ -1,306 +1,264 @@
-<!--Navbar-->
-<mdb-navbar #nav SideClass="navbar navbar-expand-lg navbar-light white">
-
-    <!-- Navbar brand -->
-    <mdb-navbar-brand>
-      <a class="navbar-brand" routerLink="/">
-        <img class="logo" src="../../assets/img/2015-logo-okpol-pl-217-50.png" alt="logo okpol"/>
+<div class="md-navbar">
+  <div class="md-navbar__search">
+    <form>
+      <i class="fas fa-search md-navbar__search--icon"></i>
+      <input class="md-navbar__search--input"
+             type="text" #searchText
+             placeholder="{{ 'HOME.search' | translate}}"
+             (keyup)="onKeyup(searchText)"
+      >
+      <span class="md-navbar__search--border"></span>
+    </form>
+  </div>
+  <div class="md-navbar__logo">
+    <img src="../../assets/img/2015-logo-okpol-pl-217-50.png" alt="logo okpol"/>
+  </div>
+  <div class="md-navbar__user-area">
+    <a class="nav-link"
+       routerLink="{{ 'LINK.myAccount' | translate}}"><i class="fas fa-user md-navbar__user-area--icon"></i></a>
+    <a class="nav-link"
+       routerLink="{{ 'LINK.cart' | translate}}"><i class="fas fa-shopping-cart md-navbar__user-area--icon"></i></a>
+  </div>
+  <ul class="md-navbar__navigation">
+    <li class="md-navbar__navigation--element">
+      <a class="md-navbar__navigation--link" (mouseover)="showShopSubMenu()" (mouseleave)="hideShopSubMenu()"
+         routerLink="{{ 'LINK.shop' | translate}}">{{ 'HOME.shop' | translate}}
+        <i class="fas fa-angle-down"></i></a>
+    </li>
+    <li class="md-navbar__navigation--element">
+      <a class="md-navbar__navigation--link" (mouseover)="showConfigSubMenu()" (mouseleave)="hideConfigSubMenu()"
+         routerLink="{{ 'LINK.configurator' | translate}}">{{ 'HOME.configurator' | translate}}
+        <i class="fas fa-angle-down"></i></a>
+    </li>
+    <li class="md-navbar__navigation--element">
+      <a class="md-navbar__navigation--link" (mouseover)="showAdviceSubMenu()" (mouseleave)="hideAdviceSubMenu()"
+         routerLink="{{ 'LINK.advices' | translate}}">{{ 'HOME.advices' | translate}}
+        <i class="fas fa-angle-down"></i>
       </a>
-    </mdb-navbar-brand>
+    </li>
+    <li class="md-navbar__navigation--element">
+      <a class="md-navbar__navigation--link"
+         routerLink="{{ 'LINK.sellers' | translate}}">{{ 'HOME.sellers' | translate}}</a>
+    </li>
+    <li class="md-navbar__navigation--element">
+      <a class="md-navbar__navigation--link"
+         routerLink="{{ 'LINK.contact' | translate}}">{{ 'HOME.contact' | translate}}</a>
+    </li>
+  </ul>
 
-    <links>
-      <!-- Links -->
-      <ul class="navbar-nav mr-auto">
-        <!-- Dropdown SHOP-->
-        <li class="nav-item dropdown mega-dropdown" mdbDropdown>
-          <a mdbDropdownToggle class="nav-link dropdown-toggle">{{ 'HOME.shop' | translate}}</a>
-          <div class="dropdown-menu mega-menu row z-depth-1">
-            <div class="row">
-              <div class="col-md-5 col-xl-3 sub-menu mt-5 mb-5 pl-4">
-                <ul class="list-unstyled mx-4 pl-0 dark-grey-text">
-                  <li class="sub-title text-uppercase mt-sm">
-                    <a class="menu-item"
-                       routerLink="{{ 'HOME.shopLink' | translate}}/{{ 'SHOP.roofWindowsLink' | translate}}">{{ 'SHOP.roofWindows' | translate}}</a>
-                  </li>
-                  <li class="sub-title text-uppercase">
-                    <a class="menu-item"
-                       routerLink="{{ 'HOME.shopLink' | translate}}/{{ 'SHOP.flashingsLink' | translate}}">{{ 'SHOP.flashings' | translate}}</a>
-                  </li>
-                  <li class="sub-title text-uppercase">
-                    <a class="menu-item"
-                       routerLink="{{ 'HOME.shopLink' | translate}}/{{ 'SHOP.flatRoofWindowsLink' | translate}}">{{ 'SHOP.flatRoofWindows' | translate}}</a>
-                  </li>
-                  <li class="sub-title text-uppercase">
-                    <a class="menu-item"
-                       routerLink="{{ 'HOME.shopLink' | translate}}/{{ 'SHOP.skylightsLink' | translate}}">{{ 'SHOP.skylights' | translate}}</a>
-                  </li>
-                  <li class="sub-title text-uppercase">
-                    <a class="menu-item"
-                       routerLink="{{ 'HOME.shopLink' | translate}}/{{ 'SHOP.accessoriesLink' | translate}}">{{ 'SHOP.accessories' | translate}}</a>
-                  </li>
-                  <li class="sub-title text-uppercase">
-                    <a class="menu-item"
-                       routerLink="{{ 'HOME.shopLink' | translate}}/{{ 'SHOP.resetLink' | translate}}">{{ 'SHOP.reset' | translate}}</a>
-                  </li>
-                </ul>
-              </div>
-              <div class="col-md-7 col-xl-9">
-                <div class="row">
-                  <div class="col-xl-6 mt-5 mb-4 pr-5 clearfix d-none d-block">
-                    <h6
-                      class="sub-title p-sm mb-4 text-uppercase font-weight-bold dark-grey-text">{{ 'HOME.headerMainTitleShop' | translate}}</h6>
-                    <!--Featured image roof windows-->
-                    <div class="view overlay pb-3">
-                      <img src="assets/img/menu_sklep_okna_dachowe.jpg"
-                           class="img-fluid z-depth-1" alt="First sample image">
-                      <div class="mask rgba-white-slight flex-center">
-                        <p></p>
-                      </div>
-                    </div>
-                    <h4 class="mb-2">
-                      <a class="news-title"
-                         routerLink="{{ 'HOME.shopLink' | translate}}/{{ 'SHOP.roofWindowsLink' | translate}}">{{ 'SHOP.roofWindows' | translate}}</a>
-                    </h4>
-                  </div>
-                  <div class="col-xl-6 mt-5 mb-4 pr-5 clearfix d-none d-xl-block">
-                    <h6
-                      class="sub-title p-sm mb-4 text-uppercase font-weight-bold dark-grey-text">{{ 'HOME.headerRecentTitleShop' | translate}}</h6>
-                    <div class="news-single">
-                      <div class="row">
-                        <div class="col-md-4">
-                          <!--Image flashings-->
-                          <div class="view overlay z-depth-1">
-                            <img src="assets/img/menu_sklep_kolnierze.jpg"
-                                 class="img-fluid" alt="Minor sample post image">
-                            <div class="mask rgba-white-slight flex-center">
-                              <p></p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-md-8">
-                          <a class="news-title smaller mb-1"
-                             routerLink="{{ 'HOME.shopLink' | translate}}/{{ 'SHOP.flashingsLink' | translate}}">{{ 'SHOP.flashings' | translate}}</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="news-single">
-                      <div class="row">
-                        <div class="col-md-4">
-                          <!--Image Flat Roof-->
-                          <div class="view overlay z-depth-1">
-                            <img src="assets/img/menu_sklep_okna_płaskie.jpg"
-                                 class="img-fluid" alt="Minor sample post image">
-                            <div class="mask rgba-white-slight flex-center">
-                              <p></p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-md-8">
-                          <a class="news-title smaller mb-1"
-                             routerLink="{{ 'HOME.shopLink' | translate}}/{{ 'SHOP.flatRoofWindowsLink' | translate}}">{{ 'SHOP.flatRoofWindows' | translate}}</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="news-single">
-                      <div class="row">
-                        <div class="col-md-4">
-                          <!--Image RESET-->
-                          <div class="view overlay z-depth-1">
-                            <img src="assets/img/menu_sklep_reset.jpg"
-                                 class="img-fluid" alt="Minor sample post image">
-                            <div class="mask rgba-white-slight flex-center">
-                              <p></p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-md-8">
-                          <a class="news-title smaller mb-1"
-                             routerLink="{{ 'HOME.shopLink' | translate}}/{{ 'SHOP.resetLink' | translate}}">{{ 'SHOP.reset' | translate}}</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+  <!--SubMenu shop-->
+  <ul class="md-navbar__navigation--element__shop" [ngStyle]="shopSubMenu" (mouseover)="showShopSubMenu()"
+      (mouseleave)="hideShopSubMenu()">
+    <li class="md-navbar__navigation--element__shop--element">
+      <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.roofWindowsLink' | translate}}"
+         class="md-navbar__navigation--element__shop--element--link">
+        <p>{{ 'HOME.roofWindows' | translate}}</p></a>
+      <ul class="md-navbar__navigation--element__shop--products">
+        <li class="md-navbar__navigation--element__shop--products--product-element">
+          <a href="" class="md-navbar__navigation--element__shop--products--product-element--link">
+            <img src="assets/icons/products/1_ISO-334x311.png" alt="{{ 'HOME.roofWindows' | translate}}">
+            <p>ISO I22</p></a>
+        </li>
+        <li class="md-navbar__navigation--element__shop--products--product-element">
+          <a href="" class="md-navbar__navigation--element__shop--products--product-element--link">
+            <img src="assets/icons/products/IGO-E2-1-334x334.png" alt="{{ 'HOME.roofWindows' | translate}}">
+            <p>IGOV N22</p></a>
+        </li>
+        <li class="md-navbar__navigation--element__shop--products--product-element">
+          <a href="" class="md-navbar__navigation--element__shop--products--product-element--link">
+            <img src="assets/icons/products/iso-e2.png" alt="{{ 'HOME.roofWindows' | translate}}">
+            <p>ISO E2</p></a>
         </li>
       </ul>
-      <!-- Links -->
+    </li>
 
-      <!-- Links -->
-      <ul class="navbar-nav mr-auto">
-        <!-- Dropdown CONFIGURATOR-->
-        <li class="nav-item dropdown mega-dropdown" mdbDropdown>
-          <a mdbDropdownToggle class="nav-link dropdown-toggle">{{ 'HOME.configurator' | translate}}</a>
-          <div class="dropdown-menu mega-menu row z-depth-1">
-            <div class="row">
-              <div class="col-md-5 col-xl-3 sub-menu mt-5 mb-5 pl-4">
-                <ul class="list-unstyled mx-4 pl-0 dark-grey-text">
-                  <li class="sub-title text-uppercase mt-sm">
-                    <a class="menu-item"
-                       routerLink="{{ 'HOME.configuratorLink' | translate}}/{{ 'CONFIGURATOR.roofWindowsLink' | translate}}">{{ 'CONFIGURATOR.roofWindows' | translate}}</a>
-                  </li>
-                  <li class="sub-title text-uppercase">
-                    <a class="menu-item"
-                       routerLink="{{ 'HOME.configuratorLink' | translate}}/{{ 'CONFIGURATOR.flashingsLink' | translate}}">{{ 'CONFIGURATOR.flashings' | translate}}</a>
-                  </li>
-                  <li class="sub-title text-uppercase">
-                    <a class="menu-item"
-                       routerLink="{{ 'HOME.configuratorLink' | translate}}/{{ 'CONFIGURATOR.accessoriesLink' | translate}}">{{ 'CONFIGURATOR.accessories' | translate}}</a>
-                  </li>
-                  <li class="sub-title text-uppercase">
-                    <a class="menu-item"
-                       routerLink="{{ 'HOME.configuratorLink' | translate}}/{{ 'CONFIGURATOR.verticalWindowsLink' | translate}}">{{ 'CONFIGURATOR.verticalWindows' | translate}}</a>
-                  </li>
-                  <li class="sub-title text-uppercase">
-                    <a class="menu-item"
-                       routerLink="{{ 'HOME.configuratorLink' | translate}}/{{ 'CONFIGURATOR.skylightsLink' | translate}}">{{ 'CONFIGURATOR.skylights' | translate}}</a>
-                  </li>
-                </ul>
-              </div>
-              <div class="col-md-7 col-xl-9">
-                <div class="row">
-                  <div class="col-xl-6 mt-5 mb-4 pr-5 clearfix d-none d-block">
-                    <h6
-                      class="sub-title p-sm mb-4 text-uppercase font-weight-bold dark-grey-text">{{ 'HOME.headerMainTitleConfigurator' | translate}}</h6>
-                    <!--Featured image Roof windows-->
-                    <div class="view overlay pb-3">
-                      <img src="assets/img/menu_konfigurator_okna_dachowe.jpg"
-                           class="img-fluid z-depth-1" alt="First sample image">
-                      <div class="mask rgba-white-slight flex-center">
-                        <p></p>
-                      </div>
-                    </div>
-                    <h4 class="mb-2">
-                      <a class="news-title"
-                         routerLink="{{ 'HOME.configuratorLink' | translate}}/{{ 'CONFIGURATOR.roofWindowsLink' | translate}}">{{ 'CONFIGURATOR.roofWindows' | translate}}</a>
-                    </h4>
-                  </div>
-                  <div class="col-xl-6 mt-5 mb-4 pr-5 clearfix d-none d-xl-block">
-                    <h6
-                      class="sub-title p-sm mb-4 text-uppercase font-weight-bold dark-grey-text">{{ 'HOME.headerRecentTitleConfigurator' | translate}}</h6>
-                    <div class="news-single">
-                      <div class="row">
-                        <div class="col-md-4">
-                          <!--Image vertical windows-->
-                          <div class="view overlay z-depth-1">
-                            <img src="assets/img/menu_konfigurator_okna_pionowe.jpg"
-                                 class="img-fluid" alt="Minor sample post image">
-                            <div class="mask rgba-white-slight flex-center">
-                              <p></p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-md-8">
-                          <a class="news-title smaller mb-1"
-                             routerLink="{{ 'HOME.configuratorLink' | translate}}/{{ 'CONFIGURATOR.verticalWindowsLink' | translate}}">{{ 'CONFIGURATOR.verticalWindows' | translate}}</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="news-single">
-                      <div class="row">
-                        <div class="col-md-4">
-                          <!--Image accessories-->
-                          <div class="view overlay z-depth-1">
-                            <img src="assets/img/menu_konfigurator_akcesoria.jpg"
-                                 class="img-fluid" alt="Minor sample post image">
-                            <div class="mask rgba-white-slight flex-center">
-                              <p></p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-md-8">
-                          <a class="news-title smaller mb-1"
-                             routerLink="{{ 'HOME.configuratorLink' | translate}}/{{ 'CONFIGURATOR.accessoriesLink' | translate}}">{{ 'CONFIGURATOR.accessories' | translate}}</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="news-single">
-                      <div class="row">
-                        <div class="col-md-4">
-                          <!--Image flashings-->
-                          <div class="view overlay z-depth-1">
-                            <img src="assets/img/menu_konfigurator_kolnierze.jpg"
-                                 class="img-fluid" alt="Minor sample post image">
-                            <div class="mask rgba-white-slight flex-center">
-                              <p></p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-md-8">
-                          <a class="news-title smaller mb-1"
-                             routerLink="{{ 'HOME.configuratorLink' | translate}}/{{ 'CONFIGURATOR.flashingsLink' | translate}}">{{ 'CONFIGURATOR.flashings' | translate}}</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+    <li class="md-navbar__navigation--element__shop--element">
+      <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.flatRoofWindowsLink' | translate}}"
+         class="md-navbar__navigation--element__shop--element--link">
+        <p>{{ 'HOME.flatRoofWindows' | translate}}</p></a>
+      <ul class="md-navbar__navigation--element__shop--products">
+        <li class="md-navbar__navigation--element__shop--products--product-element">
+          <a href="" class="md-navbar__navigation--element__shop--products--product-element--link">
+            <img src="assets/icons/products/PGX_A1.png" alt="{{ 'HOME.flatRoofWindows' | translate}}">
+            <p>PGX A1</p></a>
+        </li>
+        <li class="md-navbar__navigation--element__shop--products--product-element">
+          <a href="" class="md-navbar__navigation--element__shop--products--product-element--link">
+            <img src="assets/icons/products/PGC_A1.png" alt="{{ 'HOME.flatRoofWindows' | translate}}">
+            <p>PGC A1</p></a>
+        </li>
+        <li class="md-navbar__navigation--element__shop--products--product-element">
+          <a href="" class="md-navbar__navigation--element__shop--products--product-element--link">
+            <img src="assets/icons/products/PGX_B6.png" alt="{{ 'HOME.flatRoofWindows' | translate}}">
+            <p>PGX B6</p></a>
         </li>
       </ul>
-      <!-- Links -->
+    </li>
 
-      <!-- Links -->
-      <ul class="navbar-nav nav-flex-icons ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="{{ 'LINK.contact' | translate}}">{{ 'HOME.contact' | translate}}</a>
+    <li class="md-navbar__navigation--element__shop--element">
+      <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.flashingsLink' | translate}}"
+         class="md-navbar__navigation--element__shop--element--link">
+        <p>{{ 'HOME.flashings' | translate}}</p></a>
+      <ul class="md-navbar__navigation--element__shop--products">
+        <li class="md-navbar__navigation--element__shop--products--product-element">
+          <a href="" class="md-navbar__navigation--element__shop--products--product-element--link">
+            <img src="assets/icons/products/Kołnierz-U.png" alt="{{ 'HOME.flashings' | translate}}">
+            <p>{{ 'HOME.flashingU' | translate}}</p></a>
         </li>
-        <ng-template [ngIf]="!isAuthenticated">
-          <li class="nav-item">
-            <a class="nav-link" routerLink="{{ 'LINK.login' | translate}}">{{ 'HOME.login' | translate}}</a>
-          </li>
-        </ng-template>
-        <ng-template [ngIf]="isAuthenticated">
-          <li class="nav-item">
-            <a class="nav-link"
-               routerLink="{{ 'LINK.myAccount' | translate}}">{{ 'HOME.myAccount' | translate}}</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link"
-               (click)=logout()>{{ 'HOME.logout' | translate}}</a>
-          </li>
-        </ng-template>
-      </ul>
-
-      <ul class="navbar-nav nav-flex-icons ml-auto">
-        <!-- Search form -->
-        <form class="form-inline" #searchForm="ngForm" (ngSubmit)="onSubmit()">
-          <div class="md-form my-0">
-            <input class="form-control mr-sm-2" type="text" placeholder="{{ 'HOME.search' | translate}}"
-                   aria-label="Search">
-          </div>
-        </form>
-      </ul>
-
-
-      <ul class="navbar-nav nav-flex-icons ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="{{ 'LINK.mailTo' | translate}}">
-            <mdb-icon fas icon="envelope" aria-hidden="true"></mdb-icon>
-          </a>
+        <li class="md-navbar__navigation--element__shop--products--product-element">
+          <a href="" class="md-navbar__navigation--element__shop--products--product-element--link">
+            <img src="assets/icons/products/kołnierz-D.png" alt="{{ 'HOME.flashings' | translate}}">
+            <p>{{ 'HOME.flashingD' | translate}}</p></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="//{{ 'LINK.website' | translate}}">
-            <mdb-icon fas icon="home" aria-hidden="true"></mdb-icon>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <mdb-icon fas icon="shopping-cart"></mdb-icon>
-          </a>
+        <li class="md-navbar__navigation--element__shop--products--product-element">
+          <a href="" class="md-navbar__navigation--element__shop--products--product-element--link">
+            <img src="assets/icons/products/Kołnierz-L.png" alt="{{ 'HOME.flashings' | translate}}">
+            <p>{{ 'HOME.flashingL' | translate}}</p></a>
         </li>
       </ul>
+    </li>
 
-      <!-- Links -->
-    </links>
-    <!-- Collapsible content -->
+    <li class="md-navbar__navigation--element__shop--element">
+      <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.skylightsLink' | translate}}"
+         class="md-navbar__navigation--element__shop--element--link">
+        <p>{{ 'HOME.skylights' | translate}}</p></a>
+      <ul class="md-navbar__navigation--element__shop--products">
+        <li class="md-navbar__navigation--element__shop--products--product-element">
+          <a href="" class="md-navbar__navigation--element__shop--products--product-element--link">
+            <img src="assets/icons/products/WVD-47x731.png" alt="{{ 'HOME.skylights' | translate}}">
+            <p>WVD+ 47x73</p></a>
+        </li>
+        <li class="md-navbar__navigation--element__shop--products--product-element">
+          <a href="" class="md-navbar__navigation--element__shop--products--product-element--link">
+            <img src="assets/icons/products/WVM-47x57.png" alt="{{ 'HOME.skylights' | translate}}">
+            <p>WVM+ 47x57</p></a>
+        </li>
+        <li class="md-navbar__navigation--element__shop--products--product-element">
+          <a href="" class="md-navbar__navigation--element__shop--products--product-element--link">
+            <img src="assets/icons/products/WVR.png" alt="{{ 'HOME.skylights' | translate}}">
+            <p>WVR 47x73</p></a>
+        </li>
+      </ul>
+    </li>
 
-    <!-- Links -->
+    <li class="md-navbar__navigation--element__shop--element">
+      <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.accessoriesLink' | translate}}"
+         class="md-navbar__navigation--element__shop--element--link">
+        <p>{{ 'HOME.accessories' | translate}}</p></a>
+      <ul class="md-navbar__navigation--element__shop--products">
+        <li class="md-navbar__navigation--element__shop--products--product-element">
+          <a href="" class="md-navbar__navigation--element__shop--products--product-element--link">
+            <img src="assets/icons/products/D37.png" alt="{{ 'HOME.accessories' | translate}}">
+            <p>Multistop D37</p></a>
+        </li>
+        <li class="md-navbar__navigation--element__shop--products--product-element">
+          <a href="" class="md-navbar__navigation--element__shop--products--product-element--link">
+            <img src="assets/icons/products/D33.png" alt="{{ 'HOME.accessories' | translate}}">
+            <p>Decomatic D33</p></a>
+        </li>
+        <li class="md-navbar__navigation--element__shop--products--product-element">
+          <a href="" class="md-navbar__navigation--element__shop--products--product-element--link">
+            <img src="assets/icons/products/d12.png" alt="{{ 'HOME.accessories' | translate}}">
+            <p>Classic D12</p></a>
+        </li>
+      </ul>
+    </li>
 
-</mdb-navbar>
-<!--/.Navbar-->
+    <li class="md-navbar__navigation--element__shop--element">
+      <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.resetLink' | translate}}"
+         class="md-navbar__navigation--element__shop--element--link">
+        <p>{{ 'HOME.resetProducts' | translate}}</p></a>
+      <ul class="md-navbar__navigation--element__shop--products">
+        <li class="md-navbar__navigation--element__shop--products--product-element">
+          <a href="" class="md-navbar__navigation--element__shop--products--product-element--link">
+            <img src="assets/icons/products/IGX-F1-RESET.png" alt="{{ 'HOME.resetProducts' | translate}}">
+            <p>IGX F1</p></a>
+        </li>
+        <li class="md-navbar__navigation--element__shop--products--product-element">
+          <a href="" class="md-navbar__navigation--element__shop--products--product-element--link">
+            <img src="assets/icons/products/WVR.png" alt="{{ 'HOME.resetProducts' | translate}}">
+            <p>WVR V8</p></a>
+        </li>
+        <li class="md-navbar__navigation--element__shop--products--product-element">
+          <a href="" class="md-navbar__navigation--element__shop--products--product-element--link">
+            <img src="assets/icons/products/WVR.png" alt="{{ 'HOME.resetProducts' | translate}}">
+            <p>WVR V6</p></a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+  <!--SubMenu shop-->
 
+  <!--SubMenu configurator-->
+  <ul class="md-navbar__navigation--element__shop" [ngStyle]="configSubMenu" (mouseover)="showConfigSubMenu()"
+      (mouseleave)="hideConfigSubMenu()">
+    <li class="md-navbar__navigation--element__shop--element">
+      <a routerLink="{{ 'LINK.configurator' | translate}}/{{ 'CONFIGURATOR.roofWindowsLink' | translate}}"
+         class="md-navbar__navigation--element__shop--element--link">
+        <img src="assets/icons/products/1_ISO-334x311.png" alt="{{ 'HOME.roofWindows' | translate}}">
+        <p>{{ 'HOME.roofWindows' | translate}}</p></a>
+    </li>
 
+    <li class="md-navbar__navigation--element__shop--element">
+      <a routerLink="{{ 'LINK.configurator' | translate}}/{{ 'CONFIGURATOR.flatRoofWindowsLink' | translate}}"
+         class="md-navbar__navigation--element__shop--element--link">
+        <img src="assets/icons/products/PGX_A1.png" alt="{{ 'HOME.flatRoofWindows' | translate}}">
+        <p>{{ 'HOME.flatRoofWindows' | translate}}</p></a>
+    </li>
+
+    <li class="md-navbar__navigation--element__shop--element">
+      <a routerLink="{{ 'LINK.configurator' | translate}}/{{ 'CONFIGURATOR.flashingsLink' | translate}}"
+         class="md-navbar__navigation--element__shop--element--link">
+        <img src="assets/icons/products/Kołnierz-U.png" alt="{{ 'HOME.flashings' | translate}}">
+        <p>{{ 'HOME.flashings' | translate}}</p></a>
+    </li>
+
+    <li class="md-navbar__navigation--element__shop--element">
+      <a routerLink="{{ 'LINK.configurator' | translate}}/{{ 'CONFIGURATOR.skylightsLink' | translate}}"
+         class="md-navbar__navigation--element__shop--element--link">
+        <img src="assets/icons/products/WVD-47x731.png" alt="{{ 'HOME.skylights' | translate}}">
+        <p>{{ 'HOME.skylights' | translate}}</p></a>
+    </li>
+
+    <li class="md-navbar__navigation--element__shop--element">
+      <a routerLink="{{ 'LINK.configurator' | translate}}/{{ 'CONFIGURATOR.accessoriesLink' | translate}}"
+         class="md-navbar__navigation--element__shop--element--link">
+        <img src="assets/icons/products/D37.png" alt="{{ 'HOME.accessories' | translate}}">
+        <p>{{ 'HOME.accessories' | translate}}</p></a>
+    </li>
+
+    <li class="md-navbar__navigation--element__shop--element">
+      <a routerLink="{{ 'LINK.configurator' | translate}}/{{ 'CONFIGURATOR.verticalWindowsLink' | translate}}"
+         class="md-navbar__navigation--element__shop--element--link">
+        <img src="assets/icons/products/D37.png" alt="{{ 'HOME.accessories' | translate}}">
+        <p>{{ 'CONFIGURATOR.verticalWindows' | translate}}</p></a>
+    </li>
+  </ul>
+  <!--SubMenu configurator-->
+
+  <!--SubMenu advices-->
+  <ul class="md-navbar__navigation--element__shop" [ngStyle]="advicesSubMenu" (mouseover)="showAdviceSubMenu()"
+      (mouseleave)="hideAdviceSubMenu()">
+    <li class="md-navbar__navigation--element__shop--element">
+      <a routerLink="{{ 'LINK.advices' | translate}}/{{ 'LINK.windowSelectionLink' | translate}}"
+         class="md-navbar__navigation--element__shop--element--link">
+        <i class="fas fa-microscope"></i>
+        <p>{{ 'ADVICES.windowSelection' | translate}}</p></a>
+    </li>
+
+    <li class="md-navbar__navigation--element__shop--element">
+      <a routerLink="{{ 'LINK.advices' | translate}}/{{ 'LINK.configurationOptionsLink' | translate}}"
+         class="md-navbar__navigation--element__shop--element--link">
+        <i class="far fa-eye"></i>
+        <p>{{ 'ADVICES.configurationOptions' | translate}}</p></a>
+    </li>
+
+    <li class="md-navbar__navigation--element__shop--element">
+      <a routerLink="{{ 'LINK.advices' | translate}}/{{ 'LINK.appFunctionsLink' | translate}}"
+         class="md-navbar__navigation--element__shop--element--link">
+        <i class="fas fa-info"></i>
+        <p>{{ 'ADVICES.appFunctions' | translate}}</p></a>
+    </li>
+  </ul>
+  <!--SubMenu advices-->
+</div>

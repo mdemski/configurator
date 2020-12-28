@@ -1,0 +1,165 @@
+@import 'src/sass/base/variables';
+
+.md-navbar {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  width: 100%;
+  position: absolute;
+  z-index: 3;
+  transition: all .2s;
+  background-color: rgba($color-black, .3);
+
+  &__search {
+    position: relative;
+    border: none;
+    padding-top: 2rem;
+    margin-right: auto;
+
+    &--input {
+      width: 12rem;
+      font-size: 1.5rem;
+      border: none;
+      background-color: transparent;
+      padding-left: 2rem;
+      color: $color-white;
+      transition: all .5s;
+
+      &::placeholder {
+        color: $color-white;
+      }
+
+      &:focus {
+        outline: none;
+      }
+
+      &:focus ~ .md-navbar__search--border {
+        width: 13rem;
+      }
+    }
+
+    &--border {
+      position: absolute;
+      background-color: $color-white;
+      bottom: -.2rem;
+      left: 2rem;
+      width: 0;
+      height: 1px;
+      transition: all .5s;
+    }
+
+    &--icon {
+      padding-left: 2rem;
+      font-size: 1.5rem;
+      color: $color-white;
+    }
+  }
+
+  &__logo {
+    padding: 2rem 0;
+  }
+
+  &__user-area {
+    display: flex;
+    justify-content: flex-end;
+    width: 15.5rem;
+    padding-right: 2rem;
+    padding-top: 2rem;
+    margin-left: auto;
+
+    &--icon {
+      color: $color-white;
+      font-size: 2rem;
+    }
+  }
+
+  &__navigation {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex: 0 0 100%;
+    list-style: none;
+    font-size: 2.1rem;
+    color: $color-white;
+
+    &--element {
+
+
+      &__shop {
+        display: flex;
+        justify-content: center;
+        padding: 2rem;
+        font-size: 1.8rem;
+        transition: all .5s;
+        background-color: rgba($color-darkest-blue, 1);
+
+        &--element {
+          text-align: center;
+          align-self: flex-end;
+          list-style: none;
+          &:not(:last-child) {
+            padding-right: 5rem;
+          }
+
+          &--link {
+            color: $color-white;
+            &:hover p {
+              transition: color .5s;
+              color: $color-light-blue;
+            }
+
+            i {
+              padding-top: 1rem;
+              padding-bottom: 2rem;
+              font-size: 5rem;
+            }
+          }
+        }
+        &--products {
+
+          &--product-element {
+            list-style: none;
+
+            &--link {
+              display: flex;
+              align-items: center;
+              text-decoration: none;
+              color: $color-white;
+              padding-top: 1.5rem;
+
+              &:hover p {
+                transition: color .5s;
+                color: $color-light-blue;
+              }
+
+              img {
+                height: 50px;
+              }
+
+              p {
+                padding-left: 1rem;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    &--link {
+      padding: 1rem 2.5rem;
+      color: $color-white;
+      font-weight: 700;
+      border-radius: 1rem;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: all .5s;
+
+      &:hover {
+        border-radius: 1rem;
+        padding: 1rem 2.5rem;
+        background-color: $color-darkest-blue;
+      }
+    }
+  }
+}

@@ -1,0 +1,103 @@
+@import 'src/sass/base/variables';
+
+.btn {
+  &,
+  &:link,
+  &:visited {
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 1.4rem 4rem;
+    border-radius: 5rem;
+    transition: all .2s;
+    font-size: $default-font-size;
+    border: .5rem solid transparent;
+
+    cursor: pointer;
+  }
+
+  &:hover {
+    background-color: transparent;
+    box-shadow: 0 1rem 2rem rgba($color-black, .2);
+  }
+
+  &:active,
+  &:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 .5rem 1rem rgba($color-black,.2);
+  }
+
+  &--white {
+    background-color: $color-white;
+    color: $color-dark-grey;
+
+    &:hover {
+      border: .5rem solid $color-white;
+    }
+  }
+
+  &--red {
+    font-size: 1.2rem;
+    padding: 1rem 1.5rem;
+    background-color: $color-red;
+    color: $color-white;
+
+    &:hover {
+      border: .5rem solid $color-red;
+      color: $color-black;
+    }
+  }
+
+  &--green {
+    background-color: $color-green;
+    color: $color-darkest-grey;
+
+    &:hover {
+      border: .5rem solid $color-green;
+    }
+  }
+
+  &--light-red {
+    background-color: $color-light-red;
+    color: $color-black;
+
+    &:hover {
+      border: .5rem solid $color-light-red;
+    }
+  }
+}
+
+.btn-light {
+  &,
+  &:link,
+  &:visited {
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 1.4rem 4rem;
+    border-radius: 5rem;
+    transition: all .2s;
+    font-size: $default-font-size;
+    background-color: transparent;
+
+    cursor: pointer;
+  }
+
+  &:hover {
+    box-shadow: 0 1rem 2rem rgba($color-black, .2);
+  }
+
+  &:active,
+  &:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 .5rem 1rem rgba($color-black,.2);
+  }
+
+  &--white {
+    color: $color-white;
+    border: .2rem solid $color-white;
+
+    &:hover {
+      background-color: $color-white;
+      color: $color-darkest-grey;
+    }
+  }
+}
