@@ -60,7 +60,12 @@
     "availableSellers": "Znajdź najbliższy punkt",
     "newsletter": "Śledź zmiany na bieżąco",
     "newsletterInput": "Podaj adres mailowy",
-    "newsletterSignIn": "Zapisz się"
+    "newsletterSignIn": "Zapisz się",
+    "advices": "Porady",
+    "flashingU": "Kołnierz U",
+    "flashingD": "Kołnierz D",
+    "flashingL": "Kołnierz L",
+    "sellers": "Znajdź dealera"
   },
   "LOGIN": {
     "login": "Login",
@@ -94,7 +99,11 @@
     "newPassword": "/ustalanie-nowego-hasla",
     "registerLink": "rejestracja",
     "register": "Nie masz jeszcze konta, zajerestuj się",
-    "aboutResetWebsite": "https://www.okpol.pl/linia-produktow-reset/"
+    "aboutResetWebsite": "https://www.okpol.pl/linia-produktow-reset/",
+    "advices": "porady",
+    "windowSelectionLink": "wybor-okien",
+    "configurationOptionsLink": "dostepne-opcje",
+    "appFunctionsLink": "fukcje-aplikacji"
   },
   "CONTACT": {
     "contactUs": "Skontaktuj się z nami",
@@ -172,5 +181,10 @@
     "addToCart": "Dodaj do koszyka",
     "material": "Stolarka",
     "materialDesc": "W segmencie okien obrotowych oferujemy stolarkę drewnianą oraz wykonaną z PVC, a także okna wyposażone w siłowniki elektryczne.\n\nNasze okna drewniane to synonim solidności. Tarcicę sosnową tniemy i kleimy tak, aby zachować jego równomierną strukturę – bez deformacji czy sęków. Staranna impregnacja gotowych profili zwiększa ochronę przed powstawaniem sinizn, grzybów i pleśni.\n\nOkna z PVC wyposażone są zaś w odporne na wilgoć profile wielokomorowe o bardzo dobrych parametrach termoizolacyjnych. To doskonałe rozwiązanie dla znajdującej się na poddaszu kuchni, łazienki, czy nawet sauny – wszędzie tam, gdzie mamy do czynienia z powietrzem o dużej wilgotności. Materiał, z którego wykonujemy okna obrotowe sprawia, że są one niezwykle praktyczne – nie wymagają praktycznie żadnej konserwacji po zamontowaniu.\n\nPrzyjęty standard stolarki SOLID+ to najnowocześniejsze rozwiązania mające na celu uzyskanie jak najwyższych parametrów użytkowych. Drewniane okna obrotowe malujemy aż trzykrotnie lakierem ekologicznym, co zapewnia ochronę przed najbardziej agresywnym działaniem czynników zewnętrznych. Ponadto, jako jedyni producenci na rynku oferujemy okna obrotowe PVC o profilach wypełnianych pianką poliuretanową, dodatkowo zwiększającą termikę całego układu."
+  },
+  "ADVICES": {
+    "windowSelection": "Wybór okien",
+    "configurationOptions": "Dostepne w konfiguratorze opcje",
+    "appFunctions": "Dostępne fukcje w aplikacji"
   }
 }
