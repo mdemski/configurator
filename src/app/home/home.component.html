@@ -1,8 +1,14 @@
 <div class="md-container">
   <div class="slider">
+    <div class="slider--borders"></div>
     <!--First part roof windows-->
-    <div class="slider__element">
+    <div class="slider__element--on-hover active" [ngClass]="activeClass1">
+      <img src="assets/img/slider_pictures/slider_roof_windows.jpg" alt="{{ 'HOME.roofWindows' | translate}}"
+           class="slider__element--photo">
+    </div>
+    <div class="slider__element" (mouseover)="setActive1()" [ngClass]="activeClass1">
       <a routerLink="/{{ 'LINK.shopRoofWindows' | translate}}">
+        <div class="slider__element--overlay"></div>
         <img src="assets/img/slider_pictures/slider_roof_windows.jpg" alt="{{ 'HOME.roofWindows' | translate}}"
              class="slider__element--photo">
         <div class="slider__element__description">
@@ -14,8 +20,14 @@
     <!--!First part roof windows-->
 
     <!--Second part flat roof windows-->
-    <div class="slider__element">
+    <div class="slider__element--on-hover" [ngClass]="activeClass2">
+      <img src="assets/img/slider_pictures/slider_flat_windows.jpg" alt="{{ 'HOME.flatRoofWindows' | translate}}"
+           class="slider__element--photo">
+    </div>
+    <div class="slider__element" (mouseover)="setActive2()" [ngClass]="activeClass2">
       <a routerLink="/{{ 'LINK.shopFlatRoofWindows' | translate}}">
+        <div class="slider__element--overlay"></div>
+        <div class="slider--borders"></div>
         <img src="assets/img/slider_pictures/slider_flat_windows.jpg" alt="{{ 'HOME.flatRoofWindows' | translate}}"
              class="slider__element--photo">
         <div class="slider__element__description">
@@ -27,30 +39,43 @@
     <!--!Second part flat roof windows-->
 
     <!--Third part RESET products-->
-    <div class="slider__element">
+    <div class="slider__element--on-hover" [ngClass]="activeClass3">
+      <img src="assets/img/slider_pictures/slider_reset.jpg" alt="{{ 'HOME.resetProducts' | translate}}"
+           class="slider__element--photo">
+    </div>
+    <div class="slider__element" (mouseover)="setActive3()" [ngClass]="activeClass3">
       <a routerLink="/{{ 'LINK.shopReset' | translate}}">
+        <div class="slider__element--overlay"></div>
+        <div class="slider--borders"></div>
         <img src="assets/img/slider_pictures/slider_reset.jpg" alt="{{ 'HOME.resetProducts' | translate}}"
              class="slider__element--photo">
         <div class="slider__element__description">
           <h2 class="slider__element__description--title">{{ 'HOME.resetProducts' | translate}}</h2>
-          <p class="slider__element__description--paragraph">{{ 'HOME.resetProductsShortDesc' | translate}}<</p>
+          <p class="slider__element__description--paragraph">{{ 'HOME.resetProductsShortDesc' | translate}}</p>
         </div>
       </a>
     </div>
     <!--!Third part RESET products-->
 
     <!--Forth part configurator-->
-    <div class="slider__element">
+    <div class="slider__element--on-hover" [ngClass]="activeClass4">
+      <img src="assets/img/slider_pictures/slider_config.jpg" alt="{{ 'HOME.configurator' | translate}}"
+           class="slider__element--photo">
+    </div>
+    <div class="slider__element" (mouseover)="setActive4()" [ngClass]="activeClass4">
       <a routerLink="/{{ 'LINK.configurator' | translate}}">
+        <div class="slider__element--overlay"></div>
+        <div class="slider--borders"></div>
         <img src="assets/img/slider_pictures/slider_config.jpg" alt="{{ 'HOME.configurator' | translate}}"
              class="slider__element--photo">
         <div class="slider__element__description">
           <h1 class="slider__element__description--title">{{ 'HOME.configurator' | translate}}</h1>
-          <p class="slider__element__description--paragraph">{{ 'HOME.configDesc' | translate}}<</p>
+          <p class="slider__element__description--paragraph">{{ 'HOME.configDesc' | translate}}</p>
         </div>
       </a>
     </div>
     <!--Forth part configurator-->
+    <img class="bouncing-angle bounce" src="assets/icons/iconmonstr-arrow-65.svg" alt="arrow icon">
   </div>
 </div>
 

@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {DatabaseService} from '../services/database.service';
-import {Company} from '../models/company';
 
 @Component({
   selector: 'app-home',
@@ -14,6 +13,10 @@ export class HomeComponent implements OnInit {
   id: any;
   mostRecentProducts: any = [];
   availableSellers: any = [];
+  activeClass1 = '';
+  activeClass2 = '';
+  activeClass3 = '';
+  activeClass4 = '';
   // TODO przygotować koszyk przetrzymujący dodawane z całej aplikacji produkty
   @Input() cart: any;
 
@@ -34,5 +37,33 @@ export class HomeComponent implements OnInit {
 
   getAvailableSellers() {
 
+  }
+
+  setActive1() {
+    this.activeClass1 = 'active';
+    this.activeClass2 = '';
+    this.activeClass3 = '';
+    this.activeClass4 = '';
+  }
+
+  setActive2() {
+    this.activeClass1 = '';
+    this.activeClass2 = 'active';
+    this.activeClass3 = '';
+    this.activeClass4 = '';
+  }
+
+  setActive3() {
+    this.activeClass1 = '';
+    this.activeClass2 = '';
+    this.activeClass3 = 'active';
+    this.activeClass4 = '';
+  }
+
+  setActive4() {
+    this.activeClass1 = '';
+    this.activeClass2 = '';
+    this.activeClass3 = '';
+    this.activeClass4 = 'active';
   }
 }
