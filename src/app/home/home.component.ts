@@ -9,7 +9,7 @@ import {DatabaseService} from '../services/database.service';
 })
 export class HomeComponent implements OnInit {
   // TODO przekazać tutaj id z zalogowanego użytkownika
-  // TODO POŁĄCZYĆ SASSA Z BEMEM SKRÓCENIE PISANIA KODU - PATRZ KURS
+  // TODO Sprawdzić wszystkie linki na stronie czy mają ścieżki
   id: any;
   mostRecentProducts: any = [];
   availableSellers: any = [];
