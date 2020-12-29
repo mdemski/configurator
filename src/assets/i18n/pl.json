@@ -173,7 +173,13 @@
     "widthFromTo": "Szerokość:",
     "heightFromTo": "Wysokość:",
     "from": "od",
-    "to": "do"
+    "to": "do",
+    "subTitleRoofWindows": "Okna do zadań specjalnych",
+    "subTitleFlashings": "Kołnierze uszczelniające do okien",
+    "subTitleAccessories": "Ochrona przed słońcem i owadami",
+    "subTitleFlatRoofWindows": "Nietuzinkowa aranżacja przestrzeni",
+    "subTitleSkylights": "Bezpieczne wyjście na dach",
+    "subTitleReset": "Inne niż wszystkie"
   },
   "SINGLE-PRODUCT": {
     "price": "Cena detaliczna:",

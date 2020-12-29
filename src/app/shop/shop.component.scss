@@ -1,0 +1,105 @@
+@import 'src/sass/base/variables';
+@import 'src/sass/base/buttons';
+
+.navbar-background {
+  height: 32rem;
+  overflow: hidden;
+  background-color: rgba($color_black, 1);
+
+  img {
+    opacity: .6;
+  }
+}
+
+.title {
+  margin: 3rem 0;
+  text-align: center;
+  color:$color-darkest-grey;
+}
+
+.container {
+  max-width: 140rem;
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  &__background {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 1rem 0;
+    height: 40rem;
+    width: 40rem;
+    background-color: rgba($color-black, .5);
+  }
+
+  &__element {
+    color: $color-white;
+    margin: 2rem;
+
+    &--icon-title-windows {
+      color: $color-light-red;
+    }
+
+    &--icon-title-flashings {
+      color: $color-light-grey;
+    }
+
+    &--icon-title-accessories {
+      color: $color-light-orange;
+    }
+
+    &--icon-title-flat {
+      color: $color-light-blue;
+    }
+
+    &--icon-title-skylights {
+      color: $color-light-yellow;
+    }
+
+    &--icon-title-reset {
+      color: $color-light-green;
+    }
+
+    &--title {
+      display: flex;
+      justify-content: center;
+      flex: 0 0 100%;
+    }
+
+    &--desc {
+      text-align: justify;
+      padding: 0 4.5rem;
+      font-size: 1.6rem;
+    }
+  }
+}
+
+.windowBack {
+  background-image: url("src/assets/img/1.jpg");
+}
+
+.flashingBack {
+  background-image: url("src/assets/img/most_recent_flashings.jpg");
+}
+
+.accessoriesBack {
+  background-image: url("src/assets/img/menu_konfigurator_okna_dachowe.jpg");
+}
+
+.flatBack {
+  background-image: url("src/assets/img/do_wykorzystania_rodzina_z_gory.jpg");
+  background-position: center;
+}
+
+.skylightBack {
+  background-image: url("src/assets/img/chuttersnap-9M9qlXDgtho-unsplash.jpg");
+  background-position: center;
+}
+
+.resetBack {
+  background-image: url("src/assets/img/slider_pictures/slider_reset.jpg");
+  background-position: center;
+}

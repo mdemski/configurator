@@ -6,7 +6,7 @@
   &:visited {
     text-transform: uppercase;
     text-decoration: none;
-    padding: 1.4rem 4rem;
+    padding: 1rem 1.5rem;
     border-radius: 5rem;
     transition: all .2s;
     font-size: $default-font-size;
@@ -23,7 +23,7 @@
   &:active,
   &:focus {
     transform: translateY(-1px);
-    box-shadow: 0 .5rem 1rem rgba($color-black,.2);
+    box-shadow: 0 .5rem 1rem rgba($color-black, .2);
   }
 
   &--white {
@@ -43,16 +43,62 @@
 
     &:hover {
       border: .5rem solid $color-red;
-      color: $color-black;
     }
   }
 
   &--green {
     background-color: $color-green;
-    color: $color-darkest-grey;
+    color: $color-black;
 
     &:hover {
       border: .5rem solid $color-green;
+      color: $color-white;
+    }
+  }
+
+  &--grey {
+    background-color: $color-grey;
+    color: $color-white;
+
+    &:hover {
+      border: .5rem solid $color-grey;
+    }
+  }
+
+  &--dark-blue {
+    background-color: $color-dark-blue;
+    color: $color-white;
+
+    &:hover {
+      border: .5rem solid $color-dark-blue;
+    }
+  }
+
+  &--blue {
+    background-color: $color-blue;
+    color: $color-white;
+
+    &:hover {
+      border: .5rem solid $color-blue;
+    }
+  }
+
+  &--yellow {
+    background-color: $color-yellow;
+    color: $color-black;
+
+    &:hover {
+      border: .5rem solid $color-yellow;
+      color: $color-white;
+    }
+  }
+
+  &--orange {
+    background-color: $color-orange;
+    color: $color-white;
+
+    &:hover {
+      border: .5rem solid $color-orange;
     }
   }
 
@@ -72,7 +118,7 @@
   &:visited {
     text-transform: uppercase;
     text-decoration: none;
-    padding: 1.4rem 4rem;
+    padding: 1rem 1.5rem;
     border-radius: 5rem;
     transition: all .2s;
     font-size: $default-font-size;
@@ -88,7 +134,7 @@
   &:active,
   &:focus {
     transform: translateY(-1px);
-    box-shadow: 0 .5rem 1rem rgba($color-black,.2);
+    box-shadow: 0 .5rem 1rem rgba($color-black, .2);
   }
 
   &--white {
@@ -98,6 +144,16 @@
     &:hover {
       background-color: $color-white;
       color: $color-darkest-grey;
+    }
+  }
+
+  &--grey {
+    color: $color-grey;
+    border: .2rem solid $color-grey;
+
+
+    &:hover {
+      background-color: $color-white;
     }
   }
 }
