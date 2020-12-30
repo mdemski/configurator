@@ -19,31 +19,3 @@
   margin: 0 auto;
   flex-wrap: wrap;
 }
-
-//TODO do wywalenia
-.product-cards-container {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-self: flex-start;
-}
-
-.all-products-container {
-  justify-content: flex-start;
-}
-
-.product-card-image {
-  width: 300px;
-  height: 300px;
-}
-
-.col {
-  padding-top: 50px;
-  padding-bottom: 30px;
-  flex-grow: 0;
-}
-
-.container {
-  max-width: 100%;
-  justify-content: center;
-}
