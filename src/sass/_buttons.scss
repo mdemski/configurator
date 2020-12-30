@@ -10,8 +10,8 @@
     border-radius: 5rem;
     transition: all .2s;
     font-size: $default-font-size;
+    font-weight: bold;
     border: .5rem solid transparent;
-
     cursor: pointer;
   }
 
@@ -52,7 +52,6 @@
 
     &:hover {
       border: .5rem solid $color-green;
-      color: $color-white;
     }
   }
 
@@ -122,6 +121,7 @@
     border-radius: 5rem;
     transition: all .2s;
     font-size: $default-font-size;
+    font-weight: bold;
     background-color: transparent;
 
     cursor: pointer;
@@ -156,4 +156,69 @@
       background-color: $color-white;
     }
   }
+}
+
+.icon-btn {
+  &,
+  &:link,
+  &:visited {
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: .7rem 1rem;
+    border-radius: 50%;
+    transition: all .2s;
+    font-size: $default-font-size;
+    font-weight: bold;
+    border: .5rem solid transparent;
+    cursor: pointer;
+  }
+
+  &--red {
+    color: $color-white;
+    background-color: $color-red;
+
+    &:hover {
+      color: $color-white;
+      box-shadow: 0 1rem 2rem rgba($color-dark-red, .2);
+    }
+
+    &:active,
+    &:focus {
+      transform: translateY(-1px);
+      box-shadow: 0 .5rem 1rem rgba($color-dark-red, .2);
+    }
+  }
+
+  &--blue {
+    color: $color-white;
+    background-color: $color-blue;
+
+    &:hover {
+      color: $color-white;
+      box-shadow: 0 1rem 2rem rgba($color-dark-blue, .2);
+    }
+
+    &:active,
+    &:focus {
+      transform: translateY(-1px);
+      box-shadow: 0 .5rem 1rem rgba($color-dark-blue, .2);
+    }
+  }
+
+  &--grey {
+    color: $color-white;
+    background-color: $color-grey;
+
+    &:hover {
+      color: $color-white;
+      box-shadow: 0 1rem 2rem rgba($color-dark-grey, .2);
+    }
+
+    &:active,
+    &:focus {
+      transform: translateY(-1px);
+      box-shadow: 0 .5rem 1rem rgba($color-dark-grey, .2);
+    }
+  }
+
 }

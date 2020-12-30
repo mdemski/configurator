@@ -1,3 +1,15 @@
+.row {
+  font-size: 1.6rem;
+}
+
+label {
+  font-size: 1.6rem !important;
+}
+
+input::placeholder {
+  font-size: 1.6rem;
+}
+
 .searching-box {
   display: flex;
 }
