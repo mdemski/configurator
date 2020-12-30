@@ -23,9 +23,11 @@ export class RoofWindowSkylight {
   private _windowExtras: [];
   private _windowUrlLink: string;
   private _windowPrice: number;
+  private _windowUW: number;
+  private _windowUG: number;
 
   // tslint:disable-next-line:max-line-length
-  constructor(windowId: number, windowName: string, windowModel: string, windowGlazing: string, windowWidth: number, windowHeight: number, windowCategory: string, windowSubCategory: string, windowGeometry: string, windowOpeningType: string, windowVentilation: string, windowMaterial: string, windowMaterialColor: string, windowMaterialFinish: string, windowOuterMaterial: string, windowOuterColor: string, windowOuterFinish: string, windowHandleType: string, windowHandleColor: string, windowHardware: boolean, windowMountingAngle: string, windowExtras: [], windowUrlLink: string, windowPrice: number) {
+  constructor(windowId: number, windowName: string, windowModel: string, windowGlazing: string, windowWidth: number, windowHeight: number, windowCategory: string, windowSubCategory: string, windowGeometry: string, windowOpeningType: string, windowVentilation: string, windowMaterial: string, windowMaterialColor: string, windowMaterialFinish: string, windowOuterMaterial: string, windowOuterColor: string, windowOuterFinish: string, windowHandleType: string, windowHandleColor: string, windowHardware: boolean, windowMountingAngle: string, windowExtras: [], windowUrlLink: string, windowPrice: number, windowUW: number, windowUG: number) {
     this._windowId = windowId;
     this._windowName = windowName;
     this._windowModel = windowModel;
@@ -50,6 +52,8 @@ export class RoofWindowSkylight {
     this._windowExtras = windowExtras;
     this._windowUrlLink = windowUrlLink;
     this._windowPrice = windowPrice;
+    this._windowUW = windowUW;
+    this._windowUG = windowUG;
   }
 
 
@@ -243,5 +247,21 @@ export class RoofWindowSkylight {
 
   set windowPrice(value: number) {
     this._windowPrice = value;
+  }
+
+  get windowUW(): number {
+    return this._windowUW;
+  }
+
+  set windowUW(value: number) {
+    this._windowUW = value;
+  }
+
+  get windowUG(): number {
+    return this._windowUG;
+  }
+
+  set windowUG(value: number) {
+    this._windowUG = value;
   }
 }
