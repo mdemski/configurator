@@ -14,9 +14,10 @@ export class Accessory {
   private _accessoryClosureType: string;
   private _accessoryNameplateNumber: string;
   private _accessoryPrice: number;
+  private _accessoryUrl: string;
 
   // tslint:disable-next-line:max-line-length
-  constructor(accessoryId: number, accessoryName: string, accessoryModel: string, accessoryWidth: number, accessoryHeight: number, accessoryCategory: string, accessorySubCategory: string, accessoryType: string, accessoryMaterialType: string, accessoryMaterialColor: string, accessoryMaterialFinish: string, accessoryHorizontalSpacing: number, accessoryClosureType: string, accessoryNameplateNumber: string, accessoryPrice: number) {
+  constructor(accessoryId: number, accessoryName: string, accessoryModel: string, accessoryWidth: number, accessoryHeight: number, accessoryCategory: string, accessorySubCategory: string, accessoryType: string, accessoryMaterialType: string, accessoryMaterialColor: string, accessoryMaterialFinish: string, accessoryHorizontalSpacing: number, accessoryClosureType: string, accessoryNameplateNumber: string, accessoryPrice: number, accessoryUrl: string) {
     this._accessoryId = accessoryId;
     this._accessoryName = accessoryName;
     this._accessoryModel = accessoryModel;
@@ -32,8 +33,8 @@ export class Accessory {
     this._accessoryClosureType = accessoryClosureType;
     this._accessoryNameplateNumber = accessoryNameplateNumber;
     this._accessoryPrice = accessoryPrice;
+    this._accessoryUrl = accessoryUrl;
   }
-
 
   get accessoryId(): number {
     return this._accessoryId;
@@ -153,5 +154,13 @@ export class Accessory {
 
   set accessoryPrice(value: number) {
     this._accessoryPrice = value;
+  }
+
+  get accessoryUrl(): string {
+    return this._accessoryUrl;
+  }
+
+  set accessoryUrl(value: string) {
+    this._accessoryUrl = value;
   }
 }
