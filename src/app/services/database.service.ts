@@ -47,18 +47,18 @@ export class DatabaseService {
   // TODO do oprogramowania pobieranie danych z eNova/pliku
   getAllAccessoriesToShopList() {
     return this.accessories = [
-      new Accessory(1, 'Decomatic D33Z 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 217),
-      new Accessory(2, 'Decomatic D33Z 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 217),
-      new Accessory(3, 'Decomatic D33Z 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 217),
-      new Accessory(4, 'Decomatic D33Z 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 217),
-      new Accessory(5, 'Decomatic D33Z 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 217),
-      new Accessory(6, 'Decomatic D33Z 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 217),
-      new Accessory(7, 'Decomatic D33Z 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 217),
-      new Accessory(8, 'Decomatic D33Z 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 217),
-      new Accessory(9, 'Decomatic D33Z 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 217),
-      new Accessory(10, 'Decomatic D33T 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'transparentny', 'A368', 'srebrny', null, 'manulana', null, 157),
-      new Accessory(11, 'Multistop D37Z 78x118', 'D37', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 375),
-      new Accessory(12, 'Multistop D37T 78x118', 'D37', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'transparentny', 'A368', 'srebrny', null, 'manulana', null, 312)
+      new Accessory(1, 'Decomatic D33Z 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 217, 'assets/img/products/D33.png'),
+      new Accessory(2, 'Decomatic D33Z 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 217, 'assets/img/products/D33.png'),
+      new Accessory(3, 'Decomatic D33Z 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 217, 'assets/img/products/D33.png'),
+      new Accessory(4, 'Decomatic D33Z 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 217, 'assets/img/products/D33.png'),
+      new Accessory(5, 'Decomatic D33Z 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 217, 'assets/img/products/D33.png'),
+      new Accessory(6, 'Decomatic D33Z 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 217, 'assets/img/products/D33.png'),
+      new Accessory(7, 'Decomatic D33Z 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 217, 'assets/img/products/D33.png'),
+      new Accessory(8, 'Decomatic D33Z 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 217, 'assets/img/products/D33.png'),
+      new Accessory(9, 'Decomatic D33Z 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 217, 'assets/img/products/D33.png'),
+      new Accessory(10, 'Decomatic D33T 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'transparentny', 'A368', 'srebrny', null, 'manulana', null, 157, 'assets/img/products/D33.png'),
+      new Accessory(11, 'Multistop D37Z 78x118', 'D37', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 375, 'assets/img/products/D37.png'),
+      new Accessory(12, 'Multistop D37T 78x118', 'D37', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'transparentny', 'A368', 'srebrny', null, 'manulana', null, 312, 'assets/img/products/D37.png')
     ];
   }
 
