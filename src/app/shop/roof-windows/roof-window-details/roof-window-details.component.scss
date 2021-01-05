@@ -1,0 +1,120 @@
+@import 'src/sass/base/variables';
+@import 'src/sass/buttons';
+@import 'src/sass/components';
+
+
+.navbar-background {
+  height: 32rem;
+  overflow: hidden;
+  background-color: rgba($color_black, 1);
+  margin-bottom: 3rem;
+
+  img {
+    opacity: .7;
+  }
+}
+
+.md-container {
+  max-width: 140rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin: 0 auto;
+  flex-wrap: wrap;
+
+  &--left-side {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex: 1;
+    margin: 0 auto;
+    flex-wrap: wrap;
+  }
+
+  &--right-side {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    margin: 5rem auto;
+    flex-wrap: wrap;
+  }
+}
+
+.active-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  height: 6.5rem;
+  width: 6.5rem;
+  border: 1px solid $color-blue;
+  margin-bottom: 1rem;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.inactive-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 6.5rem;
+  width: 6.5rem;
+  border: 1px solid $color-grey;
+  margin-bottom: 1rem;
+  border-radius: 50%;
+  opacity: 0.5;
+  overflow: hidden;
+}
+
+.extra-product-container {
+  display: flex;
+  flex: 0 0 100%;
+  flex-wrap: wrap;
+}
+
+.add-to-cart {
+  flex: 0 0 35%;
+
+  &:not(:last-child) {
+    margin-left: 1.5rem;
+  }
+}
+
+//INFO WITH IMAGES
+.background-container {
+  background-color: $color-dark-white;
+  width: 100%;
+}
+
+.main-info {
+  display: flex;
+  align-items: center;
+  max-width: 140rem;
+  margin: auto;
+  padding: 7rem 0;
+
+  &__desc {
+    text-align: justify;
+    font-size: 1.6rem;
+    margin: 0 5rem;
+  }
+
+  &__photo {
+    width: auto;
+
+    &--glazing {
+      height: 40rem;
+    }
+  }
+}
+
+.pictures-container {
+  display: flex;
+
+  &__photo {
+    width: 33.33%;
+  }
+}

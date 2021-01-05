@@ -8,29 +8,43 @@ import {Accessory} from '../../../models/accessory';
 @Component({
   selector: 'app-roof-window-details',
   templateUrl: './roof-window-details.component.html',
-  styleUrls: ['./roof-window-details.component.css']
+  styleUrls: ['./roof-window-details.component.scss']
 })
 export class RoofWindowDetailsComponent implements OnInit {
-  windowToShow = {} as RoofWindowSkylight;
+  windowToShow: RoofWindowSkylight;
   picturesOfWindow = [];
+  windowMaterial: string;
+  windowVent: string;
+  windowHandle: string;
   @Input() logInUser: User;
   priceAfterDisc: any;
+  glazing: string;
   availableSizes = ['55x78', '55x98', '66x98', '66x118', '66x140', '78x98', '78x118', '78x140', '78x160', '94x118', '94x140', '94x160', '114x118', '114x140', '134x98'];
   quantity = 1;
   availableExtras: Accessory[] = [];
 
-  constructor(private route: ActivatedRoute,
-              private db: DatabaseService) { }
+  constructor(private router: ActivatedRoute,
+              private db: DatabaseService) {
+  }
 
   ngOnInit(): void {
-    const windowId = this.route.snapshot.paramMap.get('windowId');
-    this.windowToShow = this.db.getWindowById(+windowId);
+    this.router.params.subscribe(param => {
+      this.windowToShow = this.db.getWindowById(param['windowId']);
+    });
     this.picturesOfWindow.push('1');
     this.picturesOfWindow.push('2');
     this.picturesOfWindow.push('3');
     this.picturesOfWindow.push('4');
     this.priceAfterDisc = this.getDiscountPrice();
-    this.availableExtras.push(this.db.getAccessoryById(9), this.db.getAccessoryById(10));
+    this.availableExtras.push(this.db.getAccessoryById(1), this.db.getAccessoryById(2));
+    this.windowMaterial = this.windowToShow.windowMaterial;
+    this.windowVent = this.windowToShow.windowVentilation;
+    this.windowHandle = this.windowToShow.windowHandleType;
+    if (this.windowToShow.windowGlazing.toLowerCase().startsWith('e')) {
+      this.glazing = 'doubleGlazing';
+    } else {
+      this.glazing = 'tripleGlazing';
+    }
   }
 
   getDiscountPrice() {
@@ -39,16 +53,27 @@ export class RoofWindowDetailsComponent implements OnInit {
     }
   }
 
+  resize(delta: number) {
+    this.quantity = this.quantity + delta;
+  }
+
   decreaseQuantity() {
     if (this.quantity === 1) {
-      return this.quantity;
+      this.quantity = 1;
     } else {
-      this.quantity--;
+      this.resize(-1);
     }
   }
 
-
   increaseQuantity() {
-    this.quantity++;
+    this.resize(+1);
+  }
+
+  addToCart(quantity: number) {
+    this.db.addToCart(this.windowToShow, quantity);
+  }
+
+  order(quantity: number) {
+    this.db.order(this.windowToShow, quantity);
   }
 }

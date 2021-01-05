@@ -97,4 +97,12 @@ export class DatabaseService {
   saveEmailToDatabase(newsletterEmail: string) {
     // Wysłanie maila do bazy danych eNova
   }
+
+  addToCart(product: any, quantity: number) {
+    //TODO logika związana z dodaniem przedmiotu do koszyka czy osobny service dla koszyka
+  }
+
+  order(product: any, quantity: number) {
+    //TODO logika związana z wysłaniem całego koszyka jako zamówienie do eNova
+  }
 }
