@@ -1,3 +1,6 @@
+@import 'src/sass/base/variables';
+@import 'src/sass/buttons';
+
 .bg {
   /* The image used */
   background-image: url("../../assets/img/nathan-fertig-FBXuXp57eM0-unsplash.jpg");
@@ -9,7 +12,44 @@
   background-size: cover;
 }
 
+.navbar-background {
+  height: 32rem;
+  overflow: hidden;
+  background-color: rgba($color_black, 1);
 
-.login-form-container {
+  img {
+    opacity: .7;
+  }
+}
 
+.md-container {
+  max-width: 140rem;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.login-container {
+  font-size: 1.6rem;
+  margin: 4rem 0;
+}
+
+.login-title {
+  font-size: 1.8rem;
+}
+
+.form-control {
+  margin: 4rem 0;
+  font-size: 1.6rem;
+}
+
+.login-button {
+  width: 100%;
+}
+
+.navigation-link {
+  display: block;
+  width: 100%;
+  margin-top: 1rem;
 }

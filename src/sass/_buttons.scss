@@ -180,6 +180,16 @@
       background-color: $color-white;
     }
   }
+
+  &--blue {
+    color: $color-light-blue;
+    border: .2rem solid $color-light-blue;
+
+
+    &:hover {
+      background-color: $color-white;
+    }
+  }
 }
 
 .icon-btn {
