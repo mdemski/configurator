@@ -22,14 +22,6 @@
   }
 }
 
-.md-container {
-  max-width: 140rem;
-  display: flex;
-  justify-content: center;
-  margin: 0 auto;
-  flex-wrap: wrap;
-}
-
 .login-container {
   font-size: 1.6rem;
   margin: 4rem 0;
@@ -52,4 +44,18 @@
   display: block;
   width: 100%;
   margin-top: 1rem;
+}
+
+.alert-login {
+  margin-left: 2rem;
+  height: 5.7rem;
+}
+
+.support-info {
+  padding: 2rem;
+  margin-top: 3.7rem;
+  border-radius: 1px;
+  box-shadow: 5px 5px 15px 5px rgba($color-black, .1);
+  color: $color-black;
+  background-color: $color-white;
 }
