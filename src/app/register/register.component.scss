@@ -1,1 +1,37 @@
+@import 'src/sass/base/variables';
+@import 'src/sass/buttons';
 
+.navbar-background {
+  height: 32rem;
+  overflow: hidden;
+  background-color: rgba($color_black, 1);
+
+  img {
+    opacity: .7;
+  }
+}
+
+.register-title {
+  font-size: 1.8rem;
+}
+
+.form-control {
+  margin: 4rem 0;
+  font-size: 1.6rem;
+}
+
+.register-check-box {
+  font-size: 1.6rem;
+}
+
+.register-button {
+  margin: 3rem 0 1rem 0;
+  width: 100%;
+}
+
+.invalid-contact-data {
+  padding: 1rem;
+  font-size: 1.2rem;
+  background-color: $color-light-red;
+  color: $color-darkest-red;
+}

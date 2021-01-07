@@ -1,28 +1,30 @@
+<div class="navbar-background">
+  <img src="assets/img/register.jpg" alt="roof windows">
+</div>
+
+<div class="md-container">
 <div class="d-flex justify-content-center">
-
   <div class="w-25 p-4">
-
     <div class="alert alert-danger" role="alert" *ngIf="error">
       <p>{{error}}</p>
     </div>
 
     <mdb-card>
-
       <mdb-card-header class="info-color white-text text-center py-4">
         <h5>
-          <strong>{{'REGISTER.registerTitle' | translate}}</strong>
+          <strong class="register-title">{{'REGISTER.registerTitle' | translate}}</strong>
         </h5>
       </mdb-card-header>
 
       <mdb-card-body class="px-lg-5 pt-0">
 
-        <form style="color: #757575;" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
           <!--        <label for="firstName" class="register-form-labels">{{'REGISTER.firstName' | translate}}</label>-->
           <div class="md-form mt-3">
             <input type="text"
                    id="firstName"
                    formControlName="firstName"
-                   class="register-form-input"
+                   class="form-control"
                    placeholder="{{'REGISTER.firstName' | translate}}">
           </div>
           <div
@@ -38,7 +40,7 @@
             <input type="text"
                    id="lastName"
                    formControlName="lastName"
-                   class="register-form-input"
+                   class="form-control"
                    placeholder="{{'REGISTER.lastName' | translate}}">
           </div>
           <div
@@ -54,7 +56,7 @@
             <input type="email"
                    id="email"
                    formControlName="email"
-                   class="register-form-input"
+                   class="form-control"
                    placeholder="{{'REGISTER.email' | translate}}">
           </div>
           <div
@@ -76,7 +78,7 @@
             <input type="password"
                    id="password"
                    formControlName="password"
-                   class="register-form-input"
+                   class="form-control"
                    placeholder="{{'REGISTER.password' | translate}}">
           </div>
           <div
@@ -93,7 +95,7 @@
             <input type="password"
                    id="rePassword"
                    formControlName="rePassword"
-                   class="register-form-input"
+                   class="form-control"
                    placeholder="{{'REGISTER.rePassword' | translate}}">
           </div>
           <div class="invalid-contact-data" *ngIf="registerForm.get('rePassword').value != null &&
@@ -107,7 +109,7 @@
                  formControlName="role"
                  value="user">
 
-          <mdb-checkbox (click)="setClientTypeToTrue()">{{ 'REGISTER.companyClient' | translate}}</mdb-checkbox>
+          <mdb-checkbox class="register-check-box" (click)="setClientTypeToTrue()">{{ 'REGISTER.companyClient' | translate}}</mdb-checkbox>
 
           <hr class="register-horizontal-line">
           <div *ngIf="clientType">
@@ -116,7 +118,7 @@
               <input type="text"
                      id="companyName"
                      formControlName="companyName"
-                     class="register-form-input"
+                     class="form-control"
                      placeholder="{{'REGISTER.companyName' | translate}}">
             </div>
             <!--          <label for="nip" class="register-form-labels">{{ 'REGISTER.NIP' | translate}}</label>-->
@@ -124,7 +126,7 @@
               <input type="text"
                      id="nip"
                      formControlName="nip"
-                     class="register-form-input"
+                     class="form-control"
                      placeholder="{{'REGISTER.NIP' | translate}}">
             </div>
             <!--          <label for="street" class="register-form-labels">{{ 'REGISTER.street' | translate}}</label>-->
@@ -132,7 +134,7 @@
               <input type="text"
                      id="street"
                      formControlName="street"
-                     class="register-form-input"
+                     class="form-control"
                      placeholder="{{'REGISTER.street' | translate}}">
             </div>
             <!--          <label for="number" class="register-form-labels">{{ 'REGISTER.number' | translate}}</label>-->
@@ -140,7 +142,7 @@
               <input type="text"
                      id="number"
                      formControlName="number"
-                     class="register-form-input"
+                     class="form-control"
                      placeholder="{{'REGISTER.number' | translate}}">
             </div>
             <!--          <label for="zipCode" class="register-form-labels">{{ 'REGISTER.zipCode' | translate}}</label>-->
@@ -148,7 +150,7 @@
               <input type="text"
                      id="zipCode"
                      formControlName="zipCode"
-                     class="register-form-input"
+                     class="form-control"
                      placeholder="{{'REGISTER.zipCode' | translate}}">
             </div>
             <!--          <label for="agent" class="register-form-labels">{{ 'REGISTER.agent' | translate}}</label>-->
@@ -156,23 +158,16 @@
               <input type="text"
                      id="agent"
                      formControlName="agent"
-                     class="register-form-input"
+                     class="form-control"
                      placeholder="{{'REGISTER.agent' | translate}}">
             </div>
           </div>
 
-          <button mdbBtn color="info"
-                  outline="true"
-                  rounded="true"
-                  block="true"
-                  class="z-depth-0 my-4 waves-effect"
+          <button class="btn btn-light--blue register-button"
                   mdbWavesEffect type="submit">{{ 'REGISTER.register' | translate}}</button>
         </form>
-
       </mdb-card-body>
-
     </mdb-card>
-
   </div>
-
+</div>
 </div>
