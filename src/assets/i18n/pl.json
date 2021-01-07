@@ -78,6 +78,7 @@
     "wrongCredential": "Niepoprawne ades email lub hasło, podaj poprawne dane",
     "forgotPassword": "Nie pamiętasz hasła?",
     "logout": "Wyloguj",
+    "supportInfo": "W razie problemów z zalogowaniem zapraszamy do kontatku",
     "userBlocked": "Twoje konto zostało zablokowane przez admministratora - skontaktuj się Biurem Obsługi Klienta firmy OKPOL"
   },
   "LINK": {
