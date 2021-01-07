@@ -1,58 +1,52 @@
-<div class="bg">
+<div class="navbar-background">
+  <img src="assets/img/nathan-fertig-FBXuXp57eM0-unsplash.jpg" alt="roof windows">
+</div>
 
-  <div class="d-flex justify-content-center">
-
-    <div class="w-25 p-4">
-
-      <div *ngIf="isLoading" class="d-flex justify-content-center">
-        <app-bouncing-loader>
-        </app-bouncing-loader>
-      </div>
-
-      <div class="alert alert-danger" role="alert" *ngIf="error">
-        <p>{{error}}</p>
-      </div>
-
-      <mdb-card *ngIf="!isLoading">
-
-        <mdb-card-header class="info-color white-text text-center py-4">
-          <h5>
-            <strong>{{'LOGIN.loginTitle' | translate}}</strong>
-          </h5>
-        </mdb-card-header>
-
-        <mdb-card-body class="px-lg-5 pt-0">
-
-          <form #authForm='ngForm' (ngSubmit)="onSubmit(authForm)">
-            <div class="md-form mt-3">
-              <input id="email" type="email" class="form-control" ngModel name="email" required email
-                     placeholder="{{ 'LOGIN.email' | translate}}">
-            </div>
-            <div class="md-form mt-3">
-              <input id="password" type="password" class="form-control" ngModel name="password" required minlength="6"
-                     placeholder="{{ 'LOGIN.password' | translate}}">
-            </div>
-            <div>
-              <button mdbBtn color="info"
-                      outline="true"
-                      rounded="true"
-                      block="true"
-                      class="z-depth-0 my-4 waves-effect"
-                      mdbWavesEffect type="submit"
-                      [disabled]="authForm.invalid">{{ 'LOGIN.login' | translate}}</button>
-              <a routerLink="{{ 'LINK.newPassword' | translate}}"
-                 class="navigation-link">{{ 'LOGIN.forgotPassword' | translate}}</a> <hr><br>
-              <a routerLink="../{{ 'LINK.registerLink' | translate}}"
-                 class="navigation-link">{{ 'LINK.register' | translate}}</a>
-            </div>
-          </form>
-
-        </mdb-card-body>
-
-      </mdb-card>
-
-    </div>
-
+<div class="d-flex justify-content-center login-container">
+  <div *ngIf="isLoading" class="d-flex justify-content-center">
+    <app-bouncing-loader>
+    </app-bouncing-loader>
   </div>
 
+  <mdb-card *ngIf="!isLoading">
+
+    <mdb-card-header class="info-color white-text text-center py-4">
+      <h5>
+        <strong class="login-title">{{'LOGIN.loginTitle' | translate}}</strong>
+      </h5>
+    </mdb-card-header>
+
+    <mdb-card-body class="px-lg-5 pt-0">
+
+      <form #authForm='ngForm' (ngSubmit)="onSubmit(authForm)">
+        <div class="md-form mt-3">
+          <input id="email" type="email" class="form-control" ngModel name="email" required email
+                 placeholder="{{ 'LOGIN.email' | translate}}">
+        </div>
+        <div class="md-form mt-3">
+          <input id="password" type="password" class="form-control" ngModel name="password" required minlength="6"
+                 placeholder="{{ 'LOGIN.password' | translate}}">
+        </div>
+        <button class="btn btn-light--blue login-button" type="submit"
+                [disabled]="authForm.invalid">{{ 'LOGIN.login' | translate}}</button>
+        <a routerLink="{{ 'LINK.newPassword' | translate}}"
+           class="navigation-link">{{ 'LOGIN.forgotPassword' | translate}}</a>
+        <hr>
+        <a routerLink="../{{ 'LINK.registerLink' | translate}}"
+           class="navigation-link">{{ 'LINK.register' | translate}}</a>
+      </form>
+    </mdb-card-body>
+  </mdb-card>
+
+  <div class="alert alert-danger alert-login" role="alert" *ngIf="error">
+    <p>{{error}}</p>
+    <div class="support-info" role="alert">
+      <p>{{ 'LOGIN.supportInfo' | translate}}:</p>
+      <p><span class="font-weight-bold mr-2">{{'CONTACT.email' | translate}}</span><a
+        href="{{'LINK.mailTo' | translate}}">{{'CONTACT.emailAddress' | translate}}</a></p>
+      <p><span
+        class="font-weight-bold mr-2">{{'CONTACT.phone' | translate}}</span>{{'CONTACT.phoneNumberOKPOL' | translate}}
+      </p>
+    </div>
+  </div>
 </div>

@@ -5,7 +5,7 @@ import {DatabaseService} from '../../../services/database.service';
 @Component({
   selector: 'app-roof-window-filtration',
   templateUrl: './roof-window-filtration.component.html',
-  styleUrls: ['./roof-window-filtration.component.css']
+  styleUrls: ['./roof-window-filtration.component.scss']
 })
 export class RoofWindowFiltrationComponent implements OnInit {
   @Output() filters = new EventEmitter<any>();

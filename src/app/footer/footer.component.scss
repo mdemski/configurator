@@ -1,0 +1,98 @@
+@import 'src/sass/base/variables';
+@import 'src/sass/buttons';
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  font-size: 1.6rem;
+  height: 40rem;
+  color: $color-white;
+  background-color: $color-darkest-blue;
+
+  &__newsletter {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    p {
+      flex: 1;
+      padding-right: 1rem;
+      margin-bottom: 0;
+    }
+
+    input {
+      flex: 2;
+      border-radius: 5rem;
+      height: 6rem;
+      width: 30rem;
+
+      &:focus {
+        outline: none;
+      }
+
+      &::placeholder {
+        padding-left: 1rem;
+      }
+    }
+
+    a {
+      margin: 0 8rem;
+
+      &:hover {
+        color: $color-black;
+      }
+    }
+  }
+
+  &__register {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    p {
+      margin-right: 3rem;
+      margin-bottom: 0;
+    }
+  }
+
+  &__media-icons {
+    display: flex;
+    flex-wrap: wrap;
+    flex-basis: 100%;
+    justify-content: center;
+
+    i {
+      color: white;
+      font-size: 2.2rem;
+      padding-left: 3rem;
+    }
+  }
+
+  &__copyrights {
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 0;
+    flex: 0 0 100%;
+    font-size: 1.1rem;
+    color: $color-white;
+    background-color: $color-black;
+
+    p {
+      margin: 0;
+    }
+
+    a {
+      padding-left: .5rem;
+      color: $color-white;
+    }
+  }
+}
+
+path {
+  fill: white;
+}

@@ -1,1 +1,364 @@
+@import 'src/sass/base/variables';
+@import 'src/sass/buttons';
 
+//SLIDER SECTION
+
+.slider {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+
+  &--borders {
+    border-right: $color-white solid 1px;
+    z-index: 9;
+    justify-content: center;
+    align-items: flex-end;
+    position: absolute;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  &__element {
+    justify-content: center;
+    align-items: flex-end;
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+
+    &--on-hover {
+      opacity: 0;
+      z-index: 2;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      transition: all .3s;
+    }
+
+    a {
+      z-index: 10;
+    }
+
+    &--overlay {
+      z-index: 7;
+      background-color: rgba($color-black, 0.3);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: all .3s;
+    }
+
+    &:hover &--overlay {
+      opacity: 1;
+    }
+
+    &:hover &__description {
+      transform: translateY(-1.5rem);
+    }
+
+    &__description {
+      z-index: 5;
+      transition: all .3s;
+      position: absolute;
+      top: 80vh;
+      padding: 2rem 0;
+      background-color: rgba($color-black, .5);
+
+      &--title {
+        text-transform: uppercase;
+        text-align: center;
+        color: $color-white;
+        font-size: 3.5rem;
+        font-weight: 900;
+      }
+
+      &--paragraph {
+        padding: 0 1.5rem;
+        text-align: center;
+        color: $color-white;
+        font-size: 1.7rem;
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+//BOUNCING ANGLE
+.bouncing-angle {
+  position: absolute;
+  z-index: 10;
+  bottom: 1rem;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+}
+
+.bounce {
+  animation-name: bounce;
+  animation-timing-function: ease;
+}
+
+@keyframes bounce {
+  0% {transform: scale(1,1) translateY(0) translateX(-50%);}
+  10% {transform: scale(1.1,.9) translateY(0) translateX(-50%);}
+  30% {transform: scale(.9,1.1) translateY(-10px) translateX(-50%);}
+  50% {transform: scale(1,1) translateY(0) translateX(-50%);}
+  57% {transform: scale(1,1) translateY(-5px) translateX(-50%);}
+  64% {transform: scale(1,1) translateY(0) translateX(-50%);}
+  100% {transform: scale(1,1) translateY(0) translateX(-50%);}
+}
+
+//SLIDER ACTIVATION SETUPS
+.active .slider__element__description {
+  transform: translateY(-1.5rem);
+}
+
+.active .slider__element--overlay {
+  opacity: 1;
+}
+
+.active .slider__element--on-hover, .active {
+  transition: all .3s;
+  opacity: 1;
+}
+
+//SECTION ALL OFFER
+
+.full-offer {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+
+  &__container {
+    display: flex;
+    justify-content: center;
+  }
+
+  &--title {
+    text-align: center;
+    color: #555;
+    font-size: 4rem;
+    font-weight: 700;
+  }
+
+  &__product {
+    padding: 5rem 0;
+    width: 14%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    position: relative;
+
+    &:hover img {
+      transition: all .5s;
+      opacity: 0.5;
+    }
+
+    &--middle {
+      background-color: $color-red;
+      font-size: 1.8rem;
+      padding: 1rem 2rem;
+      border-radius: 5rem;
+      color: $color-white;
+      position: absolute;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+    }
+
+    &:hover &--middle {
+      transition: all .5s;
+      opacity: 1;
+    }
+
+    &--link {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    &--img {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 21.5rem;
+      border-radius: 50%;
+    }
+
+    &--disc {
+      font-size: 2rem;
+      padding-top: 1.7rem;
+    }
+  }
+}
+
+//SECTION ABOUT NEW PRODUCT
+
+.new-product {
+  height: 50rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: $color-dark-white;
+
+  &__desc {
+    text-align: center;
+    flex: 1 0 50%;
+    font-size: 5rem;
+    margin-bottom: 0;
+
+    &--paragraph {
+      padding-bottom: 4rem;
+    }
+
+    a {
+      display: flex;
+      justify-content: center;
+    }
+
+    p:nth-child(2) {
+      font-size: 3rem;
+    }
+  }
+
+  &__img {
+    flex: 1 0 50%;
+    position: relative;
+    justify-content: center;
+
+    &--product {
+      height: 70rem;
+    }
+
+    &--zoom {
+      position: absolute;
+      top: 21rem;
+      left: 3rem;
+      border-radius: 50%;
+      border: .7rem solid $color-green;
+      box-sizing: content-box;
+      height: 300px;
+    }
+  }
+}
+
+//SECTION MOST RECENT PRODUCTS
+
+.most-recent {
+  height: 55rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  div:nth-child(1) {
+    background-image: url("src/assets/img/most_recent_windows.jpg");
+    flex: 0 1 36%;
+  }
+
+  div:nth-child(2) {
+    background-image: url("src/assets/img/most_recent_flashings.jpg");
+    flex: 0 1 28%;
+  }
+
+  div:nth-child(3) {
+    background-image: url("src/assets/img/most_recent_accessoies.jpg");
+    flex: 0 1 36%;
+  }
+
+  &__product {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    position: relative;
+    overflow: hidden;
+    height: 88%;
+
+    h2 {
+      font-size: 3rem;
+      padding-top: 2rem;
+      padding-left: 2rem;
+      align-self: flex-start;
+    }
+
+    button {
+      border: 0;
+      background-color: $color-white;
+      border-radius: 50px;
+      color: $color-red;
+      padding: 1.5rem;
+      font-size: 2rem;
+      margin-top: 2rem;
+    }
+
+    &--background {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      position: absolute;
+      padding: 3rem;
+      height: 100%;
+      width: 100%;
+      background-color: rgba($color-red, .5);
+      top: 60rem;
+      transition: top 1s;
+
+      p {
+        font-size: 2rem;
+        color: $color-white;
+      }
+    }
+
+    &:hover {
+      .most-recent__product--background {;
+        top: 0;
+      }
+    }
+
+  }
+
+  &__slogan {
+    margin: 2rem 0;
+    align-self: flex-end;
+
+    h2 {
+      font-size: 4rem;
+    }
+  }
+}
+
+//AVAILABLE SELLERS SECTION
+
+.available-sellers {
+  margin: 3rem 0 0 0;
+  width: 100%;
+  height: 60rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  &__map {
+    border: 0;
+    width: 100%;
+    height: inherit;
+  }
+
+  .btn {
+    position: absolute;
+
+    &--light-red:hover {
+      background-color: $color-light-red;
+    }
+  }
+}
