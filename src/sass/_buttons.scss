@@ -1,0 +1,332 @@
+@import 'src/sass/base/variables';
+
+//SIZES
+.btn-small {
+  margin: 1rem 1rem;
+  height: 4rem;
+  width: 4rem;
+}
+
+.btn-medium {
+  margin: 1rem 1rem;
+  height: 6rem;
+  width: 6rem;
+}
+
+.btn-big {
+  margin: 1rem 1rem;
+  height: 7.2rem;
+  width: 7.2rem;
+}
+
+.btn {
+  &,
+  &:link,
+  &:visited {
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 1rem 1.5rem;
+    border-radius: 5rem;
+    transition: all .2s;
+    font-size: $default-font-size;
+    font-weight: bold;
+    border: .5rem solid transparent;
+    cursor: pointer;
+  }
+
+  &:hover {
+    background-color: transparent;
+    box-shadow: 0 1rem 2rem rgba($color-black, .2);
+  }
+
+  &:active,
+  &:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 .5rem 1rem rgba($color-black, .2);
+  }
+
+  &--white {
+    background-color: $color-white;
+    color: $color-dark-grey;
+
+    &:hover {
+      border: .5rem solid $color-white;
+    }
+  }
+
+  &--red {
+    font-size: 1.2rem;
+    padding: 1rem 1.5rem;
+    background-color: $color-red;
+    color: $color-white;
+
+    &:hover {
+      color: $color-black;
+      border: .5rem solid $color-red;
+    }
+  }
+
+  &--green {
+    background-color: $color-green;
+    color: $color-black;
+
+    &:hover {
+      color: $color-black;
+      border: .5rem solid $color-green;
+    }
+  }
+
+  &--grey {
+    background-color: $color-grey;
+    color: $color-white;
+
+    &:hover {
+      color: $color-black;
+      border: .5rem solid $color-grey;
+    }
+  }
+
+  &--dark-blue {
+    background-color: $color-dark-blue;
+    color: $color-white;
+
+    &:hover {
+      color: $color-black;
+      border: .5rem solid $color-dark-blue;
+    }
+  }
+
+  &--blue {
+    background-color: $color-blue;
+    color: $color-white;
+
+    &:hover {
+      color: $color-black;
+      border: .5rem solid $color-blue;
+    }
+  }
+
+  &--yellow {
+    background-color: $color-yellow;
+    color: $color-black;
+
+    &:hover {
+      border: .5rem solid $color-yellow;
+      color: $color-white;
+    }
+  }
+
+  &--orange {
+    background-color: $color-orange;
+    color: $color-white;
+
+    &:hover {
+      border: .5rem solid $color-orange;
+    }
+  }
+
+  &--light-red {
+    background-color: $color-light-red;
+    color: $color-black;
+
+    &:hover {
+      border: .5rem solid $color-light-red;
+    }
+  }
+}
+
+.btn-light {
+  &,
+  &:link,
+  &:visited {
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 1rem 1.5rem;
+    border-radius: 5rem;
+    transition: all .2s;
+    font-size: $default-font-size;
+    font-weight: bold;
+    background-color: transparent;
+
+    cursor: pointer;
+  }
+
+  &:hover {
+    box-shadow: 0 1rem 2rem rgba($color-black, .2);
+  }
+
+  &:active,
+  &:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 .5rem 1rem rgba($color-black, .2);
+  }
+
+  &--white {
+    color: $color-white;
+    border: .2rem solid $color-white;
+
+    &:hover {
+      background-color: $color-white;
+      color: $color-darkest-grey;
+    }
+  }
+
+  &--grey {
+    color: $color-grey;
+    border: .2rem solid $color-grey;
+
+
+    &:hover {
+      background-color: $color-white;
+    }
+  }
+
+  &--blue {
+    color: $color-light-blue;
+    border: .2rem solid $color-light-blue;
+
+
+    &:hover {
+      background-color: $color-white;
+    }
+  }
+}
+
+.icon-btn {
+  &,
+  &:link,
+  &:visited {
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: .7rem 1rem;
+    border-radius: 50%;
+    transition: all .2s;
+    font-size: $default-font-size;
+    font-weight: bold;
+    border: .5rem solid transparent;
+    cursor: pointer;
+  }
+
+  &--red {
+    color: $color-white;
+    background-color: $color-red;
+
+    &:hover {
+      color: $color-white;
+      box-shadow: 0 1rem 2rem rgba($color-dark-red, .2);
+    }
+
+    &:active,
+    &:focus {
+      transform: translateY(-1px);
+      box-shadow: 0 .5rem 1rem rgba($color-dark-red, .2);
+    }
+  }
+
+  &--blue {
+    color: $color-white;
+    background-color: $color-blue;
+
+    &:hover {
+      color: $color-white;
+      box-shadow: 0 1rem 2rem rgba($color-dark-blue, .2);
+    }
+
+    &:active,
+    &:focus {
+      transform: translateY(-1px);
+      box-shadow: 0 .5rem 1rem rgba($color-dark-blue, .2);
+    }
+  }
+
+  &--grey {
+    color: $color-white;
+    background-color: $color-grey;
+
+    &:hover {
+      color: $color-white;
+      box-shadow: 0 1rem 2rem rgba($color-dark-grey, .2);
+    }
+
+    &:active,
+    &:focus {
+      transform: translateY(-1px);
+      box-shadow: 0 .5rem 1rem rgba($color-dark-grey, .2);
+    }
+  }
+
+}
+
+.icon-btn-light {
+  &,
+  &:link,
+  &:visited {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: .7rem 1rem;
+    border-radius: 50%;
+    transition: all .2s;
+    font-size: $default-font-size;
+    cursor: pointer;
+  }
+
+  &--red {
+    color: $color-black;
+    background-color: $color-white;
+    border: 1px solid $color-red;
+
+    &:hover {
+      background-color: $color-red;
+      border: 1px solid transparent;
+      color: $color-white;
+      box-shadow: 0 1rem 2rem rgba($color-dark-red, .2);
+    }
+
+    &:active,
+    &:focus {
+      transform: translateY(-1px);
+      box-shadow: 0 .5rem 1rem rgba($color-dark-red, .2);
+    }
+  }
+
+  &--grey {
+    color: $color-black;
+    background-color: $color-white;
+    border: 1px solid $color-grey;
+
+    &:hover {
+      background-color: $color-grey;
+      border: 1px solid transparent;
+      color: $color-white;
+      box-shadow: 0 1rem 2rem rgba($color-dark-grey, .2);
+    }
+
+    &:active,
+    &:focus {
+      transform: translateY(-1px);
+      box-shadow: 0 .5rem 1rem rgba($color-dark-grey, .2);
+    }
+  }
+
+  &--blue {
+    color: $color-black;
+    background-color: $color-white;
+    border: 1px solid $color-blue;
+
+    &:hover {
+      background-color: $color-blue;
+      border: 1px solid transparent;
+      color: $color-white;
+      box-shadow: 0 1rem 2rem rgba($color-dark-blue, .2);
+    }
+
+    &:active,
+    &:focus {
+      transform: translateY(-1px);
+      box-shadow: 0 .5rem 1rem rgba($color-dark-blue, .2);
+    }
+  }
+}
