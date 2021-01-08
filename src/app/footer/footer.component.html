@@ -1,6 +1,12 @@
 <!-- Footer -->
 <footer class="footer">
 
+  <div class="footer__logo">
+    <a routerLink="/">
+      <img src="../../assets/img/2015-logo-okpol-pl-217-50.png" alt="logo okpol"/>
+    </a>
+  </div>
+
   <div class="footer__register">
     <p>{{ 'HOME.register' | translate}}</p>
     <a routerLink="/{{ 'LINK.signIn' | translate}}"
@@ -9,14 +15,15 @@
 
   <div class="footer__newsletter">
     <p>{{ 'HOME.newsletter' | translate}}</p>
-    <input type="email"
-           #newsletterEmail
-           required
-           id="newsletterEmail"
-           placeholder="{{ 'HOME.newsletterInput' | translate}}"
-           class="footer__newsletter--input">
     <a class="btn-light btn-light--white"
        (click)="submitNewsletter(newsletterEmail)">{{ 'HOME.newsletterSignIn' | translate}}</a>
+    <div class="footer__newsletter--input">
+      <input type="email"
+             #newsletterEmail
+             required
+             id="newsletterEmail"
+             placeholder="{{ 'HOME.newsletterInput' | translate}}">
+    </div>
   </div>
 
   <div class="footer__media-icons">
