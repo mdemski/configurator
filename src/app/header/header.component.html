@@ -1,4 +1,4 @@
-<div class="md-navbar">
+<div class="md-navbar" [ngClass]="{ mdNavbarScrolled: onScroll }">
   <div class="md-navbar__search">
     <form>
       <i class="fas fa-search md-navbar__search--icon"></i>
@@ -10,7 +10,12 @@
       <span class="md-navbar__search--border"></span>
     </form>
   </div>
-  <div class="md-navbar__logo">
+  <div class="md-navbar__mini-logo" [ngClass]="{ mdNavbarScrolled: onScroll }">
+    <a routerLink="/">
+      <img src="../../assets/icons/windows.png" alt="logo okpol"/>
+    </a>
+  </div>
+  <div class="md-navbar__logo" [ngClass]="{ mdNavbarScrolled: onScroll }">
     <a routerLink="/">
       <img src="../../assets/img/2015-logo-okpol-pl-217-50.png" alt="logo okpol"/>
     </a>

@@ -55,6 +55,16 @@
     }
   }
 
+  &__mini-logo {
+    display: none;
+    padding: 2rem 0;
+    height: 0;
+
+    img  {
+      height: 2.8rem;
+    }
+  }
+
   &__logo {
     padding: 2rem 0;
   }
@@ -160,5 +170,35 @@
         background-color: $color-darkest-blue;
       }
     }
+  }
+}
+
+.mdNavbarScrolled {
+  transition: all .2s;
+  top: 0;
+  position: fixed;
+  background-color: $color-darkest-grey;
+
+  .md-navbar__logo {
+    display: none;
+  }
+
+  .md-navbar__navigation--element__shop {
+    background-color: transparent;
+  }
+
+  .md-navbar__navigation--element:hover {
+    color: $color-black;
+    background-color: $color-white;
+    border-radius: 1rem;
+  }
+
+  .md-navbar__navigation--link:hover {
+    color: $color-black;
+    background-color: transparent;
+  }
+
+  .md-navbar__mini-logo {
+    display: block;
   }
 }

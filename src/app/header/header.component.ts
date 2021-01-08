@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, OnInit, Renderer2} from '@angular/core';
+import {Component, ElementRef, HostListener, OnDestroy, OnInit, Renderer2} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {AuthService} from '../services/auth.service';
 import {Subscription} from 'rxjs';
@@ -17,6 +17,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   shopSubMenu = {display: 'none'};
   configSubMenu = {display: 'none'};
   advicesSubMenu = {display: 'none'};
+  onScroll = false;
 
   constructor(private renderer: Renderer2,
               private el: ElementRef,
@@ -71,5 +72,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   hideAdviceSubMenu() {
     this.advicesSubMenu = {display: 'none'};
+  }
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    this.onScroll = window.scrollY > 350;
   }
 }
