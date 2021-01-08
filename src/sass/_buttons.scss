@@ -35,7 +35,7 @@
   }
 
   &:hover {
-    background-color: transparent;
+    background-color: $color-white;
     box-shadow: 0 1rem 2rem rgba($color-black, .2);
   }
 
@@ -47,7 +47,7 @@
 
   &--white {
     background-color: $color-white;
-    color: $color-dark-grey;
+    color: $color-black;
 
     &:hover {
       border: .5rem solid $color-white;
@@ -112,7 +112,6 @@
 
     &:hover {
       border: .5rem solid $color-yellow;
-      color: $color-white;
     }
   }
 
@@ -121,6 +120,7 @@
     color: $color-white;
 
     &:hover {
+      color: $color-black;
       border: .5rem solid $color-orange;
     }
   }
@@ -131,6 +131,15 @@
 
     &:hover {
       border: .5rem solid $color-light-red;
+    }
+  }
+
+  &--light-blue {
+    background-color: $color-light-blue;
+    color: $color-black;
+
+    &:hover {
+      border: .5rem solid $color-light-blue;
     }
   }
 }
