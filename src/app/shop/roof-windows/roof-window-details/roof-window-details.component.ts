@@ -31,6 +31,7 @@ export class RoofWindowDetailsComponent implements OnInit {
     this.router.params.subscribe(param => {
       this.windowToShow = this.db.getWindowById(param['windowId']);
     });
+    //TODO wczytać zdjęcia z bazy przypisane do danego indeksu
     this.picturesOfWindow.push('assets/img/products/ISO-I22.png');
     this.picturesOfWindow.push('assets/img/products/ISO-arrangement-1.png');
     this.picturesOfWindow.push('assets/img/products/ISO-arrangement-2.png');
