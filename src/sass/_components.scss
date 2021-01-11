@@ -128,8 +128,11 @@
 
 .main-picture {
   img {
-    height: 54rem;
     width: 54rem;
+  }
+
+  img:not(:first-child) {
+    margin-bottom: 3rem;
   }
 
   margin: 0 2rem 0 4rem;
@@ -138,7 +141,6 @@
 .specification-icons {
   display: flex;
   justify-content: center;
-  margin-bottom: 5rem;
 
   &__element {
     font-size: 1.2rem;

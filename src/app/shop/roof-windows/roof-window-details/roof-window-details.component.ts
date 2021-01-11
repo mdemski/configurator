@@ -31,10 +31,9 @@ export class RoofWindowDetailsComponent implements OnInit {
     this.router.params.subscribe(param => {
       this.windowToShow = this.db.getWindowById(param['windowId']);
     });
-    this.picturesOfWindow.push('1');
-    this.picturesOfWindow.push('2');
-    this.picturesOfWindow.push('3');
-    this.picturesOfWindow.push('4');
+    this.picturesOfWindow.push('assets/img/products/ISO-I22.png');
+    this.picturesOfWindow.push('assets/img/products/ISO-arrangement-1.png');
+    this.picturesOfWindow.push('assets/img/products/ISO-arrangement-2.png');
     this.priceAfterDisc = this.getDiscountPrice();
     this.availableExtras.push(this.db.getAccessoryById(1), this.db.getAccessoryById(2));
     this.windowMaterial = this.windowToShow.windowMaterial;

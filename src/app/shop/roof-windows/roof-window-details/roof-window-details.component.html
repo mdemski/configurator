@@ -7,19 +7,6 @@
 <div class="md-container">
 
   <div class="md-container--left-side">
-    <!--TODO dodać zdjęcia i slider do wyświetlania-->
-    <!--Icons with mini pictures of product-->
-    <div class="mini-products">
-      <div class="mini-products__element" *ngFor="let picture of picturesOfWindow">{{picture}}</div>
-    </div>
-    <!--Icons with mini pictures of product-->
-
-    <!--Main picture of product-->
-    <div class="main-picture">
-      <img src="{{windowToShow.windowUrlLink}}" alt="{{windowToShow.windowName}}">
-    </div>
-    <!--Main picture of product-->
-
     <!--Icons with specification of product-->
     <div class="specification-icons">
       <div *ngIf="windowMaterial == 'drewno'" class="specification-icons__element active-icon"><img
@@ -46,6 +33,12 @@
                                                                  alt="guarantee for window"></div>
     </div>
     <!--Icons with specification of product-->
+
+    <!--Main pictures of product-->
+    <div class="main-picture">
+      <img *ngFor="let url of picturesOfWindow" src="{{url}}" alt="{{windowToShow.windowName}}">
+    </div>
+    <!--Main pictures of product-->
   </div>
 
   <div class="md-container--right-side">
