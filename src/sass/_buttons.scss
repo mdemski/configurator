@@ -26,7 +26,6 @@
     text-transform: uppercase;
     text-decoration: none;
     padding: 1rem 1.5rem;
-    border-radius: 5rem;
     transition: all .2s;
     font-size: $default-font-size;
     font-weight: bold;
@@ -151,7 +150,6 @@
     text-transform: uppercase;
     text-decoration: none;
     padding: 1rem 1.5rem;
-    border-radius: 5rem;
     transition: all .2s;
     font-size: $default-font-size;
     font-weight: bold;
@@ -276,7 +274,6 @@
     text-transform: uppercase;
     text-decoration: none;
     padding: .7rem 1rem;
-    border-radius: 50%;
     transition: all .2s;
     font-size: $default-font-size;
     cursor: pointer;
@@ -338,4 +335,24 @@
       box-shadow: 0 .5rem 1rem rgba($color-dark-blue, .2);
     }
   }
+
+  &--light-grey-red {
+    color: $color-black;
+    background-color: $color-white;
+    border: 1px solid $color-light-grey;
+
+    &:hover {
+      background-color: $color-red;
+      border: 1px solid transparent;
+      color: $color-white;
+      box-shadow: 0 1rem 2rem rgba($color-dark-grey, .2);
+    }
+
+    &:active,
+    &:focus {
+      transform: translateY(-1px);
+      box-shadow: 0 .5rem 1rem rgba($color-dark-red, .2);
+    }
+  }
+
 }
