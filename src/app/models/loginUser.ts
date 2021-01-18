@@ -1,5 +1,5 @@
 export class LoginUser {
-  constructor(public id: number, public email: string, public localId: string, private _token: string, private _expireDate: Date) {
+  constructor(public email: string, public localId: string, private _token: string, private _expireDate: Date) {
   }
 
   get token() {

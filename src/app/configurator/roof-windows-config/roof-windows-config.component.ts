@@ -32,8 +32,8 @@ export class RoofWindowsConfigComponent implements OnInit {
   }
 
   getAllWindowCategories() {
-    //TODO wczytywanie z bazy danych lub z pliku excel
-    //TODO wykorzystać mapę do sprawdzenia warunków czy kolumna model pokrywa
+    // TODO wczytywanie z bazy danych lub z pliku excel
+    // TODO wykorzystać mapę do sprawdzenia warunków czy kolumna model pokrywa
     // się z kategorią i tak dalej - wysokość z kolumną model
     return this.categories = ['okna obrotowe', 'okna na dach płaski', 'okna uchylno-przesuwne', 'okna wysokoosiowe'];
   }
@@ -46,7 +46,7 @@ export class RoofWindowsConfigComponent implements OnInit {
     return this.glazingUnits = ['I22', 'E2', 'I6', 'A1'];
   }
 
-  //TODO możliwe że będzie konieczny validator asynchroniczny wczytujący dane z bazy
+  // TODO możliwe że będzie konieczny validator asynchroniczny wczytujący dane z bazy
   private validateHeight(control: FormControl): { [s: string]: boolean } {
     if (control.value > 160 && control.value < 98) {
       return {'roofWindowToHeight': true};

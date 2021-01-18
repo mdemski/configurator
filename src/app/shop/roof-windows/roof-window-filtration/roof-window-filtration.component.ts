@@ -116,7 +116,11 @@ export class RoofWindowFiltrationComponent implements OnInit {
   private loadGlasses() {
     const glassesTemp = [];
     for (const window of this.dataBase.getAllRoofWindowsToShopList()) {
-      glassesTemp.push(window.windowGlazing);
+      if (window.windowGlazing.toLowerCase().startsWith('e')) {
+        glassesTemp.push('dwuszybowe');
+      } else {
+        glassesTemp.push('trzyszybowe');
+      }
     }
     this.glassesToChoice = glassesTemp.filter((value, index, self) => self.indexOf(value) === index);
   }

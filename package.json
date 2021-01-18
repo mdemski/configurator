@@ -36,6 +36,7 @@
     "ionicons": "^5.2.3",
     "jquery": "^3.5.1",
     "ng-uikit-pro-standard": "file:../../../../Downloads/MDB-Angular-Pro/ng-uikit-pro-standard-9.3.1.tgz",
+    "ngx-csv-parser": "0.0.6",
     "ngx-filter-pipe": "^2.1.2",
     "popper.js": "^1.16.1",
     "rxjs": "~6.5.4",

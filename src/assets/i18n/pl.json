@@ -232,5 +232,7 @@
     "windowSelection": "Wybór okien",
     "configurationOptions": "Dostepne w konfiguratorze opcje",
     "appFunctions": "Dostępne fukcje w aplikacji"
+  },
+  "CONFIGURATION": {
   }
 }

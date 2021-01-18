@@ -2,6 +2,7 @@ import {Component, ElementRef, HostListener, OnDestroy, OnInit, Renderer2} from 
 import {TranslateService} from '@ngx-translate/core';
 import {AuthService} from '../services/auth.service';
 import {Subscription} from 'rxjs';
+import {UserService} from '../services/user.service';
 
 @Component({
   selector: 'app-header',
@@ -12,7 +13,7 @@ import {Subscription} from 'rxjs';
 export class HeaderComponent implements OnInit, OnDestroy {
   userSub: Subscription;
   isAuthenticated = false;
-  userEmail: string;
+  userId: string;
   searchInApp: string;
   shopSubMenu = {display: 'none'};
   configSubMenu = {display: 'none'};
@@ -22,7 +23,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(private renderer: Renderer2,
               private el: ElementRef,
               public translate: TranslateService,
-              private authService: AuthService) {
+              private authService: AuthService,
+              private userService: UserService) {
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
   }
@@ -31,7 +33,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.userSub = this.authService.user.subscribe(user => {
       this.isAuthenticated = !!user;
       if (user) {
-        this.userEmail = user.email;
+        this.userId = this.userService.getUserByEmail(user.email).localId;
+        console.log(this.userId);
       }
     });
     // TODO znaleźć użytkownika z bazy używając email żeby zwrócić ID do routingu www.moja-aplikacja.pl/moje-konto/id
