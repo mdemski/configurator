@@ -1,0 +1,43 @@
+propertyName;propertyGroup;opis dop�aty;;
+model;;;ISOV;ISOM
+materialWood;material;materia� wykonania - drewno;0;0;
+materialPVC;material;materia� wykonania - PVC;null;null;
+cenrtePivot;openingType;obrotowe;0;0;
+topHung;openingType;uchylno-przesuwne;null;null;
+fix;openingType;fix;null;null;
+lShaped;openingType;kolankowe;null;null;
+electric;openingType;elektryczne;null;null;
+highAxle;openingType;wysokoosiowe;null;null;
+maxWidth;dimensions;szeroko�� maksymalna;134;134;
+minWidth;dimensions;szeroko�� minimalna;55;55;
+maxHeight;dimensions;wysoko�� maksymalna;160;160;
+minHeight;dimensions;wysoko�� minimalna;78;78;
+fixedHeight;dimensions;tablica dost�pnych wysoko�ci;x;x;
+innerColorNatural;innerColor;drewniany kolor stolarki;0;0;
+innerColorWhite;innerColor;bia�y kolor stolarki;obw�d x koszt 1cm;obw�d x koszt 1cm;
+outerColor;outerColor;lista dost�pnych kolor�w zewn�trznych;obw�d x koszt 1cm;obw�d x koszt 1cm;
+doubleGlazing;glazing;pakiet dwuszybowy - dop�atra do 1cm obwodu okna bez szyby;3.4
+tripleGlazing;glazing;pakiet trzyszybowy - dop�atra do 1cm obwodu okna bez szyby;4.6
+toughenedOuter;coats;zewn�trzna szyba hartowana;0;0;
+toughenedInner;coats;wewn�trzna szyba hartowana;200;200;
+sunGuard;coats;pow�oka SunGuard;300;300;
+bioClean;coats;pow�oka BioClean;400;400;
+mat;coats;szyba matowa;500;500;
+soundReduction;coats;dodatkowa redukcja ha�asu;600;600;
+safetyLaminateP1;coats;szyba laminowana P1;700;700;
+safetyLaminateP2;coats;szyba laminowana P2;800;800;
+safetyLaminateP4;coats;szyba laminowana P3;900;900;
+handleSecureWhite;extras;bia�a klamka ExtraSecure;1000;1000;
+handleUnoWhite;extras;bia�a klamka UNO;0;0;
+handleSecure7048;extras;RAL7048 klamka ExtraSecure;0;0;
+handleUno7048;extras;RAL7048 klamka UNO;0;0;
+solarMotor;extras;silnik solarny;250;250;
+ventilationNeoVent;extras;nawiewnik NeoVent;0;null;
+ventilationNeoCover;extras;maskownica;null;0;
+noVentilation;extras;brak wentylacji;null;null;
+hardware;extras;dodatkowe okucie;null;null;
+AKP;extras;ko�nierz AKP;125;125;
+UTB;extras;opaska UTB;175;175;
+glazingCorectionWidth;technical;korekta szeroko�ci dla szyb;145;145;
+glazingCorectionHeight;technical;korekta wysoko�ci dla szyb;142;142;
+maxSurfaceTriple;technical;parametr techniczny ograniczaj�cy zastosowanie pakietu 3-szybowego od konkretenej powierzchni - powierzchnia ca�ego okna = szeroko�� x wysoko��;1.51

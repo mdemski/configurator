@@ -20,14 +20,15 @@ export class RoofWindowSkylight {
   private _windowHandleColor: string;
   private _windowHardware: boolean;
   private _windowMountingAngle: string;
-  private _windowExtras: [];
+  private _windowExtras: any[];
+  private _windowCoats: any[];
   private _windowUrlLink: string;
   private _windowPrice: number;
   private _windowUW: number;
   private _windowUG: number;
 
   // tslint:disable-next-line:max-line-length
-  constructor(windowId: number, windowName: string, windowModel: string, windowGlazing: string, windowWidth: number, windowHeight: number, windowCategory: string, windowSubCategory: string, windowGeometry: string, windowOpeningType: string, windowVentilation: string, windowMaterial: string, windowMaterialColor: string, windowMaterialFinish: string, windowOuterMaterial: string, windowOuterColor: string, windowOuterFinish: string, windowHandleType: string, windowHandleColor: string, windowHardware: boolean, windowMountingAngle: string, windowExtras: [], windowUrlLink: string, windowPrice: number, windowUW: number, windowUG: number) {
+  constructor(windowId: number, windowName: string, windowModel: string, windowGlazing: string, windowWidth: number, windowHeight: number, windowCategory: string, windowSubCategory: string, windowGeometry: string, windowOpeningType: string, windowVentilation: string, windowMaterial: string, windowMaterialColor: string, windowMaterialFinish: string, windowOuterMaterial: string, windowOuterColor: string, windowOuterFinish: string, windowHandleType: string, windowHandleColor: string, windowHardware: boolean, windowMountingAngle: string, windowExtras: [], windowCoats: [], windowUrlLink: string, windowPrice: number, windowUW: number, windowUG: number) {
     this._windowId = windowId;
     this._windowName = windowName;
     this._windowModel = windowModel;
@@ -54,6 +55,7 @@ export class RoofWindowSkylight {
     this._windowPrice = windowPrice;
     this._windowUW = windowUW;
     this._windowUG = windowUG;
+    this._windowCoats = windowCoats;
   }
 
 
@@ -225,12 +227,20 @@ export class RoofWindowSkylight {
     this._windowMountingAngle = value;
   }
 
-  get windowExtras(): [] {
+  get windowExtras(): any[] {
     return this._windowExtras;
   }
 
-  set windowExtras(value: []) {
+  set windowExtras(value: any[]) {
     this._windowExtras = value;
+  }
+
+  get windowCoats(): any[] {
+    return this._windowCoats;
+  }
+
+  set windowCoats(value: any[]) {
+    this._windowCoats = value;
   }
 
   get windowUrlLink(): string {

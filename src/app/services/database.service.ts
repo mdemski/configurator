@@ -19,28 +19,28 @@ export class DatabaseService {
     return this.windows = [
       new RoofWindowSkylight(1, 'ISO I22 78x118', 'ISO', 'I22', 78, 118, 'Okna dachowe', 'Okna obrotowe',
         'IS', 'obrotowe', 'NEO-AIR', 'drewno', 'bezbarwny', 'przeźroczysty', 'aluminium', 'RAL7022',
-        'gładki', 'Extra Secure', 'RAL7048', false, null, null, 'assets/img/products/ISO-I22.png', 1267, 1.06, 0.7),
+        'gładki', 'Extra Secure', 'RAL7048', false, null, null, null, 'assets/img/products/ISO-I22.png', 1267, 1.06, 0.7),
       new RoofWindowSkylight(2, 'IGOV N22 78x118', 'IGOV', 'N22', 78, 118, 'Okna dachowe', 'Okna obrotowe',
         'IG', 'obrotowe', 'NEO-AIR', 'PVC', 'biały', 'gładki', 'aluminium', 'RAL7022',
-        'gładki', 'Extra Secure', 'RAL9003', false, null, null, 'assets/img/products/IGOV-N22.png', 1460, 0.83, 0.5),
+        'gładki', 'Extra Secure', 'RAL9003', false, null, null, null, 'assets/img/products/IGOV-N22.png', 1460, 0.83, 0.5),
       new RoofWindowSkylight(3, 'ISO E2 78x118', 'ISO', 'E2', 78, 118, 'Okna dachowe', 'Okna obrotowe',
         'IS', 'obrotowe', 'NEO-AIR', 'drewno', 'bezbarwny', 'przeźroczysty', 'aluminium', 'RAL7022',
-        'gładki', 'Extra Secure', 'RAL7048', false, null, null, 'https://www.okpol.pl/wp-content/uploads/2014/10/okno-obrotowe-drewniane.png', 977, 1.2, 1.0),
+        'gładki', 'Extra Secure', 'RAL7048', false, null, null, null, 'https://www.okpol.pl/wp-content/uploads/2014/10/okno-obrotowe-drewniane.png', 977, 1.2, 1.0),
       new RoofWindowSkylight(4, 'IGOV E2 78x118', 'IGOV', 'E2', 78, 118, 'Okna dachowe', 'Okna obrotowe',
         'IG', 'obrotowe', 'NEO-AIR', 'PVC', 'biały', 'gładki', 'aluminium', 'RAL7022',
-        'gładki', 'Extra Secure', 'RAL9003', false, null, null, 'assets/img/products/IGOV-E2.png', 1230, 1.2, 1.0),
+        'gładki', 'Extra Secure', 'RAL9003', false, null, null, null, 'assets/img/products/IGOV-E2.png', 1230, 1.2, 1.0),
       new RoofWindowSkylight(5, 'ISO I22 78x118', 'ISO', 'I22', 78, 118, 'Okna dachowe', 'Okna obrotowe',
         'IS', 'obrotowe', 'NEO-AIR', 'drewno', 'bezbarwny', 'przeźroczysty', 'aluminium', 'RAL7022',
-        'gładki', 'Extra Secure', 'RAL7048', false, null, null, 'assets/img/products/ISO-I22.png', 1267, 1.06, 0.7),
+        'gładki', 'Extra Secure', 'RAL7048', false, null, null, null, 'assets/img/products/ISO-I22.png', 1267, 1.06, 0.7),
       new RoofWindowSkylight(6, 'IGOV N22 78x118', 'IGOV', 'N22', 78, 118, 'Okna dachowe', 'Okna obrotowe',
         'IG', 'obrotowe', 'NEO-AIR', 'PVC', 'biały', 'gładki', 'aluminium', 'RAL7022',
-        'gładki', 'Extra Secure', 'RAL9003', false, null, null, 'assets/img/products/IGOV-N22.png', 1460, 0.83, 0.5),
+        'gładki', 'Extra Secure', 'RAL9003', false, null, null, null, 'assets/img/products/IGOV-N22.png', 1460, 0.83, 0.5),
       new RoofWindowSkylight(7, 'ISO E2 78x118', 'ISO', 'E2', 78, 118, 'Okna dachowe', 'Okna obrotowe',
         'IS', 'obrotowe', 'NEO-AIR', 'drewno', 'bezbarwny', 'przeźroczysty', 'aluminium', 'RAL7022',
-        'gładki', 'Extra Secure', 'RAL7048', false, null, null, 'https://www.okpol.pl/wp-content/uploads/2014/10/okno-obrotowe-drewniane.png', 977, 1.2, 1.0),
+        'gładki', 'Extra Secure', 'RAL7048', false, null, null, null, 'https://www.okpol.pl/wp-content/uploads/2014/10/okno-obrotowe-drewniane.png', 977, 1.2, 1.0),
       new RoofWindowSkylight(8, 'IGOV E2 78x118', 'IGOV', 'E2', 78, 118, 'Okna dachowe', 'Okna obrotowe',
         'IG', 'obrotowe', 'NEO-AIR', 'PVC', 'biały', 'gładki', 'aluminium', 'RAL7022',
-        'gładki', 'Extra Secure', 'RAL9003', false, null, null, 'assets/img/products/IGOV-E2.png', 1230, 1.2, 1.0)
+        'gładki', 'Extra Secure', 'RAL9003', false, null, null, null, 'assets/img/products/IGOV-E2.png', 1230, 1.2, 1.0)
     ];
   }
 

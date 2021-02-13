@@ -2,38 +2,531 @@
   <img src="assets/img/purple.jpg" alt="roof windows">
 </div>
 
-
+<!--TODO jeśli dany krok jest niewypełniony lub w przypadku wymiarów nietknięty to wyświetla się w innym kolorze, wypełnione to zielone-->
 <div class="md-container">
   <div class="configuration-summary">
-
+    <div class="configuration-summary__navigation">
+      <a class="configuration-summary__navigation--element
+              configuration-summary__navigation--material"
+         (click)="closeAllHovers([materialOptions, openingOptions, glazingOptions,
+         coatOptions, dimensionOption, innerColorOptions, outerMaterialOptions,
+         ventilationOptions, handleOptions, extrasOptions]); onMaterialHover(materialOptions)"
+         [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.windowMaterial!==null}"></a>
+      <a class="configuration-summary__navigation--element
+              configuration-summary__navigation--opening"
+         (click)="closeAllHovers([materialOptions, openingOptions, glazingOptions,
+         coatOptions, dimensionOption, innerColorOptions, outerMaterialOptions,
+         ventilationOptions, handleOptions, extrasOptions]); onOpeningHover(openingOptions)"
+         [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.windowOpeningType!==null}"></a>
+      <a class="configuration-summary__navigation--element
+              configuration-summary__navigation--glazing"
+         (click)="closeAllHovers([materialOptions, openingOptions, glazingOptions,
+         coatOptions, dimensionOption, innerColorOptions, outerMaterialOptions,
+         ventilationOptions, handleOptions, extrasOptions]); onGlazingHover(glazingOptions)"
+         [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.windowGlazing!==null}"></a>
+      <a class="configuration-summary__navigation--element
+              configuration-summary__navigation--coats"
+         (click)="closeAllHovers([materialOptions, openingOptions, glazingOptions,
+         coatOptions, dimensionOption, innerColorOptions, outerMaterialOptions,
+         ventilationOptions, handleOptions, extrasOptions]); onCoatsHover(coatOptions)"
+         [ngClass]="{'configuration-summary__navigation--element--chosen' : (configuredWindow.windowCoats!==null || windowConfigurationForm.controls.coats.touched)}"></a>
+      <a class="configuration-summary__navigation--element
+              configuration-summary__navigation--dimensions"
+         (click)="closeAllHovers([materialOptions, openingOptions, glazingOptions,
+         coatOptions, dimensionOption, innerColorOptions, outerMaterialOptions,
+         ventilationOptions, handleOptions, extrasOptions]); onDimensionsHover(dimensionOption)"
+         [ngClass]="{'configuration-summary__navigation--element--chosen' : (!windowConfigurationForm.controls.width.untouched && !windowConfigurationForm.controls.height.untouched)}"></a>
+      <a class="configuration-summary__navigation--element
+              configuration-summary__navigation--inner-color"
+         (click)="closeAllHovers([materialOptions, openingOptions, glazingOptions,
+         coatOptions, dimensionOption, innerColorOptions, outerMaterialOptions,
+         ventilationOptions, handleOptions, extrasOptions]); onInnerColorHover(innerColorOptions)"
+         [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.windowMaterialColor!==null}"></a>
+      <a class="configuration-summary__navigation--element
+              configuration-summary__navigation--outer-material"
+         (click)="closeAllHovers([materialOptions, openingOptions, glazingOptions,
+         coatOptions, dimensionOption, innerColorOptions, outerMaterialOptions,
+         ventilationOptions, handleOptions, extrasOptions]); onOuterMaterialHover(outerMaterialOptions)"
+         [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.windowOuterMaterial!==null}"></a>
+      <a class="configuration-summary__navigation--element
+              configuration-summary__navigation--ventilation"
+         (click)="closeAllHovers([materialOptions, openingOptions, glazingOptions,
+         coatOptions, dimensionOption, innerColorOptions, outerMaterialOptions,
+         ventilationOptions, handleOptions, extrasOptions]); onVentilationHover(ventilationOptions)"
+         [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.windowVentilation!==null}"></a>
+      <a class="configuration-summary__navigation--element
+              configuration-summary__navigation--handle"
+         (click)="closeAllHovers([materialOptions, openingOptions, glazingOptions,
+         coatOptions, dimensionOption, innerColorOptions, outerMaterialOptions,
+         ventilationOptions, handleOptions, extrasOptions]); onHandleHover(handleOptions)"
+         [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.windowHandleType!==null}"></a>
+      <a class="configuration-summary__navigation--element
+              configuration-summary__navigation--extras"
+         (click)="closeAllHovers([materialOptions, openingOptions, glazingOptions,
+         coatOptions, dimensionOption, innerColorOptions, outerMaterialOptions,
+         ventilationOptions, handleOptions, extrasOptions]); onExtrasHover(extrasOptions)"
+         [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.windowExtras!==null}"></a>
+    </div>
+    <div class="configuration-summary__scores">
+      <p
+        class="price">{{this.configuredWindow.windowPrice | currency :' ' : false : undefined : undefined}}{{ 'ROOF-WINDOWS-CONFIG.currency' | translate}}</p>
+      <p class="Uw">{{ 'ROOF-WINDOWS-CONFIG.Uw' | translate}} = {{this.configuredWindow.windowUW | number: '1.2-2'}}
+        W/m²K</p>
+      <p class="Ug">{{ 'ROOF-WINDOWS-CONFIG.Ug' | translate}} = {{this.configuredWindow.windowUG | number: '1.2-2'}}
+        W/m²K</p>
+    </div>
   </div>
-  <div class="configure-form">
-    <form [formGroup]="windowConfigurationForm" (ngSubmit)="onSubmit()">
-      <label for="category">Rodzaj okna</label>
-      <label *ngFor="let category of categories">
-      <input class="configuration-radio" value="{{category}}"
-             type="radio" id="category" formControlName="category">{{category}}</label> <br>
-      <label for="model">Model okna</label>
-      <label *ngFor="let model of windowModels" >
-      <input class="configuration-radio" value="{{model}}"
-             type="radio" id="model" formControlName="model">{{model}}</label> <br>
-      <label for="glazing">Pakiet szybowy</label>
-      <label *ngFor="let glazing of glazingUnits">
-      <input class="configuration-radio" value="{{glazing}}"
-             type="radio" id="glazing" formControlName="glazing">{{glazing}}</label> <br>
-      <label for="width">Szerokość okna</label>
-      <input class="dimensions-input" type="number" id="width" formControlName="width">
-      <label for="height">Wysokość okna</label>
-      <input class="dimensions-input" type="number" id="height" formControlName="height"> <br>
-      <label for="innerColor">Kolor okna</label>
-      <input class="inner-color-input" type="text" id="innerColor" formControlName="innerColor"><br>
-      <label for="outerColor">Kolor oblachowania (zewnętrzny)</label>
-      <input class="outer-color-input" type="text" id="outerColor" formControlName="outerColor"><br>
-      <label for="ventilation">Nawiewnik</label>
-      <label *ngFor="let ventilation of ventilationTypes">
-      <input class="configuration-radio" value="{{ventilation}}"
-             type="radio" id="ventilation" formControlName="ventilation">{{ventilation}}</label> <br>
-      <button class="configuration-submit" type="submit">Podsumowanie</button>
+  <div [ngClass]="popupConfig===null ? 'md-popup' : 'configure-form'">
+    <form [formGroup]="windowConfigurationForm" (click)="onSubmit()">
+      <!--popupConfig===null ? 'md-popup__content' : 'form-content'-->
+      <div [ngClass]="popupConfig===null ? 'md-popup__content' : ''">
+        <!--Material-->
+        <div [ngClass]="popupConfig===null ? 'md-popup__content--group' : 'configure-form__group'">
+          <label for="material" (click)="onMaterialHover(materialOptions)"
+                 [ngClass]="popupConfig===null ? 'md-popup__content--group__label' : 'configure-form__group__label'">
+            {{ 'ROOF-WINDOWS-CONFIG.material' | translate}}</label>
+          <div #materialOptions
+               [ngClass]="popupConfig===null ? 'md-popup__content--group__options' : 'configure-form__group__options'">
+            <div
+              [ngClass]="popupConfig===null ? 'md-popup__content--group__options--option' : 'configure-form__group__options--option'"
+              *ngFor="let material of materials">
+              <input type="radio"
+                     [ngClass]="popupConfig===null ? 'md-popup__content--group__options--option__input' : 'configure-form__group__options--option__input'"
+                     id="{{material}}"
+                     value='{{material}}'
+                     formControlName="material"
+                     (change)="setConfiguredValues()"
+              >
+              <label for="{{material}}"
+                     [ngClass]="popupConfig === null ? 'md-popup__content--group__options--option__label' : 'configure-form__group__options--option__label'"
+                     [ngStyle]="setBackgroundImage(material)"
+              >{{builtNameForTranslation(material) | translate}}</label>
+            </div>
+            <div class="configure-form__navigation-buttons" [ngClass]="{'md-not-popup' : popupConfig===null}">
+              <div class="empty-div"></div>
+              <a (click)="onMaterialHover(materialOptions);onOpeningHover(openingOptions)"
+                 class="btn btn--blue configure-form__navigation-buttons__next-prev">
+                {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
+            </div>
+          </div>
+        </div>
+
+        <!--Opening type-->
+        <div [ngClass]="popupConfig===null ? 'md-popup__content--group' : 'configure-form__group'">
+          <label for="openingType" (click)="onOpeningHover(openingOptions)"
+                 [ngClass]="popupConfig===null ? 'md-popup__content--group__label' : 'configure-form__group__label'">
+            {{ 'ROOF-WINDOWS-CONFIG.openingType' | translate}}</label>
+          <div #openingOptions
+               [ngClass]="popupConfig===null ? 'md-popup__content--group__options' : 'configure-form__group__options'">
+            <div
+              [ngClass]="popupConfig===null ? 'md-popup__content--group__options--option' : 'configure-form__group__options--option'"
+              *ngFor="let openingType of openingTypes">
+              <input type="radio"
+                     [ngClass]="popupConfig===null ? 'md-popup__content--group__options--option__input' : 'configure-form__group__options--option__input'"
+                     id="{{openingType}}"
+                     value='{{openingType}}'
+                     formControlName="openingType"
+                     (change)="setConfiguredValues()"
+              >
+              <label for="{{openingType}}"
+                     [ngClass]="popupConfig === null ? 'md-popup__content--group__options--option__label' : 'configure-form__group__options--option__label'"
+                     [ngStyle]="setBackgroundImage(openingType)">
+                {{builtNameForTranslation(openingType) | translate}}</label>
+            </div>
+            <div class="configure-form__navigation-buttons" [ngClass]="{'md-not-popup' : popupConfig===null}">
+              <a (click)="onMaterialHover(materialOptions);onOpeningHover(openingOptions)"
+                 class="btn btn--grey configure-form__navigation-buttons__next-prev">
+                {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
+
+              <a (click)="onOpeningHover(openingOptions);onGlazingHover(glazingOptions)"
+                 class="btn btn--blue configure-form__navigation-buttons__next-prev">
+                {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
+            </div>
+          </div>
+          <ng-container *ngIf="windowConfigurationForm.controls.openingType.value === 'electric'">
+            <label for="control"
+                   [ngClass]="popupConfig===null ? 'md-popup__content--group__label' : 'configure-form__group__label'">
+              {{ 'ROOF-WINDOWS-CONFIG.remoteControl' | translate}}</label>
+            <div class="configure-form__group__options"
+                 [ngClass]="{'md-popup__group__options' : popupConfig===null}">
+              <div class="configure-form__group__options--option"
+                   [ngClass]="{'md-popup__group__options--option' : popupConfig===null}">
+                <input type="radio"
+                       [ngClass]="popupConfig===null ? 'md-popup__content--group__options--option__options__input' : 'configure-form__group__options--option__input'"
+                       id="remote-control"
+                       value='remote-control'
+                       formControlName="control"
+                       (change)="setConfiguredValues()"
+                >
+                <label for="remote-control"
+                       [ngClass]="popupConfig === null ? 'md-popup__content--group__options--option__label' : 'configure-form__group__options--option__label'">
+                  {{builtNameForTranslation('remote-control') | translate}}</label>
+              </div>
+            </div>
+            <label for="control"
+                   [ngClass]="popupConfig===null ? 'md-popup__content--group__label' : 'configure-form__group__label'">
+              {{ 'ROOF-WINDOWS-CONFIG.wallSwitchControl' | translate}}</label>
+            <div class="configure-form__group__options"
+                 [ngClass]="{'md-popup__group__options' : popupConfig===null}">
+              <div class="configure-form__group__options--option"
+                   [ngClass]="{'md-popup__group__options--option' : popupConfig===null}">
+                <input type="radio"
+                       [ngClass]="popupConfig===null ? 'md-popup__content--group__options--option__input' : 'configure-form__group__options--option__input'"
+                       id="wall-switch-control"
+                       value='wall-switch-control'
+                       formControlName="control"
+                       (change)="setConfiguredValues()"
+                >
+                <label for="wall-switch-control"
+                       [ngClass]="popupConfig === null ? 'md-popup__content--group__options--option__label' : 'configure-form__group__options--option__label'">
+                  {{builtNameForTranslation('wall-switch-control') | translate}}</label>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+
+      <!--Glazing-->
+      <div class="configure-form__group"
+           [ngClass]="{'md-not-popup' : popupConfig===null}">
+        <label for="glazing" (click)="onGlazingHover(glazingOptions)"
+               class="configure-form__group__label">{{ 'ROOF-WINDOWS-CONFIG.glazing' | translate}}</label>
+        <div class="configure-form__group__options" #glazingOptions>
+          <div class="configure-form__group__options--option" *ngFor="let glazing of glazingTypes">
+            <input type="radio"
+                   class="configure-form__group__options--option__input"
+                   id="{{glazing}}"
+                   value='{{glazing}}'
+                   formControlName="glazing"
+                   (change)="setConfiguredValues()"
+            >
+            <label for="{{glazing}}"
+                   class="configure-form__group__options--option__label"
+                   [ngStyle]="setBackgroundImage(glazing)">{{builtNameForTranslation(glazing) | translate}}</label>
+          </div>
+          <div class="configure-form__navigation-buttons">
+            <a (click)="onOpeningHover(openingOptions);onGlazingHover(glazingOptions)"
+               class="btn btn--grey configure-form__navigation-buttons__next-prev">
+              {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
+
+            <a (click)="onGlazingHover(glazingOptions);onCoatsHover(coatOptions)"
+               class="btn btn--blue configure-form__navigation-buttons__next-prev">
+              {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
+          </div>
+        </div>
+      </div>
+
+      <!--Coats-->
+      <div class="configure-form__group"
+           [ngClass]="{'md-not-popup' : popupConfig===null}">
+        <label for="coats" (click)="onCoatsHover(coatOptions)"
+               class="configure-form__group__label">{{ 'ROOF-WINDOWS-CONFIG.coat' | translate}}</label>
+        <div class="configure-form__group__options" #coatOptions>
+          <div class="configure-form__group__options--option" *ngFor="let coat of coats">
+            <input type="checkbox"
+                   id="{{coat}}"
+                   value="{{coat}}"
+                   formControlName="coats"
+                   class="configure-form__group__options--option__input"
+                   (change)="setConfiguredCoats(coat)"
+            />
+            <label for="{{coat}}"
+                   class="configure-form__group__options--option__label"
+                   [ngStyle]="setBackgroundImage(coat)">{{builtNameForTranslation(coat) | translate}}</label>
+          </div>
+          <div class="configure-form__navigation-buttons">
+            <a (click)="onGlazingHover(glazingOptions);onCoatsHover(coatOptions)"
+               class="btn btn--grey configure-form__navigation-buttons__next-prev">
+              {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
+
+            <a (click)="onCoatsHover(coatOptions);onDimensionsHover(dimensionOption)"
+               class="btn btn--blue configure-form__navigation-buttons__next-prev">
+              {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
+          </div>
+        </div>
+      </div>
+
+      <!--Dimensions-->
+      <div class="configure-form__group"
+           [ngClass]="{'md-not-popup' : popupConfig===null}">
+        <label for="dimensions" (click)="onDimensionsHover(dimensionOption)"
+               class="configure-form__group__label">{{ 'ROOF-WINDOWS-CONFIG.dimensions' | translate}}</label>
+        <div class="configure-form__group__options" #dimensionOption>
+          <label for="width"
+                 class="configure-form__group__label--inner">{{ 'ROOF-WINDOWS-CONFIG.width' | translate}}</label>
+          <div class="configure-form__group__options--option-wrap-range">
+            <input class="configure-form__group__options--option__input-range"
+                   type="range"
+                   id="width"
+                   step="{{stepWidth}}"
+                   min="{{minWidth}}"
+                   max="{{maxWidth}}"
+                   formControlName="width"
+                   (change)="setConfiguredValues(); moveWidthOutput(outputWidth)">
+            <output #outputWidth
+                    class="configure-form__group__options--option__output-range">{{windowConfigurationForm.value.width}}</output>
+          </div>
+          <label for="height"
+                 class="configure-form__group__label--inner">{{ 'ROOF-WINDOWS-CONFIG.height' | translate}}</label>
+          <div class="configure-form__group__options--option-wrap-range">
+            <input class="configure-form__group__options--option__input-range"
+                   type="range"
+                   id="height"
+                   step="{{stepHeight}}"
+                   min="{{minHeight}}"
+                   max="{{maxHeight}}"
+                   formControlName="height"
+                   (change)="setConfiguredValues(); moveHeightOutput(outputHeight)">
+            <output #outputHeight
+                    class="configure-form__group__options--option__output-range">{{windowConfigurationForm.value.height}}</output>
+          </div>
+          <p class="configure-form__validation-info--single-message"
+             *ngIf="showWidthMessage && showHeightMessage">{{ 'ROOF-WINDOWS-CONFIG.standardDimensions' | translate}}
+            <a class="configure-form__validation-info--single-message--link" (click)="navigateToShop()">{{ 'SHOP.roofWindows' | translate}}</a></p>
+          <div class="configure-form__navigation-buttons">
+            <a (click)="onCoatsHover(coatOptions);onDimensionsHover(dimensionOption)"
+               class="btn btn--grey configure-form__navigation-buttons__next-prev">
+              {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
+
+            <a (click)="onDimensionsHover(dimensionOption);onInnerColorHover(innerColorOptions)"
+               class="btn btn--blue configure-form__navigation-buttons__next-prev">
+              {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
+          </div>
+        </div>
+      </div>
+
+      <!--Inner color-->
+      <div class="configure-form__group"
+           [ngClass]="{'md-not-popup' : popupConfig===null}">
+        <label for="innerColor" (click)="onInnerColorHover(innerColorOptions)"
+               class="configure-form__group__label">{{ 'ROOF-WINDOWS-CONFIG.innerColor' | translate}}</label>
+        <div class="configure-form__group__options" #innerColorOptions>
+          <div class="configure-form__group__options--option" *ngFor="let innerColor of innerColors">
+            <input type="radio"
+                   class="configure-form__group__options--option__input"
+                   id="{{innerColor}}"
+                   value='{{innerColor}}'
+                   formControlName="innerColor"
+                   (change)="setConfiguredValues()"
+            >
+            <label for="{{innerColor}}"
+                   class="configure-form__group__options--option__label"
+                   [ngStyle]="setBackgroundImage(innerColor)">{{builtNameForTranslation(innerColor) | translate}}</label>
+          </div>
+          <div class="configure-form__navigation-buttons">
+            <a (click)="onDimensionsHover(dimensionOption);onInnerColorHover(innerColorOptions)"
+               class="btn btn--grey configure-form__navigation-buttons__next-prev">
+              {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
+
+            <a (click)="onInnerColorHover(innerColorOptions);onOuterMaterialHover(outerMaterialOptions)"
+               class="btn btn--blue configure-form__navigation-buttons__next-prev">
+              {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
+          </div>
+        </div>
+      </div>
+
+      <!--Outer material and color-->
+      <div class="configure-form__group" formGroupName="outer"
+           [ngClass]="{'md-not-popup' : popupConfig===null}">
+        <label for="outerMaterial" (click)="onOuterMaterialHover(outerMaterialOptions)"
+               class="configure-form__group__label">{{ 'ROOF-WINDOWS-CONFIG.outerMaterial' | translate}}</label>
+        <div class="configure-form__group__options" #outerMaterialOptions>
+          <div class="configure-form__group__options--option" *ngFor="let outerMaterial of outerMaterials">
+            <input type="radio"
+                   class="configure-form__group__options--option__input"
+                   id="{{outerMaterial}}"
+                   value='{{outerMaterial}}'
+                   formControlName="outerMaterial"
+                   (change)="setConfiguredValues()"
+            >
+            <label for="{{outerMaterial}}"
+                   class="configure-form__group__options--option__label"
+                   [ngStyle]="setBackgroundImage(outerMaterial)">{{builtNameForTranslation(outerMaterial) | translate}}</label>
+          </div>
+          <label for="width"
+                 class="configure-form__group__label--inner">{{ 'ROOF-WINDOWS-CONFIG.outerColor' | translate}}</label>
+          <div class="configure-form__group__options--option" *ngFor="let outerColor of outerColors">
+            <input type="radio"
+                   class="configure-form__group__options--option__input"
+                   id="{{outerColor}}"
+                   value='{{outerColor}}'
+                   formControlName="outerColor"
+                   (change)="setConfiguredValues()"
+            >
+            <label for="{{outerColor}}"
+                   class="configure-form__group__options--option__label">{{builtNameForTranslation(outerColor) | translate}}</label>
+          </div>
+          <label for="width"
+                 class="configure-form__group__label--inner">{{ 'ROOF-WINDOWS-CONFIG.outerColorFinish' | translate}}</label>
+          <div class="configure-form__group__options--option" *ngFor="let outerColorFinish of outerColorFinishes">
+            <input type="radio"
+                   class="configure-form__group__options--option__input"
+                   id="{{outerColorFinish}}"
+                   value='{{outerColorFinish}}'
+                   formControlName="outerColorFinish"
+                   (change)="setConfiguredValues()"
+            >
+            <label for="{{outerColorFinish}}"
+                   class="configure-form__group__options--option__label"
+                   [ngStyle]="setBackgroundImage(outerColorFinish)">{{builtNameForTranslation(outerColorFinish) | translate}}</label>
+          </div>
+          <h2 class="configure-form__group--info-color">{{ 'ROOF-WINDOWS-CONFIG.RALVsRGB' | translate}}</h2>
+          <div class="configure-form__navigation-buttons">
+            <a (click)="onInnerColorHover(innerColorOptions);onOuterMaterialHover(outerMaterialOptions)"
+               class="btn btn--grey configure-form__navigation-buttons__next-prev">
+              {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
+
+            <a (click)="onOuterMaterialHover(outerMaterialOptions);onVentilationHover(ventilationOptions)"
+               class="btn btn--blue configure-form__navigation-buttons__next-prev">
+              {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
+          </div>
+        </div>
+      </div>
+      <!--      <div class="configure-form__group"-->
+      <!--           [ngClass]="{'md-not-popup' : popupConfig===null}">-->
+      <!--        <label for="outerColor" (click)="onOuterColorHover(outerColorOptions)"-->
+      <!--               class="configure-form__group__label">{{ 'ROOF-WINDOWS-CONFIG.outerColor' | translate}}</label>-->
+      <!--        <div class="configure-form__group__options" #outerColorOptions>-->
+      <!--          <div class="configure-form__group__options&#45;&#45;option" *ngFor="let outerColor of outerColors">-->
+      <!--            <input type="radio"-->
+      <!--                   class="configure-form__group__options&#45;&#45;option__input"-->
+      <!--                   id="{{outerColor}}"-->
+      <!--                   value='{{outerColor}}'-->
+      <!--                   formControlName="outerColor"-->
+      <!--                   (change)="setConfiguredValues()"-->
+      <!--            >-->
+      <!--            <label for="{{outerColor}}"-->
+      <!--                   class="configure-form__group__options&#45;&#45;option__label">{{builtNameForTranslation(outerColor) | translate}}</label>-->
+      <!--          </div>-->
+      <!--          <h2 class="configure-form__group&#45;&#45;info-color">{{ 'ROOF-WINDOWS-CONFIG.RALVsRGB' | translate}}</h2>-->
+      <!--        </div>-->
+      <!--      </div>-->
+      <!--      <div class="configure-form__group"-->
+      <!--           [ngClass]="{'md-not-popup' : popupConfig===null}">-->
+      <!--        <label for="outerColorFinish" (click)="onOuterFinishHover(outerFinishOptions)"-->
+      <!--               class="configure-form__group__label">{{ 'ROOF-WINDOWS-CONFIG.outerColorFinish' | translate}}</label>-->
+      <!--        <div class="configure-form__group__options" #outerFinishOptions>-->
+      <!--          <div class="configure-form__group__options&#45;&#45;option" *ngFor="let outerColorFinish of outerColorFinishes">-->
+      <!--            <input type="radio"-->
+      <!--                   class="configure-form__group__options&#45;&#45;option__input"-->
+      <!--                   id="{{outerColorFinish}}"-->
+      <!--                   value='{{outerColorFinish}}'-->
+      <!--                   formControlName="outerColorFinish"-->
+      <!--                   (change)="setConfiguredValues()"-->
+      <!--            >-->
+      <!--            <label for="{{outerColorFinish}}"-->
+      <!--                   class="configure-form__group__options&#45;&#45;option__label">{{builtNameForTranslation(outerColorFinish) | translate}}</label>-->
+      <!--          </div>-->
+      <!--          <h2 class="configure-form__group&#45;&#45;info-color">{{ 'ROOF-WINDOWS-CONFIG.RALVsRGB' | translate}}</h2>-->
+      <!--        </div>-->
+      <!--      </div>-->
+
+      <!--Ventilation-->
+      <div class="configure-form__group"
+           [ngClass]="{'md-not-popup' : popupConfig===null}">
+        <label for="ventilation" (click)="onVentilationHover(ventilationOptions)"
+               class="configure-form__group__label">{{ 'ROOF-WINDOWS-CONFIG.ventilation' | translate}}</label>
+        <div class="configure-form__group__options" #ventilationOptions>
+          <div class="configure-form__group__options--option" *ngFor="let ventilation of ventilations">
+            <input type="radio"
+                   class="configure-form__group__options--option__input"
+                   id="{{ventilation}}"
+                   value='{{ventilation}}'
+                   formControlName="ventilation"
+                   (change)="setConfiguredValues()"
+            >
+            <label for="{{ventilation}}"
+                   class="configure-form__group__options--option__label"
+                   [ngStyle]="setBackgroundImage(ventilation)">{{builtNameForTranslation(ventilation) | translate}}</label>
+          </div>
+          <div class="configure-form__navigation-buttons">
+            <a (click)="onOuterMaterialHover(outerMaterialOptions);onVentilationHover(ventilationOptions)"
+               class="btn btn--grey configure-form__navigation-buttons__next-prev">
+              {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
+
+            <a (click)="onVentilationHover(ventilationOptions);onHandleHover(handleOptions)"
+               class="btn btn--blue configure-form__navigation-buttons__next-prev">
+              {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
+          </div>
+        </div>
+
+        <div class="configure-form__group"
+             [ngClass]="{'md-not-popup' : popupConfig===null}">
+          <label for="handle" (click)="onHandleHover(handleOptions)"
+                 class="configure-form__group__label">{{ 'ROOF-WINDOWS-CONFIG.handle' | translate}}</label>
+          <div class="configure-form__group__options" #handleOptions>
+            <div class="configure-form__group__options--option" *ngFor="let handle of handles">
+              <input type="radio"
+                     class="configure-form__group__options--option__input"
+                     id="{{handle}}"
+                     value='{{handle}}'
+                     formControlName="handle"
+                     (change)="setConfiguredValues()"
+              >
+              <label for="{{handle}}"
+                     class="configure-form__group__options--option__label"
+                     [ngStyle]="setBackgroundImage(handle)">{{builtNameForTranslation(handle) | translate}}</label>
+            </div>
+            <div class="configure-form__navigation-buttons">
+              <a (click)="onVentilationHover(ventilationOptions);onHandleHover(handleOptions)"
+                 class="btn btn--grey configure-form__navigation-buttons__next-prev">
+                {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
+
+              <a (click)="onHandleHover(handleOptions);onExtrasHover(extrasOptions)"
+                 class="btn btn--blue configure-form__navigation-buttons__next-prev">
+                {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="configure-form__group"
+             [ngClass]="{'md-not-popup' : popupConfig===null}">
+          <label for="extras" (click)="onExtrasHover(extrasOptions)"
+                 class="configure-form__group__label">{{ 'ROOF-WINDOWS-CONFIG.extras' | translate}}</label>
+          <div class="configure-form__group__options" #extrasOptions>
+            <div class="configure-form__group__options--option" *ngFor="let extra of extras">
+              <input type="checkbox"
+                     id="{{extra}}"
+                     value="{{extra}}"
+                     formControlName="coats"
+                     class="configure-form__group__options--option__input"
+                     (change)="setConfiguredExtras(extra)"
+              />
+              <label for="{{extra}}"
+                     class="configure-form__group__options--option__label"
+                     [ngStyle]="setBackgroundImage(extra)">{{builtNameForTranslation(extra) | translate}}</label>
+            </div>
+            <div class="configure-form__navigation-buttons">
+              <a (click)="onHandleHover(handleOptions);onExtrasHover(extrasOptions)"
+                 class="btn btn--grey configure-form__navigation-buttons__next-prev">
+                {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
+
+              <a (click)="onExtrasHover(extrasOptions)"
+                 class="btn btn--blue configure-form__navigation-buttons__next-prev">
+                {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--TODO przejście na stronę podsumowanie z tabelą skonfigurowanych wartości a następnie ROZEŚLIJ ZAPYTANIA ->
+popup z możliwością wyszukania hurtowników do których wyślemy zapytanie (opcja wyślij wyłącznie do producenta)
+taka sama opcja w przypadku standardowych okien (wyślik cały koszyk do wyceny-->
+      <button class="btn btn--red configure-form__submit"
+              [disabled]="!windowConfigurationForm.valid"
+              [ngClass]="{'md-not-popup' : popupConfig===null}"
+              type="submit">{{ 'ROOF-WINDOWS-CONFIG.submit' | translate}}
+      </button>
+      <div class="configure-form__validation-info">
+        <p class="configure-form__validation-info--single-message"
+           *ngIf="windowConfigurationForm.get('material').hasError('empty material') ||
+                  windowConfigurationForm.get('openingType').hasError('empty openingType') ||
+                  windowConfigurationForm.get('glazing').hasError('empty glazingType') ||
+                  windowConfigurationForm.get('innerColor').hasError('empty innerColor') ||
+                  windowConfigurationForm.get('outer').hasError('empty outerMaterial') ||
+                  windowConfigurationForm.get('ventilation').hasError('empty ventilation') ||
+                  windowConfigurationForm.get('handle').hasError('empty handle')">{{ 'ROOF-WINDOWS-CONFIG.validationInfo' | translate}}</p>
+      </div>
     </form>
   </div>
 </div>
