@@ -146,17 +146,9 @@ export class RoofWindowsConfigComponent implements OnInit {
     }
     this.configuredWindow.windowGlazing = this.windowConfigurationForm.value.glazing;
     this.configuredWindow.windowWidth = this.windowConfigurationForm.value.width;
-    for (const width of this.standardWidths) {
-      if (this.windowConfigurationForm.value.width === width) {
-        this.showWidthMessage = true;
-      }
-    }
+    this.showWidthMessage = this.standardWidths.includes(this.windowConfigurationForm.value.width);
     this.configuredWindow.windowHeight = this.windowConfigurationForm.value.height;
-    for (const height of this.standardHeights) {
-      if (this.windowConfigurationForm.value.height === height) {
-        this.showHeightMessage = true;
-      }
-    }
+    this.showHeightMessage = this.standardHeights.includes(this.windowConfigurationForm.value.height);
     this.configuredWindow.windowName =
       this.configuredWindow.windowModel + ' '
       + this.configuredWindow.windowGlazing + ' '

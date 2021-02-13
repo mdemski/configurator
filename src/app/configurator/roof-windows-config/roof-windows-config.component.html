@@ -280,8 +280,9 @@
             <output #outputHeight
                     class="configure-form__group__options--option__output-range">{{windowConfigurationForm.value.height}}</output>
           </div>
-          <p class="configure-form__validation-info--single-message"
-             *ngIf="showWidthMessage && showHeightMessage">{{ 'ROOF-WINDOWS-CONFIG.standardDimensions' | translate}}
+          <p *ngIf="showHeightMessage && showWidthMessage"
+             class="configure-form__validation-info--single-message"
+             >{{ 'ROOF-WINDOWS-CONFIG.standardDimensions' | translate}}
             <a class="configure-form__validation-info--single-message--link" (click)="navigateToShop()">{{ 'SHOP.roofWindows' | translate}}</a></p>
           <div class="configure-form__navigation-buttons">
             <a (click)="onCoatsHover(coatOptions);onDimensionsHover(dimensionOption)"
