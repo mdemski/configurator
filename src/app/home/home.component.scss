@@ -260,17 +260,17 @@
   flex-wrap: wrap;
 
   div:nth-child(1) {
-    background-image: url("src/assets/img/most_recent_windows.jpg");
+    background-image: url("src/assets/img/home_page/most_recent_windows.jpg");
     flex: 0 1 36%;
   }
 
   div:nth-child(2) {
-    background-image: url("src/assets/img/most_recent_flashings.jpg");
+    background-image: url("src/assets/img/home_page/most_recent_flashings.jpg");
     flex: 0 1 28%;
   }
 
   div:nth-child(3) {
-    background-image: url("src/assets/img/most_recent_accessoies.jpg");
+    background-image: url("src/assets/img/home_page/most_recent_accessoies.jpg");
     flex: 0 1 36%;
   }
 
