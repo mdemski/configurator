@@ -569,7 +569,7 @@ export class RoofWindowsConfigComponent implements OnInit {
   // CSS STYLING
   setBackgroundImage(value: string) {
     return {
-      ['background-image']: 'url("assets/img/' + value + '.png")',
+      ['background-image']: 'url("assets/img/configurator/window_configurator/central_navigation_pictures/' + value + '.png")',
       ['background-size']: 'contain',
       ['background-repeat']: 'no-repeat'
     };
