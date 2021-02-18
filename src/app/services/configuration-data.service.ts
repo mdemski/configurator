@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {CsvFileReaderService} from '../services/csv-file-reader.service';
+import {CsvFileReaderService} from './csv-file-reader.service';
 import {map} from 'rxjs/operators';
 
 @Injectable({

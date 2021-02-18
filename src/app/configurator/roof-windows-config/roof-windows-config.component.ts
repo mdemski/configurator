@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, ValidationErrors} from '@angular/forms';
 import {RoofWindowSkylight} from '../../models/roof-window-skylight';
-import {ConfigurationDataService} from '../configuration-data.service';
+import {ConfigurationDataService} from '../../services/configuration-data.service';
 import {TranslateService} from '@ngx-translate/core';
 import {Observable, Observer, Subject} from 'rxjs';
 import {Router} from '@angular/router';
