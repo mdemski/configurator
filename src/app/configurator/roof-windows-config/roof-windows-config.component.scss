@@ -35,10 +35,10 @@
     margin: 1rem 0;
 
     &--element {
-      border: .12rem solid transparent;
+      border: .2rem solid transparent;
 
       &--chosen {
-        border: .12rem solid rgba($color-green, 1);
+        border: .2rem solid rgba($color-green, 1);
       }
     }
 
@@ -47,61 +47,61 @@
     }
 
     &--material {
-      background-image: url("/src/assets/icons/window_config_navbar_icons/material.png");
+      background-image: url("/assets/icons/window_config_navbar_icons/material.png");
       width: 100px;
       height: 100px;
     }
 
     &--opening {
-      background-image: url("/src/assets/icons/window_config_navbar_icons/openingType.png");
+      background-image: url("/assets/icons/window_config_navbar_icons/openingType.png");
       width: 100px;
       height: 100px;
     }
 
     &--glazing {
-      background-image: url("/src/assets/icons/window_config_navbar_icons/glazing.png");
+      background-image: url("/assets/icons/window_config_navbar_icons/glazing.png");
       width: 100px;
       height: 100px;
     }
 
     &--coats {
-      background-color: purple;
+      background-image: url("/assets/icons/window_config_navbar_icons/coats.png");
       width: 100px;
       height: 100px;
     }
 
     &--dimensions {
-      background-image: url("/src/assets/icons/window_config_navbar_icons/dimensions.png");
+      background-image: url("/assets/icons/window_config_navbar_icons/dimensions.png");
       width: 100px;
       height: 100px;
     }
 
     &--inner-color {
-      background-image: url("/src/assets/icons/window_config_navbar_icons/innerColor.png");
+      background-image: url("/assets/icons/window_config_navbar_icons/innerColor.png");
       width: 100px;
       height: 100px;
     }
 
     &--outer-material {
-      background-image: url("/src/assets/icons/window_config_navbar_icons/outerMaterial.png");
+      background-image: url("/assets/icons/window_config_navbar_icons/outerMaterial.png");
       width: 100px;
       height: 100px;
     }
 
     &--ventilation {
-      background-image: url("/src/assets/icons/window_config_navbar_icons/ventilation.png");
+      background-image: url("/assets/icons/window_config_navbar_icons/ventilation.png");
       width: 100px;
       height: 100px;
     }
 
     &--handle {
-      background-image: url("/src/assets/icons/window_config_navbar_icons/handle.png");
+      background-image: url("/assets/icons/window_config_navbar_icons/handle.png");
       width: 100px;
       height: 100px;
     }
 
     &--extras {
-      background-image: url("/src/assets/icons/window_config_navbar_icons/extras.png");
+      background-image: url("/assets/icons/window_config_navbar_icons/extras.png");
       width: 100px;
       height: 100px;
     }
