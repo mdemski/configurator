@@ -141,8 +141,9 @@ export class AuthService {
     this.translate.get('LINK').subscribe(text => {
       this.loginLink = text.login;
     });
-    this.router.navigate(['/' + this.loginLink]);
+    this.isLogged = false;
     localStorage.removeItem('loginUser');
+    this.router.navigate(['/' + this.loginLink]);
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
     }
@@ -156,6 +157,7 @@ export class AuthService {
   }
 
   private authenticationHandler(email: string, localId: string, idToken: string, expiresIn: number) {
+    this.isLogged = true;
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const user = new LoginUser(email, localId, idToken, expirationDate);
     this.user.next(user);
