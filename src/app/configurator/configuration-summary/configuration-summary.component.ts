@@ -1,28 +1,31 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ConfigurationDistributorService} from '../../services/configuration-distributor.service';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-configuration-summary',
   templateUrl: './configuration-summary.component.html',
   styleUrls: ['./configuration-summary.component.scss']
 })
-export class ConfigurationSummaryComponent implements OnInit {
-  @Output() selectNoti = new EventEmitter<number>();
-  isChosen = -1;
+export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
 
-  constructor() {
+  configurations: any[];
+
+  constructor(private configDist: ConfigurationDistributorService) {
+    this.configurations = [];
+    this.configDist.configurationDataChange$.pipe(map(conf => conf)).subscribe(configurations => {
+      this.configurations = configurations;
+      console.log(this.configurations.length);
+    });
   }
 
   ngOnInit(): void {
+
   }
 
-  getChosenCss() {
-    this.selectNoti.emit(this.isChosen);
-    if (this.isChosen === 1) {
-      return 'option-selected';
-    } else if (this.isChosen === 0) {
-      return 'option-is-selecting';
-    } else {
-      return 'option-not-selected';
-    }
+  ngOnDestroy(): void {
+    // this.configDist.configurationDataChange$.unsubscribe();
   }
+
+
 }

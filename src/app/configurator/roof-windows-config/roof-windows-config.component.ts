@@ -5,6 +5,8 @@ import {ConfigurationDataService} from '../../services/configuration-data.servic
 import {TranslateService} from '@ngx-translate/core';
 import {Observable, Observer, Subject} from 'rxjs';
 import {Router} from '@angular/router';
+import {ConfigurationDistributorService} from '../../services/configuration-distributor.service';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-roof-windows-config',
@@ -12,8 +14,10 @@ import {Router} from '@angular/router';
   styleUrls: ['./roof-windows-config.component.scss']
 })
 export class RoofWindowsConfigComponent implements OnInit {
+  loginUser: string;
   dimensions;
   configuredWindow: RoofWindowSkylight;
+  tempConfiguredWindow: RoofWindowSkylight;
   windowModelsToCalculatePrice = [];
   standardWidths = [55, 66, 78, 94, 114, 134];
   showWidthMessage = false;
@@ -52,9 +56,12 @@ export class RoofWindowsConfigComponent implements OnInit {
   ventilations = [];
   handles = [];
   shopRoofWindowLink: string;
+  configurationSummary: string;
 
   // TODO przygotować strumień i service do publikowania tej danej po aplikacji
-  constructor(private configData: ConfigurationDataService,
+  constructor(private authService: AuthService,
+              private configData: ConfigurationDataService,
+              private configDist: ConfigurationDistributorService,
               private router: Router,
               public translate: TranslateService) {
     translate.addLangs(['pl', 'en', 'fr', 'de']);
@@ -63,6 +70,7 @@ export class RoofWindowsConfigComponent implements OnInit {
 
   // 'width': new FormControl(78, [this.validateWidth.bind(this), Validators.required]), własnym walidator
   ngOnInit(): void {
+    this.authService.isLogged ? this.authService.user.subscribe(user => this.loginUser = user.email) : this.loginUser = null;
     this.configData.fetchAllData().subscribe(() => {
       this.windowModelsToCalculatePrice = this.configData.models;
       this.availableOptions = this.configData.availableOptions;
@@ -126,8 +134,39 @@ export class RoofWindowsConfigComponent implements OnInit {
       'ventilation': new FormControl('ventilationNeoVent', [], [this.validateVentilation.bind(this)]),
       'handle': new FormControl(null, [], [this.validateHandle.bind(this)])
     });
+    this.tempConfiguredWindow = new RoofWindowSkylight(
+      999,
+      null,
+      null,
+      null,
+      78,
+      118,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      false,
+      null,
+      null,
+      null,
+      null,
+      0,
+      0,
+      0);
     this.translate.get('LINK').subscribe(text => {
       this.shopRoofWindowLink = text.shopRoofWindows;
+    });
+    this.translate.get('LINK').subscribe(text => {
+      this.configurationSummary = text.configurationSummary;
     });
   }
 
@@ -362,10 +401,6 @@ export class RoofWindowsConfigComponent implements OnInit {
     this.router.navigate(['/' + this.shopRoofWindowLink]);
   }
 
-  onSubmit() {
-    console.log(this.configuredWindow);
-  }
-
   // VALIDATORS
   validateMaterials<AsyncValidatorFn>(control: FormControl) {
     return new Observable((observer: Observer<ValidationErrors | null>) => {
@@ -512,6 +547,39 @@ export class RoofWindowsConfigComponent implements OnInit {
         observer.complete();
       });
     });
+  }
+
+  onSubmit() {
+    this.tempConfiguredWindow.windowCategory = 'Okna dachowe';
+    this.tempConfiguredWindow.windowCoats = ['toughenedOuter'];
+    this.tempConfiguredWindow.windowExtras = ['hardware'];
+    this.tempConfiguredWindow.windowGeometry = 'IS';
+    this.tempConfiguredWindow.windowGlazing = 'doubleGlazing';
+    this.tempConfiguredWindow.windowHandleType = 'handleSecure7048';
+    this.tempConfiguredWindow.windowHandleColor = 'handleSecure7048';
+    this.tempConfiguredWindow.windowHardware = false;
+    this.tempConfiguredWindow.windowHeight = 119;
+    this.tempConfiguredWindow.windowWidth = 79;
+    this.tempConfiguredWindow.windowMaterial = 'materialWood';
+    this.tempConfiguredWindow.windowMaterialColor = 'innerColorNatural';
+    this.tempConfiguredWindow.windowMaterialFinish = 'gładki';
+    this.tempConfiguredWindow.windowModel = 'ISOV';
+    this.tempConfiguredWindow.windowMountingAngle = null;
+    this.tempConfiguredWindow.windowName = 'ISOV E2 79x119';
+    this.tempConfiguredWindow.windowOpeningType = 'centrePivot';
+    this.tempConfiguredWindow.windowOuterColor = 'RAL9999';
+    this.tempConfiguredWindow.windowOuterFinish = 'semiMatFinish';
+    this.tempConfiguredWindow.windowOuterMaterial = 'aluminium';
+    this.tempConfiguredWindow.windowPrice = 1332.80;
+    this.tempConfiguredWindow.windowSubCategory = 'obrotowe';
+    this.tempConfiguredWindow.windowUG = 1;
+    this.tempConfiguredWindow.windowUW = 1.2;
+    this.tempConfiguredWindow.windowUrlLink = 'https://www.okpol.pl/wp-content/uploads/2017/02/1_ISO.jpg';
+    this.tempConfiguredWindow.windowVentilation = 'ventilationNeoVent';
+    // TODO zapisz dane do Firebase przed emisją żeby nie utracić konfiguracji
+    // TODO przygotować model konfiguracji w której będą przechowywane: okno, kołnierz, roleta - a później publikować tablice
+    this.configDist.populateData(this.tempConfiguredWindow, null, null);
+    this.router.navigate(['/' + this.configurationSummary]);
   }
 
   // CALCULATIONS

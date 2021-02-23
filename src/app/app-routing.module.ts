@@ -22,6 +22,7 @@ import {VerticalWindowsConfigComponent} from './configurator/vertical-windows-co
 import {SkylightsConfigComponent} from './configurator/skylights-config/skylights-config.component';
 import {FlashingsComponent} from './shop/flashings/flashings.component';
 import {FlashingDetailsComponent} from './shop/flashings/flashing-details/flashing-details.component';
+import {ConfigurationSummaryComponent} from './configurator/configuration-summary/configuration-summary.component';
 
 const appRoutes: Routes = [
   {path: 'sklep', component: ShopComponent},
@@ -42,6 +43,7 @@ const appRoutes: Routes = [
   {path: 'konfigurator/akcesoria', component: AccessoriesConfigComponent},
   {path: 'konfigurator/okna-pionowe', component: VerticalWindowsConfigComponent},
   {path: 'konfigurator/wylazy-dachowe', component: SkylightsConfigComponent},
+  {path: 'konfigurator/podsumowanie', component: ConfigurationSummaryComponent},
 
   {path: '', component: HomeComponent},
   {path: 'moje-konto', component: MyAccountComponent, canActivate: [AuthGuardService]},

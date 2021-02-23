@@ -84,6 +84,7 @@
   "LINK": {
     "shop": "sklep",
     "shopRoofWindows": "sklep/okna-dachowe",
+    "configurationSummary": "konfigurator/podsumowanie",
     "shopFlashings": "sklep/kolnierze",
     "shopFlatRoofWindows": "sklep/okna-na-dach-plaski",
     "shopSkylights": "sklep/wylazy-dachowe",

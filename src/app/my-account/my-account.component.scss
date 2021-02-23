@@ -1,0 +1,12 @@
+@import 'src/sass/base/variables';
+@import 'src/sass/buttons';
+
+.navbar-background {
+  height: 32rem;
+  overflow: hidden;
+  background-color: rgba($color_black, 1);
+
+  img {
+    opacity: .7;
+  }
+}

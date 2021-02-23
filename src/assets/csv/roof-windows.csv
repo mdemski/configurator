@@ -17,18 +17,18 @@ maxHeight;dimensions;wysokość maksymalna;;160;160
 minHeight;dimensions;wysokość minimalna;;78;78
 fixedHeight;dimensions;tablica dostępnych wysokości;;x;x
 innerColorNatural;innerColor;drewniany kolor stolarki;;0;0
-"innerColorWoodWhite;innerColor;biały kolor stolarki;;4,50;4.50"
-"innerColorWhite;innerColor;biały kolor stolarki;10;4,50;4.50"
+innerColorWoodWhite;innerColor;biały kolor stolarki;;4.50;4.50
+innerColorWhite;innerColor;biały kolor stolarki;10;4.50;4.50
 aluminium;outerMaterial;;;0;0
 copper;outerMaterial;;;8;8
 titaniumZinc ;outerMaterial;;;15;15
 semiMatFinish;outerColorFinish;;;0;0
-"matFinish;outerColorFinish;;;1,50;1.50"
-"glossFinish;outerColorFinish;;;1,50;1.50"
-"outerColor;outerColor;lista dostępnych kolorów zewnętrznych;;4,50;4.50"
+matFinish;outerColorFinish;;;1.50;1.50
+glossFinish;outerColorFinish;;;1.50;1.50
+outerColor;outerColor;lista dostępnych kolorów zewnętrznych;;4.50;4.50
 doubleGlazing;glazing;pakiet dwuszybowy - dopłatra do 1cm obwodu okna bez szyby;;3.40;3.40
-"tripleGlazing;glazing;pakiet trzyszybowy - dopłatra do 1cm obwodu okna bez szyby;;4,60;4.60"
-"tripleGlazingKrypton;glazing;pakiet trzyszybowy z kryptonem - dopłatra do 1cm obwodu okna bez szyby;;4,60;4.60"
+tripleGlazing;glazing;pakiet trzyszybowy - dopłatra do 1cm obwodu okna bez szyby;;4.60;4.60
+tripleGlazingKrypton;glazing;pakiet trzyszybowy z kryptonem - dopłatra do 1cm obwodu okna bez szyby;;4.60;4.60
 toughenedOuter;coats;zewnętrzna szyba hartowana;;0;0
 toughenedInner;coats;wewnętrzna szyba hartowana;;200;200
 sunGuard;coats;powłoka SunGuard;;300;300

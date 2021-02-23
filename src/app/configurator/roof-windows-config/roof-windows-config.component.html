@@ -77,7 +77,7 @@
     </div>
   </div>
   <div [ngClass]="popupConfig===null ? 'md-popup' : 'configure-form'">
-    <form [formGroup]="windowConfigurationForm" (click)="onSubmit()">
+    <form [formGroup]="windowConfigurationForm">
       <!--popupConfig===null ? 'md-popup__content' : 'form-content'-->
       <div [ngClass]="popupConfig===null ? 'md-popup__content' : ''">
         <!--Material-->
@@ -509,14 +509,12 @@
           </div>
         </div>
       </div>
-
-      <!--TODO przejście na stronę podsumowanie z tabelą skonfigurowanych wartości a następnie ROZEŚLIJ ZAPYTANIA ->
-popup z możliwością wyszukania hurtowników do których wyślemy zapytanie (opcja wyślij wyłącznie do producenta)
-taka sama opcja w przypadku standardowych okien (wyślik cały koszyk do wyceny-->
+<!-- TODO dokleić do przycisku i usunąć tempConfigWindow [disabled]="!windowConfigurationForm.valid"-->
       <button class="btn btn--red configure-form__submit"
-              [disabled]="!windowConfigurationForm.valid"
+
               [ngClass]="{'md-not-popup' : popupConfig===null}"
-              type="submit">{{ 'ROOF-WINDOWS-CONFIG.submit' | translate}}
+              type="submit"
+              (click)="onSubmit()">{{ 'ROOF-WINDOWS-CONFIG.submit' | translate}}
       </button>
       <div class="configure-form__validation-info">
         <p class="configure-form__validation-info--single-message"

@@ -1,0 +1,15 @@
+;E01;E02;E03;E04;E05;E06;E08;E14;E21;I01;I02;I03;I04;I06;I22;I23;N22;N23
+dwuszybowy;1;1;1;1;1;1;1;;;;;;;;;;;
+trzyszybowy;0;0;0;0;0;0;0;;;;;;;;;;;
+trzyszybowyKrypton;0;0;0;0;0;0;0;;;;;;;;;;;
+zewnetrznaHartowana;0;1;1;1;1;1;1;;;;;;;;;;;
+wewnetrznaHartowana;0;0;0;0;0;0;0;;;;;;;;;;;
+sunGuard;0;0;0;0;0;0;0;;;;;;;;;;;
+bioClean;0;0;1;1;1;1;0;;;;;;;;;;;
+matowa;0;0;0;0;0;0;0;;;;;;;;;;;
+redukcjaHalasu;0;0;0;0;0;1;1;;;;;;;;;;;
+laminowanaP1;0;0;0;1;0;1;1;;;;;;;;;;;
+laminowanaP2;0;0;0;0;1;0;0;;;;;;;;;;;
+laminowanaP4;0;0;0;0;0;0;0;;;;;;;;;;;
+gazSzlachetny;argon;argon;argon;argon;argon;argon;argon;argon;argon;krypton;krypton;krypton;krypton;argon;argon;argon;argon;argon
+ug;1;1;1;1;1;1;1;1;1;0.5;0.5;0.5;0.5;0.7;0.7;0.7;0.5;0.5
