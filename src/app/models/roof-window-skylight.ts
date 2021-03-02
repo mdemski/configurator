@@ -1,70 +1,112 @@
 export class RoofWindowSkylight {
-  private _windowId: number;
+  private _kod: string;
+  private _nazwaPozycjiPL: string;
+  private _indeksAlgorytm: string;
+  private _nazwaPLAlgorytm: string;
+  private _status: string;
   private _windowName: string;
-  private _windowModel: string;
-  private _windowGlazing: string;
-  private _windowWidth: number;
-  private _windowHeight: number;
-  private _windowCategory: string;
-  private _windowSubCategory: string;
-  private _windowGeometry: string;
-  private _windowOpeningType: string;
-  private _windowVentilation: string;
-  private _windowMaterial: string;
-  private _windowMaterialColor: string;
-  private _windowMaterialFinish: string;
-  private _windowOuterMaterial: string;
-  private _windowOuterColor: string;
-  private _windowOuterFinish: string;
-  private _windowHandleType: string;
-  private _windowHandleColor: string;
+  private _model: string;
+  private _pakietSzybowy: string;
+  private _szerokosc: number;
+  private _wysokosc: number;
+  private _grupaAsortymentowa: string;
+  private _typ: string;
+  private _geometria: string;
+  private _rodzina: string;
+  private _otwieranie: string;
+  private _wentylacja: string;
+  private _stolarkaMaterial: string;
+  private _stolarkaKolor: string;
+  private _oblachowanieMaterial: string;
+  private _oblachowanieKolor: string;
+  private _oblachowanieFinisz: string;
+  private _zamkniecieTyp: string;
+  private _zamkniecieKolor: string;
   private _windowHardware: boolean;
-  private _windowMountingAngle: string;
-  private _windowExtras: any[];
+  private _uszczelki: number;
+  private _dostepneRozmiary: any[];
   private _windowCoats: any[];
-  private _windowUrlLink: string;
-  private _windowPrice: number;
+  private _linkiDoZdjec: string[];
+  private _listaDodatkow: string[];
+  private _CenaDetaliczna: number;
   private _windowUW: number;
   private _windowUG: number;
+  private _iloscSprzedanychRok: number;
+  private _kolorTworzywWew: string;
+  private _kolorTworzywZew: string;
+  private _okucia: string;
 
   // tslint:disable-next-line:max-line-length
-  constructor(windowId: number, windowName: string, windowModel: string, windowGlazing: string, windowWidth: number, windowHeight: number, windowCategory: string, windowSubCategory: string, windowGeometry: string, windowOpeningType: string, windowVentilation: string, windowMaterial: string, windowMaterialColor: string, windowMaterialFinish: string, windowOuterMaterial: string, windowOuterColor: string, windowOuterFinish: string, windowHandleType: string, windowHandleColor: string, windowHardware: boolean, windowMountingAngle: string, windowExtras: [], windowCoats: [], windowUrlLink: string, windowPrice: number, windowUW: number, windowUG: number) {
-    this._windowId = windowId;
+  constructor(kod: string, matka: string, windowName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, pakietSzybowy: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, otwieranie: string, wentylacja: string, stolarkaMaterial: string, stolarkaKolor: string, rodzina: string, oblachowanieMaterial: string, oblachowanieKolor: string, oblachowanieFinisz: string, zamkniecieTyp: string, zamkniecieKolor: string, windowHardware: boolean, uszczelki: number, dostepneRozmiary: [], windowCoats: [], linkiDoZdjec: string[], listaDodatkow: string[], CenaDetaliczna: number, windowUW: number, windowUG: number, iloscSprzedanychRok: number, kolorTworzywWew: string, kolorTworzywZew: string, okucia: string) {
+    this._kod = kod;
+    this._nazwaPozycjiPL = matka;
     this._windowName = windowName;
-    this._windowModel = windowModel;
-    this._windowGlazing = windowGlazing;
-    this._windowWidth = windowWidth;
-    this._windowHeight = windowHeight;
-    this._windowCategory = windowCategory;
-    this._windowSubCategory = windowSubCategory;
-    this._windowGeometry = windowGeometry;
-    this._windowOpeningType = windowOpeningType;
-    this._windowVentilation = windowVentilation;
-    this._windowMaterial = windowMaterial;
-    this._windowMaterialColor = windowMaterialColor;
-    this._windowMaterialFinish = windowMaterialFinish;
-    this._windowOuterMaterial = windowOuterMaterial;
-    this._windowOuterColor = windowOuterColor;
-    this._windowOuterFinish = windowOuterFinish;
-    this._windowHandleType = windowHandleType;
-    this._windowHandleColor = windowHandleColor;
+    this._indeksAlgorytm = indeksAlgorytm;
+    this._nazwaPLAlgorytm = nazwaPLAlgorytm;
+    this._status = status;
+    this._model = model;
+    this._pakietSzybowy = pakietSzybowy;
+    this._szerokosc = szerokosc;
+    this._wysokosc = wysokosc;
+    this._grupaAsortymentowa = grupaAsortymentowa;
+    this._typ = typ;
+    this._geometria = geometria;
+    this._otwieranie = otwieranie;
+    this._wentylacja = wentylacja;
+    this._stolarkaMaterial = stolarkaMaterial;
+    this._stolarkaKolor = stolarkaKolor;
+    this._rodzina = rodzina;
+    this._oblachowanieMaterial = oblachowanieMaterial;
+    this._oblachowanieKolor = oblachowanieKolor;
+    this._oblachowanieFinisz = oblachowanieFinisz;
+    this._zamkniecieTyp = zamkniecieTyp;
+    this._zamkniecieKolor = zamkniecieKolor;
     this._windowHardware = windowHardware;
-    this._windowMountingAngle = windowMountingAngle;
-    this._windowExtras = windowExtras;
-    this._windowUrlLink = windowUrlLink;
-    this._windowPrice = windowPrice;
+    this._uszczelki = uszczelki;
+    this._dostepneRozmiary = dostepneRozmiary;
+    this._linkiDoZdjec = linkiDoZdjec;
+    this._listaDodatkow = listaDodatkow;
+    this._CenaDetaliczna = CenaDetaliczna;
     this._windowUW = windowUW;
     this._windowUG = windowUG;
     this._windowCoats = windowCoats;
+    this._iloscSprzedanychRok = iloscSprzedanychRok;
+    this._kolorTworzywWew = kolorTworzywWew;
+    this._kolorTworzywZew = kolorTworzywZew;
+    this._okucia = okucia;
   }
 
 
-  get windowId(): number {
-    return this._windowId;
+  get kod(): string {
+    return this._kod;
   }
 
-  set windowId(value: number) {
-    this._windowId = value;
+  set kod(value: string) {
+    this._kod = value;
+  }
+
+  get indeksAlgorytm(): string {
+    return this._indeksAlgorytm;
+  }
+
+  set indeksAlgorytm(value: string) {
+    this._indeksAlgorytm = value;
+  }
+
+  get nazwaPozycjiPL(): string {
+    return this._nazwaPozycjiPL;
+  }
+
+  set nazwaPozycjiPL(value: string) {
+    this._nazwaPozycjiPL = value;
+  }
+
+  get nazwaPLAlgorytm(): string {
+    return this._nazwaPLAlgorytm;
+  }
+
+  set nazwaPLAlgorytm(value: string) {
+    this._nazwaPLAlgorytm = value;
   }
 
   get windowName(): string {
@@ -75,140 +117,140 @@ export class RoofWindowSkylight {
     this._windowName = value;
   }
 
-  get windowModel(): string {
-    return this._windowModel;
+  get model(): string {
+    return this._model;
   }
 
-  set windowModel(value: string) {
-    this._windowModel = value;
+  set model(value: string) {
+    this._model = value;
   }
 
-  get windowGlazing(): string {
-    return this._windowGlazing;
+  get pakietSzybowy(): string {
+    return this._pakietSzybowy;
   }
 
-  set windowGlazing(value: string) {
-    this._windowGlazing = value;
+  set pakietSzybowy(value: string) {
+    this._pakietSzybowy = value;
   }
 
-  get windowWidth(): number {
-    return this._windowWidth;
+  get szerokosc(): number {
+    return this._szerokosc;
   }
 
-  set windowWidth(value: number) {
-    this._windowWidth = value;
+  set szerokosc(value: number) {
+    this._szerokosc = value;
   }
 
-  get windowHeight(): number {
-    return this._windowHeight;
+  get wysokosc(): number {
+    return this._wysokosc;
   }
 
-  set windowHeight(value: number) {
-    this._windowHeight = value;
+  set wysokosc(value: number) {
+    this._wysokosc = value;
   }
 
-  get windowCategory(): string {
-    return this._windowCategory;
+  get grupaAsortymentowa(): string {
+    return this._grupaAsortymentowa;
   }
 
-  set windowCategory(value: string) {
-    this._windowCategory = value;
+  set grupaAsortymentowa(value: string) {
+    this._grupaAsortymentowa = value;
   }
 
-  get windowSubCategory(): string {
-    return this._windowSubCategory;
+  get typ(): string {
+    return this._typ;
   }
 
-  set windowSubCategory(value: string) {
-    this._windowSubCategory = value;
+  set typ(value: string) {
+    this._typ = value;
   }
 
-  get windowGeometry(): string {
-    return this._windowGeometry;
+  get geometria(): string {
+    return this._geometria;
   }
 
-  set windowGeometry(value: string) {
-    this._windowGeometry = value;
+  set geometria(value: string) {
+    this._geometria = value;
   }
 
-  get windowOpeningType(): string {
-    return this._windowOpeningType;
+  get otwieranie(): string {
+    return this._otwieranie;
   }
 
-  set windowOpeningType(value: string) {
-    this._windowOpeningType = value;
+  set otwieranie(value: string) {
+    this._otwieranie = value;
   }
 
-  get windowVentilation(): string {
-    return this._windowVentilation;
+  get wentylacja(): string {
+    return this._wentylacja;
   }
 
-  set windowVentilation(value: string) {
-    this._windowVentilation = value;
+  set wentylacja(value: string) {
+    this._wentylacja = value;
   }
 
-  get windowMaterial(): string {
-    return this._windowMaterial;
+  get stolarkaMaterial(): string {
+    return this._stolarkaMaterial;
   }
 
-  set windowMaterial(value: string) {
-    this._windowMaterial = value;
+  set stolarkaMaterial(value: string) {
+    this._stolarkaMaterial = value;
   }
 
-  get windowMaterialColor(): string {
-    return this._windowMaterialColor;
+  get stolarkaKolor(): string {
+    return this._stolarkaKolor;
   }
 
-  set windowMaterialColor(value: string) {
-    this._windowMaterialColor = value;
+  set stolarkaKolor(value: string) {
+    this._stolarkaKolor = value;
   }
 
-  get windowMaterialFinish(): string {
-    return this._windowMaterialFinish;
+  get rodzina(): string {
+    return this._rodzina;
   }
 
-  set windowMaterialFinish(value: string) {
-    this._windowMaterialFinish = value;
+  set rodzina(value: string) {
+    this._rodzina = value;
   }
 
-  get windowOuterMaterial(): string {
-    return this._windowOuterMaterial;
+  get oblachowanieMaterial(): string {
+    return this._oblachowanieMaterial;
   }
 
-  set windowOuterMaterial(value: string) {
-    this._windowOuterMaterial = value;
+  set oblachowanieMaterial(value: string) {
+    this._oblachowanieMaterial = value;
   }
 
-  get windowOuterColor(): string {
-    return this._windowOuterColor;
+  get oblachowanieKolor(): string {
+    return this._oblachowanieKolor;
   }
 
-  set windowOuterColor(value: string) {
-    this._windowOuterColor = value;
+  set oblachowanieKolor(value: string) {
+    this._oblachowanieKolor = value;
   }
 
-  get windowOuterFinish(): string {
-    return this._windowOuterFinish;
+  get oblachowanieFinisz(): string {
+    return this._oblachowanieFinisz;
   }
 
-  set windowOuterFinish(value: string) {
-    this._windowOuterFinish = value;
+  set oblachowanieFinisz(value: string) {
+    this._oblachowanieFinisz = value;
   }
 
-  get windowHandleType(): string {
-    return this._windowHandleType;
+  get zamkniecieTyp(): string {
+    return this._zamkniecieTyp;
   }
 
-  set windowHandleType(value: string) {
-    this._windowHandleType = value;
+  set zamkniecieTyp(value: string) {
+    this._zamkniecieTyp = value;
   }
 
-  get windowHandleColor(): string {
-    return this._windowHandleColor;
+  get zamkniecieKolor(): string {
+    return this._zamkniecieKolor;
   }
 
-  set windowHandleColor(value: string) {
-    this._windowHandleColor = value;
+  set zamkniecieKolor(value: string) {
+    this._zamkniecieKolor = value;
   }
 
   get windowHardware(): boolean {
@@ -219,20 +261,20 @@ export class RoofWindowSkylight {
     this._windowHardware = value;
   }
 
-  get windowMountingAngle(): string {
-    return this._windowMountingAngle;
+  get uszczelki(): number {
+    return this._uszczelki;
   }
 
-  set windowMountingAngle(value: string) {
-    this._windowMountingAngle = value;
+  set uszczelki(value: number) {
+    this._uszczelki = value;
   }
 
-  get windowExtras(): any[] {
-    return this._windowExtras;
+  get dostepneRozmiary(): any[] {
+    return this._dostepneRozmiary;
   }
 
-  set windowExtras(value: any[]) {
-    this._windowExtras = value;
+  set dostepneRozmiary(value: any[]) {
+    this._dostepneRozmiary = value;
   }
 
   get windowCoats(): any[] {
@@ -243,20 +285,28 @@ export class RoofWindowSkylight {
     this._windowCoats = value;
   }
 
-  get windowUrlLink(): string {
-    return this._windowUrlLink;
+  get linkiDoZdjec(): string[] {
+    return this._linkiDoZdjec;
   }
 
-  set windowUrlLink(value: string) {
-    this._windowUrlLink = value;
+  set linkiDoZdjec(value: string[]) {
+    this._linkiDoZdjec = value;
   }
 
-  get windowPrice(): number {
-    return this._windowPrice;
+  get listaDodatkow(): string[] {
+    return this._listaDodatkow;
   }
 
-  set windowPrice(value: number) {
-    this._windowPrice = value;
+  set listaDodatkow(value: string[]) {
+    this._listaDodatkow = value;
+  }
+
+  get CenaDetaliczna(): number {
+    return this._CenaDetaliczna;
+  }
+
+  set CenaDetaliczna(value: number) {
+    this._CenaDetaliczna = value;
   }
 
   get windowUW(): number {
@@ -273,5 +323,45 @@ export class RoofWindowSkylight {
 
   set windowUG(value: number) {
     this._windowUG = value;
+  }
+
+  get status(): string {
+    return this._status;
+  }
+
+  set status(value: string) {
+    this._status = value;
+  }
+
+  get iloscSprzedanychRok(): number {
+    return this._iloscSprzedanychRok;
+  }
+
+  set iloscSprzedanychRok(value: number) {
+    this._iloscSprzedanychRok = value;
+  }
+
+  get kolorTworzywWew(): string {
+    return this._kolorTworzywWew;
+  }
+
+  set kolorTworzywWew(value: string) {
+    this._kolorTworzywWew = value;
+  }
+
+  get kolorTworzywZew(): string {
+    return this._kolorTworzywZew;
+  }
+
+  set kolorTworzywZew(value: string) {
+    this._kolorTworzywZew = value;
+  }
+
+  get okucia(): string {
+    return this._okucia;
+  }
+
+  set okucia(value: string) {
+    this._okucia = value;
   }
 }
