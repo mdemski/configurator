@@ -29,27 +29,25 @@ export class RoofWindowDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.router.params.subscribe(param => {
-      this.windowToShow = this.db.getWindowById(param['windowId']);
+      this.db.getWindowById(param['windowId']).subscribe(window => {
+        this.windowToShow = window[0];
+      });
     });
-    //TODO wczytać zdjęcia z bazy przypisane do danego indeksu
+    // TODO wczytać zdjęcia z bazy przypisane do danego indeksu
     this.picturesOfWindow.push('assets/img/products/ISO-I22.png');
     this.picturesOfWindow.push('assets/img/products/ISO-arrangement-1.png');
     this.picturesOfWindow.push('assets/img/products/ISO-arrangement-2.png');
     this.priceAfterDisc = this.getDiscountPrice();
     this.availableExtras.push(this.db.getAccessoryById(1), this.db.getAccessoryById(2));
-    this.windowMaterial = this.windowToShow.windowMaterial;
-    this.windowVent = this.windowToShow.windowVentilation;
-    this.windowHandle = this.windowToShow.windowHandleType;
-    if (this.windowToShow.windowGlazing.toLowerCase().startsWith('e')) {
-      this.glazing = 'doubleGlazing';
-    } else {
-      this.glazing = 'tripleGlazing';
-    }
+    this.windowMaterial = this.windowToShow.stolarkaMaterial;
+    this.windowVent = this.windowToShow.wentylacja;
+    this.windowHandle = this.windowToShow.zamkniecieTyp;
+    this.glazing = this.windowToShow.pakietSzybowy.split(':')[1];
   }
 
   getDiscountPrice() {
     if (this.logInUser) {
-      return (this.windowToShow.windowPrice - (this.windowToShow.windowPrice * this.logInUser.discount));
+      return (this.windowToShow.CenaDetaliczna - (this.windowToShow.CenaDetaliczna * this.logInUser.discount));
     }
   }
 

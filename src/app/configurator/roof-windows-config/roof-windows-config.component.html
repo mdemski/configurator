@@ -11,19 +11,19 @@
          (click)="closeAllHovers([materialOptions, openingOptions, glazingOptions,
          coatOptions, dimensionOption, innerColorOptions, outerMaterialOptions,
          ventilationOptions, handleOptions, extrasOptions]); onMaterialHover(materialOptions)"
-         [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.windowMaterial!==null}"></a>
+         [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.stolarkaMaterial!==null}"></a>
       <a class="configuration-summary__navigation--element
               configuration-summary__navigation--opening"
          (click)="closeAllHovers([materialOptions, openingOptions, glazingOptions,
          coatOptions, dimensionOption, innerColorOptions, outerMaterialOptions,
          ventilationOptions, handleOptions, extrasOptions]); onOpeningHover(openingOptions)"
-         [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.windowOpeningType!==null}"></a>
+         [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.otwieranie!==null}"></a>
       <a class="configuration-summary__navigation--element
               configuration-summary__navigation--glazing"
          (click)="closeAllHovers([materialOptions, openingOptions, glazingOptions,
          coatOptions, dimensionOption, innerColorOptions, outerMaterialOptions,
          ventilationOptions, handleOptions, extrasOptions]); onGlazingHover(glazingOptions)"
-         [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.windowGlazing!==null}"></a>
+         [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.pakietSzybowy!==null}"></a>
       <a class="configuration-summary__navigation--element
               configuration-summary__navigation--coats"
          (click)="closeAllHovers([materialOptions, openingOptions, glazingOptions,
@@ -41,35 +41,35 @@
          (click)="closeAllHovers([materialOptions, openingOptions, glazingOptions,
          coatOptions, dimensionOption, innerColorOptions, outerMaterialOptions,
          ventilationOptions, handleOptions, extrasOptions]); onInnerColorHover(innerColorOptions)"
-         [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.windowMaterialColor!==null}"></a>
+         [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.stolarkaKolor!==null}"></a>
       <a class="configuration-summary__navigation--element
               configuration-summary__navigation--outer-material"
          (click)="closeAllHovers([materialOptions, openingOptions, glazingOptions,
          coatOptions, dimensionOption, innerColorOptions, outerMaterialOptions,
          ventilationOptions, handleOptions, extrasOptions]); onOuterMaterialHover(outerMaterialOptions)"
-         [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.windowOuterMaterial!==null}"></a>
+         [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.oblachowanieMaterial!==null}"></a>
       <a class="configuration-summary__navigation--element
               configuration-summary__navigation--ventilation"
          (click)="closeAllHovers([materialOptions, openingOptions, glazingOptions,
          coatOptions, dimensionOption, innerColorOptions, outerMaterialOptions,
          ventilationOptions, handleOptions, extrasOptions]); onVentilationHover(ventilationOptions)"
-         [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.windowVentilation!==null}"></a>
+         [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.wentylacja!==null}"></a>
       <a class="configuration-summary__navigation--element
               configuration-summary__navigation--handle"
          (click)="closeAllHovers([materialOptions, openingOptions, glazingOptions,
          coatOptions, dimensionOption, innerColorOptions, outerMaterialOptions,
          ventilationOptions, handleOptions, extrasOptions]); onHandleHover(handleOptions)"
-         [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.windowHandleType!==null}"></a>
+         [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.zamkniecieTyp!==null}"></a>
       <a class="configuration-summary__navigation--element
               configuration-summary__navigation--extras"
          (click)="closeAllHovers([materialOptions, openingOptions, glazingOptions,
          coatOptions, dimensionOption, innerColorOptions, outerMaterialOptions,
          ventilationOptions, handleOptions, extrasOptions]); onExtrasHover(extrasOptions)"
-         [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.windowExtras!==null}"></a>
+         [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.dostepneRozmiary!==null}"></a>
     </div>
     <div class="configuration-summary__scores">
       <p
-        class="price">{{this.configuredWindow.windowPrice | currency :' ' : false : undefined : undefined}}{{ 'ROOF-WINDOWS-CONFIG.currency' | translate}}</p>
+        class="price">{{this.configuredWindow.CenaDetaliczna | currency :' ' : false : undefined : undefined}}{{ 'ROOF-WINDOWS-CONFIG.currency' | translate}}</p>
       <p class="Uw">{{ 'ROOF-WINDOWS-CONFIG.Uw' | translate}} = {{this.configuredWindow.windowUW | number: '1.2-2'}}
         W/m²K</p>
       <p class="Ug">{{ 'ROOF-WINDOWS-CONFIG.Ug' | translate}} = {{this.configuredWindow.windowUG | number: '1.2-2'}}

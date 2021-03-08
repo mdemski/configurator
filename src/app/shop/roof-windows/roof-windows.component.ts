@@ -13,7 +13,6 @@ export class RoofWindowsComponent implements OnInit, DoCheck {
   @Input() searchByKeyboard: string;
   roofWindowsList: RoofWindowSkylight[] = [];
   filteredRoofWindowsList: RoofWindowSkylight[] = [];
-  numberOfGlass: number;
 
   constructor(private db: DatabaseService,
               private router: Router,
@@ -23,7 +22,6 @@ export class RoofWindowsComponent implements OnInit, DoCheck {
 
   ngOnInit(): void {
     this.loadAllWindows();
-    this.clacNumberOfGlasses();
   }
 
   ngDoCheck() {
@@ -106,15 +104,5 @@ export class RoofWindowsComponent implements OnInit, DoCheck {
     // TODO należy dopisać this.router.id lub this.router.model żeby przenieść się do konfiguracji konkretnego okna
     // this.router.navigate(['/konfigurator/okna-dachowe', this.router.id]);
     this.router.navigate(['/konfigurator/okna-dachowe']);
-  }
-
-  private clacNumberOfGlasses() {
-    for (const singleWindow of this.filteredRoofWindowsList) {
-      if (singleWindow.windowGlazing.startsWith('E')) {
-        this.numberOfGlass = 2;
-      } else {
-        this.numberOfGlass = 3;
-      }
-    }
   }
 }

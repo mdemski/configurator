@@ -116,7 +116,7 @@ export class RoofWindowFiltrationComponent implements OnInit {
   private loadGlasses() {
     const glassesTemp = [];
     for (const window of this.dataBase.getAllRoofWindowsToShopList()) {
-      if (window.windowGlazing.toLowerCase().startsWith('e')) {
+      if (window.pakietSzybowy.toLowerCase().startsWith('e')) {
         glassesTemp.push('dwuszybowe');
       } else {
         glassesTemp.push('trzyszybowe');
@@ -128,7 +128,7 @@ export class RoofWindowFiltrationComponent implements OnInit {
   private loadOpeningTypes() {
     const openingTemp = [];
     for (const window of this.dataBase.getAllRoofWindowsToShopList()) {
-      openingTemp.push(window.windowOpeningType);
+      openingTemp.push(window.otwieranie);
     }
     this.openingTypesToChoice = openingTemp.filter((value, index, self) => self.indexOf(value) === index);
   }
@@ -136,7 +136,7 @@ export class RoofWindowFiltrationComponent implements OnInit {
   private loadMaterials() {
     const materialTemp = [];
     for (const window of this.dataBase.getAllRoofWindowsToShopList()) {
-      materialTemp.push(window.windowMaterial);
+      materialTemp.push(window.stolarkaMaterial);
     }
     this.materialsToChoice = materialTemp.filter((value, index, self) => self.indexOf(value) === index);
   }
@@ -145,8 +145,8 @@ export class RoofWindowFiltrationComponent implements OnInit {
   private getBiggestHeight() {
     let biggestHeight = 0;
     for (const window of this.dataBase.getAllRoofWindowsToShopList()) {
-      if (window.windowHeight > biggestHeight) {
-        biggestHeight = window.windowHeight;
+      if (window.wysokosc > biggestHeight) {
+        biggestHeight = window.wysokosc;
       }
     }
     return biggestHeight;
@@ -156,8 +156,8 @@ export class RoofWindowFiltrationComponent implements OnInit {
   private getBiggestWidth() {
     let biggestWidth = 0;
     for (const window of this.dataBase.getAllRoofWindowsToShopList()) {
-      if (window.windowWidth > biggestWidth) {
-        biggestWidth = window.windowWidth;
+      if (window.szerokosc > biggestWidth) {
+        biggestWidth = window.szerokosc;
       }
     }
     return biggestWidth;

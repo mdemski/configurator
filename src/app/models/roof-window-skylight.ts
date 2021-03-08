@@ -1,10 +1,10 @@
 export class RoofWindowSkylight {
   private _kod: string;
   private _nazwaPozycjiPL: string;
+  private _windowName: string;
   private _indeksAlgorytm: string;
   private _nazwaPLAlgorytm: string;
   private _status: string;
-  private _windowName: string;
   private _model: string;
   private _pakietSzybowy: string;
   private _szerokosc: number;
@@ -12,11 +12,11 @@ export class RoofWindowSkylight {
   private _grupaAsortymentowa: string;
   private _typ: string;
   private _geometria: string;
-  private _rodzina: string;
   private _otwieranie: string;
   private _wentylacja: string;
   private _stolarkaMaterial: string;
   private _stolarkaKolor: string;
+  private _rodzina: string;
   private _oblachowanieMaterial: string;
   private _oblachowanieKolor: string;
   private _oblachowanieFinisz: string;
@@ -35,11 +35,12 @@ export class RoofWindowSkylight {
   private _kolorTworzywWew: string;
   private _kolorTworzywZew: string;
   private _okucia: string;
+  private _numberOfGlasses: number;
 
   // tslint:disable-next-line:max-line-length
-  constructor(kod: string, matka: string, windowName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, pakietSzybowy: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, otwieranie: string, wentylacja: string, stolarkaMaterial: string, stolarkaKolor: string, rodzina: string, oblachowanieMaterial: string, oblachowanieKolor: string, oblachowanieFinisz: string, zamkniecieTyp: string, zamkniecieKolor: string, windowHardware: boolean, uszczelki: number, dostepneRozmiary: [], windowCoats: [], linkiDoZdjec: string[], listaDodatkow: string[], CenaDetaliczna: number, windowUW: number, windowUG: number, iloscSprzedanychRok: number, kolorTworzywWew: string, kolorTworzywZew: string, okucia: string) {
+  constructor(kod: string, nazwaPozycjiPL: string, windowName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, pakietSzybowy: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, otwieranie: string, wentylacja: string, stolarkaMaterial: string, stolarkaKolor: string, rodzina: string, oblachowanieMaterial: string, oblachowanieKolor: string, oblachowanieFinisz: string, zamkniecieTyp: string, zamkniecieKolor: string, windowHardware: boolean, uszczelki: number, dostepneRozmiary: [], windowCoats: [], linkiDoZdjec: string[], listaDodatkow: string[], CenaDetaliczna: number, windowUW: number, windowUG: number, iloscSprzedanychRok: number, kolorTworzywWew: string, kolorTworzywZew: string, okucia: string, numberOfGlasses: number) {
     this._kod = kod;
-    this._nazwaPozycjiPL = matka;
+    this._nazwaPozycjiPL = nazwaPozycjiPL;
     this._windowName = windowName;
     this._indeksAlgorytm = indeksAlgorytm;
     this._nazwaPLAlgorytm = nazwaPLAlgorytm;
@@ -74,6 +75,7 @@ export class RoofWindowSkylight {
     this._kolorTworzywWew = kolorTworzywWew;
     this._kolorTworzywZew = kolorTworzywZew;
     this._okucia = okucia;
+    this._numberOfGlasses = numberOfGlasses;
   }
 
 
@@ -363,5 +365,13 @@ export class RoofWindowSkylight {
 
   set okucia(value: string) {
     this._okucia = value;
+  }
+
+  get numberOfGlasses(): number {
+    return this._numberOfGlasses;
+  }
+
+  set numberOfGlasses(value: number) {
+    this._numberOfGlasses = value;
   }
 }

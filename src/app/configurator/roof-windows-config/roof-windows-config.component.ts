@@ -7,6 +7,7 @@ import {Observable, Observer, Subject} from 'rxjs';
 import {Router} from '@angular/router';
 import {ConfigurationDistributorService} from '../../services/configuration-distributor.service';
 import {AuthService} from '../../services/auth.service';
+import {WindowDynamicValuesSetterService} from '../../services/window-dynamic-values-setter.service';
 
 @Component({
   selector: 'app-roof-windows-config',
@@ -62,6 +63,7 @@ export class RoofWindowsConfigComponent implements OnInit {
   constructor(private authService: AuthService,
               private configData: ConfigurationDataService,
               private configDist: ConfigurationDistributorService,
+              private windowValuesSetter: WindowDynamicValuesSetterService,
               private router: Router,
               public translate: TranslateService) {
     translate.addLangs(['pl', 'en', 'fr', 'de']);
@@ -89,12 +91,16 @@ export class RoofWindowsConfigComponent implements OnInit {
     });
     // TODO get next id from database
     this.configuredWindow = new RoofWindowSkylight(
-      999,
+      '999',
       null,
       null,
       null,
-      78,
-      118,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
       null,
       null,
       null,
@@ -109,12 +115,18 @@ export class RoofWindowsConfigComponent implements OnInit {
       null,
       null,
       false,
-      null,
-      null,
-      null,
-      null,
+      0,
+      [],
+      [],
+      [],
+      [],
       0,
       0,
+      0,
+      5,
+      null,
+      null,
+      null,
       0);
     this.windowConfigurationForm = new FormGroup({
       'material': new FormControl(null, [], [this.validateMaterials.bind(this)]),
@@ -135,12 +147,16 @@ export class RoofWindowsConfigComponent implements OnInit {
       'handle': new FormControl(null, [], [this.validateHandle.bind(this)])
     });
     this.tempConfiguredWindow = new RoofWindowSkylight(
-      999,
+      '999',
       null,
       null,
       null,
-      78,
-      118,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
       null,
       null,
       null,
@@ -155,12 +171,18 @@ export class RoofWindowsConfigComponent implements OnInit {
       null,
       null,
       false,
-      null,
-      null,
-      null,
-      null,
       0,
-      0,
+      [],
+      [],
+      [],
+      [],
+      1000,
+      1,
+      0.5,
+      5,
+      null,
+      null,
+      null,
       0);
     this.translate.get('LINK').subscribe(text => {
       this.shopRoofWindowLink = text.shopRoofWindows;
@@ -175,7 +197,7 @@ export class RoofWindowsConfigComponent implements OnInit {
   }
 
   setConfiguredValues() {
-    this.configuredWindow.windowModel = this.setModels(
+    this.configuredWindow.model = this.setModels(
       this.windowConfigurationForm.value.material,
       this.windowConfigurationForm.value.openingType,
       this.windowConfigurationForm.value.ventilation);
@@ -183,75 +205,36 @@ export class RoofWindowsConfigComponent implements OnInit {
       this.windowConfigurationForm.value.openingType) {
       this.popupConfig = true;
     }
-    this.configuredWindow.windowGlazing = this.windowConfigurationForm.value.glazing;
-    this.configuredWindow.windowWidth = this.windowConfigurationForm.value.width;
+    this.configuredWindow.pakietSzybowy = this.windowConfigurationForm.value.glazing;
+    this.configuredWindow.szerokosc = this.windowConfigurationForm.value.width;
     this.showWidthMessage = this.standardWidths.includes(this.windowConfigurationForm.value.width);
-    this.configuredWindow.windowHeight = this.windowConfigurationForm.value.height;
+    this.configuredWindow.wysokosc = this.windowConfigurationForm.value.height;
     this.showHeightMessage = this.standardHeights.includes(this.windowConfigurationForm.value.height);
-    this.configuredWindow.windowName =
-      this.configuredWindow.windowModel + ' '
-      + this.configuredWindow.windowGlazing + ' '
-      + this.configuredWindow.windowWidth + 'x'
-      + this.configuredWindow.windowHeight;
-    this.configuredWindow.windowCategory = 'Okna dachowe';
-    this.configuredWindow.windowSubCategory = this.getSubCategory(this.windowConfigurationForm.value.openingType);
-    this.configuredWindow.windowGeometry = this.getGeometry(this.windowConfigurationForm.value.material);
-    this.configuredWindow.windowOpeningType = this.windowConfigurationForm.value.openingType;
-    this.configuredWindow.windowVentilation = this.windowConfigurationForm.value.ventilation;
-    this.configuredWindow.windowMaterial = this.windowConfigurationForm.value.material;
-    this.configuredWindow.windowMaterialColor = this.windowConfigurationForm.value.innerColor;
-    this.configuredWindow.windowMaterialFinish = 'gładki';
-    this.configuredWindow.windowOuterMaterial = this.windowConfigurationForm.controls.outer.value.outerMaterial;
-    this.configuredWindow.windowOuterColor = this.windowConfigurationForm.controls.outer.value.outerColor;
-    this.configuredWindow.windowOuterFinish = this.windowConfigurationForm.controls.outer.value.outerColorFinish;
-    this.configuredWindow.windowHandleType = this.windowConfigurationForm.value.handle;
-    this.configuredWindow.windowHandleColor = this.windowConfigurationForm.value.handle;
+    this.windowValuesSetter.setModelName(this.configuredWindow);
+    // this.configuredWindow.windowName =
+    //   this.configuredWindow.model + ' '
+    //   + this.configuredWindow.pakietSzybowy + ' '
+    //   + this.configuredWindow.szerokosc + 'x'
+    //   + this.configuredWindow.wysokosc;
+    this.configuredWindow.grupaAsortymentowa = 'Okna dachowe';
+    this.configuredWindow.typ = this.getSubCategory(this.windowConfigurationForm.value.openingType);
+    this.configuredWindow.geometria = this.getGeometry(this.windowConfigurationForm.value.material);
+    this.configuredWindow.otwieranie = this.windowConfigurationForm.value.openingType;
+    this.configuredWindow.wentylacja = this.windowConfigurationForm.value.ventilation;
+    this.configuredWindow.stolarkaMaterial = this.windowConfigurationForm.value.material;
+    this.configuredWindow.stolarkaKolor = this.windowConfigurationForm.value.innerColor;
+    this.configuredWindow.rodzina = 'gładki';
+    this.configuredWindow.oblachowanieMaterial = this.windowConfigurationForm.controls.outer.value.outerMaterial;
+    this.configuredWindow.oblachowanieKolor = this.windowConfigurationForm.controls.outer.value.outerColor;
+    this.configuredWindow.oblachowanieFinisz = this.windowConfigurationForm.controls.outer.value.outerColorFinish;
+    this.configuredWindow.zamkniecieTyp = this.windowConfigurationForm.value.handle;
+    this.configuredWindow.zamkniecieKolor = this.windowConfigurationForm.value.handle;
     this.configuredWindow.windowHardware = false;
-    this.configuredWindow.windowExtras = this.chosenExtras;
+    this.configuredWindow.dostepneRozmiary = this.chosenExtras;
     this.configuredWindow.windowCoats = this.chosenCoats;
-    this.configuredWindow.windowPrice = this.priceCalculation(this.configuredWindow);
+    this.configuredWindow.CenaDetaliczna = this.priceCalculation(this.configuredWindow);
 
-    if (this.windowConfigurationForm.value.glazing === 'doubleGlazing') {
-      this.configuredWindow.windowUG = 1.0;
-    }
-    if (this.windowConfigurationForm.value.glazing === 'tripleGlazing'
-      && this.windowConfigurationForm.value.material === 'materialWood') {
-      this.configuredWindow.windowUG = 0.7;
-    }
-    if (this.windowConfigurationForm.value.glazing === 'tripleGlazingKrypton'
-      && this.windowConfigurationForm.value.material === 'materialWood') {
-      this.configuredWindow.windowUG = 0.5;
-    }
-    if (this.windowConfigurationForm.value.glazing === 'tripleGlazing'
-      && this.windowConfigurationForm.value.material === 'materialPVC') {
-      this.configuredWindow.windowUG = 0.5;
-    }
-
-    if (this.configuredWindow.windowUG === 1.0
-      && this.configuredWindow.windowMaterial === 'materialWood'
-      && this.configuredWindow.windowOpeningType !== 'topHung') {
-      this.configuredWindow.windowUW = 1.2;
-    }
-    if (this.configuredWindow.windowUG === 1.0
-      && this.configuredWindow.windowMaterial === 'materialWood'
-      && this.configuredWindow.windowOpeningType === 'topHung') {
-      this.configuredWindow.windowUW = 1.3;
-    }
-    if (this.configuredWindow.windowUG === 1.0
-      && this.configuredWindow.windowMaterial === 'materialPVC') {
-      this.configuredWindow.windowUW = 1.2;
-    }
-    if (this.configuredWindow.windowUG === 0.7) {
-      this.configuredWindow.windowUW = 1.06;
-    }
-    if (this.configuredWindow.windowUG === 0.5
-      && this.configuredWindow.windowMaterial === 'materialWood') {
-      this.configuredWindow.windowUW = 0.91;
-    }
-    if (this.configuredWindow.windowUG === 0.5
-      && this.configuredWindow.windowMaterial === 'materialPVC') {
-      this.configuredWindow.windowUW = 0.83;
-    }
+    this.windowValuesSetter.setUwAndUgValues(this.configuredWindow);
   }
 
   setConfiguredCoats(value) {
@@ -272,7 +255,7 @@ export class RoofWindowsConfigComponent implements OnInit {
     } else {
       this.chosenExtras.push(extra);
     }
-    this.configuredWindow.windowExtras = this.chosenExtras;
+    this.configuredWindow.dostepneRozmiary = this.chosenExtras;
     this.setConfiguredValues();
   }
 
@@ -394,10 +377,10 @@ export class RoofWindowsConfigComponent implements OnInit {
     const windowInfo = new Subject();
     const windowInfoChange$ = windowInfo.asObservable();
     windowInfo.next([
-      this.configuredWindow.windowModel,
-      this.configuredWindow.windowGlazing,
-      this.configuredWindow.windowWidth,
-      this.configuredWindow.windowHeight]);
+      this.configuredWindow.model,
+      this.configuredWindow.pakietSzybowy,
+      this.configuredWindow.szerokosc,
+      this.configuredWindow.wysokosc]);
     this.router.navigate(['/' + this.shopRoofWindowLink]);
   }
 
@@ -550,32 +533,33 @@ export class RoofWindowsConfigComponent implements OnInit {
   }
 
   onSubmit() {
-    this.tempConfiguredWindow.windowCategory = 'Okna dachowe';
+    this.tempConfiguredWindow.grupaAsortymentowa = 'Okna dachowe';
     this.tempConfiguredWindow.windowCoats = ['toughenedOuter'];
-    this.tempConfiguredWindow.windowExtras = ['hardware'];
-    this.tempConfiguredWindow.windowGeometry = 'IS';
-    this.tempConfiguredWindow.windowGlazing = 'doubleGlazing';
-    this.tempConfiguredWindow.windowHandleType = 'handleSecure7048';
-    this.tempConfiguredWindow.windowHandleColor = 'handleSecure7048';
+    this.tempConfiguredWindow.dostepneRozmiary = ['hardware'];
+    this.tempConfiguredWindow.geometria = 'IS';
+    this.tempConfiguredWindow.pakietSzybowy = 'doubleGlazing';
+    this.tempConfiguredWindow.zamkniecieTyp = 'handleSecure7048';
+    this.tempConfiguredWindow.zamkniecieKolor = 'handleSecure7048';
     this.tempConfiguredWindow.windowHardware = false;
-    this.tempConfiguredWindow.windowHeight = 119;
-    this.tempConfiguredWindow.windowWidth = 79;
-    this.tempConfiguredWindow.windowMaterial = 'materialWood';
-    this.tempConfiguredWindow.windowMaterialColor = 'innerColorNatural';
-    this.tempConfiguredWindow.windowMaterialFinish = 'gładki';
-    this.tempConfiguredWindow.windowModel = 'ISOV';
-    this.tempConfiguredWindow.windowMountingAngle = null;
+    this.tempConfiguredWindow.wysokosc = 119;
+    this.tempConfiguredWindow.szerokosc = 79;
+    this.tempConfiguredWindow.stolarkaMaterial = 'materialWood';
+    this.tempConfiguredWindow.stolarkaKolor = 'innerColorNatural';
+    this.tempConfiguredWindow.rodzina = 'gładki';
+    this.tempConfiguredWindow.model = 'ISOV';
+    this.tempConfiguredWindow.uszczelki = null;
     this.tempConfiguredWindow.windowName = 'ISOV E2 79x119';
-    this.tempConfiguredWindow.windowOpeningType = 'centrePivot';
-    this.tempConfiguredWindow.windowOuterColor = 'RAL9999';
-    this.tempConfiguredWindow.windowOuterFinish = 'semiMatFinish';
-    this.tempConfiguredWindow.windowOuterMaterial = 'aluminium';
-    this.tempConfiguredWindow.windowPrice = 1332.80;
-    this.tempConfiguredWindow.windowSubCategory = 'obrotowe';
+    this.tempConfiguredWindow.otwieranie = 'centrePivot';
+    this.tempConfiguredWindow.oblachowanieKolor = 'RAL9999';
+    this.tempConfiguredWindow.oblachowanieFinisz = 'semiMatFinish';
+    this.tempConfiguredWindow.oblachowanieMaterial = 'aluminium';
+    this.tempConfiguredWindow.CenaDetaliczna = 1332.80;
+    this.tempConfiguredWindow.typ = 'obrotowe';
     this.tempConfiguredWindow.windowUG = 1;
     this.tempConfiguredWindow.windowUW = 1.2;
-    this.tempConfiguredWindow.windowUrlLink = 'https://www.okpol.pl/wp-content/uploads/2017/02/1_ISO.jpg';
-    this.tempConfiguredWindow.windowVentilation = 'ventilationNeoVent';
+    this.tempConfiguredWindow.linkiDoZdjec = ['https://www.okpol.pl/wp-content/uploads/2017/02/1_ISO.jpg'];
+    this.tempConfiguredWindow.wentylacja = 'ventilationNeoVent';
+    this.tempConfiguredWindow.numberOfGlasses = 3;
     // TODO zapisz dane do Firebase przed emisją żeby nie utracić konfiguracji
     // TODO przygotować model konfiguracji w której będą przechowywane: okno, kołnierz, roleta - a później publikować tablice
     this.configDist.populateData(this.tempConfiguredWindow, null, null);

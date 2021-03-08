@@ -8,40 +8,40 @@
 <div class="md-container">
 
   <div class="product-card" *ngFor="let window of filteredRoofWindowsList | filter : searchByKeyboard: 'name'">
-    <a routerLink="./{{window.windowId}}">
-      <img src="{{window.windowUrlLink}}" alt="Strawberry" class="product-card__photo"/>
+    <a routerLink="./{{window.kod}}">
+      <img src="{{window.linkiDoZdjec[0]}}" alt="{{window.grupaAsortymentowa}}" class="product-card__photo"/>
     </a>
     <h3 class="product-card__title">{{window.windowName}}</h3>
 
     <ul class="product-card__details">
-      <li class="product-card__details--info">{{ 'SINGLE-PRODUCT.category' | translate}}
-        : {{window.windowSubCategory}} </li>
-      <li class="product-card__details--info">{{ 'SINGLE-PRODUCT.opening' | translate}}
-        : {{window.windowOpeningType}} </li>
-      <li class="product-card__details--info">{{ 'SINGLE-PRODUCT.innerColor' | translate}}
-        : {{window.windowMaterialColor}} </li>
-      <li class="product-card__details--info">{{ 'SINGLE-PRODUCT.handleType' | translate}}
-        : {{window.windowHandleType}} </li>
-      <li class="product-card__details--info">{{ 'SINGLE-PRODUCT.outerColor' | translate}}
-        :{{window.windowOuterColor}} </li>
-      <li class="product-card__details--info">{{ 'SINGLE-PRODUCT.ventilation' | translate}}
-        : {{window.windowVentilation}}</li>
+      <li class="product-card__details--info">{{'SINGLE-PRODUCT.category' | translate}}:
+        {{window.rodzina}} </li>
+      <li class="product-card__details--info">{{'SINGLE-PRODUCT.opening' | translate}}:
+        {{window.otwieranie}} </li>
+      <li class="product-card__details--info">{{'SINGLE-PRODUCT.innerColor' | translate}}:
+        {{window.stolarkaKolor}} </li>
+      <li class="product-card__details--info">{{'SINGLE-PRODUCT.handleType' | translate}}:
+        {{window.zamkniecieTyp}} - {{window.zamkniecieKolor}} </li>
+      <li class="product-card__details--info">{{'SINGLE-PRODUCT.outerColor' | translate}}:
+        {{window.oblachowanieKolor}} </li>
+      <li class="product-card__details--info">{{'SINGLE-PRODUCT.ventilation' | translate}}:
+        {{window.wentylacja}}</li>
     </ul>
 
     <div class="product-card__icons-section">
       <div class="product-card__icons-section--info">
         <h4 class="product-card__icons-section--info--title">{{ 'SINGLE-PRODUCT.numberOfGlass' | translate}}</h4>
-        <p class="product-card__icons-section--info--detail">{{numberOfGlass}}</p>
+        <p class="product-card__icons-section--info--detail">{{window.numberOfGlasses}}</p>
         <!--        <img src="assets/icons/glazing.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{window.windowGlazing}}">-->
       </div>
       <div class="product-card__icons-section--info">
         <h4 class="product-card__icons-section--info--title">{{ 'SINGLE-PRODUCT.material' | translate}}</h4>
-        <p class="product-card__icons-section--info--detail">{{window.windowMaterial}}</p>
+        <p class="product-card__icons-section--info--detail">{{window.stolarkaMaterial}}</p>
         <!--        <img src="assets/icons/material.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{ 'SINGLE-PRODUCT.material' | translate}}">-->
       </div>
       <div class="product-card__icons-section--info">
         <h4 class="product-card__icons-section--info--title">{{ 'SINGLE-PRODUCT.price' | translate}}</h4>
-        <p class="product-card__icons-section--info--detail">{{window.windowPrice}}</p>
+        <p class="product-card__icons-section--info--detail">{{window.CenaDetaliczna}}</p>
         <!--        <img src="assets/icons/price.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{ 'SINGLE-PRODUCT.price' | translate}}">-->
       </div>
     </div>
