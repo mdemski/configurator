@@ -13,7 +13,7 @@
         src="assets/icons/single_product_page/wood.png" alt="wooden window"></div>
       <div *ngIf="windowMaterial == 'PVC'" class="specification-icons__element active-icon"><img
         src="assets/icons/single_product_page/pvc.png" alt="wooden window"></div>
-      <div class="specification-icons__element active-icon">{{windowToShow.windowMaterialColor}}</div>
+      <div class="specification-icons__element active-icon">{{windowToShow.stolarkaKolor}}</div>
       <div *ngIf="windowVent == 'NEO-AIR' else windowNoVent" class="specification-icons__element active-icon"><img
         src="assets/icons/single_product_page/neo-vent.png" alt="wooden window"></div>
       <ng-template #windowNoVent>
@@ -28,7 +28,7 @@
       </ng-template>
       <div class="specification-icons__element active-icon">Uw {{windowToShow.windowUW}}</div>
       <div class="specification-icons__element active-icon">Ug {{windowToShow.windowUG}} </div>
-      <div class="specification-icons__element active-icon">{{windowToShow.windowOuterColor}}</div>
+      <div class="specification-icons__element active-icon">{{windowToShow.oblachowanieKolor}}</div>
       <div class="specification-icons__element active-icon"><img src="assets/icons/single_product_page/guarantee-window.png"
                                                                  alt="guarantee for window"></div>
     </div>
@@ -43,7 +43,7 @@
 
   <div class="md-container--right-side">
     <p class="product-name">{{windowToShow.windowName}}</p>
-    <p class="price">{{ 'SINGLE-PRODUCT.price' | translate}} {{windowToShow.windowPrice}} zł</p>
+    <p class="price">{{ 'SINGLE-PRODUCT.price' | translate}} {{windowToShow.CenaDetaliczna}} zł</p>
     <p *ngIf="logInUser"
        class="price--after-discount">{{ 'SINGLE-PRODUCT.priceAfterDisc' | translate}} {{priceAfterDisc}}</p>
     <div class="line"></div>
@@ -69,7 +69,7 @@
     <div class="extra-product-container">
       <div class="extra-product-card" *ngFor="let extra of availableExtras">
         <a routerLink="../{{extra.accessoryId}}">
-          <img src="{{extra.accessoryUrl}}" alt="Strawberry" class="extra-product-card__photo"/>
+          <img src="{{extra.accessoryUrl}}" alt="{{extra.accessoryModel}}" class="extra-product-card__photo"/>
         </a>
         <h3 class="extra-product-card__title">{{extra.accessoryModel}}</h3>
 
@@ -110,97 +110,87 @@
       <tr>
         <th scope="row">4</th>
         <td>{{ 'SINGLE-PRODUCT.windowModel' | translate}}</td>
-        <td>{{windowToShow.windowModel}}</td>
+        <td>{{windowToShow.model}}</td>
       </tr>
       <tr>
         <th scope="row">5</th>
         <td>{{ 'SINGLE-PRODUCT.windowGlazing' | translate}}</td>
-        <td>{{windowToShow.windowGlazing}}</td>
+        <td>{{windowToShow.pakietSzybowy}}</td>
       </tr>
       <tr>
         <th scope="row">6</th>
         <td>{{ 'SINGLE-PRODUCT.windowDimensions' | translate}}</td>
-        <td>{{windowToShow.windowWidth}} x {{windowToShow.windowHeight}}</td>
+        <td>{{windowToShow.szerokosc}} x {{windowToShow.wysokosc}}</td>
       </tr>
       <tr>
         <th scope="row">7</th>
-        <td>{{ 'SINGLE-PRODUCT.windowCategory' | translate}}</td>
-        <td>{{windowToShow.windowCategory}}</td>
+        <td>{{ 'SINGLE-PRODUCT.windowGeometry' | translate}}</td>
+        <td>{{windowToShow.geometria}}</td>
       </tr>
       <tr>
         <th scope="row">8</th>
-        <td>{{ 'SINGLE-PRODUCT.windowSubCategory' | translate}}</td>
-        <td>{{windowToShow.windowSubCategory}}</td>
+        <td>{{ 'SINGLE-PRODUCT.windowOpeningType' | translate}}</td>
+        <td>{{windowToShow.otwieranie}}</td>
       </tr>
       <tr>
         <th scope="row">9</th>
-        <td>{{ 'SINGLE-PRODUCT.windowGeometry' | translate}}</td>
-        <td>{{windowToShow.windowGeometry}}</td>
+        <td>{{ 'SINGLE-PRODUCT.windowVentilation' | translate}}</td>
+        <td>{{windowToShow.wentylacja}}</td>
       </tr>
       <tr>
         <th scope="row">10</th>
-        <td>{{ 'SINGLE-PRODUCT.windowOpeningType' | translate}}</td>
-        <td>{{windowToShow.windowOpeningType}}</td>
+        <td>{{ 'SINGLE-PRODUCT.windowMaterial' | translate}}</td>
+        <td>{{windowToShow.stolarkaMaterial}}</td>
       </tr>
       <tr>
         <th scope="row">11</th>
-        <td>{{ 'SINGLE-PRODUCT.windowVentilation' | translate}}</td>
-        <td>{{windowToShow.windowVentilation}}</td>
+        <td>{{ 'SINGLE-PRODUCT.windowMaterialColor' | translate}}</td>
+        <td>{{windowToShow.stolarkaKolor}}</td>
       </tr>
       <tr>
         <th scope="row">12</th>
-        <td>{{ 'SINGLE-PRODUCT.windowMaterial' | translate}}</td>
-        <td>{{windowToShow.windowMaterial}}</td>
+        <td>{{ 'SINGLE-PRODUCT.windowMaterialFinish' | translate}}</td>
+        <td>{{windowToShow.rodzina}}</td>
       </tr>
       <tr>
         <th scope="row">13</th>
-        <td>{{ 'SINGLE-PRODUCT.windowMaterialColor' | translate}}</td>
-        <td>{{windowToShow.windowMaterialColor}}</td>
+        <td>{{ 'SINGLE-PRODUCT.windowOuterMaterial' | translate}}</td>
+        <td>{{windowToShow.oblachowanieMaterial}}</td>
       </tr>
       <tr>
         <th scope="row">14</th>
-        <td>{{ 'SINGLE-PRODUCT.windowMaterialFinish' | translate}}</td>
-        <td>{{windowToShow.windowMaterialFinish}}</td>
+        <td>{{ 'SINGLE-PRODUCT.windowOuterColor' | translate}}</td>
+        <td>{{windowToShow.oblachowanieKolor}}</td>
       </tr>
       <tr>
         <th scope="row">15</th>
-        <td>{{ 'SINGLE-PRODUCT.windowOuterMaterial' | translate}}</td>
-        <td>{{windowToShow.windowOuterMaterial}}</td>
+        <td>{{ 'SINGLE-PRODUCT.windowOuterFinish' | translate}}</td>
+        <td>{{windowToShow.oblachowanieFinisz}}</td>
       </tr>
       <tr>
         <th scope="row">16</th>
-        <td>{{ 'SINGLE-PRODUCT.windowOuterColor' | translate}}</td>
-        <td>{{windowToShow.windowOuterColor}}</td>
+        <td>{{ 'SINGLE-PRODUCT.windowHandleType' | translate}}</td>
+        <td>{{windowToShow.zamkniecieTyp}}</td>
       </tr>
       <tr>
         <th scope="row">17</th>
-        <td>{{ 'SINGLE-PRODUCT.windowOuterFinish' | translate}}</td>
-        <td>{{windowToShow.windowOuterFinish}}</td>
+        <td>{{ 'SINGLE-PRODUCT.windowHandleColor' | translate}}</td>
+        <td>{{windowToShow.zamkniecieKolor}}</td>
       </tr>
       <tr>
         <th scope="row">18</th>
-        <td>{{ 'SINGLE-PRODUCT.windowHandleType' | translate}}</td>
-        <td>{{windowToShow.windowHandleType}}</td>
+        <td>{{ 'SINGLE-PRODUCT.innerAccessoryColor' | translate}}</td>
+        <td>{{windowToShow.kolorTworzywWew}}</td>
       </tr>
       <tr>
         <th scope="row">19</th>
-        <td>{{ 'SINGLE-PRODUCT.windowHandleColor' | translate}}</td>
-        <td>{{windowToShow.windowHandleColor}}</td>
+        <td>{{ 'SINGLE-PRODUCT.foamsNumber' | translate}}</td>
+        <td>{{windowToShow.uszczelki}}</td>
       </tr>
       <tr>
         <th scope="row">20</th>
-        <td>{{ 'SINGLE-PRODUCT.windowHardware' | translate}}</td>
-        <td>{{windowToShow.windowHardware}}</td>
-      </tr>
-      <tr>
-        <th scope="row">21</th>
-        <td>{{ 'SINGLE-PRODUCT.windowMountingAngle' | translate}}</td>
-        <td>{{windowToShow.windowMountingAngle}}</td>
-      </tr>
-      <tr>
-        <th scope="row">22</th>
         <td>{{ 'SINGLE-PRODUCT.detalPrice' | translate}}</td>
-        <td>{{windowToShow.windowPrice}}</td>
+        <td>{{windowToShow.CenaDetaliczna}}</td>
       </tr>
       </tbody>
     </table>
@@ -209,7 +199,7 @@
 <!--Extra information about product-->
 <section>
   <div class="background-container">
-    <div class="main-info" *ngIf="windowMaterial == 'drewno' else PVCmaterial">
+    <div class="main-info" *ngIf="windowMaterial == 'DrewnoSosna' else PVCmaterial">
       <p class="main-info__desc">{{ 'SINGLE-PRODUCT.materialDescWood' | translate}}</p>
       <img class="main-info__photo"
            src="assets/img/shop/single_product_page/materialWood.png"
@@ -225,24 +215,24 @@
     </ng-template>
   </div>
 
-  <div class="main-info" *ngIf="glazing == 'tripleGlazing' else twoGlazing">
+  <div class="main-info" *ngIf="glazing.startsWith('E') else threeGlazing">
     <img class="main-info__photo--glazing"
-         src="assets/img/shop/single_product_page/glazingx3.png"
+         src="assets/img/shop/single_product_page/glazingx2.png"
          alt="{{ 'SINGLE-PRODUCT.numberOfGlass' | translate}}">
-    <p class="main-info__desc">{{ 'SINGLE-PRODUCT.glassDescx3' | translate}}</p>
+    <p class="main-info__desc">{{ 'SINGLE-PRODUCT.glassDescx2' | translate}}</p>
   </div>
-  <ng-template #twoGlazing>
+  <ng-template #threeGlazing>
     <div class="main-info">
       <img class="main-info__photo--glazing"
-           src="assets/img/shop/single_product_page/glazingx2.png"
+           src="assets/img/shop/single_product_page/glazingx3.png"
            alt="{{ 'SINGLE-PRODUCT.numberOfGlass' | translate}}">
-      <p class="main-info__desc">{{ 'SINGLE-PRODUCT.glassDescx2' | translate}}</p>
+      <p class="main-info__desc">{{ 'SINGLE-PRODUCT.glassDescx3' | translate}}</p>
     </div>
   </ng-template>
 
   <div class="pictures-container">
     <img class="pictures-container__photo"
-         *ngIf="windowVent == 'NEO-AIR' else windowNoVent"
+         *ngIf="windowVent == 'NawiewnikNeoVent' else windowNoVent"
          src="assets/img/shop/single_product_page/neo-vent.png"
          alt="{{ 'SINGLE-PRODUCT.windowVentilation' | translate}}">
     <ng-template #windowNoVent>

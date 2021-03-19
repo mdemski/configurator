@@ -7,6 +7,7 @@ export class RoofWindowSkylight {
   private _status: string;
   private _model: string;
   private _pakietSzybowy: string;
+  private _glazingToCalculation: string;
   private _szerokosc: number;
   private _wysokosc: number;
   private _grupaAsortymentowa: string;
@@ -38,7 +39,7 @@ export class RoofWindowSkylight {
   private _numberOfGlasses: number;
 
   // tslint:disable-next-line:max-line-length
-  constructor(kod: string, nazwaPozycjiPL: string, windowName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, pakietSzybowy: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, otwieranie: string, wentylacja: string, stolarkaMaterial: string, stolarkaKolor: string, rodzina: string, oblachowanieMaterial: string, oblachowanieKolor: string, oblachowanieFinisz: string, zamkniecieTyp: string, zamkniecieKolor: string, windowHardware: boolean, uszczelki: number, dostepneRozmiary: [], windowCoats: [], linkiDoZdjec: string[], listaDodatkow: string[], CenaDetaliczna: number, windowUW: number, windowUG: number, iloscSprzedanychRok: number, kolorTworzywWew: string, kolorTworzywZew: string, okucia: string, numberOfGlasses: number) {
+  constructor(kod: string, nazwaPozycjiPL: string, windowName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, pakietSzybowy: string, glazingToCalculation, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, otwieranie: string, wentylacja: string, stolarkaMaterial: string, stolarkaKolor: string, rodzina: string, oblachowanieMaterial: string, oblachowanieKolor: string, oblachowanieFinisz: string, zamkniecieTyp: string, zamkniecieKolor: string, windowHardware: boolean, uszczelki: number, dostepneRozmiary: [], windowCoats: [], linkiDoZdjec: string[], listaDodatkow: string[], CenaDetaliczna: number, windowUW: number, windowUG: number, iloscSprzedanychRok: number, kolorTworzywWew: string, kolorTworzywZew: string, okucia: string, numberOfGlasses: number) {
     this._kod = kod;
     this._nazwaPozycjiPL = nazwaPozycjiPL;
     this._windowName = windowName;
@@ -47,6 +48,7 @@ export class RoofWindowSkylight {
     this._status = status;
     this._model = model;
     this._pakietSzybowy = pakietSzybowy;
+    this._glazingToCalculation = glazingToCalculation;
     this._szerokosc = szerokosc;
     this._wysokosc = wysokosc;
     this._grupaAsortymentowa = grupaAsortymentowa;
@@ -133,6 +135,14 @@ export class RoofWindowSkylight {
 
   set pakietSzybowy(value: string) {
     this._pakietSzybowy = value;
+  }
+
+  get glazingToCalculation(): string {
+    return this._glazingToCalculation;
+  }
+
+  set glazingToCalculation(value: string) {
+    this._glazingToCalculation = value;
   }
 
   get szerokosc(): number {

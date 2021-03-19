@@ -172,6 +172,10 @@ form {
           width: 0;
           display: none;
 
+          &:disabled + label {
+            color: rgba($color-black, .3);
+          }
+
           &:checked + label {
             border: .12rem solid rgba($color-green, 1);
           }
@@ -259,6 +263,12 @@ form {
         }
       }
     }
+  }
+}
+
+.label--disabled {
+  &:hover {
+    border: .12rem solid transparent;
   }
 }
 

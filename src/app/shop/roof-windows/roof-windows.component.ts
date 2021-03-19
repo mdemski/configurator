@@ -2,6 +2,7 @@ import {ChangeDetectorRef, Component, DoCheck, Input, OnInit} from '@angular/cor
 import {DatabaseService} from '../../services/database.service';
 import {RoofWindowSkylight} from '../../models/roof-window-skylight';
 import {ActivatedRoute, Router} from '@angular/router';
+import {shareReplay} from 'rxjs/operators';
 
 @Component({
   selector: 'app-roof-windows',
@@ -35,12 +36,7 @@ export class RoofWindowsComponent implements OnInit, DoCheck {
 
 
   loadAllWindows() {
-    this.db.fetchRoofWindows().subscribe(windows => this.roofWindowsList = windows);
-    // const id = this.route.snapshot.params['id'];
-    // this.roofWindowsList[id] = this.db.getWindowById(id);
-    // this.route.params.subscribe((params: Params) => {
-    //   this.roofWindowsList[id] = this.db.getWindowById(+params['id']);
-    // });
+    this.db.fetchRoofWindows().pipe(shareReplay()).subscribe(windows => this.roofWindowsList = windows);
     this.filteredRoofWindowsList = this.filteredRoofWindowsList.length > 0 ? this.filteredRoofWindowsList : this.roofWindowsList;
   }
 

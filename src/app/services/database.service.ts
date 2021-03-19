@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {RoofWindowSkylight} from '../models/roof-window-skylight';
 import {Observable, of, Subject} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map, shareReplay} from 'rxjs/operators';
 import {Accessory} from '../models/accessory';
 import {Company} from '../models/company';
 import {PropertyValueTranslatorService} from './property-value-translator.service';
@@ -23,21 +23,21 @@ export class DatabaseService {
   getGroupFilter = this.setGroupFilter$.asObservable();
 
   // TODO do oprogramowania pobieranie danych z eNova/pliku + filtrowanie danych według grupaAsortymentowa
-  getAllRoofWindowsToShopList() {
+  getAllRoofWindowsToShopList(): RoofWindowSkylight[] {
     return this.windows = [
-      new RoofWindowSkylight('1O-ISO-V-E02-KL00-A7022P-078118-OKPO01', 'ISO E02 78x118', 'ISO', 'I-OKNO', 'NPL-OKNO', 'Sprawdzony', 'Okno:ISOV', 'Okno:E02',
+      new RoofWindowSkylight('1O-ISO-V-E02-KL00-A7022P-078118-OKPO01', 'ISO E02 78x118', 'ISO', 'I-OKNO', 'NPL-OKNO', 'Sprawdzony', 'Okno:ISOV', 'Okno:E02', 'dwuszybowy',
         78, 118, 'OknoDachowe', 'OknoDachowe:Okno', 'Okno:IS1', 'Okno:Obrotowe', 'NawiewnikNeoVent', 'DrewnoSosna',
         'Drewno:Bezbarwne', 'OknoDachowe:IS', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'Okno:ExtraSecure',
         'Okno:RAL7048', null, 4, [], [], ['assets/img/products/ISO-I22.png'], [], 997, 1.2, 1.0, 2000, 'Okno:RAL7048', 'Okno:RAL7048', null, 0),
-      new RoofWindowSkylight('1O-ISO-V-I22-KL00-A7022P-078118-OKPO01', 'ISO I22 78x118', 'ISO', 'I-OKNO', 'NPL-OKNO', 'Sprawdzony', 'Okno:ISOV', 'Okno:I22',
+      new RoofWindowSkylight('1O-ISO-V-I22-KL00-A7022P-078118-OKPO01', 'ISO I22 78x118', 'ISO', 'I-OKNO', 'NPL-OKNO', 'Sprawdzony', 'Okno:ISOV', 'Okno:I22', 'trzysybowy',
         78, 118, 'OknoDachowe', 'OknoDachowe:Okno', 'Okno:IS1', 'Okno:Obrotowe', 'NawiewnikNeoVent', 'DrewnoSosna',
         'Drewno:Bezbarwne', 'OknoDachowe:IS', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'Okno:ExtraSecure',
         'Okno:RAL7048', null, 4, [], [], ['assets/img/products/ISO-I22.png'], [], 1450, 1.0, 0.7, 2000, 'Okno:RAL7048', 'Okno:RAL7048', null, 0),
-      new RoofWindowSkylight('1O-IGO-V-N22-WSWS-A7022P-078118-OKPO01', 'IGO N22 78x118', 'IGO', 'I-OKNO', 'NPL-OKNO', 'Sprawdzony', 'Okno:IGOV', 'Okno:N22',
+      new RoofWindowSkylight('1O-IGO-V-N22-WSWS-A7022P-078118-OKPO01', 'IGO N22 78x118', 'IGO', 'I-OKNO', 'NPL-OKNO', 'Sprawdzony', 'Okno:IGOV', 'Okno:N22', 'trzyszybowy',
         78, 118, 'OknoDachowe', 'OknoDachowe:Okno', 'Okno:IG2', 'Okno:Obrotowe', 'NawiewnikNeoVent', 'PVC',
         'PVC:9016', 'OknoDachowe:IG', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'Okno:ExtraSecure',
         'Okno:RAL9016', null, 4, [], [], ['assets/img/products/IGOV-N22.png'], [], 1650, 0.78, 0.5, 2000, 'Okno:RAL9016', 'Okno:RAL9016', null, 0),
-      new RoofWindowSkylight('1O-IGO-V-E02-WSWS-A7022P-078118-OKPO01', 'IGO E02 78x118', 'IGO', 'I-OKNO', 'NPL-OKNO', 'Sprawdzony', 'Okno:IGOV', 'Okno:E02',
+      new RoofWindowSkylight('1O-IGO-V-E02-WSWS-A7022P-078118-OKPO01', 'IGO E02 78x118', 'IGO', 'I-OKNO', 'NPL-OKNO', 'Sprawdzony', 'Okno:IGOV', 'Okno:E02', 'dwuszybowy',
         78, 118, 'OknoDachowe', 'OknoDachowe:Okno', 'Okno:IG2', 'Okno:Obrotowe', 'NawiewnikNeoVent', 'PVC',
         'PVC:9016', 'OknoDachowe:IG', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'Okno:ExtraSecure',
         'Okno:RAL9016', null, 4, [], [], ['assets/img/products/IGOV-E2.png'], [], 1050, 1.1, 1.0, 2000, 'Okno:RAL9016', 'Okno:RAL9016', null, 0)
@@ -85,10 +85,19 @@ export class DatabaseService {
   }
 
   getWindowById(id: string) {
-    return this.fetchRoofWindows()
-      .pipe(
-        map(windows => windows.filter(window => window.kod === id))
-      );
+    let tempWindow: RoofWindowSkylight;
+    tempWindow = this.getAllRoofWindowsToShopList().filter(window => window.kod === id)[0];
+    this.windowValuesSetter.setModelName(tempWindow);
+    this.windowValuesSetter.setUwAndUgValues(tempWindow);
+    this.windowValuesSetter.setNumberOfGlasses(tempWindow);
+    tempWindow.uszczelki = tempWindow.uszczelki + 2;
+    for (const propertyName in tempWindow) {
+      this.valueTranslator.translatePropertyValues('ROOF-WINDOWS-DATA', tempWindow[propertyName])
+        .subscribe(translation => {
+          tempWindow[propertyName] = translation;
+        });
+    }
+    return of(tempWindow);
   }
 
   getAccessoryById(id: number) {
