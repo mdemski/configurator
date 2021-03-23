@@ -47,6 +47,7 @@ import {FilterPipe} from './pipes/filter.pipe';
 import {FilterPipeModule} from 'ngx-filter-pipe';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { IonicModule } from '@ionic/angular';
+import { DisableControlDirective } from './directives/disable-control.directive';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -87,7 +88,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     FlashingsComponent,
     FlashingDetailsComponent,
     RoofWindowFiltrationComponent,
-    FilterPipe
+    FilterPipe,
+    DisableControlDirective
   ],
   imports: [
     BrowserModule,

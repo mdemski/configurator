@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, ValidationErrors} from '@angular/forms';
+import {FormArray, FormControl, FormGroup, ValidationErrors} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
 import {Observable, Observer, Subject} from 'rxjs';
 import {Router} from '@angular/router';
@@ -100,6 +100,7 @@ export class RoofWindowsConfigComponent implements OnInit {
       this.ventilations = this.objectMaker(this.configData.ventialtions);
       this.handles = this.objectMaker(this.configData.handles);
       this.handleColors = this.objectMaker(this.configData.handleColors);
+      this.materials.forEach(material => console.log(material.disabled));
     });
     // TODO get next id from database
     this.configuredWindow = new RoofWindowSkylight(
@@ -219,6 +220,11 @@ export class RoofWindowsConfigComponent implements OnInit {
       this.popupConfig = true;
     }
     // TODO poprawić oznaczenie pakietu szybowego
+    // this.configuredWindow.pakietSzybowy = 'Okno:' + this.windowValuesSetter.glazingTypeSetter(
+    //    this.windowConfigurationForm.value.material,
+    //    this.windowConfigurationForm.value.glazing,
+    //    this.chosenCoats,
+    //    'okno');
     this.windowValuesSetter.glazingTypeSetter(
       this.windowConfigurationForm.value.material,
       this.windowConfigurationForm.value.glazing,
@@ -252,13 +258,13 @@ export class RoofWindowsConfigComponent implements OnInit {
     this.configuredWindow.windowHardware = false;
     this.configuredWindow.numberOfGlasses = this.configuredWindow.glazingToCalculation === 'dwuszybowy' ? 2 : 3;
     this.configuredWindow.kod = this.generateCode(this.configuredWindow.stolarkaMaterial, this.configuredWindow.otwieranie,
-      this.configuredWindow.wentylacja, this.configuredWindow.glazingToCalculation, this.chosenExtras, this.configuredWindow.stolarkaKolor,
+      this.configuredWindow.wentylacja, this.configuredWindow.pakietSzybowy, this.configuredWindow.stolarkaKolor,
       this.configuredWindow.oblachowanieMaterial, this.configuredWindow.oblachowanieKolor, this.configuredWindow.oblachowanieFinisz,
       this.configuredWindow.szerokosc, this.configuredWindow.wysokosc);
     this.configuredWindow.CenaDetaliczna = this.priceCalculation(this.configuredWindow);
     this.windowValuesSetter.setUwAndUgValues(this.configuredWindow);
     this.setDisabled(this.configuredWindow);
-    // console.log(this.configuredWindow);
+    console.log(this.configuredWindow);
   }
 
   setConfiguredCoats(value) {
@@ -619,32 +625,41 @@ export class RoofWindowsConfigComponent implements OnInit {
   getSubCategory(openingType: string) {
     let type = '';
     switch (openingType) {
-      case 'centrePivot':
+      case 'Okno:Obrotowe':
         type = 'obrotowe';
         break;
-      case 'topHung':
+      case 'Okno:Uchylno-przesuwne':
         type = 'uchylno-przesuwne';
         break;
-      case 'highAxle':
+      case 'Okno:Wysokoosiowe':
         type = 'wysokoosiowe';
         break;
-      case 'electric':
+      case 'Okno:ElektrycznePilot':
         type = 'elektryczne';
         break;
-      case 'lShapedX':
-        type = 'kolankowe';
+      case 'Okno:ElektrycznePrzełącznik':
+        type = 'elektryczne';
         break;
-      case 'lShapedU':
-        type = 'kolankowe';
+      case 'KolankoDrewno:Uchylne':
+        type = 'kolankowe drewniane';
         break;
-      case 'lShapedP':
-        type = 'kolankowe';
+      case 'KolankoDrewno:NieotwieraneFIP':
+        type = 'kolankowe drewniane';
         break;
-      case 'lShapedL':
-        type = 'kolankowe';
+      case 'KolankoPVC:UchylnoRozwierneLewe':
+        type = 'kolankowe PVC';
         break;
-      case 'fix':
-        type = 'fix';
+      case 'KolankoPVC:UchylnoRozwiernePrawe':
+        type = 'kolankowe PVC';
+        break;
+      case 'KolankoPVC:Uchylne':
+        type = 'kolankowe PVC';
+        break;
+      case 'KolankoPVC:NieotwieraneFIX':
+        type = 'kolankowe PVC';
+        break;
+      case 'Okno:NieotwieraneFIP':
+        type = 'fip';
         break;
     }
     return type;
@@ -653,11 +668,11 @@ export class RoofWindowsConfigComponent implements OnInit {
   getGeometry(material: string) {
     let geometry = '';
     switch (material) {
-      case 'materialWood':
-        geometry = 'IS';
+      case 'DrewnoSosna':
+        geometry = 'Okno:IS';
         break;
-      case 'materialPVC':
-        geometry = 'IG';
+      case 'PVC':
+        geometry = 'Okno:IG2';
         break;
     }
     return geometry;
@@ -672,7 +687,7 @@ export class RoofWindowsConfigComponent implements OnInit {
     for (const option of availableOptionsArray) {
       const tempObject = {
         option,
-        disabled: true
+        disabled: null
       };
       objectsArray.push(tempObject);
     }
@@ -680,7 +695,7 @@ export class RoofWindowsConfigComponent implements OnInit {
   }
 
   private generateCode(material: string, openingType: string, ventilation: string,
-                       glazingType: string, chosenCoats: string[], innerColor: string, outerMaterial: string,
+                       glazingType: string, innerColor: string, outerMaterial: string,
                        outerColor: string, outerFinish: string, width: number, height: number) {
     let model = '';
     switch (material) {
@@ -784,11 +799,6 @@ export class RoofWindowsConfigComponent implements OnInit {
         break;
     }
 
-    // TODO do poprawy zwraca pusty string subscribe poza scopem usuwa wartość
-    let glazingCode = '';
-    this.windowValuesSetter.glazingTypeSetter(material, glazingType, chosenCoats, 'okno')
-      .subscribe(glazingName => glazingCode = glazingName);
-
     let materialCode = '';
     if (material === 'DrewnoSosna') {
       materialCode = 'KL00';
@@ -854,6 +864,8 @@ export class RoofWindowsConfigComponent implements OnInit {
     } else {
       heightCode = height;
     }
+
+    const glazingCode = glazingType.split(':')[1];
 
     // '1O-ISO-V-E02-KL00-A7022P-078118-OKPO01';
     return '1O-' + model + '-' + glazingCode + '-' + materialCode +
@@ -991,7 +1003,7 @@ export class RoofWindowsConfigComponent implements OnInit {
   //     }
   //   }
 
-  // TOO TESTS
+  // DISABLE INPUT SETTER LOGIC
   setDisabled(configuredWindow: RoofWindowSkylight) {
     this.resetAllArrays(this.materials, this.openingTypes, this.innerColors, this.outerMaterials, this.outerColors, this.outerColorFinishes,
       this.glazingTypes, this.chosenCoats, this.chosenExtras, this.ventilations, this.handles, this.handleColors);
@@ -1002,23 +1014,20 @@ export class RoofWindowsConfigComponent implements OnInit {
       for (const exclusion of this.exclusions) {
         const tempExclusionValue = exclusion[selectedOption]; // tu są zwracane wartości wykluczeń
         if (_.isNumber(tempExclusionValue) && tempExclusionValue > 0) {
-          this.setDisabledOptions(Object.keys(exclusion)[0],
+          this.setDisabledOptions(tempExclusionValue, selectedOption,
             this.materials, this.openingTypes, this.innerColors,
             this.outerMaterials, this.outerColors, this.outerColorFinishes,
             this.glazingTypes, this.chosenCoats, this.chosenExtras, this.ventilations,
-            this.handles, this.handleColors);
+            this.handles, this.handleColors, this.exclusions);
         }
       }
       for (const set of this.sets) {
         const tempSetValue = set[selectedOption]; // tu są zwracane wartości setów
         if (_.isNumber(tempSetValue) && tempSetValue > 0) {
-
+          // TODO ustawić sety dla doborów
         }
       }
     }
-    // console.log(this.exclusions[configuredWindow[configurationOption][configurationOption]]);
-    // console.log(singleOption.id);
-    // singleOption.disabled = this.materials[0].disabled;
   }
 
   resetAllArrays(materials: { option: string; disabled: boolean }[], openingTypes: { option: string; disabled: boolean }[],
@@ -1028,109 +1037,114 @@ export class RoofWindowsConfigComponent implements OnInit {
                  chosenExtras: { option: string; disabled: boolean }[], ventilations: { option: string; disabled: boolean }[],
                  handles: { option: string; disabled: boolean }[], handleColors: { option: string; disabled: boolean }[]) {
     for (const material of materials) {
-      material.disabled = false;
+      material.disabled = null;
     }
     for (const openingType of openingTypes) {
-      openingType.disabled = false;
+      openingType.disabled = null;
     }
     for (const innerColor of innerColors) {
-      innerColor.disabled = false;
+      innerColor.disabled = null;
     }
     for (const outerMaterial of outerMaterials) {
-      outerMaterial.disabled = false;
+      outerMaterial.disabled = null;
     }
     for (const outerColor of outerColors) {
-      outerColor.disabled = false;
+      outerColor.disabled = null;
     }
     for (const outerColorFinish of outerColorFinishes) {
-      outerColorFinish.disabled = false;
+      outerColorFinish.disabled = null;
     }
     for (const glazingType of glazingTypes) {
-      glazingType.disabled = false;
+      glazingType.disabled = null;
     }
     for (const chosenCoat of chosenCoats) {
-      chosenCoat.disabled = false;
+      chosenCoat.disabled = null;
     }
     for (const chosenExtra of chosenExtras) {
-      chosenExtra.disabled = false;
+      chosenExtra.disabled = null;
     }
     for (const ventilation of ventilations) {
-      ventilation.disabled = false;
+      ventilation.disabled = null;
     }
     for (const handle of handles) {
-      handle.disabled = false;
+      handle.disabled = null;
     }
     for (const handleColor of handleColors) {
-      handleColor.disabled = false;
+      handleColor.disabled = null;
     }
   }
 
   // tslint:disable-next-line:max-line-length
-  setDisabledOptions(keyValue: string, materials: { option: string; disabled: boolean }[], openingTypes: { option: string; disabled: boolean }[],
+  setDisabledOptions(exNumber: number, selectedOption: string, materials: { option: string; disabled: boolean }[], openingTypes: { option: string; disabled: boolean }[],
                      innerColors: { option: string; disabled: boolean }[], outerMaterials: { option: string; disabled: boolean }[],
                      outerColors: { option: string; disabled: boolean }[], outerColorFinishes: { option: string; disabled: boolean }[],
                      glazingTypes: { option: string; disabled: boolean }[], chosenCoats: { option: string; disabled: boolean }[],
                      chosenExtras: { option: string; disabled: boolean }[], ventilations: { option: string; disabled: boolean }[],
-                     handles: { option: string; disabled: boolean }[], handleColors: { option: string; disabled: boolean }[]) {
-    for (const material of materials) {
-      if (Object.keys(material)[0] === keyValue) {
-
-        material.disabled = true;
+                     handles: { option: string; disabled: boolean }[], handleColors: { option: string; disabled: boolean }[], exclusions) {
+    for (const exclusion of exclusions) {
+      let exName = '';
+      if (Object.values(exclusion)[0] === exNumber) {
+        exName = Object.keys(exclusion)[0];
       }
-    }
-    for (const openingType of openingTypes) {
-      if (Object.keys(openingType)[0] === keyValue) {
-        openingType.disabled = true;
+      for (const material of materials) {
+        if (material.option === exName && material.option !== selectedOption) {
+          material.disabled = true;
+        }
       }
-    }
-    for (const innerColor of innerColors) {
-      if (Object.keys(innerColor)[0] === keyValue) {
-        innerColor.disabled = true;
+      for (const openingType of openingTypes) {
+        if (openingType.option === exName && openingType.option !== selectedOption) {
+          openingType.disabled = true;
+        }
       }
-    }
-    for (const outerMaterial of outerMaterials) {
-      if (Object.keys(outerMaterial)[0] === keyValue) {
-        outerMaterial.disabled = true;
+      for (const innerColor of innerColors) {
+        if (innerColor.option === exName && innerColor.option !== selectedOption) {
+          innerColor.disabled = true;
+        }
       }
-    }
-    for (const outerColor of outerColors) {
-      if (Object.keys(outerColor)[0] === keyValue) {
-        outerColor.disabled = true;
+      for (const outerMaterial of outerMaterials) {
+        if (outerMaterial.option === exName && outerMaterial.option !== selectedOption) {
+          outerMaterial.disabled = true;
+        }
       }
-    }
-    for (const outerColorFinish of outerColorFinishes) {
-      if (Object.keys(outerColorFinish)[0] === keyValue) {
-        outerColorFinish.disabled = true;
+      for (const outerColor of outerColors) {
+        if (outerColor.option === exName && outerColor.option !== selectedOption) {
+          outerColor.disabled = true;
+        }
       }
-    }
-    for (const glazingType of glazingTypes) {
-      if (Object.keys(glazingType)[0] === keyValue) {
-        glazingType.disabled = true;
+      for (const outerColorFinish of outerColorFinishes) {
+        if (outerColorFinish.option === exName && outerColorFinish.option !== selectedOption) {
+          outerColorFinish.disabled = true;
+        }
       }
-    }
-    for (const chosenCoat of chosenCoats) {
-      if (Object.keys(chosenCoat)[0] === keyValue) {
-        chosenCoat.disabled = true;
+      for (const glazingType of glazingTypes) {
+        if (glazingType.option === exName && glazingType.option !== selectedOption) {
+          glazingType.disabled = true;
+        }
       }
-    }
-    for (const chosenExtra of chosenExtras) {
-      if (Object.keys(chosenExtra)[0] === keyValue) {
-        chosenExtra.disabled = true;
+      for (const chosenCoat of chosenCoats) {
+        if (chosenCoat.option === exName && chosenCoat.option !== selectedOption) {
+          chosenCoat.disabled = true;
+        }
       }
-    }
-    for (const ventilation of ventilations) {
-      if (Object.keys(ventilation)[0] === keyValue) {
-        ventilation.disabled = true;
+      for (const chosenExtra of chosenExtras) {
+        if (chosenExtra.option === exName && chosenExtra.option !== selectedOption) {
+          chosenExtra.disabled = true;
+        }
       }
-    }
-    for (const handle of handles) {
-      if (Object.keys(handle)[0] === keyValue) {
-        handle.disabled = true;
+      for (const ventilation of ventilations) {
+        if (ventilation.option === exName && ventilation.option !== selectedOption) {
+          ventilation.disabled = true;
+        }
       }
-    }
-    for (const handleColor of handleColors) {
-      if (Object.keys(handleColor)[0] === keyValue) {
-        handleColor.disabled = true;
+      for (const handle of handles) {
+        if (handle.option === exName && handle.option !== selectedOption) {
+          handle.disabled = true;
+        }
+      }
+      for (const handleColor of handleColors) {
+        if (handleColor.option === exName && handleColor.option !== selectedOption) {
+          handleColor.disabled = true;
+        }
       }
     }
   }

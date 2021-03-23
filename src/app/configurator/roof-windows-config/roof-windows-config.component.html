@@ -97,12 +97,12 @@
                      value='{{material.option}}'
                      formControlName="material"
                      (change)="setConfiguredValues()"
-                     disabled="{{material.disabled}}"
+                     [attr.disabled]="material.disabled"
               >
               <label for="{{material.option}}"
                      [ngClass]="{'md-popup__content--group__options--option__label' : popupConfig === null,
                      'configure-form__group__options--option__label' : popupConfig !== null,
-                      'label--disabled' : !material.disabled}"
+                      'label--disabled' : material.disabled}"
                      [ngStyle]="setBackgroundImage(material.option)"
               >{{builtNameForTranslation(material.option) | translate}}</label>
             </div>
@@ -124,7 +124,8 @@
                [ngClass]="popupConfig===null ? 'md-popup__content--group__options' : 'configure-form__group__options'">
             <div
               [ngClass]="popupConfig===null ? 'md-popup__content--group__options--option' : 'configure-form__group__options--option'"
-              *ngFor="let openingType of openingTypes">
+              *ngFor="let openingType of openingTypes"
+              >
               <input type="radio"
                      [ngClass]="{'md-popup__content--group__options--option__input' : popupConfig===null,
                       'configure-form__group__options--option__input' : popupConfig!==null}"
@@ -132,11 +133,12 @@
                      value='{{openingType.option}}'
                      formControlName="openingType"
                      (change)="setConfiguredValues()"
+                     [attr.disabled]="openingType.disabled"
               >
               <label for="{{openingType.option}}"
                      [ngClass]="{'md-popup__content--group__options--option__label' : popupConfig === null,
                      'configure-form__group__options--option__label' : popupConfig !== null,
-                      'label--disabled' : !openingType.disabled}"
+                      'label--disabled' : openingType.disabled}"
                      [ngStyle]="setBackgroundImage(openingType.option)">
                 {{builtNameForTranslation(openingType.option) | translate}}</label>
             </div>
@@ -206,10 +208,11 @@
                    value='{{glazing.option}}'
                    formControlName="glazing"
                    (change)="setConfiguredValues()"
+                   [attr.disabled]="glazing.disabled"
             >
             <label for="{{glazing.option}}"
                    class="configure-form__group__options--option__label"
-                   [ngClass]="{'label--disabled' : !glazing.disabled}"
+                   [ngClass]="{'label--disabled' : glazing.disabled}"
                    [ngStyle]="setBackgroundImage(glazing.option)">{{builtNameForTranslation(glazing.option) | translate}}</label>
           </div>
           <div class="configure-form__navigation-buttons">
@@ -237,10 +240,11 @@
                    formControlName="coats"
                    class="configure-form__group__options--option__input"
                    (change)="setConfiguredCoats(coat.option)"
+                   [attr.disabled]="coat.disabled"
             />
             <label for="{{coat.option}}"
                    class="configure-form__group__options--option__label"
-                   [ngClass]="{'label--disabled' : !coat.disabled}"
+                   [ngClass]="{'label--disabled' : coat.disabled}"
                    [ngStyle]="setBackgroundImage(coat.option)">{{builtNameForTranslation(coat.option) | translate}}</label>
           </div>
           <div class="configure-form__navigation-buttons">
@@ -319,10 +323,11 @@
                    value='{{innerColor.option}}'
                    formControlName="innerColor"
                    (change)="setConfiguredValues()"
+                   [attr.disabled]="innerColor.disabled"
             >
             <label for="{{innerColor.option}}"
                    class="configure-form__group__options--option__label"
-                   [ngClass]="{'label--disabled' : !innerColor.disabled}"
+                   [ngClass]="{'label--disabled' : innerColor.disabled}"
                    [ngStyle]="setBackgroundImage(innerColor.option)">{{builtNameForTranslation(innerColor.option) | translate}}</label>
           </div>
           <div class="configure-form__navigation-buttons">
@@ -350,10 +355,11 @@
                    value="{{outerMaterial.option}}"
                    formControlName="outerMaterial"
                    (change)="setConfiguredValues()"
+                   [attr.disabled]="outerMaterial.disabled"
             >
             <label for="{{outerMaterial.option}}"
                    class="configure-form__group__options--option__label"
-                   [ngClass]="{'label--disabled' : !outerMaterial.disabled}"
+                   [ngClass]="{'label--disabled' : outerMaterial.disabled}"
                    [ngStyle]="setBackgroundImage(outerMaterial.option)">{{builtNameForTranslation(outerMaterial.option) | translate}}</label>
           </div>
           <label for="outerColor"
@@ -368,7 +374,7 @@
                    [attr.disabled]="outerColor.disabled"
             >
             <label for="{{outerColor.option}}"
-                   [ngClass]="{'label--disabled' : !outerColor.disabled}"
+                   [ngClass]="{'label--disabled' : outerColor.disabled}"
                    class="configure-form__group__options--option__label">{{builtNameForTranslation(outerColor.option) | translate}}</label>
           </div>
           <label for="outerColorFinish"
@@ -380,9 +386,10 @@
                    value="{{outerColorFinish.option}}"
                    formControlName="outerColorFinish"
                    (change)="setConfiguredValues()"
+                   [attr.disabled]="outerColorFinish.disabled"
             >
             <label for="{{outerColorFinish.option}}"
-                   [ngClass]="{'label--disabled' : !outerColorFinish.disabled}"
+                   [ngClass]="{'label--disabled' : outerColorFinish.disabled}"
                    class="configure-form__group__options--option__label"
                    [ngStyle]="setBackgroundImage(outerColorFinish.option)">{{builtNameForTranslation(outerColorFinish.option) | translate}}</label>
           </div>
@@ -412,9 +419,10 @@
                    value="{{ventilation.option}}"
                    formControlName="ventilation"
                    (change)="setConfiguredValues()"
+                   [attr.disabled]="ventilation.disabled"
             >
             <label for="{{ventilation.option}}"
-                   [ngClass]="{'label--disabled' : !ventilation.disabled}"
+                   [ngClass]="{'label--disabled' : ventilation.disabled}"
                    class="configure-form__group__options--option__label"
                    [ngStyle]="setBackgroundImage(ventilation.option)">{{builtNameForTranslation(ventilation.option) | translate}}</label>
           </div>
@@ -441,9 +449,10 @@
                      value="{{handle.option}}"
                      formControlName="handle"
                      (change)="setConfiguredValues()"
+                     [attr.disabled]="handle.disabled"
               >
               <label for="{{handle.option}}"
-                     [ngClass]="{'label--disabled' : !handle.disabled}"
+                     [ngClass]="{'label--disabled' : handle.disabled}"
                      class="configure-form__group__options--option__label"
                      [ngStyle]="setBackgroundImage(handle.option)">{{builtNameForTranslation(handle.option) | translate}}</label>
             </div>
@@ -457,9 +466,10 @@
                      value="{{handleColor.option}}"
                      formControlName="handleColor"
                      (change)="setConfiguredValues()"
+                     [attr.disabled]="handleColor.disabled"
               >
               <label for="{{handleColor.option}}"
-                     [ngClass]="{'label--disabled' : !handleColor.disabled}"
+                     [ngClass]="{'label--disabled' : handleColor.disabled}"
                      class="configure-form__group__options--option__label"
               >{{builtNameForTranslation(handleColor.option) | translate}}</label>
             </div>
@@ -487,9 +497,10 @@
                      formControlName="coats"
                      class="configure-form__group__options--option__input"
                      (change)="setConfiguredExtras(extra.option)"
+                     [attr.disabled]="extra.disabled"
               />
               <label for="{{extra.option}}"
-                     [ngClass]="{'label--disabled' : !extra.disabled}"
+                     [ngClass]="{'label--disabled' : extra.disabled}"
                      class="configure-form__group__options--option__label"
                      [ngStyle]="setBackgroundImage(extra.option)">{{builtNameForTranslation(extra.option) | translate}}</label>
             </div>
