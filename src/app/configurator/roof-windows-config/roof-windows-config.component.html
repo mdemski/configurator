@@ -97,8 +97,7 @@
                      value='{{material.option}}'
                      formControlName="material"
                      (change)="setConfiguredValues()"
-                     [attr.disabled]="material.disabled"
-              >
+                     [attr.disabled]="material.disabled">
               <label for="{{material.option}}"
                      [ngClass]="{'md-popup__content--group__options--option__label' : popupConfig === null,
                      'configure-form__group__options--option__label' : popupConfig !== null,
@@ -125,7 +124,7 @@
             <div
               [ngClass]="popupConfig===null ? 'md-popup__content--group__options--option' : 'configure-form__group__options--option'"
               *ngFor="let openingType of openingTypes"
-              >
+            >
               <input type="radio"
                      [ngClass]="{'md-popup__content--group__options--option__input' : popupConfig===null,
                       'configure-form__group__options--option__input' : popupConfig!==null}"
@@ -133,8 +132,7 @@
                      value='{{openingType.option}}'
                      formControlName="openingType"
                      (change)="setConfiguredValues()"
-                     [attr.disabled]="openingType.disabled"
-              >
+                     [attr.disabled]="openingType.disabled">
               <label for="{{openingType.option}}"
                      [ngClass]="{'md-popup__content--group__options--option__label' : popupConfig === null,
                      'configure-form__group__options--option__label' : popupConfig !== null,
@@ -165,8 +163,7 @@
                        id="remote-control"
                        value='remote-control'
                        formControlName="control"
-                       (change)="setConfiguredValues()"
-                >
+                       (change)="setConfiguredValues()"/>
                 <label for="remote-control"
                        [ngClass]="popupConfig === null ? 'md-popup__content--group__options--option__label' : 'configure-form__group__options--option__label'">
                   {{builtNameForTranslation('remote-control') | translate}}</label>
@@ -184,8 +181,7 @@
                        id="wall-switch-control"
                        value='wall-switch-control'
                        formControlName="control"
-                       (change)="setConfiguredValues()"
-                >
+                       (change)="setConfiguredValues()"/>
                 <label for="wall-switch-control"
                        [ngClass]="popupConfig === null ? 'md-popup__content--group__options--option__label' : 'configure-form__group__options--option__label'">
                   {{builtNameForTranslation('wall-switch-control') | translate}}</label>
@@ -208,8 +204,7 @@
                    value='{{glazing.option}}'
                    formControlName="glazing"
                    (change)="setConfiguredValues()"
-                   [attr.disabled]="glazing.disabled"
-            >
+                   [attr.disabled]="glazing.disabled"/>
             <label for="{{glazing.option}}"
                    class="configure-form__group__options--option__label"
                    [ngClass]="{'label--disabled' : glazing.disabled}"
@@ -240,8 +235,7 @@
                    formControlName="coats"
                    class="configure-form__group__options--option__input"
                    (change)="setConfiguredCoats(coat.option)"
-                   [attr.disabled]="coat.disabled"
-            />
+                   [attr.disabled]="coat.disabled"/>
             <label for="{{coat.option}}"
                    class="configure-form__group__options--option__label"
                    [ngClass]="{'label--disabled' : coat.disabled}"
@@ -275,7 +269,7 @@
                    min="{{minWidth}}"
                    max="{{maxWidth}}"
                    formControlName="width"
-                   (change)="setConfiguredValues(); moveWidthOutput(outputWidth)">
+                   (change)="setConfiguredValues(); moveWidthOutput(outputWidth)"/>
             <output #outputWidth
                     class="configure-form__group__options--option__output-range">{{windowConfigurationForm.value.width}}</output>
           </div>
@@ -289,7 +283,7 @@
                    min="{{minHeight}}"
                    max="{{maxHeight}}"
                    formControlName="height"
-                   (change)="setConfiguredValues(); moveHeightOutput(outputHeight)">
+                   (change)="setConfiguredValues(); moveHeightOutput(outputHeight)"/>
             <output #outputHeight
                     class="configure-form__group__options--option__output-range">{{windowConfigurationForm.value.height}}</output>
           </div>
@@ -323,8 +317,7 @@
                    value='{{innerColor.option}}'
                    formControlName="innerColor"
                    (change)="setConfiguredValues()"
-                   [attr.disabled]="innerColor.disabled"
-            >
+                   [attr.disabled]="innerColor.disabled"/>
             <label for="{{innerColor.option}}"
                    class="configure-form__group__options--option__label"
                    [ngClass]="{'label--disabled' : innerColor.disabled}"
@@ -355,8 +348,7 @@
                    value="{{outerMaterial.option}}"
                    formControlName="outerMaterial"
                    (change)="setConfiguredValues()"
-                   [attr.disabled]="outerMaterial.disabled"
-            >
+                   [attr.disabled]="outerMaterial.disabled"/>
             <label for="{{outerMaterial.option}}"
                    class="configure-form__group__options--option__label"
                    [ngClass]="{'label--disabled' : outerMaterial.disabled}"
@@ -371,8 +363,7 @@
                    value="{{outerColor.option}}"
                    formControlName="outerColor"
                    (change)="setConfiguredValues()"
-                   [attr.disabled]="outerColor.disabled"
-            >
+                   [attr.disabled]="outerColor.disabled"/>
             <label for="{{outerColor.option}}"
                    [ngClass]="{'label--disabled' : outerColor.disabled}"
                    class="configure-form__group__options--option__label">{{builtNameForTranslation(outerColor.option) | translate}}</label>
@@ -386,8 +377,7 @@
                    value="{{outerColorFinish.option}}"
                    formControlName="outerColorFinish"
                    (change)="setConfiguredValues()"
-                   [attr.disabled]="outerColorFinish.disabled"
-            >
+                   [attr.disabled]="outerColorFinish.disabled"/>
             <label for="{{outerColorFinish.option}}"
                    [ngClass]="{'label--disabled' : outerColorFinish.disabled}"
                    class="configure-form__group__options--option__label"
@@ -419,8 +409,7 @@
                    value="{{ventilation.option}}"
                    formControlName="ventilation"
                    (change)="setConfiguredValues()"
-                   [attr.disabled]="ventilation.disabled"
-            >
+                   [attr.disabled]="ventilation.disabled"/>
             <label for="{{ventilation.option}}"
                    [ngClass]="{'label--disabled' : ventilation.disabled}"
                    class="configure-form__group__options--option__label"
@@ -449,8 +438,7 @@
                      value="{{handle.option}}"
                      formControlName="handle"
                      (change)="setConfiguredValues()"
-                     [attr.disabled]="handle.disabled"
-              >
+                     [attr.disabled]="handle.disabled"/>
               <label for="{{handle.option}}"
                      [ngClass]="{'label--disabled' : handle.disabled}"
                      class="configure-form__group__options--option__label"
@@ -466,8 +454,7 @@
                      value="{{handleColor.option}}"
                      formControlName="handleColor"
                      (change)="setConfiguredValues()"
-                     [attr.disabled]="handleColor.disabled"
-              >
+                     [attr.disabled]="handleColor.disabled">
               <label for="{{handleColor.option}}"
                      [ngClass]="{'label--disabled' : handleColor.disabled}"
                      class="configure-form__group__options--option__label"
@@ -497,8 +484,7 @@
                      formControlName="coats"
                      class="configure-form__group__options--option__input"
                      (change)="setConfiguredExtras(extra.option)"
-                     [attr.disabled]="extra.disabled"
-              />
+                     [attr.disabled]="extra.disabled"/>
               <label for="{{extra.option}}"
                      [ngClass]="{'label--disabled' : extra.disabled}"
                      class="configure-form__group__options--option__label"
