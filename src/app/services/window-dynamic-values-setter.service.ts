@@ -199,7 +199,6 @@ export class WindowDynamicValuesSetterService {
             const isEqual = _.isEqual(tempGlazingType, innerLoopGlazing);
             if (isEqual) {
               model = using.concat(':', glazingModel);
-              console.log('Model pakietu szybowego: ' + model);
             }
           }
           return model;
