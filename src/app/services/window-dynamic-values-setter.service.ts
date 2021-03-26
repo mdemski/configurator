@@ -57,6 +57,7 @@ export class WindowDynamicValuesSetterService {
     window.windowUG = 0.7;
     window.windowUW = 1.06;
     const pakietTemp = window.pakietSzybowy.toLowerCase().split(':')[1];
+    console.log(window);
     if (pakietTemp.startsWith('e')) {
       window.windowUG = 1.0;
       if (window.stolarkaMaterial === 'DrewnoSosna') {
@@ -184,7 +185,7 @@ export class WindowDynamicValuesSetterService {
     }
     const tempGlazingType = new GlazingType('', DrewnoSosna, PVC, dwuszybowy, trzyszybowy, trzyszybowyKrypton,
       zewnetrznaHartowana, wewnetrznaHartowana, sunGuard, bioClean, matowa, redukcjaHalasu, laminowanaP1, laminowanaP2, laminowanaP4,
-      ug, gazSzlachetny, using);
+      ug, gazSzlachetny, using.toLowerCase());
     if (material === undefined || glazing === undefined) {
       model = '';
     }
@@ -197,7 +198,8 @@ export class WindowDynamicValuesSetterService {
             innerLoopGlazing.model = '';
             const isEqual = _.isEqual(tempGlazingType, innerLoopGlazing);
             if (isEqual) {
-              model = glazingModel;
+              model = using.concat(':', glazingModel);
+              console.log('Model pakietu szybowego: ' + model);
             }
           }
           return model;
