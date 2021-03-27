@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, ValidationErrors} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
-import {Observable, Observer, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, Observer, pipe, Subject} from 'rxjs';
 import {Router} from '@angular/router';
 import {RoofWindowSkylight} from '../../models/roof-window-skylight';
 import {ConfigurationDistributorService} from '../../services/configuration-distributor.service';
@@ -9,6 +9,7 @@ import {ConfigurationDataService} from '../../services/configuration-data.servic
 import {AuthService} from '../../services/auth.service';
 import {WindowDynamicValuesSetterService} from '../../services/window-dynamic-values-setter.service';
 import _ from 'lodash';
+import {map, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-roof-windows-config',
@@ -54,7 +55,7 @@ export class RoofWindowsConfigComponent implements OnInit {
   maxHeight = 160;
   stepWidth = 1;
   stepHeight = 1;
-  windowConfigurationForm: FormGroup;
+  form: FormGroup;
   availableOptions = [];
   chosenCoats = [];
   chosenExtras = [];
@@ -74,6 +75,8 @@ export class RoofWindowsConfigComponent implements OnInit {
   handleColors = [];
   shopRoofWindowLink: string;
   configurationSummary: string;
+  formData$;
+  glazingName$ = new BehaviorSubject('Okno:E01');
 
   static setDimensions(dimensions) {
     return dimensions;
@@ -100,7 +103,6 @@ export class RoofWindowsConfigComponent implements OnInit {
       this.ventilations = this.objectMaker(this.configData.ventialtions);
       this.handles = this.objectMaker(this.configData.handles);
       this.handleColors = this.objectMaker(this.configData.handleColors);
-      this.materials.forEach(material => console.log(material.disabled));
     });
     // TODO get next id from database
     this.configuredWindow = new RoofWindowSkylight(
@@ -142,12 +144,12 @@ export class RoofWindowsConfigComponent implements OnInit {
       null,
       null,
       0);
-    this.windowConfigurationForm = new FormGroup({
+    this.form = new FormGroup({
       material: new FormControl(null, [], [this.validateMaterials.bind(this)]),
       openingType: new FormControl(null, [], [this.validateOpenings.bind(this)]),
       control: new FormControl(null),
       glazing: new FormControl('dwuszybowy', [], [this.validateGlazing.bind(this)]),
-      coats: new FormControl(null),
+      coats: new FormControl(null), Przerobić to na formarray z obsługą tak jak na stackblitz
       width: new FormControl(78),
       height: new FormControl(118),
       innerColor: new FormControl(null, [], [this.validateInnerColor.bind(this)]),
@@ -156,7 +158,7 @@ export class RoofWindowsConfigComponent implements OnInit {
         outerColor: new FormControl('Aluminium:RAL7022'),
         outerColorFinish: new FormControl(null)
       }, [], [this.validateOuterMaterial.bind(this)]),
-      extras: new FormControl(null),
+      extras: new FormControl(null), Przerobić to na formarray z obsługą tak jak na stackblitz
       ventilation: new FormControl('NawiewnikNeoVent', [], [this.validateVentilation.bind(this)]),
       closure: new FormGroup({
         handle: new FormControl(null, [], [this.validateHandle.bind(this)]),
@@ -208,15 +210,26 @@ export class RoofWindowsConfigComponent implements OnInit {
     this.translate.get('LINK').subscribe(text => {
       this.configurationSummary = text.configurationSummary;
     });
+    this.formData$ = this.form.valueChanges; // strumień z danymi z formularza
+    this.formData$.pipe(tap((form: any) => {
+      this.windowValuesSetter.glazingTypeSetter(form.material, form.glazing, this.chosenCoats, 'Okno').subscribe(glazingName => {
+        this.glazingName$.next(glazingName);
+      });
+    }),
+      map(form => {
+        this.setConfiguredValues(form);
+      })).subscribe();
+    this.form.controls.coats.valueChanges.pipe(map(value => console.log(value))).subscribe();
   }
 
-  setConfiguredValues() {
+
+  setConfiguredValues(form) {
     this.configuredWindow.model = this.setModels(
-      this.windowConfigurationForm.value.material,
-      this.windowConfigurationForm.value.openingType,
-      this.windowConfigurationForm.value.ventilation);
-    if (this.windowConfigurationForm.value.material &&
-      this.windowConfigurationForm.value.openingType) {
+      form.material,
+      form.openingType,
+      form.ventilation);
+    if (form.material &&
+      form.openingType) {
       this.popupConfig = true;
     }
     // TODO poprawić oznaczenie pakietu szybowego
@@ -225,33 +238,31 @@ export class RoofWindowsConfigComponent implements OnInit {
     //    this.windowConfigurationForm.value.glazing,
     //    this.chosenCoats,
     //    'okno');
-    this.windowValuesSetter.glazingTypeSetter(
-      this.windowConfigurationForm.value.material,
-      this.windowConfigurationForm.value.glazing,
-      this.chosenCoats,
-      'okno').subscribe(glazingModel => this.configuredWindow.pakietSzybowy = 'Okno:' + glazingModel);
-    this.configuredWindow.glazingToCalculation = this.windowConfigurationForm.value.glazing;
+    this.glazingName$.subscribe(pakietSzybowy => {
+      this.configuredWindow.pakietSzybowy = pakietSzybowy;
+    });
+    this.configuredWindow.glazingToCalculation = form.glazing;
     this.configuredWindow.status = 'Nowy';
-    this.configuredWindow.szerokosc = this.windowConfigurationForm.value.width;
-    this.showWidthMessage = this.standardWidths.includes(this.windowConfigurationForm.value.width);
-    this.configuredWindow.wysokosc = this.windowConfigurationForm.value.height;
-    this.showHeightMessage = this.standardHeights.includes(this.windowConfigurationForm.value.height);
+    this.configuredWindow.szerokosc = form.width;
+    this.showWidthMessage = this.standardWidths.includes(form.width);
+    this.configuredWindow.wysokosc = form.height;
+    this.showHeightMessage = this.standardHeights.includes(form.height);
     this.windowValuesSetter.setModelName(this.configuredWindow);
     this.configuredWindow.grupaAsortymentowa = 'Okna dachowe';
     this.configuredWindow.indeksAlgorytm = 'I-OKNO';
     this.configuredWindow.nazwaPLAlgorytm = 'NPL-OKNO';
-    this.configuredWindow.typ = this.getSubCategory(this.windowConfigurationForm.value.openingType);
-    this.configuredWindow.geometria = this.getGeometry(this.windowConfigurationForm.value.material);
-    this.configuredWindow.otwieranie = this.windowConfigurationForm.value.openingType;
-    this.configuredWindow.wentylacja = this.windowConfigurationForm.value.ventilation;
-    this.configuredWindow.stolarkaMaterial = this.windowConfigurationForm.value.material;
-    this.configuredWindow.stolarkaKolor = this.windowConfigurationForm.value.innerColor;
-    this.configuredWindow.oblachowanieMaterial = this.windowConfigurationForm.controls.outer.value.outerMaterial;
+    this.configuredWindow.typ = this.getSubCategory(form.openingType);
+    this.configuredWindow.geometria = this.getGeometry(form.material);
+    this.configuredWindow.otwieranie = form.openingType;
+    this.configuredWindow.wentylacja = form.ventilation;
+    this.configuredWindow.stolarkaMaterial = form.material;
+    this.configuredWindow.stolarkaKolor = form.innerColor;
+    this.configuredWindow.oblachowanieMaterial = form.outerMaterial;
     this.configuredWindow.rodzina = 'OknoDachowe:' + this.getGeometry(this.configuredWindow.stolarkaMaterial);
-    this.configuredWindow.oblachowanieKolor = this.windowConfigurationForm.controls.outer.value.outerColor;
-    this.configuredWindow.oblachowanieFinisz = this.windowConfigurationForm.controls.outer.value.outerColorFinish;
-    this.configuredWindow.zamkniecieTyp = this.windowConfigurationForm.controls.closure.value.handle;
-    this.configuredWindow.zamkniecieKolor = this.windowConfigurationForm.controls.closure.value.handleColor;
+    this.configuredWindow.oblachowanieKolor = form.outerColor;
+    this.configuredWindow.oblachowanieFinisz = form.outerColorFinish;
+    this.configuredWindow.zamkniecieTyp = form.handle;
+    this.configuredWindow.zamkniecieKolor = form.handleColor;
     this.configuredWindow.uszczelki = 2;
     this.configuredWindow.windowCoats = this.chosenCoats;
     this.configuredWindow.listaDodatkow = this.chosenExtras;
@@ -269,15 +280,14 @@ export class RoofWindowsConfigComponent implements OnInit {
     console.log(this.configuredWindow);
   }
 
-  setConfiguredCoats(value) {
-    const index = this.chosenCoats.indexOf(value);
+  setConfiguredCoats(coat) {
+    const index = this.chosenCoats.indexOf(coat);
     if (index > -1) {
       this.chosenCoats.splice(index, 1);
     } else {
-      this.chosenCoats.push(value);
+      this.chosenCoats.push(coat);
     }
     this.configuredWindow.windowCoats = this.chosenCoats;
-    this.setConfiguredValues();
   }
 
   setConfiguredExtras(extra: any) {
@@ -288,7 +298,7 @@ export class RoofWindowsConfigComponent implements OnInit {
       this.chosenExtras.push(extra);
     }
     this.configuredWindow.listaDodatkow = this.chosenExtras;
-    this.setConfiguredValues();
+    // this.setConfiguredValues();
   }
 
 
@@ -952,13 +962,13 @@ export class RoofWindowsConfigComponent implements OnInit {
   }
 
   moveWidthOutput(outputWidth: HTMLOutputElement) {
-    const width = this.windowConfigurationForm.value.width;
+    const width = this.form.value.width;
     const newWidth = Number((width - this.minWidth) * 100 / (this.maxWidth - this.minWidth));
     outputWidth.style.left = ((newWidth * 0.35) + (3.5 - newWidth * 0.07)) + 'rem';
   }
 
   moveHeightOutput(outputHeight: HTMLOutputElement) {
-    const height = this.windowConfigurationForm.value.height;
+    const height = this.form.value.height;
     const newHeight = Number((height - this.minHeight) * 100 / (this.maxHeight - this.minHeight));
     outputHeight.style.left = ((newHeight * 0.35) + (3.5 - newHeight * 0.07)) + 'rem';
   }

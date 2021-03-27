@@ -29,13 +29,13 @@
          (click)="closeAllHovers([materialOptions, openingOptions, glazingOptions,
          coatOptions, dimensionOption, innerColorOptions, outerMaterialOptions,
          ventilationOptions, handleOptions, extrasOptions]); onCoatsHover(coatOptions)"
-         [ngClass]="{'configuration-summary__navigation--element--chosen' : (configuredWindow.windowCoats!==null || windowConfigurationForm.controls.coats.touched)}"></a>
+         [ngClass]="{'configuration-summary__navigation--element--chosen' : (configuredWindow.windowCoats!==null || form.controls.coats.touched)}"></a>
       <a class="configuration-summary__navigation--element
               configuration-summary__navigation--dimensions"
          (click)="closeAllHovers([materialOptions, openingOptions, glazingOptions,
          coatOptions, dimensionOption, innerColorOptions, outerMaterialOptions,
          ventilationOptions, handleOptions, extrasOptions]); onDimensionsHover(dimensionOption)"
-         [ngClass]="{'configuration-summary__navigation--element--chosen' : (!windowConfigurationForm.controls.width.untouched && !windowConfigurationForm.controls.height.untouched)}"></a>
+         [ngClass]="{'configuration-summary__navigation--element--chosen' : (!form.controls.width.untouched && !form.controls.height.untouched)}"></a>
       <a class="configuration-summary__navigation--element
               configuration-summary__navigation--inner-color"
          (click)="closeAllHovers([materialOptions, openingOptions, glazingOptions,
@@ -77,7 +77,7 @@
     </div>
   </div>
   <div [ngClass]="popupConfig===null ? 'md-popup' : 'configure-form'">
-    <form [formGroup]="windowConfigurationForm">
+    <form [formGroup]="form">
       <!--popupConfig===null ? 'md-popup__content' : 'form-content'-->
       <div [ngClass]="popupConfig===null ? 'md-popup__content' : ''">
         <!--Material-->
@@ -96,7 +96,6 @@
                      id="{{material.option}}"
                      value='{{material.option}}'
                      formControlName="material"
-                     (change)="setConfiguredValues()"
                      [attr.disabled]="material.disabled">
               <label for="{{material.option}}"
                      [ngClass]="{'md-popup__content--group__options--option__label' : popupConfig === null,
@@ -131,7 +130,6 @@
                      id="{{openingType.option}}"
                      value='{{openingType.option}}'
                      formControlName="openingType"
-                     (change)="setConfiguredValues()"
                      [attr.disabled]="openingType.disabled">
               <label for="{{openingType.option}}"
                      [ngClass]="{'md-popup__content--group__options--option__label' : popupConfig === null,
@@ -150,7 +148,7 @@
                 {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
             </div>
           </div>
-          <ng-container *ngIf="windowConfigurationForm.controls.openingType.value === 'electric'">
+          <ng-container *ngIf="form.controls.openingType.value === 'electric'">
             <label for="control"
                    [ngClass]="popupConfig===null ? 'md-popup__content--group__label' : 'configure-form__group__label'">
               {{ 'ROOF-WINDOWS-CONFIG.remoteControl' | translate}}</label>
@@ -162,8 +160,7 @@
                        [ngClass]="popupConfig===null ? 'md-popup__content--group__options--option__options__input' : 'configure-form__group__options--option__input'"
                        id="remote-control"
                        value='remote-control'
-                       formControlName="control"
-                       (change)="setConfiguredValues()"/>
+                       formControlName="control">
                 <label for="remote-control"
                        [ngClass]="popupConfig === null ? 'md-popup__content--group__options--option__label' : 'configure-form__group__options--option__label'">
                   {{builtNameForTranslation('remote-control') | translate}}</label>
@@ -180,8 +177,7 @@
                        [ngClass]="popupConfig===null ? 'md-popup__content--group__options--option__input' : 'configure-form__group__options--option__input'"
                        id="wall-switch-control"
                        value='wall-switch-control'
-                       formControlName="control"
-                       (change)="setConfiguredValues()"/>
+                       formControlName="control"/>
                 <label for="wall-switch-control"
                        [ngClass]="popupConfig === null ? 'md-popup__content--group__options--option__label' : 'configure-form__group__options--option__label'">
                   {{builtNameForTranslation('wall-switch-control') | translate}}</label>
@@ -203,7 +199,6 @@
                    id="{{glazing.option}}"
                    value='{{glazing.option}}'
                    formControlName="glazing"
-                   (change)="setConfiguredValues()"
                    [attr.disabled]="glazing.disabled"/>
             <label for="{{glazing.option}}"
                    class="configure-form__group__options--option__label"
@@ -234,8 +229,8 @@
                    value="{{coat.option}}"
                    formControlName="coats"
                    class="configure-form__group__options--option__input"
-                   (change)="setConfiguredCoats(coat.option)"
-                   [attr.disabled]="coat.disabled"/>
+                   [attr.disabled]="coat.disabled"
+            />
             <label for="{{coat.option}}"
                    class="configure-form__group__options--option__label"
                    [ngClass]="{'label--disabled' : coat.disabled}"
@@ -269,9 +264,9 @@
                    min="{{minWidth}}"
                    max="{{maxWidth}}"
                    formControlName="width"
-                   (change)="setConfiguredValues(); moveWidthOutput(outputWidth)"/>
+                   />
             <output #outputWidth
-                    class="configure-form__group__options--option__output-range">{{windowConfigurationForm.value.width}}</output>
+                    class="configure-form__group__options--option__output-range">{{form.value.width}}</output>
           </div>
           <label for="height"
                  class="configure-form__group__label--inner">{{ 'ROOF-WINDOWS-CONFIG.height' | translate}}</label>
@@ -282,10 +277,9 @@
                    step="{{stepHeight}}"
                    min="{{minHeight}}"
                    max="{{maxHeight}}"
-                   formControlName="height"
-                   (change)="setConfiguredValues(); moveHeightOutput(outputHeight)"/>
+                   formControlName="height">
             <output #outputHeight
-                    class="configure-form__group__options--option__output-range">{{windowConfigurationForm.value.height}}</output>
+                    class="configure-form__group__options--option__output-range">{{form.value.height}}</output>
           </div>
           <p *ngIf="showHeightMessage && showWidthMessage"
              class="configure-form__validation-info--single-message"
@@ -316,7 +310,6 @@
                    id="{{innerColor.option}}"
                    value='{{innerColor.option}}'
                    formControlName="innerColor"
-                   (change)="setConfiguredValues()"
                    [attr.disabled]="innerColor.disabled"/>
             <label for="{{innerColor.option}}"
                    class="configure-form__group__options--option__label"
@@ -347,7 +340,6 @@
                    id="{{outerMaterial.option}}"
                    value="{{outerMaterial.option}}"
                    formControlName="outerMaterial"
-                   (change)="setConfiguredValues()"
                    [attr.disabled]="outerMaterial.disabled"/>
             <label for="{{outerMaterial.option}}"
                    class="configure-form__group__options--option__label"
@@ -362,7 +354,6 @@
                    id="{{outerColor.option}}"
                    value="{{outerColor.option}}"
                    formControlName="outerColor"
-                   (change)="setConfiguredValues()"
                    [attr.disabled]="outerColor.disabled"/>
             <label for="{{outerColor.option}}"
                    [ngClass]="{'label--disabled' : outerColor.disabled}"
@@ -376,7 +367,6 @@
                    id="{{outerColorFinish.option}}"
                    value="{{outerColorFinish.option}}"
                    formControlName="outerColorFinish"
-                   (change)="setConfiguredValues()"
                    [attr.disabled]="outerColorFinish.disabled"/>
             <label for="{{outerColorFinish.option}}"
                    [ngClass]="{'label--disabled' : outerColorFinish.disabled}"
@@ -408,7 +398,6 @@
                    id="{{ventilation.option}}"
                    value="{{ventilation.option}}"
                    formControlName="ventilation"
-                   (change)="setConfiguredValues()"
                    [attr.disabled]="ventilation.disabled"/>
             <label for="{{ventilation.option}}"
                    [ngClass]="{'label--disabled' : ventilation.disabled}"
@@ -437,7 +426,6 @@
                      id="{{handle.option}}"
                      value="{{handle.option}}"
                      formControlName="handle"
-                     (change)="setConfiguredValues()"
                      [attr.disabled]="handle.disabled"/>
               <label for="{{handle.option}}"
                      [ngClass]="{'label--disabled' : handle.disabled}"
@@ -453,7 +441,6 @@
                      id="{{handleColor.option}}"
                      value="{{handleColor.option}}"
                      formControlName="handleColor"
-                     (change)="setConfiguredValues()"
                      [attr.disabled]="handleColor.disabled">
               <label for="{{handleColor.option}}"
                      [ngClass]="{'label--disabled' : handleColor.disabled}"
@@ -483,7 +470,6 @@
                      value="{{extra.option}}"
                      formControlName="coats"
                      class="configure-form__group__options--option__input"
-                     (change)="setConfiguredExtras(extra.option)"
                      [attr.disabled]="extra.disabled"/>
               <label for="{{extra.option}}"
                      [ngClass]="{'label--disabled' : extra.disabled}"
@@ -510,13 +496,13 @@
         </button>
         <div class="configure-form__validation-info">
           <p class="configure-form__validation-info--single-message"
-             *ngIf="windowConfigurationForm.get('material').hasError('empty material') ||
-                  windowConfigurationForm.get('openingType').hasError('empty openingType') ||
-                  windowConfigurationForm.get('glazing').hasError('empty glazingType') ||
-                  windowConfigurationForm.get('innerColor').hasError('empty innerColor') ||
-                  windowConfigurationForm.get('outer').hasError('empty outerMaterial') ||
-                  windowConfigurationForm.get('ventilation').hasError('empty ventilation') ||
-                  windowConfigurationForm.get('closure').hasError('empty handle')">{{ 'ROOF-WINDOWS-CONFIG.validationInfo' | translate}}</p>
+             *ngIf="form.get('material').hasError('empty material') ||
+                  form.get('openingType').hasError('empty openingType') ||
+                  form.get('glazing').hasError('empty glazingType') ||
+                  form.get('innerColor').hasError('empty innerColor') ||
+                  form.get('outer').hasError('empty outerMaterial') ||
+                  form.get('ventilation').hasError('empty ventilation') ||
+                  form.get('closure').hasError('empty handle')">{{ 'ROOF-WINDOWS-CONFIG.validationInfo' | translate}}</p>
         </div>
       </div>
     </form>
