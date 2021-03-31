@@ -223,18 +223,18 @@
         <label for="coats" (click)="onCoatsHover(coatOptions)"
                class="configure-form__group__label">{{ 'ROOF-WINDOWS-CONFIG.coat' | translate}}</label>
         <div class="configure-form__group__options" #coatOptions>
-          <div class="configure-form__group__options--option" *ngFor="let coat of coats">
+          <div class="configure-form__group__options--option" *ngFor="let coat of prepareCoatsArray(coatsFromFile); index as i">
             <input type="checkbox"
                    id="{{coat.option}}"
                    value="{{coat.option}}"
-                   formControlName="coats"
+                   formArrayName="coats"
                    class="configure-form__group__options--option__input"
                    [attr.disabled]="coat.disabled"
             />
             <label for="{{coat.option}}"
                    class="configure-form__group__options--option__label"
                    [ngClass]="{'label--disabled' : coat.disabled}"
-                   [ngStyle]="setBackgroundImage(coat.option)">{{builtNameForTranslation(coat.option) | translate}}</label>
+                   [ngStyle]="setBackgroundImage(coat.option)">{{coat.option}}</label>
           </div>
           <div class="configure-form__navigation-buttons">
             <a (click)="onGlazingHover(glazingOptions);onCoatsHover(coatOptions)"
@@ -464,11 +464,11 @@
           <label for="extras" (click)="onExtrasHover(extrasOptions)"
                  class="configure-form__group__label">{{ 'ROOF-WINDOWS-CONFIG.extras' | translate}}</label>
           <div class="configure-form__group__options" #extrasOptions>
-            <div class="configure-form__group__options--option" *ngFor="let extra of extras">
+            <div class="configure-form__group__options--option" *ngFor="let extra of prepareExtrasArray(extrasFromFile); index as i">
               <input type="checkbox"
                      id="{{extra.option}}"
                      value="{{extra.option}}"
-                     formControlName="coats"
+                     formArrayName="extras"
                      class="configure-form__group__options--option__input"
                      [attr.disabled]="extra.disabled"/>
               <label for="{{extra.option}}"

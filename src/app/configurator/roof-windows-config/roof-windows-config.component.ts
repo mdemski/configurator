@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, ValidationErrors} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
 import {BehaviorSubject, Observable, Observer, pipe, Subject} from 'rxjs';
 import {Router} from '@angular/router';
@@ -24,11 +24,13 @@ export class RoofWindowsConfigComponent implements OnInit {
               private configDist: ConfigurationDistributorService,
               private windowValuesSetter: WindowDynamicValuesSetterService,
               private router: Router,
+              private fb: FormBuilder,
               public translate: TranslateService) {
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
   }
 
+  form: FormGroup;
   loginUser: string;
   dimensions;
   configuredWindow: RoofWindowSkylight;
@@ -55,7 +57,6 @@ export class RoofWindowsConfigComponent implements OnInit {
   maxHeight = 160;
   stepWidth = 1;
   stepHeight = 1;
-  form: FormGroup;
   availableOptions = [];
   chosenCoats = [];
   chosenExtras = [];
@@ -68,8 +69,8 @@ export class RoofWindowsConfigComponent implements OnInit {
   outerColors = [];
   outerColorFinishes = [];
   glazingTypes = [];
-  coats = [];
-  extras = [];
+  coatsFromFile = [];
+  extrasFromFile = [];
   ventilations = [];
   handles = [];
   handleColors = [];
@@ -97,12 +98,14 @@ export class RoofWindowsConfigComponent implements OnInit {
       this.outerMaterials = this.objectMaker(this.configData.outerMaterials);
       // this.outerColors = this.objectMaker(this.configData.outerColor);
       this.outerColorFinishes = this.objectMaker(this.configData.outerColorFinishes);
-      this.coats = this.objectMaker(this.configData.coats);
+      this.coatsFromFile = this.objectMaker(this.configData.coats);
       this.dimensions = RoofWindowsConfigComponent.setDimensions(this.configData.dimensions);
-      this.extras = this.objectMaker(this.configData.extras);
+      this.extrasFromFile = this.objectMaker(this.configData.extras);
       this.ventilations = this.objectMaker(this.configData.ventialtions);
       this.handles = this.objectMaker(this.configData.handles);
       this.handleColors = this.objectMaker(this.configData.handleColors);
+      this.prepareCoatsArray(this.coatsFromFile);
+      this.prepareExtrasArray(this.extrasFromFile);
     });
     // TODO get next id from database
     this.configuredWindow = new RoofWindowSkylight(
@@ -149,7 +152,7 @@ export class RoofWindowsConfigComponent implements OnInit {
       openingType: new FormControl(null, [], [this.validateOpenings.bind(this)]),
       control: new FormControl(null),
       glazing: new FormControl('dwuszybowy', [], [this.validateGlazing.bind(this)]),
-      coats: new FormControl(null), Przerobić to na formarray z obsługą tak jak na stackblitz
+      coats: new FormArray([]),
       width: new FormControl(78),
       height: new FormControl(118),
       innerColor: new FormControl(null, [], [this.validateInnerColor.bind(this)]),
@@ -158,7 +161,7 @@ export class RoofWindowsConfigComponent implements OnInit {
         outerColor: new FormControl('Aluminium:RAL7022'),
         outerColorFinish: new FormControl(null)
       }, [], [this.validateOuterMaterial.bind(this)]),
-      extras: new FormControl(null), Przerobić to na formarray z obsługą tak jak na stackblitz
+      extras: new FormArray([]),
       ventilation: new FormControl('NawiewnikNeoVent', [], [this.validateVentilation.bind(this)]),
       closure: new FormGroup({
         handle: new FormControl(null, [], [this.validateHandle.bind(this)]),
@@ -212,16 +215,27 @@ export class RoofWindowsConfigComponent implements OnInit {
     });
     this.formData$ = this.form.valueChanges; // strumień z danymi z formularza
     this.formData$.pipe(tap((form: any) => {
-      this.windowValuesSetter.glazingTypeSetter(form.material, form.glazing, this.chosenCoats, 'Okno').subscribe(glazingName => {
-        this.glazingName$.next(glazingName);
-      });
-    }),
-      map(form => {
+        this.windowValuesSetter.glazingTypeSetter(form.material, form.glazing, form.coats, 'Okno').subscribe(glazingName => {
+          this.glazingName$.next(glazingName);
+        });
+      }),
+      map((form: FormGroup) => {
+        console.log(form);
         this.setConfiguredValues(form);
       })).subscribe();
-    this.form.controls.coats.valueChanges.pipe(map(value => console.log(value))).subscribe();
+    (this.form.get('coats') as FormArray).valueChanges.subscribe(value => setTimeout(() => {
+      console.log(value);
+      this.form.updateValueAndValidity();
+    }));
   }
 
+  prepareCoatsArray(coats: any[]) {
+    return coats;
+  }
+
+  prepareExtrasArray(extras: any[]) {
+    return extras;
+  }
 
   setConfiguredValues(form) {
     this.configuredWindow.model = this.setModels(
@@ -264,8 +278,8 @@ export class RoofWindowsConfigComponent implements OnInit {
     this.configuredWindow.zamkniecieTyp = form.handle;
     this.configuredWindow.zamkniecieKolor = form.handleColor;
     this.configuredWindow.uszczelki = 2;
-    this.configuredWindow.windowCoats = this.chosenCoats;
-    this.configuredWindow.listaDodatkow = this.chosenExtras;
+    this.configuredWindow.windowCoats = form.coats;
+    this.configuredWindow.listaDodatkow = form.extras;
     this.configuredWindow.kolorTworzywWew = this.configuredWindow.zamkniecieKolor === 'Okno:RAL7048' ? 'Okno:RAL7048' : 'Okno:RAL9016';
     this.configuredWindow.kolorTworzywZew = 'RAL7048';
     this.configuredWindow.windowHardware = false;
@@ -277,29 +291,28 @@ export class RoofWindowsConfigComponent implements OnInit {
     this.configuredWindow.CenaDetaliczna = this.priceCalculation(this.configuredWindow);
     this.windowValuesSetter.setUwAndUgValues(this.configuredWindow);
     this.setDisabled(this.configuredWindow);
-    console.log(this.configuredWindow);
   }
 
-  setConfiguredCoats(coat) {
-    const index = this.chosenCoats.indexOf(coat);
-    if (index > -1) {
-      this.chosenCoats.splice(index, 1);
-    } else {
-      this.chosenCoats.push(coat);
-    }
-    this.configuredWindow.windowCoats = this.chosenCoats;
-  }
-
-  setConfiguredExtras(extra: any) {
-    const index = this.chosenExtras.indexOf(extra);
-    if (index > -1) {
-      this.chosenExtras.splice(index, 1);
-    } else {
-      this.chosenExtras.push(extra);
-    }
-    this.configuredWindow.listaDodatkow = this.chosenExtras;
-    // this.setConfiguredValues();
-  }
+  // setConfiguredCoats(coat) {
+  //   const index = this.chosenCoats.indexOf(coat);
+  //   if (index > -1) {
+  //     this.chosenCoats.splice(index, 1);
+  //   } else {
+  //     this.chosenCoats.push(coat);
+  //   }
+  //   this.configuredWindow.windowCoats = this.chosenCoats;
+  // }
+  //
+  // setConfiguredExtras(extra: any) {
+  //   const index = this.chosenExtras.indexOf(extra);
+  //   if (index > -1) {
+  //     this.chosenExtras.splice(index, 1);
+  //   } else {
+  //     this.chosenExtras.push(extra);
+  //   }
+  //   this.configuredWindow.listaDodatkow = this.chosenExtras;
+  //   // this.setConfiguredValues();
+  // }
 
 
   priceCalculation(configuredWindow) {
@@ -332,7 +345,7 @@ export class RoofWindowsConfigComponent implements OnInit {
       if (configuredWindow.oblachowanieFinisz) {
         windowPrice += this.getWindowCircuit(configuredWindow) * windowToCalculations[configuredWindow.oblachowanieFinisz];
       }
-      for (const extra of this.chosenExtras) {
+      for (const extra of configuredWindow.listaDodatkow) {
         windowPrice += +windowToCalculations[extra];
       }
       if (configuredWindow.wentylacja) {
@@ -544,6 +557,7 @@ export class RoofWindowsConfigComponent implements OnInit {
             errors = null;
           }
         }
+        // TODO odkomentować kod po wprowadzeniu listy zewnętrznych koloróœ
         // for (const option of colorOptions) {
         //   if (group.controls.outerColor.value === option) {
         //     errors = null;
@@ -926,7 +940,7 @@ export class RoofWindowsConfigComponent implements OnInit {
 
   onCoatsHover(coatOptions: HTMLDivElement) {
     this.coatsVisible = !this.coatsVisible;
-    this.onHoverClick(coatOptions, this.coats.length, this.coatsVisible);
+    this.onHoverClick(coatOptions, this.coatsFromFile.length, this.coatsVisible);
   }
 
   onDimensionsHover(dimensionOption: HTMLDivElement) {
@@ -958,7 +972,7 @@ export class RoofWindowsConfigComponent implements OnInit {
 
   onExtrasHover(extrasOptions: HTMLDivElement) {
     this.extrasVisible = !this.extrasVisible;
-    this.onHoverClick(extrasOptions, this.extras.length + 5, this.extrasVisible);
+    this.onHoverClick(extrasOptions, this.extrasFromFile.length + 5, this.extrasVisible);
   }
 
   moveWidthOutput(outputWidth: HTMLOutputElement) {
@@ -1018,7 +1032,7 @@ export class RoofWindowsConfigComponent implements OnInit {
   // DISABLE INPUT SETTER LOGIC
   setDisabled(configuredWindow: RoofWindowSkylight) {
     this.resetAllArrays(this.materials, this.openingTypes, this.innerColors, this.outerMaterials, this.outerColors, this.outerColorFinishes,
-      this.glazingTypes, this.coats, this.extras, this.ventilations, this.handles, this.handleColors);
+      this.glazingTypes, this.coatsFromFile, this.extrasFromFile, this.ventilations, this.handles, this.handleColors);
     // tslint:disable-next-line:forin
     for (const configurationOption in configuredWindow) {
       const selectedOption = configuredWindow[configurationOption];
@@ -1029,7 +1043,7 @@ export class RoofWindowsConfigComponent implements OnInit {
           this.setDisabledOptions(tempExclusionValue, selectedOption,
             this.materials, this.openingTypes, this.innerColors,
             this.outerMaterials, this.outerColors, this.outerColorFinishes,
-            this.glazingTypes, this.coats, this.extras, this.ventilations,
+            this.glazingTypes, this.coatsFromFile, this.extrasFromFile, this.ventilations,
             this.handles, this.handleColors, this.exclusions);
         }
       }
