@@ -233,14 +233,14 @@ export class RoofWindowsConfigComponent implements OnInit {
         const checkboxCoatControl = this.coats as FormArray;
         this.subscription = checkboxCoatControl.valueChanges.subscribe(checkbox => {
           checkboxCoatControl.setValue(checkboxCoatControl.value.map((value, i) =>
-            value ? this.coatsFromFile[i].option : this.coatsFromFile[i].disabled = null), {emitEvent: false});
+            value ? this.coatsFromFile[i].option : false), {emitEvent: false});
         });
       }),
       tap(() => {
         const checkboxExtraControl = this.extras as FormArray;
         this.subscription = checkboxExtraControl.valueChanges.subscribe(checkbox => {
           checkboxExtraControl.setValue(checkboxExtraControl.value.map((value, i) =>
-            value ? this.extrasFromFile[i].option : this.extrasFromFile[i].disabled = null), {emitEvent: false});
+            value ? this.extrasFromFile[i].option : false), {emitEvent: false});
         });
       }),
       tap((form: any) => {
@@ -249,6 +249,7 @@ export class RoofWindowsConfigComponent implements OnInit {
         });
       }),
       map((form) => {
+        console.log(form);
         this.setConfiguredValues(form);
       })).subscribe();
   }
@@ -329,8 +330,10 @@ export class RoofWindowsConfigComponent implements OnInit {
       if (configuredWindow.pakietSzybowy) {
         windowPrice += this.getWindowCircuit(configuredWindow) * windowToCalculations[configuredWindow.glazingToCalculation];
       }
-      for (const coat of this.chosenCoats) {
-        windowPrice += +windowToCalculations[coat];
+      for (const coat of configuredWindow.windowCoats) {
+        if (coat !== false) {
+          windowPrice += +windowToCalculations[coat];
+        }
       }
       if (configuredWindow.stolarkaKolor) {
         windowPrice += this.getWindowCircuit(configuredWindow) * windowToCalculations[configuredWindow.stolarkaKolor];
@@ -345,7 +348,9 @@ export class RoofWindowsConfigComponent implements OnInit {
         windowPrice += this.getWindowCircuit(configuredWindow) * windowToCalculations[configuredWindow.oblachowanieFinisz];
       }
       for (const extra of configuredWindow.listaDodatkow) {
-        windowPrice += +windowToCalculations[extra];
+        if (extra !== false) {
+          windowPrice += +windowToCalculations[extra];
+        }
       }
       if (configuredWindow.wentylacja) {
         windowPrice += +windowToCalculations[configuredWindow.wentylacja];
