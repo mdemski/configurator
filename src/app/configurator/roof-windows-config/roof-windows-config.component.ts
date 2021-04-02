@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
-import {BehaviorSubject, Observable, Observer, pipe, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, Observer, Subject, Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 import {RoofWindowSkylight} from '../../models/roof-window-skylight';
 import {ConfigurationDistributorService} from '../../services/configuration-distributor.service';
@@ -9,7 +9,7 @@ import {ConfigurationDataService} from '../../services/configuration-data.servic
 import {AuthService} from '../../services/auth.service';
 import {WindowDynamicValuesSetterService} from '../../services/window-dynamic-values-setter.service';
 import _ from 'lodash';
-import {map, tap} from 'rxjs/operators';
+import {filter, map, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-roof-windows-config',
@@ -77,6 +77,9 @@ export class RoofWindowsConfigComponent implements OnInit {
   shopRoofWindowLink: string;
   configurationSummary: string;
   formData$;
+  subscription: Subscription;
+  coats$ = new Subject<any[]>();
+  extras$ = new Subject<any[]>();
   glazingName$ = new BehaviorSubject('Okno:E01');
 
   static setDimensions(dimensions) {
@@ -104,8 +107,8 @@ export class RoofWindowsConfigComponent implements OnInit {
       this.ventilations = this.objectMaker(this.configData.ventialtions);
       this.handles = this.objectMaker(this.configData.handles);
       this.handleColors = this.objectMaker(this.configData.handleColors);
-      this.prepareCoatsArray(this.coatsFromFile);
-      this.prepareExtrasArray(this.extrasFromFile);
+      this.coats$.next(this.coatsFromFile);
+      this.extras$.next(this.extrasFromFile);
     });
     // TODO get next id from database
     this.configuredWindow = new RoofWindowSkylight(
@@ -147,12 +150,11 @@ export class RoofWindowsConfigComponent implements OnInit {
       null,
       null,
       0);
-    this.form = new FormGroup({
+    this.form = this.fb.group({
       material: new FormControl(null, [], [this.validateMaterials.bind(this)]),
       openingType: new FormControl(null, [], [this.validateOpenings.bind(this)]),
       control: new FormControl(null),
       glazing: new FormControl('dwuszybowy', [], [this.validateGlazing.bind(this)]),
-      coats: new FormArray([]),
       width: new FormControl(78),
       height: new FormControl(118),
       innerColor: new FormControl(null, [], [this.validateInnerColor.bind(this)]),
@@ -161,12 +163,23 @@ export class RoofWindowsConfigComponent implements OnInit {
         outerColor: new FormControl('Aluminium:RAL7022'),
         outerColorFinish: new FormControl(null)
       }, [], [this.validateOuterMaterial.bind(this)]),
-      extras: new FormArray([]),
       ventilation: new FormControl('NawiewnikNeoVent', [], [this.validateVentilation.bind(this)]),
       closure: new FormGroup({
         handle: new FormControl(null, [], [this.validateHandle.bind(this)]),
         handleColor: new FormControl(null)
       })
+    });
+    this.coats$.pipe(
+      filter(data => !!data),
+      map(coats => this.fb.array(coats.map(x => new FormControl(false))))
+    ).subscribe(coatsFormArray => {
+      this.form.addControl('coats', coatsFormArray);
+    });
+    this.extras$.pipe(
+      filter(data => !!data),
+      map(extras => this.fb.array(extras.map(x => new FormControl(false))))
+    ).subscribe(extrasFormArray => {
+      this.form.addControl('extras', extrasFormArray);
     });
     this.tempConfiguredWindow = new RoofWindowSkylight(
       '999',
@@ -214,27 +227,38 @@ export class RoofWindowsConfigComponent implements OnInit {
       this.configurationSummary = text.configurationSummary;
     });
     this.formData$ = this.form.valueChanges; // strumień z danymi z formularza
-    this.formData$.pipe(tap((form: any) => {
+    this.formData$.pipe(
+      filter((form: any) => form.material != null),
+      tap(() => {
+        const checkboxCoatControl = this.coats as FormArray;
+        this.subscription = checkboxCoatControl.valueChanges.subscribe(checkbox => {
+          checkboxCoatControl.setValue(checkboxCoatControl.value.map((value, i) =>
+            value ? this.coatsFromFile[i].option : this.coatsFromFile[i].disabled = null), {emitEvent: false});
+        });
+      }),
+      tap(() => {
+        const checkboxExtraControl = this.extras as FormArray;
+        this.subscription = checkboxExtraControl.valueChanges.subscribe(checkbox => {
+          checkboxExtraControl.setValue(checkboxExtraControl.value.map((value, i) =>
+            value ? this.extrasFromFile[i].option : this.extrasFromFile[i].disabled = null), {emitEvent: false});
+        });
+      }),
+      tap((form: any) => {
         this.windowValuesSetter.glazingTypeSetter(form.material, form.glazing, form.coats, 'Okno').subscribe(glazingName => {
           this.glazingName$.next(glazingName);
         });
       }),
-      map((form: FormGroup) => {
-        console.log(form);
+      map((form) => {
         this.setConfiguredValues(form);
       })).subscribe();
-    (this.form.get('coats') as FormArray).valueChanges.subscribe(value => setTimeout(() => {
-      console.log(value);
-      this.form.updateValueAndValidity();
-    }));
   }
 
-  prepareCoatsArray(coats: any[]) {
-    return coats;
+  get coats(): FormArray {
+    return this.form.get('coats') as FormArray;
   }
 
-  prepareExtrasArray(extras: any[]) {
-    return extras;
+  get extras(): FormArray {
+    return this.form.get('extras') as FormArray;
   }
 
   setConfiguredValues(form) {
@@ -246,12 +270,6 @@ export class RoofWindowsConfigComponent implements OnInit {
       form.openingType) {
       this.popupConfig = true;
     }
-    // TODO poprawić oznaczenie pakietu szybowego
-    // this.configuredWindow.pakietSzybowy = 'Okno:' + this.windowValuesSetter.glazingTypeSetter(
-    //    this.windowConfigurationForm.value.material,
-    //    this.windowConfigurationForm.value.glazing,
-    //    this.chosenCoats,
-    //    'okno');
     this.glazingName$.subscribe(pakietSzybowy => {
       this.configuredWindow.pakietSzybowy = pakietSzybowy;
     });
@@ -293,26 +311,7 @@ export class RoofWindowsConfigComponent implements OnInit {
     this.setDisabled(this.configuredWindow);
   }
 
-  // setConfiguredCoats(coat) {
-  //   const index = this.chosenCoats.indexOf(coat);
-  //   if (index > -1) {
-  //     this.chosenCoats.splice(index, 1);
-  //   } else {
-  //     this.chosenCoats.push(coat);
-  //   }
-  //   this.configuredWindow.windowCoats = this.chosenCoats;
-  // }
   //
-  // setConfiguredExtras(extra: any) {
-  //   const index = this.chosenExtras.indexOf(extra);
-  //   if (index > -1) {
-  //     this.chosenExtras.splice(index, 1);
-  //   } else {
-  //     this.chosenExtras.push(extra);
-  //   }
-  //   this.configuredWindow.listaDodatkow = this.chosenExtras;
-  //   // this.setConfiguredValues();
-  // }
 
 
   priceCalculation(configuredWindow) {
@@ -460,10 +459,6 @@ export class RoofWindowsConfigComponent implements OnInit {
   }
 
   // VALIDATORS
-  inactiveOptionSetter() {
-
-  }
-
   validateMaterials<AsyncValidatorFn>(control: FormControl) {
     return new Observable((observer: Observer<ValidationErrors | null>) => {
       let options = [];
