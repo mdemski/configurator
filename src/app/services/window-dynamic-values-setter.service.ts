@@ -57,7 +57,6 @@ export class WindowDynamicValuesSetterService {
     window.windowUG = 0.7;
     window.windowUW = 1.06;
     const pakietTemp = window.pakietSzybowy.toLowerCase().split(':')[1];
-    console.log(window);
     if (pakietTemp.startsWith('e')) {
       window.windowUG = 1.0;
       if (window.stolarkaMaterial === 'DrewnoSosna') {
@@ -199,6 +198,18 @@ export class WindowDynamicValuesSetterService {
             const isEqual = _.isEqual(tempGlazingType, innerLoopGlazing);
             if (isEqual) {
               model = using.concat(':', glazingModel);
+            }
+          }
+          if (model === '') {
+            if (glazing === 'dwuszybowy') {
+              model = using.concat(':', 'E02');
+            }
+            if (glazing === 'trzyszybowy' && material === 'DrewnoSosna') {
+              model = using.concat(':', 'I22');
+            }
+
+            if (glazing === 'trzyszybowy' && material === 'PVC') {
+              model = using.concat(':', 'N22');
             }
           }
           return model;
