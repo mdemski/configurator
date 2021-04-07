@@ -1,59 +1,80 @@
 export class Flashing {
-  private _flashingId: number;
+  private _kod: string;
+  private _nazwaPozycjiPL: string;
   private _flashingName: string;
-  private _flashingModel: string;
-  private _flashingWidth: number;
-  private _flashingHeight: number;
-  private _flashingCategory: string;
-  private _flashingSubCategory: string;
-  private _flashingType: string;
-  private _flashingMaterial: string;
-  private _flashingMaterialColor: string;
-  private _flashingMaterialFinish: string;
+  private _indeksAlgorytm: string;
+  private _nazwaPLAlgorytm: string;
+  private _status: string;
+  private _model: string;
+  private _szerokosc: number;
+  private _wysokosc: number;
+  private _grupaAsortymentowa: string;
+  private _typ: string;
+  private _geometria: string;
+  private _rodzaj: string;
+  private _oblachowanieMaterial: string;
+  private _oblachowanieKolor: string;
+  private _oblachowanieFinisz: string;
+  private _typKolnierza: string;
+  private _wiatrownicaDlugosc: number;
   private _flashingApron: string;
   private _flashingTileHeight: number;
   private _flashingCombination: boolean;
   private _flashingNumberOfConnections: number;
   private _flashingCombinationDirection: string;
-  private _flashingHorizontalSpacing: number;
-  private _flashingVerticalSpacing: number;
-  private _flashingCombinationWidths: [number];
-  private _flashingCombinationHeights: [number];
+  private _rozstawPoziom: number;
+  private _rozstawPion: number;
+  private _flashingCombinationWidths: number[];
+  private _flashingCombinationHeights: number[];
   private _flashingPrice: number;
 
 
   // tslint:disable-next-line:max-line-length
-  constructor(flashingId: number, flashingName: string, flashingModel: string, flashingWidth: number, flashingHeight: number, flashingCategory: string, flashingSubCategory: string, flashingType: string, flashingMaterial: string, flashingMaterialColor: string, flashingMaterialFinish: string, flashingApron: string, flashingTileHeight: number, flashingCombination: boolean, flashingNumberOfConnections: number, flashingCombinationDirection: string, flashingHorizontalSpacing: number, flashingVerticalSpacing: number, flashingCombinationWidths: [number], flashingCombinationHeights: [number], flashingPrice: number) {
-    this._flashingId = flashingId;
+  constructor(kod: string, nazwaPozycjiPL: string, flashingName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, rodzaj: string, oblachowanieMaterial: string, oblachowanieKolor: string, oblachowanieFinisz: string, typKolnierza: string, wiatrownicaDlugosc: number, flashingApron: string, flashingTileHeight: number, flashingCombination: boolean, flashingNumberOfConnections: number, flashingCombinationDirection: string, rozstawPoziom: number, rozstawPion: number, flashingCombinationWidths: number[], flashingCombinationHeights: number[], flashingPrice: number) {
+    this._kod = kod;
+    this._nazwaPozycjiPL = nazwaPozycjiPL;
     this._flashingName = flashingName;
-    this._flashingModel = flashingModel;
-    this._flashingWidth = flashingWidth;
-    this._flashingHeight = flashingHeight;
-    this._flashingCategory = flashingCategory;
-    this._flashingSubCategory = flashingSubCategory;
-    this._flashingType = flashingType;
-    this._flashingMaterial = flashingMaterial;
-    this._flashingMaterialColor = flashingMaterialColor;
-    this._flashingMaterialFinish = flashingMaterialFinish;
+    this._indeksAlgorytm = indeksAlgorytm;
+    this._nazwaPLAlgorytm = nazwaPLAlgorytm;
+    this._status = status;
+    this._model = model;
+    this._szerokosc = szerokosc;
+    this._wysokosc = wysokosc;
+    this._grupaAsortymentowa = grupaAsortymentowa;
+    this._typ = typ;
+    this._geometria = geometria;
+    this._rodzaj = rodzaj;
+    this._oblachowanieMaterial = oblachowanieMaterial;
+    this._oblachowanieKolor = oblachowanieKolor;
+    this._oblachowanieFinisz = oblachowanieFinisz;
+    this._typKolnierza = typKolnierza;
+    this._wiatrownicaDlugosc = wiatrownicaDlugosc;
     this._flashingApron = flashingApron;
     this._flashingTileHeight = flashingTileHeight;
     this._flashingCombination = flashingCombination;
     this._flashingNumberOfConnections = flashingNumberOfConnections;
     this._flashingCombinationDirection = flashingCombinationDirection;
-    this._flashingHorizontalSpacing = flashingHorizontalSpacing;
-    this._flashingVerticalSpacing = flashingVerticalSpacing;
+    this._rozstawPoziom = rozstawPoziom;
+    this._rozstawPion = rozstawPion;
     this._flashingCombinationWidths = flashingCombinationWidths;
     this._flashingCombinationHeights = flashingCombinationHeights;
     this._flashingPrice = flashingPrice;
   }
 
-
-  get flashingId(): number {
-    return this._flashingId;
+  get kod(): string {
+    return this._kod;
   }
 
-  set flashingId(value: number) {
-    this._flashingId = value;
+  set kod(value: string) {
+    this._kod = value;
+  }
+
+  get nazwaPozycjiPL(): string {
+    return this._nazwaPozycjiPL;
+  }
+
+  set nazwaPozycjiPL(value: string) {
+    this._nazwaPozycjiPL = value;
   }
 
   get flashingName(): string {
@@ -64,76 +85,124 @@ export class Flashing {
     this._flashingName = value;
   }
 
-  get flashingModel(): string {
-    return this._flashingModel;
+  get indeksAlgorytm(): string {
+    return this._indeksAlgorytm;
   }
 
-  set flashingModel(value: string) {
-    this._flashingModel = value;
+  set indeksAlgorytm(value: string) {
+    this._indeksAlgorytm = value;
   }
 
-  get flashingWidth(): number {
-    return this._flashingWidth;
+  get nazwaPLAlgorytm(): string {
+    return this._nazwaPLAlgorytm;
   }
 
-  set flashingWidth(value: number) {
-    this._flashingWidth = value;
+  set nazwaPLAlgorytm(value: string) {
+    this._nazwaPLAlgorytm = value;
   }
 
-  get flashingHeight(): number {
-    return this._flashingHeight;
+  get status(): string {
+    return this._status;
   }
 
-  set flashingHeight(value: number) {
-    this._flashingHeight = value;
+  set status(value: string) {
+    this._status = value;
   }
 
-  get flashingCategory(): string {
-    return this._flashingCategory;
+  get model(): string {
+    return this._model;
   }
 
-  set flashingCategory(value: string) {
-    this._flashingCategory = value;
+  set model(value: string) {
+    this._model = value;
   }
 
-  get flashingSubCategory(): string {
-    return this._flashingSubCategory;
+  get szerokosc(): number {
+    return this._szerokosc;
   }
 
-  set flashingSubCategory(value: string) {
-    this._flashingSubCategory = value;
+  set szerokosc(value: number) {
+    this._szerokosc = value;
   }
 
-  get flashingType(): string {
-    return this._flashingType;
+  get wysokosc(): number {
+    return this._wysokosc;
   }
 
-  set flashingType(value: string) {
-    this._flashingType = value;
+  set wysokosc(value: number) {
+    this._wysokosc = value;
   }
 
-  get flashingMaterial(): string {
-    return this._flashingMaterial;
+  get grupaAsortymentowa(): string {
+    return this._grupaAsortymentowa;
   }
 
-  set flashingMaterial(value: string) {
-    this._flashingMaterial = value;
+  set grupaAsortymentowa(value: string) {
+    this._grupaAsortymentowa = value;
   }
 
-  get flashingMaterialColor(): string {
-    return this._flashingMaterialColor;
+  get typ(): string {
+    return this._typ;
   }
 
-  set flashingMaterialColor(value: string) {
-    this._flashingMaterialColor = value;
+  set typ(value: string) {
+    this._typ = value;
   }
 
-  get flashingMaterialFinish(): string {
-    return this._flashingMaterialFinish;
+  get geometria(): string {
+    return this._geometria;
   }
 
-  set flashingMaterialFinish(value: string) {
-    this._flashingMaterialFinish = value;
+  set geometria(value: string) {
+    this._geometria = value;
+  }
+
+  get rodzaj(): string {
+    return this._rodzaj;
+  }
+
+  set rodzaj(value: string) {
+    this._rodzaj = value;
+  }
+
+  get oblachowanieMaterial(): string {
+    return this._oblachowanieMaterial;
+  }
+
+  set oblachowanieMaterial(value: string) {
+    this._oblachowanieMaterial = value;
+  }
+
+  get oblachowanieKolor(): string {
+    return this._oblachowanieKolor;
+  }
+
+  set oblachowanieKolor(value: string) {
+    this._oblachowanieKolor = value;
+  }
+
+  get oblachowanieFinisz(): string {
+    return this._oblachowanieFinisz;
+  }
+
+  set oblachowanieFinisz(value: string) {
+    this._oblachowanieFinisz = value;
+  }
+
+  get typKolnierza(): string {
+    return this._typKolnierza;
+  }
+
+  set typKolnierza(value: string) {
+    this._typKolnierza = value;
+  }
+
+  get wiatrownicaDlugosc(): number {
+    return this._wiatrownicaDlugosc;
+  }
+
+  set wiatrownicaDlugosc(value: number) {
+    this._wiatrownicaDlugosc = value;
   }
 
   get flashingApron(): string {
@@ -176,35 +245,35 @@ export class Flashing {
     this._flashingCombinationDirection = value;
   }
 
-  get flashingHorizontalSpacing(): number {
-    return this._flashingHorizontalSpacing;
+  get rozstawPoziom(): number {
+    return this._rozstawPoziom;
   }
 
-  set flashingHorizontalSpacing(value: number) {
-    this._flashingHorizontalSpacing = value;
+  set rozstawPoziom(value: number) {
+    this._rozstawPoziom = value;
   }
 
-  get flashingVerticalSpacing(): number {
-    return this._flashingVerticalSpacing;
+  get rozstawPion(): number {
+    return this._rozstawPion;
   }
 
-  set flashingVerticalSpacing(value: number) {
-    this._flashingVerticalSpacing = value;
+  set rozstawPion(value: number) {
+    this._rozstawPion = value;
   }
 
-  get flashingCombinationWidths(): [number] {
+  get flashingCombinationWidths(): number[] {
     return this._flashingCombinationWidths;
   }
 
-  set flashingCombinationWidths(value: [number]) {
+  set flashingCombinationWidths(value: number[]) {
     this._flashingCombinationWidths = value;
   }
 
-  get flashingCombinationHeights(): [number] {
+  get flashingCombinationHeights(): number[] {
     return this._flashingCombinationHeights;
   }
 
-  set flashingCombinationHeights(value: [number]) {
+  set flashingCombinationHeights(value: number[]) {
     this._flashingCombinationHeights = value;
   }
 
