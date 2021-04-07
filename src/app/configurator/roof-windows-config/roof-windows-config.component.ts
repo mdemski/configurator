@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
 import {BehaviorSubject, Observable, Observer, Subject, Subscription} from 'rxjs';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {RoofWindowSkylight} from '../../models/roof-window-skylight';
 import {ConfigurationDistributorService} from '../../services/configuration-distributor.service';
 import {ConfigurationDataService} from '../../services/configuration-data.service';
@@ -10,20 +10,23 @@ import {AuthService} from '../../services/auth.service';
 import {WindowDynamicValuesSetterService} from '../../services/window-dynamic-values-setter.service';
 import _ from 'lodash';
 import {filter, map, tap} from 'rxjs/operators';
+import {IpService} from '../../services/ip.service';
 
 @Component({
   selector: 'app-roof-windows-config',
   templateUrl: './roof-windows-config.component.html',
   styleUrls: ['./roof-windows-config.component.scss']
 })
-export class RoofWindowsConfigComponent implements OnInit {
+export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
 
   // TODO przygotować strumień i service do publikowania tej danej po aplikacji
   constructor(private authService: AuthService,
               private configData: ConfigurationDataService,
               private configDist: ConfigurationDistributorService,
               private windowValuesSetter: WindowDynamicValuesSetterService,
+              private ip: IpService,
               private router: Router,
+              private activeRouter: ActivatedRoute,
               private fb: FormBuilder,
               public translate: TranslateService) {
     translate.addLangs(['pl', 'en', 'fr', 'de']);
@@ -31,7 +34,8 @@ export class RoofWindowsConfigComponent implements OnInit {
   }
 
   form: FormGroup;
-  loginUser: string;
+  configId: number;
+  user: string;
   dimensions;
   configuredWindow: RoofWindowSkylight;
   tempConfiguredWindow: RoofWindowSkylight;
@@ -58,8 +62,6 @@ export class RoofWindowsConfigComponent implements OnInit {
   stepWidth = 1;
   stepHeight = 1;
   availableOptions = [];
-  chosenCoats = [];
-  chosenExtras = [];
   exclusions = [];
   sets = [];
   materials = [];
@@ -88,7 +90,16 @@ export class RoofWindowsConfigComponent implements OnInit {
 
   // 'width': new FormControl(78, [this.validateWidth.bind(this), Validators.required]), własnym walidator
   ngOnInit(): void {
-    this.authService.isLogged ? this.authService.user.subscribe(user => this.loginUser = user.email) : this.loginUser = null;
+    this.authService.isLogged ? this.authService.user.subscribe(user => this.user = user.email)
+      // @ts-ignore
+      : this.ip.getIpAddress().subscribe(userIp => this.user = userIp.ip);
+    this.activeRouter.params.subscribe(param => {
+      if (param['configId'] !== undefined) {
+        this.configId = param['configId'];
+      } else {
+        this.configId = 1;
+      }
+    });
     this.configData.fetchAllData().subscribe(() => {
       this.windowModelsToCalculatePrice = this.configData.models;
       this.availableOptions = this.configData.availableOptions;
@@ -112,44 +123,10 @@ export class RoofWindowsConfigComponent implements OnInit {
     });
     // TODO get next id from database
     this.configuredWindow = new RoofWindowSkylight(
-      '999',
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      false,
-      0,
-      [],
-      [],
-      [],
-      [],
-      0,
-      0,
-      0,
-      5,
-      null,
-      null,
-      null,
-      0);
+      '999', null, null, null, null, null, null, null, null, null,
+      null, null, null, null, null, null, null, null, null, null, null,
+      null, null, null, null, false, 0, [], [],
+      [], [], 0, 0, 0, 5, null, null, null, 0);
     this.form = this.fb.group({
       material: new FormControl(null, [], [this.validateMaterials.bind(this)]),
       openingType: new FormControl(null, [], [this.validateOpenings.bind(this)]),
@@ -181,45 +158,6 @@ export class RoofWindowsConfigComponent implements OnInit {
     ).subscribe(extrasFormArray => {
       this.form.addControl('extras', extrasFormArray);
     });
-    this.tempConfiguredWindow = new RoofWindowSkylight(
-      '999',
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      false,
-      0,
-      [],
-      [],
-      [],
-      [],
-      1000,
-      1,
-      0.5,
-      5,
-      null,
-      null,
-      null,
-      0);
     this.translate.get('LINK').subscribe(text => {
       this.shopRoofWindowLink = text.shopRoofWindows;
     });
@@ -249,9 +187,19 @@ export class RoofWindowsConfigComponent implements OnInit {
         });
       }),
       map((form) => {
-        console.log(form);
         this.setConfiguredValues(form);
       })).subscribe();
+    this.tempConfiguredWindow = new RoofWindowSkylight(
+      '999', null, null, null, null, null, null, null, null, null,
+      null, null, null, null, null, null, null, null, null, null, null,
+      null, null, null, null, false, 0, [], [], [],
+      [], 1000, 1, 0.5, 5, null, null, null, 0);
+  }
+
+  // TODO przygotować wczytywanie konfiguracji jeśli Klient wraca do poprawy danej konfiguracji
+
+  ngOnDestroy() {
+    // TODO odsubskrybować się ze wszystkich strumieni oprócz http - ten strumień zamyka się sam
   }
 
   get coats(): FormArray {
@@ -290,17 +238,18 @@ export class RoofWindowsConfigComponent implements OnInit {
     this.configuredWindow.wentylacja = form.ventilation;
     this.configuredWindow.stolarkaMaterial = form.material;
     this.configuredWindow.stolarkaKolor = form.innerColor;
-    this.configuredWindow.oblachowanieMaterial = form.outerMaterial;
-    this.configuredWindow.rodzina = 'OknoDachowe:' + this.getGeometry(this.configuredWindow.stolarkaMaterial);
-    this.configuredWindow.oblachowanieKolor = form.outerColor;
-    this.configuredWindow.oblachowanieFinisz = form.outerColorFinish;
-    this.configuredWindow.zamkniecieTyp = form.handle;
-    this.configuredWindow.zamkniecieKolor = form.handleColor;
+    this.configuredWindow.oblachowanieMaterial = form.outer.outerMaterial;
+    this.configuredWindow.rodzina = this.getFamily(this.configuredWindow.stolarkaMaterial, this.configuredWindow.otwieranie);
+    this.configuredWindow.rodzaj = this.getType(this.configuredWindow.stolarkaMaterial, this.configuredWindow.otwieranie);
+    this.configuredWindow.oblachowanieKolor = form.outer.outerColor;
+    this.configuredWindow.oblachowanieFinisz = form.outer.outerColorFinish;
+    this.configuredWindow.zamkniecieTyp = form.closure.handle;
+    this.configuredWindow.zamkniecieKolor = form.closure.handleColor;
     this.configuredWindow.uszczelki = 2;
     this.configuredWindow.windowCoats = form.coats;
     this.configuredWindow.listaDodatkow = form.extras;
     this.configuredWindow.kolorTworzywWew = this.configuredWindow.zamkniecieKolor === 'Okno:RAL7048' ? 'Okno:RAL7048' : 'Okno:RAL9016';
-    this.configuredWindow.kolorTworzywZew = 'RAL7048';
+    this.configuredWindow.kolorTworzywZew = 'Okno:RAL7048';
     this.configuredWindow.windowHardware = false;
     this.configuredWindow.numberOfGlasses = this.configuredWindow.glazingToCalculation === 'dwuszybowy' ? 2 : 3;
     this.configuredWindow.kod = this.generateCode(this.configuredWindow.stolarkaMaterial, this.configuredWindow.otwieranie,
@@ -310,6 +259,7 @@ export class RoofWindowsConfigComponent implements OnInit {
     this.configuredWindow.CenaDetaliczna = this.priceCalculation(this.configuredWindow);
     this.windowValuesSetter.setUwAndUgValues(this.configuredWindow);
     this.setDisabled(this.configuredWindow);
+    console.log(this.configuredWindow);
   }
 
   //
@@ -614,36 +564,41 @@ export class RoofWindowsConfigComponent implements OnInit {
 
   onSubmit() {
     this.tempConfiguredWindow.grupaAsortymentowa = 'Okna dachowe';
-    this.tempConfiguredWindow.windowCoats = ['toughenedOuter'];
-    this.tempConfiguredWindow.dostepneRozmiary = ['hardware'];
-    this.tempConfiguredWindow.geometria = 'IS';
+    this.tempConfiguredWindow.windowCoats = ['zewnetrznaHartowana', false, false, false, false, false, false, false, false];
+    this.tempConfiguredWindow.dostepneRozmiary = ['78x118'];
+    this.tempConfiguredWindow.geometria = 'Okno:IS';
+    this.tempConfiguredWindow.rodzaj = 'OknoDachowe:ISO';
     this.tempConfiguredWindow.pakietSzybowy = 'Okno:E02';
     this.tempConfiguredWindow.glazingToCalculation = 'dwuszybowy';
-    this.tempConfiguredWindow.zamkniecieTyp = 'handleSecure7048';
-    this.tempConfiguredWindow.zamkniecieKolor = 'handleSecure7048';
+    this.tempConfiguredWindow.zamkniecieTyp = 'Okno:ExtraSecure';
+    this.tempConfiguredWindow.zamkniecieKolor = 'Okno:RAL7048';
     this.tempConfiguredWindow.windowHardware = false;
     this.tempConfiguredWindow.wysokosc = 119;
     this.tempConfiguredWindow.szerokosc = 79;
-    this.tempConfiguredWindow.stolarkaMaterial = 'materialWood';
-    this.tempConfiguredWindow.stolarkaKolor = 'innerColorNatural';
-    this.tempConfiguredWindow.rodzina = 'gładki';
-    this.tempConfiguredWindow.model = 'ISOV';
-    this.tempConfiguredWindow.uszczelki = null;
+    this.tempConfiguredWindow.stolarkaMaterial = 'DrewnoSosna';
+    this.tempConfiguredWindow.stolarkaKolor = 'Drewno:Bezbarwne';
+    this.tempConfiguredWindow.rodzina = 'OknoDachowe:IS';
+    this.tempConfiguredWindow.model = 'Okno:ISOV';
+    this.tempConfiguredWindow.uszczelki = 2;
     this.tempConfiguredWindow.windowName = 'ISOV E2 79x119';
-    this.tempConfiguredWindow.otwieranie = 'centrePivot';
+    this.tempConfiguredWindow.otwieranie = 'Okno:Obrotowe';
     this.tempConfiguredWindow.oblachowanieKolor = 'RAL9999';
-    this.tempConfiguredWindow.oblachowanieFinisz = 'semiMatFinish';
-    this.tempConfiguredWindow.oblachowanieMaterial = 'aluminium';
+    this.tempConfiguredWindow.oblachowanieFinisz = 'Aluminium:Półmat';
+    this.tempConfiguredWindow.oblachowanieMaterial = 'Aluminium';
     this.tempConfiguredWindow.CenaDetaliczna = 1332.80;
     this.tempConfiguredWindow.typ = 'obrotowe';
     this.tempConfiguredWindow.windowUG = 1;
     this.tempConfiguredWindow.windowUW = 1.2;
     this.tempConfiguredWindow.linkiDoZdjec = ['https://www.okpol.pl/wp-content/uploads/2017/02/1_ISO.jpg'];
-    this.tempConfiguredWindow.wentylacja = 'ventilationNeoVent';
-    this.tempConfiguredWindow.numberOfGlasses = 3;
+    this.tempConfiguredWindow.listaDodatkow = ['Okno:Zasuwka', false, false];
+    this.tempConfiguredWindow.wentylacja = 'NawiewnikNeoVent';
+    this.tempConfiguredWindow.numberOfGlasses = 2;
+    this.tempConfiguredWindow.kolorTworzywWew = 'Okno:RAL7048';
+    this.tempConfiguredWindow.kolorTworzywZew = 'Okno:RAL7048';
+    this.tempConfiguredWindow.kod = '1O-ISO-V-E02-KL00-A7022P-079119-OKPO01';
+    this.configDist.addWindowToConfigurationsArray(this.user, this.tempConfiguredWindow, this.configId);
     // TODO zapisz dane do Firebase przed emisją żeby nie utracić konfiguracji
     // TODO przygotować model konfiguracji w której będą przechowywane: okno, kołnierz, roleta - a później publikować tablice
-    this.configDist.populateData(this.tempConfiguredWindow, null, null);
     this.router.navigate(['/' + this.configurationSummary]);
   }
 
@@ -695,13 +650,97 @@ export class RoofWindowsConfigComponent implements OnInit {
     let geometry = '';
     switch (material) {
       case 'DrewnoSosna':
-        geometry = 'Okno:IS';
+        geometry = 'IS';
         break;
       case 'PVC':
-        geometry = 'Okno:IG2';
+        geometry = 'IG2';
         break;
     }
     return geometry;
+  }
+
+  getType(material: string, openingType: string) {
+    let type = 'OknoDachowe:';
+    switch (material) {
+      case 'DrewnoSosna':
+        material = 'IS';
+        break;
+      case 'PVC':
+        material = 'IG';
+        break;
+    }
+    switch (openingType) {
+      case 'Okno:Obrotowe':
+        type += 'O';
+        break;
+      case 'Okno:Uchylno-przesuwne':
+        type += 'K';
+        break;
+      case 'Okno:NieotwieraneFIP':
+        type += 'X';
+        break;
+      case 'Okno:ElektrycznePilot':
+        type += 'C1';
+        break;
+      case 'Okno:ElektrycznePrzełącznik':
+        type += 'C2';
+        break;
+      case 'Okno:Wysokoosiowe':
+        type += 'W';
+        break;
+      case 'KolankoDrewno:NieotwieraneFIP':
+        type = 'OknoKolankowe:IKD';
+        break;
+      case 'KolankoDrewno:Uchylne':
+        type = 'OknoKolankowe:IKD';
+        break;
+      case 'KolankoPVC:UchylnoRozwierneLewe':
+        type = 'OknoKolankowe:KPVC';
+        break;
+      case 'KolankoPVC:UchylnoRozwiernePrawe':
+        type = 'OknoKolankowe:KPVC';
+        break;
+      case 'KolankoPVC:Uchylne':
+        type = 'OknoKolankowe:KPVC';
+        break;
+      case 'KolankoPVC:NieotwieraneFIX':
+        type = 'OknoKolankowe:KPVC';
+        break;
+    }
+    return type;
+  }
+
+  getFamily(material: string, openingType: string) {
+    let family = 'OknoDachowe:';
+    switch (material) {
+      case 'DrewnoSosna':
+        material = 'IS';
+        break;
+      case 'PVC':
+        material = 'IG';
+        break;
+    }
+    switch (openingType) {
+      case 'KolankoDrewno:NieotwieraneFIP':
+        family = 'OknoKolankowe:IS';
+        break;
+      case 'KolankoDrewno:Uchylne':
+        family = 'OknoKolankowe:IS';
+        break;
+      case 'KolankoPVC:UchylnoRozwierneLewe':
+        family = 'OknoKolankowe:88MD';
+        break;
+      case 'KolankoPVC:UchylnoRozwiernePrawe':
+        family = 'OknoKolankowe:88MD';
+        break;
+      case 'KolankoPVC:Uchylne':
+        family = 'OknoKolankowe:88MD';
+        break;
+      case 'KolankoPVC:NieotwieraneFIX':
+        family = 'OknoKolankowe:88MD';
+        break;
+    }
+    return family;
   }
 
   getWindowCircuit(configuredWindow) {
