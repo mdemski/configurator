@@ -1,47 +1,75 @@
 export class Accessory {
-  private _accessoryId: number;
+  private _kod: string;
+  private _nazwaPozycjiPL: string;
   private _accessoryName: string;
-  private _accessoryModel: string;
-  private _accessoryWidth: number;
-  private _accessoryHeight: number;
-  private _accessoryCategory: string;
-  private _accessorySubCategory: string;
-  private _accessoryType: string; // A-E dopasowanie do stolarki
-  private _accessoryMaterialType: string;
-  private _accessoryMaterialColor: string;
-  private _accessoryMaterialFinish: string; // kolor dodatków takich jak prowadnice
+  private _indeksAlgorytm: string;
+  private _nazwaPLAlgorytm: string;
+  private _status: string;
+  private _model: string;
+  private _szerokosc: number;
+  private _wysokosc: number;
+  private _grupaAsortymentowa: string;
+  private _typ: string;
+  private _geometria: string;
+  private _rodzaj: string;
+  private _rodzina: string;
+  private _dopasowanieRoletyDlugosc: string;
+  private _dopasowanieRoletySzerokosc: string;
+  private _typTkaniny: string;
+  private _kolorTkaniny: string;
+  private _kolorTworzywWew: string;
+  private _roletyKolorOsprzetu: string; // kolor dodatków takich jak prowadnice
   private _accessoryHorizontalSpacing: number; // czy montowane dwa okna jedno pod drugim? Jeśli tak to y=25cm
-  private _accessoryClosureType: string;
-  private _accessoryNameplateNumber: string;
-  private _accessoryPrice: number;
-  private _accessoryUrl: string;
+  private _otwieranie: string;
+  private _tabliczka: string;
+  private _CenaDetaliczna: number;
+  private _linkiDoZdjec: string[];
+  private _dostepneRozmiary: string[];
 
   // tslint:disable-next-line:max-line-length
-  constructor(accessoryId: number, accessoryName: string, accessoryModel: string, accessoryWidth: number, accessoryHeight: number, accessoryCategory: string, accessorySubCategory: string, accessoryType: string, accessoryMaterialType: string, accessoryMaterialColor: string, accessoryMaterialFinish: string, accessoryHorizontalSpacing: number, accessoryClosureType: string, accessoryNameplateNumber: string, accessoryPrice: number, accessoryUrl: string) {
-    this._accessoryId = accessoryId;
+  constructor(kod: string, nazwaPozycjiPL: string, accessoryName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, rodzaj: string, rodzina: string, dopasowanieRoletyDlugosc: string, dopasowanieRoletySzerokosc: string, typTkaniny: string, kolorTkaniny: string, kolorTworzywWew: string, roletyKolorOsprzetu: string, accessoryHorizontalSpacing: number, otwieranie: string, tabliczka: string, CenaDetaliczna: number, linkiDoZdjec: string[], dostepneRozmiary: string[]) {
+    this._kod = kod;
+    this._nazwaPozycjiPL = nazwaPozycjiPL;
     this._accessoryName = accessoryName;
-    this._accessoryModel = accessoryModel;
-    this._accessoryWidth = accessoryWidth;
-    this._accessoryHeight = accessoryHeight;
-    this._accessoryCategory = accessoryCategory;
-    this._accessorySubCategory = accessorySubCategory;
-    this._accessoryType = accessoryType;
-    this._accessoryMaterialType = accessoryMaterialType;
-    this._accessoryMaterialColor = accessoryMaterialColor;
-    this._accessoryMaterialFinish = accessoryMaterialFinish;
+    this._indeksAlgorytm = indeksAlgorytm;
+    this._nazwaPLAlgorytm = nazwaPLAlgorytm;
+    this._status = status;
+    this._model = model;
+    this._szerokosc = szerokosc;
+    this._wysokosc = wysokosc;
+    this._grupaAsortymentowa = grupaAsortymentowa;
+    this._typ = typ;
+    this._geometria = geometria;
+    this._rodzaj = rodzaj;
+    this._rodzina = rodzina;
+    this._dopasowanieRoletyDlugosc = dopasowanieRoletyDlugosc;
+    this._dopasowanieRoletySzerokosc = dopasowanieRoletySzerokosc;
+    this._typTkaniny = typTkaniny;
+    this._kolorTkaniny = kolorTkaniny;
+    this._kolorTworzywWew = kolorTworzywWew;
+    this._roletyKolorOsprzetu = roletyKolorOsprzetu;
     this._accessoryHorizontalSpacing = accessoryHorizontalSpacing;
-    this._accessoryClosureType = accessoryClosureType;
-    this._accessoryNameplateNumber = accessoryNameplateNumber;
-    this._accessoryPrice = accessoryPrice;
-    this._accessoryUrl = accessoryUrl;
+    this._otwieranie = otwieranie;
+    this._tabliczka = tabliczka;
+    this._CenaDetaliczna = CenaDetaliczna;
+    this._linkiDoZdjec = linkiDoZdjec;
+    this._dostepneRozmiary = dostepneRozmiary;
   }
 
-  get accessoryId(): number {
-    return this._accessoryId;
+  get kod(): string {
+    return this._kod;
   }
 
-  set accessoryId(value: number) {
-    this._accessoryId = value;
+  set kod(value: string) {
+    this._kod = value;
+  }
+
+  get nazwaPozycjiPL(): string {
+    return this._nazwaPozycjiPL;
+  }
+
+  set nazwaPozycjiPL(value: string) {
+    this._nazwaPozycjiPL = value;
   }
 
   get accessoryName(): string {
@@ -52,76 +80,140 @@ export class Accessory {
     this._accessoryName = value;
   }
 
-  get accessoryModel(): string {
-    return this._accessoryModel;
+  get indeksAlgorytm(): string {
+    return this._indeksAlgorytm;
   }
 
-  set accessoryModel(value: string) {
-    this._accessoryModel = value;
+  set indeksAlgorytm(value: string) {
+    this._indeksAlgorytm = value;
   }
 
-  get accessoryWidth(): number {
-    return this._accessoryWidth;
+  get nazwaPLAlgorytm(): string {
+    return this._nazwaPLAlgorytm;
   }
 
-  set accessoryWidth(value: number) {
-    this._accessoryWidth = value;
+  set nazwaPLAlgorytm(value: string) {
+    this._nazwaPLAlgorytm = value;
   }
 
-  get accessoryHeight(): number {
-    return this._accessoryHeight;
+  get status(): string {
+    return this._status;
   }
 
-  set accessoryHeight(value: number) {
-    this._accessoryHeight = value;
+  set status(value: string) {
+    this._status = value;
   }
 
-  get accessoryCategory(): string {
-    return this._accessoryCategory;
+  get model(): string {
+    return this._model;
   }
 
-  set accessoryCategory(value: string) {
-    this._accessoryCategory = value;
+  set model(value: string) {
+    this._model = value;
   }
 
-  get accessorySubCategory(): string {
-    return this._accessorySubCategory;
+  get szerokosc(): number {
+    return this._szerokosc;
   }
 
-  set accessorySubCategory(value: string) {
-    this._accessorySubCategory = value;
+  set szerokosc(value: number) {
+    this._szerokosc = value;
   }
 
-  get accessoryType(): string {
-    return this._accessoryType;
+  get wysokosc(): number {
+    return this._wysokosc;
   }
 
-  set accessoryType(value: string) {
-    this._accessoryType = value;
+  set wysokosc(value: number) {
+    this._wysokosc = value;
   }
 
-  get accessoryMaterialType(): string {
-    return this._accessoryMaterialType;
+  get grupaAsortymentowa(): string {
+    return this._grupaAsortymentowa;
   }
 
-  set accessoryMaterialType(value: string) {
-    this._accessoryMaterialType = value;
+  set grupaAsortymentowa(value: string) {
+    this._grupaAsortymentowa = value;
   }
 
-  get accessoryMaterialColor(): string {
-    return this._accessoryMaterialColor;
+  get typ(): string {
+    return this._typ;
   }
 
-  set accessoryMaterialColor(value: string) {
-    this._accessoryMaterialColor = value;
+  set typ(value: string) {
+    this._typ = value;
   }
 
-  get accessoryMaterialFinish(): string {
-    return this._accessoryMaterialFinish;
+  get geometria(): string {
+    return this._geometria;
   }
 
-  set accessoryMaterialFinish(value: string) {
-    this._accessoryMaterialFinish = value;
+  set geometria(value: string) {
+    this._geometria = value;
+  }
+
+  get rodzaj(): string {
+    return this._rodzaj;
+  }
+
+  set rodzaj(value: string) {
+    this._rodzaj = value;
+  }
+
+  get rodzina(): string {
+    return this._rodzina;
+  }
+
+  set rodzina(value: string) {
+    this._rodzina = value;
+  }
+
+  get dopasowanieRoletyDlugosc(): string {
+    return this._dopasowanieRoletyDlugosc;
+  }
+
+  set dopasowanieRoletyDlugosc(value: string) {
+    this._dopasowanieRoletyDlugosc = value;
+  }
+
+  get dopasowanieRoletySzerokosc(): string {
+    return this._dopasowanieRoletySzerokosc;
+  }
+
+  set dopasowanieRoletySzerokosc(value: string) {
+    this._dopasowanieRoletySzerokosc = value;
+  }
+
+  get typTkaniny(): string {
+    return this._typTkaniny;
+  }
+
+  set typTkaniny(value: string) {
+    this._typTkaniny = value;
+  }
+
+  get kolorTkaniny(): string {
+    return this._kolorTkaniny;
+  }
+
+  set kolorTkaniny(value: string) {
+    this._kolorTkaniny = value;
+  }
+
+  get kolorTworzywWew(): string {
+    return this._kolorTworzywWew;
+  }
+
+  set kolorTworzywWew(value: string) {
+    this._kolorTworzywWew = value;
+  }
+
+  get roletyKolorOsprzetu(): string {
+    return this._roletyKolorOsprzetu;
+  }
+
+  set roletyKolorOsprzetu(value: string) {
+    this._roletyKolorOsprzetu = value;
   }
 
   get accessoryHorizontalSpacing(): number {
@@ -132,35 +224,43 @@ export class Accessory {
     this._accessoryHorizontalSpacing = value;
   }
 
-  get accessoryClosureType(): string {
-    return this._accessoryClosureType;
+  get otwieranie(): string {
+    return this._otwieranie;
   }
 
-  set accessoryClosureType(value: string) {
-    this._accessoryClosureType = value;
+  set otwieranie(value: string) {
+    this._otwieranie = value;
   }
 
-  get accessoryNameplateNumber(): string {
-    return this._accessoryNameplateNumber;
+  get tabliczka(): string {
+    return this._tabliczka;
   }
 
-  set accessoryNameplateNumber(value: string) {
-    this._accessoryNameplateNumber = value;
+  set tabliczka(value: string) {
+    this._tabliczka = value;
   }
 
-  get accessoryPrice(): number {
-    return this._accessoryPrice;
+  get CenaDetaliczna(): number {
+    return this._CenaDetaliczna;
   }
 
-  set accessoryPrice(value: number) {
-    this._accessoryPrice = value;
+  set CenaDetaliczna(value: number) {
+    this._CenaDetaliczna = value;
   }
 
-  get accessoryUrl(): string {
-    return this._accessoryUrl;
+  get linkiDoZdjec(): string[] {
+    return this._linkiDoZdjec;
   }
 
-  set accessoryUrl(value: string) {
-    this._accessoryUrl = value;
+  set linkiDoZdjec(value: string[]) {
+    this._linkiDoZdjec = value;
+  }
+
+  get dostepneRozmiary(): string[] {
+    return this._dostepneRozmiary;
+  }
+
+  set dostepneRozmiary(value: string[]) {
+    this._dostepneRozmiary = value;
   }
 }
