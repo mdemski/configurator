@@ -33,8 +33,6 @@ export class Flashing {
 
 
   // tslint:disable-next-line:max-line-length
-
-
   constructor(kod: string, nazwaPozycjiPL: string, flashingName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, rodzaj: string, rodzina: string, oblachowanieMaterial: string, oblachowanieKolor: string, oblachowanieFinisz: string, typKolnierza: string, wiatrownicaDlugosc: number, flashingApron: string, flashingTileHeight: number, flashingCombination: boolean, flashingNumberOfConnections: number, flashingCombinationDirection: string, rozstawPoziom: number, rozstawPion: number, flashingCombinationWidths: number[], flashingCombinationHeights: number[], CenaDetaliczna: number, dostepneRozmiary: string[], linkiDoZdjec: string[]) {
     this._kod = kod;
     this._nazwaPozycjiPL = nazwaPozycjiPL;
