@@ -27,7 +27,7 @@ export class Flashing {
   private _rozstawPion: number;
   private _flashingCombinationWidths: number[];
   private _flashingCombinationHeights: number[];
-  private _flashingPrice: number;
+  private _CenaDetaliczna: number;
   private _dostepneRozmiary: string[];
   private _linkiDoZdjec: string[];
 
@@ -35,7 +35,7 @@ export class Flashing {
   // tslint:disable-next-line:max-line-length
 
 
-  constructor(kod: string, nazwaPozycjiPL: string, flashingName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, rodzaj: string, rodzina: string, oblachowanieMaterial: string, oblachowanieKolor: string, oblachowanieFinisz: string, typKolnierza: string, wiatrownicaDlugosc: number, flashingApron: string, flashingTileHeight: number, flashingCombination: boolean, flashingNumberOfConnections: number, flashingCombinationDirection: string, rozstawPoziom: number, rozstawPion: number, flashingCombinationWidths: number[], flashingCombinationHeights: number[], flashingPrice: number, dostepneRozmiary: string[], linkiDoZdjec: string[]) {
+  constructor(kod: string, nazwaPozycjiPL: string, flashingName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, rodzaj: string, rodzina: string, oblachowanieMaterial: string, oblachowanieKolor: string, oblachowanieFinisz: string, typKolnierza: string, wiatrownicaDlugosc: number, flashingApron: string, flashingTileHeight: number, flashingCombination: boolean, flashingNumberOfConnections: number, flashingCombinationDirection: string, rozstawPoziom: number, rozstawPion: number, flashingCombinationWidths: number[], flashingCombinationHeights: number[], CenaDetaliczna: number, dostepneRozmiary: string[], linkiDoZdjec: string[]) {
     this._kod = kod;
     this._nazwaPozycjiPL = nazwaPozycjiPL;
     this._flashingName = flashingName;
@@ -64,7 +64,7 @@ export class Flashing {
     this._rozstawPion = rozstawPion;
     this._flashingCombinationWidths = flashingCombinationWidths;
     this._flashingCombinationHeights = flashingCombinationHeights;
-    this._flashingPrice = flashingPrice;
+    this._CenaDetaliczna = CenaDetaliczna;
     this._dostepneRozmiary = dostepneRozmiary;
     this._linkiDoZdjec = linkiDoZdjec;
   }
@@ -293,12 +293,12 @@ export class Flashing {
     this._flashingCombinationHeights = value;
   }
 
-  get flashingPrice(): number {
-    return this._flashingPrice;
+  get CenaDetaliczna(): number {
+    return this._CenaDetaliczna;
   }
 
-  set flashingPrice(value: number) {
-    this._flashingPrice = value;
+  set CenaDetaliczna(value: number) {
+    this._CenaDetaliczna = value;
   }
 
   get dostepneRozmiary(): string[] {
