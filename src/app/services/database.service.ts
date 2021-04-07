@@ -6,6 +6,7 @@ import {Accessory} from '../models/accessory';
 import {Company} from '../models/company';
 import {PropertyValueTranslatorService} from './property-value-translator.service';
 import {WindowDynamicValuesSetterService} from './window-dynamic-values-setter.service';
+import {Flashing} from '../models/flashing';
 
 @Injectable()
 export class DatabaseService {
@@ -21,6 +22,11 @@ export class DatabaseService {
   availableSellers: any = [];
   setGroupFilter$ = new Subject<any>();
   getGroupFilter = this.setGroupFilter$.asObservable();
+
+  // flashings
+  temporaryFlashing = new Flashing('1K-1-U-UO------A7022P-055098-OKPK01', 'UN/O 055x098 Kołnierz uniwersalny /A7022P/UO/OKPK01', 'U', 'I-KOLNIERZ', 'NPL-KOLNIERZ', 'Nowy', 'U', 55, 98, 'KołnierzUszczelniający',
+    'KolnierzUszczelniający', 'Kołnierz:U', 'KołnierzUszczelniający:K-1', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'U', 0, 'UO', 5, false, 0, null,
+    0, 0, [], [], 270);
 
   // TODO do oprogramowania pobieranie danych z eNova/pliku + filtrowanie danych według grupaAsortymentowa
   getAllRoofWindowsToShopList(): RoofWindowSkylight[] {
