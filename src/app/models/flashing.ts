@@ -27,10 +27,12 @@ export class Flashing {
   private _flashingCombinationWidths: number[];
   private _flashingCombinationHeights: number[];
   private _flashingPrice: number;
+  private _dostepneRozmiary: string[];
+  private _linkiDoZdjec: string[];
 
 
   // tslint:disable-next-line:max-line-length
-  constructor(kod: string, nazwaPozycjiPL: string, flashingName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, rodzaj: string, oblachowanieMaterial: string, oblachowanieKolor: string, oblachowanieFinisz: string, typKolnierza: string, wiatrownicaDlugosc: number, flashingApron: string, flashingTileHeight: number, flashingCombination: boolean, flashingNumberOfConnections: number, flashingCombinationDirection: string, rozstawPoziom: number, rozstawPion: number, flashingCombinationWidths: number[], flashingCombinationHeights: number[], flashingPrice: number) {
+  constructor(kod: string, nazwaPozycjiPL: string, flashingName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, rodzaj: string, oblachowanieMaterial: string, oblachowanieKolor: string, oblachowanieFinisz: string, typKolnierza: string, wiatrownicaDlugosc: number, flashingApron: string, flashingTileHeight: number, flashingCombination: boolean, flashingNumberOfConnections: number, flashingCombinationDirection: string, rozstawPoziom: number, rozstawPion: number, flashingCombinationWidths: number[], flashingCombinationHeights: number[], flashingPrice: number, dostepneRozmiary: string[], linkiDoZdjec: string[]) {
     this._kod = kod;
     this._nazwaPozycjiPL = nazwaPozycjiPL;
     this._flashingName = flashingName;
@@ -59,6 +61,8 @@ export class Flashing {
     this._flashingCombinationWidths = flashingCombinationWidths;
     this._flashingCombinationHeights = flashingCombinationHeights;
     this._flashingPrice = flashingPrice;
+    this._dostepneRozmiary = dostepneRozmiary;
+    this._linkiDoZdjec = linkiDoZdjec;
   }
 
   get kod(): string {
@@ -283,5 +287,21 @@ export class Flashing {
 
   set flashingPrice(value: number) {
     this._flashingPrice = value;
+  }
+
+  get dostepneRozmiary(): string[] {
+    return this._dostepneRozmiary;
+  }
+
+  set dostepneRozmiary(value: string[]) {
+    this._dostepneRozmiary = value;
+  }
+
+  get linkiDoZdjec(): string[] {
+    return this._linkiDoZdjec;
+  }
+
+  set linkiDoZdjec(value: string[]) {
+    this._linkiDoZdjec = value;
   }
 }
