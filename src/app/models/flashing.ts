@@ -12,6 +12,7 @@ export class Flashing {
   private _typ: string;
   private _geometria: string;
   private _rodzaj: string;
+  private _rodzina: string;
   private _oblachowanieMaterial: string;
   private _oblachowanieKolor: string;
   private _oblachowanieFinisz: string;
@@ -32,7 +33,9 @@ export class Flashing {
 
 
   // tslint:disable-next-line:max-line-length
-  constructor(kod: string, nazwaPozycjiPL: string, flashingName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, rodzaj: string, oblachowanieMaterial: string, oblachowanieKolor: string, oblachowanieFinisz: string, typKolnierza: string, wiatrownicaDlugosc: number, flashingApron: string, flashingTileHeight: number, flashingCombination: boolean, flashingNumberOfConnections: number, flashingCombinationDirection: string, rozstawPoziom: number, rozstawPion: number, flashingCombinationWidths: number[], flashingCombinationHeights: number[], flashingPrice: number, dostepneRozmiary: string[], linkiDoZdjec: string[]) {
+
+
+  constructor(kod: string, nazwaPozycjiPL: string, flashingName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, rodzaj: string, rodzina: string, oblachowanieMaterial: string, oblachowanieKolor: string, oblachowanieFinisz: string, typKolnierza: string, wiatrownicaDlugosc: number, flashingApron: string, flashingTileHeight: number, flashingCombination: boolean, flashingNumberOfConnections: number, flashingCombinationDirection: string, rozstawPoziom: number, rozstawPion: number, flashingCombinationWidths: number[], flashingCombinationHeights: number[], flashingPrice: number, dostepneRozmiary: string[], linkiDoZdjec: string[]) {
     this._kod = kod;
     this._nazwaPozycjiPL = nazwaPozycjiPL;
     this._flashingName = flashingName;
@@ -46,6 +49,7 @@ export class Flashing {
     this._typ = typ;
     this._geometria = geometria;
     this._rodzaj = rodzaj;
+    this._rodzina = rodzina;
     this._oblachowanieMaterial = oblachowanieMaterial;
     this._oblachowanieKolor = oblachowanieKolor;
     this._oblachowanieFinisz = oblachowanieFinisz;
@@ -167,6 +171,14 @@ export class Flashing {
 
   set rodzaj(value: string) {
     this._rodzaj = value;
+  }
+
+  get rodzina(): string {
+    return this._rodzina;
+  }
+
+  set rodzina(value: string) {
+    this._rodzina = value;
   }
 
   get oblachowanieMaterial(): string {
