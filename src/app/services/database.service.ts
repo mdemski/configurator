@@ -25,8 +25,8 @@ export class DatabaseService {
 
   // flashings
   temporaryFlashing = new Flashing('1K-1-U-UO------A7022P-055098-OKPK01', 'UN/O 055x098 Kołnierz uniwersalny /A7022P/UO/OKPK01', 'U', 'I-KOLNIERZ', 'NPL-KOLNIERZ', 'Nowy', 'U', 55, 98, 'KołnierzUszczelniający',
-    'KolnierzUszczelniający', 'Kołnierz:U', 'KołnierzUszczelniający:K-1', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'U', 0, 'UO', 5, false, 0, null,
-    0, 0, [], [], 270);
+    'KolnierzUszczelniający', 'Kołnierz:U', 'KołnierzUszczelniający:K-1', 'KołnierzUszczelniający', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'U', 0, 'UO', 5, false, 0, null,
+    0, 0, [], [], 270, ['78x118', '78x140'], []);
 
   // TODO do oprogramowania pobieranie danych z eNova/pliku + filtrowanie danych według grupaAsortymentowa
   getAllRoofWindowsToShopList(): RoofWindowSkylight[] {
@@ -53,18 +53,14 @@ export class DatabaseService {
   // TODO do oprogramowania pobieranie danych z eNova/pliku + filtrowanie danych według grupaAsortymentowa
   getAllAccessoriesToShopList() {
     return this.accessories = [
-      new Accessory(1, 'Decomatic D33Z 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 217, 'assets/img/products/D33.png'),
-      new Accessory(2, 'Decomatic D33Z 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 217, 'assets/img/products/D33.png'),
-      new Accessory(3, 'Decomatic D33Z 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 217, 'assets/img/products/D33.png'),
-      new Accessory(4, 'Decomatic D33Z 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 217, 'assets/img/products/D33.png'),
-      new Accessory(5, 'Decomatic D33Z 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 217, 'assets/img/products/D33.png'),
-      new Accessory(6, 'Decomatic D33Z 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 217, 'assets/img/products/D33.png'),
-      new Accessory(7, 'Decomatic D33Z 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 217, 'assets/img/products/D33.png'),
-      new Accessory(8, 'Decomatic D33Z 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 217, 'assets/img/products/D33.png'),
-      new Accessory(9, 'Decomatic D33Z 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 217, 'assets/img/products/D33.png'),
-      new Accessory(10, 'Decomatic D33T 78x118', 'D33', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'transparentny', 'A368', 'srebrny', null, 'manulana', null, 157, 'assets/img/products/D33.png'),
-      new Accessory(11, 'Multistop D37Z 78x118', 'D37', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'zaciemniający', 'S001', 'srebrny', null, 'manulana', null, 375, 'assets/img/products/D37.png'),
-      new Accessory(12, 'Multistop D37T 78x118', 'D37', 78, 118, 'Akcesoria', 'Rolety wewnętrzne', 'A', 'transparentny', 'A368', 'srebrny', null, 'manulana', null, 312, 'assets/img/products/D37.png')
+      new Accessory('1A-D37--T-A372-078118-AA', 'D37T 078x118 A372 [AA] Roleta Multistop, tkanina transparentna, srebrne prowadnice', 'Multistop D37 78x118', 'I-Akcesorium', 'NPL-Akcesorium', 'Nowy', 'Roleta:D37', 78, 118, 'Akcesorium', 'Akcesorium:Wewnętrzne',
+        'Roleta:D37', 'AkcesoriumRoletaW:D37', 'Akcesorium:Roleta', 'A', 'A', 'Transparentna', 'RoletaD_T:A372', 'Roleta:Ral7048', 'D37:Srebrny', 0, 'Roleta:Manualne', '', 358, [], []),
+      new Accessory('1A-D37W--T-A372-078118-AA', 'D37WT 078x118 A372 [AA] Roleta Multistop, tkanina transparentna, białe prowadnice', 'Multistop D37W 78x118', 'I-Akcesorium', 'NPL-Akcesorium', 'Nowy', 'Roleta:D37W', 78, 118, 'Akcesorium', 'Akcesorium:Wewnętrzne',
+        'Roleta:D37W', 'AkcesoriumRoletaW:D37W', 'Akcesorium:Roleta', 'A', 'A', 'Transparentna', 'RoletaD_T:A372', 'Roleta:Ral9016', 'D37:Biały', 0, 'Roleta:Manualne', '', 358, [], []),
+      new Accessory('1A-D37--Z-S003-078118-AA', 'D37T 078x118 A372 [AA] Roleta Multistop, tkanina zaciemniająca, srebrne prowadnice', 'Multistop D37 78x118', 'I-Akcesorium', 'NPL-Akcesorium', 'Nowy', 'Roleta:D37', 78, 118, 'Akcesorium', 'Akcesorium:Wewnętrzne',
+        'Roleta:D37', 'AkcesoriumRoletaW:D37', 'Akcesorium:Roleta', 'A', 'A', 'Zaciemniająca', 'RoletaD_Z:S003', 'Roleta:Ral7048', 'D37:Srebrny', 0, 'Roleta:Manualne', '', 358, [], []),
+      new Accessory('1A-D37W--Z-S003-078118-AA', 'D37WT 078x118 A372 [AA] Roleta Multistop, tkanina zaciemniająca, białe prowadnice', 'Multistop D37W 78x118', 'I-Akcesorium', 'NPL-Akcesorium', 'Nowy', 'Roleta:D37W', 78, 118, 'Akcesorium', 'Akcesorium:Wewnętrzne',
+        'Roleta:D37W', 'AkcesoriumRoletaW:D37W', 'Akcesorium:Roleta', 'A', 'A', 'Zaciemniająca', 'RoletaD_Z:S003', 'Roleta:Ral9016', 'D37:Biały', 0, 'Roleta:Manualne', '', 358, [], [])
     ];
   }
 
