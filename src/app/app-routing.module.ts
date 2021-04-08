@@ -39,6 +39,7 @@ const appRoutes: Routes = [
 
   {path: 'konfigurator', component: ConfiguratorComponent},
   {path: 'konfigurator/okna-dachowe', component: RoofWindowsConfigComponent},
+  {path: 'konfigurator/okna-dachowe/:configId', component: RoofWindowsConfigComponent},
   {path: 'konfigurator/kolnierze', component: FlashingsConfigComponent},
   {path: 'konfigurator/akcesoria', component: AccessoriesConfigComponent},
   {path: 'konfigurator/okna-pionowe', component: VerticalWindowsConfigComponent},
