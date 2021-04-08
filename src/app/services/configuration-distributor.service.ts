@@ -96,7 +96,7 @@ export class ConfigurationDistributorService {
     }
     // TODO usunąć tymczasową konfigurację do testów aplikacji - przetestować zapisywanie po zalogowaniu
     const temporaryConfigurationsForWork: ConfigurationRoofWindowModel[] = [{
-      user: '192.168.0.1',
+      user: '178.73.35.155',
       userConfigurations: [{
         id: 1,
         windows: [{
