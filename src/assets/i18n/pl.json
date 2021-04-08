@@ -273,6 +273,7 @@
   },
   "ROOF-WINDOWS-DATA": {
     "Okno:IS1": "IS",
+    "Okno:IS": "IS",
     "OknoDachowe:IS": "grupa IS",
     "OknoDachowe": "Okno Dachowe",
     "Okno:RAL7048": "kolor RAL7048",
@@ -328,5 +329,27 @@
     "utb:TRUE": "pianka ocieplająca UTB",
     "Okno:E02": "E02",
     "Okno:I22": "I22"
+  },
+  "CONFIG-SUMMARY": {
+    "LP": "Lp",
+    "yourConfigurations": "Twoje konfiguracje",
+    "configurationNumber": "Konfiguracja numer",
+    "window": "Okno dachowe",
+    "feature": "Cecha",
+    "value": "Wybrana wartość",
+    "correct": "Popraw",
+    "chooseFlashing": "Dobierz kołnierz",
+    "chooseAccessories": "Dobierz akcesorium",
+    "flashing": "Kołnierz",
+    "chooseAnother": "Dobierz kolejne",
+    "accessories": "Akcesoria",
+    "addToCart": "Dodaj do koszyka",
+    "sendQuestion": "Wyślij zapytanie",
+    "makeAnother": "Utwórz kolejną konfigurację",
+    "addConfigurationsToCart": "Dodaj konfiguracje do koszyka",
+    "roofWindows": "Okna dachowe",
+    "correctConfigLink": "/okna-dachowe",
+    "correctConfig": "Popraw",
+    "removeConfiguration": "Usuń"
   }
 }
