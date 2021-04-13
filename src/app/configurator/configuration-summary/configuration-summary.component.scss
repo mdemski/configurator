@@ -1,5 +1,6 @@
 @import 'src/sass/base/variables';
 @import 'src/sass/buttons';
+@import 'src/sass/components';
 
 .navbar-background {
   height: 20rem;
@@ -11,3 +12,104 @@
   }
 }
 
+.configuration-summary-container {
+
+  &__configurations {
+    margin-top: 3rem;
+
+  }
+
+  &__single {
+    margin-bottom: 10rem;
+
+    &--configuration-number {
+      margin: 2rem 0 0 0;
+    }
+
+    &--product-title {
+      color: $color-black;
+      font-weight: bold;
+      margin-top: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    &--roof-windows {
+      margin-bottom: 5rem;
+
+      &--table {
+        display: flex;
+        max-height: 84.2px;
+        overflow: hidden;
+      }
+    }
+
+    &--flashings {
+      margin-bottom: 5rem;
+
+      &--table {
+        display: flex;
+        max-height: 84.2px;
+        overflow: hidden;
+      }
+
+      &--warning {
+        color: $color-red;
+        font-size: 1.6rem;
+      }
+    }
+
+    &--accessories {
+      margin-bottom: 5rem;
+
+      &--table {
+        display: flex;
+        max-height: 84.2px;
+        overflow: hidden;
+      }
+    }
+
+    &__buttons {
+      display: flex;
+      margin-top: 1rem;
+      align-items: center;
+    }
+
+    &--hole-buttons {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &--add-new {
+      margin: 2rem 0 0 0;
+    }
+  }
+
+  &__no-configurations {
+    margin: 4rem 0;
+
+    &--text {
+      margin-bottom: 2rem;
+    }
+  }
+
+  &__create-new {
+    margin-bottom: 3rem;
+  }
+}
+
+.quantity-container {
+  margin: 0 5rem 0 4rem;
+}
+
+.remove-config-button {
+  margin-right: 2rem;
+}
+
+th {
+  cursor: pointer;
+}
+
+.last-child {
+  margin-bottom: 0;
+}

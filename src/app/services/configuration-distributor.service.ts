@@ -171,7 +171,7 @@ export class ConfigurationDistributorService {
     }]
   },
       {
-        user: '192.168.0.1',
+        user: '178.73.35.155',
         userConfigurations: [{
           id: 2,
           windows: [{
