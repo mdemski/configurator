@@ -232,7 +232,7 @@ export class CrudFirebaseService {
           accessories: null
         });
       } else {
-        const nextArrayNumber = configurationWithId.windows === null ? 0 : configurationWithId.windows.length;
+        const nextArrayNumber = configurationWithId.windows === undefined ? 0 : configurationWithId.windows.length;
         const newWindow = {
           [nextArrayNumber]: {
             id: nextArrayNumber + 1,
@@ -253,16 +253,30 @@ export class CrudFirebaseService {
       const arrayIndex = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).arrayIndex;
       // @ts-ignore
       const configurationWithId = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).configurationWithId;
-      const nextArrayNumber = configurationWithId.flashings === undefined ? 0 : configurationWithId.flashings.length;
-      const newFlashing = {
-        [nextArrayNumber]: {
-          id: nextArrayNumber + 1,
-          quantity: 1,
-          flashing: flashingConfiguration
-        }
-      };
-      this.http.patch('https://window-configurator.firebaseio.com/allConfigurations/' + arrayIndex
-        + '/userConfigurations/0/flashings.json', newFlashing).subscribe();
+      if (configurationWithId === null) {
+        this.createConfigurationForUser(user, {
+          // @ts-ignore
+          id: 1,
+          windows: null,
+          flashings: [{
+            id: 1,
+            quantity: 1,
+            flashing: flashingConfiguration
+          }],
+          accessories: null
+        });
+      } else {
+        const nextArrayNumber = configurationWithId.flashings === undefined ? 0 : configurationWithId.flashings.length;
+        const newFlashing = {
+          [nextArrayNumber]: {
+            id: nextArrayNumber + 1,
+            quantity: 1,
+            flashing: flashingConfiguration
+          }
+        };
+        this.http.patch('https://window-configurator.firebaseio.com/allConfigurations/' + arrayIndex
+          + '/userConfigurations/0/flashings.json', newFlashing).subscribe();
+      }
     });
   }
 
@@ -273,20 +287,34 @@ export class CrudFirebaseService {
       const arrayIndex = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).arrayIndex;
       // @ts-ignore
       const configurationWithId = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).configurationWithId;
-      const nextArrayNumber = configurationWithId.accessories === undefined ? 0 : configurationWithId.accessories.length;
-      const newAccessory = {
-        [nextArrayNumber]: {
-          id: nextArrayNumber + 1,
-          quantity: 1,
-          accessory: accessoryConfiguration
-        }
-      };
-      this.http.patch('https://window-configurator.firebaseio.com/allConfigurations/' + arrayIndex
-        + '/userConfigurations/0/accessories.json', newAccessory).subscribe();
+      if (configurationWithId === null) {
+        this.createConfigurationForUser(user, {
+          // @ts-ignore
+          id: 1,
+          windows: null,
+          flashings: null,
+          accessories: [{
+            id: 1,
+            quantity: 1,
+            accessory: accessoryConfiguration
+          }],
+        });
+      } else {
+        const nextArrayNumber = configurationWithId.accessories === undefined ? 0 : configurationWithId.accessories.length;
+        const newAccessory = {
+          [nextArrayNumber]: {
+            id: nextArrayNumber + 1,
+            quantity: 1,
+            accessory: accessoryConfiguration
+          }
+        };
+        this.http.patch('https://window-configurator.firebaseio.com/allConfigurations/' + arrayIndex
+          + '/userConfigurations/0/accessories.json', newAccessory).subscribe();
+      }
     });
   }
 
-  // 10 aktualizowanie okna do konfiguracji
+  // 10 aktualizowanie okna w konfiguracji
   updateWindowConfigurationIntoConfigurationById(user: string, configurationId: number,
                                                  windowId: number, windowConfiguration: RoofWindowSkylight) {
     this.readAllConfigurationsFromFirebase().subscribe(allUserConfigurations => {
@@ -308,7 +336,7 @@ export class CrudFirebaseService {
     });
   }
 
-  // 11 aktualizowanie okna do konfiguracji
+  // 11 aktualizowanie kołnierza w konfiguracji
   updateFlashingConfigurationIntoConfigurationById(user: string, configurationId: number,
                                                    flashingId: number, flashingConfiguration: Flashing) {
     this.readAllConfigurationsFromFirebase().subscribe(allUserConfigurations => {
@@ -330,7 +358,7 @@ export class CrudFirebaseService {
     });
   }
 
-  // 12 aktualizowanie akcesorium do konfiguracji
+  // 12 aktualizowanie akcesorium w konfiguracji
   updateAccessoryConfigurationIntoConfigurationById(user: string, configurationId: number,
                                                     accessoryId: number, accessoryConfiguration: Accessory) {
     this.readAllConfigurationsFromFirebase().subscribe(allUserConfigurations => {
@@ -349,6 +377,105 @@ export class CrudFirebaseService {
             + '/userConfigurations/0/accessories/' + i + '.json', configurationWithId.accessories[i]).subscribe();
         }
       }
+    });
+  }
+
+  // 1 usuwanie całej konfiguracji
+  deleteConfigurationById(user: string, configurationId: number) {
+    this.readAllConfigurationsFromFirebase().subscribe(allUserConfigurations => {
+      // @ts-ignore
+      const arrayIndex = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).arrayIndex;
+      // @ts-ignore
+      const configurationWithId = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).configurationWithId;
+      // @ts-ignore
+      for (const configurations of allUserConfigurations) {
+        if (configurations.user === user) {
+          // @ts-ignore
+          allUserConfigurations.splice(arrayIndex, 1);
+          this.http.put('https://window-configurator.firebaseio.com/allConfigurations.json', allUserConfigurations).subscribe();
+        }
+      }
+    });
+  }
+
+  // 2 usuwanie okna z konfiguracji
+  deleteWindowConfigurationFromConfigurationById(user: string, configurationId: number, windowId: number) {
+    this.readAllConfigurationsFromFirebase().subscribe(allUserConfigurations => {
+      let windowIndex = -1;
+      // @ts-ignore
+      const arrayIndex = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).arrayIndex;
+      // @ts-ignore
+      const configurationWithId = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).configurationWithId;
+      for (let i = 0; i < configurationWithId.windows.length; i++) {
+        if (configurationWithId.windows[i].id === windowId) {
+          windowIndex = i;
+        }
+      }
+      configurationWithId.windows.splice(windowIndex, 1);
+      if (configurationWithId.windows.length === 0) {
+        configurationWithId.windows = [];
+      }
+      if (configurationWithId.accessories.length === undefined &&
+        configurationWithId.flashings === undefined &&
+        configurationWithId.windows === 0) {
+        this.deleteConfigurationById(user, configurationId);
+      }
+      this.http.put('https://window-configurator.firebaseio.com/allConfigurations/' + arrayIndex
+        + '/userConfigurations/0/windows.json', configurationWithId.windows).subscribe();
+    });
+  }
+
+  // 3 usuwanie kołnierza z konfiguracji
+  deleteFlashingConfigurationFromConfigurationById(user: string, configurationId: number, flashingId: number) {
+    this.readAllConfigurationsFromFirebase().subscribe(allUserConfigurations => {
+      let windowIndex = -1;
+      // @ts-ignore
+      const arrayIndex = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).arrayIndex;
+      // @ts-ignore
+      const configurationWithId = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).configurationWithId;
+      for (let i = 0; i < configurationWithId.flashings.length; i++) {
+        if (configurationWithId.flashings[i].id === flashingId) {
+          windowIndex = i;
+        }
+      }
+      configurationWithId.flashings.splice(windowIndex, 1);
+      if (configurationWithId.flashings.length === 0) {
+        configurationWithId.flashings = [];
+      }
+      if (configurationWithId.accessories.length === undefined &&
+        configurationWithId.flashings === 0 &&
+        configurationWithId.windows === undefined) {
+        this.deleteConfigurationById(user, configurationId);
+      }
+      this.http.put('https://window-configurator.firebaseio.com/allConfigurations/' + arrayIndex
+        + '/userConfigurations/0/flashings.json', configurationWithId.flashings).subscribe();
+    });
+  }
+
+  // 4 usuwanie acesorium z konfiguracji
+  deleteAccessoryConfigurationFromConfigurationById(user: string, configurationId: number, accessoryId: number) {
+    this.readAllConfigurationsFromFirebase().subscribe(allUserConfigurations => {
+      let windowIndex = -1;
+      // @ts-ignore
+      const arrayIndex = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).arrayIndex;
+      // @ts-ignore
+      const configurationWithId = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).configurationWithId;
+      for (let i = 0; i < configurationWithId.accessories.length; i++) {
+        if (configurationWithId.accessories[i].id === accessoryId) {
+          windowIndex = i;
+        }
+      }
+      configurationWithId.accessories.splice(windowIndex, 1);
+      if (configurationWithId.accessories.length === 0) {
+        configurationWithId.accessories = [];
+      }
+      if (configurationWithId.accessories.length === 0 &&
+        configurationWithId.flashings === undefined &&
+        configurationWithId.windows === undefined) {
+        this.deleteConfigurationById(user, configurationId);
+      }
+      this.http.put('https://window-configurator.firebaseio.com/allConfigurations/' + arrayIndex
+        + '/userConfigurations/0/accessories.json', configurationWithId.accessories).subscribe();
     });
   }
 
