@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ConfigurationDistributorService} from '../../services/configuration-distributor.service';
+import {CrudFirebaseService} from '../../services/crud-firebase-service';
 import {map} from 'rxjs/operators';
 import {ConfigurationRoofWindowModel} from '../../models/configurationRoofWindowModel';
 import {DatabaseService} from '../../services/database.service';
@@ -24,13 +24,14 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
   currentUser$: Subject<string> = new Subject();
   currentUser;
 
-  constructor(private configDist: ConfigurationDistributorService,
+  constructor(private configDist: CrudFirebaseService,
               private db: DatabaseService,
               private authService: AuthService,
               private ipService: IpService) {
   }
 
   ngOnInit(): void {
+    this.configDist.populateDataToFirebase();
     this.configurationsSubject = new BehaviorSubject<ConfigurationRoofWindowModel[]>([]);
     this.configurations$ = this.configurationsSubject.asObservable();
     this.authService.isLogged ? this.authService.user.pipe(map(user => user)).subscribe(user => {
@@ -41,18 +42,11 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
         this.currentUser$.next(userIp.ip);
       });
     this.currentUser$.subscribe(currentUser => {
-      console.log(currentUser);
-      this.configurations = [];
-      const configurationsFormStorage = JSON.parse(localStorage.getItem('configurations'));
-      for (const userConfigurations of configurationsFormStorage) {
-        if (currentUser === userConfigurations.user) {
-          for (const config of userConfigurations.userConfigurations) {
-            this.configurations.push(config);
-          }
-        }
-      }
-      this.configurationsSubject.next(this.configurations);
-      console.log(this.configurations);
+      this.configDist.readAllUserConfigurations(currentUser).subscribe(userConfigurations => {
+        this.configurations = userConfigurations;
+        this.configurationsSubject.next(this.configurations);
+        // console.log(this.configurations);
+      });
     });
   }
 
@@ -68,16 +62,26 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
     quantity = quantity + delta;
   }
 
-  decreaseQuantity(quantity: number) {
-    if (quantity === 0) {
-      quantity = 0;
+  decreaseQuantity(product: RoofWindowSkylight | Flashing | Accessory) {
+    // @ts-ignore
+    console.log(product.quantity);
+    // @ts-ignore
+    if (product.quantity === 0) {
+      // @ts-ignore
+      product.quantity = 0;
     } else {
-      this.resize(-1, quantity);
+      // @ts-ignore
+      this.resize(-1, product.quantity);
     }
+    // @ts-ignore
+    console.log(product.quantity);
   }
 
-  increaseQuantity(quantity: number) {
-    this.resize(+1, quantity);
+  increaseQuantity(product: RoofWindowSkylight | Flashing | Accessory) {
+    // @ts-ignore
+    this.resize(+1, product.quantity);
+    // @ts-ignore
+    console.log(product.quantity);
   }
 
   // TODO sprawdzić co dokładnie wrzuca się do koszyka i odpowiednio to obsługiwać
@@ -98,46 +102,27 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
     }
   }
 
-  removeWindowConfiguration(configurationId: number, window: { id: number; quantity: number; window: RoofWindowSkylight }) {
+  removeConfiguration(configurationId: number,
+                      product: RoofWindowSkylight | Flashing | Accessory) {
     for (const configs of this.configurations) {
       // @ts-ignore
-      if (configs.id === configurationId) {
+      if (configs.id === configurationId && product.window !== undefined) {
         // @ts-ignore
-        configs.windows = configs.windows.filter(windows => windows.id !== window.id);
+        configs.windows = configs.windows.filter(windows => windows.id !== product.id);
       }
-    }
-    this.configurationsSubject.next(this.configurations);
-    localStorage.clear();
-    localStorage.setItem('configurations', JSON.stringify(this.configurations));
-    this.configDist.populateDataToFirebase(this.configurations);
-  }
-
-  removeFlashingConfiguration(configurationId: number, flashing: { id: number; quantity: number; flashing: Flashing }) {
-    for (const configs of this.configurations) {
       // @ts-ignore
-      if (configs.id === configurationId) {
+      if (configs.id === configurationId && product.flashing !== undefined) {
         // @ts-ignore
-        configs.flashings = configs.flashings.filter(flashings => flashings.id !== flashing.id);
+        configs.flashings = configs.flashings.filter(flashings => flashings.id !== product.id);
       }
-    }
-    this.configurationsSubject.next(this.configurations);
-    localStorage.clear();
-    localStorage.setItem('configurations', JSON.stringify(this.configurations));
-    this.configDist.populateDataToFirebase(this.configurations);
-  }
-
-  removeAccessoryConfiguration(configurationId: number, accessory: { id: number; quantity: number; accessory: Accessory }) {
-    for (const configs of this.configurations) {
       // @ts-ignore
-      if (configs.id === configurationId) {
+      if (configs.id === configurationId && product.accessory !== undefined) {
         // @ts-ignore
-        configs.accessories = configs.accessories.filter(accessories => accessories.id !== accessory.id);
+        configs.accessories = configs.accessories.filter(accessories => accessories.id !== product.id);
       }
     }
+    // this.configDist.createConfigurationForUser(this.currentUser, this.configurations);
     this.configurationsSubject.next(this.configurations);
-    localStorage.clear();
-    localStorage.setItem('configurations', JSON.stringify(this.configurations));
-    this.configDist.populateDataToFirebase(this.configurations);
   }
 
   removeHoleConfiguration(configuration: ConfigurationRoofWindowModel) {
