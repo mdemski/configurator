@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ConfigurationDistributorService } from './configuration-distributor.service';
+import { CrudFirebaseService } from './crud-firebase-service';
 
 describe('ConfigurationDistributorService', () => {
-  let service: ConfigurationDistributorService;
+  let service: CrudFirebaseService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ConfigurationDistributorService);
+    service = TestBed.inject(CrudFirebaseService);
   });
 
   it('should be created', () => {
