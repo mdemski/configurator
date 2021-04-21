@@ -67,6 +67,8 @@ export class CrudFirebaseService {
           for (const config of userConfigurations.userConfigurations) {
             if (config.id === configId) {
               return config.windows;
+            } else {
+              return [];
             }
           }
         }
@@ -223,6 +225,7 @@ export class CrudFirebaseService {
         this.createConfigurationForUser(user, {
           // @ts-ignore
           id: 1,
+          name: '',
           windows: [{
             id: 1,
             quantity: 1,
@@ -257,6 +260,7 @@ export class CrudFirebaseService {
         this.createConfigurationForUser(user, {
           // @ts-ignore
           id: 1,
+          name: '',
           windows: null,
           flashings: [{
             id: 1,
@@ -291,6 +295,7 @@ export class CrudFirebaseService {
         this.createConfigurationForUser(user, {
           // @ts-ignore
           id: 1,
+          name: '',
           windows: null,
           flashings: null,
           accessories: [{
@@ -326,6 +331,7 @@ export class CrudFirebaseService {
         if (configurationWithId.windows[i].id === windowId) {
           configurationWithId.windows[i] = {
             id: configurationWithId.windows[i].id,
+            name: configurationWithId.windows[i].name,
             quantity: configurationWithId.windows[i].quantity,
             window: windowConfiguration
           };
@@ -348,6 +354,7 @@ export class CrudFirebaseService {
         if (configurationWithId.flashings[i].id === flashingId) {
           configurationWithId.flashings[i] = {
             id: configurationWithId.flashings[i].id,
+            name: configurationWithId.flashings[i].name,
             quantity: configurationWithId.flashings[i].quantity,
             flashing: flashingConfiguration
           };
@@ -370,6 +377,7 @@ export class CrudFirebaseService {
         if (configurationWithId.accessories[i].id === accessoryId) {
           configurationWithId.accessories[i] = {
             id: configurationWithId.accessories[i].id,
+            name: configurationWithId.accessories[i].name,
             quantity: configurationWithId.accessories[i].quantity,
             accessory: accessoryConfiguration
           };
@@ -485,6 +493,7 @@ export class CrudFirebaseService {
       user: '178.73.35.155',
       userConfigurations: [{
         id: 1,
+        name: 'Pierwsza testowa',
         windows: [{
           id: 1,
           quantity: 1,
@@ -527,6 +536,7 @@ export class CrudFirebaseService {
         user: '192.168.0.2',
         userConfigurations: [{
           id: 1,
+          name: 'Pierwsza testowa',
           windows: [{
             id: 1,
             quantity: 1,
@@ -560,6 +570,7 @@ export class CrudFirebaseService {
         user: '178.73.35.155',
         userConfigurations: [{
           id: 2,
+          name: 'Pierwsza testowa',
           windows: [{
             id: 1,
             quantity: 1,
