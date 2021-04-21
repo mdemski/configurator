@@ -6,6 +6,7 @@ export interface ConfigurationRoofWindowModel {
   user: string;
   userConfigurations: {
     id: number,
+    name: string,
     windows: {
       id: number,
       quantity: number,
