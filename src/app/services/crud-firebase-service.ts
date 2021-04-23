@@ -1,12 +1,13 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {ConfigurationModel, SingleConfiguration} from '../models/configurationModel';
 import {RoofWindowSkylight} from '../models/roof-window-skylight';
 import {HttpClient} from '@angular/common/http';
 import {DatabaseService} from './database.service';
 import {map} from 'rxjs/operators';
 import {Flashing} from '../models/flashing';
 import {Accessory} from '../models/accessory';
+import {SingleConfiguration} from '../models/single-configuration';
+import {ConfigurationModel} from '../models/configuration-model';
 
 @Injectable({
   providedIn: 'root'
