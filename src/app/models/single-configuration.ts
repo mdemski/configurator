@@ -2,11 +2,6 @@ import {RoofWindowSkylight} from './roof-window-skylight';
 import {Flashing} from './flashing';
 import {Accessory} from './accessory';
 
-export interface ConfigurationModel {
-  user: string;
-  userConfigurations: SingleConfiguration[];
-}
-
 export interface SingleConfiguration {
   id: number;
   name: string;
