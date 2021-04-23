@@ -261,7 +261,7 @@ export class CrudFirebaseService {
       if (configurationWithId === null) {
         this.createConfigurationForUser(user, {
           id: 1,
-          name: '',
+          name: 'Configuration name',
           windows: null,
           flashings: [{
             id: 1,
@@ -295,7 +295,7 @@ export class CrudFirebaseService {
         this.createConfigurationForUser(user, {
           // @ts-ignore
           id: 1,
-          name: '',
+          name: 'Configuration name',
           windows: null,
           flashings: null,
           accessories: [{
