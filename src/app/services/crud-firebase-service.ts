@@ -31,9 +31,9 @@ export class CrudFirebaseService {
   }
 
   readAllUserConfigurations(user: string): Observable<SingleConfiguration[]> {
-    return this.readAllConfigurationsFromFirebase().pipe(map(allConfigs => {
+    return this.readAllConfigurationsFromFirebase().pipe(map(allConfigurations => {
       const configurations = [];
-      for (const userConfigurations of allConfigs) {
+      for (const userConfigurations of allConfigurations) {
         if (user === userConfigurations.user) {
           for (const config of userConfigurations.userConfigurations) {
             configurations.push(config);
@@ -45,9 +45,9 @@ export class CrudFirebaseService {
   }
 
   readConfigurationById(user: string, configId: number): Observable<SingleConfiguration> {
-    return this.readAllConfigurationsFromFirebase().pipe(map(allConfigs => {
+    return this.readAllConfigurationsFromFirebase().pipe(map(allConfigurations => {
       let configurationById = null;
-      for (const userConfigurations of allConfigs) {
+      for (const userConfigurations of allConfigurations) {
         if (user === userConfigurations.user) {
           for (const config of userConfigurations.userConfigurations) {
             if (config.id === configId) {
@@ -61,9 +61,9 @@ export class CrudFirebaseService {
   }
 
   readWindowsFromConfigurationById(user: string, configId: number) {
-    return this.readAllConfigurationsFromFirebase().pipe(map(allConfigs => {
+    return this.readAllConfigurationsFromFirebase().pipe(map(allConfigurations => {
       let windowConfigurations = [];
-      for (const userConfigurations of allConfigs) {
+      for (const userConfigurations of allConfigurations) {
         if (user === userConfigurations.user) {
           for (const config of userConfigurations.userConfigurations) {
             if (config.id === configId) {
@@ -79,9 +79,9 @@ export class CrudFirebaseService {
   }
 
   readFlashingsFromConfigurationById(user: string, configId: number) {
-    return this.readAllConfigurationsFromFirebase().pipe(map(allConfigs => {
+    return this.readAllConfigurationsFromFirebase().pipe(map(allConfigurations => {
       let flashingConfigurations = [];
-      for (const userConfigurations of allConfigs) {
+      for (const userConfigurations of allConfigurations) {
         if (user === userConfigurations.user) {
           for (const config of userConfigurations.userConfigurations) {
             if (config.id === configId) {
@@ -97,9 +97,9 @@ export class CrudFirebaseService {
   }
 
   readAccessoriesFromConfigurationById(user: string, configId: number) {
-    return this.readAllConfigurationsFromFirebase().pipe(map(allConfigs => {
+    return this.readAllConfigurationsFromFirebase().pipe(map(allConfigurations => {
       let accessoryConfigurations = [];
-      for (const userConfigurations of allConfigs) {
+      for (const userConfigurations of allConfigurations) {
         if (user === userConfigurations.user) {
           for (const config of userConfigurations.userConfigurations) {
             if (config.id === configId) {
@@ -115,9 +115,9 @@ export class CrudFirebaseService {
   }
 
   readWindowByIdFromConfigurationById(user: string, configId: number, windowId: number) {
-    return this.readAllConfigurationsFromFirebase().pipe(map(allConfigs => {
+    return this.readAllConfigurationsFromFirebase().pipe(map(allConfigurations => {
       let windowById = null;
-      for (const userConfigurations of allConfigs) {
+      for (const userConfigurations of allConfigurations) {
         if (user === userConfigurations.user) {
           for (const config of userConfigurations.userConfigurations) {
             if (config.id === configId) {
@@ -135,9 +135,9 @@ export class CrudFirebaseService {
   }
 
   readFlashingByIdFromConfigurationById(user: string, configId: number, flashingId: number) {
-    return this.readAllConfigurationsFromFirebase().pipe(map(allConfigs => {
+    return this.readAllConfigurationsFromFirebase().pipe(map(allConfigurations => {
       let flashingById = null;
-      for (const userConfigurations of allConfigs) {
+      for (const userConfigurations of allConfigurations) {
         if (user === userConfigurations.user) {
           for (const config of userConfigurations.userConfigurations) {
             if (config.id === configId) {
@@ -157,9 +157,9 @@ export class CrudFirebaseService {
   }
 
   readAccessoryByIdFromConfigurationById(user: string, configId: number, accessoryId: number) {
-    return this.readAllConfigurationsFromFirebase().pipe(map(allConfigs => {
+    return this.readAllConfigurationsFromFirebase().pipe(map(allConfigurations => {
       let accessoryById = null;
-      for (const userConfigurations of allConfigs) {
+      for (const userConfigurations of allConfigurations) {
         if (user === userConfigurations.user) {
           for (const config of userConfigurations.userConfigurations) {
             if (config.id === configId) {
@@ -179,14 +179,14 @@ export class CrudFirebaseService {
   }
 
   createConfigurationForUser(user: string, configuration: SingleConfiguration) {
-    this.readAllConfigurationsFromFirebase().subscribe(allConfigs => {
+    this.readAllConfigurationsFromFirebase().subscribe(allConfigurations => {
       let configNotAdded = true;
       // tslint:disable-next-line:prefer-for-of
-      for (let i = 0; i < allConfigs.length; i++) {
-        if (allConfigs[i].user === user) {
-          allConfigs[i].userConfigurations.push(configuration);
+      for (let i = 0; i < allConfigurations.length; i++) {
+        if (allConfigurations[i].user === user) {
+          allConfigurations[i].userConfigurations.push(configuration);
           this.http.put('https://window-configurator.firebaseio.com/allConfigurations/'
-            + i + '/userConfigurations.json', allConfigs[i].userConfigurations).subscribe();
+            + i + '/userConfigurations.json', allConfigurations[i].userConfigurations).subscribe();
           configNotAdded = false;
         }
       }
@@ -195,8 +195,8 @@ export class CrudFirebaseService {
           user,
           userConfigurations: [configuration]
         };
-        allConfigs.push(newConfigForUser);
-        this.http.put('https://window-configurator.firebaseio.com/allConfigurations.json', allConfigs).subscribe();
+        allConfigurations.push(newConfigForUser);
+        this.http.put('https://window-configurator.firebaseio.com/allConfigurations.json', allConfigurations).subscribe();
       }
     });
   }
@@ -221,10 +221,10 @@ export class CrudFirebaseService {
 
   // 6 dodawanie okna do konfiguracji
   createWindowConfigurationIntoConfigurationById(user: string, configurationId: number, windowConfiguration: RoofWindowSkylight) {
-    this.readAllConfigurationsFromFirebase().subscribe(allUserConfigurations => {
-      const arrayIndex = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).arrayIndex;
-      const configurationWithId = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).configurationWithId;
-      const smallArrayIndex = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).smallArrayIndex;
+    this.readAllConfigurationsFromFirebase().subscribe(allConfigurations => {
+      const arrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).arrayIndex;
+      const configurationWithId = this.getIndexAndConfiguration(user, allConfigurations, configurationId).configurationWithId;
+      const smallArrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).smallArrayIndex;
       if (configurationWithId === null) {
         this.createConfigurationForUser(user, {
           id: 1,
@@ -254,10 +254,10 @@ export class CrudFirebaseService {
 
   // 7 dodawanie kołnierza do konfiguracji
   createFlashingConfigurationIntoConfigurationById(user: string, configurationId: number, flashingConfiguration: Flashing) {
-    this.readAllConfigurationsFromFirebase().subscribe(allUserConfigurations => {
-      const arrayIndex = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).arrayIndex;
-      const configurationWithId = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).configurationWithId;
-      const smallArrayIndex = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).smallArrayIndex;
+    this.readAllConfigurationsFromFirebase().subscribe(allConfigurations => {
+      const arrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).arrayIndex;
+      const configurationWithId = this.getIndexAndConfiguration(user, allConfigurations, configurationId).configurationWithId;
+      const smallArrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).smallArrayIndex;
       if (configurationWithId === null) {
         this.createConfigurationForUser(user, {
           id: 1,
@@ -287,10 +287,10 @@ export class CrudFirebaseService {
 
   // 8 dodawanie akcesorium do konfiguracji
   createAccessoryConfigurationIntoConfigurationById(user: string, configurationId: number, accessoryConfiguration: Accessory) {
-    this.readAllConfigurationsFromFirebase().subscribe(allUserConfigurations => {
-      const arrayIndex = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).arrayIndex;
-      const configurationWithId = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).configurationWithId;
-      const smallArrayIndex = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).smallArrayIndex;
+    this.readAllConfigurationsFromFirebase().subscribe(allConfigurations => {
+      const arrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).arrayIndex;
+      const configurationWithId = this.getIndexAndConfiguration(user, allConfigurations, configurationId).configurationWithId;
+      const smallArrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).smallArrayIndex;
       if (configurationWithId === null) {
         this.createConfigurationForUser(user, {
           // @ts-ignore
@@ -320,10 +320,10 @@ export class CrudFirebaseService {
   }
 
   updateNameConfigurationById(user: string, configurationId: number, configName: string) {
-    this.readAllConfigurationsFromFirebase().subscribe(allUserConfigurations => {
-      const arrayIndex = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).arrayIndex;
-      const configurationWithId = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).configurationWithId;
-      const smallArrayIndex = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).smallArrayIndex;
+    this.readAllConfigurationsFromFirebase().subscribe(allConfigurations => {
+      const arrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).arrayIndex;
+      const configurationWithId = this.getIndexAndConfiguration(user, allConfigurations, configurationId).configurationWithId;
+      const smallArrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).smallArrayIndex;
       configurationWithId.name = configName;
       this.http.patch('https://window-configurator.firebaseio.com/allConfigurations/' + arrayIndex
         + '/userConfigurations/' + smallArrayIndex + '.json', configurationWithId).subscribe();
@@ -333,10 +333,10 @@ export class CrudFirebaseService {
   // 10 aktualizowanie okna w konfiguracji
   updateWindowConfigurationIntoConfigurationById(user: string, configurationId: number,
                                                  windowId: number, windowConfiguration: RoofWindowSkylight) {
-    this.readAllConfigurationsFromFirebase().subscribe(allUserConfigurations => {
-      const arrayIndex = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).arrayIndex;
-      const configurationWithId = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).configurationWithId;
-      const smallArrayIndex = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).smallArrayIndex;
+    this.readAllConfigurationsFromFirebase().subscribe(allConfigurations => {
+      const arrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).arrayIndex;
+      const configurationWithId = this.getIndexAndConfiguration(user, allConfigurations, configurationId).configurationWithId;
+      const smallArrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).smallArrayIndex;
       for (let i = 0; i < configurationWithId.windows.length; i++) {
         if (configurationWithId.windows[i].id === windowId) {
           configurationWithId.windows[i] = {
@@ -355,10 +355,10 @@ export class CrudFirebaseService {
   // 11 aktualizowanie kołnierza w konfiguracji
   updateFlashingConfigurationIntoConfigurationById(user: string, configurationId: number,
                                                    flashingId: number, flashingConfiguration: Flashing) {
-    this.readAllConfigurationsFromFirebase().subscribe(allUserConfigurations => {
-      const arrayIndex = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).arrayIndex;
-      const configurationWithId = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).configurationWithId;
-      const smallArrayIndex = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).smallArrayIndex;
+    this.readAllConfigurationsFromFirebase().subscribe(allConfigurations => {
+      const arrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).arrayIndex;
+      const configurationWithId = this.getIndexAndConfiguration(user, allConfigurations, configurationId).configurationWithId;
+      const smallArrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).smallArrayIndex;
       for (let i = 0; i < configurationWithId.flashings.length; i++) {
         if (configurationWithId.flashings[i].id === flashingId) {
           configurationWithId.flashings[i] = {
@@ -377,10 +377,10 @@ export class CrudFirebaseService {
   // 12 aktualizowanie akcesorium w konfiguracji
   updateAccessoryConfigurationIntoConfigurationById(user: string, configurationId: number,
                                                     accessoryId: number, accessoryConfiguration: Accessory) {
-    this.readAllConfigurationsFromFirebase().subscribe(allUserConfigurations => {
-      const arrayIndex = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).arrayIndex;
-      const configurationWithId = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).configurationWithId;
-      const smallArrayIndex = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).smallArrayIndex;
+    this.readAllConfigurationsFromFirebase().subscribe(allConfigurations => {
+      const arrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).arrayIndex;
+      const configurationWithId = this.getIndexAndConfiguration(user, allConfigurations, configurationId).configurationWithId;
+      const smallArrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).smallArrayIndex;
       for (let i = 0; i < configurationWithId.accessories.length; i++) {
         if (configurationWithId.accessories[i].id === accessoryId) {
           configurationWithId.accessories[i] = {
@@ -398,13 +398,14 @@ export class CrudFirebaseService {
 
   // 1 usuwanie całej konfiguracji
   deleteConfigurationById(user: string, configurationId: number) {
-    this.readAllConfigurationsFromFirebase().subscribe(allUserConfigurations => {
-      const arrayIndex = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).arrayIndex;
-      const configurationWithId = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).configurationWithId;
-      for (const configurations of allUserConfigurations) {
+    this.readAllConfigurationsFromFirebase().subscribe(allConfigurations => {
+      const arrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).arrayIndex;
+      const configurationWithId = this.getIndexAndConfiguration(user, allConfigurations, configurationId).configurationWithId;
+      const smallArrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).smallArrayIndex;
+      for (const configurations of allConfigurations) {
         if (configurations.user === user) {
-          allUserConfigurations.splice(arrayIndex, 1);
-          this.http.put('https://window-configurator.firebaseio.com/allConfigurations.json', allUserConfigurations).subscribe();
+          allConfigurations.splice(arrayIndex, 1);
+          this.http.put('https://window-configurator.firebaseio.com/allConfigurations.json', allConfigurations).subscribe();
         }
       }
     });
@@ -581,71 +582,3 @@ export class CrudFirebaseService {
     return this.http.put('https://window-configurator.firebaseio.com/allConfigurations.json', temporaryConfigurationsForWork).subscribe();
   }
 }
-
-// addWindowToConfigurationsArray(user: string, configuredWindow: RoofWindowSkylight, configurationId: number) {
-//   this.readAllConfigurationsFromFirebase().pipe(map(allConfigurations => allConfigurations)).subscribe(allConfigurations => {
-//     console.log(allConfigurations);
-//     let tempUser = '1';
-//     let tempWindowConfigurations = [{
-//       id: 0,
-//       quantity: 0,
-//       window: null
-//     }];
-//     let tempFlashingConfigurations = [{
-//       id: 0,
-//       quantity: 0,
-//       flashing: null
-//     }];
-//     let tempAccessoryConfigurations = [{
-//       id: 0,
-//       quantity: 0,
-//       accessory: null
-//     }];
-//     let tempUsersConfigurations: ConfigurationRoofWindowModel = {
-//       user: '',
-//       userConfigurations: [{
-//         id: 0,
-//         windows: null,
-//         flashings: null,
-//         accessories: null
-//       }]
-//     };
-//     for (const configs of allConfigurations[0]) {
-//       if (configs.user === user) {
-//         tempUser = configs.user;
-//         tempUsersConfigurations = configs;
-//         for (const config of configs.userConfigurations) {
-//           tempWindowConfigurations = config.windows;
-//           tempFlashingConfigurations = config.flashings;
-//           tempAccessoryConfigurations = config.accessories;
-//         }
-//       }
-//     }
-//     if (tempUser !== '') {
-//       tempUsersConfigurations.user = user;
-//       tempUsersConfigurations.userConfigurations = [{
-//         id: 1,
-//         windows: [{
-//           id: 1,
-//           quantity: 1,
-//           window: configuredWindow
-//         }],
-//         flashings: null,
-//         accessories: null
-//       }];
-//     } else {
-//       tempUsersConfigurations[configurationId] = {
-//         id: configurationId,
-//         windows: tempWindowConfigurations.push({
-//           id: tempWindowConfigurations.length + 1,
-//           quantity: 1,
-//           window: configuredWindow
-//         }),
-//         flashings: tempFlashingConfigurations,
-//         accessories: tempAccessoryConfigurations
-//       };
-//     }
-//     // Wydobycie tych danych: var retrievedObject = localStorage.getItem('testObject');
-//     // console.log('retrievedObject: ', JSON.parse(retrievedObject));
-//   });
-// }
