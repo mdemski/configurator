@@ -85,6 +85,16 @@
     }
   }
 
+  &--black {
+    background-color: $color-black;
+    color: $color-white;
+
+    &:hover {
+      color: $color-black;
+      border: .5rem solid $color-black;
+    }
+  }
+
   &--dark-blue {
     background-color: $color-dark-blue;
     color: $color-white;
