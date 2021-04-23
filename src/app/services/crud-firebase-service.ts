@@ -185,7 +185,8 @@ export class CrudFirebaseService {
       for (let i = 0; i < allConfigs.length; i++) {
         if (allConfigs[i].user === user) {
           allConfigs[i].userConfigurations.push(configuration);
-          this.http.patch('https://window-configurator.firebaseio.com/allConfigurations.json', allConfigs).subscribe();
+          this.http.put('https://window-configurator.firebaseio.com/allConfigurations/'
+            + i + '/userConfigurations.json', allConfigs[i].userConfigurations).subscribe();
           configNotAdded = false;
         }
       }
