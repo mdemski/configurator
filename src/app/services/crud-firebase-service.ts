@@ -208,7 +208,7 @@ export class CrudFirebaseService {
     for (let i = 0; i < configurations.length; i++) {
       if (configurations[i].user === user) {
         arrayIndex = i;
-        for (let j = 0; j < configurations[i].length; j++) {
+        for (let j = 0; j < configurations[i].userConfigurations.length; j++) {
           if (configurations[i].userConfigurations[j].id === configurationId) {
             smallArrayIndex = j;
             configurationWithId = configurations[i].userConfigurations[j];
