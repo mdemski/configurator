@@ -330,6 +330,77 @@ export class CrudFirebaseService {
     });
   }
 
+  updateWindowQuantity(user: string, configurationId: number, windowId: number, quantity: number) {
+    if (quantity === 0 || quantity === undefined) {
+      quantity = 1;
+    }
+    this.readAllConfigurationsFromFirebase().subscribe(allConfigurations => {
+      const arrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).arrayIndex;
+      const configurationWithId = this.getIndexAndConfiguration(user, allConfigurations, configurationId).configurationWithId;
+      const smallArrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).smallArrayIndex;
+      for (let i = 0; i < configurationWithId.windows.length; i++) {
+        if (configurationWithId.windows[i].id === windowId) {
+          configurationWithId.windows[i] = {
+            id: configurationWithId.windows[i].id,
+            name: configurationWithId.windows[i].name,
+            quantity,
+            window: configurationWithId.windows[i].window,
+          };
+          this.http.patch('https://window-configurator.firebaseio.com/allConfigurations/' + arrayIndex
+            + '/userConfigurations/' + smallArrayIndex + '/windows/' + i + '.json', configurationWithId.windows[i]).subscribe();
+        }
+      }
+    });
+  }
+
+  updateFlashingQuantity(user: string, configurationId: number,
+                         flashingId: number, quantity: number) {
+    if (quantity === 0 || quantity === undefined) {
+      quantity = 1;
+    }
+    this.readAllConfigurationsFromFirebase().subscribe(allConfigurations => {
+      const arrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).arrayIndex;
+      const configurationWithId = this.getIndexAndConfiguration(user, allConfigurations, configurationId).configurationWithId;
+      const smallArrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).smallArrayIndex;
+      for (let i = 0; i < configurationWithId.flashings.length; i++) {
+        if (configurationWithId.flashings[i].id === flashingId) {
+          configurationWithId.flashings[i] = {
+            id: configurationWithId.flashings[i].id,
+            name: configurationWithId.flashings[i].name,
+            quantity,
+            flashing: configurationWithId.flashings[i].flashing
+          };
+          this.http.patch('https://window-configurator.firebaseio.com/allConfigurations/' + arrayIndex
+            + '/userConfigurations/' + smallArrayIndex + '/flashings/' + i + '.json', configurationWithId.flashings[i]).subscribe();
+        }
+      }
+    });
+  }
+
+  updateAccessoryQuantity(user: string, configurationId: number,
+                          accessoryId: number, quantity: number) {
+    if (quantity === 0 || quantity === undefined) {
+      quantity = 1;
+    }
+    this.readAllConfigurationsFromFirebase().subscribe(allConfigurations => {
+      const arrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).arrayIndex;
+      const configurationWithId = this.getIndexAndConfiguration(user, allConfigurations, configurationId).configurationWithId;
+      const smallArrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).smallArrayIndex;
+      for (let i = 0; i < configurationWithId.accessories.length; i++) {
+        if (configurationWithId.accessories[i].id === accessoryId) {
+          configurationWithId.accessories[i] = {
+            id: configurationWithId.accessories[i].id,
+            name: configurationWithId.accessories[i].name,
+            quantity,
+            accessory: configurationWithId.accessories[i].accessory
+          };
+          this.http.patch('https://window-configurator.firebaseio.com/allConfigurations/' + arrayIndex
+            + '/userConfigurations/' + smallArrayIndex + '/accessories/' + i + '.json', configurationWithId.accessories[i]).subscribe();
+        }
+      }
+    });
+  }
+
   // 10 aktualizowanie okna w konfiguracji
   updateWindowConfigurationIntoConfigurationById(user: string, configurationId: number,
                                                  windowId: number, windowConfiguration: RoofWindowSkylight) {
