@@ -1,15 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CrudFirebaseService} from '../../services/crud-firebase-service';
 import {map} from 'rxjs/operators';
-import {ConfigurationRoofWindowModel} from '../../models/configurationRoofWindowModel';
 import {DatabaseService} from '../../services/database.service';
 import {RoofWindowSkylight} from '../../models/roof-window-skylight';
 import {IpService} from '../../services/ip.service';
 import {AuthService} from '../../services/auth.service';
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
-import _ from 'lodash';
+import {AsyncSubject, BehaviorSubject, Observable, Subject} from 'rxjs';
 import {Flashing} from '../../models/flashing';
 import {Accessory} from '../../models/accessory';
+import {SingleConfiguration} from '../../models/single-configuration';
 
 @Component({
   selector: 'app-configuration-summary',
@@ -18,22 +17,20 @@ import {Accessory} from '../../models/accessory';
 })
 export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
 
-  configurations: ConfigurationRoofWindowModel[];
-  configurationsSubject: BehaviorSubject<ConfigurationRoofWindowModel[]>;
-  configurations$: Observable<ConfigurationRoofWindowModel[]>;
-  currentUser$: Subject<string> = new Subject();
+  configurations: SingleConfiguration[];
+  configurationsSubject: BehaviorSubject<SingleConfiguration[]>;
+  configurations$: Observable<SingleConfiguration[]>;
+  currentUser$: BehaviorSubject<string>;
   currentUser;
+  uneditable = true;
+  loading;
 
   constructor(private configDist: CrudFirebaseService,
               private db: DatabaseService,
               private authService: AuthService,
               private ipService: IpService) {
-  }
-
-  ngOnInit(): void {
-    this.configDist.populateDataToFirebase();
-    this.configurationsSubject = new BehaviorSubject<ConfigurationRoofWindowModel[]>([]);
-    this.configurations$ = this.configurationsSubject.asObservable();
+    this.loading = true;
+    this.currentUser$ = new BehaviorSubject<string>('');
     this.authService.isLogged ? this.authService.user.pipe(map(user => user)).subscribe(user => {
         this.currentUser$.next(user.email);
       })
@@ -41,11 +38,18 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
         // @ts-ignore
         this.currentUser$.next(userIp.ip);
       });
+  }
+
+  ngOnInit(): void {
+    // this.db.populateDataToFirebase();
+    // this.configDist.createConfigurationForUser('178.73.35.150', this.db.temporarySingleConfiguration);
+    this.configurationsSubject = new BehaviorSubject<SingleConfiguration[]>([]);
+    this.configurations$ = this.configurationsSubject.asObservable();
     this.currentUser$.subscribe(currentUser => {
       this.configDist.readAllUserConfigurations(currentUser).subscribe(userConfigurations => {
         this.configurations = userConfigurations;
         this.configurationsSubject.next(this.configurations);
-        // console.log(this.configurations);
+        this.loading = currentUser === '';
       });
     });
   }
@@ -58,30 +62,71 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
     // this.configDist.configurationDataChange$.unsubscribe();
   }
 
-  resize(delta: number, quantity: number) {
+  resize(delta: number, quantity: number, configurationId, product, productId) {
     quantity = quantity + delta;
+    this.currentUser$.subscribe(user => {
+      if (product.window !== undefined) {
+        this.configDist.updateWindowQuantity(user, configurationId, productId, quantity);
+      }
+      if (product.flashing !== undefined) {
+        this.configDist.updateFlashingQuantity(user, configurationId, productId, quantity);
+      }
+      if (product.accessory !== undefined) {
+        this.configDist.updateAccessoryQuantity(user, configurationId, productId, quantity);
+      }
+    });
   }
 
-  decreaseQuantity(product: RoofWindowSkylight | Flashing | Accessory) {
-    // @ts-ignore
-    console.log(product.quantity);
-    // @ts-ignore
-    if (product.quantity === 0) {
-      // @ts-ignore
-      product.quantity = 0;
-    } else {
-      // @ts-ignore
-      this.resize(-1, product.quantity);
+  decreaseQuantity(configurationId: number, product,
+                   productId: number, quantity: number) {
+    if (quantity === 0) {
+      quantity = 0;
     }
-    // @ts-ignore
-    console.log(product.quantity);
+    this.resize(-1, quantity, configurationId, product, productId);
   }
 
-  increaseQuantity(product: RoofWindowSkylight | Flashing | Accessory) {
-    // @ts-ignore
-    this.resize(+1, product.quantity);
-    // @ts-ignore
-    console.log(product.quantity);
+  increaseQuantity(configurationId: number, product,
+                   productId: number, quantity: number) {
+    this.resize(1, quantity, configurationId, product, productId);
+  }
+
+  configurationNameEdit() {
+    if (this.uneditable === null) {
+      this.uneditable = true;
+    } else {
+      this.uneditable = null;
+    }
+  }
+
+  configurationNameSave(configId: number, newConfigName: string) {
+    this.currentUser$.subscribe(user => {
+      this.configDist.updateNameConfigurationById(user, configId, newConfigName);
+    });
+    if (this.uneditable === null) {
+      this.uneditable = true;
+    } else {
+      this.uneditable = null;
+    }
+  }
+
+  removeProductConfiguration(id: number, productId: number, product) {
+    this.currentUser$.subscribe(user => {
+      if (product.window !== undefined) {
+        this.configDist.deleteWindowConfigurationFromConfigurationById(user, id, productId);
+      }
+      if (product.flashing !== undefined) {
+        this.configDist.deleteFlashingConfigurationFromConfigurationById(user, id, productId);
+      }
+      if (product.accessory !== undefined) {
+        this.configDist.deleteAccessoryConfigurationFromConfigurationById(user, id, productId);
+      }
+    });
+  }
+
+  removeHoleConfiguration(id: number) {
+    this.currentUser$.subscribe(user => {
+      this.configDist.deleteConfigurationById(user, id);
+    });
   }
 
   // TODO sprawdzić co dokładnie wrzuca się do koszyka i odpowiednio to obsługiwać
@@ -93,46 +138,12 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
   onHoverClick($event: MouseEvent) {
     // @ts-ignore
     const divsTable = $event.target.parentElement.parentElement.parentElement.parentElement;
-    if (divsTable.style.maxHeight === '84.2px' || divsTable.style.maxHeight === '') {
+    if (divsTable.style.maxHeight === '126.3px' || divsTable.style.maxHeight === '') {
       divsTable.style.maxHeight = '875px';
       divsTable.style.transition = 'all .7s ease-in-out';
     } else {
-      divsTable.style.maxHeight = '84.2px';
+      divsTable.style.maxHeight = '126.3px';
       divsTable.style.transition = 'all .7s ease-in-out';
     }
-  }
-
-  removeConfiguration(configurationId: number,
-                      product: RoofWindowSkylight | Flashing | Accessory) {
-    for (const configs of this.configurations) {
-      // @ts-ignore
-      if (configs.id === configurationId && product.window !== undefined) {
-        // @ts-ignore
-        configs.windows = configs.windows.filter(windows => windows.id !== product.id);
-      }
-      // @ts-ignore
-      if (configs.id === configurationId && product.flashing !== undefined) {
-        // @ts-ignore
-        configs.flashings = configs.flashings.filter(flashings => flashings.id !== product.id);
-      }
-      // @ts-ignore
-      if (configs.id === configurationId && product.accessory !== undefined) {
-        // @ts-ignore
-        configs.accessories = configs.accessories.filter(accessories => accessories.id !== product.id);
-      }
-    }
-    // this.configDist.createConfigurationForUser(this.currentUser, this.configurations);
-    this.configurationsSubject.next(this.configurations);
-  }
-
-  removeHoleConfiguration(configuration: ConfigurationRoofWindowModel) {
-    let index = -1;
-    for (let i = 0; i < this.configurations.length; i++) {
-      if (_.isEqual(this.configurations[i], configuration)) {
-        index = i;
-      }
-    }
-    this.configurations.splice(index, 1);
-    this.configurationsSubject.next(this.configurations);
   }
 }
