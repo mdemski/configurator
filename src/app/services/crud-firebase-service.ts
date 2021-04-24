@@ -122,7 +122,7 @@ export class CrudFirebaseService {
           for (const config of userConfigurations.userConfigurations) {
             if (config.id === Number(configId)) {
               for (const window of config.windows) {
-                if (window.id === windowId) {
+                if (window.id === Number(windowId)) {
                   windowById = window;
                 }
               }
@@ -143,7 +143,7 @@ export class CrudFirebaseService {
             if (config.id ===  Number(configId)) {
               if (config.flashings !== undefined) {
                 for (const flashing of config.flashings) {
-                  if (flashing.id === flashingId) {
+                  if (flashing.id === Number(flashingId)) {
                     flashingById = flashing;
                   }
                 }
@@ -165,7 +165,7 @@ export class CrudFirebaseService {
             if (config.id ===  Number(configId)) {
               if (config.accessories !== undefined) {
                 for (const accessory of config.accessories) {
-                  if (accessory.id === accessoryId) {
+                  if (accessory.id === Number(accessoryId)) {
                     accessoryById = accessory;
                   }
                 }
