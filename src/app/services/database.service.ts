@@ -1,18 +1,23 @@
 import {Injectable} from '@angular/core';
 import {RoofWindowSkylight} from '../models/roof-window-skylight';
 import {Observable, of, Subject} from 'rxjs';
-import {map, shareReplay} from 'rxjs/operators';
 import {Accessory} from '../models/accessory';
 import {Company} from '../models/company';
 import {PropertyValueTranslatorService} from './property-value-translator.service';
 import {WindowDynamicValuesSetterService} from './window-dynamic-values-setter.service';
 import {Flashing} from '../models/flashing';
+import {SingleConfiguration} from '../models/single-configuration';
+import {ConfigurationModel} from '../models/configuration-model';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable()
 export class DatabaseService {
 
   constructor(private valueTranslator: PropertyValueTranslatorService,
-              private windowValuesSetter: WindowDynamicValuesSetterService) {
+              private windowValuesSetter: WindowDynamicValuesSetterService,
+              private http: HttpClient) {
+    this.accessories = this.getAllAccessoriesToShopList();
+    this.temporarySingleConfiguration = this.getSingleConfiguration();
   }
 
   // windows
@@ -22,11 +27,12 @@ export class DatabaseService {
   availableSellers: any = [];
   setGroupFilter$ = new Subject<any>();
   getGroupFilter = this.setGroupFilter$.asObservable();
+  temporarySingleConfiguration: SingleConfiguration;
 
   // flashings
-  temporaryFlashing = new Flashing('1K-1-U-UO------A7022P-055098-OKPK01', 'UN/O 055x098 Kołnierz uniwersalny /A7022P/UO/OKPK01', 'U', 'I-KOLNIERZ', 'NPL-KOLNIERZ', 'Nowy', 'U', 55, 98, 'KołnierzUszczelniający',
-    'KolnierzUszczelniający', 'Kołnierz:U', 'KołnierzUszczelniający:K-1', 'KołnierzUszczelniający', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'U', 0, 'UO', 5, false, 0, null,
-    0, 0, [], [], 270, ['78x118', '78x140'], []);
+  temporaryFlashing = new Flashing('1K-1-U-UO------A7022P-055098-OKPK01', 'UN/O 055x098 Kołnierz uniwersalny /A7022P/UO/OKPK01', 'Kołnierz U 55x98 UO', 'I-KOLNIERZ', 'NPL-KOLNIERZ', 'Nowy', 'U', 55, 98, 'KołnierzUszczelniający',
+    'KolnierzUszczelniający', 'Kołnierz:U', 'KołnierzUszczelniający:K-1', 'KołnierzUszczelniający', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'U', 0, 'UO', 5, false, 1, null,
+    0, 0, [], [], 270, ['78x118', '78x140'], ['assets/img/products/flashings.jpg']);
 
   // TODO do oprogramowania pobieranie danych z eNova/pliku + filtrowanie danych według grupaAsortymentowa
   getAllRoofWindowsToShopList(): RoofWindowSkylight[] {
@@ -54,13 +60,13 @@ export class DatabaseService {
   getAllAccessoriesToShopList() {
     return this.accessories = [
       new Accessory('1A-D37--T-A372-078118-AA', 'D37T 078x118 A372 [AA] Roleta Multistop, tkanina transparentna, srebrne prowadnice', 'Multistop D37 78x118', 'I-Akcesorium', 'NPL-Akcesorium', 'Nowy', 'Roleta:D37', 78, 118, 'Akcesorium', 'Akcesorium:Wewnętrzne',
-        'Roleta:D37', 'AkcesoriumRoletaW:D37', 'Akcesorium:Roleta', 'A', 'A', 'Transparentna', 'RoletaD_T:A372', 'Roleta:Ral7048', 'D37:Srebrny', 0, 'Roleta:Manualne', '', 358, [], []),
+        'Roleta:D37', 'AkcesoriumRoletaW:D37', 'Akcesorium:Roleta', 'A', 'A', 'Transparentna', 'RoletaD_T:A372', 'Roleta:Ral7048', 'D37:Srebrny', 0, 'Roleta:Manualne', '', 358, ['assets/img/products/D37.png'], []),
       new Accessory('1A-D37W--T-A372-078118-AA', 'D37WT 078x118 A372 [AA] Roleta Multistop, tkanina transparentna, białe prowadnice', 'Multistop D37W 78x118', 'I-Akcesorium', 'NPL-Akcesorium', 'Nowy', 'Roleta:D37W', 78, 118, 'Akcesorium', 'Akcesorium:Wewnętrzne',
-        'Roleta:D37W', 'AkcesoriumRoletaW:D37W', 'Akcesorium:Roleta', 'A', 'A', 'Transparentna', 'RoletaD_T:A372', 'Roleta:Ral9016', 'D37:Biały', 0, 'Roleta:Manualne', '', 358, [], []),
+        'Roleta:D37W', 'AkcesoriumRoletaW:D37W', 'Akcesorium:Roleta', 'A', 'A', 'Transparentna', 'RoletaD_T:A372', 'Roleta:Ral9016', 'D37:Biały', 0, 'Roleta:Manualne', '', 358, ['assets/img/products/D37.png'], []),
       new Accessory('1A-D37--Z-S003-078118-AA', 'D37T 078x118 A372 [AA] Roleta Multistop, tkanina zaciemniająca, srebrne prowadnice', 'Multistop D37 78x118', 'I-Akcesorium', 'NPL-Akcesorium', 'Nowy', 'Roleta:D37', 78, 118, 'Akcesorium', 'Akcesorium:Wewnętrzne',
-        'Roleta:D37', 'AkcesoriumRoletaW:D37', 'Akcesorium:Roleta', 'A', 'A', 'Zaciemniająca', 'RoletaD_Z:S003', 'Roleta:Ral7048', 'D37:Srebrny', 0, 'Roleta:Manualne', '', 358, [], []),
+        'Roleta:D37', 'AkcesoriumRoletaW:D37', 'Akcesorium:Roleta', 'A', 'A', 'Zaciemniająca', 'RoletaD_Z:S003', 'Roleta:Ral7048', 'D37:Srebrny', 0, 'Roleta:Manualne', '', 358, ['assets/img/products/D37.png'], []),
       new Accessory('1A-D37W--Z-S003-078118-AA', 'D37WT 078x118 A372 [AA] Roleta Multistop, tkanina zaciemniająca, białe prowadnice', 'Multistop D37W 78x118', 'I-Akcesorium', 'NPL-Akcesorium', 'Nowy', 'Roleta:D37W', 78, 118, 'Akcesorium', 'Akcesorium:Wewnętrzne',
-        'Roleta:D37W', 'AkcesoriumRoletaW:D37W', 'Akcesorium:Roleta', 'A', 'A', 'Zaciemniająca', 'RoletaD_Z:S003', 'Roleta:Ral9016', 'D37:Biały', 0, 'Roleta:Manualne', '', 358, [], [])
+        'Roleta:D37W', 'AkcesoriumRoletaW:D37W', 'Akcesorium:Roleta', 'A', 'A', 'Zaciemniająca', 'RoletaD_Z:S003', 'Roleta:Ral9016', 'D37:Biały', 0, 'Roleta:Manualne', '', 358, ['assets/img/products/D37.png'], [])
     ];
   }
 
@@ -130,5 +136,141 @@ export class DatabaseService {
 
   order(product: any, quantity: number) {
     // TODO logika związana z wysłaniem całego koszyka jako zamówienie do eNova
+  }
+
+  private getSingleConfiguration() {
+    return {
+      id: 1,
+      name: 'Pierwsza testowa',
+      windows: [{
+        id: 1,
+        quantity: 1,
+        window: this.getAllRoofWindowsToShopList()[0]
+      },
+        {
+          id: 2,
+          quantity: 1,
+          window: this.getAllRoofWindowsToShopList()[1]
+        },
+        {
+          id: 3,
+          quantity: 1,
+          window: this.getAllRoofWindowsToShopList()[2]
+        }],
+      flashings: [{
+        id: 1,
+        quantity: 1,
+        flashing: this.temporaryFlashing
+      },
+        {
+          id: 2,
+          quantity: 1,
+          flashing: this.temporaryFlashing
+        }
+      ],
+      accessories: [{
+        id: 1,
+        quantity: 1,
+        accessory: this.accessories[0]
+      },
+        {
+          id: 2,
+          quantity: 2,
+          accessory: this.accessories[2]
+        }]
+    };
+  }
+
+  // TODO usunąć tymczasową konfigurację do testów aplikacji - przetestować zapisywanie po zalogowaniu
+  populateDataToFirebase() {
+    const temporaryConfigurationsForWork: ConfigurationModel[] = [{
+      user: '178.73.35.155',
+      userConfigurations: [{
+        id: 1,
+        name: 'Pierwsza testowa',
+        windows: [{
+          id: 1,
+          quantity: 1,
+          window: this.getAllRoofWindowsToShopList()[0]
+        },
+          {
+            id: 2,
+            quantity: 1,
+            window: this.getAllRoofWindowsToShopList()[1]
+          },
+          {
+            id: 3,
+            quantity: 1,
+            window: this.getAllRoofWindowsToShopList()[2]
+          }],
+        flashings: [{
+          id: 1,
+          quantity: 1,
+          flashing: this.temporaryFlashing
+        },
+          {
+            id: 2,
+            quantity: 1,
+            flashing: this.temporaryFlashing
+          }
+        ],
+        accessories: [{
+          id: 1,
+          quantity: 1,
+          accessory: this.accessories[0]
+        },
+          {
+            id: 2,
+            quantity: 2,
+            accessory: this.accessories[2]
+          }]
+      },
+        {
+          id: 3,
+          name: 'Trzecia bo druga usunięta',
+          windows: [{
+            id: 1,
+            quantity: 1,
+            window: this.getAllRoofWindowsToShopList()[1]
+          }],
+          flashings: null,
+          accessories: null
+        }]
+    },
+      {
+        user: '192.168.0.2',
+        userConfigurations: [{
+          id: 1,
+          name: 'Pierwsza testowa',
+          windows: [{
+            id: 1,
+            quantity: 1,
+            window: this.getAllRoofWindowsToShopList()[0]
+          },
+            {
+              id: 2,
+              quantity: 1,
+              window: this.getAllRoofWindowsToShopList()[0]
+            }],
+          flashings: [{
+            id: 1,
+            quantity: 1,
+            flashing: this.temporaryFlashing
+          },
+            {
+              id: 2,
+              quantity: 1,
+              flashing: this.temporaryFlashing
+            }
+          ],
+          accessories: [
+            {
+              id: 1,
+              quantity: 2,
+              accessory: this.accessories[2]
+            }]
+        }]
+      }];
+    return this.http.put('https://window-configurator.firebaseio.com/allConfigurations.json', temporaryConfigurationsForWork).subscribe();
   }
 }
