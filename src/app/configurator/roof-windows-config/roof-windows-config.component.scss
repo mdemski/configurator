@@ -11,6 +11,11 @@
   }
 }
 
+.loader-container {
+  margin-top: 10rem;
+  height: 100vh;
+}
+
 .md-container {
   position: relative;
   max-width: 140rem;
@@ -272,6 +277,9 @@ form {
   }
 }
 
+.materials {
+  max-height: 330px;
+}
 
 //POPUP
 .md-popup {

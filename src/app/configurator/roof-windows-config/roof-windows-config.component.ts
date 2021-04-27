@@ -4,13 +4,14 @@ import {TranslateService} from '@ngx-translate/core';
 import {BehaviorSubject, Observable, Observer, Subject, Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {RoofWindowSkylight} from '../../models/roof-window-skylight';
-import {ConfigurationDistributorService} from '../../services/configuration-distributor.service';
+import {CrudFirebaseService} from '../../services/crud-firebase-service';
 import {ConfigurationDataService} from '../../services/configuration-data.service';
 import {AuthService} from '../../services/auth.service';
 import {WindowDynamicValuesSetterService} from '../../services/window-dynamic-values-setter.service';
 import _ from 'lodash';
 import {filter, map, tap} from 'rxjs/operators';
-import {IpService} from '../../services/ip.service';
+import {ErpNameTranslatorService} from '../../services/erp-name-translator.service';
+import {LoadWindowConfigurationService} from '../../services/load-window-configuration.service';
 
 @Component({
   selector: 'app-roof-windows-config',
@@ -22,20 +23,28 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   // TODO przygotować strumień i service do publikowania tej danej po aplikacji
   constructor(private authService: AuthService,
               private configData: ConfigurationDataService,
-              private configDist: ConfigurationDistributorService,
+              private configDist: CrudFirebaseService,
               private windowValuesSetter: WindowDynamicValuesSetterService,
-              private ip: IpService,
+              private erpName: ErpNameTranslatorService,
+              private loadConfig: LoadWindowConfigurationService,
               private router: Router,
               private activeRouter: ActivatedRoute,
               private fb: FormBuilder,
               public translate: TranslateService) {
+    this.loading = true;
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
+    // this.configData.fetchAllData().subscribe(() => {
+    //   this.coats$.next(this.objectMaker(this.configData.coats));
+    //   this.extras$.next(this.objectMaker(this.configData.extras));
+    // });
   }
 
+  currentUser: string;
   form: FormGroup;
   configId: number;
-  user: string;
+  windowId: number;
+  windowCode: string;
   dimensions;
   configuredWindow: RoofWindowSkylight;
   tempConfiguredWindow: RoofWindowSkylight;
@@ -45,7 +54,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   standardHeights = [78, 98, 118, 140, 160];
   showHeightMessage = false;
   popupConfig = true;
-  private materialVisible = false;
+  private materialVisible = true;
   private openingVisible = false;
   private coatsVisible = false;
   private dimensionsVisible = false;
@@ -80,25 +89,27 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   configurationSummary: string;
   formData$;
   subscription: Subscription;
-  coats$ = new Subject<any[]>();
-  extras$ = new Subject<any[]>();
+  coats$ = new BehaviorSubject<any[]>([]);
+  extras$ = new BehaviorSubject<any[]>([]);
   glazingName$ = new BehaviorSubject('Okno:E01');
+  loading;
 
   static setDimensions(dimensions) {
     return dimensions;
   }
 
+  static getControlType(otwieranie: string) {
+    if (otwieranie === 'Okno:ElektrycznePilot' || otwieranie === 'Okno:ElektrycznePrzełącznik') {
+      return otwieranie;
+    } else {
+      return null;
+    }
+  }
+
   // 'width': new FormControl(78, [this.validateWidth.bind(this), Validators.required]), własnym walidator
   ngOnInit(): void {
-    this.authService.isLogged ? this.authService.user.subscribe(user => this.user = user.email)
-      // @ts-ignore
-      : this.ip.getIpAddress().subscribe(userIp => this.user = userIp.ip);
-    this.activeRouter.params.subscribe(param => {
-      if (param['configId'] !== undefined) {
-        this.configId = param['configId'];
-      } else {
-        this.configId = 1;
-      }
+    this.authService.returnUser().subscribe(user => {
+      this.currentUser = user;
     });
     this.configData.fetchAllData().subscribe(() => {
       this.windowModelsToCalculatePrice = this.configData.models;
@@ -121,82 +132,87 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       this.coats$.next(this.coatsFromFile);
       this.extras$.next(this.extrasFromFile);
     });
-    // TODO get next id from database
-    this.configuredWindow = new RoofWindowSkylight(
-      '999', null, null, null, null, null, null, null, null, null,
-      null, null, null, null, null, null, null, null, null, null, null,
-      null, null, null, null, false, 0, [], [],
-      [], [], 0, 0, 0, 5, null, null, null, 0);
-    this.form = this.fb.group({
-      material: new FormControl(null, [], [this.validateMaterials.bind(this)]),
-      openingType: new FormControl(null, [], [this.validateOpenings.bind(this)]),
-      control: new FormControl(null),
-      glazing: new FormControl('dwuszybowy', [], [this.validateGlazing.bind(this)]),
-      width: new FormControl(78),
-      height: new FormControl(118),
-      innerColor: new FormControl(null, [], [this.validateInnerColor.bind(this)]),
-      outer: new FormGroup({
-        outerMaterial: new FormControl(null),
-        outerColor: new FormControl('Aluminium:RAL7022'),
-        outerColorFinish: new FormControl(null)
-      }, [], [this.validateOuterMaterial.bind(this)]),
-      ventilation: new FormControl('NawiewnikNeoVent', [], [this.validateVentilation.bind(this)]),
-      closure: new FormGroup({
-        handle: new FormControl(null, [], [this.validateHandle.bind(this)]),
-        handleColor: new FormControl(null)
-      })
+    this.activeRouter.params.subscribe(param => {
+      this.authService.returnUser().subscribe(user => {
+        this.loadConfig.getWindowToReconfiguration(user, param.configId, param.productId, param.productCode)
+          .subscribe(windowToReconfiguration => {
+            this.configuredWindow = windowToReconfiguration;
+            this.form = this.fb.group({
+              material: new FormControl(this.configuredWindow.stolarkaMaterial, [], [this.validateMaterials.bind(this)]),
+              openingType: new FormControl(this.configuredWindow.otwieranie, [], [this.validateOpenings.bind(this)]),
+              control: new FormControl(RoofWindowsConfigComponent.getControlType(this.configuredWindow.otwieranie)),
+              glazing: new FormControl(this.configuredWindow.glazingToCalculation, [], [this.validateGlazing.bind(this)]),
+              width: new FormControl(this.configuredWindow.szerokosc),
+              height: new FormControl(this.configuredWindow.wysokosc),
+              innerColor: new FormControl(this.configuredWindow.stolarkaKolor, [], [this.validateInnerColor.bind(this)]),
+              outer: new FormGroup({
+                outerMaterial: new FormControl(this.configuredWindow.oblachowanieMaterial),
+                outerColor: new FormControl(this.configuredWindow.oblachowanieKolor),
+                outerColorFinish: new FormControl(this.configuredWindow.oblachowanieFinisz)
+              }, [], [this.validateOuterMaterial.bind(this)]),
+              ventilation: new FormControl(this.configuredWindow.wentylacja, [], [this.validateVentilation.bind(this)]),
+              closure: new FormGroup({
+                handle: new FormControl(this.configuredWindow.zamkniecieTyp, [], [this.validateHandle.bind(this)]),
+                handleColor: new FormControl(this.configuredWindow.zamkniecieKolor)
+              })
+            });
+            console.log(this.form.controls.glazing.value);
+            this.coats$.pipe(
+              filter(data => !!data),
+              map(coats => this.fb.array(coats.map(x => new FormControl(false))))
+            ).subscribe(coatsFormArray => {
+              this.form.addControl('coats', coatsFormArray);
+            });
+            this.extras$.pipe(
+              filter(data => !!data),
+              map(extras => this.fb.array(extras.map(x => new FormControl(false))))
+            ).subscribe(extrasFormArray => {
+              this.form.addControl('extras', extrasFormArray);
+            });
+            this.translate.get('LINK').subscribe(text => {
+              this.shopRoofWindowLink = text.shopRoofWindows;
+            });
+            this.translate.get('LINK').subscribe(text => {
+              this.configurationSummary = text.configurationSummary;
+            });
+            this.formData$ = this.form.valueChanges; // strumień z danymi z formularza
+            this.formData$.pipe(
+              filter((form: any) => form.material != null),
+              tap(() => {
+                const checkboxCoatControl = this.coats as FormArray;
+                this.subscription = checkboxCoatControl.valueChanges.subscribe(checkbox => {
+                  checkboxCoatControl.setValue(checkboxCoatControl.value.map((value, i) =>
+                    value ? this.coatsFromFile[i].option : false), {emitEvent: false});
+                });
+              }),
+              tap(() => {
+                const checkboxExtraControl = this.extras as FormArray;
+                this.subscription = checkboxExtraControl.valueChanges.subscribe(checkbox => {
+                  checkboxExtraControl.setValue(checkboxExtraControl.value.map((value, i) =>
+                    value ? this.extrasFromFile[i].option : false), {emitEvent: false});
+                });
+              }),
+              tap((form: any) => {
+                this.windowValuesSetter.glazingTypeSetter(form.material, form.glazing, form.coats, 'Okno').subscribe(glazingName => {
+                  this.glazingName$.next(glazingName);
+                });
+              }),
+              map((form) => {
+                this.setConfiguredValues(form);
+              })).subscribe();
+            this.loading = false;
+            this.tempConfiguredWindow = new RoofWindowSkylight(
+              '999', null, null, null, null, null, null, null, null, null,
+              null, null, null, null, null, null, null, null, null, null, null,
+              null, null, null, null, false, 0, [], [], [],
+              [], 1000, 1, 0.5, 5, null, null, null, 0);
+          });
+      });
     });
-    this.coats$.pipe(
-      filter(data => !!data),
-      map(coats => this.fb.array(coats.map(x => new FormControl(false))))
-    ).subscribe(coatsFormArray => {
-      this.form.addControl('coats', coatsFormArray);
-    });
-    this.extras$.pipe(
-      filter(data => !!data),
-      map(extras => this.fb.array(extras.map(x => new FormControl(false))))
-    ).subscribe(extrasFormArray => {
-      this.form.addControl('extras', extrasFormArray);
-    });
-    this.translate.get('LINK').subscribe(text => {
-      this.shopRoofWindowLink = text.shopRoofWindows;
-    });
-    this.translate.get('LINK').subscribe(text => {
-      this.configurationSummary = text.configurationSummary;
-    });
-    this.formData$ = this.form.valueChanges; // strumień z danymi z formularza
-    this.formData$.pipe(
-      filter((form: any) => form.material != null),
-      tap(() => {
-        const checkboxCoatControl = this.coats as FormArray;
-        this.subscription = checkboxCoatControl.valueChanges.subscribe(checkbox => {
-          checkboxCoatControl.setValue(checkboxCoatControl.value.map((value, i) =>
-            value ? this.coatsFromFile[i].option : false), {emitEvent: false});
-        });
-      }),
-      tap(() => {
-        const checkboxExtraControl = this.extras as FormArray;
-        this.subscription = checkboxExtraControl.valueChanges.subscribe(checkbox => {
-          checkboxExtraControl.setValue(checkboxExtraControl.value.map((value, i) =>
-            value ? this.extrasFromFile[i].option : false), {emitEvent: false});
-        });
-      }),
-      tap((form: any) => {
-        this.windowValuesSetter.glazingTypeSetter(form.material, form.glazing, form.coats, 'Okno').subscribe(glazingName => {
-          this.glazingName$.next(glazingName);
-        });
-      }),
-      map((form) => {
-        this.setConfiguredValues(form);
-      })).subscribe();
-    this.tempConfiguredWindow = new RoofWindowSkylight(
-      '999', null, null, null, null, null, null, null, null, null,
-      null, null, null, null, null, null, null, null, null, null, null,
-      null, null, null, null, false, 0, [], [], [],
-      [], 1000, 1, 0.5, 5, null, null, null, 0);
   }
 
-  // TODO przygotować wczytywanie konfiguracji jeśli Klient wraca do poprawy danej konfiguracji
+  // TODO przygotować wczytywanie konfiguracji jeśli Klient wraca do poprawy danej konfiguracji lub chce przekonfigurować produkt ze sklepu
+  // TODO Wyświetlanie ceny podstawowej z eNovy podczas natrafienia na kod będący w eNova i zaproponowanie prześcia do sklepu
 
   ngOnDestroy() {
     // TODO odsubskrybować się ze wszystkich strumieni oprócz http - ten strumień zamyka się sam
@@ -211,7 +227,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   }
 
   setConfiguredValues(form) {
-    this.configuredWindow.model = this.setModels(
+    this.configuredWindow.model = this.erpName.setWindowModel(
       form.material,
       form.openingType,
       form.ventilation);
@@ -219,6 +235,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       form.openingType) {
       this.popupConfig = true;
     }
+    // this.configuredWindow.grupaAsortymentowa = this.erpName.setWindowAssortmentGroup(form.openingType);
     this.glazingName$.subscribe(pakietSzybowy => {
       this.configuredWindow.pakietSzybowy = pakietSzybowy;
     });
@@ -229,18 +246,17 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.configuredWindow.wysokosc = form.height;
     this.showHeightMessage = this.standardHeights.includes(form.height);
     this.windowValuesSetter.setModelName(this.configuredWindow);
-    this.configuredWindow.grupaAsortymentowa = 'Okna dachowe';
     this.configuredWindow.indeksAlgorytm = 'I-OKNO';
     this.configuredWindow.nazwaPLAlgorytm = 'NPL-OKNO';
-    this.configuredWindow.typ = this.getSubCategory(form.openingType);
-    this.configuredWindow.geometria = this.getGeometry(form.material);
+    this.configuredWindow.typ = this.erpName.setWindowType(form.openingType);
+    this.configuredWindow.geometria = this.erpName.setWindowGeometry(form.material);
     this.configuredWindow.otwieranie = form.openingType;
     this.configuredWindow.wentylacja = form.ventilation;
     this.configuredWindow.stolarkaMaterial = form.material;
     this.configuredWindow.stolarkaKolor = form.innerColor;
     this.configuredWindow.oblachowanieMaterial = form.outer.outerMaterial;
-    this.configuredWindow.rodzina = this.getFamily(this.configuredWindow.stolarkaMaterial, this.configuredWindow.otwieranie);
-    this.configuredWindow.rodzaj = this.getType(this.configuredWindow.stolarkaMaterial, this.configuredWindow.otwieranie);
+    this.configuredWindow.rodzina = this.erpName.setWindowFamily(this.configuredWindow.stolarkaMaterial, this.configuredWindow.otwieranie);
+    this.configuredWindow.rodzaj = this.erpName.setWindowGroup(this.configuredWindow.stolarkaMaterial, this.configuredWindow.otwieranie);
     this.configuredWindow.oblachowanieKolor = form.outer.outerColor;
     this.configuredWindow.oblachowanieFinisz = form.outer.outerColorFinish;
     this.configuredWindow.zamkniecieTyp = form.closure.handle;
@@ -252,7 +268,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.configuredWindow.kolorTworzywZew = 'Okno:RAL7048';
     this.configuredWindow.windowHardware = false;
     this.configuredWindow.numberOfGlasses = this.configuredWindow.glazingToCalculation === 'dwuszybowy' ? 2 : 3;
-    this.configuredWindow.kod = this.generateCode(this.configuredWindow.stolarkaMaterial, this.configuredWindow.otwieranie,
+    this.configuredWindow.kod = this.erpName.generateWindowCode(this.configuredWindow.stolarkaMaterial, this.configuredWindow.otwieranie,
       this.configuredWindow.wentylacja, this.configuredWindow.pakietSzybowy, this.configuredWindow.stolarkaKolor,
       this.configuredWindow.oblachowanieMaterial, this.configuredWindow.oblachowanieKolor, this.configuredWindow.oblachowanieFinisz,
       this.configuredWindow.szerokosc, this.configuredWindow.wysokosc);
@@ -316,90 +332,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       }
     }
     return windowPrice;
-  }
-
-  setModels(material: string, openingType: string, ventilation: string) {
-    let model = '';
-    switch (material) {
-      case 'DrewnoSosna':
-        model = 'Okno:IS';
-        break;
-      case 'PVC':
-        model = 'Okno:IG';
-        break;
-    }
-    switch (openingType) {
-      case 'Okno:Obrotowe':
-        model += 'O';
-        break;
-      case 'Okno:Uchylno-przesuwne':
-        model += 'K';
-        break;
-      case 'Okno:NieotwieraneFIP':
-        model += 'X';
-        break;
-      case 'Okno:ElektrycznePilot':
-        model += 'C1';
-        break;
-      case 'Okno:ElektrycznePrzełącznik':
-        model += 'C2';
-        break;
-      case 'Okno:Wysokoosiowe':
-        model += 'W';
-        break;
-      case 'KolankoDrewno:NieotwieraneFIP':
-        model = 'Kolanko:IKDN';
-        break;
-      case 'KolankoDrewno:Uchylne':
-        model = 'Kolanko:IKDU';
-        break;
-      case 'KolankoPVC:UchylnoRozwierneLewe':
-        model = 'Kolanko:KPVCL';
-        break;
-      case 'KolankoPVC:UchylnoRozwiernePrawe':
-        model = 'Kolanko:KPVCP';
-        break;
-      case 'KolankoPVC:Uchylne':
-        model = 'Kolanko:KPVCU';
-        break;
-      case 'KolankoPVC:NieotwieraneFIX':
-        model = 'Kolanko:KPVCN';
-        break;
-    }
-
-    switch (ventilation) {
-      case 'NawiewnikNeoVent':
-        if (openingType === 'KolankoPVC:UchylnoRozwierneLewe' ||
-          openingType === 'KolankoPVC:UchylnoRozwiernePrawe' ||
-          openingType === 'KolankoPVC:Uchylne' ||
-          openingType === 'KolankoPVC:NieotwieraneFIX') {
-          model += '';
-        } else {
-          model += 'V';
-        }
-        break;
-      case 'MaskownicaNeoVent':
-        if (openingType === 'KolankoPVC:UchylnoRozwierneLewe' ||
-          openingType === 'KolankoPVC:UchylnoRozwiernePrawe' ||
-          openingType === 'KolankoPVC:Uchylne' ||
-          openingType === 'KolankoPVC:NieotwieraneFIX') {
-          model += '';
-        } else {
-          model += 'M';
-        }
-        break;
-      case 'Brak':
-        if (openingType === 'KolankoPVC:UchylnoRozwierneLewe' ||
-          openingType === 'KolankoPVC:UchylnoRozwiernePrawe' ||
-          openingType === 'KolankoPVC:Uchylne' ||
-          openingType === 'KolankoPVC:NieotwieraneFIX') {
-          model += '';
-        } else {
-          model += 'X';
-        }
-        break;
-    }
-    return model;
   }
 
   navigateToShop() {
@@ -563,7 +495,8 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    this.tempConfiguredWindow.grupaAsortymentowa = 'Okna dachowe';
+    console.log(this.configuredWindow);
+    this.tempConfiguredWindow.grupaAsortymentowa = 'OknoDachowe';
     this.tempConfiguredWindow.windowCoats = ['zewnetrznaHartowana', false, false, false, false, false, false, false, false];
     this.tempConfiguredWindow.dostepneRozmiary = ['78x118'];
     this.tempConfiguredWindow.geometria = 'Okno:IS';
@@ -596,153 +529,13 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.tempConfiguredWindow.kolorTworzywWew = 'Okno:RAL7048';
     this.tempConfiguredWindow.kolorTworzywZew = 'Okno:RAL7048';
     this.tempConfiguredWindow.kod = '1O-ISO-V-E02-KL00-A7022P-079119-OKPO01';
-    this.configDist.addWindowToConfigurationsArray(this.user, this.tempConfiguredWindow, this.configId);
+    // this.configDist.createWindowConfigurationIntoConfigurationById(this.currentUser, 1, this.tempConfiguredWindow);
     // TODO zapisz dane do Firebase przed emisją żeby nie utracić konfiguracji
     // TODO przygotować model konfiguracji w której będą przechowywane: okno, kołnierz, roleta - a później publikować tablice
-    this.router.navigate(['/' + this.configurationSummary]);
+    // this.router.navigate(['/' + this.configurationSummary]);
   }
 
   // CALCULATIONS
-  getSubCategory(openingType: string) {
-    let type = '';
-    switch (openingType) {
-      case 'Okno:Obrotowe':
-        type = 'obrotowe';
-        break;
-      case 'Okno:Uchylno-przesuwne':
-        type = 'uchylno-przesuwne';
-        break;
-      case 'Okno:Wysokoosiowe':
-        type = 'wysokoosiowe';
-        break;
-      case 'Okno:ElektrycznePilot':
-        type = 'elektryczne';
-        break;
-      case 'Okno:ElektrycznePrzełącznik':
-        type = 'elektryczne';
-        break;
-      case 'KolankoDrewno:Uchylne':
-        type = 'kolankowe drewniane';
-        break;
-      case 'KolankoDrewno:NieotwieraneFIP':
-        type = 'kolankowe drewniane';
-        break;
-      case 'KolankoPVC:UchylnoRozwierneLewe':
-        type = 'kolankowe PVC';
-        break;
-      case 'KolankoPVC:UchylnoRozwiernePrawe':
-        type = 'kolankowe PVC';
-        break;
-      case 'KolankoPVC:Uchylne':
-        type = 'kolankowe PVC';
-        break;
-      case 'KolankoPVC:NieotwieraneFIX':
-        type = 'kolankowe PVC';
-        break;
-      case 'Okno:NieotwieraneFIP':
-        type = 'fip';
-        break;
-    }
-    return type;
-  }
-
-  getGeometry(material: string) {
-    let geometry = '';
-    switch (material) {
-      case 'DrewnoSosna':
-        geometry = 'IS';
-        break;
-      case 'PVC':
-        geometry = 'IG2';
-        break;
-    }
-    return geometry;
-  }
-
-  getType(material: string, openingType: string) {
-    let type = 'OknoDachowe:';
-    switch (material) {
-      case 'DrewnoSosna':
-        material = 'IS';
-        break;
-      case 'PVC':
-        material = 'IG';
-        break;
-    }
-    switch (openingType) {
-      case 'Okno:Obrotowe':
-        type += 'O';
-        break;
-      case 'Okno:Uchylno-przesuwne':
-        type += 'K';
-        break;
-      case 'Okno:NieotwieraneFIP':
-        type += 'X';
-        break;
-      case 'Okno:ElektrycznePilot':
-        type += 'C1';
-        break;
-      case 'Okno:ElektrycznePrzełącznik':
-        type += 'C2';
-        break;
-      case 'Okno:Wysokoosiowe':
-        type += 'W';
-        break;
-      case 'KolankoDrewno:NieotwieraneFIP':
-        type = 'OknoKolankowe:IKD';
-        break;
-      case 'KolankoDrewno:Uchylne':
-        type = 'OknoKolankowe:IKD';
-        break;
-      case 'KolankoPVC:UchylnoRozwierneLewe':
-        type = 'OknoKolankowe:KPVC';
-        break;
-      case 'KolankoPVC:UchylnoRozwiernePrawe':
-        type = 'OknoKolankowe:KPVC';
-        break;
-      case 'KolankoPVC:Uchylne':
-        type = 'OknoKolankowe:KPVC';
-        break;
-      case 'KolankoPVC:NieotwieraneFIX':
-        type = 'OknoKolankowe:KPVC';
-        break;
-    }
-    return type;
-  }
-
-  getFamily(material: string, openingType: string) {
-    let family = 'OknoDachowe:';
-    switch (material) {
-      case 'DrewnoSosna':
-        material = 'IS';
-        break;
-      case 'PVC':
-        material = 'IG';
-        break;
-    }
-    switch (openingType) {
-      case 'KolankoDrewno:NieotwieraneFIP':
-        family = 'OknoKolankowe:IS';
-        break;
-      case 'KolankoDrewno:Uchylne':
-        family = 'OknoKolankowe:IS';
-        break;
-      case 'KolankoPVC:UchylnoRozwierneLewe':
-        family = 'OknoKolankowe:88MD';
-        break;
-      case 'KolankoPVC:UchylnoRozwiernePrawe':
-        family = 'OknoKolankowe:88MD';
-        break;
-      case 'KolankoPVC:Uchylne':
-        family = 'OknoKolankowe:88MD';
-        break;
-      case 'KolankoPVC:NieotwieraneFIX':
-        family = 'OknoKolankowe:88MD';
-        break;
-    }
-    return family;
-  }
-
   getWindowCircuit(configuredWindow) {
     return 2 * configuredWindow.szerokosc + 2 * configuredWindow.wysokosc;
   }
@@ -757,185 +550,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       objectsArray.push(tempObject);
     }
     return objectsArray;
-  }
-
-  private generateCode(material: string, openingType: string, ventilation: string,
-                       glazingType: string, innerColor: string, outerMaterial: string,
-                       outerColor: string, outerFinish: string, width: number, height: number) {
-    let model = '';
-    switch (material) {
-      case 'DrewnoSosna':
-        model = 'IS';
-        break;
-      case 'PVC':
-        model = 'IG';
-        break;
-    }
-    switch (openingType) {
-      case 'Okno:Obrotowe':
-        model += 'O';
-        break;
-      case 'Okno:Uchylno-przesuwne':
-        model += 'K';
-        break;
-      case 'Okno:NieotwieraneFIP':
-        model += 'X';
-        break;
-      case 'Okno:ElektrycznePilot':
-        model += 'C1';
-        break;
-      case 'Okno:ElektrycznePrzełącznik':
-        model += 'C2';
-        break;
-      case 'Okno:Wysokoosiowe':
-        model += 'W';
-        break;
-      case 'KolankoDrewno:NieotwieraneFIP':
-        model = 'IKDN';
-        break;
-      case 'KolankoDrewno:Uchylne':
-        model = 'IKDU';
-        break;
-      case 'KolankoPVC:UchylnoRozwierneLewe':
-        model = 'KPVCL';
-        break;
-      case 'KolankoPVC:UchylnoRozwiernePrawe':
-        model = 'KPVCP';
-        break;
-      case 'KolankoPVC:Uchylne':
-        model = 'KPVCU';
-        break;
-      case 'KolankoPVC:NieotwieraneFIX':
-        model = 'KPVCN';
-        break;
-    }
-
-    switch (ventilation) {
-      case 'NawiewnikNeoVent':
-        if (openingType === 'KolankoPVC:UchylnoRozwierneLewe' ||
-          openingType === 'KolankoPVC:UchylnoRozwiernePrawe' ||
-          openingType === 'KolankoPVC:Uchylne' ||
-          openingType === 'KolankoPVC:NieotwieraneFIX') {
-          model += '';
-        } else {
-          if (openingType === 'Okno:ElektrycznePilot' ||
-            openingType === 'KolankoDrewno:Uchylne' ||
-            openingType === 'KolankoDrewno:NieotwieraneFIP' ||
-            openingType === 'Okno:ElektrycznePrzełącznik') {
-            model += 'V';
-          } else {
-            model += '-V';
-          }
-        }
-        break;
-      case 'MaskownicaNeoVent':
-        if (openingType === 'KolankoPVC:UchylnoRozwierneLewe' ||
-          openingType === 'KolankoPVC:UchylnoRozwiernePrawe' ||
-          openingType === 'KolankoPVC:Uchylne' ||
-          openingType === 'KolankoPVC:NieotwieraneFIX') {
-          model += '';
-        } else {
-          if (openingType === 'Okno:ElektrycznePilot' ||
-            openingType === 'KolankoDrewno:Uchylne' ||
-            openingType === 'KolankoDrewno:NieotwieraneFIP' ||
-            openingType === 'Okno:ElektrycznePrzełącznik') {
-            model += 'M';
-          } else {
-            model += '-M';
-          }
-        }
-        break;
-      case 'Brak':
-        if (openingType === 'KolankoPVC:UchylnoRozwierneLewe' ||
-          openingType === 'KolankoPVC:UchylnoRozwiernePrawe' ||
-          openingType === 'KolankoPVC:Uchylne' ||
-          openingType === 'KolankoPVC:NieotwieraneFIX') {
-          model += '';
-        } else {
-          if (openingType === 'Okno:ElektrycznePilot' ||
-            openingType === 'KolankoDrewno:Uchylne' ||
-            openingType === 'KolankoDrewno:NieotwieraneFIP' ||
-            openingType === 'Okno:ElektrycznePrzełącznik') {
-            model += 'X';
-          } else {
-            model += '-X';
-          }
-        }
-        break;
-    }
-
-    let materialCode = '';
-    if (material === 'DrewnoSosna') {
-      materialCode = 'KL00';
-    } else {
-      materialCode = 'WSWS';
-    }
-
-    let outerMaterialCode = '';
-    switch (outerMaterial) {
-      case 'Aluminium':
-        outerMaterialCode = 'A';
-        break;
-      case 'Miedż':
-        outerMaterialCode = 'C';
-        break;
-      case 'TytanCynk':
-        outerMaterialCode = 'T';
-        break;
-    }
-
-    let outerColorCode = '';
-    switch (outerColor) {
-      case 'Aluminium:RAL7022':
-        outerColorCode = '7022';
-        break;
-      case 'Aluminium:RAL7016':
-        outerColorCode = '7016';
-        break;
-      case 'Miedź:Natur':
-        outerColorCode = '0000';
-        break;
-      case 'TytanCynk:Natur':
-        outerColorCode = '0000';
-        break;
-    }
-
-    let outerFinishCode = '';
-    switch (outerFinish) {
-      case 'Aluminium:Półmat':
-        outerFinishCode = 'P';
-        break;
-      case 'Aluminium:Mat':
-        outerFinishCode = 'M';
-        break;
-      case 'Aluminium:Połysk':
-        outerFinishCode = 'B';
-        break;
-      case 'Aluminium:Natur':
-        outerFinishCode = '0';
-        break;
-    }
-
-    let widthCode;
-    if (width < 100) {
-      widthCode = '0' + width;
-    } else {
-      widthCode = width;
-    }
-
-    let heightCode;
-    if (height < 100) {
-      heightCode = '0' + height;
-    } else {
-      heightCode = height;
-    }
-
-    const glazingCode = glazingType.split(':')[1];
-
-    // '1O-ISO-V-E02-KL00-A7022P-078118-OKPO01';
-    return '1O-' + model + '-' + glazingCode + '-' + materialCode +
-      '-' + outerMaterialCode + outerColorCode + outerFinishCode +
-      '-' + widthCode + heightCode + '-OKPO01';
   }
 
   // CSS STYLING
