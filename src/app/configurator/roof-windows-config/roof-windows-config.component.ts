@@ -156,7 +156,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
                 handleColor: new FormControl(this.configuredWindow.zamkniecieKolor)
               })
             });
-            console.log(this.form.controls.glazing.value);
             this.coats$.pipe(
               filter(data => !!data),
               map(coats => this.fb.array(coats.map(x => new FormControl(false))))
