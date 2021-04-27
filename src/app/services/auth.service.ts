@@ -2,11 +2,12 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Company} from '../models/company';
 import {User} from '../models/user';
-import {catchError, tap} from 'rxjs/operators';
+import {catchError, map, tap} from 'rxjs/operators';
 import {BehaviorSubject, throwError} from 'rxjs';
 import {TranslateService} from '@ngx-translate/core';
 import {LoginUser} from '../models/loginUser';
 import {Router} from '@angular/router';
+import {IpService} from './ip.service';
 
 interface AuthResponseData {
   idToken: string;
@@ -24,6 +25,7 @@ export class AuthService {
 
   constructor(private http: HttpClient,
               private router: Router,
+              private ipService: IpService,
               public translate: TranslateService) {
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
@@ -31,6 +33,16 @@ export class AuthService {
 
   // TODO poprawić service po wprowadzeniu logowania i zaczytywania z bazy użytkowników
   isLogged = false;
+
+  returnUser() {
+    return this.isLogged ? this.user.pipe(map(user => user)).pipe(map(user => {
+        return user.email;
+      }))
+      : this.ipService.getIpAddress().pipe(map(userIp => userIp)).pipe(map(userIp => {
+        // @ts-ignore
+        return userIp.ip;
+      }));
+  }
 
   // TODO brakuje http request do bazy danych z użytkownikami do zakładania i logowania użytkwoników
 
