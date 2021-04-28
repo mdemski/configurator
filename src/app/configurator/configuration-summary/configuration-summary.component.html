@@ -18,9 +18,9 @@
                                             [attr.disabled]="uneditable"
                                             class="configuration-summary-container__single--configuration-name"></h1>
             <a (click)="configurationNameEdit()" *ngIf="uneditable"
-               class="btn btn--grey edit-button">{{'CONFIG-SUMMARY.correctConfigName' | translate}}</a>
+               class="btn btn--grey edit-button" mdbWavesEffect>{{'CONFIG-SUMMARY.correctConfigName' | translate}}</a>
             <a (click)="configurationNameSave(configuration.id, configuration.name)" *ngIf="!uneditable"
-               class="btn btn--green edit-button">{{'CONFIG-SUMMARY.saveConfigName' | translate}}</a>
+               class="btn btn--green edit-button" mdbWavesEffect>{{'CONFIG-SUMMARY.saveConfigName' | translate}}</a>
           </div>
           <!--Roof window from single configuration-->
           <h1
@@ -32,9 +32,9 @@
                  class="configuration-summary-container__single--roof-windows--window-picture"/>
             <div class="configuration-summary-container__single--roof-windows--detail">
               <div class="configuration-summary-container__single--roof-windows--table">
-                <table class="table table-striped table-hover">
+                <table mdbTable striped="true" hover="true">
                   <thead>
-                  <tr (click)="onHoverClick($event)">
+                  <tr class="on-hover" (click)="onHoverClick($event)">
                     <th scope="col">{{ 'SINGLE-PRODUCT.LP' | translate}} <span>({{'CONFIG-SUMMARY.expend' | translate}}&#8595;)</span>
                     </th>
                     <th scope="col">{{ 'CONFIG-SUMMARY.feature' | translate}}</th>
@@ -179,9 +179,9 @@
                  class="configuration-summary-container__single--flashings--flashing-picture"/>
             <div class="configuration-summary-container__single--flashings--detail">
               <div class="configuration-summary-container__single--flashings--table">
-                <table class="table table-striped table-hover">
+                <table mdbTable striped="true" hover="true">
                   <thead>
-                  <tr (click)="onHoverClick($event)">
+                  <tr class="on-hover" (click)="onHoverClick($event)">
                     <th scope="col">{{ 'SINGLE-PRODUCT.LP' | translate}} <span>({{'CONFIG-SUMMARY.expend' | translate}}&#8595;)</span>
                     </th>
                     <th scope="col">{{ 'CONFIG-SUMMARY.feature' | translate}}</th>
@@ -307,9 +307,9 @@
                  class="configuration-summary-container__single--accessories--accessory-picture"/>
             <div class="configuration-summary-container__single--accessories--detail">
               <div class="configuration-summary-container__single--accessories--table">
-                <table class="table table-striped table-hover">
+                <table mdbTable striped="true" hover="true">
                   <thead>
-                  <tr (click)="onHoverClick($event)">
+                  <tr class="on-hover" (click)="onHoverClick($event)">
                     <th scope="col">{{ 'SINGLE-PRODUCT.LP' | translate}} <span>({{'CONFIG-SUMMARY.expend' | translate}}&#8595;)</span>
                     </th>
                     <th scope="col">{{ 'CONFIG-SUMMARY.feature' | translate}}</th>

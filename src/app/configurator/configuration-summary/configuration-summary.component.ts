@@ -1,13 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CrudFirebaseService} from '../../services/crud-firebase-service';
-import {map} from 'rxjs/operators';
 import {DatabaseService} from '../../services/database.service';
-import {RoofWindowSkylight} from '../../models/roof-window-skylight';
-import {IpService} from '../../services/ip.service';
 import {AuthService} from '../../services/auth.service';
-import {AsyncSubject, BehaviorSubject, Observable, Subject} from 'rxjs';
-import {Flashing} from '../../models/flashing';
-import {Accessory} from '../../models/accessory';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {SingleConfiguration} from '../../models/single-configuration';
 
 @Component({
@@ -20,24 +15,17 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
   configurations: SingleConfiguration[];
   configurationsSubject: BehaviorSubject<SingleConfiguration[]>;
   configurations$: Observable<SingleConfiguration[]>;
-  currentUser$: BehaviorSubject<string>;
   currentUser;
   uneditable = true;
   loading;
 
   constructor(private configDist: CrudFirebaseService,
               private db: DatabaseService,
-              private authService: AuthService,
-              private ipService: IpService) {
+              private authService: AuthService) {
     this.loading = true;
-    this.currentUser$ = new BehaviorSubject<string>('');
-    this.authService.isLogged ? this.authService.user.pipe(map(user => user)).subscribe(user => {
-        this.currentUser$.next(user.email);
-      })
-      : this.ipService.getIpAddress().pipe(map(userIp => userIp)).subscribe(userIp => {
-        // @ts-ignore
-        this.currentUser$.next(userIp.ip);
-      });
+    this.authService.returnUser().subscribe(user => {
+      this.currentUser = user;
+    });
   }
 
   ngOnInit(): void {
@@ -45,7 +33,7 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
     // this.configDist.createConfigurationForUser('178.73.35.150', this.db.temporarySingleConfiguration);
     this.configurationsSubject = new BehaviorSubject<SingleConfiguration[]>([]);
     this.configurations$ = this.configurationsSubject.asObservable();
-    this.currentUser$.subscribe(currentUser => {
+    this.authService.returnUser().subscribe(currentUser => {
       this.configDist.readAllUserConfigurations(currentUser).subscribe(userConfigurations => {
         this.configurations = userConfigurations;
         this.configurationsSubject.next(this.configurations);
@@ -64,7 +52,7 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
 
   resize(delta: number, quantity: number, configurationId, product, productId) {
     quantity = quantity + delta;
-    this.currentUser$.subscribe(user => {
+    this.authService.returnUser().subscribe(user => {
       if (product.window !== undefined) {
         this.configDist.updateWindowQuantity(user, configurationId, productId, quantity);
       }
@@ -99,7 +87,7 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
   }
 
   configurationNameSave(configId: number, newConfigName: string) {
-    this.currentUser$.subscribe(user => {
+    this.authService.returnUser().subscribe(user => {
       this.configDist.updateNameConfigurationById(user, configId, newConfigName);
     });
     if (this.uneditable === null) {
@@ -110,7 +98,7 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
   }
 
   removeProductConfiguration(id: number, productId: number, product) {
-    this.currentUser$.subscribe(user => {
+    this.authService.returnUser().subscribe(user => {
       if (product.window !== undefined) {
         this.configDist.deleteWindowConfigurationFromConfigurationById(user, id, productId);
       }
@@ -124,7 +112,7 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
   }
 
   removeHoleConfiguration(id: number) {
-    this.currentUser$.subscribe(user => {
+    this.authService.returnUser().subscribe(user => {
       this.configDist.deleteConfigurationById(user, id);
     });
   }
