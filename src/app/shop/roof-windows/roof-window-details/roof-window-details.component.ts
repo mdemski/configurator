@@ -29,7 +29,7 @@ export class RoofWindowDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.router.params.subscribe(param => {
-      this.db.getWindowById(param['windowId']).subscribe(window => {
+      this.db.getWindowByCode(param['windowId']).subscribe(window => {
         this.windowToShow = window;
       });
     });
