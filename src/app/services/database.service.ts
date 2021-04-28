@@ -92,9 +92,9 @@ export class DatabaseService {
     return of(accessories);
   }
 
-  getWindowById(id: string) {
+  getWindowByCode(kod: string) {
     let tempWindow: RoofWindowSkylight;
-    tempWindow = this.getAllRoofWindowsToShopList().filter(window => window.kod === id)[0];
+    tempWindow = this.getAllRoofWindowsToShopList().filter(window => window.kod === kod)[0];
     this.windowValuesSetter.setModelName(tempWindow);
     this.windowValuesSetter.setUwAndUgValues(tempWindow);
     this.windowValuesSetter.setNumberOfGlasses(tempWindow);
