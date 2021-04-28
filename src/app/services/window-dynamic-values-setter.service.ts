@@ -1,18 +1,18 @@
 import {Injectable} from '@angular/core';
 import {RoofWindowSkylight} from '../models/roof-window-skylight';
-import {WindowModelBuilderService} from './window-model-builder.service';
 import {ConfigurationDataService} from './configuration-data.service';
 import {map} from 'rxjs/operators';
 import {GlazingType} from '../models/glazing-type';
 import * as _ from 'lodash';
 import {Observable} from 'rxjs';
+import {ErpNameTranslatorService} from './erp-name-translator.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WindowDynamicValuesSetterService {
 
-  constructor(private modelNameBD: WindowModelBuilderService,
+  constructor(private erpNames: ErpNameTranslatorService,
               private configData: ConfigurationDataService) {
   }
 
@@ -49,8 +49,14 @@ export class WindowDynamicValuesSetterService {
   //   return true;
   // }
 
+  buildWindowModel(model: string, pakietSzybowy: string, szerokosc: number, wysokosc: number) {
+    const modelName = model.split(':')[1];
+    const glazingName = pakietSzybowy.split(':')[1];
+    return String(modelName + ' ' + glazingName + ' ' + szerokosc + 'x' + wysokosc);
+  }
+
   setModelName(window: RoofWindowSkylight) {
-    window.windowName = this.modelNameBD.buildWindowModel(window.model, window.pakietSzybowy, window.szerokosc, window.wysokosc);
+    window.windowName = this.buildWindowModel(window.model, window.pakietSzybowy, window.szerokosc, window.wysokosc);
   }
 
   setUwAndUgValues(window: RoofWindowSkylight) {

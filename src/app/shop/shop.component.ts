@@ -7,7 +7,7 @@ import {Router} from '@angular/router';
   styleUrls: ['./shop.component.scss']
 })
 export class ShopComponent implements OnInit {
-  //TODO dodać linki na stronę w headerze
+  // TODO dodać linki na stronę w headerze
   urls = ['strona główna'];
 
   constructor(private router: Router) { }

@@ -295,10 +295,10 @@ export class ErpNameTranslatorService {
     let geometry = 'Okno:';
     switch (material) {
       case 'DrewnoSosna':
-        geometry = 'IS1';
+        geometry += 'IS1';
         break;
       case 'PVC':
-        geometry = 'IG2';
+        geometry += 'IG2';
         break;
     }
     return geometry;
