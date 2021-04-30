@@ -29,7 +29,7 @@
     transition: all .2s;
     font-size: 1.2rem;
     font-weight: bold;
-    border: .5rem solid transparent;
+    border: .2rem solid transparent;
     cursor: pointer;
   }
 
@@ -41,7 +41,7 @@
   &:active,
   &:focus {
     transform: translateY(-1px);
-    box-shadow: 0 .5rem 1rem rgba($color-black, .2);
+    box-shadow: 0 .2rem 1rem rgba($color-black, .2);
   }
 
   &--white {
@@ -49,39 +49,7 @@
     color: $color-black;
 
     &:hover {
-      border: .5rem solid $color-white;
-    }
-  }
-
-  &--red {
-    font-size: 1.2rem;
-    padding: 1rem 1.5rem;
-    background-color: $color-red;
-    color: $color-white;
-
-    &:hover {
-      color: $color-black;
-      border: .5rem solid $color-red;
-    }
-  }
-
-  &--green {
-    background-color: $color-green;
-    color: $color-black;
-
-    &:hover {
-      color: $color-black;
-      border: .5rem solid $color-green;
-    }
-  }
-
-  &--grey {
-    background-color: $color-grey;
-    color: $color-white;
-
-    &:hover {
-      color: $color-black;
-      border: .5rem solid $color-grey;
+      border: .2rem solid $color-white;
     }
   }
 
@@ -91,36 +59,7 @@
 
     &:hover {
       color: $color-black;
-      border: .5rem solid $color-black;
-    }
-  }
-
-  &--dark-blue {
-    background-color: $color-dark-blue;
-    color: $color-white;
-
-    &:hover {
-      color: $color-black;
-      border: .5rem solid $color-dark-blue;
-    }
-  }
-
-  &--blue {
-    background-color: $color-blue;
-    color: $color-white;
-
-    &:hover {
-      color: $color-black;
-      border: .5rem solid $color-blue;
-    }
-  }
-
-  &--yellow {
-    background-color: $color-yellow;
-    color: $color-black;
-
-    &:hover {
-      border: .5rem solid $color-yellow;
+      border: .2rem solid $color-black;
     }
   }
 
@@ -130,7 +69,54 @@
 
     &:hover {
       color: $color-black;
-      border: .5rem solid $color-orange;
+      border: .2rem solid $color-orange;
+    }
+  }
+
+  &--light-orange {
+    background-color: $color-light-orange;
+    color: $color-black;
+
+    &:hover {
+      border: .5rem solid $color-light-orange;
+    }
+  }
+
+  &--light-grey {
+    background-color: $color-light-grey;
+    color: $color-black;
+
+    &:hover {
+      border: .2rem solid $color-light-grey;
+    }
+  }
+
+  &--grey {
+    background-color: $color-grey;
+    color: $color-black;
+
+    &:hover {
+      border: .2rem solid $color-grey;
+    }
+  }
+
+  &--dark-grey {
+    background-color: $color-dark-grey;
+    color: $color-white;
+
+    &:hover {
+      color: $color-black;
+      border: .2rem solid $color-dark-grey;
+    }
+  }
+
+  &--darkest-grey {
+    background-color: $color-darkest-grey;
+    color: $color-white;
+
+    &:hover {
+      color: $color-black;
+      border: .2rem solid $color-darkest-grey;
     }
   }
 
@@ -139,7 +125,37 @@
     color: $color-black;
 
     &:hover {
-      border: .5rem solid $color-light-red;
+      border: .2rem solid $color-light-red;
+    }
+  }
+
+  &--red {
+    background-color: $color-red;
+    color: $color-white;
+
+    &:hover {
+      color: $color-black;
+      border: .2rem solid $color-red;
+    }
+  }
+
+  &--dark-red {
+    background-color: $color-dark-red;
+    color: $color-white;
+
+    &:hover {
+      color: $color-black;
+      border: .2rem solid $color-dark-red;
+    }
+  }
+
+  &--darkest-red {
+    background-color: $color-darkest-red;
+    color: $color-white;
+
+    &:hover {
+      color: $color-black;
+      border: .2rem solid $color-darkest-red;
     }
   }
 
@@ -148,12 +164,159 @@
     color: $color-black;
 
     &:hover {
-      border: .5rem solid $color-light-blue;
+      border: .2rem solid $color-light-blue;
+    }
+  }
+
+  &--blue {
+    background-color: $color-blue;
+    color: $color-white;
+
+    &:hover {
+      color: $color-black;
+      border: .2rem solid $color-blue;
+    }
+  }
+
+  &--dark-blue {
+    background-color: $color-dark-blue;
+    color: $color-white;
+
+    &:hover {
+      color: $color-black;
+      border: .2rem solid $color-dark-blue;
+    }
+  }
+
+  &--darkest-blue {
+    background-color: $color-darkest-blue;
+    color: $color-white;
+
+    &:hover {
+      color: $color-black;
+      border: .2rem solid $color-darkest-blue;
+    }
+  }
+
+  &--light-yellow {
+    background-color: $color-light-yellow;
+    color: $color-black;
+
+    &:hover {
+      border: .2rem solid $color-light-yellow;
+    }
+  }
+
+  &--yellow {
+    background-color: $color-yellow;
+    color: $color-black;
+
+    &:hover {
+      border: .2rem solid $color-yellow;
+    }
+  }
+
+  &--dark-yellow {
+    background-color: $color-dark-yellow;
+    color: $color-white;
+
+    &:hover {
+      color: $color-black;
+      border: .2rem solid $color-dark-yellow;
+    }
+  }
+
+  &--darkest-yellow {
+    background-color: $color-darkest-yellow;
+    color: $color-white;
+
+    &:hover {
+      color: $color-black;
+      border: .2rem solid $color-darkest-yellow;
+    }
+  }
+
+  &--light-green {
+    background-color: $color-light-green;
+    color: $color-black;
+
+    &:hover {
+      border: .2rem solid $color-light-green;
+    }
+  }
+
+  &--green {
+    background-color: $color-green;
+    color: $color-black;
+
+    &:hover {
+      color: $color-black;
+      border: .2rem solid $color-green;
+    }
+  }
+
+  &--dark-green {
+    background-color: $color-dark-green;
+    color: $color-white;
+
+    &:hover {
+      color: $color-black;
+      border: .2rem solid $color-dark-green;
+    }
+  }
+
+  &--darkest-green {
+    background-color: $color-darkest-green;
+    color: $color-white;
+
+    &:hover {
+      color: $color-black;
+      border: .2rem solid $color-darkest-green;
+    }
+  }
+
+  &--light-cyan {
+    background-color: $color-light-cyan;
+    color: $color-black;
+
+    &:hover {
+      border: .2rem solid $color-light-cyan;
+    }
+  }
+
+  &--cyan {
+    background-color: $color-cyan;
+    color: $color-black;
+
+    &:hover {
+      color: $color-black;
+      border: .2rem solid $color-cyan;
+    }
+  }
+
+  &--dark-cyan {
+    background-color: $color-dark-cyan;
+    color: $color-white;
+
+    &:hover {
+      color: $color-black;
+      border: .2rem solid $color-dark-cyan;
+    }
+  }
+
+  &--darkest-cyan {
+    background-color: $color-darkest-cyan;
+    color: $color-white;
+
+    &:hover {
+      color: $color-black;
+      border: .2rem solid $color-darkest-cyan;
     }
   }
 }
 
-.btn-light {
+//Inverted, soft versions of buttons
+.btn-invert {
   &,
   &:link,
   &:visited {
@@ -161,10 +324,8 @@
     text-decoration: none;
     padding: 1rem 1.5rem;
     transition: all .2s;
-    font-size: $default-font-size;
+    font-size: 1.2rem;
     font-weight: bold;
-    background-color: transparent;
-
     cursor: pointer;
   }
 
@@ -192,19 +353,179 @@
     color: $color-grey;
     border: .2rem solid $color-grey;
 
-
     &:hover {
-      background-color: $color-white;
+      color: $color-black;
+      background-color: $color-grey;
     }
   }
 
-  &--blue {
-    color: $color-light-blue;
-    border: .2rem solid $color-light-blue;
-
+  &--dark-grey {
+    color: $color-dark-grey;
+    border: .2rem solid $color-dark-grey;
 
     &:hover {
-      background-color: $color-white;
+      color: $color-white;
+      background-color: $color-dark-grey;
+    }
+  }
+
+  &--darkest-grey {
+    color: $color-darkest-grey;
+    border: .2rem solid $color-darkest-grey;
+
+    &:hover {
+      color: $color-white;
+      background-color: $color-darkest-grey;
+    }
+  }
+
+  &--red {
+    color: $color-red;
+    border: .2rem solid $color-red;
+
+    &:hover {
+      color: $color-black;
+      background-color: $color-red;
+    }
+  }
+
+  &--dark-red {
+    color: $color-dark-red;
+    border: .2rem solid $color-dark-red;
+
+    &:hover {
+      color: $color-white;
+      background-color: $color-dark-red;
+    }
+  }
+
+  &--darkest-red {
+    color: $color-darkest-red;
+    border: .2rem solid $color-darkest-red;
+
+    &:hover {
+      color: $color-white;
+      background-color: $color-darkest-red;
+    }
+  }
+
+  &--bule {
+    color: $color-blue;
+    border: .2rem solid $color-blue;
+
+    &:hover {
+      color: $color-black;
+      background-color: $color-blue;
+    }
+  }
+
+  &--dark-blue {
+    color: $color-dark-blue;
+    border: .2rem solid $color-dark-blue;
+
+    &:hover {
+      color: $color-white;
+      background-color: $color-dark-blue;
+    }
+  }
+
+  &--darkest-blue {
+    color: $color-darkest-blue;
+    border: .2rem solid $color-darkest-blue;
+
+    &:hover {
+      color: $color-white;
+      background-color: $color-darkest-blue;
+    }
+  }
+
+  &--yellow {
+    color: $color-yellow;
+    border: .2rem solid $color-yellow;
+
+    &:hover {
+      color: $color-black;
+      background-color: $color-yellow;
+    }
+  }
+
+  &--dark-yellow {
+    color: $color-dark-yellow;
+    border: .2rem solid $color-dark-yellow;
+
+    &:hover {
+      color: $color-white;
+      background-color: $color-dark-yellow;
+    }
+  }
+
+  &--darkest-yellow {
+    color: $color-darkest-yellow;
+    border: .2rem solid $color-darkest-yellow;
+
+    &:hover {
+      color: $color-white;
+      background-color: $color-darkest-yellow;
+    }
+  }
+
+  &--green {
+    color: $color-green;
+    border: .2rem solid $color-green;
+
+    &:hover {
+      color: $color-black;
+      background-color: $color-green;
+    }
+  }
+
+  &--dark-green {
+    color: $color-dark-green;
+    border: .2rem solid $color-dark-green;
+
+    &:hover {
+      color: $color-white;
+      background-color: $color-dark-green;
+    }
+  }
+
+  &--darkest-green {
+    color: $color-darkest-green;
+    border: .2rem solid $color-darkest-green;
+
+    &:hover {
+      color: $color-white;
+      background-color: $color-darkest-green;
+    }
+  }
+
+  &--cyan {
+    color: $color-cyan;
+    border: .2rem solid $color-cyan;
+
+    &:hover {
+      color: $color-black;
+      background-color: $color-cyan;
+    }
+  }
+
+  &--dark-cyan {
+    color: $color-dark-cyan;
+    border: .2rem solid $color-dark-cyan;
+
+    &:hover {
+      color: $color-white;
+      background-color: $color-dark-cyan;
+    }
+  }
+
+  &--darkest-cyan {
+    color: $color-darkest-cyan;
+    border: .2rem solid $color-darkest-cyan;
+
+    &:hover {
+      color: $color-white;
+      background-color: $color-darkest-cyan;
     }
   }
 }
@@ -222,6 +543,22 @@
     font-weight: bold;
     border: .5rem solid transparent;
     cursor: pointer;
+  }
+
+  &--grey {
+    color: $color-white;
+    background-color: $color-grey;
+
+    &:hover {
+      color: $color-white;
+      box-shadow: 0 1rem 2rem rgba($color-dark-grey, .2);
+    }
+
+    &:active,
+    &:focus {
+      transform: translateY(-1px);
+      box-shadow: 0 .5rem 1rem rgba($color-dark-grey, .2);
+    }
   }
 
   &--red {
@@ -256,22 +593,69 @@
     }
   }
 
-  &--grey {
+  &--yellow {
     color: $color-white;
-    background-color: $color-grey;
+    background-color: $color-yellow;
 
     &:hover {
       color: $color-white;
-      box-shadow: 0 1rem 2rem rgba($color-dark-grey, .2);
+      box-shadow: 0 1rem 2rem rgba($color-dark-yellow, .2);
     }
 
     &:active,
     &:focus {
       transform: translateY(-1px);
-      box-shadow: 0 .5rem 1rem rgba($color-dark-grey, .2);
+      box-shadow: 0 .5rem 1rem rgba($color-dark-yellow, .2);
     }
   }
 
+  &--green {
+    color: $color-white;
+    background-color: $color-green;
+
+    &:hover {
+      color: $color-white;
+      box-shadow: 0 1rem 2rem rgba($color-dark-green, .2);
+    }
+
+    &:active,
+    &:focus {
+      transform: translateY(-1px);
+      box-shadow: 0 .5rem 1rem rgba($color-dark-green, .2);
+    }
+  }
+
+  &--cyan {
+    color: $color-white;
+    background-color: $color-cyan;
+
+    &:hover {
+      color: $color-white;
+      box-shadow: 0 1rem 2rem rgba($color-dark-cyan, .2);
+    }
+
+    &:active,
+    &:focus {
+      transform: translateY(-1px);
+      box-shadow: 0 .5rem 1rem rgba($color-dark-cyan, .2);
+    }
+  }
+
+  &--orange {
+    color: $color-white;
+    background-color: $color-orange;
+
+    &:hover {
+      color: $color-white;
+      box-shadow: 0 1rem 2rem rgba($color-orange, .2);
+    }
+
+    &:active,
+    &:focus {
+      transform: translateY(-1px);
+      box-shadow: 0 .5rem 1rem rgba($color-orange, .2);
+    }
+  }
 }
 
 .icon-btn-light {
