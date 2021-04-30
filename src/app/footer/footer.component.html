@@ -10,12 +10,12 @@
   <div class="footer__register">
     <p>{{ 'HOME.register' | translate}}</p>
     <a routerLink="/{{ 'LINK.signIn' | translate}}"
-       class="btn-light btn-light--white">{{ 'LINK.signIn' | translate}}</a>
+       class="btn-invert btn-invert--white">{{ 'LINK.signIn' | translate}}</a>
   </div>
 
   <div class="footer__newsletter">
     <p>{{ 'HOME.newsletter' | translate}}</p>
-    <a class="btn-light btn-light--white"
+    <a class="btn-invert btn-invert--white"
        (click)="submitNewsletter(newsletterEmail)">{{ 'HOME.newsletterSignIn' | translate}}</a>
     <div class="footer__newsletter--input">
       <input type="email"
