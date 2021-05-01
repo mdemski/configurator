@@ -9,12 +9,14 @@ import {Flashing} from '../models/flashing';
 import {SingleConfiguration} from '../models/single-configuration';
 import {ConfigurationModel} from '../models/configuration-model';
 import {HttpClient} from '@angular/common/http';
+import {ErpNameTranslatorService} from './erp-name-translator.service';
 
 @Injectable()
 export class DatabaseService {
 
   constructor(private valueTranslator: PropertyValueTranslatorService,
               private windowValuesSetter: WindowDynamicValuesSetterService,
+              private erpName: ErpNameTranslatorService,
               private http: HttpClient) {
     this.accessories = this.getAllAccessoriesToShopList();
     this.temporarySingleConfiguration = this.getSingleConfiguration();
@@ -77,12 +79,7 @@ export class DatabaseService {
       this.windowValuesSetter.setUwAndUgValues(window);
       this.windowValuesSetter.setNumberOfGlasses(window);
       window.uszczelki = window.uszczelki + 2;
-      for (const propertyName in window) {
-        this.valueTranslator.translatePropertyValues('ROOF-WINDOWS-DATA', window[propertyName])
-          .subscribe(translation => {
-            window[propertyName] = translation;
-          });
-      }
+      this.erpName.translateNamesFromERPToApp(window);
     }
     return of(windows);
   }
@@ -99,12 +96,7 @@ export class DatabaseService {
     this.windowValuesSetter.setUwAndUgValues(tempWindow);
     this.windowValuesSetter.setNumberOfGlasses(tempWindow);
     tempWindow.uszczelki = tempWindow.uszczelki + 2;
-    for (const propertyName in tempWindow) {
-      this.valueTranslator.translatePropertyValues('ROOF-WINDOWS-DATA', tempWindow[propertyName])
-        .subscribe(translation => {
-          tempWindow[propertyName] = translation;
-        });
-    }
+    // this.erpName.translateNamesFromERPToApp(tempWindow);
     return of(tempWindow);
   }
 
