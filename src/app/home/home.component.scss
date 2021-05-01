@@ -211,12 +211,16 @@
   background-color: $color-dark-white;
 
   &__desc {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     text-align: center;
     flex: 1 0 50%;
     font-size: 5rem;
     margin-bottom: 0;
 
     &--paragraph {
+      width: 100%;
       padding-bottom: 4rem;
     }
 
@@ -249,6 +253,9 @@
       height: 300px;
     }
   }
+}
+.reset-button {
+  max-width: 20%;
 }
 
 //SECTION MOST RECENT PRODUCTS
