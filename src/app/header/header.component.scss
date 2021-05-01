@@ -112,6 +112,7 @@
           }
 
           &--link {
+            text-decoration: none;
             color: $color-white;
             &:hover p {
               transition: color .5s;
