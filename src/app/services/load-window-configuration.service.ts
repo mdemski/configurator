@@ -18,10 +18,13 @@ export class LoadWindowConfigurationService {
     // console.log(configId); // gdy puste to undefined
     // console.log(windowId); // gdy puste to undefined
     // console.log(windowCode); // gdy puste to undefined
+    configId = parseInt(String(configId), 10);
+    windowId = parseInt(String(windowId), 10);
 
     if (user !== '' || user !== undefined) {
       // przypadek 1 i 3
-      if (windowId === undefined && windowCode === undefined) {
+      if (windowId === -1 && windowCode === undefined) {
+        console.log('przypadek 1 i 3');
         return of(new RoofWindowSkylight(
           null, null, null, null, null, null, null, null, 'dwuszybowy', 78,
           118, 'OknoDachowe', null, null, null, null, 'NawiewnikNeoVent', null, null, null, null,
@@ -29,7 +32,10 @@ export class LoadWindowConfigurationService {
           [], 0, 0, 0, 0, null, null, null, 0));
       }
       // przypadek 5
-      if (windowId !== undefined && configId !== undefined) {
+      if (windowId !== -1 && configId !== -1) {
+        console.log(typeof configId);
+        console.log(windowId);
+        console.log('przypadek 5');
         return this.crud.readWindowByIdFromConfigurationById(user, configId, windowId).pipe(map(window => {
           return new RoofWindowSkylight(window.window._kod, window.window._nazwaPozycjiPL, window.window._windowName,
             window.window._indeksAlgorytm, window.window._nazwaPLAlgorytm, window.window._status, window.window._model,
@@ -45,7 +51,8 @@ export class LoadWindowConfigurationService {
         }));
       }
       // przypadek 2 i 4
-      if (windowId === undefined && windowCode !== undefined) {
+      if (windowId === -1 && windowCode !== undefined) {
+        console.log('przypadek 2 i 4');
         return this.db.getWindowByCode(windowCode);
       }
     }

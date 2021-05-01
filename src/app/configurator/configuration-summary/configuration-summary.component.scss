@@ -176,7 +176,11 @@ th {
 }
 
 .edit-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-left: 2rem;
   padding: .35rem 1rem;
+  min-height: 3.3rem;
   min-width: 12.5rem ;
 }

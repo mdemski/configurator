@@ -34,10 +34,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.loading = true;
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
-    // this.configData.fetchAllData().subscribe(() => {
-    //   this.coats$.next(this.objectMaker(this.configData.coats));
-    //   this.extras$.next(this.objectMaker(this.configData.extras));
-    // });
   }
 
   currentUser: string;
@@ -553,8 +549,21 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
 
   // CSS STYLING
   setBackgroundImage(value: string) {
+    const twoParts = value.split(':');
+    let fileName = '';
+    if (twoParts[1] === undefined || twoParts[1] === 'TRUE') {
+      fileName = twoParts[0];
+    } else {
+      if (twoParts[0] === 'KolankoPVC' && twoParts[1] === 'Uchylne') {
+        fileName = 'UchylnePVC';
+      } else if (twoParts[0] === 'KolankoDrewno' && twoParts[1] === 'NieotwieraneFIP') {
+        fileName = 'NieotwieraneFIPKolanko';
+      } else {
+        fileName = twoParts[1];
+      }
+    }
     return {
-      ['background-image']: 'url("assets/img/configurator/window_configurator/central_navigation_pictures/' + value + '.png")',
+      ['background-image']: 'url("assets/img/configurator/window_configurator/central_navigation_pictures/' + fileName + '.png")',
       ['background-size']: 'contain',
       ['background-repeat']: 'no-repeat'
     };

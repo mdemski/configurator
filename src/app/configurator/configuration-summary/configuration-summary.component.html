@@ -18,9 +18,9 @@
                                             [attr.disabled]="uneditable"
                                             class="configuration-summary-container__single--configuration-name"></h1>
             <a (click)="configurationNameEdit()" *ngIf="uneditable"
-               class="btn btn--grey edit-button">{{'CONFIG-SUMMARY.correctConfigName' | translate}}</a>
+               class="btn-invert btn-invert--grey edit-button">{{'CONFIG-SUMMARY.correctConfigName' | translate}}</a>
             <a (click)="configurationNameSave(configuration.id, configuration.name)" *ngIf="!uneditable"
-               class="btn btn--green edit-button">{{'CONFIG-SUMMARY.saveConfigName' | translate}}</a>
+               class="btn-invert btn--green edit-button">{{'CONFIG-SUMMARY.saveConfigName' | translate}}</a>
           </div>
           <!--Roof window from single configuration-->
           <h1
@@ -165,7 +165,7 @@
           </div>
 
           <div class="configuration-summary-container__single--add-new">
-            <a routerLink="../{{'CONFIG-SUMMARY.correctWindowConfigLink' | translate}}/{{configuration.id}}/-1/newWindow"
+            <a routerLink="../{{'CONFIG-SUMMARY.correctWindowConfigLink' | translate}}/{{configuration.id}}/-1"
                class="btn btn--grey">{{'CONFIG-SUMMARY.addNewWindow' | translate}}</a>
           </div>
 
@@ -287,7 +287,7 @@
           </div>
 
           <div class="configuration-summary-container__single--add-new">
-            <a routerLink="../{{'CONFIG-SUMMARY.correctFlashingConfigLink' | translate}}/{{configuration.id}}/-1/newFlashing"
+            <a routerLink="../{{'CONFIG-SUMMARY.correctFlashingConfigLink' | translate}}/{{configuration.id}}/-1"
                class="btn btn--grey">{{'CONFIG-SUMMARY.addNewFlashing' | translate}}</a>
           </div>
 
@@ -395,7 +395,7 @@
           </div>
 
           <div class="configuration-summary-container__single--add-new">
-            <a routerLink="../{{'CONFIG-SUMMARY.correctAccessoryConfigLink' | translate}}/{{configuration.id}}/-1/newAccessory"
+            <a routerLink="../{{'CONFIG-SUMMARY.correctAccessoryConfigLink' | translate}}/{{configuration.id}}/-1"
                class="btn btn--grey">{{'CONFIG-SUMMARY.addNewAccessory' | translate}}</a>
           </div>
 
