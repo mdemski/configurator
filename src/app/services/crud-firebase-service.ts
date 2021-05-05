@@ -50,7 +50,7 @@ export class CrudFirebaseService {
       for (const userConfigurations of allConfigurations) {
         if (user === userConfigurations.user) {
           for (const config of userConfigurations.userConfigurations) {
-            if (config.id === configId) {
+            if (config.id === Number(configId)) {
               configurationById = config;
             }
           }
@@ -66,7 +66,7 @@ export class CrudFirebaseService {
       for (const userConfigurations of allConfigurations) {
         if (user === userConfigurations.user) {
           for (const config of userConfigurations.userConfigurations) {
-            if (config.id === configId) {
+            if (config.id === Number(configId)) {
               if (config.windows !== undefined) {
                 windowConfigurations = config.windows;
               }
@@ -84,7 +84,7 @@ export class CrudFirebaseService {
       for (const userConfigurations of allConfigurations) {
         if (user === userConfigurations.user) {
           for (const config of userConfigurations.userConfigurations) {
-            if (config.id === configId) {
+            if (config.id === Number(configId)) {
               if (config.flashings !== undefined) {
                 flashingConfigurations = config.flashings;
               }
@@ -102,7 +102,7 @@ export class CrudFirebaseService {
       for (const userConfigurations of allConfigurations) {
         if (user === userConfigurations.user) {
           for (const config of userConfigurations.userConfigurations) {
-            if (config.id === configId) {
+            if (config.id === Number(configId)) {
               if (config.accessories !== undefined) {
                 accessoryConfigurations = config.accessories;
               }
@@ -209,7 +209,7 @@ export class CrudFirebaseService {
       if (configurations[i].user === user) {
         arrayIndex = i;
         for (let j = 0; j < configurations[i].userConfigurations.length; j++) {
-          if (configurations[i].userConfigurations[j].id === configurationId) {
+          if (configurations[i].userConfigurations[j].id === Number(configurationId)) {
             smallArrayIndex = j;
             configurationWithId = configurations[i].userConfigurations[j];
           }
@@ -339,7 +339,7 @@ export class CrudFirebaseService {
       const configurationWithId = this.getIndexAndConfiguration(user, allConfigurations, configurationId).configurationWithId;
       const smallArrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).smallArrayIndex;
       for (let i = 0; i < configurationWithId.windows.length; i++) {
-        if (configurationWithId.windows[i].id === windowId) {
+        if (configurationWithId.windows[i].id === Number(windowId)) {
           configurationWithId.windows[i] = {
             id: configurationWithId.windows[i].id,
             name: configurationWithId.windows[i].name,
@@ -363,7 +363,7 @@ export class CrudFirebaseService {
       const configurationWithId = this.getIndexAndConfiguration(user, allConfigurations, configurationId).configurationWithId;
       const smallArrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).smallArrayIndex;
       for (let i = 0; i < configurationWithId.flashings.length; i++) {
-        if (configurationWithId.flashings[i].id === flashingId) {
+        if (configurationWithId.flashings[i].id === Number(flashingId)) {
           configurationWithId.flashings[i] = {
             id: configurationWithId.flashings[i].id,
             name: configurationWithId.flashings[i].name,
@@ -387,7 +387,7 @@ export class CrudFirebaseService {
       const configurationWithId = this.getIndexAndConfiguration(user, allConfigurations, configurationId).configurationWithId;
       const smallArrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).smallArrayIndex;
       for (let i = 0; i < configurationWithId.accessories.length; i++) {
-        if (configurationWithId.accessories[i].id === accessoryId) {
+        if (configurationWithId.accessories[i].id === Number(accessoryId)) {
           configurationWithId.accessories[i] = {
             id: configurationWithId.accessories[i].id,
             name: configurationWithId.accessories[i].name,
@@ -409,7 +409,7 @@ export class CrudFirebaseService {
       const configurationWithId = this.getIndexAndConfiguration(user, allConfigurations, configurationId).configurationWithId;
       const smallArrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).smallArrayIndex;
       for (let i = 0; i < configurationWithId.windows.length; i++) {
-        if (configurationWithId.windows[i].id === windowId) {
+        if (configurationWithId.windows[i].id === Number(windowId)) {
           configurationWithId.windows[i] = {
             id: configurationWithId.windows[i].id,
             name: configurationWithId.windows[i].name,
@@ -431,7 +431,7 @@ export class CrudFirebaseService {
       const configurationWithId = this.getIndexAndConfiguration(user, allConfigurations, configurationId).configurationWithId;
       const smallArrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).smallArrayIndex;
       for (let i = 0; i < configurationWithId.flashings.length; i++) {
-        if (configurationWithId.flashings[i].id === flashingId) {
+        if (configurationWithId.flashings[i].id === Number(flashingId)) {
           configurationWithId.flashings[i] = {
             id: configurationWithId.flashings[i].id,
             name: configurationWithId.flashings[i].name,
@@ -453,7 +453,7 @@ export class CrudFirebaseService {
       const configurationWithId = this.getIndexAndConfiguration(user, allConfigurations, configurationId).configurationWithId;
       const smallArrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).smallArrayIndex;
       for (let i = 0; i < configurationWithId.accessories.length; i++) {
-        if (configurationWithId.accessories[i].id === accessoryId) {
+        if (configurationWithId.accessories[i].id === Number(accessoryId)) {
           configurationWithId.accessories[i] = {
             id: configurationWithId.accessories[i].id,
             name: configurationWithId.accessories[i].name,
@@ -490,7 +490,7 @@ export class CrudFirebaseService {
       const configurationWithId = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).configurationWithId;
       const smallArrayIndex = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).smallArrayIndex;
       for (let i = 0; i < configurationWithId.windows.length; i++) {
-        if (configurationWithId.windows[i].id === windowId) {
+        if (configurationWithId.windows[i].id === Number(windowId)) {
           windowIndex = i;
         }
       }
@@ -516,7 +516,7 @@ export class CrudFirebaseService {
       const configurationWithId = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).configurationWithId;
       const smallArrayIndex = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).smallArrayIndex;
       for (let i = 0; i < configurationWithId.flashings.length; i++) {
-        if (configurationWithId.flashings[i].id === flashingId) {
+        if (configurationWithId.flashings[i].id === Number(flashingId)) {
           flashingndex = i;
         }
       }
@@ -542,7 +542,7 @@ export class CrudFirebaseService {
       const configurationWithId = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).configurationWithId;
       const smallArrayIndex = this.getIndexAndConfiguration(user, allUserConfigurations, configurationId).smallArrayIndex;
       for (let i = 0; i < configurationWithId.accessories.length; i++) {
-        if (configurationWithId.accessories[i].id === accessoryId) {
+        if (configurationWithId.accessories[i].id === Number(accessoryId)) {
           accessoryIndex = i;
         }
       }
