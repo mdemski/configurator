@@ -83,315 +83,315 @@ export class RoofWindowSkylight {
   }
 
 
-  get kod(): string {
+  public get kod(): string {
     return this._kod;
   }
 
-  set kod(value: string) {
+  public set kod(value: string) {
     this._kod = value;
   }
 
-  get indeksAlgorytm(): string {
+  public get indeksAlgorytm(): string {
     return this._indeksAlgorytm;
   }
 
-  set indeksAlgorytm(value: string) {
+  public set indeksAlgorytm(value: string) {
     this._indeksAlgorytm = value;
   }
 
-  get nazwaPozycjiPL(): string {
+  public get nazwaPozycjiPL(): string {
     return this._nazwaPozycjiPL;
   }
 
-  set nazwaPozycjiPL(value: string) {
+  public set nazwaPozycjiPL(value: string) {
     this._nazwaPozycjiPL = value;
   }
 
-  get nazwaPLAlgorytm(): string {
+  public get nazwaPLAlgorytm(): string {
     return this._nazwaPLAlgorytm;
   }
 
-  set nazwaPLAlgorytm(value: string) {
+  public set nazwaPLAlgorytm(value: string) {
     this._nazwaPLAlgorytm = value;
   }
 
-  get windowName(): string {
+  public get windowName(): string {
     return this._windowName;
   }
 
-  set windowName(value: string) {
+  public set windowName(value: string) {
     this._windowName = value;
   }
 
-  get model(): string {
+  public get model(): string {
     return this._model;
   }
 
-  set model(value: string) {
+  public set model(value: string) {
     this._model = value;
   }
 
-  get pakietSzybowy(): string {
+  public get pakietSzybowy(): string {
     return this._pakietSzybowy;
   }
 
-  set pakietSzybowy(value: string) {
+  public set pakietSzybowy(value: string) {
     this._pakietSzybowy = value;
   }
 
-  get glazingToCalculation(): string {
+  public get glazingToCalculation(): string {
     return this._glazingToCalculation;
   }
 
-  set glazingToCalculation(value: string) {
+  public set glazingToCalculation(value: string) {
     this._glazingToCalculation = value;
   }
 
-  get szerokosc(): number {
+  public get szerokosc(): number {
     return this._szerokosc;
   }
 
-  set szerokosc(value: number) {
+  public set szerokosc(value: number) {
     this._szerokosc = value;
   }
 
-  get wysokosc(): number {
+  public get wysokosc(): number {
     return this._wysokosc;
   }
 
-  set wysokosc(value: number) {
+  public set wysokosc(value: number) {
     this._wysokosc = value;
   }
 
-  get grupaAsortymentowa(): string {
+  public get grupaAsortymentowa(): string {
     return this._grupaAsortymentowa;
   }
 
-  set grupaAsortymentowa(value: string) {
+  public set grupaAsortymentowa(value: string) {
     this._grupaAsortymentowa = value;
   }
 
-  get typ(): string {
+  public get typ(): string {
     return this._typ;
   }
 
-  set typ(value: string) {
+  public set typ(value: string) {
     this._typ = value;
   }
 
-  get geometria(): string {
+  public get geometria(): string {
     return this._geometria;
   }
 
-  set geometria(value: string) {
+  public set geometria(value: string) {
     this._geometria = value;
   }
 
-  get rodzaj(): string {
+  public get rodzaj(): string {
     return this._rodzaj;
   }
 
-  set rodzaj(value: string) {
+  public set rodzaj(value: string) {
     this._rodzaj = value;
   }
 
-  get otwieranie(): string {
+  public get otwieranie(): string {
     return this._otwieranie;
   }
 
-  set otwieranie(value: string) {
+  public set otwieranie(value: string) {
     this._otwieranie = value;
   }
 
-  get wentylacja(): string {
+  public get wentylacja(): string {
     return this._wentylacja;
   }
 
-  set wentylacja(value: string) {
+  public set wentylacja(value: string) {
     this._wentylacja = value;
   }
 
-  get stolarkaMaterial(): string {
+  public get stolarkaMaterial(): string {
     return this._stolarkaMaterial;
   }
 
-  set stolarkaMaterial(value: string) {
+  public set stolarkaMaterial(value: string) {
     this._stolarkaMaterial = value;
   }
 
-  get stolarkaKolor(): string {
+  public get stolarkaKolor(): string {
     return this._stolarkaKolor;
   }
 
-  set stolarkaKolor(value: string) {
+  public set stolarkaKolor(value: string) {
     this._stolarkaKolor = value;
   }
 
-  get rodzina(): string {
+  public get rodzina(): string {
     return this._rodzina;
   }
 
-  set rodzina(value: string) {
+  public set rodzina(value: string) {
     this._rodzina = value;
   }
 
-  get oblachowanieMaterial(): string {
+  public get oblachowanieMaterial(): string {
     return this._oblachowanieMaterial;
   }
 
-  set oblachowanieMaterial(value: string) {
+  public set oblachowanieMaterial(value: string) {
     this._oblachowanieMaterial = value;
   }
 
-  get oblachowanieKolor(): string {
+  public get oblachowanieKolor(): string {
     return this._oblachowanieKolor;
   }
 
-  set oblachowanieKolor(value: string) {
+  public set oblachowanieKolor(value: string) {
     this._oblachowanieKolor = value;
   }
 
-  get oblachowanieFinisz(): string {
+  public get oblachowanieFinisz(): string {
     return this._oblachowanieFinisz;
   }
 
-  set oblachowanieFinisz(value: string) {
+  public set oblachowanieFinisz(value: string) {
     this._oblachowanieFinisz = value;
   }
 
-  get zamkniecieTyp(): string {
+  public get zamkniecieTyp(): string {
     return this._zamkniecieTyp;
   }
 
-  set zamkniecieTyp(value: string) {
+  public set zamkniecieTyp(value: string) {
     this._zamkniecieTyp = value;
   }
 
-  get zamkniecieKolor(): string {
+  public get zamkniecieKolor(): string {
     return this._zamkniecieKolor;
   }
 
-  set zamkniecieKolor(value: string) {
+  public set zamkniecieKolor(value: string) {
     this._zamkniecieKolor = value;
   }
 
-  get windowHardware(): boolean {
+  public get windowHardware(): boolean {
     return this._windowHardware;
   }
 
-  set windowHardware(value: boolean) {
+  public set windowHardware(value: boolean) {
     this._windowHardware = value;
   }
 
-  get uszczelki(): number {
+  public get uszczelki(): number {
     return this._uszczelki;
   }
 
-  set uszczelki(value: number) {
+  public set uszczelki(value: number) {
     this._uszczelki = value;
   }
 
-  get dostepneRozmiary(): any[] {
+  public get dostepneRozmiary(): any[] {
     return this._dostepneRozmiary;
   }
 
-  set dostepneRozmiary(value: any[]) {
+  public set dostepneRozmiary(value: any[]) {
     this._dostepneRozmiary = value;
   }
 
-  get windowCoats(): any[] {
+  public get windowCoats(): any[] {
     return this._windowCoats;
   }
 
-  set windowCoats(value: any[]) {
+  public set windowCoats(value: any[]) {
     this._windowCoats = value;
   }
 
-  get linkiDoZdjec(): string[] {
+  public get linkiDoZdjec(): string[] {
     return this._linkiDoZdjec;
   }
 
-  set linkiDoZdjec(value: string[]) {
+  public set linkiDoZdjec(value: string[]) {
     this._linkiDoZdjec = value;
   }
 
-  get listaDodatkow(): any[] {
+  public get listaDodatkow(): any[] {
     return this._listaDodatkow;
   }
 
-  set listaDodatkow(value: any[]) {
+  public set listaDodatkow(value: any[]) {
     this._listaDodatkow = value;
   }
 
-  get CenaDetaliczna(): number {
+  public get CenaDetaliczna(): number {
     return this._CenaDetaliczna;
   }
 
-  set CenaDetaliczna(value: number) {
+  public set CenaDetaliczna(value: number) {
     this._CenaDetaliczna = value;
   }
 
-  get windowUW(): number {
+  public get windowUW(): number {
     return this._windowUW;
   }
 
-  set windowUW(value: number) {
+  public set windowUW(value: number) {
     this._windowUW = value;
   }
 
-  get windowUG(): number {
+  public get windowUG(): number {
     return this._windowUG;
   }
 
-  set windowUG(value: number) {
+  public set windowUG(value: number) {
     this._windowUG = value;
   }
 
-  get status(): string {
+  public get status(): string {
     return this._status;
   }
 
-  set status(value: string) {
+  public set status(value: string) {
     this._status = value;
   }
 
-  get iloscSprzedanychRok(): number {
+  public get iloscSprzedanychRok(): number {
     return this._iloscSprzedanychRok;
   }
 
-  set iloscSprzedanychRok(value: number) {
+  public set iloscSprzedanychRok(value: number) {
     this._iloscSprzedanychRok = value;
   }
 
-  get kolorTworzywWew(): string {
+  public get kolorTworzywWew(): string {
     return this._kolorTworzywWew;
   }
 
-  set kolorTworzywWew(value: string) {
+  public set kolorTworzywWew(value: string) {
     this._kolorTworzywWew = value;
   }
 
-  get kolorTworzywZew(): string {
+  public get kolorTworzywZew(): string {
     return this._kolorTworzywZew;
   }
 
-  set kolorTworzywZew(value: string) {
+  public set kolorTworzywZew(value: string) {
     this._kolorTworzywZew = value;
   }
 
-  get okucia(): string {
+  public get okucia(): string {
     return this._okucia;
   }
 
-  set okucia(value: string) {
+  public set okucia(value: string) {
     this._okucia = value;
   }
 
-  get numberOfGlasses(): number {
+  public get numberOfGlasses(): number {
     return this._numberOfGlasses;
   }
 
-  set numberOfGlasses(value: number) {
+  public set numberOfGlasses(value: number) {
     this._numberOfGlasses = value;
   }
 }
