@@ -295,7 +295,9 @@
     "glazingCorrectionHeight": "korekta pakietu szybowego wysokość",
     "maxSurfaceTriple": "maksymalna powierzchnia okna z pakietem trzyszybowym",
     "validationInfo": "Skonfiguruj wszystkie opcje zanim przejdziesz do podsumowania",
-    "submit": "Podsumowanie"
+    "submit": "Podsumowanie",
+    "chooseConfigName": "Wybierz konfigurację",
+    "chooseConfigNameButton": "Wybierz"
   },
   "ROOF-WINDOWS-DATA": {
     "Okno:IS1": "IS",
