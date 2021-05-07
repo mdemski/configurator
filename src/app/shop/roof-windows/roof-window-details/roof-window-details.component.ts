@@ -30,7 +30,7 @@ export class RoofWindowDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.router.params.subscribe(param => {
       this.db.getWindowByCode(param['windowId']).subscribe(window => {
-        this.windowToShow = window;
+        this.windowToShow.kod = window.kod;
       });
     });
     // TODO wczytać zdjęcia z bazy przypisane do danego indeksu
