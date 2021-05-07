@@ -27,6 +27,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
               private windowValuesSetter: WindowDynamicValuesSetterService,
               private erpName: ErpNameTranslatorService,
               private loadConfig: LoadWindowConfigurationService,
+              private crud: CrudFirebaseService,
               private router: Router,
               private activeRouter: ActivatedRoute,
               private fb: FormBuilder,
@@ -41,6 +42,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   configId: number;
   windowId: number;
   windowCode: string;
+  configFormId: number;
   dimensions;
   configuredWindow: RoofWindowSkylight;
   tempConfiguredWindow: RoofWindowSkylight;
@@ -50,6 +52,8 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   standardHeights = [78, 98, 118, 140, 160];
   showHeightMessage = false;
   popupConfig = true;
+  chooseConfigNamePopup = false;
+  userConfigs = null;
   private materialVisible = true;
   private openingVisible = false;
   private coatsVisible = false;
@@ -89,6 +93,8 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   extras$ = new BehaviorSubject<any[]>([]);
   glazingName$ = new BehaviorSubject('Okno:E01');
   loading;
+  highestId;
+  temporaryConfig;
 
   static setDimensions(dimensions) {
     return dimensions;
@@ -104,6 +110,18 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
 
   // 'width': new FormControl(78, [this.validateWidth.bind(this), Validators.required]), własnym walidator
   ngOnInit(): void {
+    this.highestId = -1;
+    this.temporaryConfig = {
+      id: this.highestId,
+      name: '<New configuration>',
+      windows: [{
+        id: 1,
+        quantity: 1,
+        window: this.tempConfiguredWindow
+      }],
+      flashings: null,
+      accessories: null
+    };
     this.authService.returnUser().subscribe(user => {
       this.currentUser = user;
     });
@@ -129,6 +147,9 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       this.extras$.next(this.extrasFromFile);
     });
     this.activeRouter.params.subscribe(param => {
+      this.configId = parseInt(param.configId, 10);
+      this.windowId = parseInt(param.productId, 10);
+      this.windowCode = param.productCode;
       this.authService.returnUser().subscribe(user => {
         this.loadConfig.getWindowToReconfiguration(user, param.configId, param.productId, param.productCode)
           .subscribe(windowToReconfiguration => {
@@ -197,10 +218,10 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
               })).subscribe();
             this.loading = false;
             this.tempConfiguredWindow = new RoofWindowSkylight(
-              '999', null, null, null, null, null, null, null, null, null,
-              null, null, null, null, null, null, null, null, null, null, null,
-              null, null, null, null, false, 0, [], [], [],
-              [], 1000, 1, 0.5, 5, null, null, null, 0);
+              '1O-ISO-V-E02-KL00-A7022P-079119-OKPO01', 'Okno dachowe tymczasowe', 'ISOV E2 79x119', 'I-Okno', 'NPL-Okno', 'Nowy', 'Okno:ISOV', 'Okno:E02', 'dwuszybowy', 79,
+              119, 'OknoDachowe', 'obrotowe', 'Okno:IS', 'OknoDachowe:ISO', 'Okno:Obrotowe', 'NawiewnikNeoVent', 'DrewnoSosna', 'Drewno:Bezbarwne', 'OknoDachowe:IS', 'Aluminium',
+              'RAL9999', 'Aluminium:Półmat', 'Okno:ExtraSecure', 'Okno:RAL7048', false, 2, ['78x118'], ['zewnetrznaHartowana', false, false, false, false, false, false, false, false], ['https://www.okpol.pl/wp-content/uploads/2017/02/1_ISO.jpg'],
+              ['Okno:Zasuwka', false, false], 1332.80, 1, 1.2, 5, 'Okno:RAL7048', 'Okno:RAL7048', null, 2);
           });
       });
     });
@@ -491,43 +512,44 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     console.log(this.configuredWindow);
-    this.tempConfiguredWindow.grupaAsortymentowa = 'OknoDachowe';
-    this.tempConfiguredWindow.windowCoats = ['zewnetrznaHartowana', false, false, false, false, false, false, false, false];
-    this.tempConfiguredWindow.dostepneRozmiary = ['78x118'];
-    this.tempConfiguredWindow.geometria = 'Okno:IS';
-    this.tempConfiguredWindow.rodzaj = 'OknoDachowe:ISO';
-    this.tempConfiguredWindow.pakietSzybowy = 'Okno:E02';
-    this.tempConfiguredWindow.glazingToCalculation = 'dwuszybowy';
-    this.tempConfiguredWindow.zamkniecieTyp = 'Okno:ExtraSecure';
-    this.tempConfiguredWindow.zamkniecieKolor = 'Okno:RAL7048';
-    this.tempConfiguredWindow.windowHardware = false;
-    this.tempConfiguredWindow.wysokosc = 119;
-    this.tempConfiguredWindow.szerokosc = 79;
-    this.tempConfiguredWindow.stolarkaMaterial = 'DrewnoSosna';
-    this.tempConfiguredWindow.stolarkaKolor = 'Drewno:Bezbarwne';
-    this.tempConfiguredWindow.rodzina = 'OknoDachowe:IS';
-    this.tempConfiguredWindow.model = 'Okno:ISOV';
-    this.tempConfiguredWindow.uszczelki = 2;
-    this.tempConfiguredWindow.windowName = 'ISOV E2 79x119';
-    this.tempConfiguredWindow.otwieranie = 'Okno:Obrotowe';
-    this.tempConfiguredWindow.oblachowanieKolor = 'RAL9999';
-    this.tempConfiguredWindow.oblachowanieFinisz = 'Aluminium:Półmat';
-    this.tempConfiguredWindow.oblachowanieMaterial = 'Aluminium';
-    this.tempConfiguredWindow.CenaDetaliczna = 1332.80;
-    this.tempConfiguredWindow.typ = 'obrotowe';
-    this.tempConfiguredWindow.windowUG = 1;
-    this.tempConfiguredWindow.windowUW = 1.2;
-    this.tempConfiguredWindow.linkiDoZdjec = ['https://www.okpol.pl/wp-content/uploads/2017/02/1_ISO.jpg'];
-    this.tempConfiguredWindow.listaDodatkow = ['Okno:Zasuwka', false, false];
-    this.tempConfiguredWindow.wentylacja = 'NawiewnikNeoVent';
-    this.tempConfiguredWindow.numberOfGlasses = 2;
-    this.tempConfiguredWindow.kolorTworzywWew = 'Okno:RAL7048';
-    this.tempConfiguredWindow.kolorTworzywZew = 'Okno:RAL7048';
-    this.tempConfiguredWindow.kod = '1O-ISO-V-E02-KL00-A7022P-079119-OKPO01';
-    // this.configDist.createWindowConfigurationIntoConfigurationById(this.currentUser, 1, this.tempConfiguredWindow);
+    this.loading = true;
+    this.authService.returnUser().subscribe(user => {
+      if (this.configId === -1) {
+        this.crud.readAllUserConfigurations(user).subscribe(userConfigurations => {
+          this.userConfigs = userConfigurations;
+          for (const config of userConfigurations) {
+            if (this.highestId < config.id) {
+              this.highestId = config.id;
+            }
+          }
+          this.highestId++;
+          this.temporaryConfig.id = this.highestId;
+          this.userConfigs.push(this.temporaryConfig);
+          if (this.userConfigs !== []) {
+            this.loading = false;
+            this.chooseConfigNamePopup = true;
+          }
+        });
+      }
+    });
+  }
+
+  chooseConfigId(configForm: any) {
+    let chosenId;
+    if (configForm.value.configFormId === undefined) {
+      chosenId = this.highestId;
+    } else {
+      chosenId = parseInt(configForm.value.configFormId, 10);
+    }
+    if (chosenId === this.highestId) {
+      this.crud.createConfigurationForUser(this.currentUser, this.temporaryConfig);
+    } else {
+      this.crud.createWindowConfigurationIntoConfigurationById(this.currentUser, chosenId, this.tempConfiguredWindow);
+    }
+    this.chooseConfigNamePopup = false;
     // TODO zapisz dane do Firebase przed emisją żeby nie utracić konfiguracji
     // TODO przygotować model konfiguracji w której będą przechowywane: okno, kołnierz, roleta - a później publikować tablice
-    // this.router.navigate(['/' + this.configurationSummary]);
+    this.router.navigate(['/' + this.configurationSummary]);
   }
 
   // CALCULATIONS

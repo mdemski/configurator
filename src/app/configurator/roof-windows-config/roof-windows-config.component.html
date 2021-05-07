@@ -493,6 +493,20 @@
               </div>
             </div>
           </div>
+          <div class="choose-config-popup" *ngIf="chooseConfigNamePopup">
+            <div class="choose-config-popup__content">
+              <form #configForm="ngForm" class="choose-config-popup__content__form">
+                <div class="choose-config-popup__content__form--select" tabindex="1">
+                  <ng-container *ngFor="let singleConfiguration of userConfigs; let i = index">
+                    <input value="{{singleConfiguration.id}}" [(ngModel)]="configFormId" name="configFormId" class="choose-config-popup__content__form--select--input" type="radio" id="{{i}}"/>
+                    <label for="{{i}}" class="choose-config-popup__content__form--select--label">{{singleConfiguration.id}} - {{singleConfiguration.name}}</label>
+                  </ng-container>
+                </div>
+                <a (click)="chooseConfigId(configForm)"
+                   class="btn btn--blue">{{ 'ROOF-WINDOWS-CONFIG.chooseConfigNameButton' | translate}}</a>
+              </form>
+            </div>
+          </div>
           <!-- TODO dokleić do przycisku i usunąć tempConfigWindow [disabled]="!windowConfigurationForm.valid"-->
           <button class="btn btn--red configure-form__submit"
 
