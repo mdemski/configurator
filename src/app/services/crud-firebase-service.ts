@@ -8,13 +8,14 @@ import {Flashing} from '../models/flashing';
 import {Accessory} from '../models/accessory';
 import {SingleConfiguration} from '../models/single-configuration';
 import {ConfigurationModel} from '../models/configuration-model';
+import {HighestIdGetterService} from './highest-id-getter.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CrudFirebaseService {
 
-  constructor(private http: HttpClient, private db: DatabaseService) {
+  constructor(private http: HttpClient, private db: DatabaseService, private hd: HighestIdGetterService) {
   }
 
   // TODO poprawić na notację obiektową ponieważ jest to wydajniejsze - pytanie jak dodawać kolejne konfiguracje?
@@ -241,7 +242,7 @@ export class CrudFirebaseService {
         const nextArrayNumber = configurationWithId.windows === undefined ? 0 : configurationWithId.windows.length;
         const newWindow = {
           [nextArrayNumber]: {
-            id: nextArrayNumber + 1,
+            id: this.hd.getHighestId(1, configurationWithId.windows),
             quantity: 1,
             window: windowConfiguration
           }
@@ -274,7 +275,7 @@ export class CrudFirebaseService {
         const nextArrayNumber = configurationWithId.flashings === undefined ? 0 : configurationWithId.flashings.length;
         const newFlashing = {
           [nextArrayNumber]: {
-            id: nextArrayNumber + 1,
+            id: this.hd.getHighestId(1, configurationWithId.flashings),
             quantity: 1,
             flashing: flashingConfiguration
           }
@@ -308,7 +309,7 @@ export class CrudFirebaseService {
         const nextArrayNumber = configurationWithId.accessories === undefined ? 0 : configurationWithId.accessories.length;
         const newAccessory = {
           [nextArrayNumber]: {
-            id: nextArrayNumber + 1,
+            id: this.hd.getHighestId(1, configurationWithId.accessories),
             quantity: 1,
             accessory: accessoryConfiguration
           }

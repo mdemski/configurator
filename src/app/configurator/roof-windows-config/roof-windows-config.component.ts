@@ -520,7 +520,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         this.crud.readAllUserConfigurations(user).subscribe(userConfigurations => {
           this.userConfigs = userConfigurations;
           this.highestId = this.hd.getHighestId(-1, userConfigurations);
-          this.highestId++;
           this.temporaryConfig.id = this.highestId;
           this.userConfigs.push(this.temporaryConfig);
           if (this.userConfigs !== []) {

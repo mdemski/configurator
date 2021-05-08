@@ -13,10 +13,13 @@ export class HighestIdGetterService {
   getHighestId(initialId, configurations: any[]) {
     this.highestId = initialId;
     for (const config of configurations) {
-      if (this.highestId < config.id) {
-        this.highestId = config.id;
+      if (config !== null) {
+        if (this.highestId < config.id) {
+          this.highestId = config.id;
+        }
       }
     }
+    this.highestId++;
     return this.highestId;
   }
 }
