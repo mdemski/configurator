@@ -12,6 +12,7 @@ import _ from 'lodash';
 import {filter, map, tap} from 'rxjs/operators';
 import {ErpNameTranslatorService} from '../../services/erp-name-translator.service';
 import {LoadWindowConfigurationService} from '../../services/load-window-configuration.service';
+import {ellipse} from 'ionicons/icons';
 
 @Component({
   selector: 'app-roof-windows-config',
@@ -111,12 +112,18 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   // 'width': new FormControl(78, [this.validateWidth.bind(this), Validators.required]), własnym walidator
   ngOnInit(): void {
     this.highestId = -1;
+    this.tempConfiguredWindow = new RoofWindowSkylight(
+      '1O-ISO-V-E02-KL00-A7022P-079119-OKPO01', 'Okno dachowe tymczasowe', 'ISOV E2 79x119', 'I-Okno', 'NPL-Okno', 'Nowy', 'Okno:ISOV', 'Okno:E02', 'dwuszybowy', 79,
+      119, 'OknoDachowe', 'obrotowe', 'Okno:IS', 'OknoDachowe:ISO', 'Okno:Obrotowe', 'NawiewnikNeoVent', 'DrewnoSosna', 'Drewno:Bezbarwne', 'OknoDachowe:IS', 'Aluminium',
+      'RAL9999', 'Aluminium:Półmat', 'Okno:ExtraSecure', 'Okno:RAL7048', false, 2, ['78x118'], ['zewnetrznaHartowana', false, false, false, false, false, false, false, false], ['https://www.okpol.pl/wp-content/uploads/2017/02/1_ISO.jpg'],
+      ['Okno:Zasuwka', false, false], 1332.80, 1, 1.2, 5, 'Okno:RAL7048', 'Okno:RAL7048', null, 2);
     this.temporaryConfig = {
       id: this.highestId,
       name: '<New configuration>',
       windows: [{
         id: 1,
         quantity: 1,
+        // TODO zamienić na configuredWindow
         window: this.tempConfiguredWindow
       }],
       flashings: null,
@@ -217,11 +224,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
                 this.setConfiguredValues(form);
               })).subscribe();
             this.loading = false;
-            this.tempConfiguredWindow = new RoofWindowSkylight(
-              '1O-ISO-V-E02-KL00-A7022P-079119-OKPO01', 'Okno dachowe tymczasowe', 'ISOV E2 79x119', 'I-Okno', 'NPL-Okno', 'Nowy', 'Okno:ISOV', 'Okno:E02', 'dwuszybowy', 79,
-              119, 'OknoDachowe', 'obrotowe', 'Okno:IS', 'OknoDachowe:ISO', 'Okno:Obrotowe', 'NawiewnikNeoVent', 'DrewnoSosna', 'Drewno:Bezbarwne', 'OknoDachowe:IS', 'Aluminium',
-              'RAL9999', 'Aluminium:Półmat', 'Okno:ExtraSecure', 'Okno:RAL7048', false, 2, ['78x118'], ['zewnetrznaHartowana', false, false, false, false, false, false, false, false], ['https://www.okpol.pl/wp-content/uploads/2017/02/1_ISO.jpg'],
-              ['Okno:Zasuwka', false, false], 1332.80, 1, 1.2, 5, 'Okno:RAL7048', 'Okno:RAL7048', null, 2);
           });
       });
     });
@@ -511,10 +513,9 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    console.log(this.configuredWindow);
     this.loading = true;
     this.authService.returnUser().subscribe(user => {
-      if (this.configId === -1) {
+      if (this.configId === -1 || isNaN(this.configId)) {
         this.crud.readAllUserConfigurations(user).subscribe(userConfigurations => {
           this.userConfigs = userConfigurations;
           for (const config of userConfigurations) {
@@ -528,6 +529,10 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
           if (this.userConfigs !== []) {
             this.loading = false;
             this.chooseConfigNamePopup = true;
+          } else {
+            this.crud.createConfigurationForUser(user, this.temporaryConfig);
+            this.router.navigate(['/' + this.configurationSummary]);
+            this.loading = false;
           }
         });
       }
@@ -544,6 +549,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     if (chosenId === this.highestId) {
       this.crud.createConfigurationForUser(this.currentUser, this.temporaryConfig);
     } else {
+      // TODO zamienić na configuredWindow
       this.crud.createWindowConfigurationIntoConfigurationById(this.currentUser, chosenId, this.tempConfiguredWindow);
     }
     this.chooseConfigNamePopup = false;
