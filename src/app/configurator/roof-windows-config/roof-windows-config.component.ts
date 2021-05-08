@@ -12,7 +12,7 @@ import _ from 'lodash';
 import {filter, map, tap} from 'rxjs/operators';
 import {ErpNameTranslatorService} from '../../services/erp-name-translator.service';
 import {LoadWindowConfigurationService} from '../../services/load-window-configuration.service';
-import {ellipse} from 'ionicons/icons';
+import {HighestIdGetterService} from '../../services/highest-id-getter.service';
 
 @Component({
   selector: 'app-roof-windows-config',
@@ -29,6 +29,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
               private erpName: ErpNameTranslatorService,
               private loadConfig: LoadWindowConfigurationService,
               private crud: CrudFirebaseService,
+              private hd: HighestIdGetterService,
               private router: Router,
               private activeRouter: ActivatedRoute,
               private fb: FormBuilder,
@@ -518,11 +519,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       if (this.configId === -1 || isNaN(this.configId)) {
         this.crud.readAllUserConfigurations(user).subscribe(userConfigurations => {
           this.userConfigs = userConfigurations;
-          for (const config of userConfigurations) {
-            if (this.highestId < config.id) {
-              this.highestId = config.id;
-            }
-          }
+          this.highestId = this.hd.getHighestId(-1, userConfigurations);
           this.highestId++;
           this.temporaryConfig.id = this.highestId;
           this.userConfigs.push(this.temporaryConfig);
