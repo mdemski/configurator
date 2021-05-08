@@ -18,17 +18,21 @@ export class LoadWindowConfigurationService {
     // console.log(configId); // gdy puste to undefined
     // console.log(windowId); // gdy puste to undefined
     // console.log(windowCode); // gdy puste to undefined
-    configId = parseInt(String(configId), 10);
-    windowId = parseInt(String(windowId), 10);
+    const newWindow = new RoofWindowSkylight(
+      null, null, null, null, null, null, null, null, 'dwuszybowy', 78,
+      118, 'OknoDachowe', null, null, null, null, 'NawiewnikNeoVent', null, null, null, null,
+      null, null, null, null, false, 0, [], [], [],
+      [], 0, 0, 0, 0, null, null, null, 0)
 
     if (user !== '' || user !== undefined) {
+      if (configId === undefined && windowId === undefined && windowCode === undefined) {
+        return of(newWindow);
+      }
+      configId = parseInt(String(configId), 10);
+      windowId = parseInt(String(windowId), 10);
       // przypadek 1 i 3
       if (windowId === -1 && windowCode === undefined) {
-        return of(new RoofWindowSkylight(
-          null, null, null, null, null, null, null, null, 'dwuszybowy', 78,
-          118, 'OknoDachowe', null, null, null, null, 'NawiewnikNeoVent', null, null, null, null,
-          null, null, null, null, false, 0, [], [], [],
-          [], 0, 0, 0, 0, null, null, null, 0));
+        return of(newWindow);
       }
       // przypadek 5
       if (windowId !== -1 && configId !== -1) {
