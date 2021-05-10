@@ -37,17 +37,21 @@ export class LoadWindowConfigurationService {
       // przypadek 5
       if (windowId !== -1 && configId !== -1) {
         return this.crud.readWindowByIdFromConfigurationById(user, configId, windowId).pipe(map(window => {
-          return new RoofWindowSkylight(window.window._kod, window.window._nazwaPozycjiPL, window.window._windowName,
-            window.window._indeksAlgorytm, window.window._nazwaPLAlgorytm, window.window._status, window.window._model,
-            window.window._pakietSzybowy, window.window._glazingToCalculation, window.window._szerokosc, window.window._wysokosc,
-            window.window._grupaAsortymentowa, window.window._typ, window.window._geometria, window.window._rodzaj,
-            window.window._otwieranie, window.window._wentylacja, window.window._stolarkaMaterial, window.window._stolarkaKolor,
-            window.window._rodzina, window.window._oblachowanieMaterial, window.window._oblachowanieKolor,
-            window.window._oblachowanieFinisz, window.window._zamkniecieTyp, window.window._zamkniecieKolor,
-            window.window._windowHardware, window.window._uszczelki, window.window._dostepneRozmiary, window.window._windowCoats,
-            window.window._linkiDoZdjec, window.window._listaDodatkow, window.window._CenaDetaliczna, window.window._windowUW,
-            window.window._windowUG, window.window._iloscSprzedanychRok, window.window._kolorTworzywWew, window.window._kolorTworzywZew,
-            window.window._okucia, window.window._numberOfGlasses, window.window._cennik);
+          if (window === null) {
+            return newWindow;
+          } else {
+            return new RoofWindowSkylight(window.window._kod, window.window._nazwaPozycjiPL, window.window._windowName,
+              window.window._indeksAlgorytm, window.window._nazwaPLAlgorytm, window.window._status, window.window._model,
+              window.window._pakietSzybowy, window.window._glazingToCalculation, window.window._szerokosc, window.window._wysokosc,
+              window.window._grupaAsortymentowa, window.window._typ, window.window._geometria, window.window._rodzaj,
+              window.window._otwieranie, window.window._wentylacja, window.window._stolarkaMaterial, window.window._stolarkaKolor,
+              window.window._rodzina, window.window._oblachowanieMaterial, window.window._oblachowanieKolor,
+              window.window._oblachowanieFinisz, window.window._zamkniecieTyp, window.window._zamkniecieKolor,
+              window.window._windowHardware, window.window._uszczelki, window.window._dostepneRozmiary, window.window._windowCoats,
+              window.window._linkiDoZdjec, window.window._listaDodatkow, window.window._CenaDetaliczna, window.window._windowUW,
+              window.window._windowUG, window.window._iloscSprzedanychRok, window.window._kolorTworzywWew, window.window._kolorTworzywZew,
+              window.window._okucia, window.window._numberOfGlasses, window.window._cennik);
+          }
         }));
       }
       // przypadek 2 i 4
