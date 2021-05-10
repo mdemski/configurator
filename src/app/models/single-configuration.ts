@@ -8,16 +8,22 @@ export interface SingleConfiguration {
   windows: {
     id: number,
     quantity: number,
-    window: RoofWindowSkylight
+    window: RoofWindowSkylight,
+    windowFormName: string,
+    windowFormData: any
   }[] | null;
   flashings: {
     id: number,
     quantity: number,
-    flashing: Flashing
+    flashing: Flashing,
+    flashingFormName: string,
+    flashingFormData: any
   }[] | null;
   accessories: {
     id: number,
     quantity: number,
-    accessory: Accessory
+    accessory: Accessory,
+    accessoryFormName: string,
+    accessoryFormData: any
   }[] | null;
 }
