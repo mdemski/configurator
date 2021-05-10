@@ -37,8 +37,6 @@ import {RegisterConfirmationPageComponent} from './register/register-confirmatio
 import {SpinnerLoadingComponent} from './loaders/spinner-loading.component';
 import {AuthService} from './services/auth.service';
 
-import {MDBBootstrapModulesPro} from 'ng-uikit-pro-standard';
-import {MDBSpinningPreloader} from 'ng-uikit-pro-standard';
 import {BouncingLoaderComponent} from './loaders/bouncing-loader.component';
 import {FlashingsComponent} from './shop/flashings/flashings.component';
 import {FlashingDetailsComponent} from './shop/flashings/flashing-details/flashing-details.component';
@@ -93,7 +91,6 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   imports: [
     BrowserModule,
-    MDBBootstrapModulesPro.forRoot(),
     HttpClientModule,
     TranslateModule.forRoot({
       loader: {
@@ -109,7 +106,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     BrowserAnimationsModule,
     IonicModule.forRoot()
   ],
-  providers: [MDBSpinningPreloader, DatabaseService, AuthService],
+  providers: [DatabaseService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
