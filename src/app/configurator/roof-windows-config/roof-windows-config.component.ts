@@ -117,7 +117,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       '1O-ISO-V-E02-KL00-A7022P-079119-OKPO01', 'Okno dachowe tymczasowe', 'ISOV E2 79x119', 'I-Okno', 'NPL-Okno', 'Nowy', 'Okno:ISOV', 'Okno:E02', 'dwuszybowy', 79,
       119, 'OknoDachowe', 'obrotowe', 'Okno:IS', 'OknoDachowe:ISO', 'Okno:Obrotowe', 'NawiewnikNeoVent', 'DrewnoSosna', 'Drewno:Bezbarwne', 'OknoDachowe:IS', 'Aluminium',
       'RAL9999', 'Aluminium:Półmat', 'Okno:ExtraSecure', 'Okno:RAL7048', false, 2, ['78x118'], ['zewnetrznaHartowana', false, false, false, false, false, false, false, false], ['https://www.okpol.pl/wp-content/uploads/2017/02/1_ISO.jpg'],
-      ['Okno:Zasuwka', false, false], 1332.80, 1, 1.2, 5, 'Okno:RAL7048', 'Okno:RAL7048', null, 2);
+      ['Okno:Zasuwka', false, false], 1332.80, 1, 1.2, 5, 'Okno:RAL7048', 'Okno:RAL7048', null, 2, 'PL');
     this.temporaryConfig = {
       id: this.highestId,
       name: '<New configuration>',
@@ -287,6 +287,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.configuredWindow.kolorTworzywZew = 'Okno:RAL7048';
     this.configuredWindow.windowHardware = false;
     this.configuredWindow.numberOfGlasses = this.configuredWindow.glazingToCalculation === 'dwuszybowy' ? 2 : 3;
+    this.configuredWindow.cennik = 'PL';
     this.configuredWindow.kod = this.erpName.generateWindowCode(this.configuredWindow.stolarkaMaterial, this.configuredWindow.otwieranie,
       this.configuredWindow.wentylacja, this.configuredWindow.pakietSzybowy, this.configuredWindow.stolarkaKolor,
       this.configuredWindow.oblachowanieMaterial, this.configuredWindow.oblachowanieKolor, this.configuredWindow.oblachowanieFinisz,
