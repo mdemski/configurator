@@ -179,6 +179,32 @@ export class CrudFirebaseService {
     }));
   }
 
+  readFormDataByName(formName: string) {
+    return this.readAllConfigurationsFromFirebase().pipe(map(allConfigurations => {
+      let formData = null;
+      for (const configurations of allConfigurations) {
+        for (const config of configurations.userConfigurations) {
+          for (const windowConfig of config.windows) {
+            if (windowConfig.windowFormName === formName) {
+              formData = windowConfig.windowFormData;
+            }
+          }
+          for (const flashingConfig of config.flashings) {
+            if (flashingConfig.flashingFormName === formName) {
+              formData = flashingConfig.flashingFormData;
+            }
+          }
+          for (const accessoryConfig of config.accessories) {
+            if (accessoryConfig.accessoryFormName === formName) {
+              formData = accessoryConfig.accessoryFormData;
+            }
+          }
+        }
+      }
+      return formData;
+    }));
+  }
+
   createConfigurationForUser(user: string, configuration: SingleConfiguration) {
     this.readAllConfigurationsFromFirebase().subscribe(allConfigurations => {
       let configNotAdded = true;
@@ -221,7 +247,7 @@ export class CrudFirebaseService {
   }
 
   // 6 dodawanie okna do konfiguracji
-  createWindowConfigurationIntoConfigurationById(user: string, configurationId: number, windowConfiguration: RoofWindowSkylight) {
+  createWindowConfigurationIntoConfigurationById(user: string, configurationId: number, windowConfiguration: RoofWindowSkylight, formName: string, formData: any) {
     this.readAllConfigurationsFromFirebase().subscribe(allConfigurations => {
       const arrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).arrayIndex;
       const configurationWithId = this.getIndexAndConfiguration(user, allConfigurations, configurationId).configurationWithId;
@@ -233,7 +259,9 @@ export class CrudFirebaseService {
           windows: [{
             id: 1,
             quantity: 1,
-            window: windowConfiguration
+            window: windowConfiguration,
+            windowFormName: formName,
+            windowFormData: formData
           }],
           flashings: null,
           accessories: null
@@ -244,7 +272,9 @@ export class CrudFirebaseService {
           [nextArrayNumber]: {
             id: this.hd.getHighestId(1, configurationWithId.windows),
             quantity: 1,
-            window: windowConfiguration
+            window: windowConfiguration,
+            windowFormName: formName,
+            windowFormData: formData
           }
         };
         this.http.patch('https://window-configurator.firebaseio.com/allConfigurations/' + arrayIndex
@@ -254,7 +284,7 @@ export class CrudFirebaseService {
   }
 
   // 7 dodawanie kołnierza do konfiguracji
-  createFlashingConfigurationIntoConfigurationById(user: string, configurationId: number, flashingConfiguration: Flashing) {
+  createFlashingConfigurationIntoConfigurationById(user: string, configurationId: number, flashingConfiguration: Flashing, formName: string, formData: any) {
     this.readAllConfigurationsFromFirebase().subscribe(allConfigurations => {
       const arrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).arrayIndex;
       const configurationWithId = this.getIndexAndConfiguration(user, allConfigurations, configurationId).configurationWithId;
@@ -267,7 +297,9 @@ export class CrudFirebaseService {
           flashings: [{
             id: 1,
             quantity: 1,
-            flashing: flashingConfiguration
+            flashing: flashingConfiguration,
+            flashingFormName: formName,
+            flashingFormData: formData
           }],
           accessories: null
         });
@@ -277,7 +309,9 @@ export class CrudFirebaseService {
           [nextArrayNumber]: {
             id: this.hd.getHighestId(1, configurationWithId.flashings),
             quantity: 1,
-            flashing: flashingConfiguration
+            flashing: flashingConfiguration,
+            flashingFormName: formName,
+            flashingFormData: formData
           }
         };
         this.http.patch('https://window-configurator.firebaseio.com/allConfigurations/' + arrayIndex
@@ -287,7 +321,7 @@ export class CrudFirebaseService {
   }
 
   // 8 dodawanie akcesorium do konfiguracji
-  createAccessoryConfigurationIntoConfigurationById(user: string, configurationId: number, accessoryConfiguration: Accessory) {
+  createAccessoryConfigurationIntoConfigurationById(user: string, configurationId: number, accessoryConfiguration: Accessory, formName: string, formData: any) {
     this.readAllConfigurationsFromFirebase().subscribe(allConfigurations => {
       const arrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).arrayIndex;
       const configurationWithId = this.getIndexAndConfiguration(user, allConfigurations, configurationId).configurationWithId;
@@ -302,7 +336,9 @@ export class CrudFirebaseService {
           accessories: [{
             id: 1,
             quantity: 1,
-            accessory: accessoryConfiguration
+            accessory: accessoryConfiguration,
+            accessoryFormName: formName,
+            accessoryFormData: formData
           }],
         });
       } else {
@@ -311,7 +347,9 @@ export class CrudFirebaseService {
           [nextArrayNumber]: {
             id: this.hd.getHighestId(1, configurationWithId.accessories),
             quantity: 1,
-            accessory: accessoryConfiguration
+            accessory: accessoryConfiguration,
+            accessoryFormName: formName,
+            accessoryFormData: formData
           }
         };
         this.http.patch('https://window-configurator.firebaseio.com/allConfigurations/' + arrayIndex
@@ -343,9 +381,10 @@ export class CrudFirebaseService {
         if (configurationWithId.windows[i].id === Number(windowId)) {
           configurationWithId.windows[i] = {
             id: configurationWithId.windows[i].id,
-            name: configurationWithId.windows[i].name,
             quantity,
             window: configurationWithId.windows[i].window,
+            windowFormName: configurationWithId.windows[i].windowFormName,
+            windowFormData: configurationWithId.windows[i].windowFormData
           };
           this.http.patch('https://window-configurator.firebaseio.com/allConfigurations/' + arrayIndex
             + '/userConfigurations/' + smallArrayIndex + '/windows/' + i + '.json', configurationWithId.windows[i]).subscribe();
@@ -367,9 +406,10 @@ export class CrudFirebaseService {
         if (configurationWithId.flashings[i].id === Number(flashingId)) {
           configurationWithId.flashings[i] = {
             id: configurationWithId.flashings[i].id,
-            name: configurationWithId.flashings[i].name,
             quantity,
-            flashing: configurationWithId.flashings[i].flashing
+            flashing: configurationWithId.flashings[i].flashing,
+            flashingFormName: configurationWithId.windows[i].flashingFormName,
+            flashingFormData: configurationWithId.windows[i].flashingFormData
           };
           this.http.patch('https://window-configurator.firebaseio.com/allConfigurations/' + arrayIndex
             + '/userConfigurations/' + smallArrayIndex + '/flashings/' + i + '.json', configurationWithId.flashings[i]).subscribe();
@@ -391,9 +431,10 @@ export class CrudFirebaseService {
         if (configurationWithId.accessories[i].id === Number(accessoryId)) {
           configurationWithId.accessories[i] = {
             id: configurationWithId.accessories[i].id,
-            name: configurationWithId.accessories[i].name,
             quantity,
-            accessory: configurationWithId.accessories[i].accessory
+            accessory: configurationWithId.accessories[i].accessory,
+            accessoryFormName: configurationWithId.windows[i].accessoryFormName,
+            accessoryFormData: configurationWithId.windows[i].accessoryFormData
           };
           this.http.patch('https://window-configurator.firebaseio.com/allConfigurations/' + arrayIndex
             + '/userConfigurations/' + smallArrayIndex + '/accessories/' + i + '.json', configurationWithId.accessories[i]).subscribe();
@@ -413,9 +454,10 @@ export class CrudFirebaseService {
         if (configurationWithId.windows[i].id === Number(windowId)) {
           configurationWithId.windows[i] = {
             id: configurationWithId.windows[i].id,
-            name: configurationWithId.windows[i].name,
             quantity: configurationWithId.windows[i].quantity,
-            window: windowConfiguration
+            window: windowConfiguration,
+            windowFormName: configurationWithId.windows[i].windowFormName,
+            windowFormData: configurationWithId.windows[i].windowFormData
           };
           this.http.patch('https://window-configurator.firebaseio.com/allConfigurations/' + arrayIndex
             + '/userConfigurations/' + smallArrayIndex + '/windows/' + i + '.json', configurationWithId.windows[i]).subscribe();
@@ -435,9 +477,10 @@ export class CrudFirebaseService {
         if (configurationWithId.flashings[i].id === Number(flashingId)) {
           configurationWithId.flashings[i] = {
             id: configurationWithId.flashings[i].id,
-            name: configurationWithId.flashings[i].name,
             quantity: configurationWithId.flashings[i].quantity,
-            flashing: flashingConfiguration
+            flashing: flashingConfiguration,
+            flashingFormName: configurationWithId.windows[i].flashingFormName,
+            flashingFormData: configurationWithId.windows[i].flashingFormData
           };
           this.http.patch('https://window-configurator.firebaseio.com/allConfigurations/' + arrayIndex
             + '/userConfigurations/' + smallArrayIndex + '/flashings/' + i + '.json', configurationWithId.flashings[i]).subscribe();
@@ -457,9 +500,10 @@ export class CrudFirebaseService {
         if (configurationWithId.accessories[i].id === Number(accessoryId)) {
           configurationWithId.accessories[i] = {
             id: configurationWithId.accessories[i].id,
-            name: configurationWithId.accessories[i].name,
             quantity: configurationWithId.accessories[i].quantity,
-            accessory: accessoryConfiguration
+            accessory: accessoryConfiguration,
+            accessoryFormName: configurationWithId.windows[i].accessoryFormName,
+            accessoryFormData: configurationWithId.windows[i].accessoryFormData
           };
           this.http.patch('https://window-configurator.firebaseio.com/allConfigurations/' + arrayIndex
             + '/userConfigurations/' + smallArrayIndex + '/accessories/' + i + '.json', configurationWithId.accessories[i]).subscribe();
