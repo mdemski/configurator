@@ -22,7 +22,7 @@ export class LoadWindowConfigurationService {
       null, null, null, null, null, null, null, null, 'dwuszybowy', 78,
       118, 'OknoDachowe', null, null, null, null, 'NawiewnikNeoVent', null, null, null, null,
       null, null, null, null, false, 0, [], [], [],
-      [], 0, 0, 0, 0, null, null, null, 0)
+      [], 0, 0, 0, 0, null, null, null, 0, 'PL');
 
     if (user !== '' || user !== undefined) {
       if (configId === undefined && windowId === undefined && windowCode === undefined) {
@@ -47,7 +47,7 @@ export class LoadWindowConfigurationService {
             window.window._windowHardware, window.window._uszczelki, window.window._dostepneRozmiary, window.window._windowCoats,
             window.window._linkiDoZdjec, window.window._listaDodatkow, window.window._CenaDetaliczna, window.window._windowUW,
             window.window._windowUG, window.window._iloscSprzedanychRok, window.window._kolorTworzywWew, window.window._kolorTworzywZew,
-            window.window._okucia, window.window._numberOfGlasses);
+            window.window._okucia, window.window._numberOfGlasses, window.window._cennik);
         }));
       }
       // przypadek 2 i 4
