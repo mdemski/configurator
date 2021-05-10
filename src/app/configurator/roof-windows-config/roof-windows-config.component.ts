@@ -24,7 +24,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   // TODO przygotować strumień i service do publikowania tej danej po aplikacji
   constructor(private authService: AuthService,
               private configData: ConfigurationDataService,
-              private configDist: CrudFirebaseService,
               private windowValuesSetter: WindowDynamicValuesSetterService,
               private erpName: ErpNameTranslatorService,
               private loadConfig: LoadWindowConfigurationService,
