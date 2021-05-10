@@ -51,7 +51,7 @@ Okno:RAL9016;handleColor;zamkniecieKolor;0;null;0;0
 NawiewnikNeoVent;ventilation;wentylacja;0;null;0;null
 MaskownicaNeoVent;ventilation;wentylacja;0;null;null;0
 Brak;ventilation;wentylacja;0;null;null;null
-Okno:Zasuwka;extras;okucia;0;null;null;null
+Okno:Zasuwka;extras;okucia;0;null;0;0
 akp:TRUE;extras;akp;0;null;125;125
 utb:TRUE;extras;dodatki;0;null;175;175
 glazingCorectionWidth;technical;szybaWymiarTyp;0;null;145;145

@@ -13,6 +13,7 @@ import {filter, map, tap} from 'rxjs/operators';
 import {ErpNameTranslatorService} from '../../services/erp-name-translator.service';
 import {LoadWindowConfigurationService} from '../../services/load-window-configuration.service';
 import {HighestIdGetterService} from '../../services/highest-id-getter.service';
+import {DatabaseService} from '../../services/database.service';
 
 @Component({
   selector: 'app-roof-windows-config',
@@ -24,6 +25,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   // TODO przygotować strumień i service do publikowania tej danej po aplikacji
   constructor(private authService: AuthService,
               private configData: ConfigurationDataService,
+              private dataBase: DatabaseService,
               private windowValuesSetter: WindowDynamicValuesSetterService,
               private erpName: ErpNameTranslatorService,
               private loadConfig: LoadWindowConfigurationService,
@@ -45,6 +47,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   windowCode: string;
   configFormId: number;
   dimensions;
+  roofWindowsFormDataBase: RoofWindowSkylight[];
   configuredWindow: RoofWindowSkylight;
   tempConfiguredWindow: RoofWindowSkylight;
   windowModelsToCalculatePrice = [];
@@ -142,7 +145,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       this.openingTypes = this.objectMaker(this.configData.openingTypes);
       this.innerColors = this.objectMaker(this.configData.innerColors);
       this.outerMaterials = this.objectMaker(this.configData.outerMaterials);
-      // this.outerColors = this.objectMaker(this.configData.outerColor);
+      this.outerColors = this.objectMaker(this.configData.outerColor);
       this.outerColorFinishes = this.objectMaker(this.configData.outerColorFinishes);
       this.coatsFromFile = this.objectMaker(this.configData.coats);
       this.dimensions = RoofWindowsConfigComponent.setDimensions(this.configData.dimensions);
@@ -227,6 +230,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
           });
       });
     });
+    this.dataBase.fetchRoofWindows().subscribe(roofWindows => { this.roofWindowsFormDataBase = roofWindows; });
   }
 
   // TODO przygotować wczytywanie konfiguracji jeśli Klient wraca do poprawy danej konfiguracji lub chce przekonfigurować produkt ze sklepu
@@ -304,6 +308,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     // ... spread operator pozwala niezagnieżdżać jendego elementu w drugi
     // tempArray.push({...data[book], id: book});
     let windowPrice = 0;
+    let isStandard = false;
     let index = -1;
     for (let i = 0; i < this.windowModelsToCalculatePrice.length; i++) {
       if (this.windowModelsToCalculatePrice[i].windowModel === configuredWindow.model) {
@@ -311,7 +316,18 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       }
     }
     const windowToCalculations = this.windowModelsToCalculatePrice[index];
-    if (index > -1) {
+    for (const standardRoofWindow of this.roofWindowsFormDataBase) {
+      if (standardRoofWindow.kod === configuredWindow.kod) {
+        windowPrice = standardRoofWindow.CenaDetaliczna;
+        isStandard = true;
+        for (const extra of configuredWindow.listaDodatkow) {
+          if (extra !== false) {
+            windowPrice += +windowToCalculations[extra];
+          }
+        }
+      }
+    }
+    if (index > -1 && !isStandard) {
       if (configuredWindow.pakietSzybowy) {
         windowPrice += this.getWindowCircuit(configuredWindow) * windowToCalculations[configuredWindow.glazingToCalculation];
       }
