@@ -10,6 +10,7 @@ import {SingleConfiguration} from '../models/single-configuration';
 import {ConfigurationModel} from '../models/configuration-model';
 import {HttpClient} from '@angular/common/http';
 import {ErpNameTranslatorService} from './erp-name-translator.service';
+import randomString from 'randomstring';
 
 @Injectable()
 export class DatabaseService {
@@ -137,38 +138,52 @@ export class DatabaseService {
       windows: [{
         id: 1,
         quantity: 1,
-        window: this.getAllRoofWindowsToShopList()[0]
+        window: this.getAllRoofWindowsToShopList()[0],
+        windowFormName: randomString.generate(12),
+        windowFormData: null
       },
         {
           id: 2,
           quantity: 1,
-          window: this.getAllRoofWindowsToShopList()[1]
+          window: this.getAllRoofWindowsToShopList()[1],
+          windowFormName: randomString.generate(12),
+          windowFormData: null
         },
         {
           id: 3,
           quantity: 1,
-          window: this.getAllRoofWindowsToShopList()[2]
+          window: this.getAllRoofWindowsToShopList()[2],
+          windowFormName: randomString.generate(12),
+          windowFormData: null
         }],
       flashings: [{
         id: 1,
         quantity: 1,
-        flashing: this.temporaryFlashing
+        flashing: this.temporaryFlashing,
+        flashingFormName: randomString.generate(12),
+        flashingFormData: null
       },
         {
           id: 2,
           quantity: 1,
-          flashing: this.temporaryFlashing
+          flashing: this.temporaryFlashing,
+          flashingFormName: randomString.generate(12),
+          flashingFormData: null
         }
       ],
       accessories: [{
         id: 1,
         quantity: 1,
-        accessory: this.accessories[0]
+        accessory: this.accessories[0],
+        accessoryFormName: randomString.generate(12),
+        accessoryFormData: null
       },
         {
           id: 2,
           quantity: 2,
-          accessory: this.accessories[2]
+          accessory: this.accessories[2],
+          accessoryFormName: randomString.generate(12),
+          accessoryFormData: null
         }]
     };
   }
@@ -183,38 +198,52 @@ export class DatabaseService {
         windows: [{
           id: 1,
           quantity: 1,
-          window: this.getAllRoofWindowsToShopList()[0]
+          window: this.getAllRoofWindowsToShopList()[0],
+          windowFormName: randomString.generate(12),
+          windowFormData: null
         },
           {
             id: 2,
             quantity: 1,
-            window: this.getAllRoofWindowsToShopList()[1]
+            window: this.getAllRoofWindowsToShopList()[1],
+            windowFormName: randomString.generate(12),
+            windowFormData: null
           },
           {
             id: 3,
             quantity: 1,
-            window: this.getAllRoofWindowsToShopList()[2]
+            window: this.getAllRoofWindowsToShopList()[2],
+            windowFormName: randomString.generate(12),
+            windowFormData: null
           }],
         flashings: [{
           id: 1,
           quantity: 1,
-          flashing: this.temporaryFlashing
+          flashing: this.temporaryFlashing,
+          flashingFormName: randomString.generate(12),
+          flashingFormData: null
         },
           {
             id: 2,
             quantity: 1,
-            flashing: this.temporaryFlashing
+            flashing: this.temporaryFlashing,
+            flashingFormName: randomString.generate(12),
+            flashingFormData: null
           }
         ],
         accessories: [{
           id: 1,
           quantity: 1,
-          accessory: this.accessories[0]
+          accessory: this.accessories[0],
+          accessoryFormName: randomString.generate(12),
+          accessoryFormData: null
         },
           {
             id: 2,
             quantity: 2,
-            accessory: this.accessories[2]
+            accessory: this.accessories[2],
+            accessoryFormName: randomString.generate(12),
+            accessoryFormData: null
           }]
       },
         {
@@ -223,7 +252,9 @@ export class DatabaseService {
           windows: [{
             id: 1,
             quantity: 1,
-            window: this.getAllRoofWindowsToShopList()[1]
+            window: this.getAllRoofWindowsToShopList()[1],
+            windowFormName: randomString.generate(12),
+            windowFormData: null
           }],
           flashings: null,
           accessories: null
@@ -237,29 +268,39 @@ export class DatabaseService {
           windows: [{
             id: 1,
             quantity: 1,
-            window: this.getAllRoofWindowsToShopList()[0]
+            window: this.getAllRoofWindowsToShopList()[0],
+            windowFormName: randomString.generate(12),
+            windowFormData: null
           },
             {
               id: 2,
               quantity: 1,
-              window: this.getAllRoofWindowsToShopList()[0]
+              window: this.getAllRoofWindowsToShopList()[0],
+              windowFormName: randomString.generate(12),
+              windowFormData: null
             }],
           flashings: [{
             id: 1,
             quantity: 1,
-            flashing: this.temporaryFlashing
+            flashing: this.temporaryFlashing,
+            flashingFormName: randomString.generate(12),
+            flashingFormData: null
           },
             {
               id: 2,
               quantity: 1,
-              flashing: this.temporaryFlashing
+              flashing: this.temporaryFlashing,
+              flashingFormName: randomString.generate(12),
+              flashingFormData: null
             }
           ],
           accessories: [
             {
               id: 1,
               quantity: 2,
-              accessory: this.accessories[2]
+              accessory: this.accessories[2],
+              accessoryFormName: randomString.generate(12),
+              accessoryFormData: null
             }]
         }]
       }];
