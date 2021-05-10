@@ -144,7 +144,8 @@ export class ConfigurationDataService {
         this.handleColors = handleColors;
         this.ventialtions = ventilations;
         this.technicalInformation = technicalInformation;
-        this.outerColor = require('../../assets/json/RalCodes.json') as [];
+        // this.outerColor = require('../../assets/json/RalCodes.json') as [];
+        this.outerColor = ['Aluminium:RAL7022'];
         this.outerColorFinishes = outerColorFinishes;
         this.outerMaterials = outerMaterials;
       }));
