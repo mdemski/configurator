@@ -25,9 +25,10 @@ export class Accessory {
   private _CenaDetaliczna: number;
   private _linkiDoZdjec: string[];
   private _dostepneRozmiary: string[];
+  private _cennik: string;
 
   // tslint:disable-next-line:max-line-length
-  constructor(kod: string, nazwaPozycjiPL: string, accessoryName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, rodzaj: string, rodzina: string, dopasowanieRoletyDlugosc: string, dopasowanieRoletySzerokosc: string, typTkaniny: string, kolorTkaniny: string, kolorTworzywWew: string, roletyKolorOsprzetu: string, accessoryHorizontalSpacing: number, otwieranie: string, tabliczka: string, CenaDetaliczna: number, linkiDoZdjec: string[], dostepneRozmiary: string[]) {
+  constructor(kod: string, nazwaPozycjiPL: string, accessoryName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, rodzaj: string, rodzina: string, dopasowanieRoletyDlugosc: string, dopasowanieRoletySzerokosc: string, typTkaniny: string, kolorTkaniny: string, kolorTworzywWew: string, roletyKolorOsprzetu: string, accessoryHorizontalSpacing: number, otwieranie: string, tabliczka: string, CenaDetaliczna: number, linkiDoZdjec: string[], dostepneRozmiary: string[], cennik: string) {
     this._kod = kod;
     this._nazwaPozycjiPL = nazwaPozycjiPL;
     this._accessoryName = accessoryName;
@@ -54,6 +55,7 @@ export class Accessory {
     this._CenaDetaliczna = CenaDetaliczna;
     this._linkiDoZdjec = linkiDoZdjec;
     this._dostepneRozmiary = dostepneRozmiary;
+    this._cennik = cennik;
   }
 
   get kod(): string {
@@ -262,5 +264,13 @@ export class Accessory {
 
   set dostepneRozmiary(value: string[]) {
     this._dostepneRozmiary = value;
+  }
+
+  get cennik(): string {
+    return this._cennik;
+  }
+
+  set cennik(value: string) {
+    this._cennik = value;
   }
 }
