@@ -34,7 +34,6 @@ import {MyAccountComponent} from './my-account/my-account.component';
 import {DatabaseService} from './services/database.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RegisterConfirmationPageComponent} from './register/register-confirmation-page/register-confirmation-page.component';
-import {SpinnerLoadingComponent} from './loaders/spinner-loading.component';
 import {AuthService} from './services/auth.service';
 
 import {BouncingLoaderComponent} from './loaders/bouncing-loader.component';
@@ -81,7 +80,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     ShoppingCartComponent,
     MyAccountComponent,
     RegisterConfirmationPageComponent,
-    SpinnerLoadingComponent,
     BouncingLoaderComponent,
     FlashingsComponent,
     FlashingDetailsComponent,

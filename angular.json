@@ -28,8 +28,8 @@
               "node_modules/@fortawesome/fontawesome-free/scss/solid.scss",
               "node_modules/@fortawesome/fontawesome-free/scss/regular.scss",
               "node_modules/@fortawesome/fontawesome-free/scss/brands.scss",
-              "node_modules/ng-uikit-pro-standard/assets/scss/bootstrap/bootstrap.scss",
               "node_modules/animate.css/animate.css",
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/sass/styles.scss"
             ],
             "scripts": [
