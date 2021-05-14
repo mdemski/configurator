@@ -184,10 +184,12 @@ export class CrudFirebaseService {
       let windowConfiguration = null;
       for (const configurations of allConfigurations) {
         for (const config of configurations.userConfigurations) {
-          if (config.windows !== undefined) {
-            for (const windowConfig of config.windows) {
-              if (windowConfig.windowFormName === formName) {
-                windowConfiguration = windowConfig;
+          if (config) {
+            if (config.windows !== undefined) {
+              for (const windowConfig of config.windows) {
+                if (windowConfig.windowFormName === formName) {
+                  windowConfiguration = windowConfig;
+                }
               }
             }
           }
