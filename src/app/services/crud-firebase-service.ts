@@ -141,7 +141,7 @@ export class CrudFirebaseService {
       for (const userConfigurations of allConfigurations) {
         if (user === userConfigurations.user) {
           for (const config of userConfigurations.userConfigurations) {
-            if (config.id ===  Number(configId)) {
+            if (config.id === Number(configId)) {
               if (config.flashings !== undefined) {
                 for (const flashing of config.flashings) {
                   if (flashing.id === Number(flashingId)) {
@@ -163,7 +163,7 @@ export class CrudFirebaseService {
       for (const userConfigurations of allConfigurations) {
         if (user === userConfigurations.user) {
           for (const config of userConfigurations.userConfigurations) {
-            if (config.id ===  Number(configId)) {
+            if (config.id === Number(configId)) {
               if (config.accessories !== undefined) {
                 for (const accessory of config.accessories) {
                   if (accessory.id === Number(accessoryId)) {
@@ -179,29 +179,21 @@ export class CrudFirebaseService {
     }));
   }
 
-  readFormDataByName(formName: string) {
+  readWindowConfigurationByFormName(formName: string) {
     return this.readAllConfigurationsFromFirebase().pipe(map(allConfigurations => {
-      let formData = null;
+      let windowConfiguration = null;
       for (const configurations of allConfigurations) {
         for (const config of configurations.userConfigurations) {
-          for (const windowConfig of config.windows) {
-            if (windowConfig.windowFormName === formName) {
-              formData = windowConfig.windowFormData;
-            }
-          }
-          for (const flashingConfig of config.flashings) {
-            if (flashingConfig.flashingFormName === formName) {
-              formData = flashingConfig.flashingFormData;
-            }
-          }
-          for (const accessoryConfig of config.accessories) {
-            if (accessoryConfig.accessoryFormName === formName) {
-              formData = accessoryConfig.accessoryFormData;
+          if (config.windows !== undefined) {
+            for (const windowConfig of config.windows) {
+              if (windowConfig.windowFormName === formName) {
+                windowConfiguration = windowConfig;
+              }
             }
           }
         }
       }
-      return formData;
+      return windowConfiguration;
     }));
   }
 
