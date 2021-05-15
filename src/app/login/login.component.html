@@ -8,35 +8,31 @@
     </app-bouncing-loader>
   </div>
 
-  <mdb-card *ngIf="!isLoading">
-
-    <mdb-card-header class="info-color white-text text-center py-4">
-      <h5>
-        <strong class="login-title">{{'LOGIN.loginTitle' | translate}}</strong>
-      </h5>
-    </mdb-card-header>
-
-    <mdb-card-body class="px-lg-5 pt-0">
-
+  <div *ngIf="!isLoading" class="container" id="container">
+    <div class="form-container sign-in-container">
       <form #authForm='ngForm' (ngSubmit)="onSubmit(authForm)">
-        <div class="md-form mt-3">
-          <input id="email" type="email" class="form-control" ngModel name="email" required email
-                 placeholder="{{ 'LOGIN.email' | translate}}">
-        </div>
-        <div class="md-form mt-3">
-          <input id="password" type="password" class="form-control" ngModel name="password" required minlength="6"
-                 placeholder="{{ 'LOGIN.password' | translate}}">
-        </div>
-        <button class="btn btn-light--blue login-button" type="submit"
-                [disabled]="authForm.invalid">{{ 'LOGIN.login' | translate}}</button>
-        <a routerLink="{{ 'LINK.newPassword' | translate}}"
-           class="navigation-link">{{ 'LOGIN.forgotPassword' | translate}}</a>
-        <hr>
+        <h1>{{'LOGIN.loginTitle' | translate}}</h1>
         <a routerLink="../{{ 'LINK.registerLink' | translate}}"
            class="navigation-link">{{ 'LINK.register' | translate}}</a>
+        <input id="email" type="email" ngModel name="email" required email
+               placeholder="{{ 'LOGIN.email' | translate}}">
+        <input id="password" type="password" ngModel name="password" required minlength="6"
+               placeholder="{{ 'LOGIN.password' | translate}}">
+        <a routerLink="{{ 'LINK.newPassword' | translate}}"
+           class="navigation-link">{{ 'LOGIN.forgotPassword' | translate}}</a>
+        <button type="submit" [disabled]="authForm.invalid">{{ 'LOGIN.login' | translate}}</button>
+        <div class="social-container">
+          <a href="https://www.facebook.com/oknadachowe/" class="social"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://www.youtube.com/channel/UCtjVf14K2LNf29alqYglOIA" class="social"><i class="fab fa-youtube"></i></a>
+          <a href="https://pl.pinterest.com/oknaokpol/_created/" class="social"><i class="fab fa-pinterest"></i></a>
+          <a href="https://www.instagram.com/okna_okpol/" class="social"><i class="fab fa-instagram"></i></a>
+        </div>
       </form>
-    </mdb-card-body>
-  </mdb-card>
+    </div>
+    <div class="overlay-container" *ngIf="!error">
+      <div class="overlay-container__img"></div>
+    </div>
+  </div>
 
   <div class="alert alert-danger alert-login" role="alert" *ngIf="error">
     <p>{{error}}</p>
