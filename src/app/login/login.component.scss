@@ -115,8 +115,8 @@ input {
   margin: 10rem 0;
   background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0 14px 28px rgba(0,0,0,0.25),
-  0 10px 10px rgba(0,0,0,0.22);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
+  0 10px 10px rgba(0, 0, 0, 0.22);
   position: relative;
   overflow: hidden;
   width: 768px;
@@ -150,6 +150,51 @@ input {
     background-image: url("src/assets/img/to_use/coffee-cup-5258877_1920.jpg");
     background-size: cover;
     background-position: center;
+  }
+
+  &__alert {
+    display: flex;
+    align-items: center;
+    background-color: $color-light-grey;
+    height: 100%;
+    padding: 0 5rem;
+    flex-wrap: wrap;
+    font-size: $default-font-size;
+
+    &--error-text {
+      font-weight: normal;
+      color: $color-red !important;
+    }
+
+    p {
+      color: $color-black;
+    }
+
+    &--support-info {
+
+      &--text {
+        font-weight: normal;
+        color: $color-black;
+      }
+
+      &--email {
+        font-weight: normal;
+        color: $color-red;
+
+        span {
+          color: $color-black;
+        }
+      }
+
+      &--phone {
+        font-weight: normal;
+        color: $color-dark-blue;
+
+        span {
+          color: $color-black;
+        }
+      }
+    }
   }
 }
 

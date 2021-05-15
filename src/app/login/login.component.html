@@ -29,20 +29,19 @@
         </div>
       </form>
     </div>
-    <div class="overlay-container" *ngIf="!error">
-      <div class="overlay-container__img"></div>
-    </div>
-  </div>
-
-  <div class="alert alert-danger alert-login" role="alert" *ngIf="error">
-    <p>{{error}}</p>
-    <div class="support-info" role="alert">
-      <p>{{ 'LOGIN.supportInfo' | translate}}:</p>
-      <p><span class="font-weight-bold mr-2">{{'CONTACT.email' | translate}}</span><a
-        href="{{'LINK.mailTo' | translate}}">{{'CONTACT.emailAddress' | translate}}</a></p>
-      <p><span
-        class="font-weight-bold mr-2">{{'CONTACT.phone' | translate}}</span>{{'CONTACT.phoneNumberOKPOL' | translate}}
-      </p>
+    <div class="overlay-container">
+      <div class="overlay-container__img" *ngIf="!error"></div>
+      <div class="overlay-container__alert" *ngIf="error">
+        <p class="overlay-container__alert--error-text">{{error}}</p>
+        <div class="overlay-container__alert--support-info">
+          <p class="overlay-container__alert--support-info--text">{{ 'LOGIN.supportInfo' | translate}}:</p>
+          <p class="overlay-container__alert--support-info--email"><span class="font-weight-bold mr-2">{{'CONTACT.email' | translate}}</span><a
+            href="{{'LINK.mailTo' | translate}}">{{'CONTACT.emailAddress' | translate}}</a></p>
+          <p class="overlay-container__alert--support-info--phone"><span
+            class="font-weight-bold mr-2">{{'CONTACT.phone' | translate}}</span>{{'CONTACT.phoneNumberOKPOL' | translate}}
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </div>
