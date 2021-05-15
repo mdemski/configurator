@@ -2,21 +2,21 @@
   <img src="assets/img/navbar_backgrounds/register.jpg" alt="roof windows">
 </div>
 
-<div class="md-container">
 <div class="d-flex justify-content-center">
-  <div class="w-25 p-4">
-    <div class="alert alert-danger" role="alert" *ngIf="error">
-      <p>{{error}}</p>
-    </div>
+  <div *ngIf="isLoading" class="d-flex justify-content-center">
+    <app-bouncing-loader>
+    </app-bouncing-loader>
+  </div>
 
-    <mdb-card>
-      <mdb-card-header class="info-color white-text text-center py-4">
-        <h5>
-          <strong class="register-title">{{'REGISTER.registerTitle' | translate}}</strong>
-        </h5>
-      </mdb-card-header>
+  <div class="md-container" *ngIf="!isLoading">
+    <div class="md-container__form-container">
 
-      <mdb-card-body class="px-lg-5 pt-0">
+      <div class="alert alert-danger" role="alert" *ngIf="error">
+        <p>{{error}}</p>
+      </div>
+
+      <div>
+        <h1 class="register-title">{{'REGISTER.registerTitle' | translate}}</h1>
 
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
           <!--        <label for="firstName" class="register-form-labels">{{'REGISTER.firstName' | translate}}</label>-->
@@ -109,7 +109,8 @@
                  formControlName="role"
                  value="user">
 
-          <mdb-checkbox class="register-check-box" (click)="setClientTypeToTrue()">{{ 'REGISTER.companyClient' | translate}}</mdb-checkbox>
+          <div class="register-check-box"
+               (click)="setClientTypeToTrue()">{{ 'REGISTER.companyClient' | translate}}</div>
 
           <hr class="register-horizontal-line">
           <div *ngIf="clientType">
@@ -163,11 +164,13 @@
             </div>
           </div>
 
-          <button class="btn btn-light--blue register-button"
-                  mdbWavesEffect type="submit">{{ 'REGISTER.register' | translate}}</button>
+          <button type="submit">{{ 'REGISTER.register' | translate}}</button>
         </form>
-      </mdb-card-body>
-    </mdb-card>
+      </div>
+
+    </div>
+    <div class="md-container__right-side">
+      <div class="md-container__right-side__img"></div>
+    </div>
   </div>
-</div>
 </div>
