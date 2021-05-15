@@ -13,6 +13,7 @@ import {AuthService} from '../services/auth.service';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
+  isLoading = false;
   registerForm: FormGroup;
   clientType = false;
   registerUser = {} as User;
@@ -50,10 +51,12 @@ export class RegisterComponent implements OnInit {
       zipCode: new FormControl(null, [Validators.pattern('[0-9]{2}-[0-9]{3}')]),
       agent: new FormControl(null),
     }, this.comparePasswordAndRePassword);
+    this.isLoading = true;
   }
 
 
   onSubmit() {
+    this.isLoading = false;
     this.registerUser.firstName = this.registerForm.value.firstName;
     this.registerUser.lastName = this.registerForm.value.lastName;
     this.registerUser.email = this.registerForm.value.email;
@@ -81,6 +84,7 @@ export class RegisterComponent implements OnInit {
         this.error = errorMessage;
       });
     }
+    this.isLoading = true;
   }
 
   generateUUID() {
