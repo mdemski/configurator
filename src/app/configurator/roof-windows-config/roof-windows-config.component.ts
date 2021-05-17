@@ -14,6 +14,7 @@ import {ErpNameTranslatorService} from '../../services/erp-name-translator.servi
 import {LoadWindowConfigurationService} from '../../services/load-window-configuration.service';
 import {HighestIdGetterService} from '../../services/highest-id-getter.service';
 import {DatabaseService} from '../../services/database.service';
+import cryptoRandomString from 'crypto-random-string';
 
 @Component({
   selector: 'app-roof-windows-config',
@@ -42,6 +43,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
 
   currentUser: string;
   form: FormGroup;
+  formName: string;
   configId: number;
   windowId: number;
   windowCode: string;
@@ -120,18 +122,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       119, 'OknoDachowe', 'obrotowe', 'Okno:IS', 'OknoDachowe:ISO', 'Okno:Obrotowe', 'NawiewnikNeoVent', 'DrewnoSosna', 'Drewno:Bezbarwne', 'OknoDachowe:IS', 'Aluminium',
       'RAL9999', 'Aluminium:Półmat', 'Okno:ExtraSecure', 'Okno:RAL7048', false, 2, ['78x118'], ['zewnetrznaHartowana', false, false, false, false, false, false, false, false], ['https://www.okpol.pl/wp-content/uploads/2017/02/1_ISO.jpg'],
       ['Okno:Zasuwka', false, false], 1332.80, 1, 1.2, 5, 'Okno:RAL7048', 'Okno:RAL7048', null, 2, 'PL');
-    this.temporaryConfig = {
-      id: this.highestId,
-      name: '<New configuration>',
-      windows: [{
-        id: 1,
-        quantity: 1,
-        // TODO zamienić na configuredWindow
-        window: this.tempConfiguredWindow
-      }],
-      flashings: null,
-      accessories: null
-    };
+    this.temporaryConfig = {};
     this.authService.returnUser().subscribe(user => {
       this.currentUser = user;
     });
@@ -157,80 +148,131 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       this.extras$.next(this.extrasFromFile);
     });
     this.activeRouter.params.subscribe(param => {
-      this.configId = parseInt(param.configId, 10);
-      this.windowId = parseInt(param.productId, 10);
+      this.formName = param.formName;
       this.windowCode = param.productCode;
-      this.authService.returnUser().subscribe(user => {
-        this.loadConfig.getWindowToReconfiguration(user, param.configId, param.productId, param.productCode)
-          .subscribe(windowToReconfiguration => {
-            this.configuredWindow = windowToReconfiguration;
-            this.form = this.fb.group({
-              material: new FormControl(this.configuredWindow.stolarkaMaterial, [], [this.validateMaterials.bind(this)]),
-              openingType: new FormControl(this.configuredWindow.otwieranie, [], [this.validateOpenings.bind(this)]),
-              control: new FormControl(RoofWindowsConfigComponent.getControlType(this.configuredWindow.otwieranie)),
-              glazing: new FormControl(this.configuredWindow.glazingToCalculation, [], [this.validateGlazing.bind(this)]),
-              width: new FormControl(this.configuredWindow.szerokosc),
-              height: new FormControl(this.configuredWindow.wysokosc),
-              innerColor: new FormControl(this.configuredWindow.stolarkaKolor, [], [this.validateInnerColor.bind(this)]),
-              outer: new FormGroup({
-                outerMaterial: new FormControl(this.configuredWindow.oblachowanieMaterial),
-                outerColor: new FormControl(this.configuredWindow.oblachowanieKolor),
-                outerColorFinish: new FormControl(this.configuredWindow.oblachowanieFinisz)
-              }, [], [this.validateOuterMaterial.bind(this)]),
-              ventilation: new FormControl(this.configuredWindow.wentylacja, [], [this.validateVentilation.bind(this)]),
-              closure: new FormGroup({
-                handle: new FormControl(this.configuredWindow.zamkniecieTyp, [], [this.validateHandle.bind(this)]),
-                handleColor: new FormControl(this.configuredWindow.zamkniecieKolor)
-              })
+      this.configId = param.configId === undefined ? -1 : param.configId;
+      if (this.formName === 'no-name' || this.formName === undefined) {
+        this.formName = cryptoRandomString({length: 12, type: 'alphanumeric'});
+        this.authService.returnUser().subscribe(user => {
+          this.loadConfig.getWindowToReconfiguration(user, param.formName, param.productCode)
+            .subscribe(windowToReconfiguration => {
+              this.configuredWindow = windowToReconfiguration;
+              this.form = this.fb.group({
+                material: new FormControl(this.configuredWindow.stolarkaMaterial, [], [this.validateMaterials.bind(this)]),
+                openingType: new FormControl(this.configuredWindow.otwieranie, [], [this.validateOpenings.bind(this)]),
+                control: new FormControl(RoofWindowsConfigComponent.getControlType(this.configuredWindow.otwieranie)),
+                glazing: new FormControl(this.configuredWindow.glazingToCalculation, [], [this.validateGlazing.bind(this)]),
+                width: new FormControl(this.configuredWindow.szerokosc),
+                height: new FormControl(this.configuredWindow.wysokosc),
+                innerColor: new FormControl(this.configuredWindow.stolarkaKolor, [], [this.validateInnerColor.bind(this)]),
+                outer: new FormGroup({
+                  outerMaterial: new FormControl(this.configuredWindow.oblachowanieMaterial),
+                  outerColor: new FormControl(this.configuredWindow.oblachowanieKolor),
+                  outerColorFinish: new FormControl(this.configuredWindow.oblachowanieFinisz)
+                }, [], [this.validateOuterMaterial.bind(this)]),
+                ventilation: new FormControl(this.configuredWindow.wentylacja, [], [this.validateVentilation.bind(this)]),
+                closure: new FormGroup({
+                  handle: new FormControl(this.configuredWindow.zamkniecieTyp, [], [this.validateHandle.bind(this)]),
+                  handleColor: new FormControl(this.configuredWindow.zamkniecieKolor)
+                })
+              });
+              this.coats$.pipe(
+                filter(data => !!data),
+                map(coats => this.fb.array(coats.map((x, index) => {
+                  if (this.configuredWindow.windowCoats === undefined) {
+                    return new FormControl(false);
+                  } else {
+                    if (this.configuredWindow.windowCoats[index] === x.option) {
+                      return new FormControl(true);
+                    } else {
+                      return new FormControl(false);
+                    }
+                  }
+                })))
+              ).subscribe(coatsFormArray => {
+                this.form.addControl('coats', coatsFormArray);
+              });
+              this.extras$.pipe(
+                filter(data => !!data),
+                map(extras => this.fb.array(extras.map((x, index) => {
+                  if (this.configuredWindow.listaDodatkow === undefined) {
+                    return new FormControl(false);
+                  } else {
+                    if (this.configuredWindow.listaDodatkow[index] === x.option) {
+                      return new FormControl(true);
+                    } else {
+                      return new FormControl(false);
+                    }
+                  }
+                })))
+              ).subscribe(extrasFormArray => {
+                this.form.addControl('extras', extrasFormArray);
+              });
+              this.translate.get('LINK').subscribe(text => {
+                this.shopRoofWindowLink = text.shopRoofWindows;
+              });
+              this.translate.get('LINK').subscribe(text => {
+                this.configurationSummary = text.configurationSummary;
+              });
+              this.formData$ = this.form.valueChanges; // strumień z danymi z formularza
+              this.formData$.pipe(
+                filter((form: any) => form.material != null),
+                tap(() => {
+                  const checkboxCoatControl = this.coats as FormArray;
+                  this.subscription = checkboxCoatControl.valueChanges.subscribe(checkbox => {
+                    checkboxCoatControl.setValue(checkboxCoatControl.value.map((value, i) =>
+                      value ? this.coatsFromFile[i].option : false), {emitEvent: false});
+                  });
+                }),
+                tap(() => {
+                  const checkboxExtraControl = this.extras as FormArray;
+                  this.subscription = checkboxExtraControl.valueChanges.subscribe(checkbox => {
+                    checkboxExtraControl.setValue(checkboxExtraControl.value.map((value, i) =>
+                      value ? this.extrasFromFile[i].option : false), {emitEvent: false});
+                  });
+                }),
+                tap((form: any) => {
+                  this.windowValuesSetter.glazingTypeSetter(form.material, form.glazing, form.coats, 'Okno').subscribe(glazingName => {
+                    this.glazingName$.next(glazingName);
+                  });
+                }),
+                map((form) => {
+                  this.setConfiguredValues(form);
+                })).subscribe();
+              this.loading = false;
             });
-            this.coats$.pipe(
-              filter(data => !!data),
-              map(coats => this.fb.array(coats.map(x => new FormControl(false))))
-            ).subscribe(coatsFormArray => {
-              this.form.addControl('coats', coatsFormArray);
-            });
-            this.extras$.pipe(
-              filter(data => !!data),
-              map(extras => this.fb.array(extras.map(x => new FormControl(false))))
-            ).subscribe(extrasFormArray => {
-              this.form.addControl('extras', extrasFormArray);
-            });
-            this.translate.get('LINK').subscribe(text => {
-              this.shopRoofWindowLink = text.shopRoofWindows;
-            });
-            this.translate.get('LINK').subscribe(text => {
-              this.configurationSummary = text.configurationSummary;
-            });
-            this.formData$ = this.form.valueChanges; // strumień z danymi z formularza
-            this.formData$.pipe(
-              filter((form: any) => form.material != null),
-              tap(() => {
-                const checkboxCoatControl = this.coats as FormArray;
-                this.subscription = checkboxCoatControl.valueChanges.subscribe(checkbox => {
-                  checkboxCoatControl.setValue(checkboxCoatControl.value.map((value, i) =>
-                    value ? this.coatsFromFile[i].option : false), {emitEvent: false});
-                });
-              }),
-              tap(() => {
-                const checkboxExtraControl = this.extras as FormArray;
-                this.subscription = checkboxExtraControl.valueChanges.subscribe(checkbox => {
-                  checkboxExtraControl.setValue(checkboxExtraControl.value.map((value, i) =>
-                    value ? this.extrasFromFile[i].option : false), {emitEvent: false});
-                });
-              }),
-              tap((form: any) => {
-                this.windowValuesSetter.glazingTypeSetter(form.material, form.glazing, form.coats, 'Okno').subscribe(glazingName => {
-                  this.glazingName$.next(glazingName);
-                });
-              }),
-              map((form) => {
-                this.setConfiguredValues(form);
-              })).subscribe();
-            this.loading = false;
+        });
+      } else {
+        this.loadConfig.getWindowConfigurationByFormName(this.formName).subscribe((windowConfiguration) => {
+          this.form = this.fb.group({
+            material: new FormControl(windowConfiguration.windowFormData.material, [], [this.validateMaterials.bind(this)]),
+            openingType: new FormControl(windowConfiguration.windowFormData.openingType, [], [this.validateOpenings.bind(this)]),
+            control: new FormControl(RoofWindowsConfigComponent.getControlType(windowConfiguration.otwieranie)),
+            glazing: new FormControl(windowConfiguration.windowFormData.glazing, [], [this.validateGlazing.bind(this)]),
+            width: new FormControl(windowConfiguration.windowFormData.width),
+            height: new FormControl(windowConfiguration.windowFormData.height),
+            coats: this.fb.array(windowConfiguration.windowFormData.coats),
+            innerColor: new FormControl(windowConfiguration.windowFormData.innerColor, [], [this.validateInnerColor.bind(this)]),
+            outer: new FormGroup({
+              outerMaterial: new FormControl(windowConfiguration.windowFormData.outer === undefined ? null : windowConfiguration.windowFormData.outer.outerMaterial),
+              outerColor: new FormControl(windowConfiguration.windowFormData.outer === undefined ? null : windowConfiguration.windowFormData.outer.outerColor),
+              outerColorFinish: new FormControl(windowConfiguration.windowFormData.outer === undefined ? null : windowConfiguration.windowFormData.outer.outerColorFinish)
+            }, [], [this.validateOuterMaterial.bind(this)]),
+            ventilation: new FormControl(windowConfiguration.windowFormData.ventilation, [], [this.validateVentilation.bind(this)]),
+            closure: new FormGroup({
+              handle: new FormControl(windowConfiguration.windowFormData.closure === undefined ? null : windowConfiguration.windowFormData.closure.handle, [], [this.validateHandle.bind(this)]),
+              handleColor: new FormControl(windowConfiguration.windowFormData.closure === undefined ? null : windowConfiguration.windowFormData.closure.handleColor)
+            }),
+            extras: this.fb.array(windowConfiguration.windowFormData.extras)
           });
-      });
+          this.configuredWindow = windowConfiguration.window;
+          this.loading = false;
+        });
+      }
     });
-    this.dataBase.fetchRoofWindows().subscribe(roofWindows => { this.roofWindowsFormDataBase = roofWindows; });
+    this.dataBase.fetchRoofWindows().subscribe(roofWindows => {
+      this.roofWindowsFormDataBase = roofWindows;
+    });
   }
 
   // TODO przygotować wczytywanie konfiguracji jeśli Klient wraca do poprawy danej konfiguracji lub chce przekonfigurować produkt ze sklepu
@@ -530,11 +572,28 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    this.temporaryConfig = {
+      id: this.highestId,
+      name: '<New configuration>',
+      windows: [{
+        id: 1,
+        quantity: 1,
+        // TODO zamienić na configuredWindow
+        window: this.tempConfiguredWindow,
+        windowFormName: this.formName,
+        windowFormData: this.form.value,
+      }],
+      flashings: null,
+      accessories: null
+    };
     this.loading = true;
     this.authService.returnUser().subscribe(user => {
       if (this.configId === -1 || isNaN(this.configId)) {
-        this.crud.readAllUserConfigurations(user).subscribe(userConfigurations => {
+        this.crud.readAllUserConfigurations(user).pipe(map((data: Array<any>) => {
+          return data.filter(x => x !== null);
+        })).subscribe(userConfigurations => {
           this.userConfigs = userConfigurations;
+          console.log(this.userConfigs);
           this.highestId = this.hd.getHighestId(-1, userConfigurations);
           this.temporaryConfig.id = this.highestId;
           this.userConfigs.push(this.temporaryConfig);
@@ -543,7 +602,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
             this.chooseConfigNamePopup = true;
           } else {
             this.crud.createConfigurationForUser(user, this.temporaryConfig);
-            this.router.navigate(['/' + this.configurationSummary]);
+            // this.router.navigate(['/' + this.configurationSummary]);
             this.loading = false;
           }
         });
@@ -562,12 +621,12 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       this.crud.createConfigurationForUser(this.currentUser, this.temporaryConfig);
     } else {
       // TODO zamienić na configuredWindow
-      this.crud.createWindowConfigurationIntoConfigurationById(this.currentUser, chosenId, this.tempConfiguredWindow);
+      this.crud.createWindowConfigurationIntoConfigurationById(this.currentUser, chosenId, this.tempConfiguredWindow, this.formName, this.form.value);
     }
     this.chooseConfigNamePopup = false;
     // TODO zapisz dane do Firebase przed emisją żeby nie utracić konfiguracji
     // TODO przygotować model konfiguracji w której będą przechowywane: okno, kołnierz, roleta - a później publikować tablice
-    this.router.navigate(['/' + this.configurationSummary]);
+    // this.router.navigate(['/' + this.configurationSummary]);
   }
 
   // CALCULATIONS
