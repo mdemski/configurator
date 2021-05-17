@@ -19,3 +19,11 @@ body {
   font-weight: 400;
   line-height: 1.6;
 }
+
+.md-container {
+  max-width: 140rem;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
