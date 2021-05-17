@@ -9,163 +9,91 @@
     <p class="mt-5 grey-text pb-5 text-center">{{ 'CONFIGURATOR.description' | translate}}</p>
 
     <!--Grid row-->
-    <div class="row text-center">
+    <div class="md-container">
 
-      <!--Grid column roof windows-->
-      <div class="col-lg-4 col-md-12 mb-5">
+      <!--Roof windows-->
+      <div class="group-card window-card-background">
 
-        <!--Featured image-->
-        <div class="view overlay rounded z-depth-1 waves-light" mdbWavesEffect>
-          <img src="assets/img/configurator/main_menu/menu_konfigurator_okna_dachowe.jpg" class="img-fluid"
-               alt="{{ 'CONFIGURATOR.roofWindows' | translate}}">
-          <a routerLink="./{{ 'CONFIGURATOR.roofWindowsLink' | translate}}">
-            <div class="mask rgba-white-slight"></div>
-          </a>
-        </div>
-
-        <!--Excerpt-->
-        <mdb-card-body class="mt-3">
-          <h4>
-            <strong>{{ 'CONFIGURATOR.roofWindows' | translate}}</strong>
-          </h4>
-          <p class="grey-text">{{ 'CONFIGURATOR.roofWindowsDesc' | translate}}</p>
+        <!--Group-card content-->
+        <div class="group-card__content">
+          <div class="group-card__content--title">{{ 'CONFIGURATOR.roofWindows' | translate}}</div>
+          <div class="group-card__content--text">{{ 'CONFIGURATOR.roofWindowsDesc' | translate}}</div>
           <a routerLink="./{{ 'CONFIGURATOR.roofWindowsLink' | translate}}" class="btn btn--red">
-            <mdb-icon far icon="clone" class="left"></mdb-icon>
             {{ 'CONFIGURATOR.roofWindows' | translate}}</a>
-        </mdb-card-body>
-
-      </div>
-      <!--Grid column roof windows-->
-
-      <!--Grid column flashings-->
-      <div class="col-lg-4 col-md-6 mb-5">
-
-        <!--Featured image-->
-        <div class="view overlay rounded z-depth-1  waves-light" mdbWavesEffect>
-          <img src="assets/img/configurator/main_menu/menu_konfigurator_kolnierze.jpg" class="img-fluid"
-               alt="{{ 'CONFIGURATOR.flashings' | translate}}">
-          <a routerLink="./{{ 'CONFIGURATOR.flashingsLink' | translate}}">
-            <div class="mask rgba-white-slight"></div>
-          </a>
         </div>
 
-        <!--Excerpt-->
-        <mdb-card-body class="mt-3">
-          <h4>
-            <strong>{{ 'CONFIGURATOR.flashings' | translate}}</strong>
-          </h4>
-          <p class="grey-text">{{ 'CONFIGURATOR.flashingsDesc' | translate}}</p>
+      </div>
+      <!--Roof windows-->
+
+      <!--Flashings-->
+      <div class="group-card flashing-card-background">
+
+        <!--Group-card content-->
+        <div class="group-card__content">
+          <div class="group-card__content--title">{{ 'CONFIGURATOR.flashings' | translate}}</div>
+          <div class="group-card__content--text">{{ 'CONFIGURATOR.flashingsDesc' | translate}}</div>
           <a routerLink="./{{ 'CONFIGURATOR.flashingsLink' | translate}}" class="btn btn--grey">
-            <mdb-icon far icon="clone" class="left"></mdb-icon>
             {{ 'CONFIGURATOR.flashings' | translate}}</a>
-        </mdb-card-body>
-
-      </div>
-      <!--Grid column flashings-->
-
-      <!--Grid column accessories-->
-      <div class="col-lg-4 col-md-6 mb-5">
-
-        <!--Featured image-->
-        <div class="view overlay rounded z-depth-1  waves-light" mdbWavesEffect>
-          <img src="assets/img/configurator/main_menu/menu_konfigurator_akcesoria.jpg" class="img-fluid"
-               alt="{{ 'CONFIGURATOR.accessories' | translate}}">
-          <a routerLink="./{{ 'CONFIGURATOR.accessoriesLink' | translate}}">
-            <div class="mask rgba-white-slight"></div>
-          </a>
         </div>
 
-        <!--Excerpt-->
-        <mdb-card-body class="mt-3">
-          <h4>
-            <strong>{{ 'CONFIGURATOR.accessories' | translate}}</strong>
-          </h4>
-          <p class="grey-text">{{ 'CONFIGURATOR.accessoriesDesc' | translate}}</p>
+      </div>
+      <!--Flashings-->
+
+      <!--Accessories-->
+      <div class="group-card accessories-card-background">
+
+        <!--Group-card content-->
+        <div class="group-card__content">
+          <div class="group-card__content--title">{{ 'CONFIGURATOR.accessories' | translate}}</div>
+          <div class="group-card__content--text">{{ 'CONFIGURATOR.accessoriesDesc' | translate}}</div>
           <a routerLink="./{{ 'CONFIGURATOR.accessoriesLink' | translate}}" class="btn btn--orange">
-            <mdb-icon far icon="clone" class="left"></mdb-icon>
             {{ 'CONFIGURATOR.accessories' | translate}}</a>
-        </mdb-card-body>
-
-      </div>
-      <!--Grid column accessories-->
-
-      <!--Grid column vertical windows-->
-      <div class="col-lg-4 col-md-6 mb-5">
-
-        <!--Featured image-->
-        <div class="view overlay rounded z-depth-1  waves-light" mdbWavesEffect>
-          <img src="assets/img/configurator/main_menu/menu_konfigurator_okna_pionowe.jpg" class="img-fluid"
-               alt="{{ 'CONFIGURATOR.verticalWindows' | translate}}">
-          <a routerLink="./{{ 'CONFIGURATOR.verticalWindowsLink' | translate}}">
-            <div class="mask rgba-white-slight"></div>
-          </a>
         </div>
 
-        <!--Excerpt-->
-        <mdb-card-body class="mt-3">
-          <h4>
-            <strong>{{ 'CONFIGURATOR.verticalWindows' | translate}}</strong>
-          </h4>
-          <p class="grey-text">{{ 'CONFIGURATOR.verticalWindowsDesc' | translate}}</p>
-          <a routerLink="./{{ 'CONFIGURATOR.verticalWindowsLink' | translate}}" class="btn btn--light-blue">
-            <mdb-icon far icon="clone" class="left"></mdb-icon>
-            {{ 'CONFIGURATOR.verticalWindows' | translate}}</a>
-        </mdb-card-body>
-
       </div>
-      <!--Grid column vertical windows-->
+      <!--Accessories-->
 
-      <!--Grid column skylights-->
-      <div class="col-lg-4 col-md-6 mb-5">
+      <!--Skylights-->
+      <div class="group-card skylights-card-background">
 
-        <!--Featured image-->
-        <div class="view overlay rounded z-depth-1  waves-light" mdbWavesEffect>
-          <img src="assets/img/configurator/main_menu/menu_konfigurator_wylazy_dachowe.jpg" class="img-fluid"
-               alt="{{ 'CONFIGURATOR.skylights' | translate}}">
-          <a routerLink="./{{ 'CONFIGURATOR.skylightsLink' | translate}}">
-            <div class="mask rgba-white-slight"></div>
-          </a>
-        </div>
-
-        <!--Excerpt-->
-        <mdb-card-body class="mt-3">
-          <h4>
-            <strong>{{ 'CONFIGURATOR.skylights' | translate}}</strong>
-          </h4>
-          <p class="grey-text">{{ 'CONFIGURATOR.skylightsDesc' | translate}}</p>
+        <!--Group-card content-->
+        <div class="group-card__content">
+          <div class="group-card__content--title">{{ 'CONFIGURATOR.skylights' | translate}}</div>
+          <div class="group-card__content--text">{{ 'CONFIGURATOR.skylightsDesc' | translate}}</div>
           <a routerLink="./{{ 'CONFIGURATOR.skylightsLink' | translate}}" class="btn btn--yellow">
-            <mdb-icon far icon="clone" class="left"></mdb-icon>
             {{ 'CONFIGURATOR.skylights' | translate}}</a>
-        </mdb-card-body>
-
-      </div>
-      <!--Grid column skylights-->
-
-      <!--Grid column shop-->
-      <div class="col-lg-4 col-md-6 mb-5">
-
-        <!--Featured image-->
-        <div class="view overlay rounded z-depth-1  waves-light" mdbWavesEffect>
-          <img src="assets/img/configurator/main_menu/do_wykorzystania_rodzina_z_gory.jpg" class="img-fluid"
-               alt="{{ 'CONFIGURATOR.shop' | translate}}">
-          <a routerLink="/{{ 'CONFIGURATOR.shopLink' | translate}}">
-            <div class="mask rgba-white-slight"></div>
-          </a>
         </div>
 
-        <!--Excerpt-->
-        <mdb-card-body class="mt-3">
-          <h4>
-            <strong>{{ 'CONFIGURATOR.shop' | translate}}</strong>
-          </h4>
-          <p class="grey-text">{{ 'CONFIGURATOR.shopDesc' | translate}}</p>
-          <a routerLink="/{{ 'CONFIGURATOR.shopLink' | translate}}" class="btn btn--blue">
-            <mdb-icon far icon="clone" class="left"></mdb-icon>
-            {{ 'CONFIGURATOR.shop' | translate}}</a>
-        </mdb-card-body>
+      </div>
+      <!--Skylights-->
+
+      <!--Vertical windows-->
+      <div class="group-card vertical-windows-card-background">
+
+        <!--Group-card content-->
+        <div class="group-card__content">
+          <div class="group-card__content--title">{{ 'CONFIGURATOR.verticalWindows' | translate}}</div>
+          <div class="group-card__content--text">{{ 'CONFIGURATOR.verticalWindowsDesc' | translate}}</div>
+          <a routerLink="./{{ 'CONFIGURATOR.verticalWindowsLink' | translate}}" class="btn btn--cyan">
+            {{ 'CONFIGURATOR.verticalWindows' | translate}}</a>
+        </div>
 
       </div>
-      <!--Grid column shop-->
+      <!--Vertical windows-->
+
+      <!--Vertical windows-->
+      <div class="group-card shop-card-background">
+
+        <!--Group-card content-->
+        <div class="group-card__content">
+          <div class="group-card__content--title">{{ 'CONFIGURATOR.shop' | translate}}</div>
+          <div class="group-card__content--text">{{ 'CONFIGURATOR.shopDesc' | translate}}</div>
+          <a routerLink="/{{ 'CONFIGURATOR.shopLink' | translate}}" class="btn btn--blue">
+            {{ 'CONFIGURATOR.shop' | translate}}</a>
+        </div>
+
+      </div>
+      <!--Vertical windows-->
 
     </div>
     <!--Grid row-->
