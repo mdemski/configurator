@@ -1,4 +1,5 @@
 @import 'src/sass/base/variables';
+@import 'src/sass/base/base';
 @import 'src/sass/buttons';
 
 .navbar-background {
@@ -18,11 +19,6 @@
 }
 
 .container {
-  max-width: 140rem;
-  margin-top: 2rem;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
 
   &__background {
     display: flex;
