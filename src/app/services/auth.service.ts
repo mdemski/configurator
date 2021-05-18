@@ -40,7 +40,7 @@ export class AuthService {
       }))
       : this.ipService.getIpAddress().pipe(map(userIp => userIp)).pipe(map(userIp => {
         // @ts-ignore
-        return userIp.ip;
+        return userIp.query;
       }));
   }
 
