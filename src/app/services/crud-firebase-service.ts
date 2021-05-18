@@ -199,6 +199,27 @@ export class CrudFirebaseService {
     }));
   }
 
+  updateWindowConfigurationByFormName(user: string, configurationId: number, windowFormName: string, windowFormData: {}) {
+    this.readAllConfigurationsFromFirebase().subscribe(allConfigurations => {
+      const arrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).arrayIndex;
+      const configurationWithId = this.getIndexAndConfiguration(user, allConfigurations, configurationId).configurationWithId;
+      const smallArrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).smallArrayIndex;
+      for (let i = 0; i < configurationWithId.windows.length; i++) {
+        if (configurationWithId.windows[i].windowFormName === windowFormName) {
+          configurationWithId.windows[i] = {
+            id: configurationWithId.windows[i].id,
+            quantity: configurationWithId.windows[i].quantity,
+            window: configurationWithId.windows[i].window,
+            windowFormName,
+            windowFormData
+          };
+          this.http.patch('https://window-configurator.firebaseio.com/allConfigurations/' + arrayIndex
+            + '/userConfigurations/' + smallArrayIndex + '/windows/' + i + '.json', configurationWithId.windows[i]).subscribe();
+        }
+      }
+    });
+  }
+
   createConfigurationForUser(user: string, configuration: SingleConfiguration) {
     this.readAllConfigurationsFromFirebase().subscribe(allConfigurations => {
       let configNotAdded = true;
