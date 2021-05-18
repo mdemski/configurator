@@ -73,7 +73,7 @@
       </div>
       <div class="configuration-summary__scores">
         <p
-          class="price">{{this.configuredWindow.CenaDetaliczna | currency :' ' : false : undefined : undefined}}{{ 'ROOF-WINDOWS-CONFIG.currency' | translate}}</p>
+          class="price">{{this.configuredWindow.CenaDetaliczna | currency :' ' : '' : undefined : undefined}}{{ 'ROOF-WINDOWS-CONFIG.currency' | translate}}</p>
         <p class="Uw">{{ 'ROOF-WINDOWS-CONFIG.Uw' | translate}} = {{this.configuredWindow.windowUW | number: '1.2-2'}}
           W/m²K</p>
         <p class="Ug">{{ 'ROOF-WINDOWS-CONFIG.Ug' | translate}} = {{this.configuredWindow.windowUG | number: '1.2-2'}}
