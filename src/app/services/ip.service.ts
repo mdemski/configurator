@@ -9,6 +9,6 @@ export class IpService {
   constructor(private http: HttpClient) { }
 
   getIpAddress() {
-    return this.http.get('http://api.ipify.org/?format=json');
+    return this.http.get('http://ip-api.com/json/');
   }
 }
