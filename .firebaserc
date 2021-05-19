@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "window-configurator": {
+      "hosting": {
+        "window-configurator": [
+          "window-configurator"
+        ]
+      }
+    }
+  }
+}

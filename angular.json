@@ -152,6 +152,10 @@
               "browserTarget": "window-configurator:build:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {}
         }
       }
     }

@@ -45,6 +45,8 @@ import {FilterPipeModule} from 'ngx-filter-pipe';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { IonicModule } from '@ionic/angular';
 import { DisableControlDirective } from './directives/disable-control.directive';
+import {AngularFireModule} from '@angular/fire';
+import {environment} from '../environments/environment';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -89,6 +91,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   imports: [
     BrowserModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
     HttpClientModule,
     TranslateModule.forRoot({
       loader: {
