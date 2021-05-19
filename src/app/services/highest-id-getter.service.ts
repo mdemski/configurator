@@ -7,7 +7,7 @@ export class HighestIdGetterService {
   highestId: number;
 
   constructor() {
-    this.highestId = 1;
+    this.highestId = 0;
   }
 
   getHighestId(initialId, configurations: any[]) {
