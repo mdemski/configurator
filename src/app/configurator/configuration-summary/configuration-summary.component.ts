@@ -4,6 +4,7 @@ import {DatabaseService} from '../../services/database.service';
 import {AuthService} from '../../services/auth.service';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {SingleConfiguration} from '../../models/single-configuration';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-configuration-summary',
@@ -34,7 +35,9 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
     this.configurationsSubject = new BehaviorSubject<SingleConfiguration[]>([]);
     this.configurations$ = this.configurationsSubject.asObservable();
     this.authService.returnUser().subscribe(currentUser => {
-      this.configDist.readAllUserConfigurations(currentUser).subscribe(userConfigurations => {
+      this.configDist.readAllUserConfigurations(currentUser).pipe(map((data: Array<any>) => {
+        return data.filter(x => x !== null);
+      })).subscribe(userConfigurations => {
         this.configurations = userConfigurations;
         this.configurationsSubject.next(this.configurations);
         this.loading = currentUser === '';

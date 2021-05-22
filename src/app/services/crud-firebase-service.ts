@@ -9,13 +9,15 @@ import {Accessory} from '../models/accessory';
 import {SingleConfiguration} from '../models/single-configuration';
 import {ConfigurationModel} from '../models/configuration-model';
 import {HighestIdGetterService} from './highest-id-getter.service';
+import {AngularFireDatabase} from '@angular/fire/database';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CrudFirebaseService {
 
-  constructor(private http: HttpClient, private db: DatabaseService, private hd: HighestIdGetterService) {
+  constructor(private http: HttpClient, private db: DatabaseService, private hd: HighestIdGetterService,
+              private firebase: AngularFireDatabase) {
   }
 
   // TODO poprawić na notację obiektową ponieważ jest to wydajniejsze - pytanie jak dodawać kolejne konfiguracje?
@@ -28,10 +30,12 @@ export class CrudFirebaseService {
   configurationDataChange$ = this.configurationData.asObservable();
 
   readAllConfigurationsFromFirebase(): Observable<ConfigurationModel[]> {
-    return this.http.get('https://window-configurator.firebaseio.com/allConfigurations.json') as Observable<ConfigurationModel[]>;
+    // this.firebase.list('/allConfigurations', ref => ref.orderByChild('user').equalTo('192.168.0.2')).valueChanges().subscribe(data => console.log(data[0].user));
+    return this.firebase.list('allConfigurations').valueChanges() as Observable<ConfigurationModel[]>;
   }
 
   readAllUserConfigurations(user: string): Observable<SingleConfiguration[]> {
+    // return this.firebase.list('/allConfigurations', ref => ref.orderByChild('user').equalTo(user)).snapshotChanges().pipe(map((data: ConfigurationModel) => data.userConfigurations));
     return this.readAllConfigurationsFromFirebase().pipe(map(allConfigurations => {
       const configurations = [];
       for (const userConfigurations of allConfigurations) {
@@ -251,9 +255,11 @@ export class CrudFirebaseService {
       if (configurations[i].user === user) {
         arrayIndex = i;
         for (let j = 0; j < configurations[i].userConfigurations.length; j++) {
-          if (configurations[i].userConfigurations[j].id === Number(configurationId)) {
-            smallArrayIndex = j;
-            configurationWithId = configurations[i].userConfigurations[j];
+          if (configurations[i].userConfigurations[j]) {
+            if (configurations[i].userConfigurations[j].id === Number(configurationId)) {
+              smallArrayIndex = j;
+              configurationWithId = configurations[i].userConfigurations[j];
+            }
           }
         }
       }
@@ -534,10 +540,14 @@ export class CrudFirebaseService {
       const configurationWithId = this.getIndexAndConfiguration(user, allConfigurations, configurationId).configurationWithId;
       const smallArrayIndex = this.getIndexAndConfiguration(user, allConfigurations, configurationId).smallArrayIndex;
       for (const configurations of allConfigurations) {
-        if (configurations.user === user) {
-          allConfigurations.splice(arrayIndex, 1);
-          this.http.put('https://window-configurator.firebaseio.com/allConfigurations.json', allConfigurations).subscribe();
+        console.log('Długość tablicy to:' + configurations.userConfigurations.filter(x => x !== null).length);
+        if (configurations.user === user && configurationWithId.id === configurationId) {
+          this.http.delete('https://window-configurator.firebaseio.com/allConfigurations/' + arrayIndex +
+            '/userConfigurations/' + smallArrayIndex + '.json').subscribe();
         }
+        // if (configurations.userConfigurations.length === 1) {
+        //   this.http.delete('https://window-configurator.firebaseio.com/allConfigurations/' + arrayIndex + '.json').subscribe();
+        // }
       }
     });
   }

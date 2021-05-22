@@ -9,7 +9,7 @@ import {ConfigurationDataService} from '../../services/configuration-data.servic
 import {AuthService} from '../../services/auth.service';
 import {WindowDynamicValuesSetterService} from '../../services/window-dynamic-values-setter.service';
 import _ from 'lodash';
-import {filter, map, tap} from 'rxjs/operators';
+import {filter, map, takeUntil, tap} from 'rxjs/operators';
 import {ErpNameTranslatorService} from '../../services/erp-name-translator.service';
 import {LoadWindowConfigurationService} from '../../services/load-window-configuration.service';
 import {HighestIdGetterService} from '../../services/highest-id-getter.service';
@@ -59,7 +59,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   showHeightMessage = false;
   popupConfig = true;
   chooseConfigNamePopup = false;
-  userConfigs = null;
+  userConfigs = [];
   private materialVisible = true;
   private openingVisible = false;
   private coatsVisible = false;
@@ -98,6 +98,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   coats$ = new BehaviorSubject<any[]>([]);
   extras$ = new BehaviorSubject<any[]>([]);
   glazingName$ = new BehaviorSubject('Okno:E01');
+  isDestroyed$ = new Subject();
   loading;
   highestId;
   temporaryConfig;
@@ -116,7 +117,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
 
   // 'width': new FormControl(78, [this.validateWidth.bind(this), Validators.required]), własnym walidator
   ngOnInit(): void {
-    this.highestId = -1;
+    this.highestId = 1;
     this.tempConfiguredWindow = new RoofWindowSkylight(
       '1O-ISO-V-E02-KL00-A7022P-079119-OKPO01', 'Okno dachowe tymczasowe', 'ISOV E2 79x119', 'I-Okno', 'NPL-Okno', 'Nowy', 'Okno:ISOV', 'Okno:E02', 'dwuszybowy', 79,
       119, 'OknoDachowe', 'obrotowe', 'Okno:IS', 'OknoDachowe:ISO', 'Okno:Obrotowe', 'NawiewnikNeoVent', 'DrewnoSosna', 'Drewno:Bezbarwne', 'OknoDachowe:IS', 'Aluminium',
@@ -147,14 +148,14 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       this.coats$.next(this.coatsFromFile);
       this.extras$.next(this.extrasFromFile);
     });
-    this.activeRouter.params.subscribe(param => {
+    this.activeRouter.params.pipe(takeUntil(this.isDestroyed$)).subscribe(param => {
       this.formName = param.formName;
       this.windowCode = param.productCode;
       this.configId = param.configId === undefined ? -1 : param.configId;
       if (this.formName === 'no-name' || this.formName === undefined) {
         this.formName = cryptoRandomString({length: 12, type: 'alphanumeric'});
-        this.authService.returnUser().subscribe(user => {
-          this.loadConfig.getWindowToReconfiguration(user, param.formName, param.productCode)
+        this.authService.returnUser().pipe(takeUntil(this.isDestroyed$)).subscribe(user => {
+          this.loadConfig.getWindowToReconfiguration(user, param.formName, param.productCode).pipe(takeUntil(this.isDestroyed$))
             .subscribe(windowToReconfiguration => {
               this.configuredWindow = windowToReconfiguration;
               this.form = this.fb.group({
@@ -177,6 +178,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
                 })
               });
               this.coats$.pipe(
+                takeUntil(this.isDestroyed$),
                 filter(data => !!data),
                 map(coats => this.fb.array(coats.map((x, index) => {
                   if (this.configuredWindow.windowCoats === undefined) {
@@ -193,6 +195,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
                 this.form.addControl('coats', coatsFormArray);
               });
               this.extras$.pipe(
+                takeUntil(this.isDestroyed$),
                 filter(data => !!data),
                 map(extras => this.fb.array(extras.map((x, index) => {
                   if (this.configuredWindow.listaDodatkow === undefined) {
@@ -208,42 +211,12 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
               ).subscribe(extrasFormArray => {
                 this.form.addControl('extras', extrasFormArray);
               });
-              this.translate.get('LINK').subscribe(text => {
-                this.shopRoofWindowLink = text.shopRoofWindows;
-              });
-              this.translate.get('LINK').subscribe(text => {
-                this.configurationSummary = text.configurationSummary;
-              });
-              this.formData$ = this.form.valueChanges; // strumień z danymi z formularza
-              this.formData$.pipe(
-                filter((form: any) => form.material != null),
-                tap(() => {
-                  const checkboxCoatControl = this.coats as FormArray;
-                  this.subscription = checkboxCoatControl.valueChanges.subscribe(checkbox => {
-                    checkboxCoatControl.setValue(checkboxCoatControl.value.map((value, i) =>
-                      value ? this.coatsFromFile[i].option : false), {emitEvent: false});
-                  });
-                }),
-                tap(() => {
-                  const checkboxExtraControl = this.extras as FormArray;
-                  this.subscription = checkboxExtraControl.valueChanges.subscribe(checkbox => {
-                    checkboxExtraControl.setValue(checkboxExtraControl.value.map((value, i) =>
-                      value ? this.extrasFromFile[i].option : false), {emitEvent: false});
-                  });
-                }),
-                tap((form: any) => {
-                  this.windowValuesSetter.glazingTypeSetter(form.material, form.glazing, form.coats, 'Okno').subscribe(glazingName => {
-                    this.glazingName$.next(glazingName);
-                  });
-                }),
-                map((form) => {
-                  this.setConfiguredValues(form);
-                })).subscribe();
+              this.formChanges();
               this.loading = false;
             });
         });
       } else {
-        this.loadConfig.getWindowConfigurationByFormName(this.formName).subscribe((windowConfiguration) => {
+        this.loadConfig.getWindowConfigurationByFormName(this.formName).pipe(takeUntil(this.isDestroyed$)).subscribe((windowConfiguration) => {
           this.form = this.fb.group({
             material: new FormControl(windowConfiguration.windowFormData.material, [], [this.validateMaterials.bind(this)]),
             openingType: new FormControl(windowConfiguration.windowFormData.openingType, [], [this.validateOpenings.bind(this)]),
@@ -266,12 +239,21 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
             extras: this.fb.array(windowConfiguration.windowFormData.extras)
           });
           this.configuredWindow = windowConfiguration.window;
+          this.windowId = windowConfiguration.window.id;
+          this.setConfiguredValues(this.form.value);
+          this.formChanges();
           this.loading = false;
         });
       }
     });
-    this.dataBase.fetchRoofWindows().subscribe(roofWindows => {
+    this.dataBase.fetchRoofWindows().pipe(takeUntil(this.isDestroyed$)).subscribe(roofWindows => {
       this.roofWindowsFormDataBase = roofWindows;
+    });
+    this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
+      this.shopRoofWindowLink = text.shopRoofWindows;
+    });
+    this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
+      this.configurationSummary = text.configurationSummary;
     });
   }
 
@@ -279,7 +261,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   // TODO Wyświetlanie ceny podstawowej z eNovy podczas natrafienia na kod będący w eNova i zaproponowanie prześcia do sklepu
 
   ngOnDestroy() {
-    // TODO odsubskrybować się ze wszystkich strumieni oprócz http - ten strumień zamyka się sam
+    this.isDestroyed$.next();
   }
 
   get coats(): FormArray {
@@ -288,6 +270,35 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
 
   get extras(): FormArray {
     return this.form.get('extras') as FormArray;
+  }
+
+  formChanges() {
+    this.formData$ = this.form.valueChanges; // strumień z danymi z formularza
+    this.formData$.pipe(
+      takeUntil(this.isDestroyed$),
+      filter((form: any) => form.material !== null),
+      tap(() => {
+        const checkboxCoatControl = this.coats as FormArray;
+        this.subscription = checkboxCoatControl.valueChanges.subscribe(checkbox => {
+          checkboxCoatControl.setValue(checkboxCoatControl.value.map((value, i) =>
+            value ? this.coatsFromFile[i].option : false), {emitEvent: false});
+        });
+      }),
+      tap(() => {
+        const checkboxExtraControl = this.extras as FormArray;
+        this.subscription = checkboxExtraControl.valueChanges.subscribe(checkbox => {
+          checkboxExtraControl.setValue(checkboxExtraControl.value.map((value, i) =>
+            value ? this.extrasFromFile[i].option : false), {emitEvent: false});
+        });
+      }),
+      tap((form: any) => {
+        this.windowValuesSetter.glazingTypeSetter(form.material, form.glazing, form.coats, 'Okno').subscribe(glazingName => {
+          this.glazingName$.next(glazingName);
+        });
+      }),
+      map((form) => {
+        this.setConfiguredValues(form);
+      })).subscribe();
   }
 
   setConfiguredValues(form) {
@@ -593,19 +604,23 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
           return data.filter(x => x !== null);
         })).subscribe(userConfigurations => {
           this.userConfigs = userConfigurations;
-          console.log(this.userConfigs);
-          this.highestId = this.hd.getHighestId(-1, userConfigurations);
+          this.highestId = this.hd.getHighestId(0, userConfigurations);
           this.temporaryConfig.id = this.highestId;
-          this.userConfigs.push(this.temporaryConfig);
-          if (this.userConfigs !== []) {
+          if (this.userConfigs.length !== 0) {
+            this.userConfigs.push(this.temporaryConfig);
             this.loading = false;
             this.chooseConfigNamePopup = true;
           } else {
             this.crud.createConfigurationForUser(user, this.temporaryConfig);
-            // this.router.navigate(['/' + this.configurationSummary]);
+            this.router.navigate(['/' + this.configurationSummary]);
             this.loading = false;
           }
         });
+      } else {
+        this.crud.updateWindowConfigurationIntoConfigurationById(user, this.configId, this.windowId, this.configuredWindow);
+        this.crud.updateWindowConfigurationByFormName(user, this.configId, this.formName, this.form.value);
+        this.router.navigate(['/' + this.configurationSummary]);
+        this.loading = false;
       }
     });
   }
@@ -619,6 +634,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     }
     if (chosenId === this.highestId) {
       this.crud.createConfigurationForUser(this.currentUser, this.temporaryConfig);
+      this.router.navigate(['/' + this.configurationSummary]);
     } else {
       // TODO zamienić na configuredWindow
       this.crud.createWindowConfigurationIntoConfigurationById(this.currentUser, chosenId, this.tempConfiguredWindow, this.formName, this.form.value);
@@ -626,7 +642,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.chooseConfigNamePopup = false;
     // TODO zapisz dane do Firebase przed emisją żeby nie utracić konfiguracji
     // TODO przygotować model konfiguracji w której będą przechowywane: okno, kołnierz, roleta - a później publikować tablice
-    // this.router.navigate(['/' + this.configurationSummary]);
+    this.router.navigate(['/' + this.configurationSummary]);
   }
 
   // CALCULATIONS
