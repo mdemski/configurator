@@ -47,6 +47,7 @@ import { IonicModule } from '@ionic/angular';
 import { DisableControlDirective } from './directives/disable-control.directive';
 import {AngularFireModule} from '@angular/fire';
 import {environment} from '../environments/environment';
+import {AngularFirestoreModule} from '@angular/fire/firestore';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -92,6 +93,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   imports: [
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFirestoreModule,
     HttpClientModule,
     TranslateModule.forRoot({
       loader: {
