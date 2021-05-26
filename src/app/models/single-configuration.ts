@@ -9,7 +9,7 @@ export interface SingleConfiguration {
   created: Date;
   lastUpdate: Date;
   user: string;
-  id: number;
+  userId: number;
   name: string;
   active: boolean;
   products: {
