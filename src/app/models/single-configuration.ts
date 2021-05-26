@@ -5,43 +5,54 @@ import {VerticalWindow} from './vertical-window';
 import {FlatRoofWindow} from './flat-roof-window';
 
 export interface SingleConfiguration {
-  id: number,
-  name: string,
+  user: string;
+  id: number;
+  name: string;
   products: {
-    windowConfig: {
-      id: number,
-      window: RoofWindowSkylight,
-      quantity: number,
-      windowFormName: string,
-      windowFormData: any
+    windows: {
+      windowConfig: {
+        id: number,
+        window: RoofWindowSkylight,
+        quantity: number,
+        windowFormName: string,
+        windowFormData: any
+      } | null
     } | null,
-    flashingConfig: {
-      id: number,
-      flashing: Flashing,
-      quantity: number,
-      flashingFormName: string,
-      flashingFormData: any
+    flashings: {
+      flashingConfig: {
+        id: number,
+        flashing: Flashing,
+        quantity: number,
+        flashingFormName: string,
+        flashingFormData: any
+      } | null
     } | null,
-    accessoryConfig: {
-      id: number,
-      accessory: Accessory,
-      quantity: number,
-      accessoryFormName: string,
-      accessoryFormData: any
+    accessories: {
+      accessoryConfig: {
+        id: number,
+        accessory: Accessory,
+        quantity: number,
+        accessoryFormName: string,
+        accessoryFormData: any
+      } | null
     } | null,
-    verticalConfig: {
-      id: number,
-      vertical: VerticalWindow,
-      quantity: number,
-      verticalFormName: string,
-      verticalFormData: any
+    verticals: {
+      verticalConfig: {
+        id: number,
+        vertical: VerticalWindow,
+        quantity: number,
+        verticalFormName: string,
+        verticalFormData: any
+      } | null
     } | null,
-    flatConfig: {
-      id: number,
-      flat: FlatRoofWindow,
-      quantity: number,
-      flatFormName: string,
-      flatFormData: any
-    } | null;
+    flats: {
+      flatConfig: {
+        id: number,
+        flat: FlatRoofWindow,
+        quantity: number,
+        flatFormName: string,
+        flatFormData: any
+      } | null
+    } | null
   };
 }
