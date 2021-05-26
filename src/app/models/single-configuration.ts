@@ -5,9 +5,13 @@ import {VerticalWindow} from './vertical-window';
 import {FlatRoofWindow} from './flat-roof-window';
 
 export interface SingleConfiguration {
+  globalId: string;
+  created: Date;
+  lastUpdate: Date;
   user: string;
   id: number;
   name: string;
+  active: boolean;
   products: {
     windows: {
       windowConfig: {
