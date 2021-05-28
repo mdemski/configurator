@@ -17,6 +17,6 @@ export interface SingleConfiguration {
     flashings: Array<FlashingConfig> | null,
     accessories: Array<AccessoryConfig> | null,
     verticals: Array<VerticalConfig> | null,
-    flats: Array<FlatConfig>| null
+    flats: Array<FlatConfig> | null
   };
 }
