@@ -1,4 +1,3 @@
-import {Accessory} from './accessory';
 import {FlatRoofWindow} from './flat-roof-window';
 
 export interface FlatConfig {
