@@ -44,8 +44,11 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# User Files
 /src/environments/environment.prod.ts
 /src/environments/environment.ts
 /src/assets/csv/archiwum/Kalkulator okna niestandardowe 21.05.2020.ods
 /src/assets/csv/archiwum/macierz do konfiguratora.xlsx
-
+../src/assets/csv/archiwum/Kalkulator okna niestandardowe 21.05.2020.ods
+/backend/database/
