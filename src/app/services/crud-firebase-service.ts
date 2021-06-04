@@ -1,14 +1,22 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {RoofWindowSkylight} from '../models/roof-window-skylight';
 import {HttpClient} from '@angular/common/http';
 import {DatabaseService} from './database.service';
+import {RoofWindowSkylight} from '../models/roof-window-skylight';
 import {Flashing} from '../models/flashing';
 import {Accessory} from '../models/accessory';
+import {VerticalWindow} from '../models/vertical-window';
+import {FlatRoofWindow} from '../models/flat-roof-window';
 import {SingleConfiguration} from '../models/single-configuration';
 import {HighestIdGetterService} from './highest-id-getter.service';
 import {AngularFirestore} from '@angular/fire/firestore';
-import {map, take} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
+import {WindowConfig} from '../models/window-config';
+import {FlashingConfig} from '../models/flashing-config';
+import {AccessoryConfig} from '../models/accessory-config';
+import {VerticalConfig} from '../models/vertical-config';
+import {FlatConfig} from '../models/flat-config';
+import firebase from 'firebase';
 
 @Injectable({
   providedIn: 'root'
@@ -172,8 +180,11 @@ export class CrudFirebaseService {
     }));
   }
 
-  updateWindowConfigurationByFormName(user: string, configurationId: number, windowFormName: string, windowFormData: {}) {
-
+  private getConfigurationObject(configId: string) {
+    return this.firestore.doc('allConfigurations/' + configId).valueChanges()
+      .pipe(map(configurationObject => {
+        return configurationObject;
+      }));
   }
 
   createConfigurationForUser(user: string, configuration: SingleConfiguration) {
@@ -190,22 +201,95 @@ export class CrudFirebaseService {
   }
 
   // 6 dodawanie okna do konfiguracji
-  createWindowConfigurationIntoConfigurationById(user: string, configurationId: number, windowConfiguration: RoofWindowSkylight, formName: string, formData: any) {
-
+  createWindowConfigurationIntoConfigurationById(configId: string,
+                                                 windowConfiguration: RoofWindowSkylight,
+                                                 formName: string, formData: any) {
+    const windowConfig: WindowConfig = {
+      id: firebase.firestore.length + 1,
+      quantity: 2,
+      window: Object.assign({}, windowConfiguration),
+      windowFormName: formName,
+      windowFormData: formData
+    };
+    return this.firestore.doc('allConfigurations/' + configId).valueChanges().subscribe((config: SingleConfiguration) => {
+      console.log(config.products.windows.push(windowConfig));
+    });
   }
 
   // 7 dodawanie kołnierza do konfiguracji
-  createFlashingConfigurationIntoConfigurationById(user: string, configurationId: number, flashingConfiguration: Flashing, formName: string, formData: any) {
-
+  createFlashingConfigurationIntoConfigurationById(configId: string,
+                                                   flashingConfiguration: Flashing,
+                                                   formName: string, formData: any) {
+    this.firestore.doc('allConfigurations/' + configId).valueChanges()
+      .pipe(
+        map((configuration: SingleConfiguration) => {
+          const flashingConfig: FlashingConfig = {
+            id: this.hd.getHighestIdForProduct(configuration).flashingId,
+            flashing: flashingConfiguration,
+            quantity: 1,
+            flashingFormName: formName,
+            flashingFormData: formData
+          };
+          configuration.products.flashings.push(flashingConfig);
+        }));
   }
 
   // 8 dodawanie akcesorium do konfiguracji
-  createAccessoryConfigurationIntoConfigurationById(user: string, configurationId: number, accessoryConfiguration: Accessory, formName: string, formData: any) {
-
+  createAccessoryConfigurationIntoConfigurationById(configId: string,
+                                                    accessoryConfiguration: Accessory,
+                                                    formName: string, formData: any) {
+    this.firestore.doc('allConfigurations/' + configId).valueChanges()
+      .pipe(
+        map((configuration: SingleConfiguration) => {
+          const accessoryConfig: AccessoryConfig = {
+            id: this.hd.getHighestIdForProduct(configuration).accessoryId,
+            accessory: accessoryConfiguration,
+            quantity: 1,
+            accessoryFormName: formName,
+            accessoryFormData: formData
+          };
+          configuration.products.accessories.push(accessoryConfig);
+        }));
   }
 
-  updateNameConfigurationById(user: string, configurationId: number, configName: string) {
+  createVerticalConfigurationIntoConfigurationById(configId: string,
+                                                   verticalConfiguration: VerticalWindow,
+                                                   formName: string, formData: any) {
+    this.firestore.doc('allConfigurations/' + configId).valueChanges()
+      .pipe(
+        map((configuration: SingleConfiguration) => {
+          const verticalConfig: VerticalConfig = {
+            id: this.hd.getHighestIdForProduct(configuration).verticalId,
+            vertical: verticalConfiguration,
+            quantity: 1,
+            verticalFormName: formName,
+            verticalFormData: formData
+          };
+          configuration.products.verticals.push(verticalConfig);
+        }));
+  }
 
+  createFlatConfigurationIntoConfigurationById(configId: string,
+                                               flatConfiguration: FlatRoofWindow,
+                                               formName: string, formData: any) {
+    this.firestore.doc('allConfigurations/' + configId).valueChanges()
+      .pipe(
+        map((configuration: SingleConfiguration) => {
+          const flatRoofWindowConfig: FlatConfig = {
+            id: this.hd.getHighestIdForProduct(configuration).verticalId,
+            flat: flatConfiguration,
+            quantity: 1,
+            flatFormName: formName,
+            flatFormData: formData
+          };
+          configuration.products.flats.push(flatRoofWindowConfig);
+        }));
+  }
+
+  updateNameConfigurationById(user: string, configId: string, configName: string) {
+    return this.firestore.doc('allConfigurations/' + configId).update({
+      name: configName
+    });
   }
 
   updateWindowQuantity(user: string, configurationId: number, windowId: number, quantity: number) {
@@ -223,7 +307,7 @@ export class CrudFirebaseService {
   }
 
   // 10 aktualizowanie okna w konfiguracji
-  updateWindowConfigurationIntoConfigurationById(user: string, configurationId: number,
+  updateWindowConfigurationIntoConfigurationById(user: string, configurationId: string,
                                                  windowId: number, windowConfiguration: RoofWindowSkylight) {
 
   }
@@ -237,26 +321,29 @@ export class CrudFirebaseService {
   // 12 aktualizowanie akcesorium w konfiguracji
   updateAccessoryConfigurationIntoConfigurationById(user: string, configurationId: number,
                                                     accessoryId: number, accessoryConfiguration: Accessory) {
+  }
+
+  updateWindowConfigurationByFormName(configurationId: string, windowFormName: string, windowFormData: {}) {
 
   }
 
   // 1 usuwanie całej konfiguracji
-  deleteConfigurationById(user: string, configurationId: number) {
+  deleteConfigurationById(user: string, configurationId: string) {
 
   }
 
   // 2 usuwanie okna z konfiguracji
-  deleteWindowConfigurationFromConfigurationById(user: string, configurationId: number, windowId: number) {
+  deleteWindowConfigurationFromConfigurationById(user: string, configurationId: string, windowId: number) {
 
   }
 
   // 3 usuwanie kołnierza z konfiguracji
-  deleteFlashingConfigurationFromConfigurationById(user: string, configurationId: number, flashingId: number) {
+  deleteFlashingConfigurationFromConfigurationById(user: string, configurationId: string, flashingId: number) {
 
   }
 
   // 4 usuwanie acesorium z konfiguracji
-  deleteAccessoryConfigurationFromConfigurationById(user: string, configurationId: number, accessoryId: number) {
+  deleteAccessoryConfigurationFromConfigurationById(user: string, configurationId: string, accessoryId: number) {
 
   }
 }
