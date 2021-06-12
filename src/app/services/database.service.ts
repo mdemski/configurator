@@ -7,7 +7,6 @@ import {PropertyValueTranslatorService} from './property-value-translator.servic
 import {WindowDynamicValuesSetterService} from './window-dynamic-values-setter.service';
 import {Flashing} from '../models/flashing';
 import {SingleConfiguration} from '../models/single-configuration';
-import {ConfigurationModel} from '../models/configuration-model';
 import {HttpClient} from '@angular/common/http';
 import {ErpNameTranslatorService} from './erp-name-translator.service';
 import cryptoRandomString from 'crypto-random-string';
@@ -20,7 +19,6 @@ export class DatabaseService {
               private erpName: ErpNameTranslatorService,
               private http: HttpClient) {
     this.accessories = this.getAllAccessoriesToShopList();
-    this.temporarySingleConfiguration = this.getSingleConfiguration();
   }
 
   // windows
@@ -189,121 +187,121 @@ export class DatabaseService {
   }
 
   // TODO usunąć tymczasową konfigurację do testów aplikacji - przetestować zapisywanie po zalogowaniu
-  populateDataToFirebase() {
-    const temporaryConfigurationsForWork: ConfigurationModel[] = [{
-      user: '178.73.35.155',
-      userConfigurations: [{
-        id: 1,
-        name: 'Pierwsza testowa',
-        windows: [{
-          id: 1,
-          quantity: 1,
-          window: this.getAllRoofWindowsToShopList()[0],
-          windowFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
-          windowFormData: null
-        },
-          {
-            id: 2,
-            quantity: 1,
-            window: this.getAllRoofWindowsToShopList()[1],
-            windowFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
-            windowFormData: null
-          },
-          {
-            id: 3,
-            quantity: 1,
-            window: this.getAllRoofWindowsToShopList()[2],
-            windowFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
-            windowFormData: null
-          }],
-        flashings: [{
-          id: 1,
-          quantity: 1,
-          flashing: this.temporaryFlashing,
-          flashingFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
-          flashingFormData: null
-        },
-          {
-            id: 2,
-            quantity: 1,
-            flashing: this.temporaryFlashing,
-            flashingFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
-            flashingFormData: null
-          }
-        ],
-        accessories: [{
-          id: 1,
-          quantity: 1,
-          accessory: this.accessories[0],
-          accessoryFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
-          accessoryFormData: null
-        },
-          {
-            id: 2,
-            quantity: 2,
-            accessory: this.accessories[2],
-            accessoryFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
-            accessoryFormData: null
-          }]
-      },
-        {
-          id: 3,
-          name: 'Trzecia bo druga usunięta',
-          windows: [{
-            id: 1,
-            quantity: 1,
-            window: this.getAllRoofWindowsToShopList()[1],
-            windowFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
-            windowFormData: null
-          }],
-          flashings: null,
-          accessories: null
-        }]
-    },
-      {
-        user: '192.168.0.2',
-        userConfigurations: [{
-          id: 1,
-          name: 'Pierwsza testowa',
-          windows: [{
-            id: 1,
-            quantity: 1,
-            window: this.getAllRoofWindowsToShopList()[0],
-            windowFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
-            windowFormData: null
-          },
-            {
-              id: 2,
-              quantity: 1,
-              window: this.getAllRoofWindowsToShopList()[0],
-              windowFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
-              windowFormData: null
-            }],
-          flashings: [{
-            id: 1,
-            quantity: 1,
-            flashing: this.temporaryFlashing,
-            flashingFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
-            flashingFormData: null
-          },
-            {
-              id: 2,
-              quantity: 1,
-              flashing: this.temporaryFlashing,
-              flashingFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
-              flashingFormData: null
-            }
-          ],
-          accessories: [
-            {
-              id: 1,
-              quantity: 2,
-              accessory: this.accessories[2],
-              accessoryFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
-              accessoryFormData: null
-            }]
-        }]
-      }];
-    return this.http.put('https://window-configurator.firebaseio.com/allConfigurations.json', temporaryConfigurationsForWork).subscribe();
-  }
+  // populateDataToFirebase() {
+  //   const temporaryConfigurationsForWork: ConfigurationModel[] = [{
+  //     user: '178.73.35.155',
+  //     userConfigurations: [{
+  //       id: 1,
+  //       name: 'Pierwsza testowa',
+  //       windows: [{
+  //         id: 1,
+  //         quantity: 1,
+  //         window: this.getAllRoofWindowsToShopList()[0],
+  //         windowFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
+  //         windowFormData: null
+  //       },
+  //         {
+  //           id: 2,
+  //           quantity: 1,
+  //           window: this.getAllRoofWindowsToShopList()[1],
+  //           windowFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
+  //           windowFormData: null
+  //         },
+  //         {
+  //           id: 3,
+  //           quantity: 1,
+  //           window: this.getAllRoofWindowsToShopList()[2],
+  //           windowFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
+  //           windowFormData: null
+  //         }],
+  //       flashings: [{
+  //         id: 1,
+  //         quantity: 1,
+  //         flashing: this.temporaryFlashing,
+  //         flashingFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
+  //         flashingFormData: null
+  //       },
+  //         {
+  //           id: 2,
+  //           quantity: 1,
+  //           flashing: this.temporaryFlashing,
+  //           flashingFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
+  //           flashingFormData: null
+  //         }
+  //       ],
+  //       accessories: [{
+  //         id: 1,
+  //         quantity: 1,
+  //         accessory: this.accessories[0],
+  //         accessoryFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
+  //         accessoryFormData: null
+  //       },
+  //         {
+  //           id: 2,
+  //           quantity: 2,
+  //           accessory: this.accessories[2],
+  //           accessoryFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
+  //           accessoryFormData: null
+  //         }]
+  //     },
+  //       {
+  //         id: 3,
+  //         name: 'Trzecia bo druga usunięta',
+  //         windows: [{
+  //           id: 1,
+  //           quantity: 1,
+  //           window: this.getAllRoofWindowsToShopList()[1],
+  //           windowFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
+  //           windowFormData: null
+  //         }],
+  //         flashings: null,
+  //         accessories: null
+  //       }]
+  //   },
+  //     {
+  //       user: '192.168.0.2',
+  //       userConfigurations: [{
+  //         id: 1,
+  //         name: 'Pierwsza testowa',
+  //         windows: [{
+  //           id: 1,
+  //           quantity: 1,
+  //           window: this.getAllRoofWindowsToShopList()[0],
+  //           windowFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
+  //           windowFormData: null
+  //         },
+  //           {
+  //             id: 2,
+  //             quantity: 1,
+  //             window: this.getAllRoofWindowsToShopList()[0],
+  //             windowFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
+  //             windowFormData: null
+  //           }],
+  //         flashings: [{
+  //           id: 1,
+  //           quantity: 1,
+  //           flashing: this.temporaryFlashing,
+  //           flashingFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
+  //           flashingFormData: null
+  //         },
+  //           {
+  //             id: 2,
+  //             quantity: 1,
+  //             flashing: this.temporaryFlashing,
+  //             flashingFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
+  //             flashingFormData: null
+  //           }
+  //         ],
+  //         accessories: [
+  //           {
+  //             id: 1,
+  //             quantity: 2,
+  //             accessory: this.accessories[2],
+  //             accessoryFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
+  //             accessoryFormData: null
+  //           }]
+  //       }]
+  //     }];
+  //   return this.http.put('https://window-configurator.firebaseio.com/allConfigurations.json', temporaryConfigurationsForWork).subscribe();
+  // }
 }
