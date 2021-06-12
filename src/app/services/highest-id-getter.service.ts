@@ -9,8 +9,8 @@ import {AuthService} from './auth.service';
 })
 export class HighestIdGetterService {
   highestId: number;
-  configurationGlobalId$ = new BehaviorSubject(1);
-  configurationUserId$ = new BehaviorSubject(1);
+  private configurationGlobalId$ = new BehaviorSubject(1);
+  private configurationUserId$ = new BehaviorSubject(1);
 
   constructor(private firestore: AngularFirestore,
               private auth: AuthService) {
