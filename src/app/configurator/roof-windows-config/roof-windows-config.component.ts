@@ -644,7 +644,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     });
   }
 
-  // TODO przeanalizować i poprawic całą tą metodę - wczytują się złe configId i nie odnajduje configuracji w crudzie
   chooseConfigId(configForm: any) {
     let chosenId;
     if (configForm.value.configFormId === undefined) {
@@ -661,6 +660,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       this.crud.createWindowConfigurationIntoConfigurationById(String('configuration-' + chosenId),
         this.tempConfiguredWindow, this.formName, this.form.value)
         .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+      this.router.navigate(['/' + this.configurationSummary]);
     }
     this.chooseConfigNamePopup = false;
     // TODO zapisz dane do Firebase przed emisją żeby nie utracić konfiguracji
