@@ -2,9 +2,9 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CrudFirebaseService} from '../../services/crud-firebase-service';
 import {DatabaseService} from '../../services/database.service';
 import {AuthService} from '../../services/auth.service';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {SingleConfiguration} from '../../models/single-configuration';
-import {map} from 'rxjs/operators';
+import {map, takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-configuration-summary',
@@ -19,30 +19,69 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
   currentUser;
   uneditable = true;
   loading;
+  tempSingleConfig: SingleConfiguration;
+  isDestroyed$ = new Subject();
 
-  constructor(private configDist: CrudFirebaseService,
+  constructor(private crud: CrudFirebaseService,
               private db: DatabaseService,
               private authService: AuthService) {
     this.loading = true;
-    this.authService.returnUser().subscribe(user => {
-      this.currentUser = user;
-    });
   }
 
-  ngOnInit(): void {
-    // this.db.populateDataToFirebase();
-    // this.configDist.createConfigurationForUser('178.73.35.150', this.db.temporarySingleConfiguration);
+  ngOnInit() {
+    // this.crud.deleteWindowConfigurationFromConfigurationById('configuration-1', 2).subscribe(console.log);
+    // this.db.fetchRoofWindows().subscribe(windows => {
+    //   this.crud.updateWindowConfigurationIntoConfigurationById('configuration-1', 1, windows[3]).subscribe(console.log);
+    // });
     this.configurationsSubject = new BehaviorSubject<SingleConfiguration[]>([]);
     this.configurations$ = this.configurationsSubject.asObservable();
-    this.authService.returnUser().subscribe(currentUser => {
-      this.configDist.readAllUserConfigurations(currentUser).pipe(map((data: Array<any>) => {
-        return data.filter(x => x !== null);
-      })).subscribe(userConfigurations => {
-        this.configurations = userConfigurations;
+    this.authService.returnUser().pipe(takeUntil(this.isDestroyed$)).subscribe(currentUser => {
+      this.crud.readAllUserConfigurations(currentUser).pipe(
+        map((data: Array<any>) => {
+          return data.filter(x => x !== null);
+        }),
+        map(configurations => {
+          return configurations.filter(config => config.active === true);
+        }),
+        takeUntil(this.isDestroyed$)).subscribe(activeConfigurations => {
+        this.configurations = activeConfigurations;
         this.configurationsSubject.next(this.configurations);
         this.loading = currentUser === '';
       });
     });
+    // TODO do wywalenia - kod testowy
+    // this.db.fetchRoofWindows().pipe(takeUntil(this.isDestroyed$)).subscribe(windows => {
+    //   this.tempSingleConfig = {
+    //     globalId: 'configuration-1',
+    //     created: new Date(),
+    //     lastUpdate: new Date(),
+    //     user: '178.73.35.150',
+    //     userId: 1,
+    //     name: 'Pierwsza testowa w MongoDB',
+    //     active: true,
+    //     products: {
+    //       windows: [{
+    //         id: 1,
+    //         window: Object.assign({}, windows[0]),
+    //         quantity: 1,
+    //         windowFormName: 'asdfgahafhga',
+    //         windowFormData: null
+    //       },
+    //         {
+    //           id: 2,
+    //           window: Object.assign({}, windows[1]),
+    //           quantity: 2,
+    //           windowFormName: 'aaasdfsdfsf',
+    //           windowFormData: null
+    //         }],
+    //       flashings: null,
+    //       accessories: null,
+    //       verticals: null,
+    //       flats: null
+    //     }
+    //   };
+    //   // this.crud.createConfigurationForUser('178.73.35.150', this.tempSingleConfig).subscribe(() => console.log('Success'));
+    // });
   }
 
   builtNameForTranslation(prefix: string, option: string) {
@@ -50,25 +89,26 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // this.configDist.configurationDataChange$.unsubscribe();
+    this.isDestroyed$.next();
   }
 
   resize(delta: number, quantity: number, configurationId, product, productId) {
     quantity = quantity + delta;
-    this.authService.returnUser().subscribe(user => {
-      if (product.window !== undefined) {
-        this.configDist.updateWindowQuantity(user, configurationId, productId, quantity);
-      }
-      if (product.flashing !== undefined) {
-        this.configDist.updateFlashingQuantity(user, configurationId, productId, quantity);
-      }
-      if (product.accessory !== undefined) {
-        this.configDist.updateAccessoryQuantity(user, configurationId, productId, quantity);
-      }
-    });
+    if (product.window !== undefined) {
+      product.quantity = product.quantity + delta;
+      this.crud.updateWindowQuantity(configurationId, productId, quantity).subscribe(console.log);
+    }
+    if (product.flashing !== undefined) {
+      product.quantity = product.quantity + delta;
+      this.crud.updateFlashingQuantity(configurationId, productId, quantity).subscribe(console.log);
+    }
+    if (product.accessory !== undefined) {
+      product.quantity = product.quantity + delta;
+      this.crud.updateAccessoryQuantity(configurationId, productId, quantity).subscribe(console.log);
+    }
   }
 
-  decreaseQuantity(configurationId: number, product,
+  decreaseQuantity(configurationId: string, product,
                    productId: number, quantity: number) {
     if (quantity === 0) {
       quantity = 0;
@@ -76,7 +116,7 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
     this.resize(-1, quantity, configurationId, product, productId);
   }
 
-  increaseQuantity(configurationId: number, product,
+  increaseQuantity(configurationId: string, product,
                    productId: number, quantity: number) {
     this.resize(1, quantity, configurationId, product, productId);
   }
@@ -89,10 +129,8 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
     }
   }
 
-  configurationNameSave(configId: number, newConfigName: string) {
-    this.authService.returnUser().subscribe(user => {
-      this.configDist.updateNameConfigurationById(user, configId, newConfigName);
-    });
+  configurationNameSave(configId: string, newConfigName: string) {
+    this.crud.updateNameConfigurationById(configId, newConfigName).subscribe(() => console.log('Nazwa została zmieniona'));
     if (this.uneditable === null) {
       this.uneditable = true;
     } else {
@@ -100,24 +138,20 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
     }
   }
 
-  removeProductConfiguration(id: number, productId: number, product) {
-    this.authService.returnUser().subscribe(user => {
-      if (product.window !== undefined) {
-        this.configDist.deleteWindowConfigurationFromConfigurationById(user, id, productId);
-      }
-      if (product.flashing !== undefined) {
-        this.configDist.deleteFlashingConfigurationFromConfigurationById(user, id, productId);
-      }
-      if (product.accessory !== undefined) {
-        this.configDist.deleteAccessoryConfigurationFromConfigurationById(user, id, productId);
-      }
-    });
+  removeProductConfiguration(id: string, productId: number, product) {
+    if (product.window !== undefined) {
+      this.crud.deleteWindowConfigurationFromConfigurationById(id, productId);
+    }
+    if (product.flashing !== undefined) {
+      this.crud.deleteFlashingConfigurationFromConfigurationById(id, productId);
+    }
+    if (product.accessory !== undefined) {
+      this.crud.deleteAccessoryConfigurationFromConfigurationById(id, productId);
+    }
   }
 
-  removeHoleConfiguration(id: number) {
-    this.authService.returnUser().subscribe(user => {
-      this.configDist.deleteConfigurationById(user, id);
-    });
+  removeHoleConfiguration(id: string) {
+    this.crud.deleteConfigurationById(id);
   }
 
   // TODO sprawdzić co dokładnie wrzuca się do koszyka i odpowiednio to obsługiwać

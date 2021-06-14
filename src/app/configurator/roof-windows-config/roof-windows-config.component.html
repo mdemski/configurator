@@ -498,8 +498,8 @@
               <form #configForm="ngForm" class="choose-config-popup__content__form">
                 <div class="choose-config-popup__content__form--select" tabindex="1">
                   <ng-container *ngFor="let singleConfiguration of userConfigs; let i = index">
-                    <input value="{{singleConfiguration.id}}" [(ngModel)]="configFormId" name="configFormId" class="choose-config-popup__content__form--select--input" type="radio" id="{{i}}"/>
-                    <label for="{{i}}" class="choose-config-popup__content__form--select--label">{{singleConfiguration.id}} - {{singleConfiguration.name}}</label>
+                    <input value="{{singleConfiguration.userId}}" [(ngModel)]="configFormId" name="configFormId" class="choose-config-popup__content__form--select--input" type="radio" id="{{i}}"/>
+                    <label for="{{i}}" class="choose-config-popup__content__form--select--label">{{singleConfiguration.userId}} - {{singleConfiguration.name}}</label>
                   </ng-container>
                 </div>
                 <a (click)="chooseConfigId(configForm)"

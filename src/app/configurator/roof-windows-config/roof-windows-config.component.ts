@@ -15,6 +15,8 @@ import {LoadWindowConfigurationService} from '../../services/load-window-configu
 import {HighestIdGetterService} from '../../services/highest-id-getter.service';
 import {DatabaseService} from '../../services/database.service';
 import cryptoRandomString from 'crypto-random-string';
+import {WindowConfig} from '../../models/window-config';
+import {SingleConfiguration} from '../../models/single-configuration';
 
 @Component({
   selector: 'app-roof-windows-config',
@@ -44,7 +46,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   currentUser: string;
   form: FormGroup;
   formName: string;
-  configId: number;
+  configId: string;
   windowId: number;
   windowCode: string;
   configFormId: number;
@@ -100,8 +102,8 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   glazingName$ = new BehaviorSubject('Okno:E01');
   isDestroyed$ = new Subject();
   loading;
-  highestId;
-  temporaryConfig;
+  highestUserId;
+  temporaryConfig: SingleConfiguration;
 
   static setDimensions(dimensions) {
     return dimensions;
@@ -117,17 +119,16 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
 
   // 'width': new FormControl(78, [this.validateWidth.bind(this), Validators.required]), własnym walidator
   ngOnInit(): void {
-    this.highestId = 1;
+    this.highestUserId = 1;
     this.tempConfiguredWindow = new RoofWindowSkylight(
       '1O-ISO-V-E02-KL00-A7022P-079119-OKPO01', 'Okno dachowe tymczasowe', 'ISOV E2 79x119', 'I-Okno', 'NPL-Okno', 'Nowy', 'Okno:ISOV', 'Okno:E02', 'dwuszybowy', 79,
       119, 'OknoDachowe', 'obrotowe', 'Okno:IS', 'OknoDachowe:ISO', 'Okno:Obrotowe', 'NawiewnikNeoVent', 'DrewnoSosna', 'Drewno:Bezbarwne', 'OknoDachowe:IS', 'Aluminium',
       'RAL9999', 'Aluminium:Półmat', 'Okno:ExtraSecure', 'Okno:RAL7048', false, 2, ['78x118'], ['zewnetrznaHartowana', false, false, false, false, false, false, false, false], ['https://www.okpol.pl/wp-content/uploads/2017/02/1_ISO.jpg'],
       ['Okno:Zasuwka', false, false], 1332.80, 1, 1.2, 5, 'Okno:RAL7048', 'Okno:RAL7048', null, 2, 'PL');
-    this.temporaryConfig = {};
-    this.authService.returnUser().subscribe(user => {
+    this.authService.returnUser().pipe(takeUntil(this.isDestroyed$)).subscribe(user => {
       this.currentUser = user;
     });
-    this.configData.fetchAllData().subscribe(() => {
+    this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(() => {
       this.windowModelsToCalculatePrice = this.configData.models;
       this.availableOptions = this.configData.availableOptions;
       this.exclusions = this.configData.exclusions;
@@ -151,7 +152,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.activeRouter.params.pipe(takeUntil(this.isDestroyed$)).subscribe(param => {
       this.formName = param.formName;
       this.windowCode = param.productCode;
-      this.configId = param.configId === undefined ? -1 : param.configId;
+      this.configId = param.configId === undefined ? '-1' : param.configId;
       if (this.formName === 'no-name' || this.formName === undefined) {
         this.formName = cryptoRandomString({length: 12, type: 'alphanumeric'});
         this.authService.returnUser().pipe(takeUntil(this.isDestroyed$)).subscribe(user => {
@@ -216,30 +217,35 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
             });
         });
       } else {
-        this.loadConfig.getWindowConfigurationByFormName(this.formName).pipe(takeUntil(this.isDestroyed$)).subscribe((windowConfiguration) => {
+        this.loadConfig.getWindowConfigurationByFormName(this.formName).pipe(takeUntil(this.isDestroyed$)).subscribe((windowConfiguration: WindowConfig) => {
           this.form = this.fb.group({
             material: new FormControl(windowConfiguration.windowFormData.material, [], [this.validateMaterials.bind(this)]),
             openingType: new FormControl(windowConfiguration.windowFormData.openingType, [], [this.validateOpenings.bind(this)]),
-            control: new FormControl(RoofWindowsConfigComponent.getControlType(windowConfiguration.otwieranie)),
+            control: new FormControl(RoofWindowsConfigComponent.getControlType(windowConfiguration.windowFormData.otwieranie)),
             glazing: new FormControl(windowConfiguration.windowFormData.glazing, [], [this.validateGlazing.bind(this)]),
             width: new FormControl(windowConfiguration.windowFormData.width),
             height: new FormControl(windowConfiguration.windowFormData.height),
             coats: this.fb.array(windowConfiguration.windowFormData.coats),
             innerColor: new FormControl(windowConfiguration.windowFormData.innerColor, [], [this.validateInnerColor.bind(this)]),
             outer: new FormGroup({
-              outerMaterial: new FormControl(windowConfiguration.windowFormData.outer === undefined ? null : windowConfiguration.windowFormData.outer.outerMaterial),
-              outerColor: new FormControl(windowConfiguration.windowFormData.outer === undefined ? null : windowConfiguration.windowFormData.outer.outerColor),
-              outerColorFinish: new FormControl(windowConfiguration.windowFormData.outer === undefined ? null : windowConfiguration.windowFormData.outer.outerColorFinish)
+              outerMaterial: new FormControl(windowConfiguration.windowFormData.outer
+              === undefined ? null : windowConfiguration.windowFormData.outer.outerMaterial),
+              outerColor: new FormControl(windowConfiguration.windowFormData.outer
+              === undefined ? null : windowConfiguration.windowFormData.outer.outerColor),
+              outerColorFinish: new FormControl(windowConfiguration.windowFormData.outer
+              === undefined ? null : windowConfiguration.windowFormData.outer.outerColorFinish)
             }, [], [this.validateOuterMaterial.bind(this)]),
             ventilation: new FormControl(windowConfiguration.windowFormData.ventilation, [], [this.validateVentilation.bind(this)]),
             closure: new FormGroup({
-              handle: new FormControl(windowConfiguration.windowFormData.closure === undefined ? null : windowConfiguration.windowFormData.closure.handle, [], [this.validateHandle.bind(this)]),
-              handleColor: new FormControl(windowConfiguration.windowFormData.closure === undefined ? null : windowConfiguration.windowFormData.closure.handleColor)
+              handle: new FormControl(windowConfiguration.windowFormData.closure
+              === undefined ? null : windowConfiguration.windowFormData.closure.handle, [], [this.validateHandle.bind(this)]),
+              handleColor: new FormControl(windowConfiguration.windowFormData.closure
+              === undefined ? null : windowConfiguration.windowFormData.closure.handleColor)
             }),
             extras: this.fb.array(windowConfiguration.windowFormData.extras)
           });
           this.configuredWindow = windowConfiguration.window;
-          this.windowId = windowConfiguration.window.id;
+          this.windowId = windowConfiguration.id;
           this.setConfiguredValues(this.form.value);
           this.formChanges();
           this.loading = false;
@@ -311,7 +317,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       this.popupConfig = true;
     }
     // this.configuredWindow.grupaAsortymentowa = this.erpName.setWindowAssortmentGroup(form.openingType);
-    this.glazingName$.subscribe(pakietSzybowy => {
+    this.glazingName$.pipe(takeUntil(this.isDestroyed$)).subscribe(pakietSzybowy => {
       this.configuredWindow.pakietSzybowy = pakietSzybowy;
     });
     this.configuredWindow.glazingToCalculation = form.glazing;
@@ -440,7 +446,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       let errors = {
         'empty material': true
       };
-      this.configData.fetchAllData().subscribe(() => {
+      this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(() => {
         options = this.configData.materials;
         for (const option of options) {
           if (control.value === option) {
@@ -459,7 +465,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       let errors = {
         'empty openingType': true
       };
-      this.configData.fetchAllData().subscribe(() => {
+      this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(() => {
         options = this.configData.openingTypes;
         for (const option of options) {
           if (control.value === option) {
@@ -478,7 +484,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       let errors = {
         'empty glazingType': true
       };
-      this.configData.fetchAllData().subscribe(() => {
+      this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(() => {
         options = this.configData.glazingTypes;
         for (const option of options) {
           if (control.value === option) {
@@ -497,7 +503,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       let errors = {
         'empty innerColor': true
       };
-      this.configData.fetchAllData().subscribe(() => {
+      this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(() => {
         options = this.configData.innerColors;
         for (const option of options) {
           if (control.value === option) {
@@ -518,7 +524,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       let errors = {
         'empty outerMaterial': true
       };
-      this.configData.fetchAllData().subscribe(() => {
+      this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(() => {
         materialOptions = this.configData.outerMaterials;
         // colorOptions = this.configData.outerColor;
         finishOptions = this.configData.outerColorFinishes;
@@ -550,7 +556,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       let errors = {
         'empty ventilation': true
       };
-      this.configData.fetchAllData().subscribe(() => {
+      this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(() => {
         options = this.configData.ventialtions;
         for (const option of options) {
           if (control.value === option) {
@@ -569,7 +575,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       let errors = {
         'empty handle': true
       };
-      this.configData.fetchAllData().subscribe(() => {
+      this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(() => {
         options = this.configData.handles;
         for (const option of options) {
           if (control.value === option) {
@@ -584,65 +590,82 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this.temporaryConfig = {
-      id: this.highestId,
+      products: {
+        windows: [{
+          id: 1,
+          quantity: 1,
+          // TODO zamienić na configuredWindow
+          window: this.tempConfiguredWindow,
+          windowFormName: this.formName,
+          windowFormData: this.form.value,
+        }],
+        flashings: null,
+        accessories: null,
+        verticals: null,
+        flats: null
+      },
+      globalId: this.hd.getHighestGlobalIdFormMongoDB(),
+      created: new Date(),
+      lastUpdate: new Date(),
+      user: this.currentUser,
+      userId: 1,
       name: '<New configuration>',
-      windows: [{
-        id: 1,
-        quantity: 1,
-        // TODO zamienić na configuredWindow
-        window: this.tempConfiguredWindow,
-        windowFormName: this.formName,
-        windowFormData: this.form.value,
-      }],
-      flashings: null,
-      accessories: null
+      active: true
     };
     this.loading = true;
-    this.authService.returnUser().subscribe(user => {
-      if (this.configId === -1 || isNaN(this.configId)) {
-        this.crud.readAllUserConfigurations(user).pipe(map((data: Array<any>) => {
-          return data.filter(x => x !== null);
-        })).subscribe(userConfigurations => {
+    this.authService.returnUser().pipe(takeUntil(this.isDestroyed$)).subscribe(user => {
+      if (this.configId === '-1' || this.configId === '') {
+        this.crud.readAllUserConfigurations(user).pipe(
+          takeUntil(this.isDestroyed$),
+          map((data: Array<any>) => {
+            return data.filter(x => x !== null);
+          })).subscribe(userConfigurations => {
           this.userConfigs = userConfigurations;
-          this.highestId = this.hd.getHighestId(0, userConfigurations);
-          this.temporaryConfig.id = this.highestId;
+          this.highestUserId = this.hd.getHighestIdForUser();
+          this.temporaryConfig.userId = this.highestUserId;
           if (this.userConfigs.length !== 0) {
             this.userConfigs.push(this.temporaryConfig);
             this.loading = false;
             this.chooseConfigNamePopup = true;
           } else {
-            this.crud.createConfigurationForUser(user, this.temporaryConfig);
+            this.crud.createConfigurationForUser(user, this.temporaryConfig).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
             this.router.navigate(['/' + this.configurationSummary]);
             this.loading = false;
           }
         });
       } else {
-        this.crud.updateWindowConfigurationIntoConfigurationById(user, this.configId, this.windowId, this.configuredWindow);
-        this.crud.updateWindowConfigurationByFormName(user, this.configId, this.formName, this.form.value);
+        this.crud.updateWindowConfigurationIntoConfigurationById(this.configId, this.windowId, this.configuredWindow)
+          .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+        this.crud.updateWindowFormDataByFormName(this.configId, this.formName, this.form.value)
+          .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
         this.router.navigate(['/' + this.configurationSummary]);
         this.loading = false;
       }
     });
   }
 
+  // TODO przeanalizować i poprawic całą tą metodę - wczytują się złe configId i nie odnajduje configuracji w crudzie
   chooseConfigId(configForm: any) {
     let chosenId;
     if (configForm.value.configFormId === undefined) {
-      chosenId = this.highestId;
+      chosenId = this.highestUserId;
     } else {
       chosenId = parseInt(configForm.value.configFormId, 10);
     }
-    if (chosenId === this.highestId) {
-      this.crud.createConfigurationForUser(this.currentUser, this.temporaryConfig);
+    if (chosenId === this.highestUserId) {
+      this.crud.createConfigurationForUser(this.currentUser, this.temporaryConfig)
+        .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
       this.router.navigate(['/' + this.configurationSummary]);
     } else {
       // TODO zamienić na configuredWindow
-      this.crud.createWindowConfigurationIntoConfigurationById(this.currentUser, chosenId, this.tempConfiguredWindow, this.formName, this.form.value);
+      this.crud.createWindowConfigurationIntoConfigurationById(String('configuration-' + chosenId),
+        this.tempConfiguredWindow, this.formName, this.form.value)
+        .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
     }
     this.chooseConfigNamePopup = false;
     // TODO zapisz dane do Firebase przed emisją żeby nie utracić konfiguracji
     // TODO przygotować model konfiguracji w której będą przechowywane: okno, kołnierz, roleta - a później publikować tablice
-    this.router.navigate(['/' + this.configurationSummary]);
+    // this.router.navigate(['/' + this.configurationSummary]);
   }
 
   // CALCULATIONS
