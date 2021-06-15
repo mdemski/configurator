@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {CsvFileReaderService} from './csv-file-reader.service';
 import {map} from 'rxjs/operators';
 import {GlazingType} from '../models/glazing-type';
+import {ExclusionsModel} from '../models/exclusions-model';
 
 @Injectable({
   providedIn: 'root'
@@ -9,10 +10,10 @@ import {GlazingType} from '../models/glazing-type';
 export class ConfigurationDataService {
   private _modelsFilePath = '../../../assets/csv/roof-windows.csv';
   private _glazingFilePath = '../../../assets/csv/translator-pakietow-szybowych.csv';
+  private _roofWindowsExclusionsFilePath = '../../../assets/csv/roof-windows-exclusions.csv';
   private _availableOptions;
   private _models;
   private _exclusions;
-  private _sets;
   private _materials;
   private _openingTypes;
   private _dimensions;
@@ -46,7 +47,7 @@ export class ConfigurationDataService {
         const columns = lines[0].split(';');
         // Models
         const models = [];
-        for (let i = 5; i < columns.length; i++) {
+        for (let i = 3; i < columns.length; i++) {
           const model = {
             windowModel: lines[0].split(';')[i]
           };
@@ -58,8 +59,6 @@ export class ConfigurationDataService {
         this.models = models;
         // Fill arrays with options
         const availableOptions = [];
-        const exclusions = [];
-        const sets = [];
         const materials = [];
         const openingTypes = [];
         const innerColors = [];
@@ -75,18 +74,6 @@ export class ConfigurationDataService {
         const technicalInformation = [];
         for (let i = 1; i < 2; i++) {
           for (let j = 1; j < lines.length - 1; j++) {
-            const exclusion = {};
-            const set = {};
-            // tslint:disable-next-line:radix
-            exclusion[lines[j].split(';')[0]] = Number.parseInt(lines[j].split(';')[3]);
-            exclusions.push(exclusion);
-            if (lines[j].split(';')[4] === 'null') {
-              set[lines[j].split(';')[0]] = 0;
-            } else {
-              // tslint:disable-next-line:radix
-              set[lines[j].split(';')[0]] = Number.parseInt(lines[j].split(';')[4]);
-            }
-            sets.push(set);
             availableOptions.push(lines[j].split(';')[0]);
             // availableOptions[lines[j].split(';')[0]] = lines[j].split(';')[1];
             if (lines[j].split(';')[1] === 'material') {
@@ -131,8 +118,6 @@ export class ConfigurationDataService {
           }
         }
         this.availableOptions = availableOptions;
-        this.exclusions = exclusions;
-        this.sets = sets;
         this.materials = materials;
         this.openingTypes = openingTypes;
         this.innerColors = innerColors;
@@ -144,6 +129,7 @@ export class ConfigurationDataService {
         this.handleColors = handleColors;
         this.ventialtions = ventilations;
         this.technicalInformation = technicalInformation;
+        // TODO uzupełnić listę o dostępne kolory
         // this.outerColor = require('../../assets/json/RalCodes.json') as [];
         this.outerColor = ['Aluminium:RAL7022'];
         this.outerColorFinishes = outerColorFinishes;
@@ -190,6 +176,111 @@ export class ConfigurationDataService {
       }));
   }
 
+  fetchAllExclusions() {
+    return this.csv.getCSVData(this._roofWindowsExclusionsFilePath).pipe(
+      map(data => {
+        const arrayWithGlazingModels: GlazingType[] = [];
+        const lines = [];
+        const linesArray = data.split('\n');
+        linesArray.forEach((e: any) => {
+          // TODO jak usunąć puste linie???
+          const row = e.replace(/[\s]+[;]+|[;]+[\s]+/g, ';').trim();
+          lines.push(row);
+        });
+        lines.slice(lines.length - 1, 1);
+        // tslint:disable-next-line:max-line-length
+        const woodenExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const PVCExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const centrePivotExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const topHungExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const fipExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const lShapedFipExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const lShapedUExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const lShapedPVCFixExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const lShapedPVCUExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const lShapedPVCURLExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const lShapedPVCURPExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const electricSwitchExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const electricPilotExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const topPivotExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const colorlessExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const whitePaintExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const whitePVCExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const aluminiumExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const copperExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const titanExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const semiMatExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const matExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const glossExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const naturalExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const ralExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const naturalColorExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const doubleGlazingExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const tripleGlazingExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const kryptonGlazingExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const externalToughenedExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const internalToughenedExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const sunGuardExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const bioCleanExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const matGlassExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const noiseReductionExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const laminatedP1Exclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const laminatedP2Exclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const laminatedP4Exclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const extraSecureExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const unoExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const solarEngineExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const closure7048Exclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const closure9016Exclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const neoVentExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const neoCoverExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+      }));
+  }
+
   get availableOptions() {
     return this._availableOptions;
   }
@@ -212,14 +303,6 @@ export class ConfigurationDataService {
 
   set exclusions(value) {
     this._exclusions = value;
-  }
-
-  get sets() {
-    return this._sets;
-  }
-
-  set sets(value) {
-    this._sets = value;
   }
 
   get modelsFilePath(): string {
