@@ -10,21 +10,21 @@ export class ExclusionsModel {
   private _KolankoPVCUchylne: boolean;
   private _KolankoPVCUchylnoRozwierneLewe: boolean;
   private _KolankoPVCUchylnoRozwiernePrawe: boolean;
-  private _OknoElektrycznePrzełącznik: boolean;
+  private _OknoElektrycznePrzelacznik: boolean;
   private _OknoElektrycznePilot: boolean;
   private _OknoWysokoosiowe: boolean;
   private _DrewnoBezbarwne: boolean;
-  private _DrewnoBiały9003: boolean;
-  private _PVCBiały9016: boolean;
+  private _DrewnoBialy9003: boolean;
+  private _PVCBialy9016: boolean;
   private _Aluminium: boolean;
-  private _Miedź: boolean;
+  private _Miedz: boolean;
   private _TytanCynk: boolean;
-  private _AluminiumPółmat: boolean;
+  private _AluminiumPolmat: boolean;
   private _AluminiumMat: boolean;
-  private _AluminiumPołysk: boolean;
-  private _MiedźITytanCynkNatur: boolean;
+  private _AluminiumPolysk: boolean;
+  private _MiedzITytanCynkNatur: boolean;
   private _AluminiumRAL7022: boolean;
-  private _MiedźNatur: boolean;
+  private _MiedzNatur: boolean;
   private _TytanCynkNatur: boolean;
   private _dwuszybowy: boolean;
   private _trzyszybowy: boolean;
@@ -40,7 +40,7 @@ export class ExclusionsModel {
   private _laminowanaP4: boolean;
   private _OknoExtraSecure: boolean;
   private _OknoUno: boolean;
-  private _OknoSiłownikSolarny: boolean;
+  private _OknoSilownikSolarny: boolean;
   private _OknoRAL7048: number;
   private _OknoRAL9016: string;
   private _NawiewnikNeoVent: string;
@@ -49,7 +49,7 @@ export class ExclusionsModel {
   private _OknoZasuwka: string;
 
   // tslint:disable-next-line:max-line-length
-  constructor(DrewnoSosna: boolean, PVC: boolean, OknoObrotowe: boolean, OknoUchylnoPrzesuwne: boolean, OknoNieotwieraneFIP: boolean, KolankoDrewnoNieotwieraneFIP: boolean, KolankoDrewnoUchylne: boolean, KolankoPVCNieotwieraneFIX: boolean, KolankoPVCUchylne: boolean, KolankoPVCUchylnoRozwierneLewe: boolean, KolankoPVCUchylnoRozwiernePrawe: boolean, OknoElektrycznePrzełącznik: boolean, OknoElektrycznePilot: boolean, OknoWysokoosiowe: boolean, DrewnoBezbarwne: boolean, DrewnoBiały9003: boolean, PVCBiały9016: boolean, Aluminium: boolean, Miedź: boolean, TytanCynk: boolean, AluminiumPółmat: boolean, AluminiumMat: boolean, AluminiumPołysk: boolean, MiedźITytanCynkNatur: boolean, AluminiumRAL7022: boolean, MiedźNatur: boolean, TytanCynkNatur: boolean, dwuszybowy: boolean, trzyszybowy: boolean, trzyszybowyKrypton: boolean, zewnetrznaHartowana: boolean, wewnetrznaHartowana: boolean, sunGuard: boolean, bioClean: boolean, matowa: boolean, redukcjaHalasu: boolean, laminowanaP1: boolean, laminowanaP2: boolean, laminowanaP4: boolean, OknoExtraSecure: boolean, OknoUno: boolean, OknoSiłownikSolarny: boolean, OknoRAL7048: number, OknoRAL9016: string, NawiewnikNeoVent: string, MaskownicaNeoVent: string, Brak: string, OknoZasuwka: string) {
+  constructor(DrewnoSosna: boolean, PVC: boolean, OknoObrotowe: boolean, OknoUchylnoPrzesuwne: boolean, OknoNieotwieraneFIP: boolean, KolankoDrewnoNieotwieraneFIP: boolean, KolankoDrewnoUchylne: boolean, KolankoPVCNieotwieraneFIX: boolean, KolankoPVCUchylne: boolean, KolankoPVCUchylnoRozwierneLewe: boolean, KolankoPVCUchylnoRozwiernePrawe: boolean, OknoElektrycznePrzelacznik: boolean, OknoElektrycznePilot: boolean, OknoWysokoosiowe: boolean, DrewnoBezbarwne: boolean, DrewnoBialy9003: boolean, PVCBialy9016: boolean, Aluminium: boolean, Miedz: boolean, TytanCynk: boolean, AluminiumPolmat: boolean, AluminiumMat: boolean, AluminiumPolysk: boolean, MiedzITytanCynkNatur: boolean, AluminiumRAL7022: boolean, MiedzNatur: boolean, TytanCynkNatur: boolean, dwuszybowy: boolean, trzyszybowy: boolean, trzyszybowyKrypton: boolean, zewnetrznaHartowana: boolean, wewnetrznaHartowana: boolean, sunGuard: boolean, bioClean: boolean, matowa: boolean, redukcjaHalasu: boolean, laminowanaP1: boolean, laminowanaP2: boolean, laminowanaP4: boolean, OknoExtraSecure: boolean, OknoUno: boolean, OknoSilownikSolarny: boolean, OknoRAL7048: number, OknoRAL9016: string, NawiewnikNeoVent: string, MaskownicaNeoVent: string, Brak: string, OknoZasuwka: string) {
     this._DrewnoSosna = DrewnoSosna;
     this._PVC = PVC;
     this._OknoObrotowe = OknoObrotowe;
@@ -61,21 +61,21 @@ export class ExclusionsModel {
     this._KolankoPVCUchylne = KolankoPVCUchylne;
     this._KolankoPVCUchylnoRozwierneLewe = KolankoPVCUchylnoRozwierneLewe;
     this._KolankoPVCUchylnoRozwiernePrawe = KolankoPVCUchylnoRozwiernePrawe;
-    this._OknoElektrycznePrzełącznik = OknoElektrycznePrzełącznik;
+    this._OknoElektrycznePrzelacznik = OknoElektrycznePrzelacznik;
     this._OknoElektrycznePilot = OknoElektrycznePilot;
     this._OknoWysokoosiowe = OknoWysokoosiowe;
     this._DrewnoBezbarwne = DrewnoBezbarwne;
-    this._DrewnoBiały9003 = DrewnoBiały9003;
-    this._PVCBiały9016 = PVCBiały9016;
+    this._DrewnoBialy9003 = DrewnoBialy9003;
+    this._PVCBialy9016 = PVCBialy9016;
     this._Aluminium = Aluminium;
-    this._Miedź = Miedź;
+    this._Miedz = Miedz;
     this._TytanCynk = TytanCynk;
-    this._AluminiumPółmat = AluminiumPółmat;
+    this._AluminiumPolmat = AluminiumPolmat;
     this._AluminiumMat = AluminiumMat;
-    this._AluminiumPołysk = AluminiumPołysk;
-    this._MiedźITytanCynkNatur = MiedźITytanCynkNatur;
+    this._AluminiumPolysk = AluminiumPolysk;
+    this._MiedzITytanCynkNatur = MiedzITytanCynkNatur;
     this._AluminiumRAL7022 = AluminiumRAL7022;
-    this._MiedźNatur = MiedźNatur;
+    this._MiedzNatur = MiedzNatur;
     this._TytanCynkNatur = TytanCynkNatur;
     this._dwuszybowy = dwuszybowy;
     this._trzyszybowy = trzyszybowy;
@@ -91,7 +91,7 @@ export class ExclusionsModel {
     this._laminowanaP4 = laminowanaP4;
     this._OknoExtraSecure = OknoExtraSecure;
     this._OknoUno = OknoUno;
-    this._OknoSiłownikSolarny = OknoSiłownikSolarny;
+    this._OknoSilownikSolarny = OknoSilownikSolarny;
     this._OknoRAL7048 = OknoRAL7048;
     this._OknoRAL9016 = OknoRAL9016;
     this._NawiewnikNeoVent = NawiewnikNeoVent;
@@ -188,12 +188,12 @@ export class ExclusionsModel {
     this._KolankoPVCUchylnoRozwiernePrawe = value;
   }
 
-  get OknoElektrycznePrzełącznik(): boolean {
-    return this._OknoElektrycznePrzełącznik;
+  get OknoElektrycznePrzelacznik(): boolean {
+    return this._OknoElektrycznePrzelacznik;
   }
 
-  set OknoElektrycznePrzełącznik(value: boolean) {
-    this._OknoElektrycznePrzełącznik = value;
+  set OknoElektrycznePrzelacznik(value: boolean) {
+    this._OknoElektrycznePrzelacznik = value;
   }
 
   get OknoElektrycznePilot(): boolean {
@@ -220,20 +220,20 @@ export class ExclusionsModel {
     this._DrewnoBezbarwne = value;
   }
 
-  get DrewnoBiały9003(): boolean {
-    return this._DrewnoBiały9003;
+  get DrewnoBialy9003(): boolean {
+    return this._DrewnoBialy9003;
   }
 
-  set DrewnoBiały9003(value: boolean) {
-    this._DrewnoBiały9003 = value;
+  set DrewnoBialy9003(value: boolean) {
+    this._DrewnoBialy9003 = value;
   }
 
-  get PVCBiały9016(): boolean {
-    return this._PVCBiały9016;
+  get PVCBialy9016(): boolean {
+    return this._PVCBialy9016;
   }
 
-  set PVCBiały9016(value: boolean) {
-    this._PVCBiały9016 = value;
+  set PVCBialy9016(value: boolean) {
+    this._PVCBialy9016 = value;
   }
 
   get Aluminium(): boolean {
@@ -244,12 +244,12 @@ export class ExclusionsModel {
     this._Aluminium = value;
   }
 
-  get Miedź(): boolean {
-    return this._Miedź;
+  get Miedz(): boolean {
+    return this._Miedz;
   }
 
-  set Miedź(value: boolean) {
-    this._Miedź = value;
+  set Miedz(value: boolean) {
+    this._Miedz = value;
   }
 
   get TytanCynk(): boolean {
@@ -260,12 +260,12 @@ export class ExclusionsModel {
     this._TytanCynk = value;
   }
 
-  get AluminiumPółmat(): boolean {
-    return this._AluminiumPółmat;
+  get AluminiumPolmat(): boolean {
+    return this._AluminiumPolmat;
   }
 
-  set AluminiumPółmat(value: boolean) {
-    this._AluminiumPółmat = value;
+  set AluminiumPolmat(value: boolean) {
+    this._AluminiumPolmat = value;
   }
 
   get AluminiumMat(): boolean {
@@ -276,20 +276,20 @@ export class ExclusionsModel {
     this._AluminiumMat = value;
   }
 
-  get AluminiumPołysk(): boolean {
-    return this._AluminiumPołysk;
+  get AluminiumPolysk(): boolean {
+    return this._AluminiumPolysk;
   }
 
-  set AluminiumPołysk(value: boolean) {
-    this._AluminiumPołysk = value;
+  set AluminiumPolysk(value: boolean) {
+    this._AluminiumPolysk = value;
   }
 
-  get MiedźITytanCynkNatur(): boolean {
-    return this._MiedźITytanCynkNatur;
+  get MiedzITytanCynkNatur(): boolean {
+    return this._MiedzITytanCynkNatur;
   }
 
-  set MiedźITytanCynkNatur(value: boolean) {
-    this._MiedźITytanCynkNatur = value;
+  set MiedzITytanCynkNatur(value: boolean) {
+    this._MiedzITytanCynkNatur = value;
   }
 
   get AluminiumRAL7022(): boolean {
@@ -300,12 +300,12 @@ export class ExclusionsModel {
     this._AluminiumRAL7022 = value;
   }
 
-  get MiedźNatur(): boolean {
-    return this._MiedźNatur;
+  get MiedzNatur(): boolean {
+    return this._MiedzNatur;
   }
 
-  set MiedźNatur(value: boolean) {
-    this._MiedźNatur = value;
+  set MiedzNatur(value: boolean) {
+    this._MiedzNatur = value;
   }
 
   get TytanCynkNatur(): boolean {
@@ -428,12 +428,12 @@ export class ExclusionsModel {
     this._OknoUno = value;
   }
 
-  get OknoSiłownikSolarny(): boolean {
-    return this._OknoSiłownikSolarny;
+  get OknoSilownikSolarny(): boolean {
+    return this._OknoSilownikSolarny;
   }
 
-  set OknoSiłownikSolarny(value: boolean) {
-    this._OknoSiłownikSolarny = value;
+  set OknoSilownikSolarny(value: boolean) {
+    this._OknoSilownikSolarny = value;
   }
 
   get OknoRAL7048(): number {
