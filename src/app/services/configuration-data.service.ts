@@ -14,7 +14,6 @@ export class ConfigurationDataService {
   private _roofWindowsExclusionsFilePath = '../../../assets/csv/roof-windows-exclusions.csv';
   private _availableOptions;
   private _models;
-  private _exclusions;
   private _materials;
   private _openingTypes;
   private _dimensions;
@@ -451,14 +450,6 @@ export class ConfigurationDataService {
 
   set models(value) {
     this._models = value;
-  }
-
-  get exclusions() {
-    return this._exclusions;
-  }
-
-  set exclusions(value) {
-    this._exclusions = value;
   }
 
   get modelsFilePath(): string {
