@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {PropertyValueTranslatorService} from './property-value-translator.service';
+import {isBoolean, isNumber, isObject, isString} from 'util';
 
 @Injectable({
   providedIn: 'root'
@@ -413,7 +414,27 @@ export class ErpNameTranslatorService {
     return type;
   }
 
+  translatePropertyNamesERP(toTranslate: string) {
+    // if (isNumber(toTranslate) || isObject(toTranslate) || isBoolean(toTranslate)) {
+    //   return toTranslate;
+    // }
+    if (toTranslate && isString(toTranslate)) {
+      toTranslate = toTranslate.normalize('NFD').replace(/\p{Diacritic}/gu, '').replace(/\u0142/g, 'l');
+      const firstPart = toTranslate.split(':')[0];
+      let secondPart = toTranslate.split(':')[1];
+      if (secondPart === 'Uchylno-przesuwne') {
+        secondPart = 'UchylnoPrzesuwne';
+      }
+      if (secondPart === undefined) {
+        secondPart = '';
+      }
+      return {firstPart, secondPart};
+    }
+  }
+
   // End Roof Windows
+
+
   // Flashings
   // End Flashings
 }
