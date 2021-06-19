@@ -3,6 +3,7 @@ import {CsvFileReaderService} from './csv-file-reader.service';
 import {map} from 'rxjs/operators';
 import {GlazingType} from '../models/glazing-type';
 import {ExclusionsModel} from '../models/exclusions-model';
+import {ErpNameTranslatorService} from './erp-name-translator.service';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +31,7 @@ export class ConfigurationDataService {
   private _technicalInformation;
   private _glazings;
 
-  constructor(private csv: CsvFileReaderService) {
+  constructor(private csv: CsvFileReaderService, private erpTranslator: ErpNameTranslatorService) {
   }
 
   fetchAllData() {
@@ -179,7 +180,6 @@ export class ConfigurationDataService {
   fetchAllExclusions() {
     return this.csv.getCSVData(this._roofWindowsExclusionsFilePath).pipe(
       map(data => {
-        const arrayWithGlazingModels: GlazingType[] = [];
         const lines = [];
         const linesArray = data.split('\n');
         linesArray.forEach((e: any) => {
@@ -188,6 +188,7 @@ export class ConfigurationDataService {
           lines.push(row);
         });
         lines.slice(lines.length - 1, 1);
+        const columns = lines[0].split(';');
         // tslint:disable-next-line:max-line-length
         const woodenExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
         // tslint:disable-next-line:max-line-length
@@ -278,6 +279,161 @@ export class ConfigurationDataService {
         const neoVentExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
         // tslint:disable-next-line:max-line-length
         const neoCoverExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        // tslint:disable-next-line:max-line-length
+        const latchExclusions: ExclusionsModel = new ExclusionsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+
+        for (let i = 1; i < columns.length; i++) {
+          for (let j = 2; j < lines.length - 1; j++) {
+            // lines[j].split(';')[0] // zwraca pierwszą kolumnę z nazwami wartości
+            // lines[j].split(';')[i] // zwraca wartości z kolejnych kolumn oprócz pierwszej
+            const firstPartName = this.erpTranslator.translatePropertyNamesERP(lines[j].split(';')[0]).firstPart;
+            const secondPartName = this.erpTranslator.translatePropertyNamesERP(lines[j].split(';')[0]).secondPart;
+            const fullName = String(firstPartName + secondPartName);
+            if (i === 1 && lines[j].split(';')[i] === 'TRUE') {
+              woodenExclusions[fullName] = true;
+            }
+            if (i === 2 && lines[j].split(';')[i] === 'TRUE') {
+              PVCExclusions[fullName] = true;
+            }
+            if (i === 3 && lines[j].split(';')[i] === 'TRUE') {
+              centrePivotExclusions[fullName] = true;
+            }
+            if (i === 4 && lines[j].split(';')[i] === 'TRUE') {
+              topHungExclusions[fullName] = true;
+            }
+            if (i === 5 && lines[j].split(';')[i] === 'TRUE') {
+              fipExclusions[fullName] = true;
+            }
+            if (i === 6 && lines[j].split(';')[i] === 'TRUE') {
+              lShapedFipExclusions[fullName] = true;
+            }
+            if (i === 7 && lines[j].split(';')[i] === 'TRUE') {
+              lShapedUExclusions[fullName] = true;
+            }
+            if (i === 8 && lines[j].split(';')[i] === 'TRUE') {
+              lShapedPVCFixExclusions[fullName] = true;
+            }
+            if (i === 9 && lines[j].split(';')[i] === 'TRUE') {
+              lShapedPVCUExclusions[fullName] = true;
+            }
+            if (i === 10 && lines[j].split(';')[i] === 'TRUE') {
+              lShapedPVCURLExclusions[fullName] = true;
+            }
+            if (i === 11 && lines[j].split(';')[i] === 'TRUE') {
+              lShapedPVCURPExclusions[fullName] = true;
+            }
+            if (i === 12 && lines[j].split(';')[i] === 'TRUE') {
+              electricSwitchExclusions[fullName] = true;
+            }
+            if (i === 13 && lines[j].split(';')[i] === 'TRUE') {
+              electricPilotExclusions[fullName] = true;
+            }
+            if (i === 14 && lines[j].split(';')[i] === 'TRUE') {
+              topPivotExclusions[fullName] = true;
+            }
+            if (i === 15 && lines[j].split(';')[i] === 'TRUE') {
+              colorlessExclusions[fullName] = true;
+            }
+            if (i === 16 && lines[j].split(';')[i] === 'TRUE') {
+              whitePaintExclusions[fullName] = true;
+            }
+            if (i === 17 && lines[j].split(';')[i] === 'TRUE') {
+              whitePVCExclusions[fullName] = true;
+            }
+            if (i === 18 && lines[j].split(';')[i] === 'TRUE') {
+              aluminiumExclusions[fullName] = true;
+            }
+            if (i === 19 && lines[j].split(';')[i] === 'TRUE') {
+              copperExclusions[fullName] = true;
+            }
+            if (i === 20 && lines[j].split(';')[i] === 'TRUE') {
+              titanExclusions[fullName] = true;
+            }
+            if (i === 21 && lines[j].split(';')[i] === 'TRUE') {
+              semiMatExclusions[fullName] = true;
+            }
+            if (i === 22 && lines[j].split(';')[i] === 'TRUE') {
+              matExclusions[fullName] = true;
+            }
+            if (i === 23 && lines[j].split(';')[i] === 'TRUE') {
+              glossExclusions[fullName] = true;
+            }
+            if (i === 24 && lines[j].split(';')[i] === 'TRUE') {
+              naturalExclusions[fullName] = true;
+            }
+            if (i === 25 && lines[j].split(';')[i] === 'TRUE') {
+              ralExclusions[fullName] = true;
+            }
+            if (i === 26 && lines[j].split(';')[i] === 'TRUE') {
+              naturalColorExclusions[fullName] = true;
+            }
+            if (i === 27 && lines[j].split(';')[i] === 'TRUE') {
+              naturalColorExclusions[fullName] = true;
+            }
+            if (i === 28 && lines[j].split(';')[i] === 'TRUE') {
+              doubleGlazingExclusions[fullName] = true;
+            }
+            if (i === 29 && lines[j].split(';')[i] === 'TRUE') {
+              tripleGlazingExclusions[fullName] = true;
+            }
+            if (i === 30 && lines[j].split(';')[i] === 'TRUE') {
+              kryptonGlazingExclusions[fullName] = true;
+            }
+            if (i === 31 && lines[j].split(';')[i] === 'TRUE') {
+              externalToughenedExclusions[fullName] = true;
+            }
+            if (i === 32 && lines[j].split(';')[i] === 'TRUE') {
+              internalToughenedExclusions[fullName] = true;
+            }
+            if (i === 33 && lines[j].split(';')[i] === 'TRUE') {
+              sunGuardExclusions[fullName] = true;
+            }
+            if (i === 34 && lines[j].split(';')[i] === 'TRUE') {
+              bioCleanExclusions[fullName] = true;
+            }
+            if (i === 35 && lines[j].split(';')[i] === 'TRUE') {
+              matGlassExclusions[fullName] = true;
+            }
+            if (i === 36 && lines[j].split(';')[i] === 'TRUE') {
+              noiseReductionExclusions[fullName] = true;
+            }
+            if (i === 37 && lines[j].split(';')[i] === 'TRUE') {
+              laminatedP1Exclusions[fullName] = true;
+            }
+            if (i === 38 && lines[j].split(';')[i] === 'TRUE') {
+              laminatedP2Exclusions[fullName] = true;
+            }
+            if (i === 39 && lines[j].split(';')[i] === 'TRUE') {
+              laminatedP4Exclusions[fullName] = true;
+            }
+            if (i === 40 && lines[j].split(';')[i] === 'TRUE') {
+              extraSecureExclusions[fullName] = true;
+            }
+            if (i === 41 && lines[j].split(';')[i] === 'TRUE') {
+              unoExclusions[fullName] = true;
+            }
+            if (i === 42 && lines[j].split(';')[i] === 'TRUE') {
+              solarEngineExclusions[fullName] = true;
+            }
+            if (i === 43 && lines[j].split(';')[i] === 'TRUE') {
+              closure7048Exclusions[fullName] = true;
+            }
+            if (i === 44 && lines[j].split(';')[i] === 'TRUE') {
+              closure9016Exclusions[fullName] = true;
+            }
+            if (i === 45 && lines[j].split(';')[i] === 'TRUE') {
+              neoVentExclusions[fullName] = true;
+            }
+            if (i === 46 && lines[j].split(';')[i] === 'TRUE') {
+              neoCoverExclusions[fullName] = true;
+            }
+            if (i === 47 && lines[j].split(';')[i] === 'TRUE') {
+              latchExclusions[fullName] = true;
+            }
+          }
+        }
+        // tslint:disable-next-line:max-line-length
+        return [woodenExclusions, PVCExclusions, centrePivotExclusions, topHungExclusions, fipExclusions, lShapedFipExclusions, lShapedUExclusions, lShapedPVCFixExclusions, lShapedPVCUExclusions, lShapedPVCURLExclusions, lShapedPVCURPExclusions, electricSwitchExclusions, electricPilotExclusions, topPivotExclusions, colorlessExclusions, whitePaintExclusions, whitePVCExclusions, aluminiumExclusions, copperExclusions, titanExclusions, semiMatExclusions, matExclusions, glossExclusions, naturalExclusions, ralExclusions, naturalColorExclusions, doubleGlazingExclusions, tripleGlazingExclusions, kryptonGlazingExclusions, externalToughenedExclusions, internalToughenedExclusions, sunGuardExclusions, bioCleanExclusions, matGlassExclusions, noiseReductionExclusions, laminatedP1Exclusions, laminatedP2Exclusions, laminatedP4Exclusions, extraSecureExclusions, unoExclusions, solarEngineExclusions, closure7048Exclusions, closure9016Exclusions, neoVentExclusions, neoCoverExclusions, latchExclusions];
       }));
   }
 
