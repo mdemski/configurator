@@ -1,4 +1,5 @@
 export class ExclusionsModel {
+  private _selectedOption: string;
   private _DrewnoSosna: boolean;
   private _PVC: boolean;
   private _OknoObrotowe: boolean;
@@ -49,7 +50,8 @@ export class ExclusionsModel {
   private _OknoZasuwka: string;
 
   // tslint:disable-next-line:max-line-length
-  constructor(DrewnoSosna: boolean, PVC: boolean, OknoObrotowe: boolean, OknoUchylnoPrzesuwne: boolean, OknoNieotwieraneFIP: boolean, KolankoDrewnoNieotwieraneFIP: boolean, KolankoDrewnoUchylne: boolean, KolankoPVCNieotwieraneFIX: boolean, KolankoPVCUchylne: boolean, KolankoPVCUchylnoRozwierneLewe: boolean, KolankoPVCUchylnoRozwiernePrawe: boolean, OknoElektrycznePrzelacznik: boolean, OknoElektrycznePilot: boolean, OknoWysokoosiowe: boolean, DrewnoBezbarwne: boolean, DrewnoBialy9003: boolean, PVCBialy9016: boolean, Aluminium: boolean, Miedz: boolean, TytanCynk: boolean, AluminiumPolmat: boolean, AluminiumMat: boolean, AluminiumPolysk: boolean, MiedzITytanCynkNatur: boolean, AluminiumRAL7022: boolean, MiedzNatur: boolean, TytanCynkNatur: boolean, dwuszybowy: boolean, trzyszybowy: boolean, trzyszybowyKrypton: boolean, zewnetrznaHartowana: boolean, wewnetrznaHartowana: boolean, sunGuard: boolean, bioClean: boolean, matowa: boolean, redukcjaHalasu: boolean, laminowanaP1: boolean, laminowanaP2: boolean, laminowanaP4: boolean, OknoExtraSecure: boolean, OknoUno: boolean, OknoSilownikSolarny: boolean, OknoRAL7048: number, OknoRAL9016: string, NawiewnikNeoVent: string, MaskownicaNeoVent: string, Brak: string, OknoZasuwka: string) {
+  constructor(selectedOption: string, DrewnoSosna: boolean, PVC: boolean, OknoObrotowe: boolean, OknoUchylnoPrzesuwne: boolean, OknoNieotwieraneFIP: boolean, KolankoDrewnoNieotwieraneFIP: boolean, KolankoDrewnoUchylne: boolean, KolankoPVCNieotwieraneFIX: boolean, KolankoPVCUchylne: boolean, KolankoPVCUchylnoRozwierneLewe: boolean, KolankoPVCUchylnoRozwiernePrawe: boolean, OknoElektrycznePrzelacznik: boolean, OknoElektrycznePilot: boolean, OknoWysokoosiowe: boolean, DrewnoBezbarwne: boolean, DrewnoBialy9003: boolean, PVCBialy9016: boolean, Aluminium: boolean, Miedz: boolean, TytanCynk: boolean, AluminiumPolmat: boolean, AluminiumMat: boolean, AluminiumPolysk: boolean, MiedzITytanCynkNatur: boolean, AluminiumRAL7022: boolean, MiedzNatur: boolean, TytanCynkNatur: boolean, dwuszybowy: boolean, trzyszybowy: boolean, trzyszybowyKrypton: boolean, zewnetrznaHartowana: boolean, wewnetrznaHartowana: boolean, sunGuard: boolean, bioClean: boolean, matowa: boolean, redukcjaHalasu: boolean, laminowanaP1: boolean, laminowanaP2: boolean, laminowanaP4: boolean, OknoExtraSecure: boolean, OknoUno: boolean, OknoSilownikSolarny: boolean, OknoRAL7048: number, OknoRAL9016: string, NawiewnikNeoVent: string, MaskownicaNeoVent: string, Brak: string, OknoZasuwka: string) {
+    this._selectedOption = selectedOption;
     this._DrewnoSosna = DrewnoSosna;
     this._PVC = PVC;
     this._OknoObrotowe = OknoObrotowe;
@@ -98,6 +100,14 @@ export class ExclusionsModel {
     this._MaskownicaNeoVent = MaskownicaNeoVent;
     this._Brak = Brak;
     this._OknoZasuwka = OknoZasuwka;
+  }
+
+  get selectedOption(): string {
+    return this._selectedOption;
+  }
+
+  set selectedOption(value: string) {
+    this._selectedOption = value;
   }
 
   get DrewnoSosna(): boolean {
