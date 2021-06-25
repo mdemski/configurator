@@ -432,7 +432,6 @@ export class ErpNameTranslatorService {
       return {firstPart, secondPart};
     }
   }
-
   // End Roof Windows
 
 

@@ -79,8 +79,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   stepWidth = 1;
   stepHeight = 1;
   availableOptions = [];
-  exclusions = [];
-  sets = [];
   materials = [];
   openingTypes = [];
   innerColors = [];
@@ -123,37 +121,36 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.tempConfiguredWindow = new RoofWindowSkylight(
       '1O-ISO-V-E02-KL00-A7022P-079119-OKPO01', 'Okno dachowe tymczasowe', 'ISOV E2 79x119', 'I-Okno', 'NPL-Okno', 'Nowy', 'Okno:ISOV', 'Okno:E02', 'dwuszybowy', 79,
       119, 'OknoDachowe', 'obrotowe', 'Okno:IS', 'OknoDachowe:ISO', 'Okno:Obrotowe', 'NawiewnikNeoVent', 'DrewnoSosna', 'Drewno:Bezbarwne', 'OknoDachowe:IS', 'Aluminium',
-      'RAL9999', 'Aluminium:Półmat', 'Okno:ExtraSecure', 'Okno:RAL7048', false, 2, ['78x118'], ['zewnetrznaHartowana', false, false, false, false, false, false, false, false], ['https://www.okpol.pl/wp-content/uploads/2017/02/1_ISO.jpg'],
-      ['Okno:Zasuwka', false, false], 1332.80, 1, 1.2, 5, 'Okno:RAL7048', 'Okno:RAL7048', null, 2, 'PL');
+      'RAL9999', 'Aluminium:Półmat', 'Okno:ExtraSecure', 'Okno:RAL7048', false, 2, ['78x118'], ['zewnetrznaHartowana', false, false, false, false, false, false, false, false],
+      ['https://www.okpol.pl/wp-content/uploads/2017/02/1_ISO.jpg'], ['Okno:Zasuwka', false, false], 1332.80, 1, 1.2, 5, 'Okno:RAL7048', 'Okno:RAL7048', null, 2, 'PL');
     this.authService.returnUser().pipe(takeUntil(this.isDestroyed$)).subscribe(user => {
       this.currentUser = user;
-    });
-    this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(() => {
-      this.windowModelsToCalculatePrice = this.configData.models;
-      this.availableOptions = this.configData.availableOptions;
-      this.exclusions = this.configData.exclusions;
-      this.sets = this.configData.sets;
-      this.glazingTypes = this.objectMaker(this.configData.glazingTypes);
-      this.materials = this.objectMaker(this.configData.materials);
-      this.openingTypes = this.objectMaker(this.configData.openingTypes);
-      this.innerColors = this.objectMaker(this.configData.innerColors);
-      this.outerMaterials = this.objectMaker(this.configData.outerMaterials);
-      this.outerColors = this.objectMaker(this.configData.outerColor);
-      this.outerColorFinishes = this.objectMaker(this.configData.outerColorFinishes);
-      this.coatsFromFile = this.objectMaker(this.configData.coats);
-      this.dimensions = RoofWindowsConfigComponent.setDimensions(this.configData.dimensions);
-      this.extrasFromFile = this.objectMaker(this.configData.extras);
-      this.ventilations = this.objectMaker(this.configData.ventialtions);
-      this.handles = this.objectMaker(this.configData.handles);
-      this.handleColors = this.objectMaker(this.configData.handleColors);
-      this.coats$.next(this.coatsFromFile);
-      this.extras$.next(this.extrasFromFile);
     });
     this.activeRouter.params.pipe(takeUntil(this.isDestroyed$)).subscribe(param => {
       this.formName = param.formName;
       this.windowCode = param.productCode;
       this.configId = param.configId === undefined ? '-1' : param.configId;
       if (this.formName === 'no-name' || this.formName === undefined) {
+        // TODO czy przerzucony tutaj kod będzie działał gdy wczytujemy okno do rekonfiguracji
+        this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(() => {
+          this.coats$.next(this.objectMaker(this.configData.coats));
+          this.extras$.next(this.objectMaker(this.configData.extras));
+          this.coatsFromFile = this.objectMaker(this.configData.coats);
+          this.extrasFromFile = this.objectMaker(this.configData.extras);
+          this.windowModelsToCalculatePrice = this.configData.models;
+          this.availableOptions = this.configData.availableOptions;
+          this.glazingTypes = this.objectMaker(this.configData.glazingTypes);
+          this.materials = this.objectMaker(this.configData.materials);
+          this.openingTypes = this.objectMaker(this.configData.openingTypes);
+          this.innerColors = this.objectMaker(this.configData.innerColors);
+          this.outerMaterials = this.objectMaker(this.configData.outerMaterials);
+          this.outerColors = this.objectMaker(this.configData.outerColor);
+          this.outerColorFinishes = this.objectMaker(this.configData.outerColorFinishes);
+          this.dimensions = RoofWindowsConfigComponent.setDimensions(this.configData.dimensions);
+          this.ventilations = this.objectMaker(this.configData.ventialtions);
+          this.handles = this.objectMaker(this.configData.handles);
+          this.handleColors = this.objectMaker(this.configData.handleColors);
+        });
         this.formName = cryptoRandomString({length: 12, type: 'alphanumeric'});
         this.authService.returnUser().pipe(takeUntil(this.isDestroyed$)).subscribe(user => {
           this.loadConfig.getWindowToReconfiguration(user, param.formName, param.productCode).pipe(takeUntil(this.isDestroyed$))
@@ -178,6 +175,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
                   handleColor: new FormControl(this.configuredWindow.zamkniecieKolor)
                 })
               });
+              // TODO spróbować przebudować tę część żeby powłoki i dodatki trafiały tu szybciej
               this.coats$.pipe(
                 takeUntil(this.isDestroyed$),
                 filter(data => !!data),
@@ -217,39 +215,41 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
             });
         });
       } else {
-        this.loadConfig.getWindowConfigurationByFormName(this.formName).pipe(takeUntil(this.isDestroyed$)).subscribe((windowConfiguration: WindowConfig) => {
-          this.form = this.fb.group({
-            material: new FormControl(windowConfiguration.windowFormData.material, [], [this.validateMaterials.bind(this)]),
-            openingType: new FormControl(windowConfiguration.windowFormData.openingType, [], [this.validateOpenings.bind(this)]),
-            control: new FormControl(RoofWindowsConfigComponent.getControlType(windowConfiguration.windowFormData.otwieranie)),
-            glazing: new FormControl(windowConfiguration.windowFormData.glazing, [], [this.validateGlazing.bind(this)]),
-            width: new FormControl(windowConfiguration.windowFormData.width),
-            height: new FormControl(windowConfiguration.windowFormData.height),
-            coats: this.fb.array(windowConfiguration.windowFormData.coats),
-            innerColor: new FormControl(windowConfiguration.windowFormData.innerColor, [], [this.validateInnerColor.bind(this)]),
-            outer: new FormGroup({
-              outerMaterial: new FormControl(windowConfiguration.windowFormData.outer
-              === undefined ? null : windowConfiguration.windowFormData.outer.outerMaterial),
-              outerColor: new FormControl(windowConfiguration.windowFormData.outer
-              === undefined ? null : windowConfiguration.windowFormData.outer.outerColor),
-              outerColorFinish: new FormControl(windowConfiguration.windowFormData.outer
-              === undefined ? null : windowConfiguration.windowFormData.outer.outerColorFinish)
-            }, [], [this.validateOuterMaterial.bind(this)]),
-            ventilation: new FormControl(windowConfiguration.windowFormData.ventilation, [], [this.validateVentilation.bind(this)]),
-            closure: new FormGroup({
-              handle: new FormControl(windowConfiguration.windowFormData.closure
-              === undefined ? null : windowConfiguration.windowFormData.closure.handle, [], [this.validateHandle.bind(this)]),
-              handleColor: new FormControl(windowConfiguration.windowFormData.closure
-              === undefined ? null : windowConfiguration.windowFormData.closure.handleColor)
-            }),
-            extras: this.fb.array(windowConfiguration.windowFormData.extras)
+        this.loadConfig.getWindowConfigurationByFormName(this.formName)
+          .pipe(takeUntil(this.isDestroyed$))
+          .subscribe((windowConfiguration: WindowConfig) => {
+            this.form = this.fb.group({
+              material: new FormControl(windowConfiguration.windowFormData.material, [], [this.validateMaterials.bind(this)]),
+              openingType: new FormControl(windowConfiguration.windowFormData.openingType, [], [this.validateOpenings.bind(this)]),
+              control: new FormControl(RoofWindowsConfigComponent.getControlType(windowConfiguration.windowFormData.otwieranie)),
+              glazing: new FormControl(windowConfiguration.windowFormData.glazing, [], [this.validateGlazing.bind(this)]),
+              width: new FormControl(windowConfiguration.windowFormData.width),
+              height: new FormControl(windowConfiguration.windowFormData.height),
+              coats: this.fb.array(windowConfiguration.windowFormData.coats),
+              innerColor: new FormControl(windowConfiguration.windowFormData.innerColor, [], [this.validateInnerColor.bind(this)]),
+              outer: new FormGroup({
+                outerMaterial: new FormControl(windowConfiguration.windowFormData.outer
+                === undefined ? null : windowConfiguration.windowFormData.outer.outerMaterial),
+                outerColor: new FormControl(windowConfiguration.windowFormData.outer
+                === undefined ? null : windowConfiguration.windowFormData.outer.outerColor),
+                outerColorFinish: new FormControl(windowConfiguration.windowFormData.outer
+                === undefined ? null : windowConfiguration.windowFormData.outer.outerColorFinish)
+              }, [], [this.validateOuterMaterial.bind(this)]),
+              ventilation: new FormControl(windowConfiguration.windowFormData.ventilation, [], [this.validateVentilation.bind(this)]),
+              closure: new FormGroup({
+                handle: new FormControl(windowConfiguration.windowFormData.closure
+                === undefined ? null : windowConfiguration.windowFormData.closure.handle, [], [this.validateHandle.bind(this)]),
+                handleColor: new FormControl(windowConfiguration.windowFormData.closure
+                === undefined ? null : windowConfiguration.windowFormData.closure.handleColor)
+              }),
+              extras: this.fb.array(windowConfiguration.windowFormData.extras)
+            });
+            this.configuredWindow = windowConfiguration.window;
+            this.windowId = windowConfiguration.id;
+            this.setConfiguredValues(this.form.value);
+            this.formChanges();
+            this.loading = false;
           });
-          this.configuredWindow = windowConfiguration.window;
-          this.windowId = windowConfiguration.id;
-          this.setConfiguredValues(this.form.value);
-          this.formChanges();
-          this.loading = false;
-        });
       }
     });
     this.dataBase.fetchRoofWindows().pipe(takeUntil(this.isDestroyed$)).subscribe(roofWindows => {
@@ -663,9 +663,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       this.router.navigate(['/' + this.configurationSummary]);
     }
     this.chooseConfigNamePopup = false;
-    // TODO zapisz dane do Firebase przed emisją żeby nie utracić konfiguracji
-    // TODO przygotować model konfiguracji w której będą przechowywane: okno, kołnierz, roleta - a później publikować tablice
-    // this.router.navigate(['/' + this.configurationSummary]);
+    this.router.navigate(['/' + this.configurationSummary]);
   }
 
   // CALCULATIONS
@@ -829,36 +827,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   //   }
 
   // DISABLE INPUT SETTER LOGIC
-  setDisabled(configuredWindow: RoofWindowSkylight) {
-    this.resetAllArrays(this.materials, this.openingTypes, this.innerColors, this.outerMaterials, this.outerColors, this.outerColorFinishes,
-      this.glazingTypes, this.coatsFromFile, this.extrasFromFile, this.ventilations, this.handles, this.handleColors);
-    // tslint:disable-next-line:forin
-    for (const configurationOption in configuredWindow) {
-      const selectedOption = configuredWindow[configurationOption];
-      // configuredWindow[configurationOption] zwaraca wartości wybrane w trakcie konfiguracji odpowiadające
-      for (const exclusion of this.exclusions) {
-        const tempExclusionValue = exclusion[selectedOption]; // tu są zwracane wartości wykluczeń
-        if (_.isNumber(tempExclusionValue) && tempExclusionValue > 0) {
-          this.setDisabledOptions(tempExclusionValue, selectedOption,
-            this.materials, this.openingTypes, this.innerColors,
-            this.outerMaterials, this.outerColors, this.outerColorFinishes,
-            this.glazingTypes, this.coatsFromFile, this.extrasFromFile, this.ventilations,
-            this.handles, this.handleColors, this.exclusions);
-        }
-      }
-      for (const set of this.sets) {
-        const tempSetValue = set[selectedOption]; // tu są zwracane wartości setów np. 30, selectedOption zwraca np. "Aluminium:RAL7022"
-        if (_.isNumber(tempSetValue)) {
-          // this.setSetsDisabledOptions(tempSetValue, selectedOption,
-          //   this.materials, this.openingTypes, this.innerColors,
-          //   this.outerMaterials, this.outerColors, this.outerColorFinishes,
-          //   this.glazingTypes, this.coats, this.extras, this.ventilations,
-          //   this.handles, this.handleColors, this.sets);
-        }
-      }
-    }
-  }
-
   resetAllArrays(materials: { option: string; disabled: boolean }[], openingTypes: { option: string; disabled: boolean }[],
                  innerColors: { option: string; disabled: boolean }[], outerMaterials: { option: string; disabled: boolean }[],
                  outerColors: { option: string; disabled: boolean }[], outerColorFinishes: { option: string; disabled: boolean }[],
@@ -903,75 +871,116 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     }
   }
 
+  setDisabled(configuredWindow: RoofWindowSkylight) {
+    this.resetAllArrays(this.materials, this.openingTypes, this.innerColors, this.outerMaterials, this.outerColors, this.outerColorFinishes,
+      this.glazingTypes, this.coatsFromFile, this.extrasFromFile, this.ventilations, this.handles, this.handleColors);
+    this.configData.fetchAllExclusions().pipe(takeUntil(this.isDestroyed$)).subscribe(exclusions => {
+      const excludedOptions = [];
+      // console.log(fullName); // zwraca string wybranej opcji po przejściu przez translator np. DrewnoSosna czy OknoObrotowe
+      // console.log(exclusions.woodenExclusions); // zwraca cały obiet ExclusionModel z ustawieniami dla wybranych wykluczeń
+      // console.log(exclusions); // tu są zwracana jest tablica wykluczeń true/null
+      // this.setDisabledOptions(tempExclusionValue, fullName,
+      //   this.materials, this.openingTypes, this.innerColors,
+      //   this.outerMaterials, this.outerColors, this.outerColorFinishes,
+      //   this.glazingTypes, this.coatsFromFile, this.extrasFromFile, this.ventilations,
+      //   this.handles, this.handleColors, exclusions);
+      // tslint:disable-next-line:forin
+      for (const configurationOption in configuredWindow) {
+        // const configurationOption = this.erpName.translatePropertyNamesERP(configuredWindow[configurationOption]);
+        if (configurationOption === '_kolorTworzywZew') {
+          continue;
+        }
+        if (configurationOption === '_kolorTworzywWew') {
+          continue;
+        }
+        for (const exclusionObject of exclusions) {
+          // console.log('From object ' + exclusionObject.selectedOption);
+          // console.log('From configuration ' + configuredWindow[configurationOption]);
+          if (exclusionObject.selectedOption === configuredWindow[configurationOption]) {
+            for (const [key, value] of Object.entries(exclusionObject)) {
+              if (value === 'TRUE') {
+                if (excludedOptions.indexOf(key) === -1) {
+                  excludedOptions.push(key);
+                }
+              }
+            }
+          }
+        }
+        // configuredWindow[configurationOption] zwaraca wartości wybrane w trakcie konfiguracji odpowiadające
+      }
+      this.setDisabledOptions(excludedOptions, this.materials, this.openingTypes, this.innerColors,
+        this.outerMaterials, this.outerColors, this.outerColorFinishes,
+        this.glazingTypes, this.coatsFromFile, this.extrasFromFile, this.ventilations,
+        this.handles, this.handleColors);
+    });
+  }
+
   // tslint:disable-next-line:max-line-length
-  setDisabledOptions(exNumber: number, selectedOption: string, materials: { option: string; disabled: boolean }[], openingTypes: { option: string; disabled: boolean }[],
+  setDisabledOptions(excludedOptions: string[], materials: { option: string; disabled: boolean }[], openingTypes: { option: string; disabled: boolean }[],
                      innerColors: { option: string; disabled: boolean }[], outerMaterials: { option: string; disabled: boolean }[],
                      outerColors: { option: string; disabled: boolean }[], outerColorFinishes: { option: string; disabled: boolean }[],
                      glazingTypes: { option: string; disabled: boolean }[], coats: { option: string; disabled: boolean }[],
                      extras: { option: string; disabled: boolean }[], ventilations: { option: string; disabled: boolean }[],
-                     handles: { option: string; disabled: boolean }[], handleColors: { option: string; disabled: boolean }[], exclusions) {
-    for (const exclusion of exclusions) {
-      let exName = '';
-      if (Object.values(exclusion)[0] === exNumber) {
-        exName = Object.keys(exclusion)[0];
-      }
+                     handles: { option: string; disabled: boolean }[], handleColors: { option: string; disabled: boolean }[]) {
+    console.log(excludedOptions);
+    for (const excludedOption of excludedOptions) {
       for (const material of materials) {
-        if (material.option === exName && material.option !== selectedOption) {
+        if (material.option === excludedOption) {
           material.disabled = true;
         }
       }
       for (const openingType of openingTypes) {
-        if (openingType.option === exName && openingType.option !== selectedOption) {
+        if (openingType.option === excludedOption) {
           openingType.disabled = true;
         }
       }
       for (const innerColor of innerColors) {
-        if (innerColor.option === exName && innerColor.option !== selectedOption) {
+        if (innerColor.option === excludedOption) {
           innerColor.disabled = true;
         }
       }
       for (const outerMaterial of outerMaterials) {
-        if (outerMaterial.option === exName && outerMaterial.option !== selectedOption) {
+        if (outerMaterial.option === excludedOption) {
           outerMaterial.disabled = true;
         }
       }
       for (const outerColor of outerColors) {
-        if (outerColor.option === exName && outerColor.option !== selectedOption) {
+        if (outerColor.option === excludedOption) {
           outerColor.disabled = true;
         }
       }
       for (const outerColorFinish of outerColorFinishes) {
-        if (outerColorFinish.option === exName && outerColorFinish.option !== selectedOption) {
+        if (outerColorFinish.option === excludedOption) {
           outerColorFinish.disabled = true;
         }
       }
       for (const glazingType of glazingTypes) {
-        if (glazingType.option === exName && glazingType.option !== selectedOption) {
+        if (glazingType.option === excludedOption) {
           glazingType.disabled = true;
         }
       }
       for (const coat of coats) {
-        if (coat.option === exName && coat.option !== selectedOption) {
+        if (coat.option === excludedOption) {
           coat.disabled = true;
         }
       }
       for (const extra of extras) {
-        if (extra.option === exName && extra.option !== selectedOption) {
+        if (extra.option === excludedOption) {
           extra.disabled = true;
         }
       }
       for (const ventilation of ventilations) {
-        if (ventilation.option === exName && ventilation.option !== selectedOption) {
+        if (ventilation.option === excludedOption) {
           ventilation.disabled = true;
         }
       }
       for (const handle of handles) {
-        if (handle.option === exName && handle.option !== selectedOption) {
+        if (handle.option === excludedOption) {
           handle.disabled = true;
         }
       }
       for (const handleColor of handleColors) {
-        if (handleColor.option === exName && handleColor.option !== selectedOption) {
+        if (handleColor.option === excludedOption) {
           handleColor.disabled = true;
         }
       }
@@ -979,78 +988,78 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   }
 
   // tslint:disable-next-line:max-line-length
-  setSetsDisabledOptions(setNumber: number, selectedOption: string, materials: { option: string; disabled: boolean }[], openingTypes: { option: string; disabled: boolean }[],
-                         innerColors: { option: string; disabled: boolean }[], outerMaterials: { option: string; disabled: boolean }[],
-                         outerColors: { option: string; disabled: boolean }[], outerColorFinishes: { option: string; disabled: boolean }[],
-                         glazingTypes: { option: string; disabled: boolean }[], chosenCoats: { option: string; disabled: boolean }[],
-                         chosenExtras: { option: string; disabled: boolean }[], ventilations: { option: string; disabled: boolean }[],
-                         handles: { option: string; disabled: boolean }[], handleColors: { option: string; disabled: boolean }[], sets) {
-    for (const set of sets) {
-      if (setNumber > 0 && Object.values(set)[0] === setNumber) {
-        const optionToChange = Object.keys(set)[0];
-        console.log(setNumber); // zwraca wartości liczbowe w setach
-        console.log(optionToChange); // zwraca nazwy watości w setach
-        for (const material of materials) {
-          if (material.option === optionToChange && setNumber !== set[selectedOption]) {
-            material.disabled = true;
-          }
-        }
-        for (const openingType of openingTypes) {
-          if (openingType.option === optionToChange && setNumber !== set[selectedOption]) {
-            openingType.disabled = true;
-          }
-        }
-        for (const innerColor of innerColors) {
-          if (innerColor.option === optionToChange && setNumber !== set[selectedOption]) {
-            innerColor.disabled = true;
-          }
-        }
-        for (const outerMaterial of outerMaterials) {
-          if (outerMaterial.option === optionToChange && setNumber !== set[selectedOption]) {
-            outerMaterial.disabled = true;
-          }
-        }
-        for (const outerColor of outerColors) {
-          if (outerColor.option === optionToChange && setNumber !== set[selectedOption]) {
-            outerColor.disabled = true;
-          }
-        }
-        for (const outerColorFinish of outerColorFinishes) {
-          if (outerColorFinish.option === optionToChange && setNumber !== set[selectedOption]) {
-            outerColorFinish.disabled = true;
-          }
-        }
-        for (const glazingType of glazingTypes) {
-          if (glazingType.option === optionToChange && setNumber !== set[selectedOption]) {
-            glazingType.disabled = true;
-          }
-        }
-        for (const chosenCoat of chosenCoats) {
-          if (chosenCoat.option === optionToChange && setNumber !== set[selectedOption]) {
-            chosenCoat.disabled = true;
-          }
-        }
-        for (const chosenExtra of chosenExtras) {
-          if (chosenExtra.option === optionToChange && setNumber !== set[selectedOption]) {
-            chosenExtra.disabled = true;
-          }
-        }
-        for (const ventilation of ventilations) {
-          if (ventilation.option === optionToChange && setNumber !== set[selectedOption]) {
-            ventilation.disabled = true;
-          }
-        }
-        for (const handle of handles) {
-          if (handle.option === optionToChange && setNumber !== set[selectedOption]) {
-            handle.disabled = true;
-          }
-        }
-        for (const handleColor of handleColors) {
-          if (handleColor.option === optionToChange && setNumber !== set[selectedOption]) {
-            handleColor.disabled = true;
-          }
-        }
-      }
-    }
-  }
+  // setSetsDisabledOptions(setNumber: number, selectedOption: string, materials: { option: string; disabled: boolean }[],openingTypes: { option: string; disabled: boolean }[],
+  //                        innerColors: { option: string; disabled: boolean }[], outerMaterials: { option: string; disabled: boolean }[],
+  //                        outerColors: { option: string; disabled: boolean }[], outerColorFinishes: { option: string; disabled: boolean }[],
+  //                        glazingTypes: { option: string; disabled: boolean }[], chosenCoats: { option: string; disabled: boolean }[],
+  //                        chosenExtras: { option: string; disabled: boolean }[], ventilations: { option: string; disabled: boolean }[],
+  //                        handles: { option: string; disabled: boolean }[], handleColors: { option: string; disabled: boolean }[], sets) {
+  //   for (const set of sets) {
+  //     if (setNumber > 0 && Object.values(set)[0] === setNumber) {
+  //       const optionToChange = Object.keys(set)[0];
+  //       console.log(setNumber); // zwraca wartości liczbowe w setach
+  //       console.log(optionToChange); // zwraca nazwy watości w setach
+  //       for (const material of materials) {
+  //         if (material.option === optionToChange && setNumber !== set[selectedOption]) {
+  //           material.disabled = true;
+  //         }
+  //       }
+  //       for (const openingType of openingTypes) {
+  //         if (openingType.option === optionToChange && setNumber !== set[selectedOption]) {
+  //           openingType.disabled = true;
+  //         }
+  //       }
+  //       for (const innerColor of innerColors) {
+  //         if (innerColor.option === optionToChange && setNumber !== set[selectedOption]) {
+  //           innerColor.disabled = true;
+  //         }
+  //       }
+  //       for (const outerMaterial of outerMaterials) {
+  //         if (outerMaterial.option === optionToChange && setNumber !== set[selectedOption]) {
+  //           outerMaterial.disabled = true;
+  //         }
+  //       }
+  //       for (const outerColor of outerColors) {
+  //         if (outerColor.option === optionToChange && setNumber !== set[selectedOption]) {
+  //           outerColor.disabled = true;
+  //         }
+  //       }
+  //       for (const outerColorFinish of outerColorFinishes) {
+  //         if (outerColorFinish.option === optionToChange && setNumber !== set[selectedOption]) {
+  //           outerColorFinish.disabled = true;
+  //         }
+  //       }
+  //       for (const glazingType of glazingTypes) {
+  //         if (glazingType.option === optionToChange && setNumber !== set[selectedOption]) {
+  //           glazingType.disabled = true;
+  //         }
+  //       }
+  //       for (const chosenCoat of chosenCoats) {
+  //         if (chosenCoat.option === optionToChange && setNumber !== set[selectedOption]) {
+  //           chosenCoat.disabled = true;
+  //         }
+  //       }
+  //       for (const chosenExtra of chosenExtras) {
+  //         if (chosenExtra.option === optionToChange && setNumber !== set[selectedOption]) {
+  //           chosenExtra.disabled = true;
+  //         }
+  //       }
+  //       for (const ventilation of ventilations) {
+  //         if (ventilation.option === optionToChange && setNumber !== set[selectedOption]) {
+  //           ventilation.disabled = true;
+  //         }
+  //       }
+  //       for (const handle of handles) {
+  //         if (handle.option === optionToChange && setNumber !== set[selectedOption]) {
+  //           handle.disabled = true;
+  //         }
+  //       }
+  //       for (const handleColor of handleColors) {
+  //         if (handleColor.option === optionToChange && setNumber !== set[selectedOption]) {
+  //           handleColor.disabled = true;
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
 }
