@@ -2,8 +2,6 @@ import {Injectable} from '@angular/core';
 import {CsvFileReaderService} from './csv-file-reader.service';
 import {map} from 'rxjs/operators';
 import {GlazingType} from '../models/glazing-type';
-import {ExclusionsModel} from '../models/exclusions-model';
-import {ErpNameTranslatorService} from './erp-name-translator.service';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +28,7 @@ export class ConfigurationDataService {
   private _technicalInformation;
   private _glazings;
 
-  constructor(private csv: CsvFileReaderService, private erpTranslator: ErpNameTranslatorService) {
+  constructor(private csv: CsvFileReaderService) {
   }
 
   fetchAllData() {
@@ -75,7 +73,6 @@ export class ConfigurationDataService {
         for (let i = 1; i < 2; i++) {
           for (let j = 1; j < lines.length - 1; j++) {
             availableOptions.push(lines[j].split(';')[0]);
-            // availableOptions[lines[j].split(';')[0]] = lines[j].split(';')[1];
             if (lines[j].split(';')[1] === 'material') {
               materials.push(lines[j].split(';')[0]);
             }
@@ -188,16 +185,10 @@ export class ConfigurationDataService {
         });
         lines.slice(lines.length - 1, 1);
         const columns = lines[0].split(';');
-
         const exArray = [];
         for (let i = 1; i < columns.length; i++) {
           const tempExObject = {};
           for (let j = 0; j < lines.length - 1; j++) {
-            // lines[j].split(';')[0] // zwraca pierwszą kolumnę z nazwami wartości
-            // lines[j].split(';')[i] // zwraca wartości z kolejnych kolumn oprócz pierwszej
-            const firstPartName = this.erpTranslator.translatePropertyNamesERP(lines[j].split(';')[0]).firstPart;
-            const secondPartName = this.erpTranslator.translatePropertyNamesERP(lines[j].split(';')[0]).secondPart;
-            const fullName = String(firstPartName + secondPartName);
             Object.assign(tempExObject, {selectedOption: lines[i].split(';')[0]});
             tempExObject[lines[j].split(';')[0]] = lines[j].split(';')[i];
           }

@@ -8,7 +8,6 @@ import {CrudFirebaseService} from '../../services/crud-firebase-service';
 import {ConfigurationDataService} from '../../services/configuration-data.service';
 import {AuthService} from '../../services/auth.service';
 import {WindowDynamicValuesSetterService} from '../../services/window-dynamic-values-setter.service';
-import _ from 'lodash';
 import {filter, map, takeUntil, tap} from 'rxjs/operators';
 import {ErpNameTranslatorService} from '../../services/erp-name-translator.service';
 import {LoadWindowConfigurationService} from '../../services/load-window-configuration.service';
@@ -316,7 +315,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       form.openingType) {
       this.popupConfig = true;
     }
-    // this.configuredWindow.grupaAsortymentowa = this.erpName.setWindowAssortmentGroup(form.openingType);
+    this.configuredWindow.grupaAsortymentowa = this.erpName.setWindowAssortmentGroup(form.openingType);
     this.glazingName$.pipe(takeUntil(this.isDestroyed$)).subscribe(pakietSzybowy => {
       this.configuredWindow.pakietSzybowy = pakietSzybowy;
     });
@@ -801,31 +800,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     }
   }
 
-  // OLD VALIDATORS
-  // private validateHeight(control: FormControl): { [s: string]: boolean } {
-  //     if (control.value > 160 && control.value < 98) {
-  //       return {'roofWindowToHeight': true};
-  //     } else {
-  //       return null;
-  //     }
-  //   }
-  //
-  //   private validateWidth(control: FormControl): { [s: string]: boolean } {
-  //     if (control.value > 134 && control.value < 55) {
-  //       return {'roofWindowToWidth': true};
-  //     } else {
-  //       return null;
-  //     }
-  //   }
-  //
-  //   private validateSurface(): { [s: string]: boolean } {
-  //     if (this.configuredWindow.windowWidth * this.configuredWindow.windowHeight > 12597) {
-  //       return {'roofWindowToLarge': true};
-  //     } else {
-  //       return null;
-  //     }
-  //   }
-
   // DISABLE INPUT SETTER LOGIC
   resetAllArrays(materials: { option: string; disabled: boolean }[], openingTypes: { option: string; disabled: boolean }[],
                  innerColors: { option: string; disabled: boolean }[], outerMaterials: { option: string; disabled: boolean }[],
@@ -876,17 +850,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       this.glazingTypes, this.coatsFromFile, this.extrasFromFile, this.ventilations, this.handles, this.handleColors);
     this.configData.fetchAllExclusions().pipe(takeUntil(this.isDestroyed$)).subscribe(exclusions => {
       const excludedOptions = [];
-      // console.log(fullName); // zwraca string wybranej opcji po przejściu przez translator np. DrewnoSosna czy OknoObrotowe
-      // console.log(exclusions.woodenExclusions); // zwraca cały obiet ExclusionModel z ustawieniami dla wybranych wykluczeń
-      // console.log(exclusions); // tu są zwracana jest tablica wykluczeń true/null
-      // this.setDisabledOptions(tempExclusionValue, fullName,
-      //   this.materials, this.openingTypes, this.innerColors,
-      //   this.outerMaterials, this.outerColors, this.outerColorFinishes,
-      //   this.glazingTypes, this.coatsFromFile, this.extrasFromFile, this.ventilations,
-      //   this.handles, this.handleColors, exclusions);
-      // tslint:disable-next-line:forin
       for (const configurationOption in configuredWindow) {
-        // const configurationOption = this.erpName.translatePropertyNamesERP(configuredWindow[configurationOption]);
         if (configurationOption === '_kolorTworzywZew') {
           continue;
         }
@@ -894,8 +858,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
           continue;
         }
         for (const exclusionObject of exclusions) {
-          // console.log('From object ' + exclusionObject.selectedOption);
-          // console.log('From configuration ' + configuredWindow[configurationOption]);
           if (exclusionObject.selectedOption === configuredWindow[configurationOption]) {
             for (const [key, value] of Object.entries(exclusionObject)) {
               if (value === 'TRUE') {
@@ -906,7 +868,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
             }
           }
         }
-        // configuredWindow[configurationOption] zwaraca wartości wybrane w trakcie konfiguracji odpowiadające
       }
       this.setDisabledOptions(excludedOptions, this.materials, this.openingTypes, this.innerColors,
         this.outerMaterials, this.outerColors, this.outerColorFinishes,
@@ -922,7 +883,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
                      glazingTypes: { option: string; disabled: boolean }[], coats: { option: string; disabled: boolean }[],
                      extras: { option: string; disabled: boolean }[], ventilations: { option: string; disabled: boolean }[],
                      handles: { option: string; disabled: boolean }[], handleColors: { option: string; disabled: boolean }[]) {
-    console.log(excludedOptions);
     for (const excludedOption of excludedOptions) {
       for (const material of materials) {
         if (material.option === excludedOption) {
@@ -945,7 +905,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         }
       }
       for (const outerColor of outerColors) {
-        if (outerColor.option === excludedOption) {
+        if (outerColor.option.startsWith(excludedOption)) {
           outerColor.disabled = true;
         }
       }
@@ -987,9 +947,35 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     }
   }
 
+  // OLD VALIDATORS
+  // private validateHeight(control: FormControl): { [s: string]: boolean } {
+  //     if (control.value > 160 && control.value < 98) {
+  //       return {'roofWindowToHeight': true};
+  //     } else {
+  //       return null;
+  //     }
+  //   }
+  //
+  //   private validateWidth(control: FormControl): { [s: string]: boolean } {
+  //     if (control.value > 134 && control.value < 55) {
+  //       return {'roofWindowToWidth': true};
+  //     } else {
+  //       return null;
+  //     }
+  //   }
+  //
+  //   private validateSurface(): { [s: string]: boolean } {
+  //     if (this.configuredWindow.windowWidth * this.configuredWindow.windowHeight > 12597) {
+  //       return {'roofWindowToLarge': true};
+  //     } else {
+  //       return null;
+  //     }
+  //   }
+
   // tslint:disable-next-line:max-line-length
   // setSetsDisabledOptions(setNumber: number, selectedOption: string, materials: { option: string; disabled: boolean }[],openingTypes: { option: string; disabled: boolean }[],
   //                        innerColors: { option: string; disabled: boolean }[], outerMaterials: { option: string; disabled: boolean }[],
+  // tslint:disable-next-line:max-line-length
   //                        outerColors: { option: string; disabled: boolean }[], outerColorFinishes: { option: string; disabled: boolean }[],
   //                        glazingTypes: { option: string; disabled: boolean }[], chosenCoats: { option: string; disabled: boolean }[],
   //                        chosenExtras: { option: string; disabled: boolean }[], ventilations: { option: string; disabled: boolean }[],
