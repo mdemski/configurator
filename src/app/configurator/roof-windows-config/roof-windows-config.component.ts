@@ -1,14 +1,27 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
-import {BehaviorSubject, Observable, Observer, Subject, Subscription} from 'rxjs';
-import {ActivatedRoute, Router} from '@angular/router';
+import {
+  BehaviorSubject,
+  combineLatest,
+  Observable,
+  ObservedValueOf,
+  Observer,
+  Subject,
+  Subscription
+} from 'rxjs';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 import {RoofWindowSkylight} from '../../models/roof-window-skylight';
 import {CrudFirebaseService} from '../../services/crud-firebase-service';
 import {ConfigurationDataService} from '../../services/configuration-data.service';
 import {AuthService} from '../../services/auth.service';
 import {WindowDynamicValuesSetterService} from '../../services/window-dynamic-values-setter.service';
-import {filter, map, takeUntil, tap} from 'rxjs/operators';
+import {
+  filter,
+  map,
+  takeUntil,
+  tap
+} from 'rxjs/operators';
 import {ErpNameTranslatorService} from '../../services/erp-name-translator.service';
 import {LoadWindowConfigurationService} from '../../services/load-window-configuration.service';
 import {HighestIdGetterService} from '../../services/highest-id-getter.service';
@@ -40,8 +53,37 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.loading = true;
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
+    this.paramsAndUser$ = combineLatest(this.authService.returnUser(), this.activeRouter.params).pipe(
+      takeUntil(this.isDestroyed$),
+      map(data => {
+        return {
+          user: data[0],
+          params: data[1]
+        };
+      }));
+    // TODO czy przerzucony tutaj kod będzie działał gdy wczytujemy okno do rekonfiguracji
+    this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(() => {
+      this.coats$.next(this.objectMaker(this.configData.coats));
+      this.extras$.next(this.objectMaker(this.configData.extras));
+      this.coatsFromFile = this.objectMaker(this.configData.coats);
+      this.extrasFromFile = this.objectMaker(this.configData.extras);
+      this.windowModelsToCalculatePrice = this.configData.models;
+      this.availableOptions = this.configData.availableOptions;
+      this.glazingTypes = this.objectMaker(this.configData.glazingTypes);
+      this.materials = this.objectMaker(this.configData.materials);
+      this.openingTypes = this.objectMaker(this.configData.openingTypes);
+      this.innerColors = this.objectMaker(this.configData.innerColors);
+      this.outerMaterials = this.objectMaker(this.configData.outerMaterials);
+      this.outerColors = this.objectMaker(this.configData.outerColor);
+      this.outerColorFinishes = this.objectMaker(this.configData.outerColorFinishes);
+      this.dimensions = RoofWindowsConfigComponent.setDimensions(this.configData.dimensions);
+      this.ventilations = this.objectMaker(this.configData.ventialtions);
+      this.handles = this.objectMaker(this.configData.handles);
+      this.handleColors = this.objectMaker(this.configData.handleColors);
+    });
   }
 
+  private paramsAndUser$: Observable<{ params: ObservedValueOf<Observable<Params>>; user: string }>;
   currentUser: string;
   form: FormGroup;
   formName: string;
@@ -114,6 +156,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     }
   }
 
+
   // 'width': new FormControl(78, [this.validateWidth.bind(this), Validators.required]), własnym walidator
   ngOnInit(): void {
     this.highestUserId = 1;
@@ -125,31 +168,12 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.authService.returnUser().pipe(takeUntil(this.isDestroyed$)).subscribe(user => {
       this.currentUser = user;
     });
+    this.paramsAndUser$.subscribe(console.log);
     this.activeRouter.params.pipe(takeUntil(this.isDestroyed$)).subscribe(param => {
       this.formName = param.formName;
       this.windowCode = param.productCode;
       this.configId = param.configId === undefined ? '-1' : param.configId;
       if (this.formName === 'no-name' || this.formName === undefined) {
-        // TODO czy przerzucony tutaj kod będzie działał gdy wczytujemy okno do rekonfiguracji
-        this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(() => {
-          this.coats$.next(this.objectMaker(this.configData.coats));
-          this.extras$.next(this.objectMaker(this.configData.extras));
-          this.coatsFromFile = this.objectMaker(this.configData.coats);
-          this.extrasFromFile = this.objectMaker(this.configData.extras);
-          this.windowModelsToCalculatePrice = this.configData.models;
-          this.availableOptions = this.configData.availableOptions;
-          this.glazingTypes = this.objectMaker(this.configData.glazingTypes);
-          this.materials = this.objectMaker(this.configData.materials);
-          this.openingTypes = this.objectMaker(this.configData.openingTypes);
-          this.innerColors = this.objectMaker(this.configData.innerColors);
-          this.outerMaterials = this.objectMaker(this.configData.outerMaterials);
-          this.outerColors = this.objectMaker(this.configData.outerColor);
-          this.outerColorFinishes = this.objectMaker(this.configData.outerColorFinishes);
-          this.dimensions = RoofWindowsConfigComponent.setDimensions(this.configData.dimensions);
-          this.ventilations = this.objectMaker(this.configData.ventialtions);
-          this.handles = this.objectMaker(this.configData.handles);
-          this.handleColors = this.objectMaker(this.configData.handleColors);
-        });
         this.formName = cryptoRandomString({length: 12, type: 'alphanumeric'});
         this.authService.returnUser().pipe(takeUntil(this.isDestroyed$)).subscribe(user => {
           this.loadConfig.getWindowToReconfiguration(user, param.formName, param.productCode).pipe(takeUntil(this.isDestroyed$))
@@ -800,6 +824,10 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     }
   }
 
+  changeCheckBoxState() {
+    this.setDisabled(this.configuredWindow);
+  }
+
   // DISABLE INPUT SETTER LOGIC
   resetAllArrays(materials: { option: string; disabled: boolean }[], openingTypes: { option: string; disabled: boolean }[],
                  innerColors: { option: string; disabled: boolean }[], outerMaterials: { option: string; disabled: boolean }[],
@@ -857,12 +885,43 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         if (configurationOption === '_kolorTworzywWew') {
           continue;
         }
-        for (const exclusionObject of exclusions) {
-          if (exclusionObject.selectedOption === configuredWindow[configurationOption]) {
-            for (const [key, value] of Object.entries(exclusionObject)) {
-              if (value === 'TRUE') {
-                if (excludedOptions.indexOf(key) === -1) {
-                  excludedOptions.push(key);
+        if (configurationOption === '_windowCoats') {
+          for (const chosenCoat of configuredWindow['_windowCoats']) {
+            for (const exclusionObject of exclusions) {
+              if (exclusionObject.selectedOption === chosenCoat) {
+                for (const [key, value] of Object.entries(exclusionObject)) {
+                  if (value === 'TRUE') {
+                    if (excludedOptions.indexOf(key) === -1) {
+                      excludedOptions.push(key);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        } else if (configurationOption === '_listaDodatkow') {
+          console.log(configuredWindow['_listaDodatkow']);
+          for (const chosenExtra of configuredWindow['_listaDodatkow']) {
+            for (const exclusionObject of exclusions) {
+              if (exclusionObject.selectedOption === chosenExtra) {
+                for (const [key, value] of Object.entries(exclusionObject)) {
+                  if (value === 'TRUE') {
+                    if (excludedOptions.indexOf(key) === -1) {
+                      excludedOptions.push(key);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        } else {
+          for (const exclusionObject of exclusions) {
+            if (exclusionObject.selectedOption === configuredWindow[configurationOption]) {
+              for (const [key, value] of Object.entries(exclusionObject)) {
+                if (value === 'TRUE') {
+                  if (excludedOptions.indexOf(key) === -1) {
+                    excludedOptions.push(key);
+                  }
                 }
               }
             }

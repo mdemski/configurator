@@ -228,12 +228,13 @@
                  class="configure-form__group__label">{{ 'ROOF-WINDOWS-CONFIG.coat' | translate}}</label>
           <div class="configure-form__group__options" #coatOptions>
             <div class="configure-form__group__options--option" formArrayName="coats"
-                 *ngFor="let coat of coats$ | async; index as i">
+                 *ngFor="let coat of this.coatsFromFile; index as i">
               <input type="checkbox"
                      id="{{coat.option}}"
                      value="{{coat.option}}"
                      formControlName="{{i}}"
                      class="configure-form__group__options--option__input"
+                     (change)="changeCheckBoxState()"
                      [attr.disabled]="coat.disabled"
               />
               <label for="{{coat.option}}"
@@ -470,12 +471,13 @@
                    class="configure-form__group__label">{{ 'ROOF-WINDOWS-CONFIG.extras' | translate}}</label>
             <div class="configure-form__group__options" #extrasOptions>
               <div class="configure-form__group__options--option" formArrayName="extras"
-                   *ngFor="let extra of extras$ | async; index as i">
+                   *ngFor="let extra of this.extrasFromFile; index as i">
                 <input type="checkbox"
                        id="{{extra.option}}"
                        value="{{extra.option}}"
                        formControlName="{{i}}"
                        class="configure-form__group__options--option__input"
+                       (change)="changeCheckBoxState()"
                        [attr.disabled]="extra.disabled"/>
                 <label for="{{extra.option}}"
                        [ngClass]="{'label--disabled' : extra.disabled}"
