@@ -1,0 +1,428 @@
+<div class="navbar-background">
+  <img src="assets/img/navbar_backgrounds/city-4991094_1920.jpg" alt="roof windows">
+</div>
+
+<div class="container">
+  <div class="loader-container" *ngIf="loading; else elseBlock">
+    <app-bouncing-loader></app-bouncing-loader>
+  </div>
+  <ng-template #elseBlock>
+    <div class="configuration-summary-container">
+      <div class="configuration-summary-container__configurations">
+        <div class="configuration-summary-container__single" *ngIf="configuration$ | async as configuration">
+          <div class="configuration-summary-container__single--title">
+            <h1
+              class="configuration-summary-container__single--configuration-number">{{'CONFIG-SUMMARY.configurationNumber' | translate}}:
+              {{configuration.userId}} - <input type="text" [(ngModel)]="configuration.name"
+                                                [attr.disabled]="uneditable"
+                                                class="configuration-summary-container__single--configuration-name"></h1>
+            <a (click)="configurationNameEdit()" *ngIf="uneditable"
+               class="btn-invert btn-invert--grey edit-button">{{'CONFIG-SUMMARY.correctConfigName' | translate}}</a>
+            <a (click)="configurationNameSave(configuration.globalId, configuration.name)" *ngIf="!uneditable"
+               class="btn-invert btn--green edit-button">{{'CONFIG-SUMMARY.saveConfigName' | translate}}</a>
+          </div>
+          <!--Roof window from single configuration-->
+          <h1
+            class="configuration-summary-container__single--product-title first-child"
+            *ngIf="configuration.products.windows">{{'CONFIG-SUMMARY.roofWindows' | translate}}</h1>
+          <div class="configuration-summary-container__single--roof-windows"
+               *ngFor="let singleWindow of configuration.products.windows let last = last" [ngClass]="{'last-child': last}">
+            <img src="{{singleWindow.window._linkiDoZdjec[0]}}"
+                 class="configuration-summary-container__single--roof-windows--window-picture"/>
+            <div class="configuration-summary-container__single--roof-windows--detail">
+              <div class="configuration-summary-container__single--roof-windows--table">
+                <table class="table table-striped table-hover">
+                  <thead>
+                  <tr class="on-hover" (click)="onHoverClick($event)">
+                    <th scope="col">{{ 'SINGLE-PRODUCT.LP' | translate}} <span>({{'CONFIG-SUMMARY.expend' | translate}}&#8595;)</span>
+                    </th>
+                    <th scope="col">{{ 'CONFIG-SUMMARY.feature' | translate}}</th>
+                    <th scope="col">{{ 'CONFIG-SUMMARY.value' | translate}}</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowName' | translate}}</td>
+                    <td>{{singleWindow.window._windowName}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowUW' | translate}}</td>
+                    <td>{{singleWindow.window._windowUW}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">3</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowUG' | translate}}</td>
+                    <td>{{singleWindow.window._windowUG}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">4</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowModel' | translate}}</td>
+                    <td>{{ builtNameForTranslation('ROOF-WINDOWS-DATA.', singleWindow.window._model) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">5</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowGlazing' | translate}}</td>
+                    <td>{{ builtNameForTranslation('ROOF-WINDOWS-DATA.', singleWindow.window._pakietSzybowy) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">6</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowDimensions' | translate}}</td>
+                    <td>{{singleWindow.window._szerokosc}} x {{singleWindow.window._wysokosc}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">7</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowGeometry' | translate}}</td>
+                    <td>{{ builtNameForTranslation('ROOF-WINDOWS-DATA.', singleWindow.window._geometria) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">8</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowOpeningType' | translate}}</td>
+                    <td>{{ builtNameForTranslation('ROOF-WINDOWS-DATA.', singleWindow.window._otwieranie) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">9</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowVentilation' | translate}}</td>
+                    <td>{{ builtNameForTranslation('ROOF-WINDOWS-DATA.', singleWindow.window._wentylacja) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">10</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowMaterial' | translate}}</td>
+                    <td>{{ builtNameForTranslation('ROOF-WINDOWS-DATA.', singleWindow.window._stolarkaMaterial) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">11</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowMaterialColor' | translate}}</td>
+                    <td>{{ builtNameForTranslation('ROOF-WINDOWS-DATA.', singleWindow.window._stolarkaKolor) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">12</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowMaterialFinish' | translate}}</td>
+                    <td>{{ builtNameForTranslation('ROOF-WINDOWS-DATA.', singleWindow.window._rodzina) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">13</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowOuterMaterial' | translate}}</td>
+                    <td>{{ builtNameForTranslation('ROOF-WINDOWS-DATA.', singleWindow.window._oblachowanieMaterial) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">14</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowOuterColor' | translate}}</td>
+                    <td>{{singleWindow.window._oblachowanieKolor}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">15</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowOuterFinish' | translate}}</td>
+                    <td>{{ builtNameForTranslation('ROOF-WINDOWS-DATA.', singleWindow.window._oblachowanieFinisz) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">16</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowHandleType' | translate}}</td>
+                    <td>{{ builtNameForTranslation('ROOF-WINDOWS-DATA.', singleWindow.window._zamkniecieTyp) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">17</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowHandleColor' | translate}}</td>
+                    <td>{{ builtNameForTranslation('ROOF-WINDOWS-DATA.', singleWindow.window._zamkniecieKolor) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">18</th>
+                    <td>{{ 'SINGLE-PRODUCT.innerAccessoryColor' | translate}}</td>
+                    <td>{{ builtNameForTranslation('ROOF-WINDOWS-DATA.', singleWindow.window._kolorTworzywWew) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">19</th>
+                    <td>{{ 'SINGLE-PRODUCT.foamsNumber' | translate}}</td>
+                    <td>{{singleWindow.window._uszczelki}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">20</th>
+                    <td>{{ 'SINGLE-PRODUCT.detalPrice' | translate}}</td>
+                    <td>{{singleWindow.window._CenaDetaliczna}}</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="configuration-summary-container__single__buttons">
+                <a routerLink="../{{'CONFIG-SUMMARY.correctWindowConfigLink' | translate}}/{{configuration.globalId}}/{{singleWindow.windowFormName}}/{{singleWindow.window._kod}}"
+                   class="btn btn--black">{{'CONFIG-SUMMARY.correctConfig' | translate}}</a>
+                <div class="quantity-container">
+                  <p class="quantity-desc">{{ 'SINGLE-PRODUCT.quantity' | translate}}</p>
+                  <i
+                    (click)="decreaseQuantity(configuration.globalId, singleWindow, singleWindow.id, singleWindow.quantity)">-</i>
+                  <input type="number" class="quantity" [(ngModel)]="singleWindow.quantity"/>
+                  <i
+                    (click)="increaseQuantity(configuration.globalId, singleWindow, singleWindow.id, singleWindow.quantity)">+</i>
+                </div>
+                <a class="btn btn--black remove-config-button"
+                   (click)="removeProductConfiguration(configuration.globalId, singleWindow.id, singleWindow)">{{ 'CONFIG-SUMMARY.removeConfiguration' | translate}}</a>
+                <a href="" class="btn btn--green add-to-cart"
+                   (click)="addToCart(singleWindow)">{{ 'SINGLE-PRODUCT.addToCart' | translate}}</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="configuration-summary-container__single--add-new">
+            <a routerLink="../{{'CONFIG-SUMMARY.correctWindowConfigLink' | translate}}/{{configuration.globalId}}/-1"
+               class="btn btn--grey">{{'CONFIG-SUMMARY.addNewWindow' | translate}}</a>
+          </div>
+
+          <!--Flashing from single configuration-->
+          <h1
+            class="configuration-summary-container__single--product-title" #flashingsLength
+            *ngIf="configuration.products.flashings">{{'CONFIG-SUMMARY.flashings' | translate}}</h1>
+          <div class="configuration-summary-container__single--flashings"
+               *ngFor="let singleFlashing of configuration.products.flashings let last = last" [ngClass]="{'last-child': last}">
+            <img src="{{singleFlashing.flashing._linkiDoZdjec[0]}}"
+                 class="configuration-summary-container__single--flashings--flashing-picture"/>
+            <div class="configuration-summary-container__single--flashings--detail">
+              <div class="configuration-summary-container__single--flashings--table">
+                <table class="table table-striped table-hover">
+                  <thead>
+                  <tr class="on-hover" (click)="onHoverClick($event)">
+                    <th scope="col">{{ 'SINGLE-PRODUCT.LP' | translate}} <span>({{'CONFIG-SUMMARY.expend' | translate}}&#8595;)</span>
+                    </th>
+                    <th scope="col">{{ 'CONFIG-SUMMARY.feature' | translate}}</th>
+                    <th scope="col">{{ 'CONFIG-SUMMARY.value' | translate}}</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>{{ 'SINGLE-PRODUCT.flashingName' | translate}}</td>
+                    <td>{{singleFlashing.flashing._flashingName}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>{{ 'SINGLE-PRODUCT.flashingModel' | translate}}</td>
+                    <td>{{ builtNameForTranslation('FLASHINGS-DATA.', singleFlashing.flashing._model) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">3</th>
+                    <td>{{ 'SINGLE-PRODUCT.flashingApron' | translate}}</td>
+                    <td>{{ builtNameForTranslation('FLASHINGS-DATA.', singleFlashing.flashing._flashingApron) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">4</th>
+                    <td>{{ 'SINGLE-PRODUCT.flashingDimensions' | translate}}</td>
+                    <td>{{singleFlashing.flashing._szerokosc}} x {{singleFlashing.flashing._wysokosc}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">5</th>
+                    <td>{{ 'SINGLE-PRODUCT.flashingCategory' | translate}}</td>
+                    <td>{{ builtNameForTranslation('FLASHINGS-DATA.', singleFlashing.flashing._grupaAsortymentowa) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">6</th>
+                    <td>{{ 'SINGLE-PRODUCT.flashingSubCategory' | translate}}</td>
+                    <td>{{ builtNameForTranslation('FLASHINGS-DATA.', singleFlashing.flashing._rodzaj) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">7</th>
+                    <td>{{ 'SINGLE-PRODUCT.flashingGeometry' | translate}}</td>
+                    <td>{{ builtNameForTranslation('FLASHINGS-DATA.', singleFlashing.flashing._geometria) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">8</th>
+                    <td>{{ 'SINGLE-PRODUCT.flashingOuterMaterial' | translate}}</td>
+                    <td>{{ builtNameForTranslation('FLASHINGS-DATA.', singleFlashing.flashing._oblachowanieMaterial) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">9</th>
+                    <td>{{ 'SINGLE-PRODUCT.flashingOuterColor' | translate}}</td>
+                    <td>{{ builtNameForTranslation('FLASHINGS-DATA.', singleFlashing.flashing._oblachowanieKolor) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">10</th>
+                    <td>{{ 'SINGLE-PRODUCT.flashingOuterFinish' | translate}}</td>
+                    <td>{{ builtNameForTranslation('FLASHINGS-DATA.', singleFlashing.flashing._oblachowanieFinisz) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">11</th>
+                    <td>{{ 'SINGLE-PRODUCT.flashingTileHeight' | translate}}</td>
+                    <td>{{singleFlashing.flashing._flashingTileHeight}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">12</th>
+                    <td>{{ 'SINGLE-PRODUCT.flashingNumberOfConnections' | translate}}</td>
+                    <td>{{singleFlashing.flashing._flashingNumberOfConnections}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">13</th>
+                    <td>{{ 'SINGLE-PRODUCT.flashingVerticalDistance' | translate}}</td>
+                    <td>{{singleFlashing.flashing._rozstawPion}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">14</th>
+                    <td>{{ 'SINGLE-PRODUCT.flashingHorizontalDistance' | translate}}</td>
+                    <td>{{singleFlashing.flashing._rozstawPoziom}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">15</th>
+                    <td>{{ 'SINGLE-PRODUCT.detalPrice' | translate}}</td>
+                    <td>{{singleFlashing.flashing._CenaDetaliczna}}</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="configuration-summary-container__single__buttons">
+                <a routerLink="../{{'CONFIG-SUMMARY.correctFlashingConfigLink' | translate}}/{{configuration.globalId}}/{{singleFlashing.id}}/{{singleFlashing.flashing._kod}}"
+                   class="btn btn--black">{{'CONFIG-SUMMARY.correctConfig' | translate}}</a>
+                <div class="quantity-container quantity-counter">
+                  <p class="quantity-desc">{{'SINGLE-PRODUCT.quantity' | translate}}</p>
+                  <i
+                    (click)="decreaseQuantity(configuration.globalId, singleFlashing, singleFlashing.id, singleFlashing.quantity)">-</i>
+                  <input type="number" class="quantity" [(ngModel)]="singleFlashing.quantity"/>
+                  <i
+                    (click)="increaseQuantity(configuration.globalId, singleFlashing, singleFlashing.id, singleFlashing.quantity)">+</i>
+                </div>
+                <a class="btn btn--black remove-config-button"
+                   (click)="removeProductConfiguration(configuration.globalId, singleFlashing.id, singleFlashing)">{{ 'CONFIG-SUMMARY.removeConfiguration' | translate}}</a>
+                <a href="" class="btn btn--green add-to-cart"
+                   (click)="addToCart(singleFlashing)">{{'SINGLE-PRODUCT.addToCart' | translate}}</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="configuration-summary-container__single--add-new">
+            <a routerLink="../{{'CONFIG-SUMMARY.correctFlashingConfigLink' | translate}}/{{configuration.id}}/-1"
+               class="btn btn--grey">{{'CONFIG-SUMMARY.addNewFlashing' | translate}}</a>
+          </div>
+
+          <div
+            *ngIf="configuration.products.windows === undefined || configuration.products.flashings === undefined || configuration.products.flashings === null
+          || configuration.products.windows.length !== configuration.products.flashings.length"
+            class="configuration-summary-container__single--flashings--warning">{{'CONFIG-SUMMARY.differentLength' | translate}}</div>
+
+          <!--Accessory from single configuration-->
+          <h1
+            class="configuration-summary-container__single--product-title"
+            *ngIf="configuration.products.accessories">{{'CONFIG-SUMMARY.accessories' | translate}}</h1>
+          <div class="configuration-summary-container__single--accessories"
+               *ngFor="let singleAccessory of configuration.products.accessories let last = last"
+               [ngClass]="{'last-child': last}">
+            <img src="{{singleAccessory.accessory._linkiDoZdjec[0]}}"
+                 class="configuration-summary-container__single--accessories--accessory-picture"/>
+            <div class="configuration-summary-container__single--accessories--detail">
+              <div class="configuration-summary-container__single--accessories--table">
+                <table class="table table-striped table-hover">
+                  <thead>
+                  <tr class="on-hover" (click)="onHoverClick($event)">
+                    <th scope="col">{{ 'SINGLE-PRODUCT.LP' | translate}} <span>({{'CONFIG-SUMMARY.expend' | translate}}&#8595;)</span>
+                    </th>
+                    <th scope="col">{{ 'CONFIG-SUMMARY.feature' | translate}}</th>
+                    <th scope="col">{{ 'CONFIG-SUMMARY.value' | translate}}</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>{{ 'SINGLE-PRODUCT.accessoryName' | translate}}</td>
+                    <td>{{singleAccessory.accessory.accessoryName}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>{{ 'SINGLE-PRODUCT.accessoryModel' | translate}}</td>
+                    <td>{{ builtNameForTranslation('ACCESSORIES-DATA.', singleAccessory.accessory._model) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">3</th>
+                    <td>{{ 'SINGLE-PRODUCT.accessoryDimensions' | translate}}</td>
+                    <td>{{singleAccessory.accessory._szerokosc}} x {{singleAccessory.accessory._wysokosc}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">4</th>
+                    <td>{{ 'SINGLE-PRODUCT.materialTyp' | translate}}</td>
+                    <td>{{ builtNameForTranslation('ACCESSORIES-DATA.', singleAccessory.accessory._typTkaniny) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">5</th>
+                    <td>{{ 'SINGLE-PRODUCT.materialColor' | translate}}</td>
+                    <td>{{ builtNameForTranslation('ACCESSORIES-DATA.', singleAccessory.accessory._kolorTkaniny) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">6</th>
+                    <td>{{ 'SINGLE-PRODUCT.accessoryColor' | translate}}</td>
+                    <td>{{ builtNameForTranslation('ACCESSORIES-DATA.', singleAccessory.accessory._roletyKolorOsprzetu) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">7</th>
+                    <td>{{ 'SINGLE-PRODUCT.accessoryOpeningType' | translate}}</td>
+                    <td>{{ builtNameForTranslation('ACCESSORIES-DATA.', singleAccessory.accessory._otwieranie) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">8</th>
+                    <td>{{ 'SINGLE-PRODUCT.accessoryCategory' | translate}}</td>
+                    <td>{{ builtNameForTranslation('ACCESSORIES-DATA.', singleAccessory.accessory._grupaAsortymentowa) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">9</th>
+                    <td>{{ 'SINGLE-PRODUCT.accessorySubCategory' | translate}}</td>
+                    <td>{{ builtNameForTranslation('ACCESSORIES-DATA.', singleAccessory.accessory._rodzaj) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">10</th>
+                    <td>{{ 'SINGLE-PRODUCT.accessoryGeometry' | translate}}</td>
+                    <td>{{ builtNameForTranslation('ACCESSORIES-DATA.', singleAccessory.accessory._geometria) | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">11</th>
+                    <td>{{ 'SINGLE-PRODUCT.detalPrice' | translate}}</td>
+                    <td>{{singleAccessory.accessory._CenaDetaliczna}}</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="configuration-summary-container__single__buttons">
+                <a routerLink="../{{'CONFIG-SUMMARY.correctAccessoryConfigLink' | translate}}/{{configuration.globalId}}/{{singleAccessory.id}}/{{singleAccessory.accessory._kod}}"
+                   class="btn btn--black">{{'CONFIG-SUMMARY.correctConfig' | translate}}</a>
+                <div class="quantity-container">
+                  <p class="quantity-desc">{{ 'SINGLE-PRODUCT.quantity' | translate}}</p>
+                  <i
+                    (click)="decreaseQuantity(configuration.globalId, singleAccessory, singleAccessory.id, singleAccessory.quantity)">-</i>
+                  <input type="number" class="quantity" [(ngModel)]="singleAccessory.quantity"/>
+                  <i
+                    (click)="increaseQuantity(configuration.globalId, singleAccessory, singleAccessory.id, singleAccessory.quantity)">+</i>
+                </div>
+                <a class="btn btn--black remove-config-button"
+                   (click)="removeProductConfiguration(configuration.globalId, singleAccessory.id, singleAccessory)">{{ 'CONFIG-SUMMARY.removeConfiguration' | translate}}</a>
+                <a href="" class="btn btn--green add-to-cart"
+                   (click)="addToCart(singleAccessory)">{{ 'SINGLE-PRODUCT.addToCart' | translate}}</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="configuration-summary-container__single--add-new">
+            <a routerLink="../{{'CONFIG-SUMMARY.correctAccessoryConfigLink' | translate}}/{{configuration.globalId}}/-1"
+               class="btn btn--grey">{{'CONFIG-SUMMARY.addNewAccessory' | translate}}</a>
+          </div>
+
+          <div class="configuration-summary-container__single--hole-buttons">
+            <a routerLink="../{{'CONFIG-SUMMARY.sendConfiguration' | translate}}/{{configuration}}"
+               class="btn btn--dark-blue">{{'CONFIG-SUMMARY.sendConfigurationButton' | translate}}</a>
+            <a class="btn btn--black remove-config-button"
+               (click)="removeHoleConfiguration(configuration.globalId)">{{ 'CONFIG-SUMMARY.removeHoleConfiguration' | translate}}</a>
+            <a class="btn btn--green add-hole-to-cart"
+               (click)="addToCart(configuration)">{{ 'CONFIG-SUMMARY.addHoleConfigToCart' | translate}}</a>
+          </div>
+
+        </div>
+
+        <div class="configuration-summary-container__create-new">
+          <a routerLink="/{{'CONFIG-SUMMARY.correctConfigLink' | translate}}"
+             class="btn btn--red">{{'CONFIG-SUMMARY.prepareNewConfiguration' | translate}}</a>
+        </div>
+
+      </div>
+      <ng-template #noConfigurations>
+        <div class="configuration-summary-container__no-configurations">
+          <h1
+            class="configuration-summary-container__no-configurations--text">{{'CONFIG-SUMMARY.noConfigurations' | translate}}</h1>
+          <a routerLink="../{{'CONFIG-SUMMARY.correctConfigLink' | translate}}"
+             class="btn btn--yellow">{{'CONFIG-SUMMARY.prepareConfiguration' | translate}}</a>
+        </div>
+      </ng-template>
+    </div>
+  </ng-template>
+</div>

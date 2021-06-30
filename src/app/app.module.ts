@@ -48,6 +48,7 @@ import { DisableControlDirective } from './directives/disable-control.directive'
 import {AngularFireModule} from '@angular/fire';
 import {environment} from '../environments/environment';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
+import { SingleConfigurationSummaryComponent } from './configurator/single-configuration-summary/single-configuration-summary.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -88,7 +89,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     FlashingDetailsComponent,
     RoofWindowFiltrationComponent,
     FilterPipe,
-    DisableControlDirective
+    DisableControlDirective,
+    SingleConfigurationSummaryComponent
   ],
   imports: [
     BrowserModule,
