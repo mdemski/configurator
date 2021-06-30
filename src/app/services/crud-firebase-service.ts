@@ -117,29 +117,39 @@ export class CrudFirebaseService {
   readWindowConfigurationByFormName(formName: string) {
     return this.http.get(`${this.baseUri}`).pipe(map((allConfigurations: SingleConfiguration[]) => {
       for (const config of allConfigurations) {
-        for (const windowConfig of config.products.windows) {
-          if (windowConfig.windowFormName === formName) {
-            return windowConfig;
+        if (config.products.windows) {
+          for (const windowConfig of config.products.windows) {
+            if (windowConfig.windowFormName === formName) {
+              return windowConfig;
+            }
           }
         }
-        for (const flashingConfig of config.products.flashings) {
-          if (flashingConfig.flashingFormName === formName) {
-            return flashingConfig;
+        if (config.products.flashings) {
+          for (const flashingConfig of config.products.flashings) {
+            if (flashingConfig.flashingFormName === formName) {
+              return flashingConfig;
+            }
           }
         }
-        for (const accessoryConfig of config.products.accessories) {
-          if (accessoryConfig.accessoryFormName === formName) {
-            return accessoryConfig;
+        if (config.products.accessories) {
+          for (const accessoryConfig of config.products.accessories) {
+            if (accessoryConfig.accessoryFormName === formName) {
+              return accessoryConfig;
+            }
           }
         }
-        for (const verticalConfig of config.products.verticals) {
-          if (verticalConfig.verticalFormName === formName) {
-            return verticalConfig;
+        if (config.products.verticals) {
+          for (const verticalConfig of config.products.verticals) {
+            if (verticalConfig.verticalFormName === formName) {
+              return verticalConfig;
+            }
           }
         }
-        for (const flatConfig of config.products.flats) {
-          if (flatConfig.flatFormName === formName) {
-            return flatConfig;
+        if (config.products.flats) {
+          for (const flatConfig of config.products.flats) {
+            if (flatConfig.flatFormName === formName) {
+              return flatConfig;
+            }
           }
         }
       }
