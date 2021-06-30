@@ -163,80 +163,78 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.tempConfiguredWindow = new RoofWindowSkylight(
       '1O-ISO-V-E02-KL00-A7022P-079119-OKPO01', 'Okno dachowe tymczasowe', 'ISOV E2 79x119', 'I-Okno', 'NPL-Okno', 'Nowy', 'Okno:ISOV', 'Okno:E02', 'dwuszybowy', 79,
       119, 'OknoDachowe', 'obrotowe', 'Okno:IS', 'OknoDachowe:ISO', 'Okno:Obrotowe', 'NawiewnikNeoVent', 'DrewnoSosna', 'Drewno:Bezbarwne', 'OknoDachowe:IS', 'Aluminium',
+      // tslint:disable-next-line:max-line-length
       'RAL9999', 'Aluminium:Półmat', 'Okno:ExtraSecure', 'Okno:RAL7048', false, 2, ['78x118'], ['zewnetrznaHartowana', false, false, false, false, false, false, false, false],
       ['https://www.okpol.pl/wp-content/uploads/2017/02/1_ISO.jpg'], ['Okno:Zasuwka', false, false], 1332.80, 1, 1.2, 5, 'Okno:RAL7048', 'Okno:RAL7048', null, 2, 'PL');
-    this.authService.returnUser().pipe(takeUntil(this.isDestroyed$)).subscribe(user => {
-      this.currentUser = user;
-    });
-    this.paramsAndUser$.subscribe(console.log);
-    this.activeRouter.params.pipe(takeUntil(this.isDestroyed$)).subscribe(param => {
-      this.formName = param.formName;
-      this.windowCode = param.productCode;
-      this.configId = param.configId === undefined ? '-1' : param.configId;
+    this.paramsAndUser$.pipe(takeUntil(this.isDestroyed$)).subscribe(paramsAndUser => {
+      this.formName = paramsAndUser.params.formName;
+      this.windowCode = paramsAndUser.params.productCode;
+      this.configId = paramsAndUser.params.configId === undefined ? '-1' : paramsAndUser.params.configId;
+      this.currentUser = paramsAndUser.user;
       if (this.formName === 'no-name' || this.formName === undefined) {
         this.formName = cryptoRandomString({length: 12, type: 'alphanumeric'});
-        this.authService.returnUser().pipe(takeUntil(this.isDestroyed$)).subscribe(user => {
-          this.loadConfig.getWindowToReconfiguration(user, param.formName, param.productCode).pipe(takeUntil(this.isDestroyed$))
-            .subscribe(windowToReconfiguration => {
-              this.configuredWindow = windowToReconfiguration;
-              this.form = this.fb.group({
-                material: new FormControl(this.configuredWindow.stolarkaMaterial, [], [this.validateMaterials.bind(this)]),
-                openingType: new FormControl(this.configuredWindow.otwieranie, [], [this.validateOpenings.bind(this)]),
-                control: new FormControl(RoofWindowsConfigComponent.getControlType(this.configuredWindow.otwieranie)),
-                glazing: new FormControl(this.configuredWindow.glazingToCalculation, [], [this.validateGlazing.bind(this)]),
-                width: new FormControl(this.configuredWindow.szerokosc),
-                height: new FormControl(this.configuredWindow.wysokosc),
-                innerColor: new FormControl(this.configuredWindow.stolarkaKolor, [], [this.validateInnerColor.bind(this)]),
-                outer: new FormGroup({
-                  outerMaterial: new FormControl(this.configuredWindow.oblachowanieMaterial),
-                  outerColor: new FormControl(this.configuredWindow.oblachowanieKolor),
-                  outerColorFinish: new FormControl(this.configuredWindow.oblachowanieFinisz)
-                }, [], [this.validateOuterMaterial.bind(this)]),
-                ventilation: new FormControl(this.configuredWindow.wentylacja, [], [this.validateVentilation.bind(this)]),
-                closure: new FormGroup({
-                  handle: new FormControl(this.configuredWindow.zamkniecieTyp, [], [this.validateHandle.bind(this)]),
-                  handleColor: new FormControl(this.configuredWindow.zamkniecieKolor)
-                })
-              });
-              // TODO spróbować przebudować tę część żeby powłoki i dodatki trafiały tu szybciej
-              this.coats$.pipe(
-                takeUntil(this.isDestroyed$),
-                filter(data => !!data),
-                map(coats => this.fb.array(coats.map((x, index) => {
-                  if (this.configuredWindow.windowCoats === undefined) {
-                    return new FormControl(false);
-                  } else {
-                    if (this.configuredWindow.windowCoats[index] === x.option) {
-                      return new FormControl(true);
-                    } else {
-                      return new FormControl(false);
-                    }
-                  }
-                })))
-              ).subscribe(coatsFormArray => {
-                this.form.addControl('coats', coatsFormArray);
-              });
-              this.extras$.pipe(
-                takeUntil(this.isDestroyed$),
-                filter(data => !!data),
-                map(extras => this.fb.array(extras.map((x, index) => {
-                  if (this.configuredWindow.listaDodatkow === undefined) {
-                    return new FormControl(false);
-                  } else {
-                    if (this.configuredWindow.listaDodatkow[index] === x.option) {
-                      return new FormControl(true);
-                    } else {
-                      return new FormControl(false);
-                    }
-                  }
-                })))
-              ).subscribe(extrasFormArray => {
-                this.form.addControl('extras', extrasFormArray);
-              });
-              this.formChanges();
-              this.loading = false;
+        // tslint:disable-next-line:max-line-length
+        this.loadConfig.getWindowToReconfiguration(paramsAndUser.user, paramsAndUser.params.formName, paramsAndUser.params.productCode).pipe(takeUntil(this.isDestroyed$))
+          .subscribe(windowToReconfiguration => {
+            this.configuredWindow = windowToReconfiguration;
+            this.form = this.fb.group({
+              material: new FormControl(this.configuredWindow.stolarkaMaterial, [], [this.validateMaterials.bind(this)]),
+              openingType: new FormControl(this.configuredWindow.otwieranie, [], [this.validateOpenings.bind(this)]),
+              control: new FormControl(RoofWindowsConfigComponent.getControlType(this.configuredWindow.otwieranie)),
+              glazing: new FormControl(this.configuredWindow.glazingToCalculation, [], [this.validateGlazing.bind(this)]),
+              width: new FormControl(this.configuredWindow.szerokosc),
+              height: new FormControl(this.configuredWindow.wysokosc),
+              innerColor: new FormControl(this.configuredWindow.stolarkaKolor, [], [this.validateInnerColor.bind(this)]),
+              outer: new FormGroup({
+                outerMaterial: new FormControl(this.configuredWindow.oblachowanieMaterial),
+                outerColor: new FormControl(this.configuredWindow.oblachowanieKolor),
+                outerColorFinish: new FormControl(this.configuredWindow.oblachowanieFinisz)
+              }, [], [this.validateOuterMaterial.bind(this)]),
+              ventilation: new FormControl(this.configuredWindow.wentylacja, [], [this.validateVentilation.bind(this)]),
+              closure: new FormGroup({
+                handle: new FormControl(this.configuredWindow.zamkniecieTyp, [], [this.validateHandle.bind(this)]),
+                handleColor: new FormControl(this.configuredWindow.zamkniecieKolor)
+              })
             });
-        });
+            // TODO spróbować przebudować tę część żeby powłoki i dodatki trafiały tu szybciej
+            this.coats$.pipe(
+              takeUntil(this.isDestroyed$),
+              filter(data => !!data),
+              map(coats => this.fb.array(coats.map((x, index) => {
+                if (this.configuredWindow.windowCoats === undefined) {
+                  return new FormControl(false);
+                } else {
+                  if (this.configuredWindow.windowCoats[index] === x.option) {
+                    return new FormControl(true);
+                  } else {
+                    return new FormControl(false);
+                  }
+                }
+              })))
+            ).subscribe(coatsFormArray => {
+              this.form.addControl('coats', coatsFormArray);
+            });
+            this.extras$.pipe(
+              takeUntil(this.isDestroyed$),
+              filter(data => !!data),
+              map(extras => this.fb.array(extras.map((x, index) => {
+                if (this.configuredWindow.listaDodatkow === undefined) {
+                  return new FormControl(false);
+                } else {
+                  if (this.configuredWindow.listaDodatkow[index] === x.option) {
+                    return new FormControl(true);
+                  } else {
+                    return new FormControl(false);
+                  }
+                }
+              })))
+            ).subscribe(extrasFormArray => {
+              this.form.addControl('extras', extrasFormArray);
+            });
+            this.formChanges();
+            this.setDisabled(this.configuredWindow);
+            this.loading = false;
+          });
       } else {
         this.loadConfig.getWindowConfigurationByFormName(this.formName)
           .pipe(takeUntil(this.isDestroyed$))
@@ -900,7 +898,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
             }
           }
         } else if (configurationOption === '_listaDodatkow') {
-          console.log(configuredWindow['_listaDodatkow']);
           for (const chosenExtra of configuredWindow['_listaDodatkow']) {
             for (const exclusionObject of exclusions) {
               if (exclusionObject.selectedOption === chosenExtra) {
