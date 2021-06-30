@@ -500,13 +500,28 @@
               <form #configForm="ngForm" class="choose-config-popup__content__form">
                 <div class="choose-config-popup__content__form--select" tabindex="1">
                   <ng-container *ngFor="let singleConfiguration of userConfigs; let i = index">
-                    <input value="{{singleConfiguration.userId}}" [(ngModel)]="configFormId" name="configFormId" class="choose-config-popup__content__form--select--input" type="radio" id="{{i}}"/>
-                    <label for="{{i}}" class="choose-config-popup__content__form--select--label">{{singleConfiguration.userId}} - {{singleConfiguration.name}}</label>
+                    <input value="{{singleConfiguration.userId}}" [(ngModel)]="configFormId" name="configFormId"
+                           class="choose-config-popup__content__form--select--input" type="radio" id="{{i}}"/>
+                    <label for="{{i}}"
+                           class="choose-config-popup__content__form--select--label">{{singleConfiguration.userId}}
+                      - {{singleConfiguration.name}}</label>
                   </ng-container>
                 </div>
                 <a (click)="chooseConfigId(configForm)"
                    class="btn btn--blue">{{ 'ROOF-WINDOWS-CONFIG.chooseConfigNameButton' | translate}}</a>
               </form>
+            </div>
+          </div>
+          <div class="copy-link-config-popup" *ngIf="copyLinkToConfigurationPopup">
+            <div class="copy-link-config-popup__content" tabindex="1">
+              <div class="copy-link-config-popup__content__info-box">
+                <label
+                  class="copy-link-config-popup__content__info-box--label">{{ 'ROOF-WINDOWS-CONFIG.copyLinkText' | translate}}</label>
+                <input value="{{urlToSaveConfiguration}}" name="configLink" class="copy-link-config-popup__content__info-box--input"
+                       type="text" disabled id="configLink"/>
+                <a (click)="closeCopyLinkPopUp()"
+                   class="btn btn--grey copy-link-config-popup__content__info-box__button">{{ 'ROOF-WINDOWS-CONFIG.closeCopyLinkPopUp' | translate}}</a>
+              </div>
             </div>
           </div>
           <!-- TODO dokleić do przycisku i usunąć tempConfigWindow [disabled]="!windowConfigurationForm.valid"-->
@@ -526,6 +541,8 @@
                   form.get('ventilation').hasError('empty ventilation') ||
                   form.get('closure').hasError('empty handle')">{{ 'ROOF-WINDOWS-CONFIG.validationInfo' | translate}}</p>
           </div>
+          <a (click)="saveCopyLinkPopUp()"
+             class="btn btn--grey configure-form__save-button">{{ 'ROOF-WINDOWS-CONFIG.saveCopyLinkPopUp' | translate}}</a>
         </div>
       </form>
     </div>

@@ -297,7 +297,10 @@
     "validationInfo": "Skonfiguruj wszystkie opcje zanim przejdziesz do podsumowania",
     "submit": "Podsumowanie",
     "chooseConfigName": "Wybierz konfigurację",
-    "chooseConfigNameButton": "Wybierz"
+    "chooseConfigNameButton": "Wybierz",
+    "closeCopyLinkPopUp": "Zamknij",
+    "copyLinkText": "Skopij i zapisz poniższy link",
+    "saveCopyLinkPopUp": "Zapisz link do konfiguracji"
   },
   "ROOF-WINDOWS-DATA": {
     "Okno:IS1": "IS",

@@ -92,6 +92,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   windowCode: string;
   configFormId: number;
   dimensions;
+  urlToSaveConfiguration: string;
   roofWindowsFormDataBase: RoofWindowSkylight[];
   configuredWindow: RoofWindowSkylight;
   tempConfiguredWindow: RoofWindowSkylight;
@@ -102,6 +103,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   showHeightMessage = false;
   popupConfig = true;
   chooseConfigNamePopup = false;
+  copyLinkToConfigurationPopup = false;
   userConfigs = [];
   private materialVisible = true;
   private openingVisible = false;
@@ -826,6 +828,10 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.setDisabled(this.configuredWindow);
   }
 
+  closeCopyLinkPopUp() {
+    this.copyLinkToConfigurationPopup = false;
+  }
+
   // DISABLE INPUT SETTER LOGIC
   resetAllArrays(materials: { option: string; disabled: boolean }[], openingTypes: { option: string; disabled: boolean }[],
                  innerColors: { option: string; disabled: boolean }[], outerMaterials: { option: string; disabled: boolean }[],
@@ -1104,4 +1110,36 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   //     }
   //   }
   // }
+  saveCopyLinkPopUp() {
+    this.loading = true;
+    this.copyLinkToConfigurationPopup = true;
+    this.temporaryConfig = {
+      products: {
+        windows: [{
+          id: 1,
+          quantity: 1,
+          window: this.configuredWindow,
+          windowFormName: this.formName,
+          windowFormData: this.form.value,
+        }],
+        flashings: null,
+        accessories: null,
+        verticals: null,
+        flats: null
+      },
+      globalId: this.hd.getHighestGlobalIdFormMongoDB(),
+      created: new Date(),
+      lastUpdate: new Date(),
+      user: 'anonym',
+      userId: 0,
+      name: 'temporary',
+      active: true
+    };
+    this.urlToSaveConfiguration = this.router['location']._platformLocation.location.origin + this.router.url
+      + '/' + this.temporaryConfig.globalId
+      + '/' + this.temporaryConfig.products.windows[0].windowFormName
+      + '/' + this.temporaryConfig.products.windows[0].window.kod;
+    this.crud.createConfigurationForUser('anonym', this.temporaryConfig).subscribe(console.log);
+    this.loading = false;
+  }
 }
