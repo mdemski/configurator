@@ -136,6 +136,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   handleColors = [];
   shopRoofWindowLink: string;
   configurationSummary: string;
+  windowsConfigurator: string;
   formData$;
   subscription: Subscription;
   coats$ = new BehaviorSubject<any[]>([]);
@@ -283,6 +284,9 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     });
     this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
       this.configurationSummary = text.configurationSummary;
+    });
+    this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
+      this.windowsConfigurator = text.configuratorRoofWindows;
     });
   }
 
@@ -706,6 +710,43 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     return objectsArray;
   }
 
+  saveCopyLinkPopUp() {
+    this.loading = true;
+    this.copyLinkToConfigurationPopup = true;
+    this.temporaryConfig = {
+      products: {
+        windows: [{
+          id: 1,
+          quantity: 1,
+          window: this.configuredWindow,
+          windowFormName: this.formName,
+          windowFormData: this.form.value,
+        }],
+        flashings: null,
+        accessories: null,
+        verticals: null,
+        flats: null
+      },
+      globalId: this.hd.getHighestGlobalIdFormMongoDB(),
+      created: new Date(),
+      lastUpdate: new Date(),
+      user: 'anonym',
+      userId: 0,
+      name: 'temporary',
+      active: true
+    };
+    this.urlToSaveConfiguration = this.router['location']._platformLocation.location.origin + this.router.url
+      + '/' + this.temporaryConfig.globalId
+      + '/' + this.temporaryConfig.products.windows[0].windowFormName
+      + '/' + this.temporaryConfig.products.windows[0].window.kod;
+    this.crud.createConfigurationForUser('anonym', this.temporaryConfig).subscribe(console.log);
+    this.loading = false;
+  }
+
+  resetConfigForm() {
+    this.router.navigate(['/' + this.windowsConfigurator]);
+  }
+
   // CSS STYLING
   setBackgroundImage(value: string) {
     const twoParts = value.split(':');
@@ -1110,36 +1151,4 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   //     }
   //   }
   // }
-  saveCopyLinkPopUp() {
-    this.loading = true;
-    this.copyLinkToConfigurationPopup = true;
-    this.temporaryConfig = {
-      products: {
-        windows: [{
-          id: 1,
-          quantity: 1,
-          window: this.configuredWindow,
-          windowFormName: this.formName,
-          windowFormData: this.form.value,
-        }],
-        flashings: null,
-        accessories: null,
-        verticals: null,
-        flats: null
-      },
-      globalId: this.hd.getHighestGlobalIdFormMongoDB(),
-      created: new Date(),
-      lastUpdate: new Date(),
-      user: 'anonym',
-      userId: 0,
-      name: 'temporary',
-      active: true
-    };
-    this.urlToSaveConfiguration = this.router['location']._platformLocation.location.origin + this.router.url
-      + '/' + this.temporaryConfig.globalId
-      + '/' + this.temporaryConfig.products.windows[0].windowFormName
-      + '/' + this.temporaryConfig.products.windows[0].window.kod;
-    this.crud.createConfigurationForUser('anonym', this.temporaryConfig).subscribe(console.log);
-    this.loading = false;
-  }
 }

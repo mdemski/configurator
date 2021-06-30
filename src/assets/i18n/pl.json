@@ -300,7 +300,8 @@
     "chooseConfigNameButton": "Wybierz",
     "closeCopyLinkPopUp": "Zamknij",
     "copyLinkText": "Skopij i zapisz poniższy link",
-    "saveCopyLinkPopUp": "Zapisz link do konfiguracji"
+    "saveCopyLinkPopUp": "Zapisz link do konfiguracji",
+    "resetConfigForm": "Resetuj konfigurację"
   },
   "ROOF-WINDOWS-DATA": {
     "Okno:IS1": "IS",
