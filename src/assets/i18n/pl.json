@@ -411,6 +411,7 @@
     "roofWindows": "Okna dachowe",
     "flashings": "Kołnierze",
     "correctConfigLink": "/konfigurator",
+    "summaryWindowsLink": "/konfigurator/podsumowanie",
     "correctWindowConfigLink": "/okna-dachowe",
     "correctFlashingConfigLink": "/kolnierze",
     "correctAccessoryConfigLink": "/akcesoria",
@@ -426,6 +427,8 @@
     "prepareNewConfiguration": "Utwórz nową konfigurację",
     "addNewWindow": "Dodaj okno",
     "addNewFlashing": "Dodaj kołnierz",
-    "addNewAccessory": "Dodaj akcesorium"
+    "addNewAccessory": "Dodaj akcesorium",
+    "back": "Wróć",
+    "saveToPDF": "Zapisz do PDF"
   }
 }
