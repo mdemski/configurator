@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {SingleConfiguration} from '../../models/single-configuration';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {CrudFirebaseService} from '../../services/crud-firebase-service';
@@ -14,6 +14,7 @@ import {map, takeUntil} from 'rxjs/operators';
 })
 export class SingleConfigurationSummaryComponent implements OnInit, OnDestroy {
 
+  @ViewChild('configurationData') configurationData: ElementRef;
   configuration: SingleConfiguration;
   configurationSubject: BehaviorSubject<SingleConfiguration>;
   configuration$: Observable<SingleConfiguration>;

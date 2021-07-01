@@ -21,11 +21,6 @@ th, td {
   font-size: 1.6rem;
 }
 
-.on-hover:hover {
-  transition: all .7s;
-  background-color: $color-light-orange;
-}
-
 .configuration-summary-container {
 
 &__configurations {
@@ -72,8 +67,6 @@ th, td {
 
 &--table {
    display: flex;
-   max-height: 126.3px;
-   overflow: hidden;
  }
 }
 
@@ -93,8 +86,6 @@ th, td {
 
 &--table {
    display: flex;
-   max-height: 126.3px;
-   overflow: hidden;
  }
 
 &--warning {
@@ -119,8 +110,6 @@ th, td {
 
 &--table {
    display: flex;
-   max-height: 126.3px;
-   overflow: hidden;
  }
 }
 
@@ -163,10 +152,6 @@ th, td {
   margin-right: 2rem;
 }
 
-th {
-  cursor: pointer;
-}
-
 .last-child {
   margin-bottom: 0;
 }
@@ -183,4 +168,8 @@ th {
   padding: .35rem 1rem;
   min-height: 3.3rem;
   min-width: 12.5rem ;
+}
+
+.summary-buttons {
+  margin-right: 1rem;
 }
