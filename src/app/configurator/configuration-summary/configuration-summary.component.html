@@ -400,6 +400,8 @@
           </div>
 
           <div class="configuration-summary-container__single--hole-buttons">
+            <a routerLink="./{{configuration.globalId}}"
+               class="btn btn--black">{{'CONFIG-SUMMARY.details' | translate}}</a>
             <a routerLink="../{{'CONFIG-SUMMARY.sendConfiguration' | translate}}/{{configuration}}"
                class="btn btn--dark-blue">{{'CONFIG-SUMMARY.sendConfigurationButton' | translate}}</a>
             <a class="btn btn--black remove-config-button"

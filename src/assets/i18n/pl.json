@@ -429,6 +429,7 @@
     "addNewFlashing": "Dodaj kołnierz",
     "addNewAccessory": "Dodaj akcesorium",
     "back": "Wróć",
-    "saveToPDF": "Zapisz do PDF"
+    "saveToPDF": "Zapisz do PDF",
+    "details": "Szczegóły"
   }
 }
