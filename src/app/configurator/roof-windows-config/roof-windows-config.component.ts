@@ -65,6 +65,8 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(() => {
       this.coats$.next(this.objectMaker(this.configData.coats));
       this.extras$.next(this.objectMaker(this.configData.extras));
+      // this.coats$.complete();
+      // this.extras$.complete();
       this.coatsFromFile = this.objectMaker(this.configData.coats);
       this.extrasFromFile = this.objectMaker(this.configData.extras);
       this.windowModelsToCalculatePrice = this.configData.models;
@@ -80,7 +82,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       this.ventilations = this.objectMaker(this.configData.ventialtions);
       this.handles = this.objectMaker(this.configData.handles);
       this.handleColors = this.objectMaker(this.configData.handleColors);
-    });
+    }, error => console.log(error), () => console.log('Data fetched successfully'));
   }
 
   private paramsAndUser$: Observable<{ params: ObservedValueOf<Observable<Params>>; user: string }>;
@@ -180,6 +182,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         this.loadConfig.getWindowToReconfiguration(paramsAndUser.user, paramsAndUser.params.formName, paramsAndUser.params.productCode).pipe(takeUntil(this.isDestroyed$))
           .subscribe(windowToReconfiguration => {
             this.configuredWindow = windowToReconfiguration;
+            console.log(this.configuredWindow);
             this.form = this.fb.group({
               material: new FormControl(this.configuredWindow.stolarkaMaterial, [], [this.validateMaterials.bind(this)]),
               openingType: new FormControl(this.configuredWindow.otwieranie, [], [this.validateOpenings.bind(this)]),
@@ -419,6 +422,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       }
       for (const coat of configuredWindow.windowCoats) {
         if (coat !== false) {
+          console.log(configuredWindow.windowCoats);
           windowPrice += +windowToCalculations[coat];
         }
       }
