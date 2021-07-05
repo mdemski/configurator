@@ -53,39 +53,18 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.loading = true;
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
-    this.paramsAndUser$ = combineLatest(this.authService.returnUser(), this.activeRouter.params).pipe(
+    this.paramsUserFetchData$ = combineLatest(this.authService.returnUser(), this.activeRouter.params, this.configData.fetchAllData()).pipe(
       takeUntil(this.isDestroyed$),
       map(data => {
         return {
           user: data[0],
-          params: data[1]
+          params: data[1],
+          fetch: data[2]
         };
       }));
-    // TODO czy przerzucony tutaj kod będzie działał gdy wczytujemy okno do rekonfiguracji
-    this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(() => {
-      this.coats$.next(this.objectMaker(this.configData.coats));
-      this.extras$.next(this.objectMaker(this.configData.extras));
-      // this.coats$.complete();
-      // this.extras$.complete();
-      this.coatsFromFile = this.objectMaker(this.configData.coats);
-      this.extrasFromFile = this.objectMaker(this.configData.extras);
-      this.windowModelsToCalculatePrice = this.configData.models;
-      this.availableOptions = this.configData.availableOptions;
-      this.glazingTypes = this.objectMaker(this.configData.glazingTypes);
-      this.materials = this.objectMaker(this.configData.materials);
-      this.openingTypes = this.objectMaker(this.configData.openingTypes);
-      this.innerColors = this.objectMaker(this.configData.innerColors);
-      this.outerMaterials = this.objectMaker(this.configData.outerMaterials);
-      this.outerColors = this.objectMaker(this.configData.outerColor);
-      this.outerColorFinishes = this.objectMaker(this.configData.outerColorFinishes);
-      this.dimensions = RoofWindowsConfigComponent.setDimensions(this.configData.dimensions);
-      this.ventilations = this.objectMaker(this.configData.ventialtions);
-      this.handles = this.objectMaker(this.configData.handles);
-      this.handleColors = this.objectMaker(this.configData.handleColors);
-    }, error => console.log(error), () => console.log('Data fetched successfully'));
   }
 
-  private paramsAndUser$: Observable<{ params: ObservedValueOf<Observable<Params>>; user: string }>;
+  private paramsUserFetchData$: Observable<{ params: ObservedValueOf<Observable<Params>>; user: string; fetch: any }>;
   currentUser: string;
   form: FormGroup;
   formName: string;
@@ -141,8 +120,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   windowsConfigurator: string;
   formData$;
   subscription: Subscription;
-  coats$ = new BehaviorSubject<any[]>([]);
-  extras$ = new BehaviorSubject<any[]>([]);
   glazingName$ = new BehaviorSubject('Okno:E01');
   isDestroyed$ = new Subject();
   loading;
@@ -171,15 +148,35 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       // tslint:disable-next-line:max-line-length
       'RAL9999', 'Aluminium:Półmat', 'Okno:ExtraSecure', 'Okno:RAL7048', false, 2, ['78x118'], ['zewnetrznaHartowana', false, false, false, false, false, false, false, false],
       ['https://www.okpol.pl/wp-content/uploads/2017/02/1_ISO.jpg'], ['Okno:Zasuwka', false, false], 1332.80, 1, 1.2, 5, 'Okno:RAL7048', 'Okno:RAL7048', null, 2, 'PL');
-    this.paramsAndUser$.pipe(takeUntil(this.isDestroyed$)).subscribe(paramsAndUser => {
-      this.formName = paramsAndUser.params.formName;
-      this.windowCode = paramsAndUser.params.productCode;
-      this.configId = paramsAndUser.params.configId === undefined ? '-1' : paramsAndUser.params.configId;
-      this.currentUser = paramsAndUser.user;
+    this.paramsUserFetchData$.pipe(
+      takeUntil(this.isDestroyed$),
+      map((data: { params: ObservedValueOf<Observable<Params>>; user: string; fetch: any }) => {
+        this.coatsFromFile = this.objectMaker(data.fetch.coats);
+        this.extrasFromFile = this.objectMaker(data.fetch.extras);
+        this.windowModelsToCalculatePrice = data.fetch.models;
+        this.availableOptions = data.fetch.availableOptions;
+        this.glazingTypes = this.objectMaker(data.fetch.glazingTypes);
+        this.materials = this.objectMaker(data.fetch.materials);
+        this.openingTypes = this.objectMaker(data.fetch.openingTypes);
+        this.innerColors = this.objectMaker(data.fetch.innerColors);
+        this.outerMaterials = this.objectMaker(data.fetch.outerMaterials);
+        this.outerColors = this.objectMaker(data.fetch.outerColor);
+        this.outerColorFinishes = this.objectMaker(data.fetch.outerColorFinishes);
+        this.dimensions = RoofWindowsConfigComponent.setDimensions(data.fetch.dimensions);
+        this.ventilations = this.objectMaker(data.fetch.ventilations);
+        this.handles = this.objectMaker(data.fetch.handles);
+        this.handleColors = this.objectMaker(data.fetch.handleColors);
+        this.currentUser = data.user;
+        this.formName = data.params.formName;
+        this.windowCode = data.params.productCode;
+        this.configId = data.params.configId === undefined ? '-1' : data.params.configId;
+      })).subscribe(() => {
       if (this.formName === 'no-name' || this.formName === undefined) {
-        this.formName = cryptoRandomString({length: 12, type: 'alphanumeric'});
         // tslint:disable-next-line:max-line-length
-        this.loadConfig.getWindowToReconfiguration(paramsAndUser.user, paramsAndUser.params.formName, paramsAndUser.params.productCode).pipe(takeUntil(this.isDestroyed$))
+        console.log(this.currentUser);
+        console.log(this.formName);
+        console.log(this.windowCode);
+        this.loadConfig.getWindowToReconfiguration(this.currentUser, this.formName, this.windowCode).pipe(takeUntil(this.isDestroyed$))
           .subscribe(windowToReconfiguration => {
             this.configuredWindow = windowToReconfiguration;
             console.log(this.configuredWindow);
@@ -190,6 +187,8 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
               glazing: new FormControl(this.configuredWindow.glazingToCalculation, [], [this.validateGlazing.bind(this)]),
               width: new FormControl(this.configuredWindow.szerokosc),
               height: new FormControl(this.configuredWindow.wysokosc),
+              coats: new FormArray(this.builtCoatsArray(this.coatsFromFile)),
+              extras: new FormArray(this.builtExtrasArray(this.extrasFromFile)),
               innerColor: new FormControl(this.configuredWindow.stolarkaKolor, [], [this.validateInnerColor.bind(this)]),
               outer: new FormGroup({
                 outerMaterial: new FormControl(this.configuredWindow.oblachowanieMaterial),
@@ -201,41 +200,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
                 handle: new FormControl(this.configuredWindow.zamkniecieTyp, [], [this.validateHandle.bind(this)]),
                 handleColor: new FormControl(this.configuredWindow.zamkniecieKolor)
               })
-            });
-            // TODO spróbować przebudować tę część żeby powłoki i dodatki trafiały tu szybciej
-            this.coats$.pipe(
-              takeUntil(this.isDestroyed$),
-              filter(data => !!data),
-              map(coats => this.fb.array(coats.map((x, index) => {
-                if (this.configuredWindow.windowCoats === undefined) {
-                  return new FormControl(false);
-                } else {
-                  if (this.configuredWindow.windowCoats[index] === x.option) {
-                    return new FormControl(true);
-                  } else {
-                    return new FormControl(false);
-                  }
-                }
-              })))
-            ).subscribe(coatsFormArray => {
-              this.form.addControl('coats', coatsFormArray);
-            });
-            this.extras$.pipe(
-              takeUntil(this.isDestroyed$),
-              filter(data => !!data),
-              map(extras => this.fb.array(extras.map((x, index) => {
-                if (this.configuredWindow.listaDodatkow === undefined) {
-                  return new FormControl(false);
-                } else {
-                  if (this.configuredWindow.listaDodatkow[index] === x.option) {
-                    return new FormControl(true);
-                  } else {
-                    return new FormControl(false);
-                  }
-                }
-              })))
-            ).subscribe(extrasFormArray => {
-              this.form.addControl('extras', extrasFormArray);
             });
             this.formChanges();
             this.setDisabled(this.configuredWindow);
@@ -306,6 +270,38 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
 
   get extras(): FormArray {
     return this.form.get('extras') as FormArray;
+  }
+
+  private builtCoatsArray(coatsFromFile: any[]) {
+    const coats = [];
+    coatsFromFile.forEach((x, index) => {
+      if (this.configuredWindow.windowCoats === undefined) {
+        coats.push(new FormControl(false));
+      } else {
+        if (this.configuredWindow.windowCoats[index] === x.option) {
+          coats.push(new FormControl(true));
+        } else {
+          coats.push(new FormControl(false));
+        }
+      }
+    });
+    return coats;
+  }
+
+  private builtExtrasArray(extrasFromFile: any[]) {
+    const extras = [];
+    extrasFromFile.forEach((x, index) => {
+      if (this.configuredWindow.listaDodatkow === undefined) {
+        extras.push(new FormControl(false));
+      } else {
+        if (this.configuredWindow.listaDodatkow[index] === x.option) {
+          extras.push(new FormControl(true));
+        } else {
+          extras.push(new FormControl(false));
+        }
+      }
+    });
+    return extras;
   }
 
   formChanges() {
@@ -477,8 +473,8 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       let errors = {
         'empty material': true
       };
-      this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(() => {
-        options = this.configData.materials;
+      this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
+        options = data.materials;
         for (const option of options) {
           if (control.value === option) {
             errors = null;
@@ -496,8 +492,8 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       let errors = {
         'empty openingType': true
       };
-      this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(() => {
-        options = this.configData.openingTypes;
+      this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
+        options = data.openingTypes;
         for (const option of options) {
           if (control.value === option) {
             errors = null;
@@ -515,8 +511,8 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       let errors = {
         'empty glazingType': true
       };
-      this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(() => {
-        options = this.configData.glazingTypes;
+      this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
+        options = data.glazingTypes;
         for (const option of options) {
           if (control.value === option) {
             errors = null;
@@ -534,8 +530,8 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       let errors = {
         'empty innerColor': true
       };
-      this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(() => {
-        options = this.configData.innerColors;
+      this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
+        options = data.innerColors;
         for (const option of options) {
           if (control.value === option) {
             errors = null;
@@ -555,10 +551,10 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       let errors = {
         'empty outerMaterial': true
       };
-      this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(() => {
-        materialOptions = this.configData.outerMaterials;
+      this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
+        materialOptions = data.materials;
         // colorOptions = this.configData.outerColor;
-        finishOptions = this.configData.outerColorFinishes;
+        finishOptions = data.outerColorFinishes;
         for (const option of materialOptions) {
           if (group.controls.outerMaterial.value === option) {
             errors = null;
@@ -587,8 +583,8 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       let errors = {
         'empty ventilation': true
       };
-      this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(() => {
-        options = this.configData.ventialtions;
+      this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
+        options = data.ventilations;
         for (const option of options) {
           if (control.value === option) {
             errors = null;
@@ -606,8 +602,8 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       let errors = {
         'empty handle': true
       };
-      this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(() => {
-        options = this.configData.handles;
+      this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
+        options = data.handles;
         for (const option of options) {
           if (control.value === option) {
             errors = null;
@@ -620,6 +616,9 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    if (this.formName === 'no-name' || this.formName === undefined) {
+      this.formName = cryptoRandomString({length: 12, type: 'alphanumeric'});
+    }
     this.temporaryConfig = {
       products: {
         windows: [{

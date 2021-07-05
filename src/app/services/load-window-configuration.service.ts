@@ -17,7 +17,7 @@ export class LoadWindowConfigurationService {
   getWindowToReconfiguration(user: string, formName: string, windowCode: string): Observable<RoofWindowSkylight> {
     const newWindow = new RoofWindowSkylight(
       null, null, null, null, null, null, null, null, 'dwuszybowy', 78,
-      118, 'OknoDachowe', null, null, null, null, null, null, null, null, null,
+      118, 'OknoDachowe', null, null, null, null, 'NawiewnikNeoVent', null, null, null, null,
       null, null, null, null, false, 0, [], [], [],
       [], 0, 0, 0, 0, null, null, null, 0, 'PL');
 

@@ -54,7 +54,7 @@ export class ConfigurationDataService {
           }
           models.push(model);
         }
-        this.models = models;
+        // this.models = models;
         // Fill arrays with options
         const availableOptions = [];
         const materials = [];
@@ -114,23 +114,43 @@ export class ConfigurationDataService {
             }
           }
         }
-        this.availableOptions = availableOptions;
-        this.materials = materials;
-        this.openingTypes = openingTypes;
-        this.innerColors = innerColors;
-        this.glazingTypes = glazingTypes;
-        this.coats = coats;
-        this.dimensions = dimensions;
-        this.extras = extras;
-        this.handles = handles;
-        this.handleColors = handleColors;
-        this.ventialtions = ventilations;
-        this.technicalInformation = technicalInformation;
-        // TODO uzupełnić listę o dostępne kolory
-        // this.outerColor = require('../../assets/json/RalCodes.json') as [];
-        this.outerColor = ['Aluminium:RAL7022'];
-        this.outerColorFinishes = outerColorFinishes;
-        this.outerMaterials = outerMaterials;
+        // this.availableOptions = availableOptions;
+        // this.materials = materials;
+        // this.openingTypes = openingTypes;
+        // this.innerColors = innerColors;
+        // this.glazingTypes = glazingTypes;
+        // this.coats = coats;
+        // this.dimensions = dimensions;
+        // this.extras = extras;
+        // this.handles = handles;
+        // this.handleColors = handleColors;
+        // this.ventialtions = ventilations;
+        // this.technicalInformation = technicalInformation;
+        // // TODO uzupełnić listę o dostępne kolory
+        // // this.outerColor = require('../../assets/json/RalCodes.json') as [];
+        // this.outerColor = ['Aluminium:RAL7022'];
+        // this.outerColorFinishes = outerColorFinishes;
+        // this.outerMaterials = outerMaterials;
+        return {
+          models,
+          availableOptions,
+          materials,
+          openingTypes,
+          innerColors,
+          glazingTypes,
+          coats,
+          dimensions,
+          extras,
+          handles,
+          handleColors,
+          ventilations,
+          technicalInformation,
+          // TODO uzupełnić listę o dostępne kolory
+          // this.outerColor = require('../../assets/json/RalCodes.json') as [];
+          outerColor: ['Aluminium:RAL7022'],
+          outerColorFinishes,
+          outerMaterials
+        };
       }));
   }
 
