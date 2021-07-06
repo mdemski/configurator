@@ -18,7 +18,7 @@ import {AuthService} from '../../services/auth.service';
 import {WindowDynamicValuesSetterService} from '../../services/window-dynamic-values-setter.service';
 import {
   filter,
-  map,
+  map, pairwise, startWith,
   takeUntil,
   tap
 } from 'rxjs/operators';
@@ -173,22 +173,17 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       })).subscribe(() => {
       if (this.formName === 'no-name' || this.formName === undefined) {
         // tslint:disable-next-line:max-line-length
-        console.log(this.currentUser);
-        console.log(this.formName);
-        console.log(this.windowCode);
         this.loadConfig.getWindowToReconfiguration(this.currentUser, this.formName, this.windowCode).pipe(takeUntil(this.isDestroyed$))
           .subscribe(windowToReconfiguration => {
             this.configuredWindow = windowToReconfiguration;
-            console.log(this.configuredWindow);
             this.form = this.fb.group({
               material: new FormControl(this.configuredWindow.stolarkaMaterial, [], [this.validateMaterials.bind(this)]),
               openingType: new FormControl(this.configuredWindow.otwieranie, [], [this.validateOpenings.bind(this)]),
               control: new FormControl(RoofWindowsConfigComponent.getControlType(this.configuredWindow.otwieranie)),
               glazing: new FormControl(this.configuredWindow.glazingToCalculation, [], [this.validateGlazing.bind(this)]),
+              coats: new FormArray(this.builtCoatsArray(this.coatsFromFile)),
               width: new FormControl(this.configuredWindow.szerokosc),
               height: new FormControl(this.configuredWindow.wysokosc),
-              coats: new FormArray(this.builtCoatsArray(this.coatsFromFile)),
-              extras: new FormArray(this.builtExtrasArray(this.extrasFromFile)),
               innerColor: new FormControl(this.configuredWindow.stolarkaKolor, [], [this.validateInnerColor.bind(this)]),
               outer: new FormGroup({
                 outerMaterial: new FormControl(this.configuredWindow.oblachowanieMaterial),
@@ -199,7 +194,8 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
               closure: new FormGroup({
                 handle: new FormControl(this.configuredWindow.zamkniecieTyp, [], [this.validateHandle.bind(this)]),
                 handleColor: new FormControl(this.configuredWindow.zamkniecieKolor)
-              })
+              }),
+              extras: new FormArray(this.builtExtrasArray(this.extrasFromFile))
             });
             this.formChanges();
             this.setDisabled(this.configuredWindow);
@@ -308,28 +304,33 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.formData$ = this.form.valueChanges; // strumień z danymi z formularza
     this.formData$.pipe(
       takeUntil(this.isDestroyed$),
-      filter((form: any) => form.material !== null),
+      startWith([]),
+      pairwise(),
+      filter(([prevForm, form]: [any, any]) => form.material !== null),
       tap(() => {
         const checkboxCoatControl = this.coats as FormArray;
-        this.subscription = checkboxCoatControl.valueChanges.subscribe(checkbox => {
+        console.log(checkboxCoatControl);
+        this.subscription = checkboxCoatControl.valueChanges.subscribe(() => {
           checkboxCoatControl.setValue(checkboxCoatControl.value.map((value, i) =>
             value ? this.coatsFromFile[i].option : false), {emitEvent: false});
         });
       }),
       tap(() => {
         const checkboxExtraControl = this.extras as FormArray;
-        this.subscription = checkboxExtraControl.valueChanges.subscribe(checkbox => {
+        this.subscription = checkboxExtraControl.valueChanges.subscribe(() => {
           checkboxExtraControl.setValue(checkboxExtraControl.value.map((value, i) =>
             value ? this.extrasFromFile[i].option : false), {emitEvent: false});
         });
       }),
-      tap((form: any) => {
-        this.windowValuesSetter.glazingTypeSetter(form.material, form.glazing, form.coats, 'Okno').subscribe(glazingName => {
+      startWith([]),
+      pairwise(),
+      tap(([prevForm, form]: [any, any]) => {
+        this.windowValuesSetter.glazingTypeSetter(form[1].material, form[1].glazing, form[1].coats, 'Okno').subscribe(glazingName => {
           this.glazingName$.next(glazingName);
         });
       }),
-      map((form) => {
-        this.setConfiguredValues(form);
+      map(([prevForm, form]: [any, any]) => {
+        this.setConfiguredValues(form[1]);
       })).subscribe();
   }
 
@@ -418,7 +419,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       }
       for (const coat of configuredWindow.windowCoats) {
         if (coat !== false) {
-          console.log(configuredWindow.windowCoats);
+          console.log(coat);
           windowPrice += +windowToCalculations[coat];
         }
       }
