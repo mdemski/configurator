@@ -1,30 +1,14 @@
 import {Injectable} from '@angular/core';
 import {SingleConfiguration} from '../models/single-configuration';
-import {BehaviorSubject} from 'rxjs';
-import {AuthService} from './auth.service';
+import {CrudFirebaseService} from './crud-firebase-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HighestIdGetterService {
   highestId: number;
-  private configurationGlobalId$ = new BehaviorSubject(1);
-  private configurationUserId$ = new BehaviorSubject(1);
 
-  constructor(private auth: AuthService) {
-    // this.highestId = 0;
-    // this.auth.returnUser().subscribe(user => {
-    //   this.crud.readAllUserConfigurations(user).pipe().subscribe((allConfigurations: SingleConfiguration[]) => {
-    //     let userIdNumber = 1;
-    //     this.configurationGlobalId$.next(allConfigurations.length + 1);
-    //     allConfigurations.forEach(config => {
-    //       if (config.user === user) {
-    //         userIdNumber++;
-    //       }
-    //     });
-    //     this.configurationUserId$.next(userIdNumber);
-    //   });
-    // });
+  constructor(private crud: CrudFirebaseService) {
   }
 
   getHighestIdForProduct(configuration: SingleConfiguration) {
@@ -90,15 +74,28 @@ export class HighestIdGetterService {
 
   getHighestGlobalIdFormMongoDB() {
     let configurationId = 1;
-    this.configurationGlobalId$.subscribe(id => configurationId = id);
-    this.configurationGlobalId$.next(configurationId + 1);
+    this.crud.readAllConfigurationsFromMongoDB().subscribe((configurations: SingleConfiguration[]) => {
+      for (const config of configurations) {
+        const globalId = Number(config.globalId.split('-')[1]);
+        if (globalId > configurationId) {
+          configurationId = globalId;
+        }
+      }
+      configurationId++;
+    });
     return String('configuration-' + configurationId);
   }
 
-  getHighestIdForUser() {
+  getHighestIdForUser(user: string) {
     let userId = 1;
-    this.configurationUserId$.subscribe(id => userId = id);
-    this.configurationUserId$.next(userId + 1);
+    this.crud.readAllUserConfigurations(user).subscribe((configurations: SingleConfiguration[]) => {
+      for (const config of configurations) {
+        if (config.userId > userId) {
+          userId = config.userId;
+        }
+      }
+      userId++;
+    });
     return userId;
   }
 }
