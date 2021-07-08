@@ -33,21 +33,23 @@ export class CrudFirebaseService {
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   temporaryConfigurations: Observable<any[]>;
 
-  readAllConfigurationsFromMongoDB(): Observable<object> {
-    return this.http.get(this.baseUri);
+  readAllConfigurationsFromMongoDB(): Observable<SingleConfiguration[]> {
+    return this.http.get(this.baseUri).pipe(map((data: SingleConfiguration[]) => {
+      return data;
+    }));
   }
 
-  readAllUserConfigurations(user: string): Observable<object> {
+  readAllUserConfigurations(user: string): Observable<SingleConfiguration[]> {
     return this.http.get(this.baseUri).pipe(map((configurations: SingleConfiguration[]) => configurations
       .filter(configuration => configuration.user === user)));
   }
 
-  readConfigurationById(configId: string): Observable<any> {
+  readConfigurationById(configId: string): Observable<SingleConfiguration> {
     return this.http.get(this.baseUri).pipe(map((configurations: SingleConfiguration[]) => configurations
       .find(configuration => configuration.globalId === configId)));
   }
 
-  readConfigurationByName(configName: string): Observable<any> {
+  readConfigurationByName(configName: string): Observable<SingleConfiguration> {
     return this.http.get(this.baseUri).pipe(map((configurations: SingleConfiguration[]) => configurations
       .find(configuration => configuration.name === configName)));
   }
