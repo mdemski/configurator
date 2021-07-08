@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {SingleConfiguration} from '../models/single-configuration';
-import {CrudFirebaseService} from './crud-firebase-service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,8 +7,7 @@ import {CrudFirebaseService} from './crud-firebase-service';
 export class HighestIdGetterService {
   highestId: number;
 
-  constructor(private crud: CrudFirebaseService) {
-  }
+  constructor() {}
 
   getHighestIdForProduct(configuration: SingleConfiguration) {
     const productObjectId = {
@@ -72,30 +70,26 @@ export class HighestIdGetterService {
     return productObjectId;
   }
 
-  getHighestGlobalIdFormMongoDB() {
+  getHighestGlobalIdFormMongoDB(allConfigurations: SingleConfiguration[]) {
     let configurationId = 1;
-    this.crud.readAllConfigurationsFromMongoDB().subscribe((configurations: SingleConfiguration[]) => {
-      for (const config of configurations) {
-        const globalId = Number(config.globalId.split('-')[1]);
-        if (globalId > configurationId) {
-          configurationId = globalId;
-        }
+    for (const config of allConfigurations) {
+      const globalId = Number(config.globalId.split('-')[1]);
+      if (globalId > configurationId) {
+        configurationId = globalId;
       }
-      configurationId++;
-    });
+    }
+    configurationId++;
     return String('configuration-' + configurationId);
   }
 
-  getHighestIdForUser(user: string) {
+  getHighestIdForUser(userConfigurations: SingleConfiguration[]) {
     let userId = 1;
-    this.crud.readAllUserConfigurations(user).subscribe((configurations: SingleConfiguration[]) => {
-      for (const config of configurations) {
-        if (config.userId > userId) {
-          userId = config.userId;
-        }
+    for (const config of userConfigurations) {
+      if (config.userId > userId) {
+        userId = config.userId;
       }
-      userId++;
-    });
+    }
+    userId++;
     return userId;
   }
 }
