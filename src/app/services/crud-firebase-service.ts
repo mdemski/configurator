@@ -9,7 +9,6 @@ import {VerticalWindow} from '../models/vertical-window';
 import {FlatRoofWindow} from '../models/flat-roof-window';
 import {SingleConfiguration} from '../models/single-configuration';
 import {HighestIdGetterService} from './highest-id-getter.service';
-import {AngularFirestore} from '@angular/fire/firestore';
 import {catchError, map} from 'rxjs/operators';
 import {WindowConfig} from '../models/window-config';
 import {FlashingConfig} from '../models/flashing-config';
@@ -22,8 +21,7 @@ import {FlatConfig} from '../models/flat-config';
 })
 export class CrudFirebaseService {
 
-  constructor(private http: HttpClient, private db: DatabaseService, private hd: HighestIdGetterService,
-              private firestore: AngularFirestore) {
+  constructor(private http: HttpClient, private db: DatabaseService, private hd: HighestIdGetterService) {
   }
 
   // TODO poprawić na notację obiektową ponieważ jest to wydajniejsze - pytanie jak dodawać kolejne konfiguracje?
@@ -36,7 +34,7 @@ export class CrudFirebaseService {
   temporaryConfigurations: Observable<any[]>;
 
   readAllConfigurationsFromMongoDB(): Observable<object> {
-    return this.http.get(`${this.baseUri}`);
+    return this.http.get(this.baseUri);
   }
 
   readAllUserConfigurations(user: string): Observable<object> {
@@ -154,13 +152,6 @@ export class CrudFirebaseService {
         }
       }
     }));
-  }
-
-  private getConfigurationObject(configId: string) {
-    return this.firestore.doc('allConfigurations/' + configId).valueChanges()
-      .pipe(map(configurationObject => {
-        return configurationObject;
-      }));
   }
 
   createConfigurationForUser(user: string, configuration: SingleConfiguration) {
