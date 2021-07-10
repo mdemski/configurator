@@ -114,7 +114,7 @@ export class CrudFirebaseService {
       map(products => products.flats.find(flat => flat.id === flatId)));
   }
 
-  readWindowConfigurationByFormName(formName: string) {
+  readConfigurationByFormName(formName: string) {
     return this.http.get(`${this.baseUri}`).pipe(map((allConfigurations: SingleConfiguration[]) => {
       for (const config of allConfigurations) {
         if (config.products.windows) {
