@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { LoadWindowConfigurationService } from './load-window-configuration.service';
+import { LoadConfigurationService } from './load-configuration.service';
 
 describe('LoadWindowConfigurationService', () => {
-  let service: LoadWindowConfigurationService;
+  let service: LoadConfigurationService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(LoadWindowConfigurationService);
+    service = TestBed.inject(LoadConfigurationService);
   });
 
   it('should be created', () => {
