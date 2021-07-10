@@ -83,35 +83,35 @@ export class CrudFirebaseService {
     return this.http.get(this.baseUri).pipe(
       map((configurations: SingleConfiguration[]) => configurations
         .find(configuration => configuration.globalId === configId).products),
-      map(products => products.windows.find(window => window.id === windowId)));
+      map(products => products.windows.find(window => window.id === Number(windowId))));
   }
 
   readFlashingByIdFromConfigurationById(configId: string, flashingId: number) {
     return this.http.get(this.baseUri).pipe(
       map((configurations: SingleConfiguration[]) => configurations
         .find(configuration => configuration.globalId === configId).products),
-      map(products => products.flashings.find(flashing => flashing.id === flashingId)));
+      map(products => products.flashings.find(flashing => flashing.id === Number(flashingId))));
   }
 
   readAccessoryByIdFromConfigurationById(configId: string, accessoryId: number) {
     return this.http.get(this.baseUri).pipe(
       map((configurations: SingleConfiguration[]) => configurations
         .find(configuration => configuration.globalId === configId).products),
-      map(products => products.accessories.find(accessory => accessory.id === accessoryId)));
+      map(products => products.accessories.find(accessory => accessory.id === Number(accessoryId))));
   }
 
   readVerticalByIdFromConfigurationById(configId: string, verticalId: number) {
     return this.http.get(this.baseUri).pipe(
       map((configurations: SingleConfiguration[]) => configurations
         .find(configuration => configuration.globalId === configId).products),
-      map(products => products.verticals.find(vertical => vertical.id === verticalId)));
+      map(products => products.verticals.find(vertical => vertical.id === Number(verticalId))));
   }
 
   readFlatByIdFromConfigurationById(configId: string, flatId: number) {
     return this.http.get(this.baseUri).pipe(
       map((configurations: SingleConfiguration[]) => configurations
         .find(configuration => configuration.globalId === configId).products),
-      map(products => products.flats.find(flat => flat.id === flatId)));
+      map(products => products.flats.find(flat => flat.id === Number(flatId))));
   }
 
   readConfigurationByFormName(formName: string) {
@@ -297,7 +297,7 @@ export class CrudFirebaseService {
       if (configuration.products.windows) {
         for (const window of configuration.products.windows) {
           if (window.id === Number(windowId)) {
-            window.quantity = quantity;
+            window.quantity = Number(quantity);
           }
         }
       }
@@ -313,7 +313,7 @@ export class CrudFirebaseService {
       if (configuration.products.flashings) {
         for (const flashing of configuration.products.flashings) {
           if (flashing.id === Number(flashingId)) {
-            flashing.quantity = quantity;
+            flashing.quantity = Number(quantity);
           }
         }
       }
@@ -329,7 +329,7 @@ export class CrudFirebaseService {
       if (configuration.products.accessories) {
         for (const accessory of configuration.products.accessories) {
           if (accessory.id === Number(accessoryId)) {
-            accessory.quantity = quantity;
+            accessory.quantity = Number(quantity);
           }
         }
       }
@@ -345,7 +345,7 @@ export class CrudFirebaseService {
       if (configuration.products.verticals) {
         for (const vertical of configuration.products.verticals) {
           if (vertical.id === Number(verticalId)) {
-            vertical.quantity = quantity;
+            vertical.quantity = Number(quantity);
           }
         }
       }
@@ -361,7 +361,7 @@ export class CrudFirebaseService {
       if (configuration.products.flats) {
         for (const flat of configuration.products.flats) {
           if (flat.id === Number(flatId)) {
-            flat.quantity = quantity;
+            flat.quantity = Number(quantity);
           }
         }
       }
