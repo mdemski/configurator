@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {LoadConfigurationService} from '../../services/load-configuration.service';
 
 @Component({
   selector: 'app-flashings-config',
@@ -7,12 +8,12 @@ import {Component, OnInit} from '@angular/core';
 })
 export class FlashingsConfigComponent implements OnInit {
 
-  constructor() {
+  constructor(private loadData: LoadConfigurationService) {
 
   }
 
   ngOnInit(): void {
-
+    this.loadData.getFlashingToReconfigurationFromWindowData().subscribe(console.log);
   }
 
 }

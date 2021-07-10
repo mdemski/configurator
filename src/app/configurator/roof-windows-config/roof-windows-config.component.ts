@@ -23,7 +23,7 @@ import {
   tap
 } from 'rxjs/operators';
 import {ErpNameTranslatorService} from '../../services/erp-name-translator.service';
-import {LoadWindowConfigurationService} from '../../services/load-window-configuration.service';
+import {LoadConfigurationService} from '../../services/load-configuration.service';
 import {HighestIdGetterService} from '../../services/highest-id-getter.service';
 import {DatabaseService} from '../../services/database.service';
 import cryptoRandomString from 'crypto-random-string';
@@ -43,7 +43,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
               private dataBase: DatabaseService,
               private windowValuesSetter: WindowDynamicValuesSetterService,
               private erpName: ErpNameTranslatorService,
-              private loadConfig: LoadWindowConfigurationService,
+              private loadConfig: LoadConfigurationService,
               private crud: CrudFirebaseService,
               private hd: HighestIdGetterService,
               private router: Router,
@@ -53,18 +53,21 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.loading = true;
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
-    this.paramsUserFetchData$ = combineLatest(this.authService.returnUser(), this.activeRouter.params, this.configData.fetchAllData()).pipe(
+    this.paramsUserFetchData$ = combineLatest(this.authService.returnUser(), this.activeRouter.params,
+      this.configData.fetchAllData(), this.crud.readAllConfigurationsFromMongoDB()).pipe(
       takeUntil(this.isDestroyed$),
       map(data => {
         return {
           user: data[0],
           params: data[1],
-          fetch: data[2]
+          fetch: data[2],
+          configurations: data[3]
         };
       }));
   }
 
-  private paramsUserFetchData$: Observable<{ params: ObservedValueOf<Observable<Params>>; user: string; fetch: any }>;
+  // tslint:disable-next-line:max-line-length
+  private paramsUserFetchData$: Observable<{ params: ObservedValueOf<Observable<Params>>; user: string; fetch: any; configurations: SingleConfiguration[] }>;
   currentUser: string;
   form: FormGroup;
   formName: string;
@@ -620,29 +623,31 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     if (this.formName === 'no-name' || this.formName === undefined) {
       this.formName = cryptoRandomString({length: 12, type: 'alphanumeric'});
     }
-    this.temporaryConfig = {
-      products: {
-        windows: [{
-          id: 1,
-          quantity: 1,
-          // TODO zamienić na configuredWindow
-          window: this.tempConfiguredWindow,
-          windowFormName: this.formName,
-          windowFormData: this.form.value,
-        }],
-        flashings: null,
-        accessories: null,
-        verticals: null,
-        flats: null
-      },
-      globalId: this.hd.getHighestGlobalIdFormMongoDB(),
-      created: new Date(),
-      lastUpdate: new Date(),
-      user: this.currentUser,
-      userId: 1,
-      name: '<New configuration>',
-      active: true
-    };
+    this.paramsUserFetchData$.pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
+      this.temporaryConfig = {
+        products: {
+          windows: [{
+            id: 1,
+            quantity: 1,
+            // TODO zamienić na configuredWindow
+            window: this.tempConfiguredWindow,
+            windowFormName: this.formName,
+            windowFormData: this.form.value,
+          }],
+          flashings: null,
+          accessories: null,
+          verticals: null,
+          flats: null
+        },
+        globalId: this.hd.getHighestGlobalIdFormMongoDB(data.configurations),
+        created: new Date(),
+        lastUpdate: new Date(),
+        user: this.currentUser,
+        userId: 1,
+        name: '<New configuration>',
+        active: true
+      };
+    });
     this.loading = true;
     this.authService.returnUser().pipe(takeUntil(this.isDestroyed$)).subscribe(user => {
       if (this.configId === '-1' || this.configId === '') {
@@ -652,7 +657,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
             return data.filter(x => x !== null);
           })).subscribe(userConfigurations => {
           this.userConfigs = userConfigurations;
-          this.highestUserId = this.hd.getHighestIdForUser();
+          this.highestUserId = this.hd.getHighestIdForUser(userConfigurations);
           this.temporaryConfig.userId = this.highestUserId;
           if (this.userConfigs.length !== 0) {
             this.userConfigs.push(this.temporaryConfig);
@@ -717,34 +722,36 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   saveCopyLinkPopUp() {
     this.loading = true;
     this.copyLinkToConfigurationPopup = true;
-    this.temporaryConfig = {
-      products: {
-        windows: [{
-          id: 1,
-          quantity: 1,
-          window: this.configuredWindow,
-          windowFormName: this.formName,
-          windowFormData: this.form.value,
-        }],
-        flashings: null,
-        accessories: null,
-        verticals: null,
-        flats: null
-      },
-      globalId: this.hd.getHighestGlobalIdFormMongoDB(),
-      created: new Date(),
-      lastUpdate: new Date(),
-      user: 'anonym',
-      userId: 0,
-      name: 'temporary',
-      active: true
-    };
-    this.urlToSaveConfiguration = this.router['location']._platformLocation.location.origin + this.router.url
-      + '/' + this.temporaryConfig.globalId
-      + '/' + this.temporaryConfig.products.windows[0].windowFormName
-      + '/' + this.temporaryConfig.products.windows[0].window.kod;
-    this.crud.createConfigurationForUser('anonym', this.temporaryConfig).subscribe(console.log);
-    this.loading = false;
+    this.paramsUserFetchData$.pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
+      this.temporaryConfig = {
+        products: {
+          windows: [{
+            id: 1,
+            quantity: 1,
+            window: this.configuredWindow,
+            windowFormName: this.formName,
+            windowFormData: this.form.value,
+          }],
+          flashings: null,
+          accessories: null,
+          verticals: null,
+          flats: null
+        },
+        globalId: this.hd.getHighestGlobalIdFormMongoDB(data.configurations),
+        created: new Date(),
+        lastUpdate: new Date(),
+        user: 'anonym',
+        userId: 0,
+        name: 'temporary',
+        active: true
+      };
+      this.urlToSaveConfiguration = this.router['location']._platformLocation.location.origin + this.router.url
+        + '/' + this.temporaryConfig.globalId
+        + '/' + this.temporaryConfig.products.windows[0].windowFormName
+        + '/' + this.temporaryConfig.products.windows[0].window.kod;
+      this.crud.createConfigurationForUser('anonym', this.temporaryConfig).subscribe(console.log);
+      this.loading = false;
+    });
   }
 
   resetConfigForm() {
