@@ -420,6 +420,10 @@ form {
         height: 5rem;
         margin-right: 2rem;
 
+        &:hover {
+          cursor: pointer;
+        }
+
         &:focus .choose-config-popup__content__form--select--label {
           position: relative;
           pointer-events: all;
