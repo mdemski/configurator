@@ -5,6 +5,10 @@ import {AuthService} from '../../services/auth.service';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {SingleConfiguration} from '../../models/single-configuration';
 import {map, takeUntil} from 'rxjs/operators';
+import {Router} from '@angular/router';
+import {TranslateService} from '@ngx-translate/core';
+import {WindowConfig} from '../../models/window-config';
+import {LoadConfigurationService} from '../../services/load-configuration.service';
 
 @Component({
   selector: 'app-configuration-summary',
@@ -19,13 +23,25 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
   currentUser;
   uneditable = true;
   loading;
+  chooseWindowPopup = false;
   tempSingleConfig: SingleConfiguration;
   isDestroyed$ = new Subject();
+  windowId: number;
+  windowConfigurations: WindowConfig[];
+  chosenConfig: SingleConfiguration;
+  emptyFlashingConfiguration: string;
+  emptyAccessoryConfiguration: string;
+  addingProduct: string;
 
   constructor(private crud: CrudFirebaseService,
               private db: DatabaseService,
-              private authService: AuthService) {
+              private authService: AuthService,
+              private router: Router,
+              public translate: TranslateService,
+              private loadConfig: LoadConfigurationService) {
     this.loading = true;
+    translate.addLangs(['pl', 'en', 'fr', 'de']);
+    translate.setDefaultLang('pl');
   }
 
   ngOnInit() {
@@ -82,6 +98,12 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
     //   };
     //   // this.crud.createConfigurationForUser('178.73.35.150', this.tempSingleConfig).subscribe(() => console.log('Success'));
     // });
+    this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
+      this.emptyFlashingConfiguration = text.configuratorFlashing;
+    });
+    this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
+      this.emptyAccessoryConfiguration = text.configuratorAccessory;
+    });
   }
 
   builtNameForTranslation(prefix: string, option: string) {
@@ -170,5 +192,35 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
       divsTable.style.maxHeight = '126.3px';
       divsTable.style.transition = 'all .7s ease-in-out';
     }
+  }
+
+  addNewFlashingOrAccessory(configuration: SingleConfiguration, product: string) {
+    this.chosenConfig = configuration;
+    this.addingProduct = product;
+    this.windowConfigurations = Object.assign([], configuration.products.windows);
+    this.windowConfigurations.push({
+      window: null,
+      id: -1,
+      windowFormName: null,
+      windowFormData: null,
+      quantity: 0
+    });
+    this.chooseWindowPopup = true;
+  }
+
+  chooseWindowId(windowId: number) {
+    if (windowId === undefined || windowId === 0) {
+      this.loadConfig.windowData$.next(null);
+    } else {
+      this.crud.readWindowByIdFromConfigurationById(this.chosenConfig.globalId, windowId)
+        .subscribe(window =>  this.loadConfig.windowData$.next(window.window));
+    }
+    if (this.addingProduct === 'flashing') {
+      this.router.navigate(['/' + this.emptyFlashingConfiguration]);
+    }
+    if (this.addingProduct === 'accessory') {
+      this.router.navigate(['/' + this.emptyAccessoryConfiguration]);
+    }
+    this.chooseWindowPopup = false;
   }
 }

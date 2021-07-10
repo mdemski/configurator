@@ -145,6 +145,7 @@
                   </tbody>
                 </table>
               </div>
+
               <div class="configuration-summary-container__single__buttons">
                 <a routerLink="../{{'CONFIG-SUMMARY.correctWindowConfigLink' | translate}}/{{configuration.globalId}}/{{singleWindow.windowFormName}}/{{singleWindow.window._kod}}"
                    class="btn btn--black">{{'CONFIG-SUMMARY.correctConfig' | translate}}</a>
@@ -287,8 +288,32 @@
           </div>
 
           <div class="configuration-summary-container__single--add-new">
-            <a routerLink="../{{'CONFIG-SUMMARY.correctFlashingConfigLink' | translate}}/{{configuration.id}}/-1"
+            <a (click)="addNewFlashingOrAccessory(configuration,  'flashing')"
                class="btn btn--grey">{{'CONFIG-SUMMARY.addNewFlashing' | translate}}</a>
+          </div>
+
+          <div class="choose-window-popup" *ngIf="chooseWindowPopup">
+            <div class="choose-window-popup__content">
+              <form #configForm="ngForm" class="choose-window-popup__content__form">
+<!--                <p class="choose-window-popup__content__form&#45;&#45;text">{{ 'CONFIG-SUMMARY.chooseList' | translate}}</p>-->
+                <div class="choose-window-popup__content__form--select" tabindex="1">
+                  <ng-container *ngFor="let windowConfiguration of windowConfigurations; let i = index">
+                    <input *ngIf="windowConfiguration.window" value="{{windowConfiguration.id}}" [(ngModel)]="windowId" name="windowId"
+                           class="choose-window-popup__content__form--select--input" type="radio" id="{{i}}"/>
+                    <label *ngIf="windowConfiguration.window" for="{{i}}"
+                           class="choose-window-popup__content__form--select--label">{{windowConfiguration.id}} - {{windowConfiguration.window._windowName}}</label>
+
+                    <input *ngIf="!windowConfiguration.window" value="{{windowConfiguration.id}}" [(ngModel)]="windowId" name="windowId"
+                           class="choose-window-popup__content__form--select--input" type="radio" id="{{i}}" checked/>
+                    <label *ngIf="!windowConfiguration.window" for="{{i}}"
+                           class="choose-window-popup__content__form--select--label">{{ 'CONFIG-SUMMARY.newConfiguration' | translate}}</label>
+
+                  </ng-container>
+                </div>
+                <a (click)="chooseWindowId(windowId)"
+                   class="btn btn--blue">{{ 'CONFIG-SUMMARY.chooseWindow' | translate}}</a>
+              </form>
+            </div>
           </div>
 
           <div
@@ -395,7 +420,7 @@
           </div>
 
           <div class="configuration-summary-container__single--add-new">
-            <a routerLink="../{{'CONFIG-SUMMARY.correctAccessoryConfigLink' | translate}}/{{configuration.globalId}}/-1"
+            <a (click)="addNewFlashingOrAccessory(configuration, 'accessory')"
                class="btn btn--grey">{{'CONFIG-SUMMARY.addNewAccessory' | translate}}</a>
           </div>
 
