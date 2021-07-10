@@ -93,6 +93,8 @@
     "configurator": "konfigurator",
     "configuratorRoofWindows": "konfigurator/okna-dachowe",
     "configuratorVertical": "konfigurator/okna-pionowe",
+    "configuratorFlashing": "konfigurator/kolnierze",
+    "configuratorAccessory": "konfigurator/akcesoria",
     "myAccount": "moje-konto",
     "contact": "kontakt",
     "signIn": "rejestracja",
@@ -430,6 +432,9 @@
     "addNewAccessory": "Dodaj akcesorium",
     "back": "Wróć",
     "saveToPDF": "Zapisz do PDF",
-    "details": "Szczegóły"
+    "details": "Szczegóły",
+    "chooseWindow": "Wybierz okno",
+    "newConfiguration": "Nowa konfiguracja",
+    "chooseList": "Lista wyboru:"
   }
 }
