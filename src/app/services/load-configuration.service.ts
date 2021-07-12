@@ -54,8 +54,18 @@ export class LoadConfigurationService {
     return this.crud.readConfigurationByFormName(formName);
   }
 
-  getFlashingToReconfiguration() {
-
+  getFlashingToReconfiguration(user: string, formName: string, flashingCode: string): Observable<Flashing> {
+    if (user !== '' || user !== undefined) {
+      if (formName === 'no-name' && flashingCode === undefined) {
+        return of(this.newFlashing);
+      }
+      if (formName === undefined && flashingCode === undefined) {
+        return of(this.newFlashing);
+      }
+      if (formName === 'no-name' && flashingCode !== undefined) {
+        return this.db.getFlashingByCode(flashingCode);
+      }
+    }
   }
 
   getFlashingToReconfigurationFromWindowData(): Observable<Flashing> {
