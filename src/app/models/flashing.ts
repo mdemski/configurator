@@ -18,7 +18,7 @@ export class Flashing {
   private _oblachowanieFinisz: string;
   private _typKolnierza: string;
   private _wiatrownicaDlugosc: number;
-  private _flashingApron: string;
+  private _typFartucha: string;
   private _flashingTileHeight: number;
   private _flashingCombination: boolean;
   private _flashingNumberOfConnections: number;
@@ -34,7 +34,7 @@ export class Flashing {
 
 
   // tslint:disable-next-line:max-line-length
-  constructor(kod: string, nazwaPozycjiPL: string, flashingName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, rodzaj: string, rodzina: string, oblachowanieMaterial: string, oblachowanieKolor: string, oblachowanieFinisz: string, typKolnierza: string, wiatrownicaDlugosc: number, flashingApron: string, flashingTileHeight: number, flashingCombination: boolean, flashingNumberOfConnections: number, flashingCombinationDirection: string, rozstawPoziom: number, rozstawPion: number, flashingCombinationWidths: number[], flashingCombinationHeights: number[], CenaDetaliczna: number, dostepneRozmiary: string[], linkiDoZdjec: string[], cennik: string) {
+  constructor(kod: string, nazwaPozycjiPL: string, flashingName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, rodzaj: string, rodzina: string, oblachowanieMaterial: string, oblachowanieKolor: string, oblachowanieFinisz: string, typKolnierza: string, wiatrownicaDlugosc: number, typFartucha: string, flashingTileHeight: number, flashingCombination: boolean, flashingNumberOfConnections: number, flashingCombinationDirection: string, rozstawPoziom: number, rozstawPion: number, flashingCombinationWidths: number[], flashingCombinationHeights: number[], CenaDetaliczna: number, dostepneRozmiary: string[], linkiDoZdjec: string[], cennik: string) {
     this._kod = kod;
     this._nazwaPozycjiPL = nazwaPozycjiPL;
     this._flashingName = flashingName;
@@ -54,7 +54,7 @@ export class Flashing {
     this._oblachowanieFinisz = oblachowanieFinisz;
     this._typKolnierza = typKolnierza;
     this._wiatrownicaDlugosc = wiatrownicaDlugosc;
-    this._flashingApron = flashingApron;
+    this._typFartucha = typFartucha;
     this._flashingTileHeight = flashingTileHeight;
     this._flashingCombination = flashingCombination;
     this._flashingNumberOfConnections = flashingNumberOfConnections;
@@ -221,12 +221,12 @@ export class Flashing {
     this._wiatrownicaDlugosc = value;
   }
 
-  get flashingApron(): string {
-    return this._flashingApron;
+  get typFartucha(): string {
+    return this._typFartucha;
   }
 
-  set flashingApron(value: string) {
-    this._flashingApron = value;
+  set typFartucha(value: string) {
+    this._typFartucha = value;
   }
 
   get flashingTileHeight(): number {
