@@ -368,11 +368,20 @@
     "U": "Kołnierz U",
     "KołnierzUszczelniający": "Kołnierz uszczelniający",
     "Kołnierz:U": "Kołnierz U",
+    "Kołnierz": "Kołnierz",
     "KołnierzUszczelniający:K-1": "Kołnierz pojedynczy",
     "Aluminium": "Aluminium",
     "Aluminium:RAL7022": "RAL7022",
     "Aluminium:Półmat": "Półmat",
-    "UO": "Fartuch ołowiany 200"
+    "UO": "Fartuch ołowiany 200",
+    "1": "pojedynczy",
+    "2": "zespolony",
+    "3": "zespolony",
+    "4": "zespolony",
+    "5": "zespolony",
+    "6": "zespolony",
+    "7": "zespolony",
+    "8": "zespolony"
   },
   "ACCESSORIES-DATA": {
     "Roleta:D37": "D37",

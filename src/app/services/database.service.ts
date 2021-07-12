@@ -10,6 +10,7 @@ import {SingleConfiguration} from '../models/single-configuration';
 import {HttpClient} from '@angular/common/http';
 import {ErpNameTranslatorService} from './erp-name-translator.service';
 import cryptoRandomString from 'crypto-random-string';
+import {FlashingValueSetterService} from './flashing-value-setter.service';
 
 @Injectable()
 export class DatabaseService {
@@ -17,12 +18,14 @@ export class DatabaseService {
   constructor(private valueTranslator: PropertyValueTranslatorService,
               private windowValuesSetter: WindowDynamicValuesSetterService,
               private erpName: ErpNameTranslatorService,
+              private flashingValueSetter: FlashingValueSetterService,
               private http: HttpClient) {
-    this.accessories = this.getAllAccessoriesToShopList();
+    // this.accessories = this.getAllAccessoriesToShopList();
   }
 
   // windows
   windows: RoofWindowSkylight[] = [];
+  flashings: Flashing[] = [];
   accessories: Accessory[] = [];
   mostRecentProducts: any = [];
   availableSellers: any = [];
@@ -57,8 +60,22 @@ export class DatabaseService {
     ];
   }
 
+  getAllFlashingsToShopList(): Flashing[] {
+    return this.flashings = [
+      new Flashing('1K-1-U-UO------A7022P-055098-OKPK01', 'UN/O 055x098 Kołnierz uniwersalny /A7022P/UO/OKPK01', 'Kołnierz U 55x98 UO', 'I-KOLNIERZ', 'NPL-KOLNIERZ', 'Nowy', 'U', 55, 98, 'KołnierzUszczelniający',
+        'KolnierzUszczelniający', 'Kołnierz:U', 'KołnierzUszczelniający:K-1', 'KołnierzUszczelniający', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'U', 0, 'UO', 5, false, 1, null,
+        0, 0, [], [], 270, ['78x118', '78x140'], ['assets/img/products/flashings.jpg'], 'PL'),
+      new Flashing('1K-1-U-UO------A7022P-055098-OKPK01', 'UN/O 055x098 Kołnierz uniwersalny /A7022P/UO/OKPK01', 'Kołnierz U 55x98 UO', 'I-KOLNIERZ', 'NPL-KOLNIERZ', 'Nowy', 'U', 55, 98, 'KołnierzUszczelniający',
+        'KolnierzUszczelniający', 'Kołnierz:U', 'KołnierzUszczelniający:K-1', 'KołnierzUszczelniający', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'U', 0, 'UO', 5, false, 1, null,
+        0, 0, [], [], 270, ['78x118', '78x140'], ['assets/img/products/flashings.jpg'], 'PL'),
+      new Flashing('1K-1-U-UO------A7022P-055098-OKPK01', 'UN/O 055x098 Kołnierz uniwersalny /A7022P/UO/OKPK01', 'Kołnierz U 55x98 UO', 'I-KOLNIERZ', 'NPL-KOLNIERZ', 'Nowy', 'U', 55, 98, 'KołnierzUszczelniający',
+        'KolnierzUszczelniający', 'Kołnierz:U', 'KołnierzUszczelniający:K-1', 'KołnierzUszczelniający', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'U', 0, 'UO', 5, false, 1, null,
+        0, 0, [], [], 270, ['78x118', '78x140'], ['assets/img/products/flashings.jpg'], 'PL')
+    ];
+  }
+
   // TODO do oprogramowania pobieranie danych z eNova/pliku + filtrowanie danych według grupaAsortymentowa
-  getAllAccessoriesToShopList() {
+  getAllAccessoriesToShopList(): Accessory[] {
     return this.accessories = [
       new Accessory('1A-D37--T-A372-078118-AA', 'D37T 078x118 A372 [AA] Roleta Multistop, tkanina transparentna, srebrne prowadnice', 'Multistop D37 78x118', 'I-Akcesorium', 'NPL-Akcesorium', 'Nowy', 'Roleta:D37', 78, 118, 'Akcesorium', 'Akcesorium:Wewnętrzne',
         'Roleta:D37', 'AkcesoriumRoletaW:D37', 'Akcesorium:Roleta', 'A', 'A', 'Transparentna', 'RoletaD_T:A372', 'Roleta:Ral7048', 'D37:Srebrny', 0, 'Roleta:Manualne', '', 358, ['assets/img/products/D37.png'], [], 'PL'),
@@ -97,6 +114,15 @@ export class DatabaseService {
     tempWindow.uszczelki = tempWindow.uszczelki + 2;
     // this.erpName.translateNamesFromERPToApp(tempWindow);
     return of(tempWindow);
+  }
+
+  getFlashingByCode(flashingCode: string) {
+    let flashing: Flashing;
+    flashing = this.getAllFlashingsToShopList().filter(flashingPro => flashingPro.kod === flashingCode)[0];
+    this.flashingValueSetter.setNumberOfConnections(flashing);
+    this.flashingValueSetter.setModelName(flashing);
+    this.flashingValueSetter.setTileHeight(flashing);
+    return of(flashing);
   }
 
   getAccessoryById(id: number) {
