@@ -8,8 +8,10 @@ export class User {
   private _activated: boolean;
   private _uuid: string;
   private _discount: number;
+  private _companyNip: string;
 
-  constructor(firstName: string, lastName: string, email: string, password: string, rePassword: string, role: string, activated: boolean, uuid: string, discount: number) {
+  // tslint:disable-next-line:max-line-length
+  constructor(firstName: string, lastName: string, email: string, password: string, rePassword: string, role: string, activated: boolean, uuid: string, discount: number, companyNip: string) {
     this._firstName = firstName;
     this._lastName = lastName;
     this._email = email;
@@ -19,6 +21,7 @@ export class User {
     this._activated = activated;
     this._uuid = uuid;
     this._discount = discount;
+    this._companyNip = companyNip;
   }
 
 
@@ -92,5 +95,13 @@ export class User {
 
   set discount(value: number) {
     this._discount = value;
+  }
+
+  get companyNip(): string {
+    return this._companyNip;
+  }
+
+  set companyNip(value: string) {
+    this._companyNip = value;
   }
 }
