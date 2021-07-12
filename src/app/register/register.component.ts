@@ -68,9 +68,9 @@ export class RegisterComponent implements OnInit {
     this.registerCompany.nip = this.registerForm.value.nip;
     this.registerCompany.name = this.registerForm.value.companyName;
     this.registerCompany.street = this.registerForm.value.street;
-    this.registerCompany.number = this.registerForm.value.number;
+    this.registerCompany.address = this.registerForm.value.number;
     this.registerCompany.zipCode = this.registerForm.value.zipCode;
-    this.registerCompany.agent = this.registerForm.value.agent;
+    this.registerCompany.agentOkpol = this.registerForm.value.agent;
     this.companyBody = JSON.stringify(this.registerCompany);
     // TODO wysłać POSTem obydwa JSONy w service
     if (this.registerForm.valid) {

@@ -2,18 +2,18 @@ export class Company {
   private _name: string;
   private _nip: string;
   private _street: string;
-  private _number: string;
+  private _address: string;
   private _zipCode: string;
-  private _agent: string;
+  private _agentOkpol: string;
 
 
-  constructor(name: string, nip: string, street: string, number: string, zipCode: string, agent: string) {
+  constructor(name: string, nip: string, street: string, address: string, zipCode: string, agentOkpol: string) {
     this._name = name;
     this._nip = nip;
     this._street = street;
-    this._number = number;
+    this._address = address;
     this._zipCode = zipCode;
-    this._agent = agent;
+    this._agentOkpol = agentOkpol;
   }
 
 
@@ -41,12 +41,12 @@ export class Company {
     this._street = value;
   }
 
-  get number(): string {
-    return this._number;
+  get address(): string {
+    return this._address;
   }
 
-  set number(value: string) {
-    this._number = value;
+  set address(value: string) {
+    this._address = value;
   }
 
   get zipCode(): string {
@@ -57,11 +57,11 @@ export class Company {
     this._zipCode = value;
   }
 
-  get agent(): string {
-    return this._agent;
+  get agentOkpol(): string {
+    return this._agentOkpol;
   }
 
-  set agent(value: string) {
-    this._agent = value;
+  set agentOkpol(value: string) {
+    this._agentOkpol = value;
   }
 }
