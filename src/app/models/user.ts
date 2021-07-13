@@ -1,3 +1,5 @@
+import {Address} from './address';
+
 export class User {
   private _firstName: string;
   private _lastName: string;
@@ -9,9 +11,10 @@ export class User {
   private _uuid: string;
   private _discount: number;
   private _companyNip: string;
+  private _address: Address;
 
   // tslint:disable-next-line:max-line-length
-  constructor(firstName: string, lastName: string, email: string, password: string, rePassword: string, role: string, activated: boolean, uuid: string, discount: number, companyNip: string) {
+  constructor(firstName: string, lastName: string, email: string, password: string, rePassword: string, role: string, activated: boolean, uuid: string, discount: number, companyNip: string, address: Address) {
     this._firstName = firstName;
     this._lastName = lastName;
     this._email = email;
@@ -22,6 +25,7 @@ export class User {
     this._uuid = uuid;
     this._discount = discount;
     this._companyNip = companyNip;
+    this._address = address;
   }
 
 
@@ -103,5 +107,13 @@ export class User {
 
   set companyNip(value: string) {
     this._companyNip = value;
+  }
+
+  get address(): Address {
+    return this._address;
+  }
+
+  set address(value: Address) {
+    this._address = value;
   }
 }
