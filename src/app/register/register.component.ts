@@ -67,9 +67,9 @@ export class RegisterComponent implements OnInit {
     this.userBody = JSON.stringify(this.registerUser);
     this.registerCompany.nip = this.registerForm.value.nip;
     this.registerCompany.name = this.registerForm.value.companyName;
-    this.registerCompany.street = this.registerForm.value.street;
-    this.registerCompany.address = this.registerForm.value.number;
-    this.registerCompany.zipCode = this.registerForm.value.zipCode;
+    this.registerCompany.address.street = this.registerForm.value.street;
+    this.registerCompany.address.address = this.registerForm.value.number;
+    this.registerCompany.address.zipCode = this.registerForm.value.zipCode;
     this.registerCompany.agentOkpol = this.registerForm.value.agent;
     this.companyBody = JSON.stringify(this.registerCompany);
     // TODO wysłać POSTem obydwa JSONy w service
