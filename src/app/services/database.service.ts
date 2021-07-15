@@ -11,6 +11,7 @@ import {HttpClient} from '@angular/common/http';
 import {ErpNameTranslatorService} from './erp-name-translator.service';
 import cryptoRandomString from 'crypto-random-string';
 import {FlashingValueSetterService} from './flashing-value-setter.service';
+import {Address} from '../models/address';
 
 @Injectable()
 export class DatabaseService {
@@ -139,7 +140,8 @@ export class DatabaseService {
 
   // Zwraca TYLKO listę wszystkich firm które są w programi.
   getAllSellers() {
-    this.availableSellers.push(new Company('Felek', '7771901580', 'Krucza', '74a', '50-102', 'Janek'));
+    this.availableSellers.push(new Company('Felek', '11122233344', new Address('Felkowa', '3/1', '10-150', 'Polzka', {coordinateA: 55.55, coordinateB: 115.25}),
+      'DTHXX', 10000000, 5, 2, [], null));
     return this.availableSellers;
   }
 
