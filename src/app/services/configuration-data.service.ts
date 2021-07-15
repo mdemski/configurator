@@ -7,32 +7,17 @@ import {GlazingType} from '../models/glazing-type';
   providedIn: 'root'
 })
 export class ConfigurationDataService {
-  private _modelsFilePath = '../../../assets/csv/roof-windows.csv';
+  private _windowModelsFilePath = '../../../assets/csv/roof-windows.csv';
+  private _flashingModelsFilePath = '../../../assets/csv/flashings.csv';
   private _glazingFilePath = '../../../assets/csv/translator-pakietow-szybowych.csv';
   private _roofWindowsExclusionsFilePath = '../../../assets/csv/roof-windows-exclusions.csv';
-  private _availableOptions;
-  private _models;
-  private _materials;
-  private _openingTypes;
-  private _dimensions;
-  private _innerColors;
-  private _outerMaterials;
-  private _outerColor;
-  private _outerColorFinishes;
-  private _glazingTypes;
-  private _coats;
-  private _handles;
-  private _handleColors;
-  private _ventialtions;
-  private _extras;
-  private _technicalInformation;
-  private _glazings;
+  private _flashingsExclusionsFilePath = '../../../assets/csv/flashings-exclusions.csv';
 
   constructor(private csv: CsvFileReaderService) {
   }
 
-  fetchAllData() {
-    return this.csv.getCSVData(this._modelsFilePath)
+  fetchAllWindowsData() {
+    return this.csv.getCSVData(this._windowModelsFilePath)
       .pipe(map(data => {
         const lines = [];
         const linesArray = data.split('\n');
@@ -114,23 +99,6 @@ export class ConfigurationDataService {
             }
           }
         }
-        // this.availableOptions = availableOptions;
-        // this.materials = materials;
-        // this.openingTypes = openingTypes;
-        // this.innerColors = innerColors;
-        // this.glazingTypes = glazingTypes;
-        // this.coats = coats;
-        // this.dimensions = dimensions;
-        // this.extras = extras;
-        // this.handles = handles;
-        // this.handleColors = handleColors;
-        // this.ventialtions = ventilations;
-        // this.technicalInformation = technicalInformation;
-        // // TODO uzupełnić listę o dostępne kolory
-        // // this.outerColor = require('../../assets/json/RalCodes.json') as [];
-        // this.outerColor = ['Aluminium:RAL7022'];
-        // this.outerColorFinishes = outerColorFinishes;
-        // this.outerMaterials = outerMaterials;
         return {
           models,
           availableOptions,
@@ -193,7 +161,7 @@ export class ConfigurationDataService {
       }));
   }
 
-  fetchAllExclusions() {
+  fetchAllWindowExclusions() {
     return this.csv.getCSVData(this._roofWindowsExclusionsFilePath).pipe(
       map(data => {
         const lines = [];
@@ -218,147 +186,103 @@ export class ConfigurationDataService {
       }));
   }
 
-  get availableOptions() {
-    return this._availableOptions;
+  fetchAllFlashingsData() {
+    return this.csv.getCSVData(this._flashingModelsFilePath)
+      .pipe(map(data => {
+        const lines = [];
+        const linesArray = data.split('\n');
+        linesArray.forEach((e: any) => {
+          // TODO jak usunąć puste linie???
+          const row = e.replace(/[\s]+[;]+|[;]+[\s]+/g, ';').trim();
+          lines.push(row);
+        });
+        lines.slice(lines.length - 1, 1);
+        const columns = lines[0].split(';');
+        // Models
+        const models = [];
+        for (let i = 3; i < columns.length; i++) {
+          const model = {
+            flashingModel: lines[0].split(';')[i]
+          };
+          for (let j = 1; j < lines.length - 1; j++) {
+            model[lines[j].split(';')[0]] = lines[j].split(';')[i];
+          }
+          models.push(model);
+        }
+        // Fill arrays with options
+        const availableOptions = [];
+        const verticalSpacings = [];
+        const horizontalSpacings = [];
+        const outerMaterials = [];
+        const outerColorFinishes = [];
+        const dimensions = [];
+        const apronTypes = [];
+        const technicalInformation = [];
+        for (let i = 1; i < 2; i++) {
+          for (let j = 1; j < lines.length - 1; j++) {
+            availableOptions.push(lines[j].split(';')[0]);
+            if (lines[j].split(';')[1] === 'verticalSpacing') {
+              verticalSpacings.push(lines[j].split(';')[0]);
+            }
+            if (lines[j].split(';')[1] === 'horizontalSpacing') {
+              horizontalSpacings.push(lines[j].split(';')[0]);
+            }
+            if (lines[j].split(';')[1] === 'outerColorFinish') {
+              outerColorFinishes.push(lines[j].split(';')[0]);
+            }
+            if (lines[j].split(';')[1] === 'outerMaterial') {
+              outerMaterials.push(lines[j].split(';')[0]);
+            }
+            if (lines[j].split(';')[1] === 'apronType') {
+              apronTypes.push(lines[j].split(';')[0]);
+            }
+            if (lines[j].split(';')[1] === 'dimensions') {
+              dimensions.push(dimensions[lines[j].split(';')[0]] = lines[j].split(';')[3]);
+            }
+            if (lines[j].split(';')[1] === 'technical') {
+              technicalInformation.push(lines[j].split(';')[0]);
+            }
+          }
+        }
+        return {
+          models,
+          availableOptions,
+          verticalSpacings,
+          horizontalSpacings,
+          dimensions,
+          apronTypes,
+          technicalInformation,
+          // TODO uzupełnić listę o dostępne kolory
+          // this.outerColor = require('../../assets/json/RalCodes.json') as [];
+          outerColor: ['Aluminium:RAL7022'],
+          outerColorFinishes,
+          outerMaterials
+        };
+      }));
   }
 
-  set availableOptions(value) {
-    this._availableOptions = value;
-  }
-
-  get models() {
-    return this._models;
-  }
-
-  set models(value) {
-    this._models = value;
-  }
-
-  get modelsFilePath(): string {
-    return this._modelsFilePath;
-  }
-
-  set modelsFilePath(value: string) {
-    this._modelsFilePath = value;
-  }
-
-  get materials() {
-    return this._materials;
-  }
-
-  set materials(value) {
-    this._materials = value;
-  }
-
-  get openingTypes() {
-    return this._openingTypes;
-  }
-
-  set openingTypes(value) {
-    this._openingTypes = value;
-  }
-
-  get dimensions() {
-    return this._dimensions;
-  }
-
-  set dimensions(value) {
-    this._dimensions = value;
-  }
-
-  get innerColors() {
-    return this._innerColors;
-  }
-
-  set innerColors(value) {
-    this._innerColors = value;
-  }
-
-  get outerMaterials() {
-    return this._outerMaterials;
-  }
-
-  set outerMaterials(value) {
-    this._outerMaterials = value;
-  }
-
-  get outerColor() {
-    return this._outerColor;
-  }
-
-  set outerColor(value) {
-    this._outerColor = value;
-  }
-
-  get outerColorFinishes() {
-    return this._outerColorFinishes;
-  }
-
-  set outerColorFinishes(value) {
-    this._outerColorFinishes = value;
-  }
-
-  get glazingTypes() {
-    return this._glazingTypes;
-  }
-
-  set glazingTypes(value) {
-    this._glazingTypes = value;
-  }
-
-  get coats() {
-    return this._coats;
-  }
-
-  set coats(value) {
-    this._coats = value;
-  }
-
-  get extras() {
-    return this._extras;
-  }
-
-  set extras(value) {
-    this._extras = value;
-  }
-
-  get handles() {
-    return this._handles;
-  }
-
-  set handles(value) {
-    this._handles = value;
-  }
-
-  get handleColors() {
-    return this._handleColors;
-  }
-
-  set handleColors(value) {
-    this._handleColors = value;
-  }
-
-  get ventialtions() {
-    return this._ventialtions;
-  }
-
-  set ventialtions(value) {
-    this._ventialtions = value;
-  }
-
-  get technicalInformation() {
-    return this._technicalInformation;
-  }
-
-  set technicalInformation(value) {
-    this._technicalInformation = value;
-  }
-
-  get glazings() {
-    return this._glazings;
-  }
-
-  set glazings(value) {
-    this._glazings = value;
+  fetchAllFlashingExclusions() {
+    return this.csv.getCSVData(this._flashingsExclusionsFilePath).pipe(
+      map(data => {
+        const lines = [];
+        const linesArray = data.split('\n');
+        linesArray.forEach((e: any) => {
+          // TODO jak usunąć puste linie???
+          const row = e.replace(/[\s]+[;]+|[;]+[\s]+/g, ';').trim();
+          lines.push(row);
+        });
+        lines.slice(lines.length - 1, 1);
+        const columns = lines[0].split(';');
+        const exArray = [];
+        for (let i = 1; i < columns.length; i++) {
+          const tempExObject = {};
+          for (let j = 0; j < lines.length - 1; j++) {
+            Object.assign(tempExObject, {selectedOption: lines[i].split(';')[0]});
+            tempExObject[lines[j].split(';')[0]] = lines[j].split(';')[i];
+          }
+          exArray.push(tempExObject);
+        }
+        return exArray;
+      }));
   }
 }
