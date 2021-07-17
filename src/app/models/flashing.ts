@@ -20,13 +20,8 @@ export class Flashing {
   private _wiatrownicaDlugosc: number;
   private _typFartucha: string;
   private _flashingTileHeight: number;
-  private _flashingCombination: boolean;
-  private _flashingNumberOfConnections: number;
-  private _flashingCombinationDirection: string;
   private _rozstawPoziom: number;
   private _rozstawPion: number;
-  private _flashingCombinationWidths: number[];
-  private _flashingCombinationHeights: number[];
   private _CenaDetaliczna: number;
   private _dostepneRozmiary: string[];
   private _linkiDoZdjec: string[];
@@ -34,7 +29,7 @@ export class Flashing {
 
 
   // tslint:disable-next-line:max-line-length
-  constructor(kod: string, nazwaPozycjiPL: string, flashingName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, rodzaj: string, rodzina: string, oblachowanieMaterial: string, oblachowanieKolor: string, oblachowanieFinisz: string, typKolnierza: string, wiatrownicaDlugosc: number, typFartucha: string, flashingTileHeight: number, flashingCombination: boolean, flashingNumberOfConnections: number, flashingCombinationDirection: string, rozstawPoziom: number, rozstawPion: number, flashingCombinationWidths: number[], flashingCombinationHeights: number[], CenaDetaliczna: number, dostepneRozmiary: string[], linkiDoZdjec: string[], cennik: string) {
+  constructor(kod: string, nazwaPozycjiPL: string, flashingName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, rodzaj: string, rodzina: string, oblachowanieMaterial: string, oblachowanieKolor: string, oblachowanieFinisz: string, typKolnierza: string, wiatrownicaDlugosc: number, typFartucha: string, flashingTileHeight: number, rozstawPoziom: number, rozstawPion: number, CenaDetaliczna: number, dostepneRozmiary: string[], linkiDoZdjec: string[], cennik: string) {
     this._kod = kod;
     this._nazwaPozycjiPL = nazwaPozycjiPL;
     this._flashingName = flashingName;
@@ -56,13 +51,8 @@ export class Flashing {
     this._wiatrownicaDlugosc = wiatrownicaDlugosc;
     this._typFartucha = typFartucha;
     this._flashingTileHeight = flashingTileHeight;
-    this._flashingCombination = flashingCombination;
-    this._flashingNumberOfConnections = flashingNumberOfConnections;
-    this._flashingCombinationDirection = flashingCombinationDirection;
     this._rozstawPoziom = rozstawPoziom;
     this._rozstawPion = rozstawPion;
-    this._flashingCombinationWidths = flashingCombinationWidths;
-    this._flashingCombinationHeights = flashingCombinationHeights;
     this._CenaDetaliczna = CenaDetaliczna;
     this._dostepneRozmiary = dostepneRozmiary;
     this._linkiDoZdjec = linkiDoZdjec;
@@ -237,30 +227,6 @@ export class Flashing {
     this._flashingTileHeight = value;
   }
 
-  get flashingCombination(): boolean {
-    return this._flashingCombination;
-  }
-
-  set flashingCombination(value: boolean) {
-    this._flashingCombination = value;
-  }
-
-  get flashingNumberOfConnections(): number {
-    return this._flashingNumberOfConnections;
-  }
-
-  set flashingNumberOfConnections(value: number) {
-    this._flashingNumberOfConnections = value;
-  }
-
-  get flashingCombinationDirection(): string {
-    return this._flashingCombinationDirection;
-  }
-
-  set flashingCombinationDirection(value: string) {
-    this._flashingCombinationDirection = value;
-  }
-
   get rozstawPoziom(): number {
     return this._rozstawPoziom;
   }
@@ -275,22 +241,6 @@ export class Flashing {
 
   set rozstawPion(value: number) {
     this._rozstawPion = value;
-  }
-
-  get flashingCombinationWidths(): number[] {
-    return this._flashingCombinationWidths;
-  }
-
-  set flashingCombinationWidths(value: number[]) {
-    this._flashingCombinationWidths = value;
-  }
-
-  get flashingCombinationHeights(): number[] {
-    return this._flashingCombinationHeights;
-  }
-
-  set flashingCombinationHeights(value: number[]) {
-    this._flashingCombinationHeights = value;
   }
 
   get CenaDetaliczna(): number {
