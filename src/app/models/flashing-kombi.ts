@@ -2,6 +2,7 @@ import {Flashing} from './flashing';
 
 export class FlashingKombi {
   private _flashing: Flashing[];
+  private _numberOfFlashings: number;
   private _flashingCombinationCode: string;
   private _flashingName: string;
   private _localizationInCombination: string;
@@ -15,8 +16,9 @@ export class FlashingKombi {
   private _flashingTileHeight: number;
 
   // tslint:disable-next-line:max-line-length
-  constructor(flashing: Flashing[], flashingCombinationCode: string, flashingName: string, localizationInCombination: string, oblachowanieMaterial: string, oblachowanieKolor: string, oblachowanieFinisz: string, typKolnierza: string, CenaDetaliczna: number, wiatrownicaDlugosc: number, typFartucha: string, flashingTileHeight: number) {
+  constructor(flashing: Flashing[], numberOfFlashings: number, flashingCombinationCode: string, flashingName: string, localizationInCombination: string, oblachowanieMaterial: string, oblachowanieKolor: string, oblachowanieFinisz: string, typKolnierza: string, CenaDetaliczna: number, wiatrownicaDlugosc: number, typFartucha: string, flashingTileHeight: number) {
     this._flashing = flashing;
+    this._numberOfFlashings = numberOfFlashings;
     this._flashingCombinationCode = flashingCombinationCode;
     this._flashingName = flashingName;
     this._localizationInCombination = localizationInCombination;
@@ -36,6 +38,14 @@ export class FlashingKombi {
 
   set flashing(value: Flashing[]) {
     this._flashing = value;
+  }
+
+  get numberOfFlashings(): number {
+    return this._numberOfFlashings;
+  }
+
+  set numberOfFlashings(value: number) {
+    this._numberOfFlashings = value;
   }
 
   get flashingCombinationCode(): string {
