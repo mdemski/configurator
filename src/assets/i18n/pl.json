@@ -91,7 +91,7 @@
     "shopAccessories": "sklep/akcesoria",
     "shopReset": "sklep/reset",
     "configurator": "konfigurator",
-    "configuratorRoofWindows": "konfigurator/okna-dachowe",
+    "configuratorRoofWindow": "konfigurator/okna-dachowe",
     "configuratorVertical": "konfigurator/okna-pionowe",
     "configuratorFlashing": "konfigurator/kolnierze",
     "configuratorAccessory": "konfigurator/akcesoria",
