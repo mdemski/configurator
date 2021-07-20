@@ -1,4 +1,3 @@
-import {Flashing} from './flashing';
 import {FlashingKombi} from './flashing-kombi';
 
 export interface FlashingConfig {
