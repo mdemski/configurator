@@ -2,21 +2,6 @@
 @import 'src/sass/buttons';
 @import 'src/sass/components';
 
-.navbar-background {
-  height: 20rem;
-  overflow: hidden;
-  background-color: rgba($color-black, 1);
-
-  img {
-    opacity: .7;
-  }
-}
-
-.loader-container {
-  margin-top: 10rem;
-  height: 100vh;
-}
-
 th, td {
   font-size: 1.6rem;
 }

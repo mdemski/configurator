@@ -2,18 +2,6 @@
 @import 'src/sass/buttons';
 @import 'src/sass/components';
 
-
-.navbar-background {
-  height: 20rem;
-  overflow: hidden;
-  background-color: rgba($color_black, 1);
-  margin-bottom: 3rem;
-
-  img {
-    opacity: .7;
-  }
-}
-
 .md-container {
   max-width: 140rem;
   display: flex;

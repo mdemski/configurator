@@ -1,0 +1,151 @@
+@import 'src/sass/base/variables';
+@import 'src/sass/buttons';
+
+.configure-form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  &__group {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    overflow: hidden;
+    width: 100%;
+
+    &__label {
+      flex-basis: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2.2rem;
+      padding: 1rem 2rem;
+      cursor: pointer;
+      background-color: rgba($color-light-grey, .3);
+
+      &--inner {
+        display: flex;
+        justify-content: center;
+        flex-basis: 100%;
+        font-size: 1.6rem;
+        padding: .5rem 0;
+        background-color: rgba($color-light-blue, .3);
+      }
+    }
+
+    &__options {
+      width: 100%;
+      transition: all .7s ease-in-out;
+      max-height: 0;
+      overflow: hidden;
+      position: relative;
+
+      &--option {
+        background-color: rgba($color-light-grey, .1);
+
+        &__input {
+          opacity: 0;
+          width: 0;
+          display: none;
+
+          &:disabled + label {
+            color: rgba($color-black, .3);
+          }
+
+          &:checked + label {
+            border: .12rem solid rgba($color-green, 1);
+          }
+        }
+
+        &-wrap-range {
+          position: relative;
+        }
+
+        &__input-range {
+          display: flex;
+          justify-content: flex-start;
+          margin-bottom: 5rem;
+          height: 5rem;
+          width: 100%;
+        }
+
+        &__output-range {
+          background-color: $color-darkest-red;
+          color: $color-white;
+          padding: 1rem 2rem;
+          position: absolute;
+          border-radius: .4rem;
+          left: 50%;
+          transform: translateX(-50%);
+          top: 3.5rem;
+
+          &::after {
+            content: "";
+            width: 2px;
+            height: 2px;
+            position: absolute;
+            background: $color-darkest-red;
+            top: -1px;
+            left: 50%;
+          }
+        }
+
+        &__label {
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding-left: 12rem;
+          height: 10rem;
+          color: $color-black;
+          border: .12rem solid transparent;
+
+          &:hover {
+            border: .12rem solid rgba($color-black, .3);
+          }
+        }
+      }
+    }
+  }
+
+  &__navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem 0;
+
+    &__next-prev {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  &__submit {
+    margin: 2rem 0;
+    font-size: 1.6rem;
+  }
+
+  &__save-button {
+    margin: 2rem 0;
+  }
+
+  &__reset-button {
+    margin: 0 0 2rem 0;
+  }
+
+  &__validation-info {
+
+    &--single-message {
+      color: $color-red;
+
+      &--link {
+        color: $color-blue;
+
+        &:hover {
+          color: $color-black;
+        }
+      }
+    }
+  }
+}

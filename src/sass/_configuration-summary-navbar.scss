@@ -1,0 +1,110 @@
+@import 'src/sass/base/variables';
+
+.configuration-summary {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+
+  &__navigation {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-basis: 100%;
+    margin: 1rem 0;
+
+    &--element {
+      border: .2rem solid transparent;
+
+      &--chosen {
+        border: .2rem solid rgba($color-green, 1);
+      }
+    }
+
+    &--element:not(:last-child) {
+      margin-right: 1rem;
+    }
+
+    &--material {
+      background-image: url("/icons/window_config_navbar_icons/material.png");
+      width: 100px;
+      height: 100px;
+    }
+
+    &--opening {
+      background-image: url("/icons/window_config_navbar_icons/openingType.png");
+      width: 100px;
+      height: 100px;
+    }
+
+    &--glazing {
+      background-image: url("/icons/window_config_navbar_icons/glazing.png");
+      width: 100px;
+      height: 100px;
+    }
+
+    &--coats {
+      background-image: url("/icons/window_config_navbar_icons/coats.png");
+      width: 100px;
+      height: 100px;
+    }
+
+    &--dimensions {
+      background-image: url("/icons/window_config_navbar_icons/dimensions.png");
+      width: 100px;
+      height: 100px;
+    }
+
+    &--inner-color {
+      background-image: url("/icons/window_config_navbar_icons/innerColor.png");
+      width: 100px;
+      height: 100px;
+    }
+
+    &--outer-material {
+      background-image: url("/icons/window_config_navbar_icons/outerMaterial.png");
+      width: 100px;
+      height: 100px;
+    }
+
+    &--ventilation {
+      background-image: url("/icons/window_config_navbar_icons/ventilation.png");
+      width: 100px;
+      height: 100px;
+    }
+
+    &--handle {
+      background-image: url("/icons/window_config_navbar_icons/handle.png");
+      width: 100px;
+      height: 100px;
+    }
+
+    &--extras {
+      background-image: url("/icons/window_config_navbar_icons/extras.png");
+      width: 100px;
+      height: 100px;
+    }
+
+    &--flashing-type {
+      background-image: url("/icons/window_config_navbar_icons/falshingType.png");
+      width: 100px;
+      height: 100px;
+    }
+
+    &--apron-type {
+      background-image: url("/icons/window_config_navbar_icons/apronType.png");
+      width: 100px;
+      height: 100px;
+    }
+  }
+
+  &__scores {
+    display: flex;
+    font-size: 2.2rem;
+    margin: 2rem 0;
+
+    p {
+      margin-right: 2rem;
+    }
+  }
+}
