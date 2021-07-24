@@ -1,8 +1,8 @@
-import {FlashingKombi} from './flashing-kombi';
+import {Flashing} from './flashing';
 
 export interface FlashingConfig {
   id: number;
-  flashingKombi: FlashingKombi | null;
+  flashing: Flashing | null;
   quantity: number;
   flashingFormName: string;
   flashingFormData: any | null;

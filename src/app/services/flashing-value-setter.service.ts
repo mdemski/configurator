@@ -17,80 +17,76 @@ export class FlashingValueSetterService {
 
   setModelName(flashing: Flashing) {
     // tslint:disable-next-line:max-line-length
-    flashing.flashingName = this.buildFlashingModel(flashing.model, flashing.szerokosc, flashing.wysokosc, flashing.flashingNumberOfConnections);
+    flashing.flashingName = this.buildFlashingModel(flashing.model, flashing.szerokosc, flashing.wysokosc);
   }
 
-  buildFlashingModel(model: string, szerokosc: number, wysokosc: number, numberOfConnections: number) {
+  buildFlashingModel(model: string, szerokosc: number, wysokosc: number) {
     let flashingDesc = '';
-    let flashingCombi = '';
     this.translate.get('FLASHINGS-DATA').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
       const flashingDescElement = model.split(':')[0];
       flashingDesc = text[flashingDescElement];
     });
-    this.translate.get('FLASHINGS-DATA').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
-      flashingCombi = text[numberOfConnections];
-    });
     const flashingType = model.split(':')[1];
-    return String(flashingDesc + ' ' + flashingCombi + ' ' + flashingType + ' ' + szerokosc + 'x' + wysokosc);
+    return String(flashingDesc + ' ' + flashingType + ' ' + szerokosc + 'x' + wysokosc);
   }
 
-  setNumberOfConnections(flashing: Flashing) {
-    const flashingType = flashing.rodzaj.split(':')[1];
-    switch (flashingType) {
-      case ('K-1'):
-        flashing.flashingCombination = false;
-        flashing.flashingNumberOfConnections = 1;
-        break;
-      case ('KYS'):
-        flashing.flashingCombination = true;
-        flashing.flashingNumberOfConnections = 2;
-        break;
-      case ('KXL'):
-        flashing.flashingCombination = true;
-        flashing.flashingNumberOfConnections = 2;
-        break;
-      case ('KXP'):
-        flashing.flashingCombination = true;
-        flashing.flashingNumberOfConnections = 2;
-        break;
-      case ('KXS'):
-        flashing.flashingCombination = true;
-        flashing.flashingNumberOfConnections = 6;
-        break;
-      case ('KZL'):
-        flashing.flashingCombination = true;
-        flashing.flashingNumberOfConnections = 4;
-        break;
-      case ('KZP'):
-        flashing.flashingCombination = true;
-        flashing.flashingNumberOfConnections = 4;
-        break;
-      case ('KZS'):
-        flashing.flashingCombination = true;
-        flashing.flashingNumberOfConnections = 6;
-        break;
-      case ('KK1'):
-        flashing.flashingCombination = true;
-        flashing.flashingNumberOfConnections = 2;
-        break;
-      case ('KKL'):
-        flashing.flashingCombination = true;
-        flashing.flashingNumberOfConnections = 4;
-        break;
-      case ('KKP'):
-        flashing.flashingCombination = true;
-        flashing.flashingNumberOfConnections = 4;
-        break;
-      case ('KKS'):
-        flashing.flashingCombination = true;
-        flashing.flashingNumberOfConnections = 6;
-        break;
-      default:
-        flashing.flashingCombination = false;
-        flashing.flashingNumberOfConnections = 1;
-        break;
-    }
-  }
+  // setNumberOfConnections(flashing: Flashing) {
+  //   const flashingType = flashing.rodzaj.split(':')[1];
+  //   switch (flashingType) {
+  //     case ('K-1'):
+  //       flashing.flashingCombination = false;
+  //       flashing.flashingCombinationCode = null;
+  //       break;
+  //     case ('KYS'):
+  //       flashing.flashingCombination = true;
+  //       flashing.flashingNumberOfConnections = 2;
+  //       break;
+  //     case ('KXL'):
+  //       flashing.flashingCombination = true;
+  //       flashing.flashingNumberOfConnections = 2;
+  //       break;
+  //     case ('KXP'):
+  //       flashing.flashingCombination = true;
+  //       flashing.flashingNumberOfConnections = 2;
+  //       break;
+  //     case ('KXS'):
+  //       flashing.flashingCombination = true;
+  //       flashing.flashingNumberOfConnections = 6;
+  //       break;
+  //     case ('KZL'):
+  //       flashing.flashingCombination = true;
+  //       flashing.flashingNumberOfConnections = 4;
+  //       break;
+  //     case ('KZP'):
+  //       flashing.flashingCombination = true;
+  //       flashing.flashingNumberOfConnections = 4;
+  //       break;
+  //     case ('KZS'):
+  //       flashing.flashingCombination = true;
+  //       flashing.flashingNumberOfConnections = 6;
+  //       break;
+  //     case ('KK1'):
+  //       flashing.flashingCombination = true;
+  //       flashing.flashingNumberOfConnections = 2;
+  //       break;
+  //     case ('KKL'):
+  //       flashing.flashingCombination = true;
+  //       flashing.flashingNumberOfConnections = 4;
+  //       break;
+  //     case ('KKP'):
+  //       flashing.flashingCombination = true;
+  //       flashing.flashingNumberOfConnections = 4;
+  //       break;
+  //     case ('KKS'):
+  //       flashing.flashingCombination = true;
+  //       flashing.flashingNumberOfConnections = 6;
+  //       break;
+  //     default:
+  //       flashing.flashingCombination = false;
+  //       flashing.flashingNumberOfConnections = 1;
+  //       break;
+  //   }
+  // }
 
   setTileHeight(flashing: Flashing) {
     const apronType = flashing.typFartucha;
@@ -101,6 +97,9 @@ export class FlashingValueSetterService {
       case ('H'):
         flashing.flashingTileHeight = 9;
         break;
+      case ('H5'):
+        flashing.flashingTileHeight = 5;
+        break;
       case ('H9'):
         flashing.flashingTileHeight = 9;
         break;
@@ -110,10 +109,10 @@ export class FlashingValueSetterService {
       case ('K'):
         flashing.flashingTileHeight = 5;
         break;
-      case ('H5'):
+      case ('A'):
         flashing.flashingTileHeight = 5;
         break;
-      case('BRAK'):
+      case ('BRAK'):
         flashing.flashingTileHeight = 0;
         break;
       default:

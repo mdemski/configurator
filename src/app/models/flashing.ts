@@ -26,10 +26,12 @@ export class Flashing {
   private _dostepneRozmiary: string[];
   private _linkiDoZdjec: string[];
   private _cennik: string;
-
+  private _flashingCombination: boolean;
+  private _flashingCombinationCode: string | null; // pomocnicze oznaczenie zestawu nie przesyłać do ERP
+  private _flashingCodesArray: string[]; // lista kodów wchodzących w skład zestawu - informacja wyłącznie do wyświetlania
 
   // tslint:disable-next-line:max-line-length
-  constructor(kod: string, nazwaPozycjiPL: string, flashingName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, rodzaj: string, rodzina: string, oblachowanieMaterial: string, oblachowanieKolor: string, oblachowanieFinisz: string, typKolnierza: string, wiatrownicaDlugosc: number, typFartucha: string, flashingTileHeight: number, rozstawPoziom: number, rozstawPion: number, CenaDetaliczna: number, dostepneRozmiary: string[], linkiDoZdjec: string[], cennik: string) {
+  constructor(kod: string, nazwaPozycjiPL: string, flashingName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, rodzaj: string, rodzina: string, oblachowanieMaterial: string, oblachowanieKolor: string, oblachowanieFinisz: string, typKolnierza: string, wiatrownicaDlugosc: number, typFartucha: string, flashingTileHeight: number, rozstawPoziom: number, rozstawPion: number, CenaDetaliczna: number, dostepneRozmiary: string[], linkiDoZdjec: string[], cennik: string, flashingCombination: boolean, flashingCombinationCode: string | null, flashingCodesArray: string[]) {
     this._kod = kod;
     this._nazwaPozycjiPL = nazwaPozycjiPL;
     this._flashingName = flashingName;
@@ -57,6 +59,9 @@ export class Flashing {
     this._dostepneRozmiary = dostepneRozmiary;
     this._linkiDoZdjec = linkiDoZdjec;
     this._cennik = cennik;
+    this._flashingCombination = flashingCombination;
+    this._flashingCombinationCode = flashingCombinationCode;
+    this._flashingCodesArray = flashingCodesArray;
   }
 
   get kod(): string {
@@ -273,5 +278,29 @@ export class Flashing {
 
   set cennik(value: string) {
     this._cennik = value;
+  }
+
+  get flashingCombination(): boolean {
+    return this._flashingCombination;
+  }
+
+  set flashingCombination(value: boolean) {
+    this._flashingCombination = value;
+  }
+
+  get flashingCombinationCode(): string | null {
+    return this._flashingCombinationCode;
+  }
+
+  set flashingCombinationCode(value: string | null) {
+    this._flashingCombinationCode = value;
+  }
+
+  get flashingCodesArray(): string[] {
+    return this._flashingCodesArray;
+  }
+
+  set flashingCodesArray(value: string[]) {
+    this._flashingCodesArray = value;
   }
 }
