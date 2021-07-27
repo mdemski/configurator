@@ -223,7 +223,7 @@ export class ConfigurationDataService {
           for (let j = 1; j < lines.length - 1; j++) {
             availableOptions.push(lines[j].split(';')[0]);
             if (lines[j].split(';')[1] === 'flashingType') {
-              verticalSpacings.push(lines[j].split(';')[0]);
+              flashingTypes.push(lines[j].split(';')[0]);
             }
             if (lines[j].split(';')[1] === 'verticalSpacing') {
               verticalSpacings.push(lines[j].split(';')[0]);
