@@ -1,0 +1,48 @@
+@import 'src/sass/base/variables';
+
+.md-modal-wrap {
+  position: absolute;
+  display: block;
+  width: 100%;
+  max-width: 40rem;
+  margin: 2rem auto;
+  z-index: 100;
+  border-radius: .4rem;
+  overflow: hidden;
+  padding-bottom: 2rem;
+  background-color: $color-white;
+  align-self: center;
+  box-shadow: 0 12px 25px 0 rgba(199, 175, 189, .25);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 250ms 250ms ease, transform 300ms 250ms ease;
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  &__text {
+    font-size: $default-font-size;
+    padding: 2rem 3rem 0 3rem;
+  }
+}
+
+.md-modal-wrap-open {
+  pointer-events: auto;
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 250ms 500ms ease, transform 350ms 500ms ease;
+}
+
+@media screen and (max-width: 500px) {
+  .md-modal-wrap {
+    width: calc(100% - 40px);
+    padding-bottom: 15px;
+  }
+
+  .md-modal-wrap p {
+    padding: 1.5rem 2rem 0 2rem;
+  }
+}
