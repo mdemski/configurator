@@ -20,9 +20,9 @@ export class LoadConfigurationService {
   windowData$: BehaviorSubject<RoofWindowSkylight> = new BehaviorSubject(this.newWindow);
 
   newFlashing = new Flashing(null, null, null, 'I-KOŁNIERZ', 'NPL-KOŁNIERZ', '1.Nowy', null,
-    0, 0, 'KołnierzUszczelniający', null, null, null, null, null, null, null,
-    null, 0, null, 0, false, 0, null, 0, 0,
-    null, null, 0, [], [], null);
+      0, 0, 'KołnierzUszczelniający', null, null, null, null, null, null, null,
+      null, 0, null, 0, 0, 0, 0,
+      [], [], null, false, null, null);
   flashingData$: BehaviorSubject<Flashing> = new BehaviorSubject(this.newFlashing);
 
   // TODO Sprawdzić jaka jest grupa asortymentowa dla rolet wewnętrznych
@@ -46,6 +46,7 @@ export class LoadConfigurationService {
       if (formName === 'no-name' && windowCode !== undefined) {
         return this.db.getWindowByCode(windowCode);
       }
+      // tslint:disable-next-line:max-line-length
       // TODO dodać opcję gdy wklejony zostanie link z konfiguracji zalogowanego użytkownika, a w trakcie wklejania użytkownik jest wylogowany
     }
   }
@@ -77,7 +78,13 @@ export class LoadConfigurationService {
       // @ts-ignore
       this.newFlashing.oblachowanieMaterial = window._oblachowanieMaterial;
       // @ts-ignore
+      this.newFlashing.oblachowanieMaterial = window._oblachowanieMaterial;
+      // @ts-ignore
       this.newFlashing.oblachowanieKolor = window._oblachowanieKolor;
+      // @ts-ignore
+      this.newFlashing.oblachowanieKolor = window._oblachowanieKolor;
+      // @ts-ignore
+      this.newFlashing.oblachowanieFinisz = window._oblachowanieFinisz;
       // @ts-ignore
       this.newFlashing.oblachowanieFinisz = window._oblachowanieFinisz;
       return this.newFlashing;
