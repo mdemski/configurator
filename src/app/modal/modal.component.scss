@@ -27,6 +27,10 @@
     font-size: $default-font-size;
     padding: 2rem 3rem 0 3rem;
   }
+
+  p {
+    padding: 1.5rem 2rem 0 2rem;
+  }
 }
 
 .md-modal-wrap-open {
@@ -40,9 +44,5 @@
   .md-modal-wrap {
     width: calc(100% - 40px);
     padding-bottom: 15px;
-  }
-
-  .md-modal-wrap p {
-    padding: 1.5rem 2rem 0 2rem;
   }
 }
