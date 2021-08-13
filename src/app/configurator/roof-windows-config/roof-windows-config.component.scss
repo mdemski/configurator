@@ -3,14 +3,6 @@
 @import 'src/sass/configure-form';
 @import 'src/sass/configuration-summary-navbar';
 
-
-form {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  width: 25%;
-}
-
 .label--disabled {
   &:hover {
     border: .12rem solid transparent;

@@ -1,6 +1,13 @@
 @import 'src/sass/base/variables';
 @import 'src/sass/buttons';
 
+form {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 25%;
+}
+
 .configure-form {
   width: 100%;
   display: flex;
@@ -26,7 +33,7 @@
       &--inner {
         display: flex;
         justify-content: center;
-        flex-basis: 100%;
+        //flex-basis: 100%;
         font-size: 1.6rem;
         padding: .5rem 0;
         background-color: rgba($color-light-blue, .3);

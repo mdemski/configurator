@@ -86,13 +86,18 @@
     }
 
     &--flashing-type {
-      //background-image: url("src/assets/icons/flashing_config_navbar_icons/falshingType.png");
+      background-image: url("src/assets/icons/flashing_config_navbar_icons/flashingType.png");
       width: 100px;
       height: 100px;
     }
 
     &--apron-type {
       //background-image: url("src/assets/icons/flashing_config_navbar_icons/apronType.png");
+      width: 100px;
+      height: 100px;
+    }
+    &--combination {
+      //background-image: url("src/assets/icons/flashing_config_navbar_icons/combination.png");
       width: 100px;
       height: 100px;
     }
