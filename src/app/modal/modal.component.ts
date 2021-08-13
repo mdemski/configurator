@@ -25,7 +25,7 @@ export class ModalComponent implements OnInit, OnDestroy {
       return;
     }
     // document.body.appendChild(this.element);
-    this.addEventListenerMulti(['click', 'keypress']);
+    // this.addEventListenerMulti(['click', 'keypress']);
     this.modalService.add(this);
   }
 
