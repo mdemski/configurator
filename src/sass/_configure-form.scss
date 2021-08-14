@@ -8,11 +8,6 @@ form {
   width: 25%;
 }
 
-// No overflow hidden - parent has hidden
-.modal-window-relative-parent {
-  position: relative;
-}
-
 .configure-form {
   width: 100%;
   display: flex;
@@ -89,6 +84,22 @@ form {
           margin-bottom: 5rem;
           height: 5rem;
           width: 100%;
+        }
+
+        &__input-width {
+          //display: flex;
+          //justify-content: flex-start;
+          //margin-bottom: 5rem;
+          //height: 5rem;
+          //width: 100%;
+        }
+
+        &__input-height {
+          //display: flex;
+          //justify-content: flex-start;
+          //margin-bottom: 5rem;
+          //height: 5rem;
+          //width: 100%;
         }
 
         &__output-range {

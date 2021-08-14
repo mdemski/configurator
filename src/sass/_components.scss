@@ -360,3 +360,8 @@ table {
   width: 100%;
   font-size: 1.6rem;
 }
+
+// No overflow hidden - parent has hidden
+.modal-window-relative-parent {
+  position: relative;
+}
