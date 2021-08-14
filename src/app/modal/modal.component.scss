@@ -2,11 +2,13 @@
 
 .md-modal-wrap {
   position: absolute;
-  display: block;
+  display: inline-block;
   width: 100%;
   max-width: 40rem;
-  margin: 2rem auto;
+  margin: 1rem 0 auto -2rem;
   z-index: 100;
+  top: 5%;
+  left: 95%;
   border-radius: .4rem;
   overflow: hidden;
   padding-bottom: 2rem;

@@ -8,6 +8,11 @@ form {
   width: 25%;
 }
 
+// No overflow hidden - parent has hidden
+.modal-window-relative-parent {
+  position: relative;
+}
+
 .configure-form {
   width: 100%;
   display: flex;
@@ -44,8 +49,6 @@ form {
       width: 100%;
       transition: all .7s ease-in-out;
       max-height: 0;
-      overflow: hidden;
-      position: relative;
 
       &--option {
         background-color: rgba($color-light-grey, .1);
