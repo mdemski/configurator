@@ -365,3 +365,171 @@ table {
 .modal-window-relative-parent {
   position: relative;
 }
+
+// CHOOSE CONFIG POPUP
+.choose-config-popup {
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba($color-black, .8);
+  z-index: 9999;
+
+  &__content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-image: radial-gradient(at top, $color-white, $color-light-blue);
+    width: 45%;
+    height: 60vh;
+    overflow: scroll;
+    box-shadow: 0 2rem 4rem rgba($color-black, .2);
+    border-radius: .5rem;
+
+    &__form {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+      color: $color-black;
+
+      &--select {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        width: 40rem;
+        height: 5rem;
+        margin-right: 2rem;
+
+        &:hover {
+          cursor: pointer;
+        }
+
+        &:focus .choose-config-popup__content__form--select--label {
+          position: relative;
+          pointer-events: all;
+        }
+
+        &--input {
+          opacity: 0;
+          position: absolute;
+          left: -99999px;
+
+          &:checked + label {
+            order: 1;
+            z-index: 2;
+            color: $color-white;
+            background: $color-darkest-blue;
+            border-top: none;
+            position: relative;
+          }
+
+          &:checked + label:after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid $color-black;
+            position: absolute;
+            right: 10px;
+            top: calc(50% - 2.5px);
+            pointer-events: none;
+            z-index: 3;
+          }
+
+          &:checked + label:before {
+            position: absolute;
+            right: 0;
+            height: 5rem;
+            width: 5rem;
+            content: '';
+            background: $color-white;
+          }
+        }
+
+        &--label {
+          padding: 0 3rem 0 1.5rem;
+          min-height: 5rem;
+          display: flex;
+          align-items: center;
+          background-color: $color-light-grey;
+          border-top: $color-white solid 1px;
+          position: absolute;
+          top: 0;
+          width: 100%;
+          pointer-events: none;
+          order: 2;
+          z-index: 1;
+          transition: background .4s ease-in-out;
+          box-sizing: border-box;
+          overflow: hidden;
+          white-space: nowrap;
+
+          &:hover {
+            color: $color-white;
+            background-color: $color-darkest-blue;
+          }
+        }
+      }
+    }
+  }
+}
+
+// COPY LINK CONFIG POPUP
+.copy-link-config-popup {
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba($color-black, .8);
+  z-index: 9999;
+
+  &__content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba($color-white, 1);
+    width: 45%;
+    height: 60vh;
+    overflow: hidden;
+    box-shadow: 0 2rem 4rem rgba($color-black, .2);
+    border-radius: .5rem;
+
+    &__info-box {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+
+      &--label {
+        margin: 1.5rem 0;
+        text-align: center;
+        width: 100%;
+      }
+
+      &--input {
+        width: 100%;
+      }
+
+      &__button {
+        margin: 3rem 0;
+      }
+    }
+  }
+}
