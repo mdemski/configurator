@@ -72,11 +72,10 @@
            [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.dostepneRozmiary!==null}"></a>
       </div>
       <div class="configuration-summary__scores">
-        <p
-          class="price">{{this.configuredWindow.CenaDetaliczna | currency :' ' : '' : undefined : undefined}}{{ 'ROOF-WINDOWS-CONFIG.currency' | translate}}</p>
-        <p class="Uw">{{ 'ROOF-WINDOWS-CONFIG.Uw' | translate}} = {{this.configuredWindow.windowUW | number: '1.2-2'}}
+        <p>{{this.configuredWindow.CenaDetaliczna | currency :' ' : '' : undefined : undefined}}{{ 'ROOF-WINDOWS-CONFIG.currency' | translate}}</p>
+        <p>{{ 'ROOF-WINDOWS-CONFIG.Uw' | translate}} = {{this.configuredWindow.windowUW | number: '1.2-2'}}
           W/m²K</p>
-        <p class="Ug">{{ 'ROOF-WINDOWS-CONFIG.Ug' | translate}} = {{this.configuredWindow.windowUG | number: '1.2-2'}}
+        <p>{{ 'ROOF-WINDOWS-CONFIG.Ug' | translate}} = {{this.configuredWindow.windowUG | number: '1.2-2'}}
           W/m²K</p>
       </div>
     </div>
@@ -420,6 +419,7 @@
                 {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
             </div>
           </div>
+        </div>
 
           <div class="configure-form__group" formGroupName="closure"
                [ngClass]="{'md-not-popup' : popupConfig===false}">
@@ -545,7 +545,6 @@
              class="btn btn--grey configure-form__save-button">{{ 'ROOF-WINDOWS-CONFIG.saveCopyLinkPopUp' | translate}}</a>
           <a (click)="resetConfigForm()"
              class="btn btn--light-blue configure-form__reset-button">{{ 'ROOF-WINDOWS-CONFIG.resetConfigForm' | translate}}</a>
-        </div>
       </form>
     </div>
   </ng-template>

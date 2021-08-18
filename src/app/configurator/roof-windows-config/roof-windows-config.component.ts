@@ -29,6 +29,7 @@ import {DatabaseService} from '../../services/database.service';
 import cryptoRandomString from 'crypto-random-string';
 import {WindowConfig} from '../../models/window-config';
 import {SingleConfiguration} from '../../models/single-configuration';
+import {ModalService} from '../../modal/modal.service';
 
 @Component({
   selector: 'app-roof-windows-config',
@@ -54,7 +55,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
     this.paramsUserFetchData$ = combineLatest(this.authService.returnUser(), this.activeRouter.params,
-      this.configData.fetchAllData(), this.crud.readAllConfigurationsFromMongoDB()).pipe(
+      this.configData.fetchAllWindowsData(), this.crud.readAllConfigurationsFromMongoDB()).pipe(
       takeUntil(this.isDestroyed$),
       map(data => {
         return {
@@ -68,27 +69,27 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
 
   // tslint:disable-next-line:max-line-length
   private paramsUserFetchData$: Observable<{ params: ObservedValueOf<Observable<Params>>; user: string; fetch: any; configurations: SingleConfiguration[] }>;
-  currentUser: string;
-  form: FormGroup;
-  formName: string;
-  configId: string;
-  windowId: number;
-  windowCode: string;
-  configFormId: number;
-  dimensions;
-  urlToSaveConfiguration: string;
-  roofWindowsFormDataBase: RoofWindowSkylight[];
   configuredWindow: RoofWindowSkylight;
-  tempConfiguredWindow: RoofWindowSkylight;
-  windowModelsToCalculatePrice = [];
-  standardWidths = [55, 66, 78, 94, 114, 134];
+  form: FormGroup;
+  configFormId: number;
+  userConfigs = [];
+  urlToSaveConfiguration: string;
   showWidthMessage = false;
-  standardHeights = [78, 98, 118, 140, 160];
   showHeightMessage = false;
   popupConfig = true;
   chooseConfigNamePopup = false;
   copyLinkToConfigurationPopup = false;
-  userConfigs = [];
+  private currentUser: string;
+  private formName: string;
+  private configId: string;
+  private windowId: number;
+  private windowCode: string;
+  private dimensions;
+  private roofWindowsFormDataBase: RoofWindowSkylight[];
+  private tempConfiguredWindow: RoofWindowSkylight;
+  private windowModelsToCalculatePrice = [];
+  private standardWidths = [55, 66, 78, 94, 114, 134];
+  private standardHeights = [78, 98, 118, 140, 160];
   private materialVisible = true;
   private openingVisible = false;
   private coatsVisible = false;
@@ -200,8 +201,8 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
               }),
               extras: new FormArray(this.builtExtrasArray(this.extrasFromFile))
             });
-            this.formChanges();
-            this.setDisabled(this.configuredWindow);
+            this.formChanges(); // TODO które usunąć to, czy poniżej - raczej poniżej wiersz, bo tam brak ustawiania formArray
+            this.setConfiguredValues(this.form.value); // TODO ten i poprzedni wiersz mają odwołanie do tej samej metody setConfigureValues - czy można jedno usunąć?
             this.loading = false;
           });
       } else {
@@ -236,8 +237,8 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
             });
             this.configuredWindow = windowConfiguration.window;
             this.windowId = windowConfiguration.id;
-            this.setConfiguredValues(this.form.value);
-            this.formChanges();
+            this.setConfiguredValues(this.form.value); // TODO ten kolejny wiersz mają odwołanie do tej samej metody setConfigureValues - czy można jedno usunąć?
+            this.formChanges(); // TODO które usunąć to, czy poprzednie - raczej poprzedni wiersz, bo tam brak ustawiania formArray
             this.loading = false;
           });
       }
@@ -252,7 +253,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       this.configurationSummary = text.configurationSummary;
     });
     this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
-      this.windowsConfigurator = text.configuratorRoofWindows;
+      this.windowsConfigurator = text.configuratorRoofWindow;
     });
   }
 
@@ -312,7 +313,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       filter(([prevForm, form]: [any, any]) => form.material !== null),
       tap(() => {
         const checkboxCoatControl = this.coats as FormArray;
-        console.log(checkboxCoatControl);
         this.subscription = checkboxCoatControl.valueChanges.subscribe(() => {
           checkboxCoatControl.setValue(checkboxCoatControl.value.map((value, i) =>
             value ? this.coatsFromFile[i].option : false), {emitEvent: false});
@@ -337,7 +337,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       })).subscribe();
   }
 
-  setConfiguredValues(form) {
+  private setConfiguredValues(form) {
     this.configuredWindow.model = this.erpName.setWindowModel(
       form.material,
       form.openingType,
@@ -351,7 +351,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       this.configuredWindow.pakietSzybowy = pakietSzybowy;
     });
     this.configuredWindow.glazingToCalculation = form.glazing;
-    this.configuredWindow.status = 'Nowy';
+    this.configuredWindow.status = '1. Nowy';
     this.configuredWindow.szerokosc = form.width;
     this.showWidthMessage = this.standardWidths.includes(form.width);
     this.configuredWindow.wysokosc = form.height;
@@ -477,7 +477,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       let errors = {
         'empty material': true
       };
-      this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
+      this.configData.fetchAllWindowsData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
         options = data.materials;
         for (const option of options) {
           if (control.value === option) {
@@ -496,7 +496,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       let errors = {
         'empty openingType': true
       };
-      this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
+      this.configData.fetchAllWindowsData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
         options = data.openingTypes;
         for (const option of options) {
           if (control.value === option) {
@@ -515,7 +515,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       let errors = {
         'empty glazingType': true
       };
-      this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
+      this.configData.fetchAllWindowsData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
         options = data.glazingTypes;
         for (const option of options) {
           if (control.value === option) {
@@ -534,7 +534,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       let errors = {
         'empty innerColor': true
       };
-      this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
+      this.configData.fetchAllWindowsData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
         options = data.innerColors;
         for (const option of options) {
           if (control.value === option) {
@@ -555,8 +555,8 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       let errors = {
         'empty outerMaterial': true
       };
-      this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
-        materialOptions = data.materials;
+      this.configData.fetchAllWindowsData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
+        materialOptions = data.outerMaterials;
         // colorOptions = this.configData.outerColor;
         finishOptions = data.outerColorFinishes;
         for (const option of materialOptions) {
@@ -587,7 +587,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       let errors = {
         'empty ventilation': true
       };
-      this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
+      this.configData.fetchAllWindowsData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
         options = data.ventilations;
         for (const option of options) {
           if (control.value === option) {
@@ -606,7 +606,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       let errors = {
         'empty handle': true
       };
-      this.configData.fetchAllData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
+      this.configData.fetchAllWindowsData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
         options = data.handles;
         for (const option of options) {
           if (control.value === option) {
@@ -774,7 +774,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       }
     }
     return {
-      ['background-image']: 'url("assets/img/configurator/window_configurator/central_navigation_pictures/' + fileName + '.png")',
+      ['background-image']: 'url("assets/img/configurator/window_configurator/central_options_pictures/' + fileName + '.png")',
       ['background-size']: 'contain',
       ['background-repeat']: 'no-repeat'
     };
@@ -932,7 +932,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   setDisabled(configuredWindow: RoofWindowSkylight) {
     this.resetAllArrays(this.materials, this.openingTypes, this.innerColors, this.outerMaterials, this.outerColors, this.outerColorFinishes,
       this.glazingTypes, this.coatsFromFile, this.extrasFromFile, this.ventilations, this.handles, this.handleColors);
-    this.configData.fetchAllExclusions().pipe(takeUntil(this.isDestroyed$)).subscribe(exclusions => {
+    this.configData.fetchAllWindowExclusions().pipe(takeUntil(this.isDestroyed$)).subscribe(exclusions => {
       const excludedOptions = [];
       for (const configurationOption in configuredWindow) {
         if (configurationOption === '_kolorTworzywZew') {
