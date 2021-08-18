@@ -12,6 +12,7 @@ export class ModalComponent implements OnInit, OnDestroy {
   @Input() name: string;
   @Input() text: string;
   @Input() optionName: string;
+  position = {x: 1, y: 2};
   private readonly element: any;
 
   constructor(private modalService: ModalService,
@@ -50,6 +51,8 @@ export class ModalComponent implements OnInit, OnDestroy {
 
   open() {
     this.element.firstChild.classList.add('md-modal-wrap-open');
+    this.element.firstChild.style.left = (this.position.x + 100) + 'px';
+    this.element.firstChild.style.top = (this.position.y / 2) + 'px';
   }
 
   close() {

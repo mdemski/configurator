@@ -17,8 +17,10 @@ export class ModalService {
     this.modals = this.modals.filter(x => x.name === id);
   }
 
-  open(name: string) {
+  open(name: string, event: MouseEvent) {
     const modal = this.modals.find(x => x.name === name);
+    modal.position.x = event.clientX;
+    modal.position.y = event.clientY;
     modal.open();
   }
 
