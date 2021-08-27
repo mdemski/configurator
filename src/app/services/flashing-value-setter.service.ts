@@ -120,7 +120,7 @@ export class FlashingValueSetterService implements OnDestroy {
       }
       for (let i = 1; i < horizontalNumber; i++) {
         flashingsModelArray.push(topLeftFlashing);
-        for (let j = 2; i < verticalNumber; j++) {
+        for (let j = 2; j < verticalNumber; j++) {
           flashingsModelArray.push(topMiddleFlashing);
         }
         flashingsModelArray.push(topRightFlashing);
