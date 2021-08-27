@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { WindowDynamicValuesSetterService } from './window-dynamic-values-setter.service';
+import { RoofWindowValuesSetterService } from './roof-window-values-setter.service';
 
 describe('WindowDynamicValuesSetterService', () => {
-  let service: WindowDynamicValuesSetterService;
+  let service: RoofWindowValuesSetterService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(WindowDynamicValuesSetterService);
+    service = TestBed.inject(RoofWindowValuesSetterService);
   });
 
   it('should be created', () => {

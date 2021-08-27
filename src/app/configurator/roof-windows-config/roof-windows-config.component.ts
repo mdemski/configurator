@@ -15,7 +15,7 @@ import {RoofWindowSkylight} from '../../models/roof-window-skylight';
 import {CrudFirebaseService} from '../../services/crud-firebase-service';
 import {ConfigurationDataService} from '../../services/configuration-data.service';
 import {AuthService} from '../../services/auth.service';
-import {WindowDynamicValuesSetterService} from '../../services/window-dynamic-values-setter.service';
+import {RoofWindowValuesSetterService} from '../../services/roof-window-values-setter.service';
 import {
   filter,
   map, pairwise, startWith,
@@ -42,8 +42,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   constructor(private authService: AuthService,
               private configData: ConfigurationDataService,
               private dataBase: DatabaseService,
-              private windowValuesSetter: WindowDynamicValuesSetterService,
-              private erpName: ErpNameTranslatorService,
+              private windowValuesSetter: RoofWindowValuesSetterService,
               private loadConfig: LoadConfigurationService,
               private crud: CrudFirebaseService,
               private hd: HighestIdGetterService,
@@ -338,7 +337,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   }
 
   private setConfiguredValues(form) {
-    this.configuredWindow.model = this.erpName.setWindowModel(
+    this.configuredWindow.model = this.windowValuesSetter.setWindowModel(
       form.material,
       form.openingType,
       form.ventilation);
@@ -346,7 +345,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       form.openingType) {
       this.popupConfig = true;
     }
-    this.configuredWindow.grupaAsortymentowa = this.erpName.setWindowAssortmentGroup(form.openingType);
+    this.configuredWindow.grupaAsortymentowa = this.windowValuesSetter.setWindowAssortmentGroup(form.openingType);
     this.glazingName$.pipe(takeUntil(this.isDestroyed$)).subscribe(pakietSzybowy => {
       this.configuredWindow.pakietSzybowy = pakietSzybowy;
     });
@@ -359,15 +358,15 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.windowValuesSetter.setModelName(this.configuredWindow);
     this.configuredWindow.indeksAlgorytm = 'I-OKNO';
     this.configuredWindow.nazwaPLAlgorytm = 'NPL-OKNO';
-    this.configuredWindow.typ = this.erpName.setWindowType(form.openingType);
-    this.configuredWindow.geometria = this.erpName.setWindowGeometry(form.material);
+    this.configuredWindow.typ = this.windowValuesSetter.setWindowType(form.openingType);
+    this.configuredWindow.geometria = this.windowValuesSetter.setWindowGeometry(form.material);
     this.configuredWindow.otwieranie = form.openingType;
     this.configuredWindow.wentylacja = form.ventilation;
     this.configuredWindow.stolarkaMaterial = form.material;
     this.configuredWindow.stolarkaKolor = form.innerColor;
     this.configuredWindow.oblachowanieMaterial = form.outer.outerMaterial;
-    this.configuredWindow.rodzina = this.erpName.setWindowFamily(this.configuredWindow.stolarkaMaterial, this.configuredWindow.otwieranie);
-    this.configuredWindow.rodzaj = this.erpName.setWindowGroup(this.configuredWindow.stolarkaMaterial, this.configuredWindow.otwieranie);
+    this.configuredWindow.rodzina = this.windowValuesSetter.setWindowFamily(this.configuredWindow.stolarkaMaterial, this.configuredWindow.otwieranie);
+    this.configuredWindow.rodzaj = this.windowValuesSetter.setWindowGroup(this.configuredWindow.stolarkaMaterial, this.configuredWindow.otwieranie);
     this.configuredWindow.oblachowanieKolor = form.outer.outerColor;
     this.configuredWindow.oblachowanieFinisz = form.outer.outerColorFinish;
     this.configuredWindow.zamkniecieTyp = form.closure.handle;
@@ -380,7 +379,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.configuredWindow.windowHardware = false;
     this.configuredWindow.numberOfGlasses = this.configuredWindow.glazingToCalculation === 'dwuszybowy' ? 2 : 3;
     this.configuredWindow.cennik = 'PL';
-    this.configuredWindow.kod = this.erpName.generateWindowCode(this.configuredWindow.stolarkaMaterial, this.configuredWindow.otwieranie,
+    this.configuredWindow.kod = this.windowValuesSetter.generateWindowCode(this.configuredWindow.stolarkaMaterial, this.configuredWindow.otwieranie,
       this.configuredWindow.wentylacja, this.configuredWindow.pakietSzybowy, this.configuredWindow.stolarkaKolor,
       this.configuredWindow.oblachowanieMaterial, this.configuredWindow.oblachowanieKolor, this.configuredWindow.oblachowanieFinisz,
       this.configuredWindow.szerokosc, this.configuredWindow.wysokosc);
