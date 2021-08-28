@@ -20,13 +20,13 @@ export class LoadConfigurationService {
   windowData$: BehaviorSubject<RoofWindowSkylight> = new BehaviorSubject(this.newWindow);
 
   newFlashing = new Flashing(null, null, null, 'I-KOŁNIERZ', 'NPL-KOŁNIERZ', '1.Nowy', null,
-      0, 0, 'KołnierzUszczelniający', null, null, null, null, null, null, null,
+      78, 118, 'KołnierzUszczelniający', null, null, null, null, null, null, null,
       null, 0, null, 0, 0, 0, 0,
       [], [], null, false, null, null);
   flashingData$: BehaviorSubject<Flashing> = new BehaviorSubject(this.newFlashing);
 
   // TODO Sprawdzić jaka jest grupa asortymentowa dla rolet wewnętrznych
-  newAccessory = new Accessory(null, null, null, 'I-ROLETAW', 'NPL-ROLETAW', '1. Nowy', null, 0, 0, 'Akcesorium',
+  newAccessory = new Accessory(null, null, null, 'I-ROLETAW', 'NPL-ROLETAW', '1. Nowy', null, 78, 118, 'Akcesorium',
     null, null, null, null, null, null, null, null, null, null, 0,
     'manualne', null, 0, [], [], null);
   accessoryData$: BehaviorSubject<Accessory> = new BehaviorSubject(this.newAccessory);
