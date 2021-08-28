@@ -4,7 +4,7 @@ import {Observable, of, Subject} from 'rxjs';
 import {Accessory} from '../models/accessory';
 import {Company} from '../models/company';
 import {PropertyValueTranslatorService} from './property-value-translator.service';
-import {WindowDynamicValuesSetterService} from './window-dynamic-values-setter.service';
+import {RoofWindowValuesSetterService} from './roof-window-values-setter.service';
 import {Flashing} from '../models/flashing';
 import {SingleConfiguration} from '../models/single-configuration';
 import {HttpClient} from '@angular/common/http';
@@ -17,7 +17,7 @@ import {Address} from '../models/address';
 export class DatabaseService {
 
   constructor(private valueTranslator: PropertyValueTranslatorService,
-              private windowValuesSetter: WindowDynamicValuesSetterService,
+              private windowValuesSetter: RoofWindowValuesSetterService,
               private erpName: ErpNameTranslatorService,
               private flashingValueSetter: FlashingValueSetterService,
               private http: HttpClient) {
@@ -63,13 +63,13 @@ export class DatabaseService {
 
   getAllFlashingsToShopList(): Flashing[] {
     return this.flashings = [
-      new Flashing('1K-1-U-UO------A7022P-055098-OKPK01', 'UN/O 055x098 Kołnierz uniwersalny /A7022P/UO/OKPK01', 'Kołnierz U 55x98 UO', 'I-KOLNIERZ', 'NPL-KOLNIERZ', 'Nowy', 'U', 55, 98, 'KołnierzUszczelniający',
+      new Flashing('1K-1-U-UO------A7022P-078118-OKPK01', 'UN/O 055x098 Kołnierz uniwersalny /A7022P/UO/OKPK01', 'Kołnierz U 55x98 UO', 'I-KOLNIERZ', 'NPL-KOLNIERZ', 'Nowy', 'U', 55, 98, 'KołnierzUszczelniający',
         'KolnierzUszczelniający', 'Kołnierz:U', 'KołnierzUszczelniający:K-1', 'KołnierzUszczelniający', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'U', 0, 'UO', 5, 0, 0,
         270, ['78x118', '78x140'], ['assets/img/products/flashings.jpg'], 'PL', false, null, null),
       new Flashing('1K-1-U-UO------A7022P-055098-OKPK01', 'UN/O 055x098 Kołnierz uniwersalny /A7022P/UO/OKPK01', 'Kołnierz U 55x98 UO', 'I-KOLNIERZ', 'NPL-KOLNIERZ', 'Nowy', 'U', 55, 98, 'KołnierzUszczelniający',
         'KolnierzUszczelniający', 'Kołnierz:U', 'KołnierzUszczelniający:K-1', 'KołnierzUszczelniający', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'U', 0, 'UO', 5, 0, 0,
         270, ['78x118', '78x140'], ['assets/img/products/flashings.jpg'], 'PL', false, null, null),
-      new Flashing('1K-1-U-UO------A7022P-055098-OKPK01', 'UN/O 055x098 Kołnierz uniwersalny /A7022P/UO/OKPK01', 'Kołnierz U 55x98 UO', 'I-KOLNIERZ', 'NPL-KOLNIERZ', 'Nowy', 'U', 55, 98, 'KołnierzUszczelniający',
+      new Flashing('1K-1-U-UO------A7022P-078140-OKPK01', 'UN/O 055x098 Kołnierz uniwersalny /A7022P/UO/OKPK01', 'Kołnierz U 55x98 UO', 'I-KOLNIERZ', 'NPL-KOLNIERZ', 'Nowy', 'U', 55, 98, 'KołnierzUszczelniający',
         'KolnierzUszczelniający', 'Kołnierz:U', 'KołnierzUszczelniający:K-1', 'KołnierzUszczelniający', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'U', 0, 'UO', 5, 0, 0,
         270, ['78x118', '78x140'], ['assets/img/products/flashings.jpg'], 'PL', false, null, null)
     ];
@@ -106,6 +106,11 @@ export class DatabaseService {
     return of(accessories);
   }
 
+  fetchFlashings() {
+    const flashings = this.getAllFlashingsToShopList();
+    return of(flashings);
+  }
+
   getWindowByCode(kod: string) {
     let tempWindow: RoofWindowSkylight;
     tempWindow = this.getAllRoofWindowsToShopList().filter(window => window.kod === kod)[0];
@@ -120,7 +125,7 @@ export class DatabaseService {
   getFlashingByCode(flashingCode: string) {
     let flashing: Flashing;
     flashing = this.getAllFlashingsToShopList().filter(flashingPro => flashingPro.kod === flashingCode)[0];
-    this.flashingValueSetter.setModelName(flashing);
+    this.flashingValueSetter.setModelNameFromErpData(flashing);
     this.flashingValueSetter.setTileHeight(flashing);
     return of(flashing);
   }
