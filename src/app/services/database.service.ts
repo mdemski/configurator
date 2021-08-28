@@ -37,7 +37,7 @@ export class DatabaseService {
   // flashings
   temporaryFlashing = new Flashing('1K-1-U-UO------A7022P-055098-OKPK01', 'UN/O 055x098 Kołnierz uniwersalny /A7022P/UO/OKPK01', 'Kołnierz U 55x98 UO', 'I-KOLNIERZ', 'NPL-KOLNIERZ', 'Nowy', 'U', 55, 98, 'KołnierzUszczelniający',
     'KolnierzUszczelniający', 'Kołnierz:U', 'KołnierzUszczelniający:K-1', 'KołnierzUszczelniający', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'U', 0, 'UO', 5, 0, 0,
-    270, ['78x118', '78x140'], ['assets/img/products/flashings.jpg'], 'PL', false, null, null);
+    270, ['78x118', '78x140'], ['assets/img/products/flashings.jpg'], 'PL', false, null);
 
   // TODO do oprogramowania pobieranie danych z eNova/pliku + filtrowanie danych według grupaAsortymentowa
   getAllRoofWindowsToShopList(): RoofWindowSkylight[] {
@@ -65,13 +65,13 @@ export class DatabaseService {
     return this.flashings = [
       new Flashing('1K-1-U-UO------A7022P-078118-OKPK01', 'UN/O 055x098 Kołnierz uniwersalny /A7022P/UO/OKPK01', 'Kołnierz U 55x98 UO', 'I-KOLNIERZ', 'NPL-KOLNIERZ', 'Nowy', 'U', 55, 98, 'KołnierzUszczelniający',
         'KolnierzUszczelniający', 'Kołnierz:U', 'KołnierzUszczelniający:K-1', 'KołnierzUszczelniający', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'U', 0, 'UO', 5, 0, 0,
-        270, ['78x118', '78x140'], ['assets/img/products/flashings.jpg'], 'PL', false, null, null),
+        270, ['78x118', '78x140'], ['assets/img/products/flashings.jpg'], 'PL', false, null),
       new Flashing('1K-1-U-UO------A7022P-055098-OKPK01', 'UN/O 055x098 Kołnierz uniwersalny /A7022P/UO/OKPK01', 'Kołnierz U 55x98 UO', 'I-KOLNIERZ', 'NPL-KOLNIERZ', 'Nowy', 'U', 55, 98, 'KołnierzUszczelniający',
         'KolnierzUszczelniający', 'Kołnierz:U', 'KołnierzUszczelniający:K-1', 'KołnierzUszczelniający', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'U', 0, 'UO', 5, 0, 0,
-        270, ['78x118', '78x140'], ['assets/img/products/flashings.jpg'], 'PL', false, null, null),
+        270, ['78x118', '78x140'], ['assets/img/products/flashings.jpg'], 'PL', false, null),
       new Flashing('1K-1-U-UO------A7022P-078140-OKPK01', 'UN/O 055x098 Kołnierz uniwersalny /A7022P/UO/OKPK01', 'Kołnierz U 55x98 UO', 'I-KOLNIERZ', 'NPL-KOLNIERZ', 'Nowy', 'U', 55, 98, 'KołnierzUszczelniający',
         'KolnierzUszczelniający', 'Kołnierz:U', 'KołnierzUszczelniający:K-1', 'KołnierzUszczelniający', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'U', 0, 'UO', 5, 0, 0,
-        270, ['78x118', '78x140'], ['assets/img/products/flashings.jpg'], 'PL', false, null, null)
+        270, ['78x118', '78x140'], ['assets/img/products/flashings.jpg'], 'PL', false, null)
     ];
   }
 
