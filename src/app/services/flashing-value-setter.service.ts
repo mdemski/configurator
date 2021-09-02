@@ -2,13 +2,14 @@ import {Injectable, OnDestroy} from '@angular/core';
 import {Flashing} from '../models/flashing';
 import {TranslateService} from '@ngx-translate/core';
 import {takeUntil} from 'rxjs/operators';
+import {Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FlashingValueSetterService implements OnDestroy {
 
-  isDestroyed$;
+  isDestroyed$ = new Subject();
 
   constructor(public translate: TranslateService) {
     translate.addLangs(['pl', 'en', 'fr', 'de']);
@@ -22,17 +23,101 @@ export class FlashingValueSetterService implements OnDestroy {
 
   setModelNameFromErpData(flashing: Flashing) {
     // tslint:disable-next-line:max-line-length
-    flashing.flashingName = this.buildFlashingModel(flashing.model, flashing.szerokosc, flashing.wysokosc);
+    flashing.flashingName = this.buildFlashingName(flashing.model, flashing.szerokosc, flashing.wysokosc);
   }
 
-  buildFlashingModel(model: string, szerokosc: number, wysokosc: number) {
+  buildFlashingName(model: string, szerokosc: number, wysokosc: number) {
     let flashingDesc = '';
     this.translate.get('FLASHINGS-DATA').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
-      const flashingDescElement = model.split(':')[0];
-      flashingDesc = text[flashingDescElement];
+      flashingDesc = text[model];
     });
     const flashingType = model.split(':')[1];
     return String(flashingDesc + ' ' + flashingType + ' ' + szerokosc + 'x' + wysokosc);
+  }
+
+  singleFlashingModelCreator(flashingType: string, apronType: string) {
+    let singleFlashingModel = '';
+    switch (flashingType) {
+      case ('Kołnierz:D'):
+        singleFlashingModel = 'Kołnierz:D';
+        break;
+      case ('Kołnierz:P'):
+        singleFlashingModel = 'Kołnierz:P';
+        break;
+      case ('Kołnierz:L'):
+        singleFlashingModel = 'Kołnierz:L';
+        break;
+      case ('Kołnierz:LH'):
+        singleFlashingModel = 'Kołnierz:LH';
+        break;
+      case ('Kołnierz:R'):
+        singleFlashingModel = 'Kołnierz:R';
+        break;
+      default:
+        singleFlashingModel = '';
+        break;
+    }
+    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:KE') {
+      singleFlashingModel = 'Kołnierz:BP/H5';
+    }
+    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:UE') {
+      singleFlashingModel = 'Kołnierz:BP/H9';
+    }
+    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:HE') {
+      singleFlashingModel = 'Kołnierz:BP/H12';
+    }
+    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:KO') {
+      singleFlashingModel = 'Kołnierz:BP/KO';
+    }
+    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:UO') {
+      singleFlashingModel = 'Kołnierz:BP/UO';
+    }
+    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:HO') {
+      singleFlashingModel = 'Kołnierz:BP/HO';
+    }
+    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:KA') {
+      singleFlashingModel = 'Kołnierz:BP/KA';
+    }
+    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:A') {
+      singleFlashingModel = 'Kołnierz:BP/A';
+    }
+    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:HA') {
+      singleFlashingModel = 'Kołnierz:BP/HA';
+    }
+    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:UB') {
+      singleFlashingModel = 'Kołnierz:BP/UB';
+    }
+    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:KE') {
+      singleFlashingModel = 'Kołnierz:H5';
+    }
+    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:UE') {
+      singleFlashingModel = 'Kołnierz:H9';
+    }
+    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:HE') {
+      singleFlashingModel = 'Kołnierz:H12';
+    }
+    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:KO') {
+      singleFlashingModel = 'Kołnierz:K';
+    }
+    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:UO') {
+      singleFlashingModel = 'Kołnierz:U';
+    }
+    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:HO') {
+      singleFlashingModel = 'Kołnierz:H';
+    }
+    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:KA') {
+      singleFlashingModel = 'Kołnierz:KA';
+    }
+    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:A') {
+      singleFlashingModel = 'Kołnierz:A';
+    }
+    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:HA') {
+      singleFlashingModel = 'Kołnierz:HA';
+    }
+    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:UB') {
+      singleFlashingModel = 'Kołnierz:UB';
+    }
+    return singleFlashingModel;
   }
 
   setTileHeight(flashing: Flashing) {
@@ -80,14 +165,14 @@ export class FlashingValueSetterService implements OnDestroy {
     } else {
       // FlashingType - BP, U, R, P, L, LH, D
       const splitFlashingType = flashingType.split(':')[1];
+      const flashingModel = String('Kołnierz:KYS ' + splitFlashingType);
       // Kombinacja z kołnierzami wyłącznie w pionie wraz z kołnierzami kolankowymi
       if (verticalNumber === 1) {
         if (lShapedConnection) {
           flashingsModelArray.push(String('Kołnierz:KK1 ' + splitFlashingType));
         } else {
-          flashingsModelArray.push(flashingType);
+          flashingsModelArray.push(flashingModel);
         }
-        const flashingModel = String('Kołnierz:KYS ' + splitFlashingType);
         for (let i = 1; i < horizontalNumber; i++) {
           flashingsModelArray.push(flashingModel);
         }
@@ -127,6 +212,156 @@ export class FlashingValueSetterService implements OnDestroy {
       }
     }
     return flashingsModelArray;
+  }
+
+  setFlashingApronType(flashingFamily: string, apronType: string) {
+    // Setter dla kołnierzy kombi - przestawia typ fatrucha na Kołnierz:BRAK jeśli rodzina kołnierza kombi jest równa KZ, KY lub KK
+    let flashingApronType = '';
+    const familyValue = flashingFamily.split(':')[1];
+    switch (familyValue) {
+      case ('KY'):
+        flashingApronType = 'Kołnierz:BRAK';
+        break;
+      case ('KZ'):
+        flashingApronType = 'Kołnierz:BRAK';
+        break;
+      case ('KK'):
+        flashingApronType = 'Kołnierz:BRAK';
+        break;
+      default:
+        flashingApronType = apronType;
+        break;
+    }
+    return flashingApronType;
+  }
+
+  setFlashingFamily(flashingModel: string) {
+    // Ustawia rodzinę kołnierza w zależności od modelu - np. KołnierzUszczelniający:KZ
+    let flashingFamilyName = '';
+    const temp = flashingModel.split(':')[1].substring(0, 2);
+    flashingFamilyName = String('KołnierzUszczelniający:' + temp);
+    return flashingFamilyName;
+  }
+
+  setFlashingType(flashingModel: string) {
+    // Ustawia rodzaj kołnierza w zależności od modelu - np. KołnierzUszczelniający:KZP
+    let flashingTypeName = '';
+    const temp = flashingModel.split(':')[1].substring(0, 3);
+    flashingTypeName = String('KołnierzUszczelniający:' + temp);
+    return flashingTypeName;
+  }
+
+  // Model = Null dla pojedynczych, dla kombi idzie w pętli z tablicy modeli
+  generateFlashingCode(model: string | null, flashingType: string, flashingApron: string,
+                       verticalSpacing: number, horizontalSpacing: number, outerMaterial: string,
+                       outerColor: string, outerFinish: string, width: number, height: number) {
+    let flashingCode = '';
+    let flashingModel = '';
+    let flashingApronCode = '';
+    let verticalSpacingCode = '';
+    let horizontalSpacingCode = '';
+    flashingApronCode = flashingApron === ('Kołnierz:BRAK' || '') ? '--' : flashingApron.split(':')[1];
+    verticalSpacingCode = verticalSpacing === 0 ? '--' : String(verticalSpacing);
+    horizontalSpacingCode = horizontalSpacing === 0 ? '--' : String(horizontalSpacing);
+    if (model) {
+      console.log(model);
+      // Przykładowy model = Kołnierz:KZP U
+      const secondPart = model.split(':')[1]; // KZP U
+      const thirdPart = secondPart.split(' ')[1]; // U
+      const partOfIndex = secondPart.substring(1, 3); // ZP
+      if (thirdPart.length === 1) {
+        flashingModel = String(partOfIndex + thirdPart + '-');
+      } else {
+        flashingModel = String(partOfIndex + thirdPart);
+      }
+    } else {
+      // Przykładowo 1-U;
+      const partOfFlashingType = flashingType.split(':')[1]; // U;
+      if (partOfFlashingType.length === 1) {
+        flashingModel = String(partOfFlashingType + '-');
+      } else {
+        flashingModel = String(partOfFlashingType);
+      }
+    }
+
+    let outerMaterialCode = '';
+    switch (outerMaterial) {
+      case 'Aluminium':
+        outerMaterialCode = 'A';
+        break;
+      case 'Miedż':
+        outerMaterialCode = 'C';
+        break;
+      case 'TytanCynk':
+        outerMaterialCode = 'T';
+        break;
+    }
+
+    let outerColorCode = '';
+    switch (outerColor) {
+      case 'Aluminium:RAL7022':
+        outerColorCode = '7022';
+        break;
+      case 'Aluminium:RAL7016':
+        outerColorCode = '7016';
+        break;
+      case 'Miedź:Natur':
+        outerColorCode = '0000';
+        break;
+      case 'TytanCynk:Natur':
+        outerColorCode = '0000';
+        break;
+    }
+
+    let outerFinishCode = '';
+    switch (outerFinish) {
+      case 'Aluminium:Półmat':
+        outerFinishCode = 'P';
+        break;
+      case 'Aluminium:Mat':
+        outerFinishCode = 'M';
+        break;
+      case 'Aluminium:Połysk':
+        outerFinishCode = 'B';
+        break;
+      case 'Aluminium:Natur':
+        outerFinishCode = '0';
+        break;
+    }
+
+    let widthCode;
+    if (width < 100) {
+      widthCode = '0' + width;
+    } else {
+      widthCode = width;
+    }
+
+    let heightCode;
+    if (height < 100) {
+      heightCode = '0' + height;
+    } else {
+      heightCode = height;
+    }
+
+    flashingCode = '1K-' + flashingModel + flashingApronCode + '-' + verticalSpacingCode + horizontalSpacingCode + '-'
+      + outerMaterialCode + outerColorCode + outerFinishCode + '-' + widthCode + heightCode + '-OKPK01';
+
+    return flashingCode;
+  }
+
+  generateFlashingCombinationCode(verticalNumber: number, horizontalNumber: number, flashingType: string, apronType: string) {
+    // Kołnierz:H9
+    const flashingModelValue = this.singleFlashingModelCreator(flashingType, apronType).split(':')[1];
+    let flashingCombinationCode = '';
+    const numberOfFlashings = horizontalNumber * verticalNumber;
+    if (horizontalNumber > verticalNumber) {
+      flashingCombinationCode = String('KY' + numberOfFlashings + flashingModelValue);
+    } else if (horizontalNumber === 1) {
+      flashingCombinationCode = String('KX' + numberOfFlashings + flashingModelValue);
+    } else {
+      flashingCombinationCode = String('KZ' + numberOfFlashings + flashingModelValue);
+    }
+    return flashingCombinationCode;
   }
 
   // setNumberOfConnections(flashing: Flashing) {
