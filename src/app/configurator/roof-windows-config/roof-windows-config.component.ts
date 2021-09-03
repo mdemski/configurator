@@ -22,14 +22,12 @@ import {
   takeUntil,
   tap
 } from 'rxjs/operators';
-import {ErpNameTranslatorService} from '../../services/erp-name-translator.service';
 import {LoadConfigurationService} from '../../services/load-configuration.service';
 import {HighestIdGetterService} from '../../services/highest-id-getter.service';
 import {DatabaseService} from '../../services/database.service';
 import cryptoRandomString from 'crypto-random-string';
 import {WindowConfig} from '../../models/window-config';
 import {SingleConfiguration} from '../../models/single-configuration';
-import {ModalService} from '../../modal/modal.service';
 
 @Component({
   selector: 'app-roof-windows-config',
@@ -378,7 +376,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.configuredWindow.kolorTworzywZew = 'Okno:RAL7048';
     this.configuredWindow.windowHardware = false;
     this.configuredWindow.numberOfGlasses = this.configuredWindow.glazingToCalculation === 'dwuszybowy' ? 2 : 3;
-    this.configuredWindow.cennik = 'PL';
+    this.configuredWindow.cennik = 'KO';
     this.configuredWindow.kod = this.windowValuesSetter.generateWindowCode(this.configuredWindow.stolarkaMaterial, this.configuredWindow.otwieranie,
       this.configuredWindow.wentylacja, this.configuredWindow.pakietSzybowy, this.configuredWindow.stolarkaKolor,
       this.configuredWindow.oblachowanieMaterial, this.configuredWindow.oblachowanieKolor, this.configuredWindow.oblachowanieFinisz,
@@ -392,7 +390,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   //
 
 
-  priceCalculation(configuredWindow) {
+  priceCalculation(configuredWindow: RoofWindowSkylight) {
     // ... spread operator pozwala niezagnieżdżać jendego elementu w drugi
     // tempArray.push({...data[book], id: book});
     let windowPrice = 0;
@@ -421,7 +419,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       }
       for (const coat of configuredWindow.windowCoats) {
         if (coat !== false) {
-          console.log(coat);
           windowPrice += +windowToCalculations[coat];
         }
       }
@@ -792,6 +789,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       divEle.style.maxHeight = arrayLength * 105 + 120 + 'px';
       divEle.style.transition = 'all .7s ease-in-out';
     }
+    window.scrollTo({top: 0, behavior: 'smooth'});
   }
 
   onMaterialHover(materialOptions: HTMLDivElement) {

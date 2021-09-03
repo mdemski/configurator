@@ -37,8 +37,8 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
               private db: DatabaseService,
               private authService: AuthService,
               private router: Router,
-              public translate: TranslateService,
-              private loadConfig: LoadConfigurationService) {
+              private loadConfig: LoadConfigurationService,
+              public translate: TranslateService) {
     this.loading = true;
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');

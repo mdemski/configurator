@@ -1,6 +1,7 @@
 import {Component, ElementRef, Input, OnDestroy, OnInit} from '@angular/core';
 import {ModalService} from './modal.service';
 import {ErpNameTranslatorService} from '../services/erp-name-translator.service';
+import {RoofWindowValuesSetterService} from '../services/roof-window-values-setter.service';
 
 @Component({
   selector: 'app-modal',
@@ -17,7 +18,7 @@ export class ModalComponent implements OnInit, OnDestroy {
 
   constructor(private modalService: ModalService,
               private el: ElementRef,
-              private erpNameTrans: ErpNameTranslatorService) {
+              private windowSetter: RoofWindowValuesSetterService) {
     this.element = el.nativeElement;
   }
 
@@ -44,7 +45,7 @@ export class ModalComponent implements OnInit, OnDestroy {
   }
 
   getOptionImage() {
-    const fileNameObject = this.erpNameTrans.translatePropertyNamesERP(this.optionName);
+    const fileNameObject = this.windowSetter.translatePropertyNamesERP(this.optionName);
     const fileName = fileNameObject.firstPart + fileNameObject.secondPart;
     return '/assets/img/modal_pictures/' + fileName + '.png';
   }
