@@ -33,8 +33,18 @@
               configuration-summary__navigation--dimensions"
            (click)="closeAllHovers([flashingTypeOptions, apronTypeOptions, outerMaterialOptions,
          compositionOptions, dimensionsOptions]); onDimensionsHover(dimensionsOptions)"
-           [ngClass]="{'configuration-summary__navigation--element--chosen' : (form && !form.get('dimensions.widths').untouched && !form.controls.heights.untouched)}"></a>
+           [ngClass]="{'configuration-summary__navigation--element--chosen' : (form && !form.get('dimensions.widths').untouched && !form.get('dimensions.heights').untouched)}"></a>
       </div>
+
+      <div class="configuration-summary__scores">
+        <p
+          *ngIf="configuredFlashingArray.length === 0">{{this.configuredFlashing.CenaDetaliczna | currency :' ' : '' : undefined : undefined}}{{ 'FLASHINGS-CONFIG.currency' | translate}}</p>
+        <p
+          *ngIf="configuredFlashingArray.length !== 0">{{ 'FLASHINGS-CONFIG.summaryPrice' | translate}} {{this.summaryFlashingsPrice | currency :' ' : '' : undefined : undefined}}{{ 'FLASHINGS-CONFIG.currency' | translate}}</p>
+        <p
+          *ngIf="configuredFlashingArray.length !== 0">{{ 'FLASHINGS-CONFIG.averagePrice' | translate}} {{this.summaryFlashingsPrice / this.configuredFlashingArray.length | currency :' ' : '' : undefined : undefined}}{{ 'FLASHINGS-CONFIG.currency' | translate}}</p>
+      </div>
+
     </div>
     <div class="configure-form">
       <form [formGroup]="form">
@@ -54,7 +64,7 @@
                        formControlName="flashingType"
                        [attr.disabled]="flashingType.disabled">
                 <label for="{{flashingType.option}}"
-                       (mouseover)="openModal(flashingType.option)"
+                       (mouseover)="openModal(flashingType.option, $event)"
                        (mouseleave)="closeModal(flashingType.option)"
                        class="configure-form__group__options--option__label"
                        [ngClass]="{'label--disabled' : flashingType.disabled}"
@@ -74,9 +84,10 @@
                          id="{{lShaped[0]}}"
                          value="{{lShaped[0].option}}"
                          formControlName="lShaped"
-                         [attr.disabled]="lShaped[0].disabled">
-                  <label for="lShaped"
-                         (mouseover)="openModal(lShaped[0].option)"
+                         [attr.disabled]="lShaped[0].disabled"
+                  >
+                  <label for="{{lShaped[0]}}"
+                         (mouseover)="openModal(lShaped[0].option, $event)"
                          (mouseleave)="closeModal(lShaped[0].option)"
                          class="configure-form__group__options--option__label"
                          [ngClass]="{'label--disabled' : lShaped[0].disabled}"
@@ -86,7 +97,7 @@
                              text="{{lShaped[0].option}}"
                              optionName="{{lShaped[0].option}}"></app-modal>
                 </div>
-                <div *ngIf="form.get('lShaped').value === 'Kołnierz:KK'" class="vertical-horizontal-container">
+                <div *ngIf="form.get('lShaped').value" class="vertical-horizontal-container">
                   <label for="windchestLength"
                          class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.windchestLength' | translate}}</label>
                   <div class="configure-form__group__options--option-text windchest-length">
@@ -100,7 +111,6 @@
                     />
                   </div>
                 </div>
-
               </div>
 
               <div class="configure-form__navigation-buttons">
@@ -218,6 +228,7 @@
                        min="{{minVerticalNumber}}"
                        max="{{maxVerticalNumber}}"
                        formControlName="verticalNumber"
+                       (change)="widthsControlsArrayMaker(); verticalSpacingControlsMaker()"
                 />
               </div>
             </div>
@@ -232,6 +243,7 @@
                        min="{{minHorizontalNumber}}"
                        max="{{maxHorizontalNumber}}"
                        formControlName="horizontalNumber"
+                       (change)="heightsControlsArrayMaker(); horizontalSpacingControlsMaker()"
                 />
               </div>
             </div>
@@ -248,89 +260,171 @@
         </div>
 
         <!--Dimensions-->
-        <div class="configure-form__group" formGroupName="dimensions">
+        <div class="configure-form__group"
+             [ngClass]="{'dimensions-popup' : dimensionsPopup}"
+             formGroupName="dimensions">
           <label for="dimensions" (click)="onDimensionsHover(dimensionsOptions)"
                  class="configure-form__group__label">{{ 'FLASHINGS-CONFIG.dimensions' | translate}}</label>
           <div class="configure-form__group__options" #dimensionsOptions>
-            <div class="configure-form__group__options__widths-inputs-group"
-                 *ngFor="let width of widthsControlsArrayMaker(); let i = index" formArrayName="widths">
-              <div class="widths-container">
-                <label for="widths"
+
+            <div class="dimensions-popup__content" *ngIf="dimensionsPopup else singleFlashing">
+              <div class="all-flashing-dimensions-container">
+                <p
+                  class="all-flashing-dimensions-container--title">{{'FLASHINGS-CONFIG.allFlashingDimensions' | translate}}</p>
+                <div class="widths-container" formArrayName="widths">
+                  <div class="configure-form__group__options__widths-inputs-group"
+                       *ngFor="let width of widths.controls; let i = index">
+                    <label for="{{'width' + i}}"
+                           class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.width' | translate}}</label>
+                    <input class="configure-form__group__options--option__input-width"
+                           [style.width.rem]="widthsSize"
+                           type="number"
+                           id="{{'width' + i}}"
+                           step="{{stepWidth}}"
+                           min="{{dimensionsFromFile.minWidth}}"
+                           max="{{dimensionsFromFile.maxWidth}}"
+                           formControlName="{{i}}"
+                    />
+                  </div>
+                </div>
+
+                <div class="heights-container" formArrayName="heights">
+                  <div class="configure-form__group__options__heights-inputs-group"
+                       *ngFor="let height of heights.controls; let i = index">
+                    <label for="{{'height' + i}}"
+                           class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.height' | translate}}</label>
+                    <input class="configure-form__group__options--option__input-height"
+                           type="number"
+                           id="{{'height' + i}}"
+                           step="{{stepHeight}}"
+                           min="{{dimensionsFromFile.minHeight}}"
+                           max="{{dimensionsFromFile.maxHeight}}"
+                           formControlName="{{i}}"
+                    />
+                  </div>
+                </div>
+
+                <div class="composition-and-dimensions-presentation-container">
+                  <table class="composition-and-dimensions-presentation-container__table">
+                    <tr class="composition-and-dimensions-presentation-container__table--row"
+                        *ngFor="let horizontalFlashing of heights.controls let i = index">
+                      <td #dimensionsPresentationTD
+                          class="composition-and-dimensions-presentation-container__table--column"
+                          *ngFor="let verticalFlashing of widths.controls; let j = index">
+                        <div #dimensionsPresentationDivs
+                             *ngIf="heights.length !== widths.length && widths.length !== 1 && heights.length !== 1">x</div>
+                        <div #dimensionsPresentationDivsEqual
+                             *ngIf="heights.length === widths.length">{{(-1 * (form.get('composition.horizontalNumber').value) * i) + (((form.get('composition.horizontalNumber').value) - 1) * (form.get('composition.verticalNumber').value) + j) + 1}}</div>
+                        <div #dimensionsPresentationDivsW1
+                             *ngIf="widths.length === 1">{{form.get('composition.horizontalNumber').value - i}}</div>
+                        <div #dimensionsPresentationDivsH1
+                             *ngIf="heights.length === 1">{{(form.get('composition.verticalNumber').value * i) + ((form.get('composition.horizontalNumber').value - (form.get('composition.horizontalNumber').value - 1)) * j) + 1}}</div>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+
+                <div class="vertical-spacings-container" formArrayName="verticalSpacings">
+                  <div class="configure-form__group__options__vertical-inputs-group" [style.width.rem]="widthsSize"
+                       *ngFor="let verticalSpacing of verticalSpacings.controls; let i = index">
+                    <label for="{{'verticalSpacing' + i}}"
+                           class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.verticalSpacing' | translate}}</label>
+                    <select class="configure-form__group__options--option__select-vertical-spacing"
+                            id="{{'verticalSpacing' + i}}" formControlName="{{i}}">
+                      <option class="configure-form__group__options--option__select-vertical-spacing--option"
+                              value="null" disabled>{{ 'FLASHINGS-CONFIG.choice' | translate}}</option>
+                      <br>
+                      <option class="configure-form__group__options--option__select-vertical-spacing--option"
+                              value="null" disabled>{{ 'FLASHINGS-CONFIG.verticalSpacingChoice' | translate}}</option>
+                      <option class="configure-form__group__options--option__select-vertical-spacing--option"
+                              *ngFor="let vertical of verticalSpacingsFromFile"
+                              value="{{vertical}}">{{vertical}}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="horizontal-spacings-container" formArrayName="horizontalSpacings">
+                  <div class="configure-form__group__options__horizontal-inputs-group"
+                       *ngFor="let horizontalSpacing of horizontalSpacings.controls; let i = index">
+                    <label for="{{'horizontalSpacing' + i}}"
+                           class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.horizontalSpacing' | translate}}</label>
+                    <select class="configure-form__group__options--option__select-horizontal-spacing"
+                            id="{{'horizontalSpacing' + i}}" formControlName="{{i}}">
+                      <option class="configure-form__group__options--option__select-horizontal-spacing--option"
+                              value="null" disabled>{{ 'FLASHINGS-CONFIG.choice' | translate}}</option>
+                      <br>
+                      <option class="configure-form__group__options--option__select-horizontal-spacing--option"
+                              value="null" disabled>{{ 'FLASHINGS-CONFIG.horizontalSpacingChoice' | translate}}</option>
+                      <option class="configure-form__group__options--option__select-horizontal-spacing--option"
+                              *ngFor="let horizontal of horizontalSpacingsFromFile"
+                              value="{{horizontal}}">{{horizontal}}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <p *ngIf="showHeightMessage && showWidthMessage"
+                   class="configure-form__validation-info--single-message"
+                >{{ 'ROOF-WINDOWS-CONFIG.standardDimensions' | translate}}
+                  <a class="configure-form__validation-info--single-message--link"
+                     (click)="navigateToShop()">{{ 'SHOP.flashings' | translate}}</a></p>
+                <div class="configure-form__navigation-buttons">
+                  <a
+                    (click)="onDimensionsHover(dimensionsOptions);onCompositionHover(compositionOptions); hideDimensionsPopup()"
+                    class="btn btn--grey configure-form__navigation-buttons__next-prev">
+                    {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
+
+                  <a (click)="onDimensionsHover(dimensionsOptions); hideDimensionsPopup()"
+                     class="btn btn--blue configure-form__navigation-buttons__next-prev">
+                    {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
+                </div>
+              </div>
+            </div>
+
+            <ng-template #singleFlashing>
+
+              <div class="width-container" formArrayName="widths">
+                <label for="width0"
                        class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.width' | translate}}</label>
-                <input class="configure-form__group__options--option__input-range"
+                <input class="configure-form__group__options--option__input-width"
                        type="number"
-                       id="width{{-i}}"
+                       id="width0"
                        step="{{stepWidth}}"
-                       min="{{dimensions.minWidth}}"
-                       max="{{dimensions.maxWidth}}"
-                       [formControl]="widthsControlsArrayMaker()[i]"
+                       min="{{dimensionsFromFile.minWidth}}"
+                       max="{{dimensionsFromFile.maxWidth}}"
+                       [formControlName]="0"
                 />
               </div>
-            </div>
-            <div class="configure-form__group__options__heights-inputs-group"
-                 *ngFor="let height of heightsControlsArrayMaker(); let i = index" formArrayName="heights">
-              <div class="heights-container">
-                <label for="heights"
-                       class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.height' | translate}}</label>
-                <input class="configure-form__group__options--option__input-range"
+
+              <div class="height-container" formArrayName="heights">
+                <label
+                  class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.height' | translate}}</label>
+                <input class="configure-form__group__options--option__input-height"
                        type="number"
-                       id="height{{-i}}"
                        step="{{stepHeight}}"
-                       min="{{dimensions.minHeight}}"
-                       max="{{dimensions.maxHeight}}"
-                       [formControl]="heightsControlsArrayMaker()[i]"
+                       min="{{dimensionsFromFile.minHeight}}"
+                       max="{{dimensionsFromFile.maxHeight}}"
+                       [formControlName]="0"
                 />
               </div>
-            </div>
 
-            <div class="configure-form__group__options__widths-inputs-group"
-                 formArrayName="verticalSpacings"
-                 *ngFor="let verticalSpacing of verticalSpacingControlsMaker(); let i = index">
-              <div class="verticalSpacings-container">
-                <label for="verticalSpacings"
-                       class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.verticalSpacing' | translate}}</label>
-                <input class="configure-form__group__options--option__input-range"
-                       type="number"
-                       id="verticalSpacing{{-i}}"
-                       step="{{stepHeight}}"
-                       min="{{dimensions.minHeight}}"
-                       max="{{dimensions.maxHeight}}"
-                       [formControl]="verticalSpacingControlsMaker()[i]"
-                />
+              <p *ngIf="showHeightMessage && showWidthMessage"
+                 class="configure-form__validation-info--single-message"
+              >{{ 'ROOF-WINDOWS-CONFIG.standardDimensions' | translate}}
+                <a class="configure-form__validation-info--single-message--link"
+                   (click)="navigateToShop()">{{ 'SHOP.flashings' | translate}}</a></p>
+              <div class="configure-form__navigation-buttons">
+                <a
+                  (click)="onDimensionsHover(dimensionsOptions);onCompositionHover(compositionOptions); hideDimensionsPopup()"
+                  class="btn btn--grey configure-form__navigation-buttons__next-prev">
+                  {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
+
+                <a (click)="onDimensionsHover(dimensionsOptions); hideDimensionsPopup()"
+                   class="btn btn--blue configure-form__navigation-buttons__next-prev">
+                  {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
               </div>
-            </div>
 
-            <div class="configure-form__group__options__widths-inputs-group"
-                 *ngFor="let horizontalSpacing of horizontalSpacingControlsMaker(); let i = index"
-                 formArrayName="horizontalSpacings">
-              <div class="horizontalSpacings-container">
-                <label for="horizontalSpacings"
-                       class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.horizontalSpacing' | translate}}</label>
-                <input class="configure-form__group__options--option__input-range"
-                       type="number"
-                       id="horizontalSpacing{{-i}}"
-                       step="{{stepHeight}}"
-                       min="{{dimensions.minHeight}}"
-                       max="{{dimensions.maxHeight}}"
-                       [formControl]="horizontalSpacingControlsMaker()[i]"
-                />
-              </div>
-            </div>
+            </ng-template>
 
-            <p *ngIf="showHeightMessage && showWidthMessage"
-               class="configure-form__validation-info--single-message"
-            >{{ 'ROOF-WINDOWS-CONFIG.standardDimensions' | translate}}
-              <a class="configure-form__validation-info--single-message--link"
-                 (click)="navigateToShop()">{{ 'SHOP.flashings' | translate}}</a></p>
-            <div class="configure-form__navigation-buttons">
-              <a (click)="onDimensionsHover(dimensionsOptions);onCompositionHover(compositionOptions)"
-                 class="btn btn--grey configure-form__navigation-buttons__next-prev">
-                {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
-
-              <a (click)="onDimensionsHover(dimensionsOptions)"
-                 class="btn btn--blue configure-form__navigation-buttons__next-prev">
-                {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
-            </div>
           </div>
         </div>
         <!--Popup with number configuration choose-->
@@ -338,10 +432,10 @@
           <div class="choose-config-popup__content">
             <form #configForm="ngForm" class="choose-config-popup__content__form">
               <div class="choose-config-popup__content__form--select" tabindex="1">
-                <ng-container *ngFor="let singleConfiguration of userConfigs; let i = index">
+                <ng-container *ngFor="let singleConfiguration of userConfigs; let c = index">
                   <input value="{{singleConfiguration.userId}}" [(ngModel)]="configFormId" name="configFormId"
-                         class="choose-config-popup__content__form--select--input" type="radio" id="{{i}}"/>
-                  <label for="{{i}}"
+                         class="choose-config-popup__content__form--select--input" type="radio" id="{{c}}"/>
+                  <label for="{{c}}"
                          class="choose-config-popup__content__form--select--label">{{singleConfiguration.userId}}
                     - {{singleConfiguration.name}}</label>
                 </ng-container>
@@ -374,6 +468,7 @@
           <p class="configure-form__validation-info--single-message"
              *ngIf="form.get('flashingType').hasError('empty flashingType') ||
                   form.get('apronType').hasError('empty apronType') ||
+                  form.get('dimensions').hasError('wrong dimensions') ||
                   form.get('outer').hasError('empty outerMaterial')">{{ 'FLASHINGS-CONFIG.validationInfo' | translate}}</p>
         </div>
         <a (click)="saveCopyLinkPopUp()"

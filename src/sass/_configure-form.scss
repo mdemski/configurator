@@ -87,11 +87,7 @@ form {
         }
 
         &__input-width {
-          //display: flex;
-          //justify-content: flex-start;
-          //margin-bottom: 5rem;
-          //height: 5rem;
-          //width: 100%;
+
         }
 
         &__input-height {
@@ -100,6 +96,61 @@ form {
           //margin-bottom: 5rem;
           //height: 5rem;
           //width: 100%;
+        }
+
+        &__select-vertical-spacing {
+          //display: flex;
+          //justify-content: flex-start;
+          //margin-bottom: 5rem;
+          height: 4rem;
+          overflow-wrap: break-word;
+          cursor: pointer;
+          outline: none;
+          border: none;
+          background-color: $color-yellow;
+          padding: 1rem;
+          width: 100%;
+
+          &--option {
+            display: block;
+            padding: 1.5rem;
+            width: 100%;
+            background-color: $color-white;
+
+            &:hover,
+            &:focus {
+              color: $color-light-blue;
+              background-color: $color-dark-white;
+            }
+          }
+        }
+
+        &__select-horizontal-spacing {
+          //display: flex;
+          //justify-content: flex-start;
+          //margin-bottom: 5rem;
+          height: 4rem;
+          width: 10rem;
+          overflow-wrap: break-word;
+          cursor: pointer;
+          outline: none;
+          border: none;
+          background-color: $color-yellow;
+          padding: 1rem;
+
+          &--option {
+            display: block;
+            padding: 1.5rem;
+            background-color: $color-white;
+            width: 100%;
+            margin: 0;
+
+            &:hover,
+            &:focus {
+              color: $color-light-blue;
+              background-color: $color-dark-white;
+            }
+          }
         }
 
         &__output-range {
@@ -180,5 +231,14 @@ form {
         }
       }
     }
+  }
+}
+
+@keyframes HideList {
+  from {
+    transform: scaleY(1);
+  }
+  to {
+    transform: scaleY(0);
   }
 }

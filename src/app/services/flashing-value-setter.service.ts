@@ -264,7 +264,6 @@ export class FlashingValueSetterService implements OnDestroy {
     verticalSpacingCode = verticalSpacing === 0 ? '--' : String(verticalSpacing);
     horizontalSpacingCode = horizontalSpacing === 0 ? '--' : String(horizontalSpacing);
     if (model) {
-      console.log(model);
       // Przykładowy model = Kołnierz:KZP U
       const secondPart = model.split(':')[1]; // KZP U
       const thirdPart = secondPart.split(' ')[1]; // U

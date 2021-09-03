@@ -211,7 +211,7 @@ export class ConfigurationDataService {
         }
         // Fill arrays with options
         const flashingTypes = [];
-        let lShaped = '';
+        const lShapeds = [];
         const availableOptions = [];
         const verticalSpacings = [];
         const horizontalSpacings = [];
@@ -227,7 +227,7 @@ export class ConfigurationDataService {
               flashingTypes.push(lines[j].split(';')[0]);
             }
             if (lines[j].split(';')[1] === 'lShaped') {
-              lShaped = lines[j].split(';')[0];
+              lShapeds.push(lines[j].split(';')[0]);
             }
             if (lines[j].split(';')[1] === 'verticalSpacing') {
               verticalSpacings.push(lines[j].split(';')[0]);
@@ -255,7 +255,7 @@ export class ConfigurationDataService {
         return {
           models,
           flashingTypes,
-          lShaped,
+          lShapeds,
           availableOptions,
           verticalSpacings,
           horizontalSpacings,
