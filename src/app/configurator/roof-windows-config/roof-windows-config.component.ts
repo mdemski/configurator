@@ -173,6 +173,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         this.configId = data.params.configId === undefined ? '-1' : data.params.configId;
       })).subscribe(() => {
       if (this.formName === 'no-name' || this.formName === undefined) {
+        this.formName = cryptoRandomString({length: 12, type: 'alphanumeric'});
         // tslint:disable-next-line:max-line-length
         this.loadConfig.getWindowToReconfiguration(this.currentUser, this.formName, this.windowCode).pipe(takeUntil(this.isDestroyed$))
           .subscribe(windowToReconfiguration => {
@@ -616,9 +617,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.formName === 'no-name' || this.formName === undefined) {
-      this.formName = cryptoRandomString({length: 12, type: 'alphanumeric'});
-    }
     this.paramsUserFetchData$.pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
       this.temporaryConfig = {
         products: {
