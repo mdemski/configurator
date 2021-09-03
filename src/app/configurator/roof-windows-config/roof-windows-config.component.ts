@@ -173,7 +173,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         this.configId = data.params.configId === undefined ? '-1' : data.params.configId;
       })).subscribe(() => {
       if (this.formName === 'no-name' || this.formName === undefined) {
-        this.formName = cryptoRandomString({length: 12, type: 'alphanumeric'});
         // tslint:disable-next-line:max-line-length
         this.loadConfig.getWindowToReconfiguration(this.currentUser, this.formName, this.windowCode).pipe(takeUntil(this.isDestroyed$))
           .subscribe(windowToReconfiguration => {
@@ -201,6 +200,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
             });
             this.formChanges(); // TODO które usunąć to, czy poniżej - raczej poniżej wiersz, bo tam brak ustawiania formArray
             this.setConfiguredValues(this.form.value); // TODO ten i poprzedni wiersz mają odwołanie do tej samej metody setConfigureValues - czy można jedno usunąć?
+            this.formName = cryptoRandomString({length: 12, type: 'alphanumeric'});
             this.loading = false;
           });
       } else {
