@@ -126,6 +126,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   loading;
   highestUserId;
   temporaryConfig: SingleConfiguration;
+  globalId = 'configuration';
 
   static setDimensions(dimensions) {
     return dimensions;
@@ -151,7 +152,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       ['https://www.okpol.pl/wp-content/uploads/2017/02/1_ISO.jpg'], ['Okno:Zasuwka', false, false], 1332.80, 1, 1.2, 5, 'Okno:RAL7048', 'Okno:RAL7048', null, 2, 'PL');
     this.paramsUserFetchData$.pipe(
       takeUntil(this.isDestroyed$),
-      map((data: { params: ObservedValueOf<Observable<Params>>; user: string; fetch: any }) => {
+      map((data: { params: ObservedValueOf<Observable<Params>>; user: string; fetch: any; configurations: SingleConfiguration[] }) => {
         this.coatsFromFile = this.objectMaker(data.fetch.coats);
         this.extrasFromFile = this.objectMaker(data.fetch.extras);
         this.windowModelsToCalculatePrice = data.fetch.models;
@@ -171,6 +172,8 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         this.formName = data.params.formName;
         this.windowCode = data.params.productCode;
         this.configId = data.params.configId === undefined ? '-1' : data.params.configId;
+        this.globalId = data.params.configId === undefined
+          ? this.hd.getHighestGlobalIdFormMongoDB(data.configurations) : data.params.configId;
       })).subscribe(() => {
       if (this.formName === 'no-name' || this.formName === undefined) {
         // tslint:disable-next-line:max-line-length
@@ -714,38 +717,45 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   }
 
   saveCopyLinkPopUp() {
+    let temporaryUrl = '';
     this.loading = true;
     this.copyLinkToConfigurationPopup = true;
-    this.paramsUserFetchData$.pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
-      this.temporaryConfig = {
-        products: {
-          windows: [{
-            id: 1,
-            quantity: 1,
-            window: this.configuredWindow,
-            windowFormName: this.formName,
-            windowFormData: this.form.value,
-          }],
-          flashings: null,
-          accessories: null,
-          verticals: null,
-          flats: null
-        },
-        globalId: this.hd.getHighestGlobalIdFormMongoDB(data.configurations),
-        created: new Date(),
-        lastUpdate: new Date(),
-        user: 'anonym',
-        userId: 0,
-        name: 'temporary',
-        active: true
-      };
+    this.temporaryConfig = {
+      products: {
+        windows: [{
+          id: 1,
+          quantity: 1,
+          window: this.configuredWindow,
+          windowFormName: this.formName,
+          windowFormData: this.form.value,
+        }],
+        flashings: null,
+        accessories: null,
+        verticals: null,
+        flats: null
+      },
+      globalId: this.globalId,
+      created: new Date(),
+      lastUpdate: new Date(),
+      user: 'anonym',
+      userId: 0,
+      name: 'temporary',
+      active: true
+    };
+    if (this.configId === this.globalId) {
+      this.urlToSaveConfiguration = this.router['location']._platformLocation.location.origin
+        + '/' + this.temporaryConfig.globalId
+        + '/' + this.temporaryConfig.products.windows[0].windowFormName
+        + '/' + this.temporaryConfig.products.windows[0].window.kod;
+      this.crud.updateWindowConfigurationIntoConfigurationById(this.configId, 1, this.temporaryConfig.products.windows[0].window);
+    } else {
       this.urlToSaveConfiguration = this.router['location']._platformLocation.location.origin + this.router.url
         + '/' + this.temporaryConfig.globalId
         + '/' + this.temporaryConfig.products.windows[0].windowFormName
         + '/' + this.temporaryConfig.products.windows[0].window.kod;
       this.crud.createConfigurationForUser('anonym', this.temporaryConfig).subscribe(console.log);
-      this.loading = false;
-    });
+    }
+    this.loading = false;
   }
 
   resetConfigForm() {
