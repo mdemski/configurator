@@ -1,10 +1,9 @@
 import {
-  AfterViewInit,
   ChangeDetectorRef,
   Component,
   ElementRef,
   OnDestroy,
-  OnInit, QueryList, ViewChild,
+  OnInit, QueryList,
   ViewChildren
 } from '@angular/core';
 import {LoadConfigurationService} from '../../services/load-configuration.service';
@@ -14,22 +13,23 @@ import {combineLatest, Observable, ObservedValueOf, Observer, Subject} from 'rxj
 import {AuthService} from '../../services/auth.service';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {CrudFirebaseService} from '../../services/crud-firebase-service';
-import {map, pairwise, takeUntil} from 'rxjs/operators';
+import {filter, map, pairwise, takeUntil} from 'rxjs/operators';
 import {SingleConfiguration} from '../../models/single-configuration';
 import {Flashing} from '../../models/flashing';
-import {FormArray, FormBuilder, FormControl, FormGroup, NgForm, ValidationErrors} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors} from '@angular/forms';
 import {FlashingConfig} from '../../models/flashing-config';
 import {HighestIdGetterService} from '../../services/highest-id-getter.service';
 import {ModalService} from '../../modal/modal.service';
 import {FlashingValueSetterService} from '../../services/flashing-value-setter.service';
 import {DatabaseService} from '../../services/database.service';
+import cryptoRandomString from 'crypto-random-string';
 
 @Component({
   selector: 'app-flashings-config',
   templateUrl: './flashings-config.component.html',
   styleUrls: ['./flashings-config.component.scss']
 })
-export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewInit {
+export class FlashingsConfigComponent implements OnInit, OnDestroy {
 
   constructor(private activeRouter: ActivatedRoute,
               private router: Router,
@@ -74,9 +74,9 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
   private flashingId: number;
   private columns: ElementRef[] = [];
   private divs: ElementRef[] = [];
-  private tablePresentation: ElementRef = null;
   reverseModelsArrayIndex: number[];
   summaryFlashingsPrice: number;
+  globalId = '';
   form: FormGroup;
   configuredFlashing: Flashing;
   configuredFlashingArray: Flashing[];
@@ -174,7 +174,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
       270, ['78x118', '78x140'], ['assets/img/products/flashings.jpg'], 'PL', false, null);
     this.paramsUserFetchData$.pipe(
       takeUntil(this.isDestroyed$),
-      map((data: { params: ObservedValueOf<Observable<Params>>; user: string; fetch: any }) => {
+      map((data: { params: ObservedValueOf<Observable<Params>>; user: string; fetch: any; configurations: SingleConfiguration[] }) => {
         this.flashingModels = data.fetch.models;
         this.flashingTypes = FlashingsConfigComponent.objectsMaker(data.fetch.flashingTypes);
         this.lShaped = FlashingsConfigComponent.objectsMaker(data.fetch.lShapeds);
@@ -190,6 +190,8 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
         this.formName = data.params.formName;
         this.flashingCode = data.params.productCode;
         this.configId = data.params.configId === undefined ? '-1' : data.params.configId;
+        this.globalId = data.params.configId === undefined
+          ? this.hd.getHighestGlobalIdFormMongoDB(data.configurations) : data.params.configId;
       })).subscribe(() => {
       if (this.formName === 'no-name' || this.formName === undefined) {
         this.loadData.getFlashingToReconfiguration(this.currentUser, this.formName, this.flashingCode).pipe(
@@ -219,6 +221,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
             lShaped: new FormControl(null),
             windchestLength: new FormControl(80)
           });
+          this.formName = cryptoRandomString({length: 12, type: 'alphanumeric'});
         });
         this.formChanges();
         this.loading = false;
@@ -230,22 +233,22 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
             this.flashingId = flashingConfiguration.id;
             const flashingFormData = flashingConfiguration.flashingFormData;
             this.form = this.fb.group({
-              flashingType: new FormControl(flashingFormData.type, [], [this.validateFlashingType.bind(this)]),
+              flashingType: new FormControl(flashingFormData.flashingType, [], [this.validateFlashingType.bind(this)]),
               apronType: new FormControl(flashingFormData.apronType, [], [this.validateApronType.bind(this)]),
               outer: new FormGroup({
-                outerMaterial: new FormControl(flashingFormData.outerMaterial),
-                outerColor: new FormControl(flashingFormData.outerColor),
-                outerColorFinish: new FormControl(flashingFormData.outerColorFinish),
+                outerMaterial: new FormControl(flashingFormData.outer.outerMaterial),
+                outerColor: new FormControl(flashingFormData.outer.outerColor),
+                outerColorFinish: new FormControl(flashingFormData.outer.outerColorFinish),
               }),
               composition: new FormGroup({
-                verticalNumber: new FormControl(flashingFormData.verticalNumber),
-                horizontalNumber: new FormControl(flashingFormData.horizontalNumber),
+                verticalNumber: new FormControl(flashingFormData.composition.verticalNumber),
+                horizontalNumber: new FormControl(flashingFormData.composition.horizontalNumber),
               }),
               dimensions: new FormGroup({
-                widths: new FormArray(flashingFormData.widths),
-                heights: new FormArray(flashingFormData.heights),
-                verticalSpacings: new FormArray(flashingFormData.verticalSpacings),
-                horizontalSpacings: new FormArray(flashingFormData.horizontalSpacings),
+                widths: this.fb.array(flashingFormData.dimensions.widths),
+                heights: this.fb.array(flashingFormData.dimensions.heights),
+                verticalSpacings: this.fb.array(flashingFormData.dimensions.verticalSpacings),
+                horizontalSpacings: this.fb.array(flashingFormData.dimensions.horizontalSpacings),
               }),
               lShaped: new FormControl(flashingFormData.lShaped),
               windchestLenght: new FormControl(flashingFormData.windchestLenght)
@@ -269,10 +272,22 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
     });
   }
 
-  // TODO poprawić edycję wymiarów tabeli na bazie wpisywanych wartości w wymiarach kołnierzy i odstępów
-  ngAfterViewInit() {
-    // this.dimensionsPresentation = this.dimPresent;
-    // console.log(this.dimensionsPresentation);
+  initialTemplateArrays() {
+    this.dimPresentTDS.changes.pipe(takeUntil(this.isDestroyed$)).subscribe((columns: QueryList<any>) => {
+      columns.forEach(element => this.columns.push(element));
+    });
+    this.dimPresentDivsH1.changes.pipe(takeUntil(this.isDestroyed$)).subscribe((divs: QueryList<any>) => {
+      divs.forEach(element => this.divs.push(element));
+    });
+    this.dimPresentDivsW1.changes.pipe(takeUntil(this.isDestroyed$)).subscribe((divs: QueryList<any>) => {
+      divs.forEach(element => this.divs.push(element));
+    });
+    this.dimPresentDivsEqual.changes.pipe(takeUntil(this.isDestroyed$)).subscribe((divs: QueryList<any>) => {
+      divs.forEach(element => this.divs.push(element));
+    });
+    this.dimPresentDivs.changes.pipe(takeUntil(this.isDestroyed$)).subscribe((divs: QueryList<any>) => {
+      divs.forEach(element => this.divs.push(element));
+    });
   }
 
   ngOnDestroy(): void {
@@ -285,7 +300,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
 
   get widths() {
     // To działa, bo zwraca tablice z FormControlkami
-    return this.dimensions.get('widths') as FormArray;
+    return this.form.get('dimensions.widths') as FormArray;
   }
 
   get heights() {
@@ -302,10 +317,6 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   formChanges() {
-    this.widthsControlsArrayMaker();
-    this.heightsControlsArrayMaker();
-    this.verticalSpacingControlsMaker();
-    this.horizontalSpacingControlsMaker();
     this.form.valueChanges.pipe(
       takeUntil(this.isDestroyed$),
       pairwise(),
@@ -382,8 +393,12 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
         }
       }
       this.reverseModelsArrayIndex = [...modelsIndexArray].reverse().reverse();
-      console.log(this.reverseModelsArrayIndex);
+      this.summaryFlashingsPriceSetter(this.configuredFlashingArray);
     } else {
+      this.configuredFlashing = new Flashing(null, null, null, 'I-KOŁNIERZ', 'NPL-KOŁNIERZ', '1.Nowy', null,
+        0, 0, 'KołnierzUszczelniający', null, null, null, null, null, null, null,
+        null, 0, null, 0, 0, 0, 0,
+        [], [], null, false, null);
       this.configuredFlashing.model = this.flashingSetter.singleFlashingModelCreator(form.flashingType, form.apronType);
       // tslint:disable-next-line:max-line-length
       this.configuredFlashing.flashingName = this.flashingSetter.buildFlashingName(form.flashingType, form.dimensions.widths[0], form.dimensions.heights[0]);
@@ -414,8 +429,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
         form.outer.outerColorFinish, form.dimensions.widths[0], form.dimensions.heights[0]);
       this.configuredFlashing.CenaDetaliczna = this.setFlashingPrice(this.configuredFlashing);
     }
-    this.summaryFlashingsPriceSetter(this.configuredFlashingArray);
-    console.log(this.configuredFlashingArray);
+    // console.log(this.configuredFlashingArray);
     console.log(this.configuredFlashing);
   }
 
@@ -673,6 +687,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   onDimensionsHover(dimension: HTMLDivElement) {
+    this.initialTemplateArrays();
     this.dimensionsVisible = !this.dimensionsVisible;
     const verticalNumberOfControls = this.form.get('composition.verticalNumber').value;
     const horizontalNumberOfControls = this.form.get('composition.horizontalNumber').value;
@@ -733,7 +748,6 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   private widthsHeightsAndSpacingsSetter(elementIndex, width, height, horizontalSpacing, verticalSpacing) {
-    console.log(this.divs);
     this.divs[elementIndex].nativeElement.style.marginLeft = verticalSpacing / 10 + 'rem';
     this.divs[elementIndex].nativeElement.style.marginTop = horizontalSpacing / 10 + 'rem';
     // this.columns[elementIndex].nativeElement.style.width = width / 10 + 'rem';
@@ -792,9 +806,10 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   saveCopyLinkPopUp() {
+    let temporaryUrl = '';
     this.loading = true;
     this.copyLinkToConfigurationPopup = true;
-    this.paramsUserFetchData$.pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
+    if (this.configuredFlashingArray.length === 0) {
       this.temporaryConfig = {
         products: {
           windows: null,
@@ -809,7 +824,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
           verticals: null,
           flats: null
         },
-        globalId: this.hd.getHighestGlobalIdFormMongoDB(data.configurations),
+        globalId: this.globalId,
         created: new Date(),
         lastUpdate: new Date(),
         user: 'anonym',
@@ -817,12 +832,68 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
         name: 'temporary',
         active: true
       };
-    });
-    this.urlToSaveConfiguration = this.router['location']._platformLocation.location.origin + this.router.url
-      + '/' + this.temporaryConfig.globalId
-      + '/' + this.temporaryConfig.products.flashings[0].flashingFormName
-      + '/' + this.temporaryConfig.products.flashings[0].flashing.kod;
-    this.crud.createConfigurationForUser('anonym', this.temporaryConfig).subscribe(console.log);
+      if (this.configId === this.globalId) {
+        this.crud.updateFlashingConfigurationIntoConfigurationById(this.configId, 1, this.temporaryConfig.products.flashings[0].flashing)
+          .subscribe(console.log);
+        temporaryUrl = this.router['location']._platformLocation.location.origin
+          + '/' + this.temporaryConfig.globalId
+          + '/' + this.temporaryConfig.products.flashings[0].flashingFormName
+          + '/' + this.temporaryConfig.products.flashings[0].flashing.kod;
+      } else {
+        this.crud.createConfigurationForUser('anonym', this.temporaryConfig).subscribe(console.log);
+        temporaryUrl = this.router['location']._platformLocation.location.origin + this.router.url
+          + '/' + this.temporaryConfig.globalId
+          + '/' + this.temporaryConfig.products.flashings[0].flashingFormName
+          + '/' + this.temporaryConfig.products.flashings[0].flashing.kod;
+      }
+    } else {
+      const temporaryFlashingConfigsArray: FlashingConfig[] = [];
+      let id = 1;
+      for (const flashing of this.configuredFlashingArray) {
+        temporaryFlashingConfigsArray.push(
+          {
+            id,
+            quantity: 1,
+            flashing,
+            flashingFormName: this.formName,
+            flashingFormData: this.form.value
+          });
+        if (this.configId === this.globalId) {
+          this.crud.updateFlashingConfigurationIntoConfigurationById(this.configId, id, flashing)
+            .subscribe(console.log);
+        }
+        id++;
+      }
+      this.temporaryConfig = {
+        products: {
+          windows: null,
+          flashings: temporaryFlashingConfigsArray,
+          accessories: null,
+          verticals: null,
+          flats: null
+        },
+        globalId: this.globalId,
+        created: new Date(),
+        lastUpdate: new Date(),
+        user: 'anonym',
+        userId: 0,
+        name: 'temporary',
+        active: true
+      };
+      if (this.configId !== this.globalId) {
+        this.crud.createConfigurationForUser('anonym', this.temporaryConfig).subscribe(console.log);
+        temporaryUrl = this.router['location']._platformLocation.location.origin + this.router.url
+          + '/' + this.temporaryConfig.globalId
+          + '/' + this.temporaryConfig.products.flashings[0].flashingFormName
+          + '/' + this.temporaryConfig.products.flashings[0].flashing.kod;
+      } else {
+        temporaryUrl = this.router['location']._platformLocation.location.origin
+          + '/' + this.temporaryConfig.globalId
+          + '/' + this.temporaryConfig.products.flashings[0].flashingFormName
+          + '/' + this.temporaryConfig.products.flashings[0].flashing.kod;
+      }
+    }
+    this.urlToSaveConfiguration = temporaryUrl;
     this.loading = false;
   }
 

@@ -383,11 +383,11 @@
             <ng-template #singleFlashing>
 
               <div class="width-container" formArrayName="widths">
-                <label for="width0"
+                <label for="0"
                        class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.width' | translate}}</label>
                 <input class="configure-form__group__options--option__input-width"
                        type="number"
-                       id="width0"
+                       id="0"
                        step="{{stepWidth}}"
                        min="{{dimensionsFromFile.minWidth}}"
                        max="{{dimensionsFromFile.maxWidth}}"
@@ -396,10 +396,11 @@
               </div>
 
               <div class="height-container" formArrayName="heights">
-                <label
+                <label for="0"
                   class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.height' | translate}}</label>
                 <input class="configure-form__group__options--option__input-height"
                        type="number"
+                       id="0"
                        step="{{stepHeight}}"
                        min="{{dimensionsFromFile.minHeight}}"
                        max="{{dimensionsFromFile.maxHeight}}"
