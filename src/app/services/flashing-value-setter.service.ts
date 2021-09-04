@@ -252,7 +252,7 @@ export class FlashingValueSetterService implements OnDestroy {
   }
 
   // Model = Null dla pojedynczych, dla kombi idzie w pętli z tablicy modeli
-  generateFlashingCode(model: string | null, flashingType: string, flashingApron: string,
+  generateFlashingCode(model: string | null, flashingType: string, flashingApron: string | null,
                        verticalSpacing: number, horizontalSpacing: number, outerMaterial: string,
                        outerColor: string, outerFinish: string, width: number, height: number) {
     let flashingCode = '';
@@ -260,7 +260,11 @@ export class FlashingValueSetterService implements OnDestroy {
     let flashingApronCode = '';
     let verticalSpacingCode = '';
     let horizontalSpacingCode = '';
-    flashingApronCode = flashingApron === ('Kołnierz:BRAK' || '') ? '--' : flashingApron.split(':')[1];
+    if (flashingApron === null || flashingApron === 'Kołnierz:BRAK') {
+      flashingApronCode = '--';
+    } else {
+      flashingApronCode = flashingApron.split(':')[1];
+    }
     verticalSpacingCode = verticalSpacing === 0 ? '--' : String(verticalSpacing);
     horizontalSpacingCode = horizontalSpacing === 0 ? '--' : String(horizontalSpacing);
     if (model) {
