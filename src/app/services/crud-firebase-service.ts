@@ -376,6 +376,7 @@ export class CrudFirebaseService {
       // @ts-ignore
       const url = `${this.baseUri}/update/${configuration._id}`;
       if (configuration.products.windows) {
+        configuration.lastUpdate = new Date();
         for (const window of configuration.products.windows) {
           if (window.id === Number(windowId)) {
             window.window = windowConfiguration;
@@ -393,6 +394,7 @@ export class CrudFirebaseService {
       // @ts-ignore
       const url = `${this.baseUri}/update/${configuration._id}`;
       if (configuration.products.flashings) {
+        configuration.lastUpdate = new Date();
         for (const flashing of configuration.products.flashings) {
           if (flashing.id === Number(flashingId)) {
             flashing.flashing = flashingConfiguration;
@@ -410,6 +412,7 @@ export class CrudFirebaseService {
       // @ts-ignore
       const url = `${this.baseUri}/update/${configuration._id}`;
       if (configuration.products.accessories) {
+        configuration.lastUpdate = new Date();
         for (const accessory of configuration.products.accessories) {
           if (accessory.id === Number(accessoryId)) {
             accessory.accessory = accessoryConfiguration;
