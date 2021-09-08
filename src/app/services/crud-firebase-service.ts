@@ -220,6 +220,19 @@ export class CrudFirebaseService {
     }));
   }
 
+  // 7a dodawanie tablicy kołnierzy do konfiguracji
+  createFlashingsArrayConfigurationIntoConfigurationById(configId: string,
+                                                         flashingsConfigurationArray: FlashingConfig[]) {
+    return this.readConfigurationById(configId).pipe(map((configuration: SingleConfiguration) => {
+      // @ts-ignore
+      const url = `${this.baseUri}/update/${configuration._id}`;
+      configuration.products.flashings = flashingsConfigurationArray;
+      configuration.lastUpdate = new Date();
+      this.http.put(url, configuration, {headers: this.headers})
+        .subscribe(() => console.log('Flashings array added successfully'), err => console.log(err));
+    }));
+  }
+
   // 8 dodawanie akcesorium do konfiguracji
   createAccessoryConfigurationIntoConfigurationById(configId: string,
                                                     accessoryConfiguration: Accessory,
@@ -402,6 +415,29 @@ export class CrudFirebaseService {
         }
         this.http.put(url, configuration, {headers: this.headers})
           .subscribe(() => console.log('Flashing changed successfully'), err => console.log(err));
+      }
+    }));
+  }
+
+  // 11a aktualizowanie kołnierza w konfiguracji
+  // tslint:disable-next-line:max-line-length
+  updateFlashingsArrayConfigurationIntoConfigurationById(configId: string, flashingIdsArray: number[], flashingConfigurationArray: FlashingConfig[]) {
+    return this.readConfigurationById(configId).pipe(map((configuration: SingleConfiguration) => {
+      // @ts-ignore
+      const url = `${this.baseUri}/update/${configuration._id}`;
+      let isCorrect = true;
+      if (configuration.products.flashings) {
+        configuration.lastUpdate = new Date();
+        for (let i = 0; i < configuration.products.flashings.length; i++) {
+          if (configuration.products.flashings[i].id !== Number(flashingIdsArray[i])) {
+            isCorrect = false;
+          }
+        }
+        if (isCorrect) {
+          configuration.products.flashings = flashingConfigurationArray;
+        }
+        this.http.put(url, configuration, {headers: this.headers})
+          .subscribe(() => console.log('Flashings array changed successfully'), err => console.log(err));
       }
     }));
   }
