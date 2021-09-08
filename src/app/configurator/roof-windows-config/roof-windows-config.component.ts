@@ -736,7 +736,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
           .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
         // wersja 3
       } else {
-        // tslint:disable-next-line:max-line-length
         this.crud.updateWindowConfigurationIntoConfigurationById(this.configId, this.windowId, this.configuredWindow)
           .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
       }
