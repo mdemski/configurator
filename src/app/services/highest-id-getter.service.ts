@@ -5,17 +5,16 @@ import {SingleConfiguration} from '../models/single-configuration';
   providedIn: 'root'
 })
 export class HighestIdGetterService {
-  highestId: number;
 
   constructor() {}
 
   getHighestIdForProduct(configuration: SingleConfiguration) {
     const productObjectId = {
-      windowId: 1,
-      flashingId: 1,
-      accessoryId: 1,
-      verticalId: 1,
-      flatId: 1,
+      windowId: 0,
+      flashingId: 0,
+      accessoryId: 0,
+      verticalId: 0,
+      flatId: 0,
     };
     if (configuration.products.windows.length === 0) {
       productObjectId.windowId = 1;
@@ -71,7 +70,7 @@ export class HighestIdGetterService {
   }
 
   getHighestGlobalIdFormMongoDB(allConfigurations: SingleConfiguration[]) {
-    let configurationId = 1;
+    let configurationId = 0;
     for (const config of allConfigurations) {
       const globalId = Number(config.globalId.split('-')[1]);
       if (globalId > configurationId) {
@@ -83,7 +82,7 @@ export class HighestIdGetterService {
   }
 
   getHighestIdForUser(userConfigurations: SingleConfiguration[]) {
-    let userId = 1;
+    let userId = 0;
     for (const config of userConfigurations) {
       if (config.userId > userId) {
         userId = config.userId;
