@@ -94,7 +94,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy {
   outerColors: {}[];
   outerColorFinishes: {}[];
   userConfigs = [];
-  configFormId: number;
+  configFlashingFormId: number;
   minVerticalNumber: number;
   minHorizontalNumber: number;
   maxVerticalNumber: number;
@@ -125,7 +125,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy {
   private compositionVisible = false;
   private dimensionsVisible = false;
   private highestUserId;
-  private temporaryConfig: SingleConfiguration;
+  private newFlashingConfig: SingleConfiguration;
   dimensionsPopup = false;
   widthsSize: any;
   verticalsSize: any;
@@ -223,6 +223,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy {
           });
           this.formName = cryptoRandomString({length: 12, type: 'alphanumeric'});
         });
+        this.flashingId = 1;
         this.formChanges();
         this.loading = false;
       } else {
@@ -770,16 +771,28 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy {
     this.router.navigate(['/' + this.shopFlashingLink]);
   }
 
+  closeCopyLinkPopUp() {
+    this.copyLinkToConfigurationPopup = false;
+  }
+
+  resetConfigForm() {
+    this.router.navigate(['/' + this.flashingsConfigurator]);
+  }
+
+  onSubmit() {
+    // TODO napisać funkcję do zapisu konfiguracji kołnierzy
+  }
+
   chooseConfigId(configForm: any) {
     // TODO sprawdzić poprawność działania tej metody
     let chosenId;
-    if (configForm.value.configFormId === undefined) {
+    if (configForm.value.configFlashingFormId === undefined) {
       chosenId = this.highestUserId;
     } else {
-      chosenId = parseInt(configForm.value.configFormId, 10);
+      chosenId = parseInt(configForm.value.configFlashingFormId, 10);
     }
     if (chosenId === this.highestUserId) {
-      this.crud.createConfigurationForUser(this.currentUser, this.temporaryConfig)
+      this.crud.createConfigurationForUser(this.currentUser, this.newFlashingConfig)
         .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
       this.router.navigate(['/' + this.configurationSummary]);
     } else {
@@ -793,24 +806,13 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy {
     this.router.navigate(['/' + this.configurationSummary]);
   }
 
-  closeCopyLinkPopUp() {
-    this.copyLinkToConfigurationPopup = false;
-  }
-
-  resetConfigForm() {
-    this.router.navigate(['/' + this.flashingsConfigurator]);
-  }
-
-  onSubmit() {
-    // TODO napisać funkcję do zapisu konfiguracji kołnierzy
-  }
-
   saveCopyLinkPopUp() {
     let temporaryUrl = '';
     this.loading = true;
     this.copyLinkToConfigurationPopup = true;
+    // zapis konfiguracji z pojedynczym kołnierzem
     if (this.configuredFlashingArray.length === 0) {
-      this.temporaryConfig = {
+      this.newFlashingConfig = {
         products: {
           windows: null,
           flashings: [{
@@ -832,23 +834,37 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy {
         name: 'temporary',
         active: true
       };
+      // wersja 2 lub 3
       if (this.configId === this.globalId) {
-        this.crud.updateFlashingConfigurationIntoConfigurationById(this.configId, 1, this.temporaryConfig.products.flashings[0].flashing)
-          .subscribe(console.log);
+        // wersja 2
+        if (this.flashingId === 1) {
+          this.crud.createFlashingConfigurationIntoConfigurationById(this.configId, this.configuredFlashing, this.formName, this.form.value)
+            .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+          // wersja 3
+        } else {
+          this.crud.updateFlashingConfigurationIntoConfigurationById(this.configId, this.flashingId, this.configuredFlashing)
+            .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+        }
         temporaryUrl = this.router['location']._platformLocation.location.origin
-          + '/' + this.temporaryConfig.globalId
-          + '/' + this.temporaryConfig.products.flashings[0].flashingFormName
-          + '/' + this.temporaryConfig.products.flashings[0].flashing.kod;
+          + '/' + this.globalId
+          + '/' + this.formName
+          + '/' + this.configuredFlashing.kod;
+        // wersja 1
       } else {
-        this.crud.createConfigurationForUser('anonym', this.temporaryConfig).subscribe(console.log);
+        this.crud.createConfigurationForUser('anonym', this.newFlashingConfig)
+          .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
         temporaryUrl = this.router['location']._platformLocation.location.origin + this.router.url
-          + '/' + this.temporaryConfig.globalId
-          + '/' + this.temporaryConfig.products.flashings[0].flashingFormName
-          + '/' + this.temporaryConfig.products.flashings[0].flashing.kod;
+          + '/' + this.newFlashingConfig.globalId
+          + '/' + this.newFlashingConfig.products.flashings[0].flashingFormName
+          + '/' + this.newFlashingConfig.products.flashings[0].flashing.kod;
       }
+      this.urlToSaveConfiguration = temporaryUrl;
+      this.loading = false;
+      // zapis konfiguracji z kołnierzami w kombi
     } else {
       const temporaryFlashingConfigsArray: FlashingConfig[] = [];
       let id = 1;
+      const flashingIdsArray = [];
       for (const flashing of this.configuredFlashingArray) {
         temporaryFlashingConfigsArray.push(
           {
@@ -858,13 +874,10 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy {
             flashingFormName: this.formName,
             flashingFormData: this.form.value
           });
-        if (this.configId === this.globalId) {
-          this.crud.updateFlashingConfigurationIntoConfigurationById(this.configId, id, flashing)
-            .subscribe(console.log);
-        }
+        flashingIdsArray.push(id);
         id++;
       }
-      this.temporaryConfig = {
+      this.newFlashingConfig = {
         products: {
           windows: null,
           flashings: temporaryFlashingConfigsArray,
@@ -880,17 +893,28 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy {
         name: 'temporary',
         active: true
       };
-      if (this.configId !== this.globalId) {
-        this.crud.createConfigurationForUser('anonym', this.temporaryConfig).subscribe(console.log);
-        temporaryUrl = this.router['location']._platformLocation.location.origin + this.router.url
-          + '/' + this.temporaryConfig.globalId
-          + '/' + this.temporaryConfig.products.flashings[0].flashingFormName
-          + '/' + this.temporaryConfig.products.flashings[0].flashing.kod;
-      } else {
+      if (this.configId === this.globalId) {
+        // wersja 2
+        if (this.flashingId === 1) {
+          this.crud.createFlashingsArrayConfigurationIntoConfigurationById(this.configId, temporaryFlashingConfigsArray)
+            .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+          // wersja 3
+        } else {
+          this.crud.updateFlashingsArrayConfigurationIntoConfigurationById(this.configId, flashingIdsArray, temporaryFlashingConfigsArray)
+            .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+        }
         temporaryUrl = this.router['location']._platformLocation.location.origin
-          + '/' + this.temporaryConfig.globalId
-          + '/' + this.temporaryConfig.products.flashings[0].flashingFormName
-          + '/' + this.temporaryConfig.products.flashings[0].flashing.kod;
+          + '/' + this.globalId
+          + '/' + this.formName
+          + '/' + this.configuredFlashing.kod;
+        // wersja 1
+      } else {
+        this.crud.createConfigurationForUser('anonym', this.newFlashingConfig)
+          .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+        temporaryUrl = this.router['location']._platformLocation.location.origin + this.router.url
+          + '/' + this.newFlashingConfig.globalId
+          + '/' + this.newFlashingConfig.products.flashings[0].flashingFormName
+          + '/' + this.newFlashingConfig.products.flashings[0].flashing.kod;
       }
     }
     this.urlToSaveConfiguration = temporaryUrl;
