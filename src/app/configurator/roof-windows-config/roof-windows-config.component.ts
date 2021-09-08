@@ -745,7 +745,8 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         + '/' + this.configuredWindow.kod;
       // wersja 1
     } else {
-      this.crud.createConfigurationForUser('anonym', this.newWindowConfig).subscribe(console.log);
+      this.crud.createConfigurationForUser('anonym', this.newWindowConfig)
+        .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
       temporaryUrl = this.router['location']._platformLocation.location.origin + this.router.url
         + '/' + this.newWindowConfig.globalId
         + '/' + this.newWindowConfig.products.windows[0].windowFormName
