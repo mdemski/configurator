@@ -69,7 +69,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   configuredWindow: RoofWindowSkylight;
   form: FormGroup;
   configWindowFormId: number;
-  globalId = '';
   userConfigs = [];
   urlToSaveConfiguration: string;
   showWidthMessage = false;
@@ -77,6 +76,9 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   popupConfig = true;
   chooseConfigNamePopup = false;
   copyLinkToConfigurationPopup = false;
+  private globalId = '';
+  private highestUserId;
+  private newWindowConfig: SingleConfiguration;
   private currentUser: string;
   private formName: string;
   private configId: string;
@@ -125,8 +127,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   glazingName$ = new BehaviorSubject('Okno:E01');
   isDestroyed$ = new Subject();
   loading;
-  highestUserId;
-  windowConfig: SingleConfiguration;
 
   static setDimensions(dimensions) {
     return dimensions;
@@ -171,9 +171,9 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         this.currentUser = data.user;
         this.formName = data.params.formName;
         this.windowCode = data.params.productCode;
-        this.configId = data.params.configId === undefined ? '-1' : data.params.configId;
         this.globalId = data.params.configId === undefined
           ? this.hd.getHighestGlobalIdFormMongoDB(data.configurations) : data.params.configId;
+        this.configId = data.params.configId === undefined ? '-1' : this.globalId;
       })).subscribe(() => {
       if (this.formName === 'no-name' || this.formName === undefined) {
         // tslint:disable-next-line:max-line-length
@@ -621,7 +621,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    this.windowConfig = {
+    this.newWindowConfig = {
       products: {
         windows: [{
           id: this.windowId,
@@ -654,21 +654,25 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
           })).subscribe(userConfigurations => {
           this.userConfigs = userConfigurations;
           this.highestUserId = this.hd.getHighestIdForUser(userConfigurations);
-          this.windowConfig.userId = this.highestUserId;
+          this.newWindowConfig.userId = this.highestUserId;
+          // wersja 2 lub 1
           if (this.userConfigs.length !== 0) {
-            this.userConfigs.push(this.windowConfig);
+            this.userConfigs.push(this.newWindowConfig);
             this.loading = false;
             this.chooseConfigNamePopup = true;
+            // wersja 1
           } else {
-            this.crud.createConfigurationForUser(user, this.windowConfig).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+            this.crud.createConfigurationForUser(user, this.newWindowConfig).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
             this.router.navigate(['/' + this.configurationSummary]);
             this.loading = false;
           }
         });
       } else {
+        // wersja 2
         if (this.windowId === 1) {
           this.crud.createWindowConfigurationIntoConfigurationById(this.configId, this.configuredWindow, this.formName, this.form.value)
             .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+          // wersja 3
         } else {
           this.crud.updateWindowConfigurationIntoConfigurationById(this.configId, this.windowId, this.configuredWindow)
             .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
@@ -682,22 +686,17 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   }
 
   chooseConfigId(configForm: any) {
-    let chosenId;
+    // wersja 1
     if (configForm.value.configWindowFormId === undefined) {
-      chosenId = this.highestUserId;
-    } else {
-      chosenId = parseInt(configForm.value.configWindowFormId, 10);
-    }
-    if (chosenId === this.highestUserId) {
-      this.crud.createConfigurationForUser(this.currentUser, this.windowConfig)
+      this.crud.createConfigurationForUser(this.currentUser, this.newWindowConfig)
         .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
-      this.router.navigate(['/' + this.configurationSummary]);
+      // wersja 2
     } else {
+      const chosenId = parseInt(configForm.value.configWindowFormId, 10);
       // TODO zamienić na configuredWindow
       this.crud.createWindowConfigurationIntoConfigurationById(String('configuration-' + chosenId),
         this.tempConfiguredWindow, this.formName, this.form.value)
         .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
-      this.router.navigate(['/' + this.configurationSummary]);
     }
     this.chooseConfigNamePopup = false;
     this.router.navigate(['/' + this.configurationSummary]);
@@ -724,7 +723,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     let temporaryUrl = '';
     this.loading = true;
     this.copyLinkToConfigurationPopup = true;
-    this.windowConfig = {
+    this.newWindowConfig = {
       products: {
         windows: [{
           id: this.windowId,
@@ -746,25 +745,29 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       name: 'temporary',
       active: true
     };
+    // wersja 2 lub 3
     if (this.configId === this.globalId) {
-      temporaryUrl = this.router['location']._platformLocation.location.origin
-        + '/' + this.windowConfig.globalId
-        + '/' + this.windowConfig.products.windows[this.windowId - 1].windowFormName
-        + '/' + this.windowConfig.products.windows[this.windowId - 1].window.kod;
+      // wersja 2
       if (this.windowId === 1) {
         this.crud.createWindowConfigurationIntoConfigurationById(this.configId, this.configuredWindow, this.formName, this.form.value)
           .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+        // wersja 3
       } else {
         // tslint:disable-next-line:max-line-length
-        this.crud.updateWindowConfigurationIntoConfigurationById(this.configId, this.windowId, this.windowConfig.products.windows[this.windowId - 1].window)
+        this.crud.updateWindowConfigurationIntoConfigurationById(this.configId, this.windowId, this.configuredWindow)
           .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
       }
+      temporaryUrl = this.router['location']._platformLocation.location.origin
+        + '/' + this.globalId
+        + '/' + this.formName
+        + '/' + this.configuredWindow.kod;
+      // wersja 1
     } else {
+      this.crud.createConfigurationForUser('anonym', this.newWindowConfig).subscribe(console.log);
       temporaryUrl = this.router['location']._platformLocation.location.origin + this.router.url
-        + '/' + this.windowConfig.globalId
-        + '/' + this.windowConfig.products.windows[0].windowFormName
-        + '/' + this.windowConfig.products.windows[0].window.kod;
-      this.crud.createConfigurationForUser('anonym', this.windowConfig).subscribe(console.log);
+        + '/' + this.newWindowConfig.globalId
+        + '/' + this.newWindowConfig.products.windows[0].windowFormName
+        + '/' + this.newWindowConfig.products.windows[0].window.kod;
     }
     this.urlToSaveConfiguration = temporaryUrl;
     this.loading = false;
