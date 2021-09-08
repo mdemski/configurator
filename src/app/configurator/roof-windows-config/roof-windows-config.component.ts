@@ -702,23 +702,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.router.navigate(['/' + this.configurationSummary]);
   }
 
-  // CALCULATIONS
-  getWindowCircuit(configuredWindow) {
-    return 2 * configuredWindow.szerokosc + 2 * configuredWindow.wysokosc;
-  }
-
-  private objectMaker(availableOptionsArray: string[]): {}[] {
-    const objectsArray = [];
-    for (const option of availableOptionsArray) {
-      const tempObject = {
-        option,
-        disabled: null
-      };
-      objectsArray.push(tempObject);
-    }
-    return objectsArray;
-  }
-
   saveCopyLinkPopUp() {
     let temporaryUrl = '';
     this.loading = true;
@@ -775,6 +758,23 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
 
   resetConfigForm() {
     this.router.navigate(['/' + this.windowsConfigurator]);
+  }
+
+  // CALCULATIONS
+  getWindowCircuit(configuredWindow) {
+    return 2 * configuredWindow.szerokosc + 2 * configuredWindow.wysokosc;
+  }
+
+  private objectMaker(availableOptionsArray: string[]): {}[] {
+    const objectsArray = [];
+    for (const option of availableOptionsArray) {
+      const tempObject = {
+        option,
+        disabled: null
+      };
+      objectsArray.push(tempObject);
+    }
+    return objectsArray;
   }
 
   // CSS STYLING
