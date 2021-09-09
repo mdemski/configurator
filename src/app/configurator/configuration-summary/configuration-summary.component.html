@@ -317,8 +317,11 @@
           </div>
 
           <div
-            *ngIf="configuration.products.windows === undefined || configuration.products.flashings === undefined || configuration.products.flashings === null
-          || configuration.products.windows.length !== configuration.products.flashings.length"
+            *ngIf="configuration.products.windows === undefined
+            || configuration.products.windows === null
+            || configuration.products.flashings === undefined
+            || configuration.products.flashings === null
+            || configuration.products.windows.length !== configuration.products.flashings.length"
             class="configuration-summary-container__single--flashings--warning">{{'CONFIG-SUMMARY.differentLength' | translate}}</div>
 
           <!--Accessory from single configuration-->

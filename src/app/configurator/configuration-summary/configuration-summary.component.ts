@@ -205,7 +205,20 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
       windowFormData: null,
       quantity: 0
     });
-    this.chooseWindowPopup = true;
+    // Do wyboru jeśli w konfiguracji jest wiele okien do wyboru
+    if (configuration.products.windows.length > 1) {
+      this.chooseWindowPopup = true;
+    } else {
+      // 'konfigurator/kolnierze/:configId/:formName/:productCode'
+      if (this.addingProduct === 'flashing') {
+        this.router.navigate(['/' + this.emptyFlashingConfiguration +
+        '/' + configuration.globalId + '/' + 'no-name' + '/' + '-1']);
+      }
+      if (this.addingProduct === 'accessory') {
+        this.router.navigate(['/' + this.emptyAccessoryConfiguration +
+        '/' + configuration.globalId + '/' + 'no-name' + '/' + '-1']);
+      }
+    }
   }
 
   chooseWindowId(windowId: number) {
@@ -216,10 +229,12 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
         .subscribe(window =>  this.loadConfig.windowData$.next(window.window));
     }
     if (this.addingProduct === 'flashing') {
-      this.router.navigate(['/' + this.emptyFlashingConfiguration]);
+      this.router.navigate(['/' + this.emptyFlashingConfiguration +
+      '/' + this.chosenConfig.globalId + '/' + 'no-name' + '/' + '-1']);
     }
     if (this.addingProduct === 'accessory') {
-      this.router.navigate(['/' + this.emptyAccessoryConfiguration]);
+      this.router.navigate(['/' + this.emptyAccessoryConfiguration +
+      '/' + this.chosenConfig.globalId + '/' + 'no-name' + '/' + '-1']);
     }
     this.chooseWindowPopup = false;
   }
