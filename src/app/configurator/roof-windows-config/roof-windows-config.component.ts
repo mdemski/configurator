@@ -692,9 +692,9 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
       // wersja 2
     } else {
-      const chosenId = parseInt(configForm.value.configWindowFormId, 10);
+      this.configId = String('configuration-' + parseInt(configForm.value.configWindowFormId, 10));
       // TODO zamienić na configuredWindow
-      this.crud.createWindowConfigurationIntoConfigurationById(String('configuration-' + chosenId),
+      this.crud.createWindowConfigurationIntoConfigurationById(this.configId,
         this.tempConfiguredWindow, this.formName, this.form.value)
         .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
     }
