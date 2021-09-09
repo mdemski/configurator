@@ -40,6 +40,9 @@ export class LoadConfigurationService {
       if (formName === 'no-name' && windowCode === undefined) {
         return of(this.newWindow);
       }
+      if (formName === 'no-name' && windowCode === '-1') {
+        return of(this.newWindow);
+      }
       if (formName === undefined && windowCode === undefined) {
         return of(this.newWindow);
       }
@@ -58,6 +61,9 @@ export class LoadConfigurationService {
   getFlashingToReconfiguration(user: string, formName: string, flashingCode: string): Observable<Flashing> {
     if (user !== '' || user !== undefined) {
       if (formName === 'no-name' && flashingCode === undefined) {
+        return of(this.newFlashing);
+      }
+      if (formName === 'no-name' && flashingCode === '-1') {
         return of(this.newFlashing);
       }
       if (formName === undefined && flashingCode === undefined) {
