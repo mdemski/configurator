@@ -72,6 +72,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy {
   private isDestroyed$ = new Subject();
   private tempConfigFlashing: Flashing;
   private flashingId: number;
+  private configuredFlashingIDsArray: number[];
   private columns: ElementRef[] = [];
   private divs: ElementRef[] = [];
   reverseModelsArrayIndex: number[];
@@ -224,15 +225,18 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy {
           this.formName = cryptoRandomString({length: 12, type: 'alphanumeric'});
         });
         this.flashingId = 1;
+        this.configuredFlashingIDsArray = [this.flashingId];
         this.formChanges();
         this.loading = false;
       } else {
         this.loadData.getFlashingConfigurationByFormName(this.formName)
           .pipe(takeUntil(this.isDestroyed$))
-          .subscribe((flashingConfiguration: FlashingConfig) => {
-            this.configuredFlashing = flashingConfiguration.flashing;
-            this.flashingId = flashingConfiguration.id;
-            const flashingFormData = flashingConfiguration.flashingFormData;
+          .subscribe((flashingConfigurations: FlashingConfig[]) => {
+            this.configuredFlashing = flashingConfigurations[0].flashing;
+            flashingConfigurations.forEach(flashingConfig => this.configuredFlashingIDsArray.push(flashingConfig.id));
+            flashingConfigurations.forEach(flashingConfig => this.configuredFlashingArray.push(flashingConfig.flashing));
+            this.flashingId = flashingConfigurations[0].id; // w tym zwraca pierwszy id gdy znajdzie pasujący formName
+            const flashingFormData = flashingConfigurations[0].flashingFormData;
             this.form = this.fb.group({
               flashingType: new FormControl(flashingFormData.flashingType, [], [this.validateFlashingType.bind(this)]),
               apronType: new FormControl(flashingFormData.apronType, [], [this.validateApronType.bind(this)]),
@@ -816,7 +820,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy {
         products: {
           windows: null,
           flashings: [{
-            id: 1,
+            id: this.flashingId,
             quantity: 1,
             flashing: this.configuredFlashing,
             flashingFormName: this.formName,
@@ -863,18 +867,19 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy {
       // zapis konfiguracji z kołnierzami w kombi
     } else {
       const temporaryFlashingConfigsArray: FlashingConfig[] = [];
-      let id = 1;
-      const flashingIdsArray = [];
+      let id = 0;
       for (const flashing of this.configuredFlashingArray) {
+        if (this.configuredFlashingIDsArray[id] === undefined) {
+          this.configuredFlashingIDsArray[id] = id + 1;
+        }
         temporaryFlashingConfigsArray.push(
           {
-            id,
+            id: this.configuredFlashingIDsArray[id],
             quantity: 1,
             flashing,
             flashingFormName: this.formName,
             flashingFormData: this.form.value
           });
-        flashingIdsArray.push(id);
         id++;
       }
       this.newFlashingConfig = {
@@ -900,7 +905,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
           // wersja 3
         } else {
-          this.crud.updateFlashingsArrayConfigurationIntoConfigurationById(this.configId, flashingIdsArray, temporaryFlashingConfigsArray)
+          this.crud.updateFlashingsArrayConfigurationIntoConfigurationById(this.configId, temporaryFlashingConfigsArray)
             .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
         }
         temporaryUrl = this.router['location']._platformLocation.location.origin
