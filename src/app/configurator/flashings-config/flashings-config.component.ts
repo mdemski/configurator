@@ -785,26 +785,132 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     // TODO napisać funkcję do zapisu konfiguracji kołnierzy
+    if (this.configuredFlashingArray.length === 0) {
+      this.newFlashingConfig = {
+        products: {
+          windows: null,
+          flashings: [{
+            id: this.flashingId,
+            quantity: 1,
+            flashing: this.configuredFlashing,
+            flashingFormName: this.formName,
+            flashingFormData: this.form.value
+          }],
+          accessories: null,
+          verticals: null,
+          flats: null
+        },
+        globalId: this.globalId,
+        created: new Date(),
+        lastUpdate: new Date(),
+        user: this.currentUser,
+        userId: 1,
+        name: '<New configuration>',
+        active: true
+      };
+    } else {
+      const temporaryFlashingConfigsArray: FlashingConfig[] = [];
+      let id = 0;
+      for (const flashing of this.configuredFlashingArray) {
+        if (this.configuredFlashingIDsArray[id] === undefined) {
+          this.configuredFlashingIDsArray[id] = id + 1;
+        }
+        temporaryFlashingConfigsArray.push(
+          {
+            id: this.configuredFlashingIDsArray[id],
+            quantity: 1,
+            flashing,
+            flashingFormName: this.formName,
+            flashingFormData: this.form.value
+          });
+        id++;
+      }
+      this.newFlashingConfig = {
+        products: {
+          windows: null,
+          flashings: temporaryFlashingConfigsArray,
+          accessories: null,
+          verticals: null,
+          flats: null
+        },
+        globalId: this.globalId,
+        created: new Date(),
+        lastUpdate: new Date(),
+        user: this.currentUser,
+        userId: 1,
+        name: '<New configuration>',
+        active: true
+      };
+    }
+    this.loading = true;
+    this.authService.returnUser().pipe(takeUntil(this.isDestroyed$)).subscribe(user => {
+      if (this.configId === '-1' || this.configId === '') {
+        this.crud.readAllUserConfigurations(user).pipe(
+          takeUntil(this.isDestroyed$),
+          map((data: Array<any>) => {
+            return data.filter(x => x !== null);
+          })).subscribe(userConfigurations => {
+          this.userConfigs = userConfigurations;
+          this.highestUserId = this.hd.getHighestIdForUser(userConfigurations);
+          this.newFlashingConfig.userId = this.highestUserId;
+          // wersja 1 lub 2
+          if (this.userConfigs.length !== 0) {
+            this.userConfigs.push(this.newFlashingConfig);
+            this.loading = false;
+            this.chooseConfigNamePopup = true;
+            // wersja 1
+          } else {
+            this.crud.createConfigurationForUser(user, this.newFlashingConfig)
+              .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+            this.router.navigate(['/' + this.configurationSummary]);
+            this.loading = false;
+          }
+        });
+      } else {
+        // wersja 2
+        if (this.flashingId === 1) {
+          if (this.configuredFlashingArray.length === 0) {
+            // tslint:disable-next-line:max-line-length
+            this.crud.createFlashingConfigurationIntoConfigurationById(this.configId, this.configuredFlashing, this.formName, this.form.value)
+              .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+          } else {
+            this.crud.createFlashingsArrayConfigurationIntoConfigurationById(this.configId, this.newFlashingConfig.products.flashings)
+              .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+          }
+          // wersja 3
+        } else {
+          if (this.configuredFlashingArray.length === 0) {
+            this.crud.updateFlashingConfigurationIntoConfigurationById(this.configId, this.flashingId, this.configuredFlashing)
+              .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+          } else {
+            this.crud.updateFlashingsArrayConfigurationIntoConfigurationById(this.configId, this.newFlashingConfig.products.flashings)
+              .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+          }
+          this.crud.updateFlashingFormDataByFormName(this.configId, this.formName, this.form.value)
+            .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+        }
+        this.router.navigate(['/' + this.configurationSummary]);
+        this.loading = false;
+      }
+    });
   }
 
   chooseConfigId(configForm: any) {
-    // TODO sprawdzić poprawność działania tej metody
-    let chosenId;
+    // wersja 1
     if (configForm.value.configFlashingFormId === undefined) {
-      chosenId = this.highestUserId;
-    } else {
-      chosenId = parseInt(configForm.value.configFlashingFormId, 10);
-    }
-    if (chosenId === this.highestUserId) {
       this.crud.createConfigurationForUser(this.currentUser, this.newFlashingConfig)
         .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
-      this.router.navigate(['/' + this.configurationSummary]);
+      // wersja 2
     } else {
-      // TODO zamienić na configuredFlashing
-      this.crud.createFlashingConfigurationIntoConfigurationById(String('configuration-' + chosenId),
-        this.tempConfigFlashing, this.formName, this.form.value)
-        .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
-      this.router.navigate(['/' + this.configurationSummary]);
+      this.configId = String('configuration-' + parseInt(configForm.value.configFlashingFormId, 10));
+      if (this.configuredFlashingArray.length === 0) {
+        // tslint:disable-next-line:max-line-length
+        this.crud.createFlashingConfigurationIntoConfigurationById(this.configId, this.configuredFlashing, this.formName, this.form.value)
+          .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+      } else {
+        this.crud.createFlashingsArrayConfigurationIntoConfigurationById(this.configId, this.newFlashingConfig.products.flashings)
+          .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+      }
     }
     this.chooseConfigNamePopup = false;
     this.router.navigate(['/' + this.configurationSummary]);
