@@ -9,6 +9,7 @@ import {Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {WindowConfig} from '../../models/window-config';
 import {LoadConfigurationService} from '../../services/load-configuration.service';
+import {FlashingConfig} from '../../models/flashing-config';
 
 @Component({
   selector: 'app-configuration-summary',
@@ -24,11 +25,15 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
   uneditable = true;
   loading;
   chooseWindowPopup = false;
+  chooseFlashingPopup = false;
   tempSingleConfig: SingleConfiguration;
   isDestroyed$ = new Subject();
   windowId: number;
-  windowConfigurations: WindowConfig[];
+  flashingId: number;
+  windowConfigs: WindowConfig[];
+  flashingConfigs: FlashingConfig[];
   chosenConfig: SingleConfiguration;
+  emptyWindowConfiguration: string;
   emptyFlashingConfiguration: string;
   emptyAccessoryConfiguration: string;
   addingProduct: string;
@@ -103,6 +108,9 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
     });
     this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
       this.emptyAccessoryConfiguration = text.configuratorAccessory;
+    });
+    this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
+      this.emptyWindowConfiguration = text.configuratorRoofWindow;
     });
   }
 
@@ -197,14 +205,18 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
   addNewFlashingOrAccessory(configuration: SingleConfiguration, product: string) {
     this.chosenConfig = configuration;
     this.addingProduct = product;
-    this.windowConfigurations = Object.assign([], configuration.products.windows);
-    this.windowConfigurations.push({
+    this.windowConfigs = Object.assign([], configuration.products.windows);
+    this.windowConfigs.push({
       window: null,
       id: -1,
       windowFormName: null,
       windowFormData: null,
       quantity: 0
     });
+    if (configuration.products.windows.length === 1) {
+      this.crud.readWindowByIdFromConfigurationById(configuration.globalId, configuration.products.windows[0].id)
+        .subscribe(window =>  this.loadConfig.windowData$.next(window.window));
+    }
     // Do wyboru jeśli w konfiguracji jest wiele okien do wyboru
     if (configuration.products.windows.length > 1) {
       this.chooseWindowPopup = true;
@@ -237,5 +249,40 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
       '/' + this.chosenConfig.globalId + '/' + 'no-name' + '/' + '-1']);
     }
     this.chooseWindowPopup = false;
+  }
+
+  addNewWindow(configuration: SingleConfiguration) {
+    this.chosenConfig = configuration;
+    this.flashingConfigs = Object.assign([], configuration.products.flashings);
+    this.flashingConfigs.push({
+      flashing: null,
+      id: -1,
+      flashingFormName: null,
+      flashingFormData: null,
+      quantity: 0
+    });
+    if (configuration.products.flashings.length === 1) {
+      this.crud.readFlashingByIdFromConfigurationById(configuration.globalId, configuration.products.flashings[0].id)
+        .subscribe(flashing =>  this.loadConfig.flashingData$.next(flashing.flashing));
+    }
+    // Do wyboru jeśli w konfiguracji jest wiele okien do wyboru
+    if (configuration.products.flashings.length > 1) {
+      this.chooseFlashingPopup = true;
+    } else {
+      this.router.navigate(['/' + this.emptyWindowConfiguration +
+      '/' + configuration.globalId + '/' + 'no-name' + '/' + '-1']);
+    }
+  }
+
+  chooseFlashingId(flashingId: number) {
+    if (flashingId === undefined || flashingId === 0) {
+      this.loadConfig.flashingData$.next(null);
+    } else {
+      this.crud.readFlashingByIdFromConfigurationById(this.chosenConfig.globalId, flashingId)
+        .subscribe(flashing =>  this.loadConfig.flashingData$.next(flashing.flashing));
+    }
+    this.router.navigate(['/' + this.emptyWindowConfiguration +
+    '/' + this.chosenConfig.globalId + '/' + 'no-name' + '/' + '-1']);
+    this.chooseFlashingPopup = false;
   }
 }

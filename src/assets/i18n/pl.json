@@ -462,8 +462,8 @@
     "feature": "Cecha",
     "value": "Wartość cechy",
     "correct": "Popraw",
-    "chooseFlashing": "Dobierz kołnierz",
-    "chooseAccessories": "Dobierz akcesorium",
+    "addFlashing": "Dobierz kołnierz",
+    "addAccessory": "Dobierz akcesorium",
     "flashing": "Kołnierz",
     "chooseAnother": "Dobierz kolejne",
     "accessories": "Akcesoria",
@@ -495,6 +495,7 @@
     "saveToPDF": "Zapisz do PDF",
     "details": "Szczegóły",
     "chooseWindow": "Wybierz okno",
+    "chooseFlashing": "Wybierz kołnierz",
     "newConfiguration": "Nowa konfiguracja",
     "chooseList": "Lista wyboru:"
   }
