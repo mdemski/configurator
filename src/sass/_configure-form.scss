@@ -227,6 +227,7 @@ form {
         color: $color-blue;
 
         &:hover {
+          cursor: pointer;
           color: $color-black;
         }
       }
