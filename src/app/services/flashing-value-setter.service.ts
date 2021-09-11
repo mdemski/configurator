@@ -288,9 +288,9 @@ export class FlashingValueSetterService implements OnDestroy {
       // Przykładowo 1-U;
       const partOfFlashingType = flashingType.split(':')[1]; // U;
       if (partOfFlashingType.length === 1) {
-        flashingModel = String(partOfFlashingType + '-');
+        flashingModel = String('1-' + partOfFlashingType + '-');
       } else {
-        flashingModel = String(partOfFlashingType);
+        flashingModel = String('1-' + partOfFlashingType);
       }
     }
 
