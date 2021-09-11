@@ -85,16 +85,16 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
   flashingsFromDataBase: Flashing[];
   loading = false;
   flashingModels = [];
-  flashingTypes: {}[];
-  lShaped: {};
-  apronTypes: {}[];
+  flashingTypes: { option: string, disabled: boolean }[];
+  lShaped: { option: string, disabled: boolean }[];
+  apronTypes: { option: string, disabled: boolean }[];
   availableOptions: {}[];
   verticalSpacingsFromFile: {}[];
   horizontalSpacingsFromFile: {}[];
   dimensionsFromFile;
-  outerMaterials: {}[];
-  outerColors: {}[];
-  outerColorFinishes: {}[];
+  outerMaterials: { option: string, disabled: boolean }[];
+  outerColors: { option: string, disabled: boolean }[];
+  outerColorFinishes: { option: string, disabled: boolean }[];
   userConfigs = [];
   configFlashingFormId: number;
   minVerticalNumber: number;
@@ -138,8 +138,8 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
     return dimensions;
   }
 
-  private static objectsMaker(availableOptionsArray: string[]): {}[] {
-    const objectsArray = [];
+  private static objectsMaker(availableOptionsArray: string[]): { option: string, disabled: boolean }[] {
+    const objectsArray: { option: string, disabled: boolean }[] = [];
     for (const option of availableOptionsArray) {
       const tempObject = {
         option,
@@ -404,6 +404,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
             form.outer.outerMaterial, form.outer.outerColor, form.outer.outerColorFinish,
             form.dimensions.widths[j], reverseHeightsArray[i]);
           this.configuredFlashing.CenaDetaliczna = this.setFlashingPrice(this.configuredFlashing);
+          this.setDisabled(this.configuredFlashing);
           this.configuredFlashingArray.push(this.configuredFlashing);
         }
       }
@@ -445,6 +446,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
         this.configuredFlashing.rozstawPoziom, this.configuredFlashing.rozstawPion, form.outer.outerMaterial, form.outer.outerColor,
         form.outer.outerColorFinish, form.dimensions.widths[0], form.dimensions.heights[0]);
       this.configuredFlashing.CenaDetaliczna = this.setFlashingPrice(this.configuredFlashing);
+      this.setDisabled(this.configuredFlashing);
     }
     console.log(this.showHeightMessage);
     console.log(this.showWidthMessage);
@@ -1051,5 +1053,90 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
 
   closeModal(text: string) {
     this.modal.close(text);
+  }
+
+  // DISABLE INPUT SETTER LOGIC
+  resetAllArrays(flashingTypes: { option: string; disabled: boolean }[], apronTypes: { option: string; disabled: boolean }[],
+                 lShapeds: { option: string; disabled: boolean }[], outerMaterials: { option: string; disabled: boolean }[],
+                 outerColors: { option: string; disabled: boolean }[], outerColorFinishes: { option: string; disabled: boolean }[]) {
+    for (const flashingType of flashingTypes) {
+      flashingType.disabled = null;
+    }
+    for (const apronType of apronTypes) {
+      apronType.disabled = null;
+    }
+    for (const lShaped of lShapeds) {
+      lShaped.disabled = null;
+    }
+    for (const outerMaterial of outerMaterials) {
+      outerMaterial.disabled = null;
+    }
+    for (const outerColor of outerColors) {
+      outerColor.disabled = null;
+    }
+    for (const outerColorFinish of outerColorFinishes) {
+      outerColorFinish.disabled = null;
+    }
+  }
+
+  setDisabled(configuredFlashing: Flashing) {
+    this.resetAllArrays(this.flashingTypes, this.apronTypes, this.lShaped, this.outerMaterials, this.outerColors, this.outerColorFinishes);
+    this.configData.fetchAllFlashingExclusions().pipe(takeUntil(this.isDestroyed$)).subscribe(exclusions => {
+      const excludedOptions = [];
+      // tslint:disable-next-line:forin
+      for (const configuratedOption in configuredFlashing) {
+        for (const exclusionObject of exclusions) {
+          if (exclusionObject.selectedOption === configuredFlashing[configuratedOption]) {
+            for (const [key, value] of Object.entries(exclusionObject)) {
+              if (value === 'TRUE') {
+                if (excludedOptions.indexOf(key) === -1) {
+                  excludedOptions.push(key);
+                }
+              }
+            }
+          }
+        }
+      }
+      this.setDisabledOptions(excludedOptions, this.flashingTypes, this.apronTypes, this.lShaped, this.outerMaterials,
+        this.outerColors, this.outerColorFinishes);
+    });
+  }
+
+  private setDisabledOptions(excludedOptions: string[], flashingTypes: { option: string; disabled: boolean }[],
+                             apronTypes: { option: string; disabled: boolean }[], lShaped: { option: string; disabled: boolean }[],
+                             outerMaterials: { option: string; disabled: boolean }[], outerColors: { option: string; disabled: boolean }[],
+                             outerColorFinishes: { option: string; disabled: boolean }[]) {
+    for (const excludedOption of excludedOptions) {
+      for (const flashingType of flashingTypes) {
+        if (flashingType.option === excludedOption) {
+          flashingType.disabled = true;
+        }
+      }
+      for (const apronType of apronTypes) {
+        if (apronType.option === excludedOption) {
+          apronType.disabled = true;
+        }
+      }
+      for (const lShapedElement of lShaped) {
+        if (lShapedElement.option === excludedOption) {
+          lShapedElement.disabled = true;
+        }
+      }
+      for (const outerMaterial of outerMaterials) {
+        if (outerMaterial.option === excludedOption) {
+          outerMaterial.disabled = true;
+        }
+      }
+      for (const outerColor of outerColors) {
+        if (outerColor.option.startsWith(excludedOption)) {
+          outerColor.disabled = true;
+        }
+      }
+      for (const outerColorFinish of outerColorFinishes) {
+        if (outerColorFinish.option === excludedOption) {
+          outerColorFinish.disabled = true;
+        }
+      }
+    }
   }
 }
