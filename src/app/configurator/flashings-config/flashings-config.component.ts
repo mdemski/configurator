@@ -332,8 +332,8 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
   formChanges() {
     this.form.valueChanges.pipe(
       takeUntil(this.isDestroyed$),
-      pairwise(),
-      map(([prevForm, form]: [any, any]) => {
+      // pairwise(),
+      map(form => {
         this.calcWidthInputSize();
         this.setConfiguredValues(form);
       })).subscribe();
