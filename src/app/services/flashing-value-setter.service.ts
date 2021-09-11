@@ -57,66 +57,7 @@ export class FlashingValueSetterService implements OnDestroy {
         singleFlashingModel = '';
         break;
     }
-    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:KE') {
-      singleFlashingModel = 'Kołnierz:BP/H5';
-    }
-    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:UE') {
-      singleFlashingModel = 'Kołnierz:BP/H9';
-    }
-    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:HE') {
-      singleFlashingModel = 'Kołnierz:BP/H12';
-    }
-    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:KO') {
-      singleFlashingModel = 'Kołnierz:BP/KO';
-    }
-    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:UO') {
-      singleFlashingModel = 'Kołnierz:BP/UO';
-    }
-    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:HO') {
-      singleFlashingModel = 'Kołnierz:BP/HO';
-    }
-    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:KA') {
-      singleFlashingModel = 'Kołnierz:BP/KA';
-    }
-    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:A') {
-      singleFlashingModel = 'Kołnierz:BP/A';
-    }
-    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:HA') {
-      singleFlashingModel = 'Kołnierz:BP/HA';
-    }
-    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:UB') {
-      singleFlashingModel = 'Kołnierz:BP/UB';
-    }
-    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:KE') {
-      singleFlashingModel = 'Kołnierz:H5';
-    }
-    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:UE') {
-      singleFlashingModel = 'Kołnierz:H9';
-    }
-    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:HE') {
-      singleFlashingModel = 'Kołnierz:H12';
-    }
-    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:KO') {
-      singleFlashingModel = 'Kołnierz:K';
-    }
-    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:UO') {
-      singleFlashingModel = 'Kołnierz:U';
-    }
-    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:HO') {
-      singleFlashingModel = 'Kołnierz:H';
-    }
-    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:KA') {
-      singleFlashingModel = 'Kołnierz:KA';
-    }
-    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:A') {
-      singleFlashingModel = 'Kołnierz:A';
-    }
-    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:HA') {
-      singleFlashingModel = 'Kołnierz:HA';
-    }
-    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:UB') {
-      singleFlashingModel = 'Kołnierz:UB';
-    }
+    singleFlashingModel = String('Kołnierz:' + this.flashingTypeSetter(flashingType, apronType));
     return singleFlashingModel;
   }
 
@@ -154,7 +95,7 @@ export class FlashingValueSetterService implements OnDestroy {
   }
 
   // Flashing models in combinations setter - return list of flashing models (Kołnierz:KXP H9, Kołnierz:KXL H9, Kołnierz:KYS H12, ...)
-  flashingsArrayOfModelsCreator(verticalNumber: number, horizontalNumber: number, lShaped: string, flashingType: string): string[] {
+  flashingsArrayOfModelsCreator(verticalNumber: number, horizontalNumber: number, lShaped: string, flashingType: string, apronType: string): string[] {
     const flashingsModelArray: string[] = [];
     const lShapedConnection = lShaped === 'Kołnierz:KK';
     if (flashingType === 'Kołnierz:RESET') {
@@ -163,8 +104,9 @@ export class FlashingValueSetterService implements OnDestroy {
         flashingsModelArray.push(flashingType);
       }
     } else {
+      // ApronType - Kołnierz:UE, Kołnierz:UO
       // FlashingType - BP, U, R, P, L, LH, D
-      const splitFlashingType = flashingType.split(':')[1];
+      const splitFlashingType = this.flashingTypeSetter(flashingType, apronType);
       const flashingModel = String('Kołnierz:KYS ' + splitFlashingType);
       // Kombinacja z kołnierzami wyłącznie w pionie wraz z kołnierzami kolankowymi
       if (verticalNumber === 1) {
@@ -212,6 +154,71 @@ export class FlashingValueSetterService implements OnDestroy {
       }
     }
     return flashingsModelArray;
+  }
+
+  private flashingTypeSetter(flashingType: string, apronType: string): string {
+    let splitFlashingType = '';
+    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:KE') {
+      splitFlashingType = 'BP/H5';
+    }
+    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:UE') {
+      splitFlashingType = 'BP/H9';
+    }
+    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:HE') {
+      splitFlashingType = 'BP/H12';
+    }
+    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:KO') {
+      splitFlashingType = 'BP/KO';
+    }
+    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:UO') {
+      splitFlashingType = 'BP/UO';
+    }
+    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:HO') {
+      splitFlashingType = 'BP/HO';
+    }
+    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:KA') {
+      splitFlashingType = 'BP/KA';
+    }
+    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:A') {
+      splitFlashingType = 'BP/A';
+    }
+    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:HA') {
+      splitFlashingType = 'BP/HA';
+    }
+    if (flashingType === 'Kołnierz:BP' && apronType === 'Kołnierz:UB') {
+      splitFlashingType = 'BP/UB';
+    }
+    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:KE') {
+      splitFlashingType = 'H5';
+    }
+    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:UE') {
+      splitFlashingType = 'H9';
+    }
+    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:HE') {
+      splitFlashingType = 'H12';
+    }
+    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:KO') {
+      splitFlashingType = 'K';
+    }
+    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:UO') {
+      splitFlashingType = 'U';
+    }
+    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:HO') {
+      splitFlashingType = 'H';
+    }
+    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:KA') {
+      splitFlashingType = 'KA';
+    }
+    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:A') {
+      splitFlashingType = 'A';
+    }
+    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:HA') {
+      splitFlashingType = 'HA';
+    }
+    if (flashingType === 'Kołnierz:U' && apronType === 'Kołnierz:UB') {
+      splitFlashingType = 'UB';
+    }
+    return splitFlashingType;
   }
 
   setFlashingApronType(flashingFamily: string, apronType: string) {
@@ -353,8 +360,8 @@ export class FlashingValueSetterService implements OnDestroy {
   }
 
   generateFlashingCombinationCode(verticalNumber: number, horizontalNumber: number, flashingType: string, apronType: string) {
-    // Kołnierz:H9
-    const flashingModelValue = this.singleFlashingModelCreator(flashingType, apronType).split(':')[1];
+    // H9
+    const flashingModelValue = this.singleFlashingModelCreator(flashingType, apronType);
     let flashingCombinationCode = '';
     const numberOfFlashings = horizontalNumber * verticalNumber;
     if (horizontalNumber > verticalNumber) {

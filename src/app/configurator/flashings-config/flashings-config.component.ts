@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -13,7 +14,7 @@ import {combineLatest, Observable, ObservedValueOf, Observer, Subject} from 'rxj
 import {AuthService} from '../../services/auth.service';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {CrudFirebaseService} from '../../services/crud-firebase-service';
-import {filter, map, pairwise, takeUntil} from 'rxjs/operators';
+import {map, pairwise, takeUntil} from 'rxjs/operators';
 import {SingleConfiguration} from '../../models/single-configuration';
 import {Flashing} from '../../models/flashing';
 import {FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors} from '@angular/forms';
@@ -29,7 +30,7 @@ import cryptoRandomString from 'crypto-random-string';
   templateUrl: './flashings-config.component.html',
   styleUrls: ['./flashings-config.component.scss']
 })
-export class FlashingsConfigComponent implements OnInit, OnDestroy {
+export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(private activeRouter: ActivatedRoute,
               private router: Router,
@@ -277,9 +278,16 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy {
     });
   }
 
+  ngAfterViewInit() {
+    console.log('After view init');
+    // console.log(this.dimPresentTDS);
+    // tslint:disable-next-line:no-shadowed-variable
+    // this.dimPresentTDS.forEach(element => element.nativeElement.setAttribute('background: green'));
+  }
+
   initialTemplateArrays() {
     this.dimPresentTDS.changes.pipe(takeUntil(this.isDestroyed$)).subscribe((columns: QueryList<any>) => {
-      columns.forEach(element => this.columns.push(element));
+      columns.forEach(element2 => this.columns.push(element2));
     });
     this.dimPresentDivsH1.changes.pipe(takeUntil(this.isDestroyed$)).subscribe((divs: QueryList<any>) => {
       divs.forEach(element => this.divs.push(element));
@@ -342,7 +350,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy {
     if (form.composition.verticalNumber > 1 || form.composition.horizontalNumber > 1) {
       const modelsIndexArray = [];
       // tslint:disable-next-line:max-line-length
-      flashingModelsArray = this.flashingSetter.flashingsArrayOfModelsCreator(form.composition.verticalNumber, form.composition.horizontalNumber, form.lShaped, form.flashingType);
+      flashingModelsArray = this.flashingSetter.flashingsArrayOfModelsCreator(form.composition.verticalNumber, form.composition.horizontalNumber, form.lShaped, form.flashingType, form.apronType);
       reverseHeightsArray = [...form.dimensions.heights].reverse();
       reverseHorizontalSpacingsArray = [...form.dimensions.horizontalSpacings].reverse();
       for (let i = 0; i < form.composition.horizontalNumber; i++) {
@@ -467,7 +475,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy {
         isStandard = true;
       }
     }
-    // console.log(isStandard);
+    console.log(index);
     if (index > -1 && !isStandard) {
       if (configuredFlashing.typKolnierza) {
         flashingPrice += this.getFlashingCircuit(configuredFlashing) * flashingToCalculations[configuredFlashing.typKolnierza];
@@ -692,7 +700,6 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy {
   }
 
   onDimensionsHover(dimension: HTMLDivElement) {
-    this.initialTemplateArrays();
     this.dimensionsVisible = !this.dimensionsVisible;
     const verticalNumberOfControls = this.form.get('composition.verticalNumber').value;
     const horizontalNumberOfControls = this.form.get('composition.horizontalNumber').value;
