@@ -114,6 +114,8 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
   chooseConfigNamePopup = false;
   copyLinkToConfigurationPopup = false;
   urlToSaveConfiguration: string;
+  private standardWidths = [55, 66, 78, 94, 114, 134];
+  private standardHeights = [78, 98, 118, 140, 160];
   private currentUser: string;
   private formName: string;
   private flashingCode: string;
@@ -268,7 +270,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
       this.flashingsFromDataBase = flashings;
     });
     this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
-      this.shopFlashingLink = text.shopFlashigns;
+      this.shopFlashingLink = text.shopFlashings;
     });
     this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
       this.configurationSummary = text.configurationSummary;
@@ -279,15 +281,13 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   ngAfterViewInit() {
-    console.log('After view init');
-    // console.log(this.dimPresentTDS);
     // tslint:disable-next-line:no-shadowed-variable
     // this.dimPresentTDS.forEach(element => element.nativeElement.setAttribute('background: green'));
   }
 
   initialTemplateArrays() {
     this.dimPresentTDS.changes.pipe(takeUntil(this.isDestroyed$)).subscribe((columns: QueryList<any>) => {
-      columns.forEach(element2 => this.columns.push(element2));
+      columns.forEach(element => this.columns.push(element));
     });
     this.dimPresentDivsH1.changes.pipe(takeUntil(this.isDestroyed$)).subscribe((divs: QueryList<any>) => {
       divs.forEach(element => this.divs.push(element));
@@ -388,6 +388,8 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
             form.composition.horizontalNumber, form.flashingType, form.apronType);
           this.configuredFlashing.szerokosc = form.dimensions.widths[j];
           this.configuredFlashing.wysokosc = reverseHeightsArray[i];
+          this.showWidthMessage = this.standardWidths.includes(form.dimensions.widths[j]);
+          this.showHeightMessage = this.standardHeights.includes(reverseHeightsArray[i]);
           this.configuredFlashing.flashingName = this.flashingSetter.buildFlashingName(form.flashingType,
             form.dimensions.widths[j], reverseHeightsArray[i]);
           this.verticalAndHorizontalSpacingSetter(i, j, form, reverseHorizontalSpacingsArray);
@@ -420,6 +422,8 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
       this.configuredFlashing.status = '1. Nowy';
       this.configuredFlashing.szerokosc = form.dimensions.widths[0];
       this.configuredFlashing.wysokosc = form.dimensions.heights[0];
+      this.showWidthMessage = this.standardWidths.includes(form.dimensions.widths[0]);
+      this.showHeightMessage = this.standardHeights.includes(form.dimensions.heights[0]);
       this.configuredFlashing.grupaAsortymentowa = 'KołnierzUszczelniający';
       this.configuredFlashing.typ = 'KołnierzUszczelniający:Pojedynczy';
       this.configuredFlashing.geometria = form.flashingType;
@@ -442,6 +446,8 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
         form.outer.outerColorFinish, form.dimensions.widths[0], form.dimensions.heights[0]);
       this.configuredFlashing.CenaDetaliczna = this.setFlashingPrice(this.configuredFlashing);
     }
+    console.log(this.showHeightMessage);
+    console.log(this.showWidthMessage);
     // console.log(this.configuredFlashingArray);
     console.log(this.configuredFlashing);
   }
@@ -475,7 +481,6 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
         isStandard = true;
       }
     }
-    console.log(index);
     if (index > -1 && !isStandard) {
       if (configuredFlashing.typKolnierza) {
         flashingPrice += this.getFlashingCircuit(configuredFlashing) * flashingToCalculations[configuredFlashing.typKolnierza];
@@ -779,6 +784,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
       this.configuredFlashing.model,
       this.configuredFlashing.szerokosc,
       this.configuredFlashing.wysokosc]);
+    console.log(this.shopFlashingLink);
     this.router.navigate(['/' + this.shopFlashingLink]);
   }
 

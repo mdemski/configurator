@@ -389,6 +389,7 @@
     "height": "Wysokość",
     "verticalSpacing": "Odstęp x",
     "horizontalSpacing": "Odstęp y",
+    "loadDimensions": "Wczytaj wymiary",
     "validationInfo": "Skonfiguruj wszystkie opcje zanim przejdziesz do podsumowania",
     "submit": "Podsumowanie"
   },
