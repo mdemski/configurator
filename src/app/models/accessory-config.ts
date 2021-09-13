@@ -6,4 +6,5 @@ export interface AccessoryConfig {
   quantity: number;
   accessoryFormName: string;
   accessoryFormData: any | null;
+  configLink: string;
 }

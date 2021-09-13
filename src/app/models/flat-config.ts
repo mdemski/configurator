@@ -6,4 +6,5 @@ export interface FlatConfig {
   quantity: number;
   flatFormName: string;
   flatFormData: any | null;
+  configLink: string;
 }

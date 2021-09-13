@@ -6,4 +6,5 @@ export interface FlashingConfig {
   quantity: number;
   flashingFormName: string;
   flashingFormData: any | null;
+  configLink: string;
 }

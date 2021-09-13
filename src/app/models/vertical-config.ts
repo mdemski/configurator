@@ -6,4 +6,5 @@ export interface VerticalConfig {
   quantity: number;
   verticalFormName: string;
   verticalFormData: any | null;
+  configLink: string;
 }

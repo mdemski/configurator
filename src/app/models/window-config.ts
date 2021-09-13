@@ -6,4 +6,5 @@ export interface WindowConfig {
   quantity: number;
   windowFormName: string;
   windowFormData: any | null;
+  configLink: string;
 }
