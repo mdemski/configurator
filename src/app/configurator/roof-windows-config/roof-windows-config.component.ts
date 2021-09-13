@@ -630,6 +630,10 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
           window: this.tempConfiguredWindow,
           windowFormName: this.formName,
           windowFormData: this.form.value,
+          configLink: String(this.router['location']._platformLocation.location.origin
+            + '/' + this.globalId
+            + '/' + this.formName
+            + '/' + this.configuredWindow.kod)
         }],
         flashings: null,
         accessories: null,
@@ -662,6 +666,11 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
             this.chooseConfigNamePopup = true;
             // wersja 1
           } else {
+            this.newWindowConfig.products.windows.forEach(element => element.configLink = String(
+              this.router['location']._platformLocation.location.origin  + this.router.url
+              + '/' + this.globalId
+              + '/' + this.formName
+              + '/' + this.configuredWindow.kod));
             this.crud.createConfigurationForUser(user, this.newWindowConfig).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
             this.router.navigate(['/' + this.configurationSummary]);
             this.loading = false;
@@ -688,6 +697,11 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   chooseConfigId(configForm: any) {
     // wersja 1
     if (configForm.value.configWindowFormId === undefined) {
+      this.newWindowConfig.products.windows.forEach(element => element.configLink = String(
+        this.router['location']._platformLocation.location.origin  + this.router.url
+        + '/' + this.globalId
+        + '/' + this.formName
+        + '/' + this.configuredWindow.kod));
       this.crud.createConfigurationForUser(this.currentUser, this.newWindowConfig)
         .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
       // wersja 2
@@ -714,6 +728,10 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
           window: this.configuredWindow,
           windowFormName: this.formName,
           windowFormData: this.form.value,
+          configLink: String(this.router['location']._platformLocation.location.origin
+      + '/' + this.globalId
+      + '/' + this.formName
+      + '/' + this.configuredWindow.kod)
         }],
         flashings: null,
         accessories: null,
@@ -745,6 +763,11 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         + '/' + this.configuredWindow.kod;
       // wersja 1
     } else {
+      this.newWindowConfig.products.windows.forEach(element => element.configLink = String(
+        this.router['location']._platformLocation.location.origin  + this.router.url
+        + '/' + this.globalId
+        + '/' + this.formName
+        + '/' + this.configuredWindow.kod));
       this.crud.createConfigurationForUser('anonym', this.newWindowConfig)
         .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
       temporaryUrl = this.router['location']._platformLocation.location.origin + this.router.url
