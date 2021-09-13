@@ -24,6 +24,7 @@ import {ModalService} from '../../modal/modal.service';
 import {FlashingValueSetterService} from '../../services/flashing-value-setter.service';
 import {DatabaseService} from '../../services/database.service';
 import cryptoRandomString from 'crypto-random-string';
+import {element} from 'protractor';
 
 @Component({
   selector: 'app-flashings-config',
@@ -809,7 +810,11 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
             quantity: 1,
             flashing: this.configuredFlashing,
             flashingFormName: this.formName,
-            flashingFormData: this.form.value
+            flashingFormData: this.form.value,
+            configLink: String(this.router['location']._platformLocation.location.origin
+              + '/' + this.globalId
+              + '/' + this.formName
+              + '/' + this.configuredFlashing.kod)
           }],
           accessories: null,
           verticals: null,
@@ -836,7 +841,11 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
             quantity: 1,
             flashing,
             flashingFormName: this.formName,
-            flashingFormData: this.form.value
+            flashingFormData: this.form.value,
+            configLink: String(this.router['location']._platformLocation.location.origin
+              + '/' + this.globalId
+              + '/' + this.formName
+              + '/' + this.configuredFlashing.kod)
           });
         id++;
       }
@@ -875,6 +884,11 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
             this.chooseConfigNamePopup = true;
             // wersja 1
           } else {
+            this.newFlashingConfig.products.flashings.forEach(element2 => element2.configLink = String(
+              this.router['location']._platformLocation.location.origin + this.router.url
+              + '/' + this.newFlashingConfig.globalId
+              + '/' + element2.flashingFormName
+              + '/' + element2.flashing.kod));
             this.crud.createConfigurationForUser(user, this.newFlashingConfig)
               .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
             this.router.navigate(['/' + this.configurationSummary]);
@@ -945,7 +959,11 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
             quantity: 1,
             flashing: this.configuredFlashing,
             flashingFormName: this.formName,
-            flashingFormData: this.form.value
+            flashingFormData: this.form.value,
+            configLink: String(this.router['location']._platformLocation.location.origin
+              + '/' + this.globalId
+              + '/' + this.formName
+              + '/' + this.configuredFlashing.kod)
           }],
           accessories: null,
           verticals: null,
@@ -976,6 +994,11 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
           + '/' + this.configuredFlashing.kod;
         // wersja 1
       } else {
+        this.newFlashingConfig.products.flashings.forEach(element2 => element2.configLink = String(
+          this.router['location']._platformLocation.location.origin + this.router.url
+          + '/' + this.newFlashingConfig.globalId
+          + '/' + element2.flashingFormName
+          + '/' + element2.flashing.kod));
         this.crud.createConfigurationForUser('anonym', this.newFlashingConfig)
           .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
         temporaryUrl = this.router['location']._platformLocation.location.origin + this.router.url
@@ -999,7 +1022,11 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
             quantity: 1,
             flashing,
             flashingFormName: this.formName,
-            flashingFormData: this.form.value
+            flashingFormData: this.form.value,
+            configLink: String(this.router['location']._platformLocation.location.origin
+              + '/' + this.globalId
+              + '/' + this.formName
+              + '/' + this.configuredFlashing.kod)
           });
         id++;
       }
@@ -1035,6 +1062,11 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
           + '/' + this.configuredFlashing.kod;
         // wersja 1
       } else {
+        this.newFlashingConfig.products.flashings.forEach(element2 => element2.configLink = String(
+          this.router['location']._platformLocation.location.origin + this.router.url
+          + '/' + this.newFlashingConfig.globalId
+          + '/' + element2.flashingFormName
+          + '/' + element2.flashing.kod));
         this.crud.createConfigurationForUser('anonym', this.newFlashingConfig)
           .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
         temporaryUrl = this.router['location']._platformLocation.location.origin + this.router.url
