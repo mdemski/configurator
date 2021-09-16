@@ -28,6 +28,8 @@ import {DatabaseService} from '../../services/database.service';
 import cryptoRandomString from 'crypto-random-string';
 import {WindowConfig} from '../../models/window-config';
 import {SingleConfiguration} from '../../models/single-configuration';
+import {Store} from '@ngxs/store';
+import {SetCurrentUser} from '../../store/app/app.actions';
 
 @Component({
   selector: 'app-roof-windows-config',
@@ -38,6 +40,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
 
   // TODO przygotować strumień i service do publikowania tej danej po aplikacji
   constructor(private authService: AuthService,
+              private store: Store,
               private configData: ConfigurationDataService,
               private dataBase: DatabaseService,
               private windowValuesSetter: RoofWindowValuesSetterService,
@@ -51,7 +54,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.loading = true;
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
-    this.paramsUserFetchData$ = combineLatest(this.authService.returnUser(), this.activeRouter.params,
+    this.paramsUserFetchData$ = combineLatest(this.store.dispatch(SetCurrentUser), this.activeRouter.params,
       this.configData.fetchAllWindowsData(), this.crud.readAllConfigurationsFromMongoDB()).pipe(
       takeUntil(this.isDestroyed$),
       map(data => {
@@ -143,6 +146,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
 
   // 'width': new FormControl(78, [this.validateWidth.bind(this), Validators.required]), własnym walidator
   ngOnInit(): void {
+    this.paramsUserFetchData$.subscribe(console.log);
     this.highestUserId = 1;
     this.tempConfiguredWindow = new RoofWindowSkylight(
       '1O-ISO-V-E02-KL00-A7022P-079119-OKPO01', 'Okno dachowe tymczasowe', 'ISOV E2 79x119', 'I-Okno', 'NPL-Okno', 'Nowy', 'Okno:ISOV', 'Okno:E02', 'dwuszybowy', 79,
@@ -679,7 +683,13 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       } else {
         // wersja 2
         if (this.windowId === 1) {
-          this.crud.createWindowConfigurationIntoConfigurationById(this.configId, this.configuredWindow, this.formName, this.form.value)
+          const temporaryLink = String(
+            this.router['location']._platformLocation.location.origin  + this.router.url
+            + '/' + this.globalId
+            + '/' + this.formName
+            + '/' + this.configuredWindow.kod);
+          this.crud.createWindowConfigurationIntoConfigurationById(this.configId, this.configuredWindow,
+            this.formName, this.form.value, temporaryLink)
             .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
           // wersja 3
         } else {
@@ -706,10 +716,15 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
       // wersja 2
     } else {
+      const temporaryLink = String(
+        this.router['location']._platformLocation.location.origin
+        + '/' + this.globalId
+        + '/' + this.formName
+        + '/' + this.configuredWindow.kod);
       this.configId = String('configuration-' + parseInt(configForm.value.configWindowFormId, 10));
       // TODO zamienić na configuredWindow
       this.crud.createWindowConfigurationIntoConfigurationById(this.configId,
-        this.tempConfiguredWindow, this.formName, this.form.value)
+        this.tempConfiguredWindow, this.formName, this.form.value, temporaryLink)
         .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
     }
     this.chooseConfigNamePopup = false;
@@ -748,19 +763,20 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     };
     // wersja 2 lub 3
     if (this.configId === this.globalId) {
+      temporaryUrl = this.router['location']._platformLocation.location.origin
+        + '/' + this.globalId
+        + '/' + this.formName
+        + '/' + this.configuredWindow.kod;
       // wersja 2
       if (this.windowId === 1) {
-        this.crud.createWindowConfigurationIntoConfigurationById(this.configId, this.configuredWindow, this.formName, this.form.value)
+        this.crud.createWindowConfigurationIntoConfigurationById(this.configId, this.configuredWindow,
+          this.formName, this.form.value, temporaryUrl)
           .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
         // wersja 3
       } else {
         this.crud.updateWindowConfigurationIntoConfigurationById(this.configId, this.windowId, this.configuredWindow)
           .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
       }
-      temporaryUrl = this.router['location']._platformLocation.location.origin
-        + '/' + this.globalId
-        + '/' + this.formName
-        + '/' + this.configuredWindow.kod;
       // wersja 1
     } else {
       this.newWindowConfig.products.windows.forEach(element => element.configLink = String(
