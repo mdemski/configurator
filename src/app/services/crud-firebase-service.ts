@@ -183,7 +183,7 @@ export class CrudFirebaseService {
   // 6 dodawanie okna do konfiguracji
   createWindowConfigurationIntoConfigurationById(configId: string,
                                                  windowConfiguration: RoofWindowSkylight,
-                                                 formName: string, formData: any) {
+                                                 formName: string, formData: any, configLink: string) {
     return this.readConfigurationById(configId).pipe(map((configuration: SingleConfiguration) => {
       // @ts-ignore
       const url = `${this.baseUri}/update/${configuration._id}`;
@@ -192,7 +192,8 @@ export class CrudFirebaseService {
         quantity: 1,
         window: Object.assign({}, windowConfiguration),
         windowFormName: formName,
-        windowFormData: formData
+        windowFormData: formData,
+        configLink
       };
       configuration.lastUpdate = new Date();
       configuration.products.windows.push(windowConfig);
@@ -204,7 +205,7 @@ export class CrudFirebaseService {
   // 7 dodawanie kołnierza do konfiguracji
   createFlashingConfigurationIntoConfigurationById(configId: string,
                                                    flashingConfiguration: Flashing,
-                                                   formName: string, formData: any) {
+                                                   formName: string, formData: any, configLink: string) {
     return this.readConfigurationById(configId).pipe(map((configuration: SingleConfiguration) => {
       // @ts-ignore
       const url = `${this.baseUri}/update/${configuration._id}`;
@@ -213,7 +214,8 @@ export class CrudFirebaseService {
         quantity: 1,
         flashing: Object.assign({}, flashingConfiguration),
         flashingFormName: formName,
-        flashingFormData: formData
+        flashingFormData: formData,
+        configLink
       };
       configuration.lastUpdate = new Date();
       configuration.products.flashings.push(flashingConfig);
@@ -241,7 +243,7 @@ export class CrudFirebaseService {
   // 8 dodawanie akcesorium do konfiguracji
   createAccessoryConfigurationIntoConfigurationById(configId: string,
                                                     accessoryConfiguration: Accessory,
-                                                    formName: string, formData: any) {
+                                                    formName: string, formData: any, configLink: string) {
     return this.readConfigurationById(configId).pipe(map((configuration: SingleConfiguration) => {
       // @ts-ignore
       const url = `${this.baseUri}/update/${configuration._id}`;
@@ -250,7 +252,8 @@ export class CrudFirebaseService {
         quantity: 1,
         accessory: Object.assign({}, accessoryConfiguration),
         accessoryFormName: formName,
-        accessoryFormData: formData
+        accessoryFormData: formData,
+        configLink
       };
       configuration.lastUpdate = new Date();
       configuration.products.accessories.push(accessoryConfig);
@@ -261,7 +264,7 @@ export class CrudFirebaseService {
 
   createVerticalConfigurationIntoConfigurationById(configId: string,
                                                    verticalConfiguration: VerticalWindow,
-                                                   formName: string, formData: any) {
+                                                   formName: string, formData: any, configLink: string) {
     return this.readConfigurationById(configId).pipe(map((configuration: SingleConfiguration) => {
       // @ts-ignore
       const url = `${this.baseUri}/update/${configuration._id}`;
@@ -270,7 +273,8 @@ export class CrudFirebaseService {
         quantity: 1,
         vertical: Object.assign({}, verticalConfiguration),
         verticalFormName: formName,
-        verticalFormData: formData
+        verticalFormData: formData,
+        configLink
       };
       configuration.lastUpdate = new Date();
       configuration.products.verticals.push(verticalConfig);
@@ -281,7 +285,7 @@ export class CrudFirebaseService {
 
   createFlatConfigurationIntoConfigurationById(configId: string,
                                                flatConfiguration: FlatRoofWindow,
-                                               formName: string, formData: any) {
+                                               formName: string, formData: any, configLink: string) {
     return this.readConfigurationById(configId).pipe(map((configuration: SingleConfiguration) => {
       // @ts-ignore
       const url = `${this.baseUri}/update/${configuration._id}`;
@@ -290,7 +294,8 @@ export class CrudFirebaseService {
         quantity: 1,
         flat: Object.assign({}, flatConfiguration),
         flatFormName: formName,
-        flatFormData: formData
+        flatFormData: formData,
+        configLink
       };
       configuration.lastUpdate = new Date();
       configuration.products.flats.push(flatConfig);
