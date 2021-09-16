@@ -24,7 +24,6 @@ import {ModalService} from '../../modal/modal.service';
 import {FlashingValueSetterService} from '../../services/flashing-value-setter.service';
 import {DatabaseService} from '../../services/database.service';
 import cryptoRandomString from 'crypto-random-string';
-import {element} from 'protractor';
 
 @Component({
   selector: 'app-flashings-config',
@@ -669,9 +668,9 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
     this.outerMaterialVisible = false;
     this.compositionVisible = false;
     this.dimensionsVisible = false;
-    for (const element of htmlDivElements) {
-      element.style.maxHeight = '0';
-      element.style.transition = 'all .7s ease-in-out';
+    for (const divElement of htmlDivElements) {
+      divElement.style.maxHeight = '0';
+      divElement.style.transition = 'all .7s ease-in-out';
     }
   }
 
@@ -716,18 +715,18 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
       this.divs = [];
       this.dimensionsPopup = true;
       this.changeDetector.detectChanges();
-      this.dimPresentTDS.forEach(element => this.columns.push(element));
+      this.dimPresentTDS.forEach(td => this.columns.push(td));
       if (this.dimPresentDivsEqual) {
-        this.dimPresentDivsEqual.forEach(element => this.divs.push(element));
+        this.dimPresentDivsEqual.forEach(div => this.divs.push(div));
       }
       if (this.dimPresentDivs) {
-        this.dimPresentDivs.forEach(element => this.divs.push(element));
+        this.dimPresentDivs.forEach(div => this.divs.push(div));
       }
       if (this.dimPresentDivsH1) {
-        this.dimPresentDivsH1.forEach(element => this.divs.push(element));
+        this.dimPresentDivsH1.forEach(h1 => this.divs.push(h1));
       }
       if (this.dimPresentDivsW1) {
-        this.dimPresentDivsW1.forEach(element => this.divs.push(element));
+        this.dimPresentDivsW1.forEach(w1 => this.divs.push(w1));
       }
     } else {
       const rows = this.widths.length +
@@ -897,10 +896,16 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
         });
       } else {
         // wersja 2
+        const temporaryLink = String(
+          this.router['location']._platformLocation.location.origin
+          + '/' + this.newFlashingConfig.globalId
+          + '/' + this.formName
+          + '/' + this.configuredFlashing.kod);
         if (this.flashingId === 1) {
           if (this.configuredFlashingArray.length === 0) {
             // tslint:disable-next-line:max-line-length
-            this.crud.createFlashingConfigurationIntoConfigurationById(this.configId, this.configuredFlashing, this.formName, this.form.value)
+            this.crud.createFlashingConfigurationIntoConfigurationById(this.configId, this.configuredFlashing,
+              this.formName, this.form.value, temporaryLink)
               .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
           } else {
             this.crud.createFlashingsArrayConfigurationIntoConfigurationById(this.configId, this.newFlashingConfig.products.flashings)
@@ -931,10 +936,16 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
         .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
       // wersja 2
     } else {
+      const temporaryLink = String(
+        this.router['location']._platformLocation.location.origin
+        + '/' + this.newFlashingConfig.globalId
+        + '/' + this.formName
+        + '/' + this.configuredFlashing.kod);
       this.configId = String('configuration-' + parseInt(configForm.value.configFlashingFormId, 10));
       if (this.configuredFlashingArray.length === 0) {
         // tslint:disable-next-line:max-line-length
-        this.crud.createFlashingConfigurationIntoConfigurationById(this.configId, this.configuredFlashing, this.formName, this.form.value)
+        this.crud.createFlashingConfigurationIntoConfigurationById(this.configId, this.configuredFlashing,
+          this.formName, this.form.value, temporaryLink)
           .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
       } else {
         this.crud.createFlashingsArrayConfigurationIntoConfigurationById(this.configId, this.newFlashingConfig.products.flashings)
@@ -980,18 +991,19 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
       // wersja 2 lub 3
       if (this.configId === this.globalId) {
         // wersja 2
+        temporaryUrl = this.router['location']._platformLocation.location.origin
+          + '/' + this.globalId
+          + '/' + this.formName
+          + '/' + this.configuredFlashing.kod;
         if (this.flashingId === 1) {
-          this.crud.createFlashingConfigurationIntoConfigurationById(this.configId, this.configuredFlashing, this.formName, this.form.value)
+          this.crud.createFlashingConfigurationIntoConfigurationById(this.configId, this.configuredFlashing,
+            this.formName, this.form.value, temporaryUrl)
             .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
           // wersja 3
         } else {
           this.crud.updateFlashingConfigurationIntoConfigurationById(this.configId, this.flashingId, this.configuredFlashing)
             .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
         }
-        temporaryUrl = this.router['location']._platformLocation.location.origin
-          + '/' + this.globalId
-          + '/' + this.formName
-          + '/' + this.configuredFlashing.kod;
         // wersja 1
       } else {
         this.newFlashingConfig.products.flashings.forEach(element2 => element2.configLink = String(
