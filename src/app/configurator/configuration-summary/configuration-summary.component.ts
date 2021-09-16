@@ -211,7 +211,8 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
       id: -1,
       windowFormName: null,
       windowFormData: null,
-      quantity: 0
+      quantity: 0,
+      configLink: ''
     });
     if (configuration.products.windows.length === 1) {
       this.crud.readWindowByIdFromConfigurationById(configuration.globalId, configuration.products.windows[0].id)
@@ -259,7 +260,8 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
       id: -1,
       flashingFormName: null,
       flashingFormData: null,
-      quantity: 0
+      quantity: 0,
+      configLink: ''
     });
     if (configuration.products.flashings.length === 1) {
       this.crud.readFlashingByIdFromConfigurationById(configuration.globalId, configuration.products.flashings[0].id)
