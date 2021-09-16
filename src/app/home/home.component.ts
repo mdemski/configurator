@@ -1,6 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {DatabaseService} from '../services/database.service';
+import {Store} from '@ngxs/store';
+import {SetCurrentUser} from '../store/app/app.actions';
 
 @Component({
   selector: 'app-home',
@@ -21,12 +23,14 @@ export class HomeComponent implements OnInit {
   @Input() cart: any;
 
   constructor(public translate: TranslateService,
-              public db: DatabaseService) {
+              private db: DatabaseService,
+              private store: Store) {
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
   }
 
   ngOnInit(): void {
+    this.store.dispatch(SetCurrentUser);
     this.mostRecentProducts = this.db.getMostRecentProductsHomePage();
     this.availableSellers = this.db.getAllSellers();
   }
