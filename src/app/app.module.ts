@@ -50,6 +50,13 @@ import {environment} from '../environments/environment';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import { SingleConfigurationSummaryComponent } from './configurator/single-configuration-summary/single-configuration-summary.component';
 import { ModalComponent } from './modal/modal.component';
+import {NgxsModule} from '@ngxs/store';
+import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
+import {NgxsLoggerPluginModule} from '@ngxs/logger-plugin';
+import {AppState} from './store/app/app.state';
+import {RouterState} from './store/router/router.state';
+import {NgxsRouterPluginModule, RouterStateSerializer} from '@ngxs/router-plugin';
+import {CustomRouterStateSerializer} from './store/router/custom-router-state.serializer';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -111,9 +118,20 @@ export function HttpLoaderFactory(http: HttpClient) {
     ReactiveFormsModule,
     FilterPipeModule,
     BrowserAnimationsModule,
-    IonicModule.forRoot()
+    IonicModule.forRoot(),
+    NgxsModule.forRoot([
+      RouterState,
+      AppState
+    ], {
+      developmentMode: !environment.production,
+      selectorOptions: {injectContainerState: false}
+    }),
+    NgxsReduxDevtoolsPluginModule.forRoot(),
+    NgxsLoggerPluginModule.forRoot(),
+    NgxsRouterPluginModule.forRoot()
   ],
-  providers: [DatabaseService, AuthService],
+  providers: [DatabaseService, AuthService,
+    {provide: RouterStateSerializer, useClass: CustomRouterStateSerializer}],
   bootstrap: [AppComponent]
 })
 export class AppModule {
