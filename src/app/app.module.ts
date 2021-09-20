@@ -8,19 +8,10 @@ import {AppComponent} from './app.component';
 import {HeaderComponent} from './header/header.component';
 import {ConfiguratorComponent} from './configurator/configurator.component';
 import {RoofWindowsConfigComponent} from './configurator/roof-windows-config/roof-windows-config.component';
-import {VerticalWindowsConfigComponent} from './configurator/vertical-windows-config/vertical-windows-config.component';
 import {SkylightsConfigComponent} from './configurator/skylights-config/skylights-config.component';
 import {FlashingsConfigComponent} from './configurator/flashings-config/flashings-config.component';
 import {AccessoriesConfigComponent} from './configurator/accessories-config/accessories-config.component';
-import {ShopComponent} from './shop/shop.component';
 import {VerticalWindowsComponent} from './shop/vertical-windows/vertical-windows.component';
-import {RoofWindowDetailsComponent} from './shop/roof-windows/roof-window-details/roof-window-details.component';
-import {AccessoriesComponent} from './shop/accessories/accessories.component';
-import {RoofWindowsComponent} from './shop/roof-windows/roof-windows.component';
-import {SkylightsComponent} from './shop/skylights/skylights.component';
-import {VerticalWindowDetailsComponent} from './shop/vertical-windows/vertical-window-details/vertical-window-details.component';
-import {SkylightDetailsComponent} from './shop/skylights/skylight-details/skylight-details.component';
-import {AccessorieDetailsComponent} from './shop/accessories/accessorie-details/accessorie-details.component';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import {RegulationsComponent} from './regulations/regulations.component';
@@ -39,8 +30,6 @@ import {AuthService} from './services/auth.service';
 import {BouncingLoaderComponent} from './loaders/bouncing-loader.component';
 import {FlashingsComponent} from './shop/flashings/flashings.component';
 import {FlashingDetailsComponent} from './shop/flashings/flashing-details/flashing-details.component';
-import {RoofWindowFiltrationComponent} from './shop/roof-windows/roof-window-filtration/roof-window-filtration.component';
-import {FilterPipe} from './pipes/filter.pipe';
 import {FilterPipeModule} from 'ngx-filter-pipe';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { IonicModule } from '@ionic/angular';
@@ -73,16 +62,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     SkylightsConfigComponent,
     FlashingsConfigComponent,
     AccessoriesConfigComponent,
-    ShopComponent,
-    VerticalWindowsComponent,
-    RoofWindowDetailsComponent,
-    VerticalWindowsConfigComponent,
-    AccessoriesComponent,
-    RoofWindowsComponent,
-    SkylightsComponent,
-    VerticalWindowDetailsComponent,
-    SkylightDetailsComponent,
-    AccessorieDetailsComponent,
     LoginComponent,
     RegisterComponent,
     RegulationsComponent,
@@ -96,8 +75,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     BouncingLoaderComponent,
     FlashingsComponent,
     FlashingDetailsComponent,
-    RoofWindowFiltrationComponent,
-    FilterPipe,
     DisableControlDirective,
     SingleConfigurationSummaryComponent,
     ModalComponent
@@ -122,8 +99,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     IonicModule.forRoot(),
     NgxsModule.forRoot([
       RouterState,
-      AppState,
-      RoofWindowState
+      AppState
     ], {
       developmentMode: !environment.production,
       selectorOptions: {injectContainerState: false}

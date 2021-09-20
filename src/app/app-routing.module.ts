@@ -1,18 +1,11 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {ShopComponent} from './shop/shop.component';
 import {ConfiguratorComponent} from './configurator/configurator.component';
 import {RegisterComponent} from './register/register.component';
 import {LoginComponent} from './login/login.component';
 import {ContactComponent} from './contact/contact.component';
-import {RoofWindowsComponent} from './shop/roof-windows/roof-windows.component';
-import {SkylightsComponent} from './shop/skylights/skylights.component';
-import {AccessoriesComponent} from './shop/accessories/accessories.component';
 import {VerticalWindowsComponent} from './shop/vertical-windows/vertical-windows.component';
-import {RoofWindowDetailsComponent} from './shop/roof-windows/roof-window-details/roof-window-details.component';
 import {MyAccountComponent} from './my-account/my-account.component';
-import {SkylightDetailsComponent} from './shop/skylights/skylight-details/skylight-details.component';
-import {AccessorieDetailsComponent} from './shop/accessories/accessorie-details/accessorie-details.component';
 import {AuthGuardService} from './services/auth-guard.service';
 import {RoofWindowsConfigComponent} from './configurator/roof-windows-config/roof-windows-config.component';
 import {HomeComponent} from './home/home.component';
@@ -20,21 +13,11 @@ import {FlashingsConfigComponent} from './configurator/flashings-config/flashing
 import {AccessoriesConfigComponent} from './configurator/accessories-config/accessories-config.component';
 import {VerticalWindowsConfigComponent} from './configurator/vertical-windows-config/vertical-windows-config.component';
 import {SkylightsConfigComponent} from './configurator/skylights-config/skylights-config.component';
-import {FlashingsComponent} from './shop/flashings/flashings.component';
-import {FlashingDetailsComponent} from './shop/flashings/flashing-details/flashing-details.component';
 import {ConfigurationSummaryComponent} from './configurator/configuration-summary/configuration-summary.component';
 import {SingleConfigurationSummaryComponent} from './configurator/single-configuration-summary/single-configuration-summary.component';
 
 const appRoutes: Routes = [
-  {path: 'sklep', component: ShopComponent},
-  {path: 'sklep/okna-dachowe', component: RoofWindowsComponent},
-  {path: 'sklep/okna-dachowe/:windowId', component: RoofWindowDetailsComponent},
-  {path: 'sklep/kolnierze', component: FlashingsComponent},
-  {path: 'sklep/kolnierze/:flashingId', component: FlashingDetailsComponent},
-  {path: 'sklep/wylazy-dachowe', component: SkylightsComponent},
-  {path: 'sklep/wylazy-dachowe/:skylightId', component: SkylightDetailsComponent},
-  {path: 'sklep/akcesoria', component: AccessoriesComponent},
-  {path: 'sklep/akcesoria/:accessoryId', component: AccessorieDetailsComponent},
+  {path: 'sklep', loadChildren: () => import('./shop/shop.module').then(m => m.ShopModule)},
 
   {path: 'okna-pionowe', component: VerticalWindowsComponent},
 
