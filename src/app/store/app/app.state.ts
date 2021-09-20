@@ -24,11 +24,11 @@ export class AppState {
   }
 
   @Action(SetCurrentUser)
-  setCurrentUser({getState, setState}: StateContext<AppStateModel>) {
+  setCurrentUser(ctx: StateContext<AppStateModel>) {
     return this.authService.returnUser().pipe(
       tap((result) => {
-        const state = getState();
-        setState({
+        const state = ctx.getState();
+        ctx.setState({
           ...state,
           currentUser: result
         });
@@ -37,11 +37,11 @@ export class AppState {
   }
 
   @Action(UpdateCurrentUser)
-  updateCurrentUser({getState, setState}: StateContext<AppStateModel>) {
+  updateCurrentUser(ctx: StateContext<AppStateModel>) {
     return this.authService.returnUser().pipe(
       tap((result) => {
-        const state = getState();
-        setState({
+        const state = ctx.getState();
+        ctx.setState({
           ...state,
           currentUser: result
         });
