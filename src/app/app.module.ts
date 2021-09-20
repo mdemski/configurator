@@ -57,6 +57,7 @@ import {AppState} from './store/app/app.state';
 import {RouterState} from './store/router/router.state';
 import {NgxsRouterPluginModule, RouterStateSerializer} from '@ngxs/router-plugin';
 import {CustomRouterStateSerializer} from './store/router/custom-router-state.serializer';
+import {RoofWindowState} from './store/roof-window/roof-window.state';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -121,7 +122,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     IonicModule.forRoot(),
     NgxsModule.forRoot([
       RouterState,
-      AppState
+      AppState,
+      RoofWindowState
     ], {
       developmentMode: !environment.production,
       selectorOptions: {injectContainerState: false}

@@ -2,7 +2,11 @@ import {ChangeDetectorRef, Component, DoCheck, Input, OnInit} from '@angular/cor
 import {DatabaseService} from '../../services/database.service';
 import {RoofWindowSkylight} from '../../models/roof-window-skylight';
 import {ActivatedRoute, Router} from '@angular/router';
-import {shareReplay} from 'rxjs/operators';
+import {shareReplay, tap} from 'rxjs/operators';
+import {Select, Store} from '@ngxs/store';
+import {GetRoofWindows} from '../../store/roof-window/roof-window.actions';
+import {RoofWindowState} from '../../store/roof-window/roof-window.state';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-roof-windows',
@@ -10,18 +14,21 @@ import {shareReplay} from 'rxjs/operators';
   styleUrls: ['./roof-windows.component.scss']
 })
 export class RoofWindowsComponent implements OnInit, DoCheck {
-  @Input() filters: Object;
+  @Input() filters: object;
   @Input() searchByKeyboard: string;
+  @Select(RoofWindowState.roofWindows) roofWindows$: Observable<RoofWindowSkylight[]>;
   roofWindowsList: RoofWindowSkylight[] = [];
   filteredRoofWindowsList: RoofWindowSkylight[] = [];
 
   constructor(private db: DatabaseService,
               private router: Router,
+              private store: Store,
               private route: ActivatedRoute,
               private ref: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
+    this.store.dispatch(new GetRoofWindows());
     this.loadAllWindows();
   }
 
@@ -36,7 +43,7 @@ export class RoofWindowsComponent implements OnInit, DoCheck {
 
 
   loadAllWindows() {
-    this.db.fetchRoofWindows().pipe(shareReplay()).subscribe(windows => this.roofWindowsList = windows);
+    this.roofWindows$.pipe(shareReplay()).subscribe(windows => this.roofWindowsList = windows);
     this.filteredRoofWindowsList = this.filteredRoofWindowsList.length > 0 ? this.filteredRoofWindowsList : this.roofWindowsList;
   }
 
