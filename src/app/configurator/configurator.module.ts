@@ -1,6 +1,4 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {HttpLoaderFactory} from '../app.module';
 import {HttpClient} from '@angular/common/http';
@@ -15,13 +13,11 @@ import {FlashingsConfigComponent} from './flashings-config/flashings-config.comp
 import {AccessoriesConfigComponent} from './accessories-config/accessories-config.component';
 import {ConfigurationSummaryComponent} from './configuration-summary/configuration-summary.component';
 import {SingleConfigurationSummaryComponent} from './single-configuration-summary/single-configuration-summary.component';
-import {BouncingLoaderComponent} from '../loaders/bouncing-loader.component';
+import {SharedModule} from '../shared/shared.module';
 
 @NgModule({
   imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
+    SharedModule,
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
@@ -33,7 +29,6 @@ import {BouncingLoaderComponent} from '../loaders/bouncing-loader.component';
     ConfiguratorRoutingModule
   ],
   declarations: [
-    BouncingLoaderComponent,
     ConfiguratorComponent,
     RoofWindowsConfigComponent,
     VerticalWindowsComponent,

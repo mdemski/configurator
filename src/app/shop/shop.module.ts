@@ -1,5 +1,4 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {ShopRoutingModule} from './shop-routing.module';
 import {ShopComponent} from './shop.component';
 import {RoofWindowDetailsComponent} from './roof-windows/roof-window-details/roof-window-details.component';
@@ -14,18 +13,16 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {HttpLoaderFactory} from '../app.module';
 import {HttpClient} from '@angular/common/http';
 import {RoofWindowFiltrationComponent} from './roof-windows/roof-window-filtration/roof-window-filtration.component';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FilterPipe} from '../pipes/filter.pipe';
 import {NgxsModule} from '@ngxs/store';
 import {RoofWindowState} from '../store/roof-window/roof-window.state';
 import {FlashingsComponent} from './flashings/flashings.component';
 import {FlashingDetailsComponent} from './flashings/flashing-details/flashing-details.component';
+import {SharedModule} from '../shared/shared.module';
 
 @NgModule({
   imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
+    SharedModule,
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
