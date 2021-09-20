@@ -18,6 +18,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FilterPipe} from '../pipes/filter.pipe';
 import {NgxsModule} from '@ngxs/store';
 import {RoofWindowState} from '../store/roof-window/roof-window.state';
+import {FlashingsComponent} from './flashings/flashings.component';
+import {FlashingDetailsComponent} from './flashings/flashing-details/flashing-details.component';
 
 @NgModule({
   imports: [
@@ -46,6 +48,8 @@ import {RoofWindowState} from '../store/roof-window/roof-window.state';
     VerticalWindowDetailsComponent,
     SkylightDetailsComponent,
     AccessorieDetailsComponent,
+    FlashingsComponent,
+    FlashingDetailsComponent,
   ]
 })
 export class ShopModule { }
