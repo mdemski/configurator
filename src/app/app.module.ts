@@ -6,19 +6,12 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
 
 import {AppComponent} from './app.component';
 import {HeaderComponent} from './header/header.component';
-import {ConfiguratorComponent} from './configurator/configurator.component';
-import {RoofWindowsConfigComponent} from './configurator/roof-windows-config/roof-windows-config.component';
-import {SkylightsConfigComponent} from './configurator/skylights-config/skylights-config.component';
-import {FlashingsConfigComponent} from './configurator/flashings-config/flashings-config.component';
-import {AccessoriesConfigComponent} from './configurator/accessories-config/accessories-config.component';
-import {VerticalWindowsComponent} from './shop/vertical-windows/vertical-windows.component';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import {RegulationsComponent} from './regulations/regulations.component';
 import {FooterComponent} from './footer/footer.component';
 import {ContactComponent} from './contact/contact.component';
 import {HomeComponent} from './home/home.component';
-import {ConfigurationSummaryComponent} from './configurator/configuration-summary/configuration-summary.component';
 import {AppRoutingModule} from './app-routing.module';
 import {ShoppingCartComponent} from './shop/shopping-cart/shopping-cart.component';
 import {MyAccountComponent} from './my-account/my-account.component';
@@ -28,8 +21,6 @@ import {RegisterConfirmationPageComponent} from './register/register-confirmatio
 import {AuthService} from './services/auth.service';
 
 import {BouncingLoaderComponent} from './loaders/bouncing-loader.component';
-import {FlashingsComponent} from './shop/flashings/flashings.component';
-import {FlashingDetailsComponent} from './shop/flashings/flashing-details/flashing-details.component';
 import {FilterPipeModule} from 'ngx-filter-pipe';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { IonicModule } from '@ionic/angular';
@@ -37,7 +28,6 @@ import { DisableControlDirective } from './directives/disable-control.directive'
 import {AngularFireModule} from '@angular/fire';
 import {environment} from '../environments/environment';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
-import { SingleConfigurationSummaryComponent } from './configurator/single-configuration-summary/single-configuration-summary.component';
 import { ModalComponent } from './modal/modal.component';
 import {NgxsModule} from '@ngxs/store';
 import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
@@ -46,7 +36,6 @@ import {AppState} from './store/app/app.state';
 import {RouterState} from './store/router/router.state';
 import {NgxsRouterPluginModule, RouterStateSerializer} from '@ngxs/router-plugin';
 import {CustomRouterStateSerializer} from './store/router/custom-router-state.serializer';
-import {RoofWindowState} from './store/roof-window/roof-window.state';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -56,27 +45,17 @@ export function HttpLoaderFactory(http: HttpClient) {
   declarations: [
     AppComponent,
     HeaderComponent,
-    ConfiguratorComponent,
-    RoofWindowsConfigComponent,
-    VerticalWindowsComponent,
-    SkylightsConfigComponent,
-    FlashingsConfigComponent,
-    AccessoriesConfigComponent,
     LoginComponent,
     RegisterComponent,
     RegulationsComponent,
     FooterComponent,
     ContactComponent,
     HomeComponent,
-    ConfigurationSummaryComponent,
     ShoppingCartComponent,
     MyAccountComponent,
     RegisterConfirmationPageComponent,
     BouncingLoaderComponent,
-    FlashingsComponent,
-    FlashingDetailsComponent,
     DisableControlDirective,
-    SingleConfigurationSummaryComponent,
     ModalComponent
   ],
   imports: [
