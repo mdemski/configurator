@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {Select} from '@ngxs/store';
+import {Select, Store} from '@ngxs/store';
 import {FlashingState} from '../../store/flashing/flashing.state';
 import {Observable} from 'rxjs';
 import {Flashing} from '../../models/flashing';
+import {GetFlashings} from '../../store/flashing/flashing.actions';
 
 @Component({
   selector: 'app-flashings',
@@ -12,9 +13,10 @@ import {Flashing} from '../../models/flashing';
 export class FlashingsComponent implements OnInit {
 
   @Select(FlashingState.flashings) flashings$: Observable<Flashing[]>;
-  constructor() { }
+  constructor(private store: Store) { }
 
   ngOnInit(): void {
+    this.store.dispatch(new GetFlashings());
   }
 
 }
