@@ -19,7 +19,7 @@ import {FlatConfig} from '../models/flat-config';
 @Injectable({
   providedIn: 'root'
 })
-export class CrudFirebaseService {
+export class CrudService {
 
   constructor(private http: HttpClient, private db: DatabaseService, private hd: HighestIdGetterService) {
   }
