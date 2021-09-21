@@ -1,9 +1,7 @@
 import {Component, ElementRef, HostListener, OnInit, Renderer2} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {AuthService} from '../services/auth.service';
-import {Observable} from 'rxjs';
-import {Select, Store} from '@ngxs/store';
-import {AppState} from '../store/app/app.state';
+import {Store} from '@ngxs/store';
 import {SetCurrentUser} from '../store/app/app.actions';
 
 @Component({
