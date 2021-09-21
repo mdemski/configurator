@@ -1,8 +1,7 @@
-import {ChangeDetectorRef, Component, DoCheck, Input, OnInit} from '@angular/core';
-import {DatabaseService} from '../../services/database.service';
+import {Component, DoCheck, Input, OnInit} from '@angular/core';
 import {RoofWindowSkylight} from '../../models/roof-window-skylight';
-import {ActivatedRoute, Router} from '@angular/router';
-import {shareReplay, tap} from 'rxjs/operators';
+import {Router} from '@angular/router';
+import {shareReplay} from 'rxjs/operators';
 import {Select, Store} from '@ngxs/store';
 import {GetRoofWindows} from '../../store/roof-window/roof-window.actions';
 import {RoofWindowState} from '../../store/roof-window/roof-window.state';
@@ -20,11 +19,8 @@ export class RoofWindowsComponent implements OnInit, DoCheck {
   roofWindowsList: RoofWindowSkylight[] = [];
   filteredRoofWindowsList: RoofWindowSkylight[] = [];
 
-  constructor(private db: DatabaseService,
-              private router: Router,
-              private store: Store,
-              private route: ActivatedRoute,
-              private ref: ChangeDetectorRef) {
+  constructor(private router: Router,
+              private store: Store) {
   }
 
   ngOnInit(): void {
