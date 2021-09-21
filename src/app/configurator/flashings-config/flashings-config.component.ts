@@ -14,7 +14,7 @@ import {combineLatest, Observable, ObservedValueOf, Observer, Subject} from 'rxj
 import {AuthService} from '../../services/auth.service';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {CrudFirebaseService} from '../../services/crud-firebase-service';
-import {map, pairwise, takeUntil} from 'rxjs/operators';
+import {map, takeUntil} from 'rxjs/operators';
 import {SingleConfiguration} from '../../models/single-configuration';
 import {Flashing} from '../../models/flashing';
 import {FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors} from '@angular/forms';
@@ -22,8 +22,11 @@ import {FlashingConfig} from '../../models/flashing-config';
 import {HighestIdGetterService} from '../../services/highest-id-getter.service';
 import {ModalService} from '../../modal/modal.service';
 import {FlashingValueSetterService} from '../../services/flashing-value-setter.service';
-import {DatabaseService} from '../../services/database.service';
 import cryptoRandomString from 'crypto-random-string';
+import {Select, Store} from '@ngxs/store';
+import {FlashingState} from '../../store/flashing/flashing.state';
+import {GetFlashings} from '../../store/flashing/flashing.actions';
+import {SetCurrentUser} from '../../store/app/app.actions';
 
 @Component({
   selector: 'app-flashings-config',
@@ -35,9 +38,9 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
   constructor(private activeRouter: ActivatedRoute,
               private router: Router,
               private fb: FormBuilder,
+              private store: Store,
               private changeDetector: ChangeDetectorRef,
               private authService: AuthService,
-              private dataBase: DatabaseService,
               private loadData: LoadConfigurationService,
               private flashingSetter: FlashingValueSetterService,
               private configData: ConfigurationDataService,
@@ -48,8 +51,8 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
     this.loading = true;
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
-    this.paramsUserFetchData$ = combineLatest(this.authService.returnUser(), this.activeRouter.params,
-      this.configData.fetchAllFlashingsData(), this.crud.readAllConfigurationsFromMongoDB()
+    this.paramsUserFetchData$ = combineLatest(this.store.dispatch(SetCurrentUser), this.activeRouter.params,
+      this.store.dispatch(new GetFlashings()), this.crud.readAllConfigurationsFromMongoDB()
     ).pipe(
       takeUntil(this.isDestroyed$),
       map(data => {
@@ -62,6 +65,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
       }));
   }
 
+  @Select(FlashingState.flashings) flashings$: Observable<Flashing[]>;
   @ViewChildren('dimensionsPresentationDivs') dimPresentDivs: QueryList<ElementRef>;
   @ViewChildren('dimensionsPresentationDivsEqual') dimPresentDivsEqual: QueryList<ElementRef>;
   @ViewChildren('dimensionsPresentationDivsH1') dimPresentDivsH1: QueryList<ElementRef>;
@@ -266,7 +270,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
           });
       }
     });
-    this.dataBase.fetchFlashings().pipe(takeUntil(this.isDestroyed$)).subscribe(flashings => {
+    this.flashings$.pipe(takeUntil(this.isDestroyed$)).subscribe(flashings => {
       this.flashingsFromDataBase = flashings;
     });
     this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {

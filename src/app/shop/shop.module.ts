@@ -19,6 +19,7 @@ import {RoofWindowState} from '../store/roof-window/roof-window.state';
 import {FlashingsComponent} from './flashings/flashings.component';
 import {FlashingDetailsComponent} from './flashings/flashing-details/flashing-details.component';
 import {SharedModule} from '../shared/shared.module';
+import {FlashingState} from '../store/flashing/flashing.state';
 
 @NgModule({
   imports: [
@@ -30,7 +31,7 @@ import {SharedModule} from '../shared/shared.module';
         deps: [HttpClient]
       }
     }),
-    NgxsModule.forFeature([RoofWindowState]),
+    NgxsModule.forFeature([RoofWindowState, FlashingState]),
     ShopRoutingModule,
   ],
   declarations: [
