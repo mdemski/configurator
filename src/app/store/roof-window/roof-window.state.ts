@@ -4,7 +4,7 @@ import {DatabaseService} from '../../services/database.service';
 import {GetRoofWindows} from './roof-window.actions';
 import {tap} from 'rxjs/operators';
 
-export class RoofWindowStateModel {
+export interface RoofWindowStateModel {
   roofWindows: RoofWindowSkylight[];
 }
 
