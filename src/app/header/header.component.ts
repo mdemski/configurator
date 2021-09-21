@@ -1,12 +1,10 @@
-import {Component, ElementRef, HostListener, OnDestroy, OnInit, Renderer2} from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit, Renderer2} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {AuthService} from '../services/auth.service';
-import {Observable, Subject} from 'rxjs';
-import {UserService} from '../services/user.service';
-import {SetCurrentUser} from '../store/app/app.actions';
+import {Observable} from 'rxjs';
 import {Select, Store} from '@ngxs/store';
 import {AppState} from '../store/app/app.state';
-import {takeUntil} from 'rxjs/operators';
+import {SetCurrentUser} from '../store/app/app.actions';
 
 @Component({
   selector: 'app-header',
@@ -14,10 +12,7 @@ import {takeUntil} from 'rxjs/operators';
   styleUrls: ['./header.component.scss']
 })
 
-export class HeaderComponent implements OnInit, OnDestroy {
-  @Select(AppState.currentUser) userSub$: Observable<string>;
-  private isDestroyed$ = new Subject();
-  isAuthenticated = false;
+export class HeaderComponent implements OnInit {
   userId: string;
   searchInApp: string;
   shopSubMenu = {display: 'none'};
@@ -29,7 +24,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private el: ElementRef,
               public translate: TranslateService,
               private authService: AuthService,
-              private userService: UserService,
               private store: Store) {
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
@@ -37,22 +31,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.store.dispatch(SetCurrentUser);
-    this.userSub$ = this.store.select(AppState.currentUser);
-    this.userSub$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => {
-      this.isAuthenticated = !!user;
-      if (user) {
-        this.userId = this.userService.getUserByEmail(user).localId;
-      }
-    });
-    // TODO znaleźć użytkownika z bazy używając email żeby zwrócić ID do routingu www.moja-aplikacja.pl/moje-konto/id
   }
 
   logout() {
     this.authService.logout();
-  }
-
-  ngOnDestroy() {
-    this.isDestroyed$.next();
   }
 
   // TODO przygotować proces wyszukiwania
