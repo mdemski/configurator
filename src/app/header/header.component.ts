@@ -1,8 +1,12 @@
 import {Component, ElementRef, HostListener, OnDestroy, OnInit, Renderer2} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {AuthService} from '../services/auth.service';
-import {Subscription} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {UserService} from '../services/user.service';
+import {SetCurrentUser} from '../store/app/app.actions';
+import {Select, Store} from '@ngxs/store';
+import {AppState} from '../store/app/app.state';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +15,8 @@ import {UserService} from '../services/user.service';
 })
 
 export class HeaderComponent implements OnInit, OnDestroy {
-  userSub: Subscription;
+  @Select(AppState.currentUser) userSub$: Observable<string>;
+  private isDestroyed$ = new Subject();
   isAuthenticated = false;
   userId: string;
   searchInApp: string;
@@ -24,17 +29,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private el: ElementRef,
               public translate: TranslateService,
               private authService: AuthService,
-              private userService: UserService) {
+              private userService: UserService,
+              private store: Store) {
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
   }
 
   ngOnInit() {
-    this.userSub = this.authService.user.subscribe(user => {
+    this.store.dispatch(SetCurrentUser);
+    this.userSub$ = this.store.select(AppState.currentUser);
+    this.userSub$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => {
       this.isAuthenticated = !!user;
       if (user) {
-        this.userId = this.userService.getUserByEmail(user.email).localId;
-        console.log(this.userId);
+        this.userId = this.userService.getUserByEmail(user).localId;
       }
     });
     // TODO znaleźć użytkownika z bazy używając email żeby zwrócić ID do routingu www.moja-aplikacja.pl/moje-konto/id
@@ -45,7 +52,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.userSub.unsubscribe();
+    this.isDestroyed$.next();
   }
 
   // TODO przygotować proces wyszukiwania
