@@ -5,6 +5,7 @@ import {VerticalConfig} from './vertical-config';
 import {FlatConfig} from './flat-config';
 
 export interface SingleConfiguration {
+  _id?: string;
   globalId: string;
   created: Date;
   lastUpdate: Date;
