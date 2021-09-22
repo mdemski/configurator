@@ -369,7 +369,8 @@ export class CrudService {
   }
 
   // 11 aktualizowanie kołnierza w konfiguracji
-  updateFlashingConfigurationIntoGlobalConfiguration(globalConfiguration: SingleConfiguration, flashingId: number, flashingConfiguration: Flashing) {
+  updateFlashingConfigurationIntoGlobalConfiguration(globalConfiguration: SingleConfiguration,
+                                                     flashingId: number, flashingConfiguration: Flashing) {
     const url = this.urlToUpdateSetter(globalConfiguration);
     if (globalConfiguration.products.flashings) {
       for (const flashing of globalConfiguration.products.flashings) {
@@ -400,7 +401,8 @@ export class CrudService {
   }
 
   // 12 aktualizowanie akcesorium w konfiguracji
-  updateAccessoryConfigurationIntoGlobalConfiguration(globalConfiguration: SingleConfiguration, accessoryId: number, accessoryConfiguration: Accessory) {
+  updateAccessoryConfigurationIntoGlobalConfiguration(globalConfiguration: SingleConfiguration,
+                                                      accessoryId: number, accessoryConfiguration: Accessory) {
     const url = this.urlToUpdateSetter(globalConfiguration);
     if (globalConfiguration.products.accessories) {
       for (const accessory of globalConfiguration.products.accessories) {
@@ -413,7 +415,8 @@ export class CrudService {
     return this.http.put(url, globalConfiguration, {headers: this.headers}).pipe(catchError(err => err));
   }
 
-  updateVerticalConfigurationIntoGlobalConfiguration(globalConfiguration: SingleConfiguration, verticalId: number, verticalConfiguration: VerticalWindow) {
+  updateVerticalConfigurationIntoGlobalConfiguration(globalConfiguration: SingleConfiguration,
+                                                     verticalId: number, verticalConfiguration: VerticalWindow) {
     const url = this.urlToUpdateSetter(globalConfiguration);
     if (globalConfiguration.products.verticals) {
       for (const vertical of globalConfiguration.products.verticals) {
@@ -426,7 +429,8 @@ export class CrudService {
     return this.http.put(url, globalConfiguration, {headers: this.headers}).pipe(catchError(err => err));
   }
 
-  updateFlatConfigurationIntoGlobalConfiguration(globalConfiguration: SingleConfiguration, flatId: number, flatConfiguration: FlatRoofWindow) {
+  updateFlatConfigurationIntoGlobalConfiguration(globalConfiguration: SingleConfiguration,
+                                                 flatId: number, flatConfiguration: FlatRoofWindow) {
     const url = this.urlToUpdateSetter(globalConfiguration);
     if (globalConfiguration.products.flats) {
       for (const flat of globalConfiguration.products.flats) {
