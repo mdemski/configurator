@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {CrudFirebaseService} from '../../services/crud-firebase-service';
+import {CrudService} from '../../services/crud-service';
 import {DatabaseService} from '../../services/database.service';
 import {AuthService} from '../../services/auth.service';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
@@ -38,7 +38,7 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
   emptyAccessoryConfiguration: string;
   addingProduct: string;
 
-  constructor(private crud: CrudFirebaseService,
+  constructor(private crud: CrudService,
               private db: DatabaseService,
               private authService: AuthService,
               private router: Router,
@@ -54,6 +54,7 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
     // this.db.fetchRoofWindows().subscribe(windows => {
     //   this.crud.updateWindowConfigurationIntoConfigurationById('configuration-1', 1, windows[3]).subscribe(console.log);
     // });
+    this.crud.readConfigurationById('60ba1b0bed679217c0d76f43').subscribe(console.log);
     this.configurationsSubject = new BehaviorSubject<SingleConfiguration[]>([]);
     this.configurations$ = this.configurationsSubject.asObservable();
     this.authService.returnUser().pipe(takeUntil(this.isDestroyed$)).subscribe(currentUser => {
@@ -159,8 +160,8 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
     }
   }
 
-  configurationNameSave(configId: string, newConfigName: string) {
-    this.crud.updateNameConfigurationById(configId, newConfigName).subscribe(() => console.log('Nazwa została zmieniona'));
+  configurationNameSave(mongoId: string, newConfigName: string) {
+    this.crud.updateNameConfigurationByMongoId(mongoId, newConfigName).subscribe(() => console.log('Nazwa została zmieniona'));
     if (this.uneditable === null) {
       this.uneditable = true;
     } else {

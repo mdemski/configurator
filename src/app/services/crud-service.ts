@@ -44,9 +44,9 @@ export class CrudService {
       .filter(configuration => configuration.user === user)));
   }
 
-  readConfigurationById(configId: string): Observable<SingleConfiguration> {
+  readConfigurationById(mongoId: string): Observable<SingleConfiguration> {
     return this.http.get(this.baseUri).pipe(map((configurations: SingleConfiguration[]) => configurations
-      .find(configuration => configuration.globalId === configId)));
+      .find(configuration => configuration._id === mongoId)));
   }
 
   readConfigurationByName(configName: string): Observable<SingleConfiguration> {
@@ -54,63 +54,63 @@ export class CrudService {
       .find(configuration => configuration.name === configName)));
   }
 
-  readWindowConfigurationsFromConfigurationById(configId: string) {
+  readWindowConfigurationsFromConfigurationById(mongoId: string) {
     return this.http.get(this.baseUri).pipe(map((configurations: SingleConfiguration[]) => configurations
-      .find(configuration => configuration.globalId === configId).products.windows));
+      .find(configuration => configuration._id === mongoId).products.windows));
   }
 
-  readFlashingConfigurationsFromConfigurationById(configId: string) {
+  readFlashingConfigurationsFromConfigurationById(mongoId: string) {
     return this.http.get(this.baseUri).pipe(map((configurations: SingleConfiguration[]) => configurations
-      .find(configuration => configuration.globalId === configId).products.flashings));
+      .find(configuration => configuration._id === mongoId).products.flashings));
   }
 
-  readAccessoryConfigurationsFromConfigurationById(configId: string) {
+  readAccessoryConfigurationsFromConfigurationById(mongoId: string) {
     return this.http.get(this.baseUri).pipe(map((configurations: SingleConfiguration[]) => configurations
-      .find(configuration => configuration.globalId === configId).products.accessories));
+      .find(configuration => configuration._id === mongoId).products.accessories));
   }
 
-  readVerticalConfigurationsFromConfigurationById(configId: string) {
+  readVerticalConfigurationsFromConfigurationById(mongoId: string) {
     return this.http.get(this.baseUri).pipe(map((configurations: SingleConfiguration[]) => configurations
-      .find(configuration => configuration.globalId === configId).products.verticals));
+      .find(configuration => configuration._id === mongoId).products.verticals));
   }
 
-  readFlatConfigurationsFromConfigurationById(configId: string) {
+  readFlatConfigurationsFromConfigurationById(mongoId: string) {
     return this.http.get(this.baseUri).pipe(map((configurations: SingleConfiguration[]) => configurations
-      .find(configuration => configuration.globalId === configId).products.flats));
+      .find(configuration => configuration._id === mongoId).products.flats));
   }
 
-  readWindowByIdFromConfigurationById(configId: string, windowId: number) {
+  readWindowByIdFromConfigurationById(mongoId: string, windowId: number) {
     return this.http.get(this.baseUri).pipe(
       map((configurations: SingleConfiguration[]) => configurations
-        .find(configuration => configuration.globalId === configId).products),
+        .find(configuration => configuration._id === mongoId).products),
       map(products => products.windows.find(window => window.id === Number(windowId))));
   }
 
-  readFlashingByIdFromConfigurationById(configId: string, flashingId: number) {
+  readFlashingByIdFromConfigurationById(mongoId: string, flashingId: number) {
     return this.http.get(this.baseUri).pipe(
       map((configurations: SingleConfiguration[]) => configurations
-        .find(configuration => configuration.globalId === configId).products),
+        .find(configuration => configuration._id === mongoId).products),
       map(products => products.flashings.find(flashing => flashing.id === Number(flashingId))));
   }
 
-  readAccessoryByIdFromConfigurationById(configId: string, accessoryId: number) {
+  readAccessoryByIdFromConfigurationById(mongoId: string, accessoryId: number) {
     return this.http.get(this.baseUri).pipe(
       map((configurations: SingleConfiguration[]) => configurations
-        .find(configuration => configuration.globalId === configId).products),
+        .find(configuration => configuration._id === mongoId).products),
       map(products => products.accessories.find(accessory => accessory.id === Number(accessoryId))));
   }
 
-  readVerticalByIdFromConfigurationById(configId: string, verticalId: number) {
+  readVerticalByIdFromConfigurationById(mongoId: string, verticalId: number) {
     return this.http.get(this.baseUri).pipe(
       map((configurations: SingleConfiguration[]) => configurations
-        .find(configuration => configuration.globalId === configId).products),
+        .find(configuration => configuration._id === mongoId).products),
       map(products => products.verticals.find(vertical => vertical.id === Number(verticalId))));
   }
 
-  readFlatByIdFromConfigurationById(configId: string, flatId: number) {
+  readFlatByIdFromConfigurationById(mongoId: string, flatId: number) {
     return this.http.get(this.baseUri).pipe(
       map((configurations: SingleConfiguration[]) => configurations
-        .find(configuration => configuration.globalId === configId).products),
+        .find(configuration => configuration._id === mongoId).products),
       map(products => products.flats.find(flat => flat.id === Number(flatId))));
   }
 
@@ -176,141 +176,118 @@ export class CrudService {
         flats: configuration.products.flats
       }
     };
-    return this.http.post(url, configurationToCreate)
-      .pipe(catchError(err => err));
+    return this.http.post(url, configurationToCreate).pipe(catchError(err => err));
   }
 
   // 6 dodawanie okna do konfiguracji
-  createWindowConfigurationIntoConfigurationById(configId: string,
-                                                 windowConfiguration: RoofWindowSkylight,
-                                                 formName: string, formData: any, configLink: string) {
-    return this.readConfigurationById(configId).pipe(map((configuration: SingleConfiguration) => {
-      // @ts-ignore
-      const url = `${this.baseUri}/update/${configuration._id}`;
-      const windowConfig: WindowConfig = {
-        id: this.hd.getHighestIdForProduct(configuration).windowId,
-        quantity: 1,
-        window: Object.assign({}, windowConfiguration),
-        windowFormName: formName,
-        windowFormData: formData,
-        configLink
-      };
-      configuration.lastUpdate = new Date();
-      configuration.products.windows.push(windowConfig);
-      this.http.put(url, configuration, {headers: this.headers})
-        .subscribe(() => console.log('Window added successfully'), err => console.log(err));
-    }));
+  createWindowConfigurationIntoGlobalConfiguration(globalConfiguration: SingleConfiguration,
+                                                   windowConfiguration: RoofWindowSkylight,
+                                                   formName: string, formData: any, configLink: string) {
+    const url = `${this.baseUri}/update/${globalConfiguration._id}`;
+    const windowConfig: WindowConfig = {
+      id: this.hd.getHighestIdForProduct(globalConfiguration).windowId,
+      quantity: 1,
+      window: Object.assign({}, windowConfiguration),
+      windowFormName: formName,
+      windowFormData: formData,
+      configLink
+    };
+    globalConfiguration.products.windows.push(windowConfig);
+    globalConfiguration.lastUpdate = new Date();
+    return this.http.put(url, globalConfiguration, {headers: this.headers}).pipe(catchError(err => err));
   }
 
   // 7 dodawanie kołnierza do konfiguracji
-  createFlashingConfigurationIntoConfigurationById(configId: string,
-                                                   flashingConfiguration: Flashing,
-                                                   formName: string, formData: any, configLink: string) {
-    return this.readConfigurationById(configId).pipe(map((configuration: SingleConfiguration) => {
-      // @ts-ignore
-      const url = `${this.baseUri}/update/${configuration._id}`;
-      const flashingConfig: FlashingConfig = {
-        id: this.hd.getHighestIdForProduct(configuration).flashingId,
-        quantity: 1,
-        flashing: Object.assign({}, flashingConfiguration),
-        flashingFormName: formName,
-        flashingFormData: formData,
-        configLink
-      };
-      configuration.lastUpdate = new Date();
-      configuration.products.flashings.push(flashingConfig);
-      this.http.put(url, configuration, {headers: this.headers})
-        .subscribe(() => console.log('Flashing added successfully'), err => console.log(err));
-    }));
+  createFlashingConfigurationIntoGlobalConfiguration(globalConfiguration: SingleConfiguration,
+                                                     flashingConfiguration: Flashing,
+                                                     formName: string, formData: any, configLink: string) {
+
+    // @ts-ignore
+    const url = `${this.baseUri}/update/${globalConfiguration._id}`;
+    const flashingConfig: FlashingConfig = {
+      id: this.hd.getHighestIdForProduct(globalConfiguration).flashingId,
+      quantity: 1,
+      flashing: Object.assign({}, flashingConfiguration),
+      flashingFormName: formName,
+      flashingFormData: formData,
+      configLink
+    };
+    globalConfiguration.lastUpdate = new Date();
+    globalConfiguration.products.flashings.push(flashingConfig);
+    return this.http.put(url, globalConfiguration, {headers: this.headers}).pipe(catchError(err => err));
   }
 
   // 7a dodawanie tablicy kołnierzy do konfiguracji
-  createFlashingsArrayConfigurationIntoConfigurationById(configId: string,
-                                                         flashingsConfigurationArray: FlashingConfig[]) {
-    return this.readConfigurationById(configId).pipe(map((configuration: SingleConfiguration) => {
-      // @ts-ignore
-      const url = `${this.baseUri}/update/${configuration._id}`;
-      for (const flashingConfig of flashingsConfigurationArray) {
-        flashingConfig.id = this.hd.getHighestIdForProduct(configuration).flashingId;
-        configuration.products.flashings.push(flashingConfig);
-      }
-      configuration.lastUpdate = new Date();
-      this.http.put(url, configuration, {headers: this.headers})
-        .subscribe(() => console.log('Flashings array added successfully'), err => console.log(err));
-    }));
+  createFlashingsArrayConfigurationIntoGlobalConfiguration(globalConfiguration: SingleConfiguration,
+                                                           flashingsConfigurationArray: FlashingConfig[]) {
+    // @ts-ignore
+    const url = `${this.baseUri}/update/${globalConfiguration._id}`;
+    for (const flashingConfig of flashingsConfigurationArray) {
+      flashingConfig.id = this.hd.getHighestIdForProduct(globalConfiguration).flashingId;
+      globalConfiguration.products.flashings.push(flashingConfig);
+    }
+    globalConfiguration.lastUpdate = new Date();
+    return this.http.put(url, globalConfiguration, {headers: this.headers}).pipe(catchError(err => err));
   }
 
   // 8 dodawanie akcesorium do konfiguracji
-  createAccessoryConfigurationIntoConfigurationById(configId: string,
-                                                    accessoryConfiguration: Accessory,
-                                                    formName: string, formData: any, configLink: string) {
-    return this.readConfigurationById(configId).pipe(map((configuration: SingleConfiguration) => {
-      // @ts-ignore
-      const url = `${this.baseUri}/update/${configuration._id}`;
-      const accessoryConfig: AccessoryConfig = {
-        id: this.hd.getHighestIdForProduct(configuration).accessoryId,
-        quantity: 1,
-        accessory: Object.assign({}, accessoryConfiguration),
-        accessoryFormName: formName,
-        accessoryFormData: formData,
-        configLink
-      };
-      configuration.lastUpdate = new Date();
-      configuration.products.accessories.push(accessoryConfig);
-      this.http.put(url, configuration, {headers: this.headers})
-        .subscribe(() => console.log('Accessory added successfully'), err => console.log(err));
-    }));
+  createAccessoryConfigurationIntoGlobalConfiguration(globalConfiguration: SingleConfiguration,
+                                                      accessoryConfiguration: Accessory,
+                                                      formName: string, formData: any, configLink: string) {
+    // @ts-ignore
+    const url = `${this.baseUri}/update/${configuration._id}`;
+    const accessoryConfig: AccessoryConfig = {
+      id: this.hd.getHighestIdForProduct(globalConfiguration).accessoryId,
+      quantity: 1,
+      accessory: Object.assign({}, accessoryConfiguration),
+      accessoryFormName: formName,
+      accessoryFormData: formData,
+      configLink
+    };
+    globalConfiguration.lastUpdate = new Date();
+    globalConfiguration.products.accessories.push(accessoryConfig);
+    return this.http.put(url, globalConfiguration, {headers: this.headers}).pipe(catchError(err => err));
   }
 
-  createVerticalConfigurationIntoConfigurationById(configId: string,
-                                                   verticalConfiguration: VerticalWindow,
-                                                   formName: string, formData: any, configLink: string) {
-    return this.readConfigurationById(configId).pipe(map((configuration: SingleConfiguration) => {
-      // @ts-ignore
-      const url = `${this.baseUri}/update/${configuration._id}`;
-      const verticalConfig: VerticalConfig = {
-        id: this.hd.getHighestIdForProduct(configuration).verticalId,
-        quantity: 1,
-        vertical: Object.assign({}, verticalConfiguration),
-        verticalFormName: formName,
-        verticalFormData: formData,
-        configLink
-      };
-      configuration.lastUpdate = new Date();
-      configuration.products.verticals.push(verticalConfig);
-      this.http.put(url, configuration, {headers: this.headers})
-        .subscribe(() => console.log('Vertical added successfully'), err => console.log(err));
-    }));
+  createVerticalConfigurationIntoGlobalConfiguration(globalConfiguration: SingleConfiguration,
+                                                     verticalConfiguration: VerticalWindow,
+                                                     formName: string, formData: any, configLink: string) {
+    // @ts-ignore
+    const url = `${this.baseUri}/update/${configuration._id}`;
+    const verticalConfig: VerticalConfig = {
+      id: this.hd.getHighestIdForProduct(globalConfiguration).verticalId,
+      quantity: 1,
+      vertical: Object.assign({}, verticalConfiguration),
+      verticalFormName: formName,
+      verticalFormData: formData,
+      configLink
+    };
+    globalConfiguration.lastUpdate = new Date();
+    globalConfiguration.products.verticals.push(verticalConfig);
+    return this.http.put(url, globalConfiguration, {headers: this.headers}).pipe(catchError(err => err));
   }
 
-  createFlatConfigurationIntoConfigurationById(configId: string,
-                                               flatConfiguration: FlatRoofWindow,
-                                               formName: string, formData: any, configLink: string) {
-    return this.readConfigurationById(configId).pipe(map((configuration: SingleConfiguration) => {
-      // @ts-ignore
-      const url = `${this.baseUri}/update/${configuration._id}`;
-      const flatConfig: FlatConfig = {
-        id: this.hd.getHighestIdForProduct(configuration).flatId,
-        quantity: 1,
-        flat: Object.assign({}, flatConfiguration),
-        flatFormName: formName,
-        flatFormData: formData,
-        configLink
-      };
-      configuration.lastUpdate = new Date();
-      configuration.products.flats.push(flatConfig);
-      this.http.put(url, configuration, {headers: this.headers})
-        .subscribe(() => console.log('Flat added successfully'), err => console.log(err));
-    }));
+  createFlatConfigurationIntoGlobalConfiguration(globalConfiguration: SingleConfiguration,
+                                                 flatConfiguration: FlatRoofWindow,
+                                                 formName: string, formData: any, configLink: string) {
+    // @ts-ignore
+    const url = `${this.baseUri}/update/${configuration._id}`;
+    const flatConfig: FlatConfig = {
+      id: this.hd.getHighestIdForProduct(globalConfiguration).flatId,
+      quantity: 1,
+      flat: Object.assign({}, flatConfiguration),
+      flatFormName: formName,
+      flatFormData: formData,
+      configLink
+    };
+    globalConfiguration.lastUpdate = new Date();
+    globalConfiguration.products.flats.push(flatConfig);
+    return this.http.put(url, globalConfiguration, {headers: this.headers}).pipe(catchError(err => err));
   }
 
-  updateNameConfigurationById(configId: string, configName: string) {
-    return this.readConfigurationById(configId).pipe(map((configuration: SingleConfiguration) => {
-      // @ts-ignore
-      const url = `${this.baseUri}/update/${configuration._id}`;
-      this.http.put(url, {name: configName, lastUpdate: new Date()}, {headers: this.headers})
-        .subscribe(() => console.log('Name changed successfully'), err => console.log(err));
-    }));
+  updateNameConfigurationByMongoId(mongoId: string, configName: string) {
+    const url = `${this.baseUri}/update/${mongoId}`;
+    return this.http.put(url, {name: configName, lastUpdate: new Date()}, {headers: this.headers});
   }
 
   updateWindowQuantity(configId: string, windowId: number, quantity: number) {

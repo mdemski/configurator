@@ -12,7 +12,7 @@ import {
 } from 'rxjs';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {RoofWindowSkylight} from '../../models/roof-window-skylight';
-import {CrudFirebaseService} from '../../services/crud-firebase-service';
+import {CrudService} from '../../services/crud-service';
 import {ConfigurationDataService} from '../../services/configuration-data.service';
 import {AuthService} from '../../services/auth.service';
 import {RoofWindowValuesSetterService} from '../../services/roof-window-values-setter.service';
@@ -45,7 +45,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
               private dataBase: DatabaseService,
               private windowValuesSetter: RoofWindowValuesSetterService,
               private loadConfig: LoadConfigurationService,
-              private crud: CrudFirebaseService,
+              private crud: CrudService,
               private hd: HighestIdGetterService,
               private router: Router,
               private activeRouter: ActivatedRoute,
@@ -81,6 +81,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   copyLinkToConfigurationPopup = false;
   private globalId = '';
   private highestUserId;
+  private globalConfiguration: SingleConfiguration = null;
   private newWindowConfig: SingleConfiguration;
   private currentUser: string;
   private formName: string;
@@ -175,9 +176,12 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         this.currentUser = data.user;
         this.formName = data.params.formName;
         this.windowCode = data.params.productCode;
-        this.globalId = data.params.configId === undefined
-          ? this.hd.getHighestGlobalIdFormMongoDB(data.configurations) : data.params.configId;
-        this.configId = data.params.configId === undefined ? '-1' : this.globalId;
+        if (data.params.configId === undefined) {
+          this.globalId = this.hd.getHighestGlobalIdFormMongoDB(data.configurations);
+        } else {
+          this.globalId = data.params.configId;
+          this.globalConfiguration = data.configurations.find(item => item.globalId === this.globalId);
+        }
       })).subscribe(() => {
       if (this.formName === 'no-name' || this.formName === undefined) {
         // tslint:disable-next-line:max-line-length
@@ -688,7 +692,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
             + '/' + this.globalId
             + '/' + this.formName
             + '/' + this.configuredWindow.kod);
-          this.crud.createWindowConfigurationIntoConfigurationById(this.configId, this.configuredWindow,
+          this.crud.createWindowConfigurationIntoGlobalConfiguration(this.globalConfiguration, this.configuredWindow,
             this.formName, this.form.value, temporaryLink)
             .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
           // wersja 3
@@ -723,7 +727,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         + '/' + this.configuredWindow.kod);
       this.configId = String('configuration-' + parseInt(configForm.value.configWindowFormId, 10));
       // TODO zamienić na configuredWindow
-      this.crud.createWindowConfigurationIntoConfigurationById(this.configId,
+      this.crud.createWindowConfigurationIntoGlobalConfiguration(this.globalConfiguration,
         this.tempConfiguredWindow, this.formName, this.form.value, temporaryLink)
         .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
     }
@@ -769,7 +773,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         + '/' + this.configuredWindow.kod;
       // wersja 2
       if (this.windowId === 1) {
-        this.crud.createWindowConfigurationIntoConfigurationById(this.configId, this.configuredWindow,
+        this.crud.createWindowConfigurationIntoGlobalConfiguration(this.globalConfiguration, this.configuredWindow,
           this.formName, this.form.value, temporaryUrl)
           .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
         // wersja 3

@@ -19,7 +19,7 @@
                                             class="configuration-summary-container__single--configuration-name"></h1>
             <a (click)="configurationNameEdit()" *ngIf="uneditable"
                class="btn-invert btn-invert--grey edit-button">{{'CONFIG-SUMMARY.correctConfigName' | translate}}</a>
-            <a (click)="configurationNameSave(configuration.globalId, configuration.name)" *ngIf="!uneditable"
+            <a (click)="configurationNameSave(configuration._id, configuration.name)" *ngIf="!uneditable"
                class="btn-invert btn--green edit-button">{{'CONFIG-SUMMARY.saveConfigName' | translate}}</a>
           </div>
           <!--Roof window from single configuration-->
