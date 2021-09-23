@@ -697,9 +697,9 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
           // wersja 3
         } else {
-          this.crud.updateWindowConfigurationIntoConfigurationById(this.configId, this.windowId, this.configuredWindow)
+          this.crud.updateWindowConfigurationIntoGlobalConfiguration(this.globalConfiguration, this.windowId, this.configuredWindow)
             .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
-          this.crud.updateWindowFormDataByFormName(this.configId, this.formName, this.form.value)
+          this.crud.updateWindowFormDataByFormName(this.globalConfiguration, this.formName, this.form.value)
             .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
         }
         this.router.navigate(['/' + this.configurationSummary]);
@@ -778,7 +778,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
           .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
         // wersja 3
       } else {
-        this.crud.updateWindowConfigurationIntoConfigurationById(this.configId, this.windowId, this.configuredWindow)
+        this.crud.updateWindowConfigurationIntoGlobalConfiguration(this.globalConfiguration, this.windowId, this.configuredWindow)
           .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
       }
       // wersja 1
