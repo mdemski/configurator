@@ -51,4 +51,4 @@ Thumbs.db
 /src/assets/csv/archiwum/Kalkulator okna niestandardowe 21.05.2020.ods
 /src/assets/csv/archiwum/macierz do konfiguratora.xlsx
 ../src/assets/csv/archiwum/Kalkulator okna niestandardowe 21.05.2020.ods
-/backend/database/
+!/backend/database/
