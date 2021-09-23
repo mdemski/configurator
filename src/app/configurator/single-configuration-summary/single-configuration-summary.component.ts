@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {SingleConfiguration} from '../../models/single-configuration';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
-import {CrudFirebaseService} from '../../services/crud-firebase-service';
+import {CrudService} from '../../services/crud-service';
 import {DatabaseService} from '../../services/database.service';
 import {AuthService} from '../../services/auth.service';
 import {ActivatedRoute} from '@angular/router';
@@ -26,7 +26,7 @@ export class SingleConfigurationSummaryComponent implements OnInit, OnDestroy {
   tempSingleConfig: SingleConfiguration;
   isDestroyed$ = new Subject();
 
-  constructor(private crud: CrudFirebaseService,
+  constructor(private crud: CrudService,
               private db: DatabaseService,
               private authService: AuthService,
               private activeRouter: ActivatedRoute) {
@@ -39,7 +39,7 @@ export class SingleConfigurationSummaryComponent implements OnInit, OnDestroy {
     this.activeRouter.params.pipe(
       takeUntil(this.isDestroyed$),
       map(param => {
-      this.crud.readConfigurationById(param.configId).pipe(
+      this.crud.readConfigurationByMongoId(param.configId).pipe(
         takeUntil(this.isDestroyed$),
         map(configuration => {
         this.configuration = configuration;
