@@ -48,9 +48,14 @@ export class CrudService {
       .filter(configuration => configuration.user === user)));
   }
 
-  readConfigurationById(mongoId: string): Observable<SingleConfiguration> {
+  readConfigurationByMongoId(mongoId: string): Observable<SingleConfiguration> {
     return this.http.get(this.baseUri).pipe(map((configurations: SingleConfiguration[]) => configurations
       .find(configuration => configuration._id === mongoId)));
+  }
+
+  readConfigurationByGlobalId(globalId: string): Observable<SingleConfiguration> {
+    return this.http.get(this.baseUri).pipe(map((configurations: SingleConfiguration[]) => configurations
+      .find(configuration => configuration.globalId === globalId)));
   }
 
   readConfigurationByName(configName: string): Observable<SingleConfiguration> {
@@ -58,63 +63,63 @@ export class CrudService {
       .find(configuration => configuration.name === configName)));
   }
 
-  readWindowConfigurationsFromConfigurationById(mongoId: string) {
+  readWindowConfigurationsFromConfigurationByGlobalId(globalId: string) {
     return this.http.get(this.baseUri).pipe(map((configurations: SingleConfiguration[]) => configurations
-      .find(configuration => configuration._id === mongoId).products.windows));
+      .find(configuration => configuration.globalId === globalId).products.windows));
   }
 
-  readFlashingConfigurationsFromConfigurationById(mongoId: string) {
+  readFlashingConfigurationsFromConfigurationByGlobalId(globalId: string) {
     return this.http.get(this.baseUri).pipe(map((configurations: SingleConfiguration[]) => configurations
-      .find(configuration => configuration._id === mongoId).products.flashings));
+      .find(configuration => configuration.globalId === globalId).products.flashings));
   }
 
-  readAccessoryConfigurationsFromConfigurationById(mongoId: string) {
+  readAccessoryConfigurationsFromConfigurationByGlobalId(globalId: string) {
     return this.http.get(this.baseUri).pipe(map((configurations: SingleConfiguration[]) => configurations
-      .find(configuration => configuration._id === mongoId).products.accessories));
+      .find(configuration => configuration.globalId === globalId).products.accessories));
   }
 
-  readVerticalConfigurationsFromConfigurationById(mongoId: string) {
+  readVerticalConfigurationsFromConfigurationByGlobalId(globalId: string) {
     return this.http.get(this.baseUri).pipe(map((configurations: SingleConfiguration[]) => configurations
-      .find(configuration => configuration._id === mongoId).products.verticals));
+      .find(configuration => configuration.globalId === globalId).products.verticals));
   }
 
-  readFlatConfigurationsFromConfigurationById(mongoId: string) {
+  readFlatConfigurationsFromConfigurationByGlobalId(globalId: string) {
     return this.http.get(this.baseUri).pipe(map((configurations: SingleConfiguration[]) => configurations
-      .find(configuration => configuration._id === mongoId).products.flats));
+      .find(configuration => configuration.globalId === globalId).products.flats));
   }
 
-  readWindowByIdFromConfigurationById(mongoId: string, windowId: number) {
+  readWindowByIdFromConfigurationByGlobalId(globalId: string, windowId: number) {
     return this.http.get(this.baseUri).pipe(
       map((configurations: SingleConfiguration[]) => configurations
-        .find(configuration => configuration._id === mongoId).products),
+        .find(configuration => configuration.globalId === globalId).products),
       map(products => products.windows.find(window => window.id === Number(windowId))));
   }
 
-  readFlashingByIdFromConfigurationById(mongoId: string, flashingId: number) {
+  readFlashingByIdFromConfigurationByGlobalId(globalId: string, flashingId: number) {
     return this.http.get(this.baseUri).pipe(
       map((configurations: SingleConfiguration[]) => configurations
-        .find(configuration => configuration._id === mongoId).products),
+        .find(configuration => configuration.globalId === globalId).products),
       map(products => products.flashings.find(flashing => flashing.id === Number(flashingId))));
   }
 
-  readAccessoryByIdFromConfigurationById(mongoId: string, accessoryId: number) {
+  readAccessoryByIdFromConfigurationByGlobalId(globalId: string, accessoryId: number) {
     return this.http.get(this.baseUri).pipe(
       map((configurations: SingleConfiguration[]) => configurations
-        .find(configuration => configuration._id === mongoId).products),
+        .find(configuration => configuration.globalId === globalId).products),
       map(products => products.accessories.find(accessory => accessory.id === Number(accessoryId))));
   }
 
-  readVerticalByIdFromConfigurationById(mongoId: string, verticalId: number) {
+  readVerticalByIdFromConfigurationByGlobalId(globalId: string, verticalId: number) {
     return this.http.get(this.baseUri).pipe(
       map((configurations: SingleConfiguration[]) => configurations
-        .find(configuration => configuration._id === mongoId).products),
+        .find(configuration => configuration.globalId === globalId).products),
       map(products => products.verticals.find(vertical => vertical.id === Number(verticalId))));
   }
 
-  readFlatByIdFromConfigurationById(mongoId: string, flatId: number) {
+  readFlatByIdFromConfigurationByGlobalId(globalId: string, flatId: number) {
     return this.http.get(this.baseUri).pipe(
       map((configurations: SingleConfiguration[]) => configurations
-        .find(configuration => configuration._id === mongoId).products),
+        .find(configuration => configuration.globalId === globalId).products),
       map(products => products.flats.find(flat => flat.id === Number(flatId))));
   }
 
