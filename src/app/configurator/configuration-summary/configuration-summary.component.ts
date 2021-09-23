@@ -54,7 +54,7 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
     // this.db.fetchRoofWindows().subscribe(windows => {
     //   this.crud.updateWindowConfigurationIntoConfigurationById('configuration-1', 1, windows[3]).subscribe(console.log);
     // });
-    this.crud.readConfigurationById('60ba1b0bed679217c0d76f43').subscribe(console.log);
+    this.crud.readConfigurationByMongoId('60ba1b0bed679217c0d76f43').subscribe(console.log);
     this.configurationsSubject = new BehaviorSubject<SingleConfiguration[]>([]);
     this.configurations$ = this.configurationsSubject.asObservable();
     this.authService.returnUser().pipe(takeUntil(this.isDestroyed$)).subscribe(currentUser => {
@@ -123,33 +123,33 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
     this.isDestroyed$.next();
   }
 
-  resize(delta: number, quantity: number, configurationId, product, productId) {
+  resize(delta: number, quantity: number, globalConfiguration: SingleConfiguration, product, productId) {
     quantity = quantity + delta;
     if (product.window !== undefined) {
       product.quantity = product.quantity + delta;
-      this.crud.updateWindowQuantity(configurationId, productId, quantity).subscribe(console.log);
+      this.crud.updateWindowQuantity(globalConfiguration, productId, quantity).subscribe(console.log);
     }
     if (product.flashing !== undefined) {
       product.quantity = product.quantity + delta;
-      this.crud.updateFlashingQuantity(configurationId, productId, quantity).subscribe(console.log);
+      this.crud.updateFlashingQuantity(globalConfiguration, productId, quantity).subscribe(console.log);
     }
     if (product.accessory !== undefined) {
       product.quantity = product.quantity + delta;
-      this.crud.updateAccessoryQuantity(configurationId, productId, quantity).subscribe(console.log);
+      this.crud.updateAccessoryQuantity(globalConfiguration, productId, quantity).subscribe(console.log);
     }
   }
 
-  decreaseQuantity(configurationId: string, product,
+  decreaseQuantity(globalConfiguration: SingleConfiguration, product,
                    productId: number, quantity: number) {
     if (quantity === 0) {
       quantity = 0;
     }
-    this.resize(-1, quantity, configurationId, product, productId);
+    this.resize(-1, quantity, globalConfiguration, product, productId);
   }
 
-  increaseQuantity(configurationId: string, product,
+  increaseQuantity(globalConfiguration: SingleConfiguration, product,
                    productId: number, quantity: number) {
-    this.resize(1, quantity, configurationId, product, productId);
+    this.resize(1, quantity, globalConfiguration, product, productId);
   }
 
   configurationNameEdit() {
@@ -169,20 +169,20 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
     }
   }
 
-  removeProductConfiguration(id: string, productId: number, product) {
+  removeProductConfiguration(globalConfiguration: SingleConfiguration, productId: number, product) {
     if (product.window !== undefined) {
-      this.crud.deleteWindowConfigurationFromConfigurationById(id, productId);
+      this.crud.deleteWindowConfigurationFromConfigurationById(globalConfiguration, productId);
     }
     if (product.flashing !== undefined) {
-      this.crud.deleteFlashingConfigurationFromConfigurationById(id, productId);
+      this.crud.deleteFlashingConfigurationFromConfigurationById(globalConfiguration, productId);
     }
     if (product.accessory !== undefined) {
-      this.crud.deleteAccessoryConfigurationFromConfigurationById(id, productId);
+      this.crud.deleteAccessoryConfigurationFromConfigurationById(globalConfiguration, productId);
     }
   }
 
-  removeHoleConfiguration(id: string) {
-    this.crud.deleteConfigurationById(id);
+  removeHoleConfiguration(globalConfiguration: SingleConfiguration) {
+    this.crud.deleteConfiguration(globalConfiguration);
   }
 
   // TODO sprawdzić co dokładnie wrzuca się do koszyka i odpowiednio to obsługiwać
@@ -216,7 +216,7 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
       configLink: ''
     });
     if (configuration.products.windows.length === 1) {
-      this.crud.readWindowByIdFromConfigurationById(configuration.globalId, configuration.products.windows[0].id)
+      this.crud.readWindowByIdFromConfigurationByGlobalId(configuration.globalId, configuration.products.windows[0].id)
         .subscribe(window =>  this.loadConfig.windowData$.next(window.window));
     }
     // Do wyboru jeśli w konfiguracji jest wiele okien do wyboru
@@ -239,7 +239,7 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
     if (windowId === undefined || windowId === 0) {
       this.loadConfig.windowData$.next(null);
     } else {
-      this.crud.readWindowByIdFromConfigurationById(this.chosenConfig.globalId, windowId)
+      this.crud.readWindowByIdFromConfigurationByGlobalId(this.chosenConfig.globalId, windowId)
         .subscribe(window =>  this.loadConfig.windowData$.next(window.window));
     }
     if (this.addingProduct === 'flashing') {
@@ -265,7 +265,7 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
       configLink: ''
     });
     if (configuration.products.flashings.length === 1) {
-      this.crud.readFlashingByIdFromConfigurationById(configuration.globalId, configuration.products.flashings[0].id)
+      this.crud.readFlashingByIdFromConfigurationByGlobalId(configuration.globalId, configuration.products.flashings[0].id)
         .subscribe(flashing =>  this.loadConfig.flashingData$.next(flashing.flashing));
     }
     // Do wyboru jeśli w konfiguracji jest wiele okien do wyboru
@@ -281,7 +281,7 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
     if (flashingId === undefined || flashingId === 0) {
       this.loadConfig.flashingData$.next(null);
     } else {
-      this.crud.readFlashingByIdFromConfigurationById(this.chosenConfig.globalId, flashingId)
+      this.crud.readFlashingByIdFromConfigurationByGlobalId(this.chosenConfig.globalId, flashingId)
         .subscribe(flashing =>  this.loadConfig.flashingData$.next(flashing.flashing));
     }
     this.router.navigate(['/' + this.emptyWindowConfiguration +
