@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {CrudFirebaseService} from './crud-firebase-service';
+import {CrudService} from './crud-service';
 import {RoofWindowSkylight} from '../models/roof-window-skylight';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {DatabaseService} from './database.service';
@@ -31,7 +31,7 @@ export class LoadConfigurationService {
     'manualne', null, 0, [], [], null);
   accessoryData$: BehaviorSubject<Accessory> = new BehaviorSubject(this.newAccessory);
 
-  constructor(private crud: CrudFirebaseService,
+  constructor(private crud: CrudService,
               private db: DatabaseService) {
   }
 
