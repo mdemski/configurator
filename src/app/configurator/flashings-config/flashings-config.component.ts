@@ -917,19 +917,20 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
               this.formName, this.form.value, temporaryLink)
               .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
           } else {
-            this.crud.createFlashingsArrayConfigurationIntoGlobalConfiguration(this.globalConfiguration, this.newFlashingConfig.products.flashings)
-              .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+            this.crud.createFlashingsArrayConfigurationIntoGlobalConfiguration(this.globalConfiguration,
+              this.newFlashingConfig.products.flashings).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
           }
           // wersja 3
         } else {
           if (this.configuredFlashingArray.length === 0) {
-            this.crud.updateFlashingConfigurationIntoConfigurationById(this.configId, this.flashingId, this.configuredFlashing)
+            this.crud.updateFlashingConfigurationIntoGlobalConfiguration(this.globalConfiguration, this.flashingId, this.configuredFlashing)
               .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
           } else {
-            this.crud.updateFlashingsArrayConfigurationIntoConfigurationById(this.configId, this.newFlashingConfig.products.flashings)
+            this.crud.updateFlashingsArrayConfigurationIntoGlobalConfiguration(this.globalConfiguration,
+              this.newFlashingConfig.products.flashings)
               .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
           }
-          this.crud.updateFlashingFormDataByFormName(this.configId, this.formName, this.form.value)
+          this.crud.updateFlashingFormDataByFormName(this.globalConfiguration, this.formName, this.form.value)
             .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
         }
         this.router.navigate(['/' + this.configurationSummary]);
@@ -957,8 +958,8 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
           this.formName, this.form.value, temporaryLink)
           .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
       } else {
-        this.crud.createFlashingsArrayConfigurationIntoGlobalConfiguration(this.globalConfiguration, this.newFlashingConfig.products.flashings)
-          .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+        this.crud.createFlashingsArrayConfigurationIntoGlobalConfiguration(this.globalConfiguration,
+          this.newFlashingConfig.products.flashings).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
       }
     }
     this.chooseConfigNamePopup = false;
@@ -1010,7 +1011,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
             .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
           // wersja 3
         } else {
-          this.crud.updateFlashingConfigurationIntoConfigurationById(this.configId, this.flashingId, this.configuredFlashing)
+          this.crud.updateFlashingConfigurationIntoGlobalConfiguration(this.globalConfiguration, this.flashingId, this.configuredFlashing)
             .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
         }
         // wersja 1
@@ -1074,7 +1075,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
             .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
           // wersja 3
         } else {
-          this.crud.updateFlashingsArrayConfigurationIntoConfigurationById(this.configId, temporaryFlashingConfigsArray)
+          this.crud.updateFlashingsArrayConfigurationIntoGlobalConfiguration(this.globalConfiguration, temporaryFlashingConfigsArray)
             .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
         }
         temporaryUrl = this.router['location']._platformLocation.location.origin
