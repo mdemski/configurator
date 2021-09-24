@@ -46,7 +46,7 @@ export class ConfigurationState {
   constructor(private crud: CrudService) {
   }
 
-  // Global configurations
+  // Global configurations selectors
   @Selector()
   static configurations(state: ConfigurationStateModel) {
     return state.configurations;
@@ -54,22 +54,22 @@ export class ConfigurationState {
 
   @Selector()
   static userConfigurations(state: SingleConfiguration[], user) {
-    return state.filter(config => config.user === user);
+    return state.filter(configuration => configuration.user === user);
   }
 
   @Selector()
   static configurationByMongoID(state: SingleConfiguration[], mongoId) {
-    return state.find(config => config._id === mongoId);
+    return state.find(configuration => configuration._id === mongoId);
   }
 
   @Selector()
   static configurationByGlobalID(state: SingleConfiguration[], globalId) {
-    return state.find(config => config.globalId === globalId);
+    return state.find(configuration => configuration.globalId === globalId);
   }
 
   @Selector()
   static configurationByName(state: SingleConfiguration[], configName: string) {
-    return state.find(config => config.name === configName);
+    return state.find(configuration => configuration.name === configName);
   }
 
   @Selector()
@@ -105,7 +105,7 @@ export class ConfigurationState {
 
   // ---------------------------------------------------------------------------------------------------------- //
 
-  // Roof window configurations
+  // Roof window configurations selectors
   @Selector()
   static roofWindowConfigurationsByGlobalId(state: ConfigurationStateModel, globalId: string) {
     state.roofWindowConfigurations = state.configurations.find(configuration => configuration.globalId === globalId).products.windows;
@@ -117,6 +117,9 @@ export class ConfigurationState {
     return state.roofWindowConfigurations.find(windowConfig => windowConfig.id === windowId);
   }
 
+  // ---------------------------------------------------------------------------------------------------------- //
+
+  // Global configurations Actions
   @Action(GetConfigurations)
   getAllConfigurations(ctx: StateContext<ConfigurationStateModel>) {
     return this.crud.readAllConfigurationsFromMongoDB().pipe(
@@ -172,7 +175,7 @@ export class ConfigurationState {
 
   // ---------------------------------------------------------------------------------------------------------- //
 
-  // Roof window configurations
+  // Roof window configurations Actions
   @Action(AddRoofWindowConfiguration)
   addNewRoofWindowConfiguration(ctx: StateContext<ConfigurationStateModel>,
                                 {globalConfiguration, payload, formName, formData, configLink}: AddRoofWindowConfiguration) {
