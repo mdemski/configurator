@@ -10,6 +10,11 @@ import {TranslateService} from '@ngx-translate/core';
 import {WindowConfig} from '../../models/window-config';
 import {LoadConfigurationService} from '../../services/load-configuration.service';
 import {FlashingConfig} from '../../models/flashing-config';
+import {Store} from '@ngxs/store';
+import {
+  DeleteRoofWindowConfigurationByConfigAndWindowId,
+  UpdateRoofWindowQuantityByConfigAndWindowId
+} from '../../store/configuration/configuration.actions';
 
 @Component({
   selector: 'app-configuration-summary',
@@ -42,6 +47,7 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
               private db: DatabaseService,
               private authService: AuthService,
               private router: Router,
+              private store: Store,
               private loadConfig: LoadConfigurationService,
               public translate: TranslateService) {
     this.loading = true;
@@ -127,7 +133,8 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
     quantity = quantity + delta;
     if (product.window !== undefined) {
       product.quantity = product.quantity + delta;
-      this.crud.updateWindowQuantity(globalConfiguration, productId, quantity).subscribe(console.log);
+      this.store.dispatch(new UpdateRoofWindowQuantityByConfigAndWindowId(globalConfiguration, productId, quantity)).subscribe(console.log);
+      // this.crud.updateWindowQuantity(globalConfiguration, productId, quantity).subscribe(console.log);
     }
     if (product.flashing !== undefined) {
       product.quantity = product.quantity + delta;
@@ -171,7 +178,7 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
 
   removeProductConfiguration(globalConfiguration: SingleConfiguration, productId: number, product) {
     if (product.window !== undefined) {
-      this.crud.deleteWindowConfigurationFromConfigurationById(globalConfiguration, productId);
+      this.store.dispatch(new DeleteRoofWindowConfigurationByConfigAndWindowId(globalConfiguration, productId));
     }
     if (product.flashing !== undefined) {
       this.crud.deleteFlashingConfigurationFromConfigurationById(globalConfiguration, productId);
