@@ -7,13 +7,15 @@ import {VerticalWindowsComponent} from './shop/vertical-windows/vertical-windows
 import {MyAccountComponent} from './my-account/my-account.component';
 import {AuthGuardService} from './services/auth-guard.service';
 import {HomeComponent} from './home/home.component';
+import {ConfigurationsGuard} from './store/configuration/configurations.guard';
 
 const appRoutes: Routes = [
   {path: 'sklep', loadChildren: () => import('./shop/shop.module').then(m => m.ShopModule)},
 
   {path: 'okna-pionowe', component: VerticalWindowsComponent},
 
-  {path: 'konfigurator', loadChildren: () => import('./configurator/configurator.module').then(m => m.ConfiguratorModule)},
+  {path: 'konfigurator', loadChildren: () => import('./configurator/configurator.module').then(m => m.ConfiguratorModule),
+    canActivate: [ConfigurationsGuard]},
 
   {path: '', component: HomeComponent},
   {path: 'moje-konto', component: MyAccountComponent, canActivate: [AuthGuardService]},
@@ -25,7 +27,8 @@ const appRoutes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(appRoutes, {scrollPositionRestoration: 'enabled'})],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [ConfigurationsGuard]
 })
 export class AppRoutingModule {
 }

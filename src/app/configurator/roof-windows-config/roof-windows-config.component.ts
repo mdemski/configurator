@@ -28,8 +28,9 @@ import {DatabaseService} from '../../services/database.service';
 import cryptoRandomString from 'crypto-random-string';
 import {WindowConfig} from '../../models/window-config';
 import {SingleConfiguration} from '../../models/single-configuration';
-import {Store} from '@ngxs/store';
+import {Select, Store} from '@ngxs/store';
 import {SetCurrentUser} from '../../store/app/app.actions';
+import {ConfigurationState} from '../../store/configuration/configuration.state';
 
 @Component({
   selector: 'app-roof-windows-config',
@@ -38,6 +39,7 @@ import {SetCurrentUser} from '../../store/app/app.actions';
 })
 export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
 
+  @Select(ConfigurationState.configurations) configurations$: Observable<SingleConfiguration[]>;
   // TODO przygotować strumień i service do publikowania tej danej po aplikacji
   constructor(private authService: AuthService,
               private store: Store,
@@ -55,7 +57,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
     this.paramsUserFetchData$ = combineLatest(this.store.dispatch(SetCurrentUser), this.activeRouter.params,
-      this.configData.fetchAllWindowsData(), this.crud.readAllConfigurationsFromMongoDB()).pipe(
+      this.configData.fetchAllWindowsData(), this.configurations$).pipe(
       takeUntil(this.isDestroyed$),
       map(data => {
         return {
@@ -148,6 +150,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   // 'width': new FormControl(78, [this.validateWidth.bind(this), Validators.required]), własnym walidator
   ngOnInit(): void {
     this.paramsUserFetchData$.subscribe(console.log);
+    this.configurations$.subscribe(console.log);
     this.highestUserId = 1;
     this.tempConfiguredWindow = new RoofWindowSkylight(
       '1O-ISO-V-E02-KL00-A7022P-079119-OKPO01', 'Okno dachowe tymczasowe', 'ISOV E2 79x119', 'I-Okno', 'NPL-Okno', 'Nowy', 'Okno:ISOV', 'Okno:E02', 'dwuszybowy', 79,

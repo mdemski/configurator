@@ -17,7 +17,6 @@ import {FlashingConfig} from '../../models/flashing-config';
 import {AccessoryConfig} from '../../models/accessory-config';
 import {FlatConfig} from '../../models/flat-config';
 import {VerticalConfig} from '../../models/vertical-config';
-import {config} from 'rxjs';
 
 export interface ConfigurationStateModel {
   configurations: SingleConfiguration[];
