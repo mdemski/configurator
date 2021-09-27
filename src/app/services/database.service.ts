@@ -139,6 +139,21 @@ export class DatabaseService {
     return of([]);
   }
 
+  getSkylightById(id: number) {
+    // TODO uzupełnić w późniejszym czasie
+    return null;
+  }
+
+  fetchFlatRoofWindows() {
+    // TODO uzupełnić w późniejszym czasie
+    return of([]);
+  }
+
+  getFlatRoofWindowById(id: number) {
+    // TODO uzupełnić w późniejszym czasie
+    return null;
+  }
+
   // Musi zwracać listę 3 produktów z których 1 jest oknem, 2 to kołnierz, 3 akcesorium
   getMostRecentProductsHomePage() {
     this.mostRecentProducts.push(this.windows[0]);

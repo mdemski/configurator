@@ -16,6 +16,9 @@ import {SingleConfigurationSummaryComponent} from './single-configuration-summar
 import {SharedModule} from '../shared/shared.module';
 import {FlashingState} from '../store/flashing/flashing.state';
 import {ConfigurationState} from '../store/configuration/configuration.state';
+import {AccessoryState} from '../store/accessory/accessory.state';
+import {SkylightsState} from '../store/skylight/skylights.state';
+import {FlatRoofWindowState} from '../store/flat-roof-window/flat-roof-window.state';
 
 @NgModule({
   imports: [
@@ -27,7 +30,7 @@ import {ConfigurationState} from '../store/configuration/configuration.state';
         deps: [HttpClient]
       }
     }),
-    NgxsModule.forFeature([ConfigurationState, RoofWindowState, FlashingState]),
+    NgxsModule.forFeature([ConfigurationState, RoofWindowState, FlashingState, AccessoryState, SkylightsState, FlatRoofWindowState]),
     ConfiguratorRoutingModule
   ],
   declarations: [

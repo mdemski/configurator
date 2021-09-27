@@ -8,6 +8,11 @@ import {MyAccountComponent} from './my-account/my-account.component';
 import {AuthGuardService} from './services/auth-guard.service';
 import {HomeComponent} from './home/home.component';
 import {ConfigurationsGuard} from './store/configuration/configurations.guard';
+import {RoofWindowsGuard} from './store/roof-window/roof-windows.guard';
+import {FlashingsGuard} from './store/flashing/flashings.guard';
+import {AccessoriesGuard} from './store/accessory/accessories.guard';
+import {SkylightsGuard} from './store/skylight/skylights.guard';
+import {FlatRoofWindowsGuard} from './store/flat-roof-window/flat-roof-windows.guard';
 
 const appRoutes: Routes = [
   {path: 'sklep', loadChildren: () => import('./shop/shop.module').then(m => m.ShopModule)},
@@ -28,7 +33,7 @@ const appRoutes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(appRoutes, {scrollPositionRestoration: 'enabled'})],
   exports: [RouterModule],
-  providers: [ConfigurationsGuard]
+  providers: [ConfigurationsGuard, RoofWindowsGuard, FlashingsGuard, AccessoriesGuard, SkylightsGuard, FlatRoofWindowsGuard]
 })
 export class AppRoutingModule {
 }

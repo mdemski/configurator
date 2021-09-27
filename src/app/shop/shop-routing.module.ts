@@ -13,6 +13,9 @@ import {RoofWindowsGuard} from '../store/roof-window/roof-windows.guard';
 import {FlashingsGuard} from '../store/flashing/flashings.guard';
 import {AccessoriesGuard} from '../store/accessory/accessories.guard';
 import {SkylightsGuard} from '../store/skylight/skylights.guard';
+import {FlatRoofWindowsComponent} from './flat-roof-windows/flat-roof-windows.component';
+import {FlatRoofWidnowDetailsComponent} from './flat-roof-windows/flat-roof-widnow-details/flat-roof-widnow-details.component';
+import {FlatRoofWindowsGuard} from '../store/flat-roof-window/flat-roof-windows.guard';
 
 const routes: Routes = [
   {path: '', component: ShopComponent},
@@ -24,6 +27,8 @@ const routes: Routes = [
   {path: 'wylazy-dachowe/:skylightId', component: SkylightDetailsComponent},
   {path: 'akcesoria', component: AccessoriesComponent, canActivate: [AccessoriesGuard]},
   {path: 'akcesoria/:accessoryId', component: AccessorieDetailsComponent},
+  {path: 'plaski-dach', component: FlatRoofWindowsComponent, canActivate: [FlatRoofWindowsGuard]},
+  {path: 'plaski-dach/:flatId', component: FlatRoofWidnowDetailsComponent},
 ];
 
 @NgModule({

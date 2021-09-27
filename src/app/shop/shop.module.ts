@@ -20,6 +20,11 @@ import {FlashingsComponent} from './flashings/flashings.component';
 import {FlashingDetailsComponent} from './flashings/flashing-details/flashing-details.component';
 import {SharedModule} from '../shared/shared.module';
 import {FlashingState} from '../store/flashing/flashing.state';
+import { FlatRoofWindowsComponent } from './flat-roof-windows/flat-roof-windows.component';
+import { FlatRoofWidnowDetailsComponent } from './flat-roof-windows/flat-roof-widnow-details/flat-roof-widnow-details.component';
+import {SkylightsState} from '../store/skylight/skylights.state';
+import {AccessoryState} from '../store/accessory/accessory.state';
+import {FlatRoofWindowState} from '../store/flat-roof-window/flat-roof-window.state';
 
 @NgModule({
   imports: [
@@ -31,7 +36,7 @@ import {FlashingState} from '../store/flashing/flashing.state';
         deps: [HttpClient]
       }
     }),
-    NgxsModule.forFeature([RoofWindowState, FlashingState]),
+    NgxsModule.forFeature([RoofWindowState, FlashingState, AccessoryState, SkylightsState, FlatRoofWindowState]),
     ShopRoutingModule,
   ],
   declarations: [
@@ -48,6 +53,8 @@ import {FlashingState} from '../store/flashing/flashing.state';
     AccessorieDetailsComponent,
     FlashingsComponent,
     FlashingDetailsComponent,
+    FlatRoofWindowsComponent,
+    FlatRoofWidnowDetailsComponent,
   ]
 })
 export class ShopModule { }
