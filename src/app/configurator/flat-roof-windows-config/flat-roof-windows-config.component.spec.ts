@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SkylightsConfigComponent } from './skylights-config.component';
+import { FlatRoofWindowsConfigComponent } from './flat-roof-windows-config.component';
 
-describe('SkylightsConfigComponent', () => {
-    let component: SkylightsConfigComponent;
-    let fixture: ComponentFixture<SkylightsConfigComponent>;
+describe('FlatRoofWindowsConfigComponent', () => {
+    let component: FlatRoofWindowsConfigComponent;
+    let fixture: ComponentFixture<FlatRoofWindowsConfigComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [SkylightsConfigComponent]
+            declarations: [FlatRoofWindowsConfigComponent]
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(SkylightsConfigComponent);
+        fixture = TestBed.createComponent(FlatRoofWindowsConfigComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

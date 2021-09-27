@@ -8,7 +8,7 @@ import {ConfiguratorRoutingModule} from './configurator-routing.module';
 import {ConfiguratorComponent} from './configurator.component';
 import {RoofWindowsConfigComponent} from './roof-windows-config/roof-windows-config.component';
 import {VerticalWindowsComponent} from '../shop/vertical-windows/vertical-windows.component';
-import {SkylightsConfigComponent} from './skylights-config/skylights-config.component';
+import {FlatRoofWindowsConfigComponent} from './flat-roof-windows-config/flat-roof-windows-config.component';
 import {FlashingsConfigComponent} from './flashings-config/flashings-config.component';
 import {AccessoriesConfigComponent} from './accessories-config/accessories-config.component';
 import {ConfigurationSummaryComponent} from './configuration-summary/configuration-summary.component';
@@ -37,7 +37,7 @@ import {FlatRoofWindowState} from '../store/flat-roof-window/flat-roof-window.st
     ConfiguratorComponent,
     RoofWindowsConfigComponent,
     VerticalWindowsComponent,
-    SkylightsConfigComponent,
+    FlatRoofWindowsConfigComponent,
     FlashingsConfigComponent,
     AccessoriesConfigComponent,
     ConfigurationSummaryComponent,
