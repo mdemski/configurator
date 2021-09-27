@@ -11,6 +11,7 @@ import {ConfiguratorComponent} from './configurator.component';
 import {RoofWindowsGuard} from '../store/roof-window/roof-windows.guard';
 import {FlashingsGuard} from '../store/flashing/flashings.guard';
 import {AccessoriesGuard} from '../store/accessory/accessories.guard';
+import {FlatRoofWindowsGuard} from '../store/flat-roof-window/flat-roof-windows.guard';
 
 const routes: Routes = [
   {path: '', component: ConfiguratorComponent},
@@ -21,7 +22,7 @@ const routes: Routes = [
   {path: 'akcesoria', component: AccessoriesConfigComponent, canActivate: [AccessoriesGuard]},
   {path: 'akcesoria/:configId/:formName/:productCode', component: AccessoriesConfigComponent},
   {path: 'okna-pionowe', component: VerticalWindowsConfigComponent},
-  {path: 'wylazy-dachowe', component: SkylightsConfigComponent},
+  {path: 'wylazy-dachowe', component: SkylightsConfigComponent, canActivate: [FlatRoofWindowsGuard]},
   {path: 'podsumowanie', component: ConfigurationSummaryComponent},
   {path: 'podsumowanie/:configId', component: SingleConfigurationSummaryComponent},
 ];
