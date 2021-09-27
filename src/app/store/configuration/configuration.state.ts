@@ -36,6 +36,7 @@ import {
 import {tap} from 'rxjs/operators';
 
 export interface ConfigurationStateModel {
+  // w razie problemów z wydajnością zmienić wczytywanie tylko na konfiguracje user'a a pełną listę brać wyłącznie do nadawania numerów
   configurations: SingleConfiguration[];
   // roofWindowConfigurations: WindowConfig[];
   // flashingConfigurations: FlashingConfig[];
