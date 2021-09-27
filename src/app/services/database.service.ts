@@ -134,6 +134,11 @@ export class DatabaseService {
     return this.getAllAccessoriesToShopList()[--id];
   }
 
+  fetchSkylights() {
+    // TODO uzupełnić w późniejszym czasie
+    return of([]);
+  }
+
   // Musi zwracać listę 3 produktów z których 1 jest oknem, 2 to kołnierz, 3 akcesorium
   getMostRecentProductsHomePage() {
     this.mostRecentProducts.push(this.windows[0]);
