@@ -19,12 +19,10 @@ export class RoofWindowsComponent implements OnInit, DoCheck {
   roofWindowsList: RoofWindowSkylight[] = [];
   filteredRoofWindowsList: RoofWindowSkylight[] = [];
 
-  constructor(private router: Router,
-              private store: Store) {
+  constructor(private router: Router) {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(new GetRoofWindows());
     this.loadAllWindows();
   }
 
