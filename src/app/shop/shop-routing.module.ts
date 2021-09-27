@@ -9,12 +9,14 @@ import {SkylightsComponent} from './skylights/skylights.component';
 import {SkylightDetailsComponent} from './skylights/skylight-details/skylight-details.component';
 import {AccessoriesComponent} from './accessories/accessories.component';
 import {AccessorieDetailsComponent} from './accessories/accessorie-details/accessorie-details.component';
+import {RoofWindowsGuard} from '../store/roof-window/roof-windows.guard';
+import {FlashingsGuard} from '../store/flashing/flashings.guard';
 
 const routes: Routes = [
   {path: '', component: ShopComponent},
-  {path: 'okna-dachowe', component: RoofWindowsComponent},
+  {path: 'okna-dachowe', component: RoofWindowsComponent, canActivate: [RoofWindowsGuard]},
   {path: 'okna-dachowe/:windowId', component: RoofWindowDetailsComponent},
-  {path: 'kolnierze', component: FlashingsComponent},
+  {path: 'kolnierze', component: FlashingsComponent, canActivate: [FlashingsGuard]},
   {path: 'kolnierze/:flashingId', component: FlashingDetailsComponent},
   {path: 'wylazy-dachowe', component: SkylightsComponent},
   {path: 'wylazy-dachowe/:skylightId', component: SkylightDetailsComponent},
