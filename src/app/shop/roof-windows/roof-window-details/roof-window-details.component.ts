@@ -1,48 +1,61 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {DatabaseService} from '../../../services/database.service';
 import {RoofWindowSkylight} from '../../../models/roof-window-skylight';
 import {User} from '../../../models/user';
 import {Accessory} from '../../../models/accessory';
+import {Actions, ofActionSuccessful, Select, Store} from '@ngxs/store';
+import {map, takeUntil} from 'rxjs/operators';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import {RouterDataResolved} from '@ngxs/router-plugin';
+import {RoofWindowState} from '../../../store/roof-window/roof-window.state';
 
 @Component({
   selector: 'app-roof-window-details',
   templateUrl: './roof-window-details.component.html',
   styleUrls: ['./roof-window-details.component.scss']
 })
-export class RoofWindowDetailsComponent implements OnInit {
+export class RoofWindowDetailsComponent implements OnInit, OnDestroy {
+  window$: Observable<RoofWindowSkylight>;
+  @Input() logInUser: User;
+  routerData;
   windowToShow: RoofWindowSkylight;
+  isDestroyed$ = new Subject();
   picturesOfWindow = [];
   windowMaterial: string;
   windowVent: string;
   windowHandle: string;
-  @Input() logInUser: User;
   priceAfterDisc: any;
   glazing: string;
   availableSizes = ['55x78', '55x98', '66x98', '66x118', '66x140', '78x98', '78x118', '78x140', '78x160', '94x118', '94x140', '94x160', '114x118', '114x140', '134x98'];
   quantity = 1;
   availableExtras: Accessory[] = [];
 
-  constructor(private router: ActivatedRoute,
-              private db: DatabaseService) {
+  constructor(private router: ActivatedRoute, private store: Store) {
+    this.window$ = this.store.select(RoofWindowState.roofWindowByCode)
+      .pipe(map(filterFn => filterFn('1O-ISO-V-E02-KL00-A7022P-078118-OKPO01')));
   }
 
   ngOnInit(): void {
-    this.router.params.subscribe(param => {
-      this.db.getWindowByCode(param['windowId']).subscribe(window => {
-        this.windowToShow = window;
-      });
+    this.window$.subscribe(window => {
+      this.windowToShow = window;
+      this.windowMaterial = window.stolarkaMaterial;
+      this.windowVent = window.wentylacja;
+      this.windowHandle = window.zamkniecieTyp;
+      // TODO odkomentować po wczytaniu danych z eNova i zakomnetować kolejną linię
+      // this.glazing = window.pakietSzybowy.split(':')[1];
+      this.glazing = window.pakietSzybowy;
     });
     // TODO wczytać zdjęcia z bazy przypisane do danego indeksu
     this.picturesOfWindow.push('assets/img/products/ISO-I22.png');
     this.picturesOfWindow.push('assets/img/products/ISO-arrangement-1.png');
     this.picturesOfWindow.push('assets/img/products/ISO-arrangement-2.png');
     this.priceAfterDisc = this.getDiscountPrice();
-    this.availableExtras.push(this.db.getAccessoryById(1), this.db.getAccessoryById(2));
-    this.windowMaterial = this.windowToShow.stolarkaMaterial;
-    this.windowVent = this.windowToShow.wentylacja;
-    this.windowHandle = this.windowToShow.zamkniecieTyp;
-    this.glazing = this.windowToShow.pakietSzybowy.split(':')[1];
+    // TODO napisać obsługę tej metody z wykorzystaniem store'a
+    // this.availableExtras.push(this.db.getAccessoryById(1), this.db.getAccessoryById(2));
+  }
+
+  ngOnDestroy() {
+    this.isDestroyed$.next();
   }
 
   getDiscountPrice() {
@@ -68,10 +81,12 @@ export class RoofWindowDetailsComponent implements OnInit {
   }
 
   addToCart(quantity: number) {
-    this.db.addToCart(this.windowToShow, quantity);
+    // TODO napisać obsługę tej metody z wykorzystaniem store'a
+    // this.db.addToCart(this.windowToShow, quantity);
   }
 
   order(quantity: number) {
-    this.db.order(this.windowToShow, quantity);
+    // TODO napisać obsługę tej metody z wykorzystaniem store'a
+    // this.db.order(this.windowToShow, quantity);
   }
 }

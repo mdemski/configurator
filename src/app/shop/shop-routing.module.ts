@@ -20,15 +20,15 @@ import {FlatRoofWindowsGuard} from '../store/flat-roof-window/flat-roof-windows.
 const routes: Routes = [
   {path: '', component: ShopComponent},
   {path: 'okna-dachowe', component: RoofWindowsComponent, canActivate: [RoofWindowsGuard]},
-  {path: 'okna-dachowe/:windowId', component: RoofWindowDetailsComponent},
+  {path: 'okna-dachowe/:windowId', component: RoofWindowDetailsComponent, canActivate: [RoofWindowsGuard]},
   {path: 'kolnierze', component: FlashingsComponent, canActivate: [FlashingsGuard]},
-  {path: 'kolnierze/:flashingId', component: FlashingDetailsComponent},
+  {path: 'kolnierze/:flashingId', component: FlashingDetailsComponent, canActivate: [FlashingsGuard]},
   {path: 'wylazy-dachowe', component: SkylightsComponent, canActivate: [SkylightsGuard]},
-  {path: 'wylazy-dachowe/:skylightId', component: SkylightDetailsComponent},
+  {path: 'wylazy-dachowe/:skylightId', component: SkylightDetailsComponent, canActivate: [SkylightsGuard]},
   {path: 'akcesoria', component: AccessoriesComponent, canActivate: [AccessoriesGuard]},
-  {path: 'akcesoria/:accessoryId', component: AccessorieDetailsComponent},
+  {path: 'akcesoria/:accessoryId', component: AccessorieDetailsComponent, canActivate: [AccessoriesGuard]},
   {path: 'plaski-dach', component: FlatRoofWindowsComponent, canActivate: [FlatRoofWindowsGuard]},
-  {path: 'plaski-dach/:flatId', component: FlatRoofWidnowDetailsComponent},
+  {path: 'plaski-dach/:flatId', component: FlatRoofWidnowDetailsComponent, canActivate: [FlatRoofWindowsGuard]},
 ];
 
 @NgModule({
