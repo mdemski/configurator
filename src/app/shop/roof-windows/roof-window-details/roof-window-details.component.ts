@@ -6,7 +6,7 @@ import {Accessory} from '../../../models/accessory';
 import {Actions, ofActionSuccessful, Select, Store} from '@ngxs/store';
 import {map, takeUntil} from 'rxjs/operators';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
-import {RouterDataResolved} from '@ngxs/router-plugin';
+import {RouterDataResolved, RouterState} from '@ngxs/router-plugin';
 import {RoofWindowState} from '../../../store/roof-window/roof-window.state';
 
 @Component({
@@ -30,9 +30,11 @@ export class RoofWindowDetailsComponent implements OnInit, OnDestroy {
   quantity = 1;
   availableExtras: Accessory[] = [];
 
-  constructor(private router: ActivatedRoute, private store: Store) {
-    this.window$ = this.store.select(RoofWindowState.roofWindowByCode)
-      .pipe(map(filterFn => filterFn('1O-ISO-V-E02-KL00-A7022P-078118-OKPO01')));
+  constructor(private store: Store) {
+    this.store.select(RouterState.state).pipe(takeUntil(this.isDestroyed$)).subscribe(state => {
+      this.window$ = this.store.select(RoofWindowState.roofWindowByCode)
+        .pipe(map(filterFn => filterFn(state['params'].windowId.toString())));
+    });
   }
 
   ngOnInit(): void {
