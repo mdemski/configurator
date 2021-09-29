@@ -96,7 +96,7 @@ export class DatabaseService {
       this.windowValuesSetter.setUwAndUgValues(window);
       this.windowValuesSetter.setNumberOfGlasses(window);
       window.uszczelki = window.uszczelki + 2;
-      this.erpName.translateNamesFromERPToApp(window);
+      this.erpName.translateWindowsPropertiesFromERPToApp(window);
     }
     return of(windows);
   }

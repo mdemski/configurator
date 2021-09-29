@@ -9,7 +9,7 @@ export class ErpNameTranslatorService {
   constructor(private valueTranslator: PropertyValueTranslatorService) {
   }
 
-  translateNamesFromERPToApp(product) {
+  translateWindowsPropertiesFromERPToApp(product) {
     // tslint:disable-next-line:forin
     for (const propertyName in product) {
       this.valueTranslator.translatePropertyValues('ROOF-WINDOWS-DATA', product[propertyName])

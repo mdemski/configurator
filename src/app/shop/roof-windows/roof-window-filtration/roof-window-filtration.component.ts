@@ -5,6 +5,7 @@ import {RoofWindowState} from '../../../store/roof-window/roof-window.state';
 import {Observable, Subject} from 'rxjs';
 import {RoofWindowSkylight} from '../../../models/roof-window-skylight';
 import {map, takeUntil} from 'rxjs/operators';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-roof-window-filtration',
@@ -13,7 +14,10 @@ import {map, takeUntil} from 'rxjs/operators';
 })
 export class RoofWindowFiltrationComponent implements OnInit, OnDestroy {
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+              public translate: TranslateService) {
+    translate.addLangs(['pl', 'en', 'fr', 'de']);
+    translate.setDefaultLang('pl');
   }
 
   @Output() filters = new EventEmitter<any>();
@@ -90,9 +94,13 @@ export class RoofWindowFiltrationComponent implements OnInit, OnDestroy {
       const materialTemp = [];
       for (const window of windows) {
         if (window.pakietSzybowy.toLowerCase().startsWith('e')) {
-          glassesTemp.push('dwuszybowe');
+          this.translate.get('SHOP').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
+            glassesTemp.push(text['doubleGlazing']);
+          });
         } else {
-          glassesTemp.push('trzyszybowe');
+          this.translate.get('SHOP').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
+            glassesTemp.push(text['tripleGlazing']);
+          });
         }
         openingTemp.push(window.otwieranie);
         materialTemp.push(window.stolarkaMaterial);

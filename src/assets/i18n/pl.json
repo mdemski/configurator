@@ -184,7 +184,9 @@
     "subTitleAccessories": "Ochrona przed słońcem i owadami",
     "subTitleFlatRoofWindows": "Nietuzinkowa aranżacja przestrzeni",
     "subTitleSkylights": "Bezpieczne wyjście na dach",
-    "subTitleReset": "Inne niż wszystkie"
+    "subTitleReset": "Inne niż wszystkie",
+    "doubleGlazing": "dwuszybowe",
+    "tripleGlazing": "trzyszybowe"
   },
   "SINGLE-PRODUCT": {
     "price": "Cena",
