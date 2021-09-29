@@ -20,7 +20,7 @@ export class RoofWindowFiltrationComponent implements OnInit, OnDestroy {
     translate.setDefaultLang('pl');
   }
 
-  @Output() filters = new EventEmitter<any>();
+  @Output() filtersEmitter = new EventEmitter<any>();
   @Select(RoofWindowState.roofWindows) roofWindows$: Observable<RoofWindowSkylight[]>;
   glassesToChoice: string[] = [];
   openingTypesToChoice: string[] = [];
@@ -73,8 +73,7 @@ export class RoofWindowFiltrationComponent implements OnInit, OnDestroy {
         this.filtersObject.windowHeightTo = data.windowHeightTo;
       })
     ).subscribe((data) => {
-      console.log(this.filtersObject);
-      // this.search(this.filtersObject);
+      this.search(this.filtersObject);
     });
   }
 
@@ -82,9 +81,9 @@ export class RoofWindowFiltrationComponent implements OnInit, OnDestroy {
     this.isDestroyed$.next();
   }
 
-  search(filters: any): void {
-    Object.keys(filters).forEach(key => filters[key] === '' ? delete filters[key] : key);
-    this.filters.emit(filters);
+  search(filtersObject: any): void {
+    Object.keys(filtersObject).forEach(key => filtersObject[key] === null ? delete filtersObject[key] : key);
+    this.filtersEmitter.emit(filtersObject);
   }
 
   private loadDataToFiltration() {

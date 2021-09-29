@@ -1,4 +1,4 @@
-import {Component, DoCheck, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, DoCheck, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {RoofWindowSkylight} from '../../models/roof-window-skylight';
 import {Router} from '@angular/router';
 import {shareReplay, takeUntil} from 'rxjs/operators';
@@ -12,14 +12,14 @@ import {Observable, Subject} from 'rxjs';
   styleUrls: ['./roof-windows.component.scss']
 })
 export class RoofWindowsComponent implements OnInit, OnDestroy {
-  @Input() filters: object;
+  filters: object;
   @Input() searchByKeyboard: string;
   @Select(RoofWindowState.roofWindows) roofWindows$: Observable<RoofWindowSkylight[]>;
   roofWindowsList: RoofWindowSkylight[] = [];
   filteredRoofWindowsList: RoofWindowSkylight[] = [];
   private isDestroyed$ = new Subject();
 
-  constructor(private router: Router) {
+  constructor() {
   }
 
   ngOnInit(): void {
@@ -28,11 +28,10 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
     this.filterWindowList(JSON.stringify(this.filters), this.roofWindowsList);
   }
 
-  // ngDoCheck() {
-  //   if (this.filters) {
-  //     this.filterWindowList(this.filters, this.roofWindowsList);
-  //   }
-  // }
+  filtersInput(filtersObject: any) {
+    this.filters = filtersObject;
+    console.log(filtersObject);
+  }
 
   ngOnDestroy() {
     this.isDestroyed$.next();
