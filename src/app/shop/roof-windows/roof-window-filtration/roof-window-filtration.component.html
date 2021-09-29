@@ -1,26 +1,26 @@
 <div class="row">
   <div class="col">
     <!--Searching-->
-    <form class="form-inline md-form form-sm active-pink-2">
+    <form [formGroup]="filtrationForm" class="form-inline md-form form-sm active-pink-2">
       <!--      Searching by name input box-->
       <div class="searching-box">
         <div class="pr-1 searching-icon" fas icon="search" aria-hidden="true"></div>
-        <input [formControl]="windowName"
+        <input formControlName="windowName"
                class="form-control form-control-sm mr-3 w-75"
                type="text"
                autocomplete="off"
                placeholder="{{ 'SHOP.searchingText' | translate}}"
-               (keyup)="editValueToObjectFromName(windowName)"
         >
       </div>
 
       <!-- START Searching by glazing checkbox box-->
       <div class="searching-box">
-        <label>{{ 'SHOP.glazingToFilter' | translate}}</label>
-        <div class="check-box" *ngFor="let glass of glassesToChoice">
+        <label for="windowGlazings">{{ 'SHOP.glazingToFilter' | translate}}</label>
+        <div class="check-box"
+             *ngFor="let glass of glassesToChoice; let i = index"
+        formArrayName="windowGlazings">
           <input type="checkbox"
-                 [formControl]="windowGlazing"
-                 (change)="editValueToObjectFromGlazing(glass)"
+                 formControlName="{{i}}"
           >{{glass}}
         </div>
       </div>
@@ -29,10 +29,11 @@
       <!-- START Searching by opening box-->
       <div class="searching-box">
         <label>{{ 'SHOP.openingToFilter' | translate}}</label>
-        <div class="check-box" *ngFor="let opening of openingTypesToChoice">
+        <div class="check-box"
+             *ngFor="let opening of openingTypesToChoice; let i = index"
+             formArrayName="windowOpeningTypes">
           <input type="checkbox"
-                 [formControl]="windowOpeningType"
-                 (change)="editValueToObjectFromOpening(opening)"
+                 formControlName="{{i}}"
           >{{opening}}
         </div>
       </div>
@@ -41,10 +42,11 @@
       <!-- START Searching by material box-->
       <div class="searching-box">
         <label>{{ 'SHOP.materialToFilter' | translate}}</label>
-        <div class="check-box" *ngFor="let material of materialsToChoice">
+        <div class="check-box"
+             *ngFor="let material of materialsToChoice; let i = index"
+             formArrayName="windowMaterials">
           <input type="checkbox"
-                 [formControl]="windowMaterial"
-                 (change)="editValueToObjectFromMaterial(material)"
+                 formControlName="{{i}}"
           >{{material}}
         </div>
       </div>
@@ -54,17 +56,19 @@
       <div class="searching-box dimensions-input">
         <label>{{ 'SHOP.widthFromTo' | translate}}</label>
         <div class="md-form md-outline">
-          <input [formControl]="windowWidthFrom"
+          <input formControlName="windowWidthFrom"
                  type="number"
                  autocomplete="off"
+                 min="{{smallestWidth}}"
+                 max="{{biggestWidth}}"
                  placeholder="{{ 'SHOP.from' | translate}}"
-                 (keyup)="editValueToObjectFromWidthFrom(windowWidthFrom)"
           >
-          <input [formControl]="windowWidthTo"
+          <input formControlName="windowWidthTo"
                  type="number"
                  autocomplete="off"
+                 min="{{smallestWidth}}"
+                 max="{{biggestWidth}}"
                  placeholder="{{ 'SHOP.to' | translate}}"
-                 (keyup)="editValueToObjectFromWidthTo(windowWidthTo)"
           ></div>
       </div>
 
@@ -72,17 +76,19 @@
       <div class="searching-box dimensions-input">
         <label>{{ 'SHOP.heightFromTo' | translate}}</label>
         <div class="md-form md-outline">
-          <input [formControl]="windowHeightFrom"
+          <input formControlName="windowHeightFrom"
                  type="number"
                  autocomplete="off"
+                 min="{{smallestHeight}}"
+                 max="{{biggestHeight}}"
                  placeholder="{{ 'SHOP.from' | translate}}"
-                 (keyup)="editValueToObjectFromHeightFrom(windowHeightFrom)"
           >
-          <input [formControl]="windowHeightTo"
+          <input formControlName="windowHeightTo"
                  type="number"
                  autocomplete="off"
+                 min="{{smallestHeight}}"
+                 max="{{biggestHeight}}"
                  placeholder="{{ 'SHOP.to' | translate}}"
-                 (keyup)="editValueToObjectFromHeightTo(windowHeightTo)"
           ></div>
       </div>
 
