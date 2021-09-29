@@ -5,7 +5,9 @@ import {ModalComponent} from '../modal/modal.component';
 import {BouncingLoaderComponent} from '../loaders/bouncing-loader.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FilterPipeModule} from 'ngx-filter-pipe';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {HttpLoaderFactory} from '../app.module';
+import {HttpClient} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,13 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     FilterPipeModule,
     FormsModule,
     ReactiveFormsModule,
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
   ],
   exports: [
     CommonModule,
@@ -27,6 +36,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     DisableControlDirective,
     ModalComponent,
     BouncingLoaderComponent,
+    TranslateModule
   ]
 })
 export class SharedModule { }

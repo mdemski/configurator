@@ -23,13 +23,6 @@ import {FlatRoofWindowState} from '../store/flat-roof-window/flat-roof-window.st
 @NgModule({
   imports: [
     SharedModule,
-    TranslateModule.forChild({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
-    }),
     NgxsModule.forFeature([ConfigurationState, RoofWindowState, FlashingState, AccessoryState, SkylightsState, FlatRoofWindowState]),
     ConfiguratorRoutingModule
   ],
