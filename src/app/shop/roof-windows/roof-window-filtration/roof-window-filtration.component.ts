@@ -89,8 +89,6 @@ export class RoofWindowFiltrationComponent implements OnInit, OnDestroy {
       const openingTemp = [];
       const materialTemp = [];
       for (const window of windows) {
-        // TODO poprawić po aktualizacji wczytywania z eNova
-        // if (window.pakietSzybowy.split(':')[1].toLowerCase().startsWith('e')) {
         if (window.pakietSzybowy.toLowerCase().startsWith('e')) {
           glassesTemp.push('dwuszybowe');
         } else {
