@@ -36,10 +36,10 @@ export class RoofWindowFiltrationComponent implements OnInit, OnDestroy {
     windowGlazings: [],
     windowOpeningTypes: [],
     windowMaterials: [],
-    windowWidthFrom: '',
-    windowWidthTo: '',
-    windowHeightFrom: '',
-    windowHeightTo: ''
+    windowWidthFrom: 47,
+    windowWidthTo: 999,
+    windowHeightFrom: 60,
+    windowHeightTo: 999
   };
   private isDestroyed$ = new Subject();
 
