@@ -21,6 +21,7 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
     windowHeightFrom: number,
     windowHeightTo: number
   };
+  isFiltering = false;
   @Input() searchByKeyboard: string;
   @Select(RoofWindowState.roofWindows) roofWindows$: Observable<RoofWindowSkylight[]>;
   roofWindowsList: RoofWindowSkylight[] = [];
@@ -31,11 +32,14 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.isFiltering = true;
     this.roofWindows$.pipe(takeUntil(this.isDestroyed$)).subscribe(roofWindows => this.roofWindowsList = roofWindows);
     this.filteredRoofWindowsList = this.roofWindowsList;
+    this.isFiltering = false;
   }
 
   filtersInput(filtersObject: any) {
+    this.isFiltering = true;
     this.filters = filtersObject;
     let numberOfGlazingNull = 0;
     let filteredByGlazing: RoofWindowSkylight[];
@@ -115,6 +119,7 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
       }
       return nameFound && widthFound && heightFound;
     });
+    this.isFiltering = false;
   }
 
   ngOnDestroy() {
