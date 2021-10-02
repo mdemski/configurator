@@ -7,7 +7,9 @@
 
 <div class="md-container">
 
-  <div class="product-card" *ngFor="let window of filteredRoofWindowsList | filter : searchByKeyboard: 'name'">
+
+
+  <div class="product-card" *ngFor="let window of filteredRoofWindowsList">
     <a routerLink="./{{window.kod}}">
       <img src="{{window.linkiDoZdjec[0]}}" alt="{{window.grupaAsortymentowa}}" class="product-card__photo"/>
     </a>

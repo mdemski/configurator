@@ -185,8 +185,8 @@
     "subTitleFlatRoofWindows": "Nietuzinkowa aranżacja przestrzeni",
     "subTitleSkylights": "Bezpieczne wyjście na dach",
     "subTitleReset": "Inne niż wszystkie",
-    "doubleGlazing": "dwuszybowe",
-    "tripleGlazing": "trzyszybowe"
+    "doubleGlazing": "dwuszybowy",
+    "tripleGlazing": "trzyszybowy"
   },
   "SINGLE-PRODUCT": {
     "price": "Cena",
@@ -311,6 +311,7 @@
     "Okno:IS1": "IS",
     "Okno:IS": "IS",
     "OknoDachowe:IS": "grupa IS",
+    "OknoDachowe:IG": "grupa IG",
     "OknoDachowe": "Okno Dachowe",
     "Okno:RAL7048": "kolor RAL7048",
     "Okno:ISOV": "ISOV",
