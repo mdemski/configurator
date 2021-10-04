@@ -23,7 +23,6 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
     windowHeightTo: number
   };
   isFiltering = false;
-  @Input() searchByKeyboard: string;
   @Select(RoofWindowState.roofWindows) roofWindows$: Observable<RoofWindowSkylight[]>;
   roofWindowsList: RoofWindowSkylight[] = [];
   filteredRoofWindowsList: RoofWindowSkylight[] = [];
