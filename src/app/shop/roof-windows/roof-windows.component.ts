@@ -30,7 +30,7 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
   private isDestroyed$ = new Subject();
   page = 1;
   pageSize = 10;
-  sortBy = 'nameDesc';
+  sortBy = 'popularity';
 
   constructor() {
   }
@@ -139,20 +139,25 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
   }
 
   sortArray() {
-    if (this.sortBy === 'popularity') {
-      this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['iloscSprzedanychRok'], ['asc']);
-    }
-    if (this.sortBy === 'priceAsc') {
-      this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['CenaDetaliczna'], ['asc']);
-    }
-    if (this.sortBy === 'priceDesc') {
-      this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['CenaDetaliczna'], ['desc']);
-    }
-    if (this.sortBy === 'nameAsc') {
-      this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['windowName'], ['asc']);
-    }
-    if (this.sortBy === 'nameDesc') {
-      this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['windowName'], ['desc']);
+    switch (this.sortBy) {
+      case 'popularity':
+        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['iloscSprzedanychRok'], ['asc']);
+        break;
+      case 'priceAsc':
+        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['CenaDetaliczna'], ['asc']);
+        break;
+      case 'priceDesc':
+        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['CenaDetaliczna'], ['desc']);
+        break;
+      case 'nameAsc':
+        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['windowName'], ['asc']);
+        break;
+      case 'nameDesc':
+        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['windowName'], ['desc']);
+        break;
+      default:
+        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['iloscSprzedanychRok'], ['asc']);
+        break;
     }
   }
 }
