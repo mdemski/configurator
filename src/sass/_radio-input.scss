@@ -1,10 +1,6 @@
 @import 'src/sass/base/variables';
 
-.select-box {
-  position: relative;
-  font-size: $default-font-size;
-  color: $color-dark-grey;
-
+.paginating {
   @media (min-width: 768px) {
     width: 7%;
   }
@@ -16,6 +12,26 @@
   @media (min-width: 1200px) {
     width: 7%;
   }
+}
+
+.sorting {
+  @media (min-width: 768px) {
+    width: 45%;
+  }
+
+  @media (min-width: 992px) {
+    width: 35%;
+  }
+
+  @media (min-width: 1200px) {
+    width: 20%;
+  }
+}
+
+.select-box {
+  position: relative;
+  font-size: $default-font-size;
+  color: $color-dark-grey;
 
   &__current {
     position: relative;
