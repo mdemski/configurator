@@ -27,11 +27,14 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
   roofWindowsList: RoofWindowSkylight[] = [];
   filteredRoofWindowsList: RoofWindowSkylight[] = [];
   private isDestroyed$ = new Subject();
+  page = 1;
+  pageSize = 10;
 
   constructor() {
   }
 
   ngOnInit(): void {
+    this.pageSize = this.getNumberInRow();
     this.isFiltering = true;
     this.roofWindows$.pipe(takeUntil(this.isDestroyed$)).subscribe(roofWindows => this.roofWindowsList = roofWindows);
     this.filteredRoofWindowsList = this.roofWindowsList;
@@ -124,5 +127,10 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.isDestroyed$.next();
+  }
+
+  getNumberInRow() {
+    const containerWidth = Number(window.getComputedStyle(document.getElementsByClassName('md-container')[0]).width.slice(0, -2));
+    return Math.floor(containerWidth / 300);
   }
 }

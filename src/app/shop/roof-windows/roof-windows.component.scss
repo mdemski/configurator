@@ -2,3 +2,35 @@
 @import 'src/sass/base/base';
 @import 'src/sass/buttons';
 @import 'src/sass/components';
+@import 'src/sass/radio-input';
+
+.pagination-container {
+  z-index: 100;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}
+
+.paginator {
+  display: flex;
+  align-items: center;
+  height: 55.594px;
+  margin-right: 1rem;
+}
+
+.paginator {
+  ::ng-deep {
+    ul {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.paginator {
+  ::ng-deep {
+    li.current {
+      background: red;
+    }
+  }
+}

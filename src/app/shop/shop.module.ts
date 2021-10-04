@@ -9,9 +9,6 @@ import {SkylightsComponent} from './skylights/skylights.component';
 import {VerticalWindowDetailsComponent} from './vertical-windows/vertical-window-details/vertical-window-details.component';
 import {SkylightDetailsComponent} from './skylights/skylight-details/skylight-details.component';
 import {AccessorieDetailsComponent} from './accessories/accessorie-details/accessorie-details.component';
-import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
-import {HttpLoaderFactory} from '../app.module';
-import {HttpClient} from '@angular/common/http';
 import {RoofWindowFiltrationComponent} from './roof-windows/roof-window-filtration/roof-window-filtration.component';
 import {FilterPipe} from '../pipes/filter.pipe';
 import {NgxsModule} from '@ngxs/store';
@@ -25,12 +22,14 @@ import { FlatRoofWidnowDetailsComponent } from './flat-roof-windows/flat-roof-wi
 import {SkylightsState} from '../store/skylight/skylights.state';
 import {AccessoryState} from '../store/accessory/accessory.state';
 import {FlatRoofWindowState} from '../store/flat-roof-window/flat-roof-window.state';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 @NgModule({
   imports: [
     SharedModule,
     NgxsModule.forFeature([RoofWindowState, FlashingState, AccessoryState, SkylightsState, FlatRoofWindowState]),
     ShopRoutingModule,
+    NgxPaginationModule
   ],
   declarations: [
     FilterPipe,

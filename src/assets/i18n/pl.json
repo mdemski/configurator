@@ -186,7 +186,9 @@
     "subTitleSkylights": "Bezpieczne wyjście na dach",
     "subTitleReset": "Inne niż wszystkie",
     "doubleGlazing": "dwuszybowy",
-    "tripleGlazing": "trzyszybowy"
+    "tripleGlazing": "trzyszybowy",
+    "nextPageLabel": "Następna",
+    "previousPageLabel": "Poprzednia"
   },
   "SINGLE-PRODUCT": {
     "price": "Cena",
