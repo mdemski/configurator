@@ -5,7 +5,7 @@
 @import 'src/sass/radio-input';
 
 .pagination-container {
-  z-index: 100;
+  z-index: 90;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -16,7 +16,7 @@
   display: flex;
   align-items: center;
   height: 55.594px;
-  margin-right: 1rem;
+  margin: 0 1rem;
 }
 
 .paginator {

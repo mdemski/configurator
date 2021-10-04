@@ -11,6 +11,58 @@
   </div>
   <ng-template #elseBlock>
     <div class="pagination-container">
+      <!--Sorting way selection-->
+      <div class="select-box sorting">
+        <div class="select-box__current" tabindex="1" (change)="sortArray()">
+          <div class="select-box__value">
+            <input class="select-box__input" type="radio" id="popularity" [(ngModel)]="sortBy" value="popularity"
+                   name="sort"
+                   checked/>
+            <p class="select-box__input-text">{{'SHOP.popularity' | translate}}</p>
+          </div>
+
+          <div class="select-box__value">
+            <input class="select-box__input" type="radio" id="priceAsc" [(ngModel)]="sortBy" value="priceAsc"
+                   name="sort"/>
+            <p class="select-box__input-text">{{'SHOP.priceAsc' | translate}}</p>
+          </div>
+
+          <div class="select-box__value">
+            <input class="select-box__input" type="radio" id="priceDesc" [(ngModel)]="sortBy" value="priceDesc"
+                   name="sort"/>
+            <p class="select-box__input-text">{{'SHOP.priceDesc' | translate}}</p>
+          </div>
+
+          <div class="select-box__value">
+            <input class="select-box__input" type="radio" id="nameDesc" [(ngModel)]="sortBy" value="nameDesc"
+                   name="sort"/>
+            <p class="select-box__input-text">{{'SHOP.nameDesc' | translate}}</p>
+          </div>
+
+          <div class="select-box__value">
+            <input class="select-box__input" type="radio" id="nameAsc" [(ngModel)]="sortBy" value="nameAsc"
+                   name="sort"/>
+            <p class="select-box__input-text">{{'SHOP.nameAsc' | translate}}</p>
+          </div>
+
+          <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon"
+               aria-hidden="true"/>
+        </div>
+        <ul class="select-box__list">
+          <li><label class="select-box__option" for="popularity"
+                     aria-hidden="aria-hidden">{{'SHOP.popularity' | translate}}</label></li>
+          <li><label class="select-box__option" for="priceAsc"
+                     aria-hidden="aria-hidden">{{'SHOP.priceAsc' | translate}}</label></li>
+          <li><label class="select-box__option" for="priceDesc"
+                     aria-hidden="aria-hidden">{{'SHOP.priceDesc' | translate}}</label></li>
+          <li><label class="select-box__option" for="nameDesc"
+                     aria-hidden="aria-hidden">{{'SHOP.nameDesc' | translate}}</label></li>
+          <li><label class="select-box__option" for="nameAsc"
+                     aria-hidden="aria-hidden">{{'SHOP.nameAsc' | translate}}</label></li>
+        </ul>
+      </div>
+
+
       <pagination-controls
         class="paginator"
         (pageChange)="page = $event"
@@ -18,7 +70,8 @@
         nextLabel="{{'SHOP.nextPageLabel' | translate}}"
         autoHide="true"
       ></pagination-controls>
-      <div class="select-box">
+      <!--Number on page selection-->
+      <div class="select-box paginating">
         <div class="select-box__current" tabindex="1">
           <div class="select-box__value">
             <input class="select-box__input" type="radio" id="0" [(ngModel)]="pageSize" [value]="getNumberInRow()"

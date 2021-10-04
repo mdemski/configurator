@@ -4,6 +4,7 @@ import {takeUntil} from 'rxjs/operators';
 import {Select} from '@ngxs/store';
 import {RoofWindowState} from '../../store/roof-window/roof-window.state';
 import {Observable, Subject} from 'rxjs';
+import _ from 'lodash';
 
 @Component({
   selector: 'app-roof-windows',
@@ -29,6 +30,7 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
   private isDestroyed$ = new Subject();
   page = 1;
   pageSize = 10;
+  sortBy = 'nameDesc';
 
   constructor() {
   }
@@ -39,6 +41,7 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
     this.roofWindows$.pipe(takeUntil(this.isDestroyed$)).subscribe(roofWindows => this.roofWindowsList = roofWindows);
     this.filteredRoofWindowsList = this.roofWindowsList;
     this.isFiltering = false;
+    this.sortArray();
   }
 
   filtersInput(filtersObject: any) {
@@ -122,6 +125,7 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
       }
       return nameFound && widthFound && heightFound;
     });
+    this.sortArray();
     this.isFiltering = false;
   }
 
@@ -132,5 +136,23 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
   getNumberInRow() {
     const containerWidth = Number(window.getComputedStyle(document.getElementsByClassName('md-container')[0]).width.slice(0, -2));
     return Math.floor(containerWidth / 300);
+  }
+
+  sortArray() {
+    if (this.sortBy === 'popularity') {
+      this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['iloscSprzedanychRok'], ['asc']);
+    }
+    if (this.sortBy === 'priceAsc') {
+      this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['CenaDetaliczna'], ['asc']);
+    }
+    if (this.sortBy === 'priceDesc') {
+      this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['CenaDetaliczna'], ['desc']);
+    }
+    if (this.sortBy === 'nameAsc') {
+      this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['windowName'], ['asc']);
+    }
+    if (this.sortBy === 'nameDesc') {
+      this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['windowName'], ['desc']);
+    }
   }
 }

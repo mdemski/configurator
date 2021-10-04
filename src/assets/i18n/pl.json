@@ -187,6 +187,11 @@
     "subTitleReset": "Inne niż wszystkie",
     "doubleGlazing": "dwuszybowy",
     "tripleGlazing": "trzyszybowy",
+    "popularity": "Popularność",
+    "priceDesc": "Cena: od najdroższych",
+    "priceAsc": "Cena: od najtańszych",
+    "nameDesc": "Nazwa od Z do A",
+    "nameAsc": "Nazwa od A do Z",
     "nextPageLabel": "Następna",
     "previousPageLabel": "Poprzednia"
   },
