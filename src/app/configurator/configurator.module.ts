@@ -1,7 +1,4 @@
 import {NgModule} from '@angular/core';
-import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
-import {HttpLoaderFactory} from '../app.module';
-import {HttpClient} from '@angular/common/http';
 import {NgxsModule} from '@ngxs/store';
 import {RoofWindowState} from '../store/roof-window/roof-window.state';
 import {ConfiguratorRoutingModule} from './configurator-routing.module';
