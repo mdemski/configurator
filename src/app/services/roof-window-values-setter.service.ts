@@ -56,49 +56,50 @@ export class RoofWindowValuesSetterService {
     return String(modelName + ' ' + glazingName + ' ' + szerokosc + 'x' + wysokosc);
   }
 
-  setModelName(window: RoofWindowSkylight) {
-    window.windowName = this.buildWindowModel(window.model, window.pakietSzybowy, window.szerokosc, window.wysokosc);
+  getModelName(window: RoofWindowSkylight) {
+    return this.buildWindowModel(window.model, window.pakietSzybowy, window.szerokosc, window.wysokosc);
   }
 
-  setUwAndUgValues(window: RoofWindowSkylight) {
-    window.windowUG = 0.7;
-    window.windowUW = 1.06;
+  getUwAndUgValues(window: RoofWindowSkylight) {
+    let windowUG = 0.7;
+    let windowUW = 1.06;
     const pakietTemp = window.pakietSzybowy.toLowerCase().split(':')[1];
     if (pakietTemp.startsWith('e')) {
-      window.windowUG = 1.0;
+      windowUG = 1.0;
       if (window.stolarkaMaterial === 'DrewnoSosna') {
         if (window.otwieranie === 'Okno:Uchylno-przesuwne') {
-          window.windowUW = 1.3;
+          windowUW = 1.3;
         } else {
-          window.windowUW = 1.2;
+          windowUW = 1.2;
         }
       }
       if (window.stolarkaMaterial === 'PVC') {
         if (window.model === 'Okno:BGOV') {
-          window.windowUW = 1.3;
+          windowUW = 1.3;
         } else {
-          window.windowUW = 1.2;
+          windowUW = 1.2;
         }
       }
     }
     if (pakietTemp.startsWith('n')) {
-      window.windowUG = 0.5;
-      window.windowUW = 0.83;
+      windowUG = 0.5;
+      windowUW = 0.83;
     }
     if (pakietTemp === 'i1' ||
       pakietTemp === 'i2' ||
       pakietTemp === 'i3' ||
       pakietTemp === 'i4') {
-      window.windowUG = 0.5;
-      window.windowUW = 0.91;
+      windowUG = 0.5;
+      windowUW = 0.91;
     }
+    return {windowUG, windowUW};
   }
 
-  setNumberOfGlasses(window: RoofWindowSkylight) {
+  getNumberOfGlasses(window: RoofWindowSkylight) {
     if (window.pakietSzybowy.split(':')[1].toLowerCase().startsWith('e')) {
-      window.numberOfGlasses = 2;
+      return 2;
     } else {
-      window.numberOfGlasses = 3;
+      return 3;
     }
   }
 
@@ -390,7 +391,7 @@ export class RoofWindowValuesSetterService {
       '-' + widthCode + heightCode + '-OKPO01';
   }
 
-  setWindowModel(material: string, openingType: string, ventilation: string) {
+  getWindowModel(material: string, openingType: string, ventilation: string) {
     let model = '';
     switch (material) {
       case 'DrewnoSosna':
@@ -460,7 +461,7 @@ export class RoofWindowValuesSetterService {
     return model;
   }
 
-  setWindowAssortmentGroup(openingType: string) {
+  getWindowAssortmentGroup(openingType: string) {
     let assortmentGroup = '';
     switch (openingType) {
       case 'Okno:Obrotowe':
@@ -503,11 +504,11 @@ export class RoofWindowValuesSetterService {
     return assortmentGroup;
   }
 
-  setWindowType(openingType: string) {
-    return String(this.setWindowAssortmentGroup(openingType) + ':Okno');
+  getWindowType(openingType: string) {
+    return String(this.getWindowAssortmentGroup(openingType) + ':Okno');
   }
 
-  setWindowGeometry(material: string) {
+  getWindowGeometry(material: string) {
     let geometry = 'Okno:';
     switch (material) {
       case 'DrewnoSosna':
@@ -520,8 +521,8 @@ export class RoofWindowValuesSetterService {
     return geometry;
   }
 
-  setWindowFamily(material: string, openingType: string) {
-    const assortmentGroup = String(this.setWindowAssortmentGroup(openingType) + ':');
+  getWindowFamily(material: string, openingType: string) {
+    const assortmentGroup = String(this.getWindowAssortmentGroup(openingType) + ':');
     let tempMaterial = '';
     let family = '';
     switch (material) {
@@ -574,8 +575,8 @@ export class RoofWindowValuesSetterService {
     return family;
   }
 
-  setWindowGroup(material: string, openingType: string) {
-    const family = this.setWindowFamily(material, openingType);
+  getWindowGroup(material: string, openingType: string) {
+    const family = this.getWindowFamily(material, openingType);
     let type = '';
 
     switch (openingType) {
@@ -598,22 +599,22 @@ export class RoofWindowValuesSetterService {
         type = family + 'W';
         break;
       case 'KolankoDrewno:NieotwieraneFIP':
-        type = String(this.setWindowAssortmentGroup(openingType) + ':IKD');
+        type = String(this.getWindowAssortmentGroup(openingType) + ':IKD');
         break;
       case 'KolankoDrewno:Uchylne':
-        type = String(this.setWindowAssortmentGroup(openingType) + ':IKD');
+        type = String(this.getWindowAssortmentGroup(openingType) + ':IKD');
         break;
       case 'KolankoPVC:UchylnoRozwierneLewe':
-        type = String(this.setWindowAssortmentGroup(openingType) + ':KPVC');
+        type = String(this.getWindowAssortmentGroup(openingType) + ':KPVC');
         break;
       case 'KolankoPVC:UchylnoRozwiernePrawe':
-        type = String(this.setWindowAssortmentGroup(openingType) + ':KPVC');
+        type = String(this.getWindowAssortmentGroup(openingType) + ':KPVC');
         break;
       case 'KolankoPVC:Uchylne':
-        type = String(this.setWindowAssortmentGroup(openingType) + ':KPVC');
+        type = String(this.getWindowAssortmentGroup(openingType) + ':KPVC');
         break;
       case 'KolankoPVC:NieotwieraneFIX':
-        type = String(this.setWindowAssortmentGroup(openingType) + ':KPVC');
+        type = String(this.getWindowAssortmentGroup(openingType) + ':KPVC');
         break;
     }
     return type;

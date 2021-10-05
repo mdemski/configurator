@@ -31,6 +31,7 @@ import {SingleConfiguration} from '../../models/single-configuration';
 import {Select, Store} from '@ngxs/store';
 import {SetCurrentUser} from '../../store/app/app.actions';
 import {ConfigurationState} from '../../store/configuration/configuration.state';
+import {RouterState} from '@ngxs/router-plugin';
 
 @Component({
   selector: 'app-roof-windows-config',
@@ -40,6 +41,8 @@ import {ConfigurationState} from '../../store/configuration/configuration.state'
 export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
 
   @Select(ConfigurationState.configurations) configurations$: Observable<SingleConfiguration[]>;
+  @Select(RouterState) params$: Observable<any>;
+
   // TODO przygotować strumień i service do publikowania tej danej po aplikacji
   constructor(private authService: AuthService,
               private store: Store,
@@ -56,13 +59,13 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.loading = true;
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
-    this.paramsUserFetchData$ = combineLatest(this.store.dispatch(SetCurrentUser), this.activeRouter.params,
+    this.paramsUserFetchData$ = combineLatest(this.store.dispatch(SetCurrentUser), this.params$,
       this.configData.fetchAllWindowsData(), this.configurations$).pipe(
       takeUntil(this.isDestroyed$),
       map(data => {
         return {
           user: data[0],
-          params: data[1],
+          params: data[1].state.params,
           fetch: data[2],
           configurations: data[3]
         };
@@ -81,6 +84,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   popupConfig = true;
   chooseConfigNamePopup = false;
   copyLinkToConfigurationPopup = false;
+  private glazingName = 'Okno:E01';
   private globalId = '';
   private highestUserId;
   private globalConfiguration: SingleConfiguration = null;
@@ -149,8 +153,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
 
   // 'width': new FormControl(78, [this.validateWidth.bind(this), Validators.required]), własnym walidator
   ngOnInit(): void {
-    this.paramsUserFetchData$.subscribe(console.log);
-    this.configurations$.subscribe(console.log);
     this.highestUserId = 1;
     this.tempConfiguredWindow = new RoofWindowSkylight(
       '1O-ISO-V-E02-KL00-A7022P-079119-OKPO01', 'Okno dachowe tymczasowe', 'ISOV E2 79x119', 'I-Okno', 'NPL-Okno', 'Nowy', 'Okno:ISOV', 'Okno:E02', 'dwuszybowy', 79,
@@ -179,7 +181,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         this.currentUser = data.user;
         this.formName = data.params.formName;
         this.windowCode = data.params.productCode;
-        if (data.params.configId === undefined) {
+        if (data.params.configId === undefined || data.params.configId === -1) {
           this.globalId = this.hd.getHighestGlobalIdFormMongoDB(data.configurations);
         } else {
           this.globalId = data.params.configId;
@@ -191,6 +193,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         this.loadConfig.getWindowToReconfiguration(this.currentUser, this.formName, this.windowCode).pipe(takeUntil(this.isDestroyed$))
           .subscribe(windowToReconfiguration => {
             this.configuredWindow = windowToReconfiguration;
+            console.log(this.configuredWindow);
             this.form = this.fb.group({
               material: new FormControl(this.configuredWindow.stolarkaMaterial, [], [this.validateMaterials.bind(this)]),
               openingType: new FormControl(this.configuredWindow.otwieranie, [], [this.validateOpenings.bind(this)]),
@@ -342,7 +345,9 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       pairwise(),
       tap(([prevForm, form]: [any, any]) => {
         this.windowValuesSetter.glazingTypeSetter(form[1].material, form[1].glazing, form[1].coats, 'Okno').subscribe(glazingName => {
-          this.glazingName$.next(glazingName);
+          // this.glazingName$.next(glazingName);
+          this.glazingName = glazingName;
+          this.configuredWindow.pakietSzybowy = glazingName;
         });
       }),
       map(([prevForm, form]: [any, any]) => {
@@ -351,56 +356,59 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   }
 
   private setConfiguredValues(form) {
-    this.configuredWindow.model = this.windowValuesSetter.setWindowModel(
-      form.material,
-      form.openingType,
-      form.ventilation);
+    // @ts-ignore
+    const temporaryConfigObject: RoofWindowSkylight = {};
+    temporaryConfigObject.model = this.windowValuesSetter.getWindowModel(form.material, form.openingType, form.ventilation);
+    temporaryConfigObject.grupaAsortymentowa = this.windowValuesSetter.getWindowAssortmentGroup(form.openingType);
+    temporaryConfigObject.pakietSzybowy = this.glazingName;
+    temporaryConfigObject.glazingToCalculation = form.glazing;
+    temporaryConfigObject.status = '1. Nowy';
+    temporaryConfigObject.szerokosc = form.width;
+    temporaryConfigObject.wysokosc = form.height;
+    temporaryConfigObject.windowName = this.windowValuesSetter.getModelName(temporaryConfigObject);
+    temporaryConfigObject.indeksAlgorytm = 'I-OKNO';
+    temporaryConfigObject.nazwaPLAlgorytm = 'NPL-OKNO';
+    temporaryConfigObject.typ = this.windowValuesSetter.getWindowType(form.openingType);
+    temporaryConfigObject.geometria = this.windowValuesSetter.getWindowGeometry(form.material);
+    temporaryConfigObject.otwieranie = form.openingType;
+    temporaryConfigObject.wentylacja = form.ventilation;
+    temporaryConfigObject.stolarkaMaterial = form.material;
+    temporaryConfigObject.stolarkaKolor = form.innerColor;
+    temporaryConfigObject.oblachowanieMaterial = form.outer.outerMaterial;
+    temporaryConfigObject.oblachowanieKolor = form.outer.outerColor;
+    temporaryConfigObject.oblachowanieFinisz = form.outer.outerColorFinish;
+    temporaryConfigObject.rodzina = this.windowValuesSetter.getWindowFamily(temporaryConfigObject.stolarkaMaterial, temporaryConfigObject.otwieranie);
+    temporaryConfigObject.rodzaj = this.windowValuesSetter.getWindowGroup(temporaryConfigObject.stolarkaMaterial, temporaryConfigObject.otwieranie);
+    temporaryConfigObject.zamkniecieTyp = form.closure.handle;
+    temporaryConfigObject.zamkniecieKolor = form.closure.handleColor;
+    temporaryConfigObject.uszczelki = 2;
+    temporaryConfigObject.windowCoats = form.coats;
+    temporaryConfigObject.listaDodatkow = form.extras;
+    temporaryConfigObject.kolorTworzywWew = temporaryConfigObject.zamkniecieKolor === 'Okno:RAL7048' ? 'Okno:RAL7048' : 'Okno:RAL9016';
+    temporaryConfigObject.kolorTworzywZew = 'Okno:RAL7048';
+    temporaryConfigObject.windowHardware = false;
+    temporaryConfigObject.numberOfGlasses = this.windowValuesSetter.getNumberOfGlasses(temporaryConfigObject);
+    temporaryConfigObject.cennik = 'KO';
+    temporaryConfigObject.kod = this.windowValuesSetter.generateWindowCode(temporaryConfigObject.stolarkaMaterial, temporaryConfigObject.otwieranie,
+      temporaryConfigObject.wentylacja, temporaryConfigObject.pakietSzybowy, temporaryConfigObject.stolarkaKolor,
+      temporaryConfigObject.oblachowanieMaterial, temporaryConfigObject.oblachowanieKolor, temporaryConfigObject.oblachowanieFinisz,
+      temporaryConfigObject.szerokosc, temporaryConfigObject.wysokosc);
+    temporaryConfigObject.CenaDetaliczna = this.priceCalculation(temporaryConfigObject);
+    temporaryConfigObject.windowUG = this.windowValuesSetter.getUwAndUgValues(temporaryConfigObject).windowUG;
+    temporaryConfigObject.windowUW = this.windowValuesSetter.getUwAndUgValues(temporaryConfigObject).windowUW;
+    temporaryConfigObject.dostepneRozmiary = [];
+    temporaryConfigObject.linkiDoZdjec = [];
+    temporaryConfigObject.iloscSprzedanychRok = 0;
+    temporaryConfigObject.okucia = '';
+    temporaryConfigObject.nazwaPozycjiPL = 'Nowe okno z konfiguratora - nazwa do uzupełnienia';
     if (form.material &&
       form.openingType) {
       this.popupConfig = true;
     }
-    this.configuredWindow.grupaAsortymentowa = this.windowValuesSetter.setWindowAssortmentGroup(form.openingType);
-    this.glazingName$.pipe(takeUntil(this.isDestroyed$)).subscribe(pakietSzybowy => {
-      this.configuredWindow.pakietSzybowy = pakietSzybowy;
-    });
-    this.configuredWindow.glazingToCalculation = form.glazing;
-    this.configuredWindow.status = '1. Nowy';
-    this.configuredWindow.szerokosc = form.width;
+    this.configuredWindow = JSON.parse(JSON.stringify(temporaryConfigObject));
     this.showWidthMessage = this.standardWidths.includes(form.width);
-    this.configuredWindow.wysokosc = form.height;
     this.showHeightMessage = this.standardHeights.includes(form.height);
-    this.windowValuesSetter.setModelName(this.configuredWindow);
-    this.configuredWindow.indeksAlgorytm = 'I-OKNO';
-    this.configuredWindow.nazwaPLAlgorytm = 'NPL-OKNO';
-    this.configuredWindow.typ = this.windowValuesSetter.setWindowType(form.openingType);
-    this.configuredWindow.geometria = this.windowValuesSetter.setWindowGeometry(form.material);
-    this.configuredWindow.otwieranie = form.openingType;
-    this.configuredWindow.wentylacja = form.ventilation;
-    this.configuredWindow.stolarkaMaterial = form.material;
-    this.configuredWindow.stolarkaKolor = form.innerColor;
-    this.configuredWindow.oblachowanieMaterial = form.outer.outerMaterial;
-    this.configuredWindow.rodzina = this.windowValuesSetter.setWindowFamily(this.configuredWindow.stolarkaMaterial, this.configuredWindow.otwieranie);
-    this.configuredWindow.rodzaj = this.windowValuesSetter.setWindowGroup(this.configuredWindow.stolarkaMaterial, this.configuredWindow.otwieranie);
-    this.configuredWindow.oblachowanieKolor = form.outer.outerColor;
-    this.configuredWindow.oblachowanieFinisz = form.outer.outerColorFinish;
-    this.configuredWindow.zamkniecieTyp = form.closure.handle;
-    this.configuredWindow.zamkniecieKolor = form.closure.handleColor;
-    this.configuredWindow.uszczelki = 2;
-    this.configuredWindow.windowCoats = form.coats;
-    this.configuredWindow.listaDodatkow = form.extras;
-    this.configuredWindow.kolorTworzywWew = this.configuredWindow.zamkniecieKolor === 'Okno:RAL7048' ? 'Okno:RAL7048' : 'Okno:RAL9016';
-    this.configuredWindow.kolorTworzywZew = 'Okno:RAL7048';
-    this.configuredWindow.windowHardware = false;
-    this.configuredWindow.numberOfGlasses = this.configuredWindow.glazingToCalculation === 'dwuszybowy' ? 2 : 3;
-    this.configuredWindow.cennik = 'KO';
-    this.configuredWindow.kod = this.windowValuesSetter.generateWindowCode(this.configuredWindow.stolarkaMaterial, this.configuredWindow.otwieranie,
-      this.configuredWindow.wentylacja, this.configuredWindow.pakietSzybowy, this.configuredWindow.stolarkaKolor,
-      this.configuredWindow.oblachowanieMaterial, this.configuredWindow.oblachowanieKolor, this.configuredWindow.oblachowanieFinisz,
-      this.configuredWindow.szerokosc, this.configuredWindow.wysokosc);
-    this.configuredWindow.CenaDetaliczna = this.priceCalculation(this.configuredWindow);
-    this.windowValuesSetter.setUwAndUgValues(this.configuredWindow);
     this.setDisabled(this.configuredWindow);
-    console.log(this.configuredWindow);
   }
 
   //
@@ -678,7 +686,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
             // wersja 1
           } else {
             this.newWindowConfig.products.windows.forEach(element => element.configLink = String(
-              this.router['location']._platformLocation.location.origin  + this.router.url
+              this.router['location']._platformLocation.location.origin + this.router.url
               + '/' + this.globalId
               + '/' + this.formName
               + '/' + this.configuredWindow.kod));
@@ -691,7 +699,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         // wersja 2
         if (this.windowId === 1) {
           const temporaryLink = String(
-            this.router['location']._platformLocation.location.origin  + this.router.url
+            this.router['location']._platformLocation.location.origin + this.router.url
             + '/' + this.globalId
             + '/' + this.formName
             + '/' + this.configuredWindow.kod);
@@ -715,7 +723,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     // wersja 1
     if (configForm.value.configWindowFormId === undefined) {
       this.newWindowConfig.products.windows.forEach(element => element.configLink = String(
-        this.router['location']._platformLocation.location.origin  + this.router.url
+        this.router['location']._platformLocation.location.origin + this.router.url
         + '/' + this.globalId
         + '/' + this.formName
         + '/' + this.configuredWindow.kod));
@@ -751,9 +759,9 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
           windowFormName: this.formName,
           windowFormData: this.form.value,
           configLink: String(this.router['location']._platformLocation.location.origin
-      + '/' + this.globalId
-      + '/' + this.formName
-      + '/' + this.configuredWindow.kod)
+            + '/' + this.globalId
+            + '/' + this.formName
+            + '/' + this.configuredWindow.kod)
         }],
         flashings: null,
         accessories: null,
@@ -787,7 +795,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       // wersja 1
     } else {
       this.newWindowConfig.products.windows.forEach(element => element.configLink = String(
-        this.router['location']._platformLocation.location.origin  + this.router.url
+        this.router['location']._platformLocation.location.origin + this.router.url
         + '/' + this.globalId
         + '/' + this.formName
         + '/' + this.configuredWindow.kod));

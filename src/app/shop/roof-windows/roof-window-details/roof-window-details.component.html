@@ -13,7 +13,7 @@
         src="assets/icons/single_product_page/wood.png" alt="wooden window"></div>
       <div *ngIf="windowMaterial == 'PVC'" class="specification-icons__element active-icon"><img
         src="assets/icons/single_product_page/pvc.png" alt="wooden window"></div>
-      <div class="specification-icons__element active-icon">{{windowToShow.stolarkaKolor}}</div>
+      <div class="specification-icons__element active-icon">{{'ROOF-WINDOWS-DATA.' + windowToShow.stolarkaKolor | translate}}</div>
       <div *ngIf="windowVent == 'NEO-AIR' else windowNoVent" class="specification-icons__element active-icon"><img
         src="assets/icons/single_product_page/neo-vent.png" alt="wooden window"></div>
       <ng-template #windowNoVent>
@@ -28,7 +28,7 @@
       </ng-template>
       <div class="specification-icons__element active-icon">Uw {{windowToShow.windowUW}}</div>
       <div class="specification-icons__element active-icon">Ug {{windowToShow.windowUG}} </div>
-      <div class="specification-icons__element active-icon">{{windowToShow.oblachowanieKolor}}</div>
+      <div class="specification-icons__element active-icon">{{'ROOF-WINDOWS-DATA.' + windowToShow.oblachowanieKolor | translate}}</div>
       <div class="specification-icons__element active-icon"><img src="assets/icons/single_product_page/guarantee-window.png"
                                                                  alt="guarantee for window"></div>
     </div>
@@ -110,12 +110,12 @@
       <tr>
         <th scope="row">4</th>
         <td>{{ 'SINGLE-PRODUCT.windowModel' | translate}}</td>
-        <td>{{windowToShow.model}}</td>
+        <td>{{'ROOF-WINDOWS-DATA.' + windowToShow.model | translate}}</td>
       </tr>
       <tr>
         <th scope="row">5</th>
         <td>{{ 'SINGLE-PRODUCT.windowGlazing' | translate}}</td>
-        <td>{{windowToShow.pakietSzybowy}}</td>
+        <td>{{'ROOF-WINDOWS-DATA.' + windowToShow.pakietSzybowy | translate}}</td>
       </tr>
       <tr>
         <th scope="row">6</th>
@@ -125,62 +125,62 @@
       <tr>
         <th scope="row">7</th>
         <td>{{ 'SINGLE-PRODUCT.windowGeometry' | translate}}</td>
-        <td>{{windowToShow.geometria}}</td>
+        <td>{{'ROOF-WINDOWS-DATA.' + windowToShow.geometria | translate}}</td>
       </tr>
       <tr>
         <th scope="row">8</th>
         <td>{{ 'SINGLE-PRODUCT.windowOpeningType' | translate}}</td>
-        <td>{{windowToShow.otwieranie}}</td>
+        <td>{{'ROOF-WINDOWS-DATA.' + windowToShow.otwieranie | translate}}</td>
       </tr>
       <tr>
         <th scope="row">9</th>
         <td>{{ 'SINGLE-PRODUCT.windowVentilation' | translate}}</td>
-        <td>{{windowToShow.wentylacja}}</td>
+        <td>{{'ROOF-WINDOWS-DATA.' + windowToShow.wentylacja | translate}}</td>
       </tr>
       <tr>
         <th scope="row">10</th>
         <td>{{ 'SINGLE-PRODUCT.windowMaterial' | translate}}</td>
-        <td>{{windowToShow.stolarkaMaterial}}</td>
+        <td>{{'ROOF-WINDOWS-DATA.' + windowToShow.stolarkaMaterial | translate}}</td>
       </tr>
       <tr>
         <th scope="row">11</th>
         <td>{{ 'SINGLE-PRODUCT.windowMaterialColor' | translate}}</td>
-        <td>{{windowToShow.stolarkaKolor}}</td>
+        <td>{{'ROOF-WINDOWS-DATA.' + windowToShow.stolarkaKolor | translate}}</td>
       </tr>
       <tr>
         <th scope="row">12</th>
         <td>{{ 'SINGLE-PRODUCT.windowMaterialFinish' | translate}}</td>
-        <td>{{windowToShow.rodzina}}</td>
+        <td>{{'ROOF-WINDOWS-DATA.' + windowToShow.rodzina | translate}}</td>
       </tr>
       <tr>
         <th scope="row">13</th>
         <td>{{ 'SINGLE-PRODUCT.windowOuterMaterial' | translate}}</td>
-        <td>{{windowToShow.oblachowanieMaterial}}</td>
+        <td>{{'ROOF-WINDOWS-DATA.' + windowToShow.oblachowanieMaterial | translate}}</td>
       </tr>
       <tr>
         <th scope="row">14</th>
         <td>{{ 'SINGLE-PRODUCT.windowOuterColor' | translate}}</td>
-        <td>{{windowToShow.oblachowanieKolor}}</td>
+        <td>{{'ROOF-WINDOWS-DATA.' + windowToShow.oblachowanieKolor | translate}}</td>
       </tr>
       <tr>
         <th scope="row">15</th>
         <td>{{ 'SINGLE-PRODUCT.windowOuterFinish' | translate}}</td>
-        <td>{{windowToShow.oblachowanieFinisz}}</td>
+        <td>{{'ROOF-WINDOWS-DATA.' + windowToShow.oblachowanieFinisz | translate}}</td>
       </tr>
       <tr>
         <th scope="row">16</th>
         <td>{{ 'SINGLE-PRODUCT.windowHandleType' | translate}}</td>
-        <td>{{windowToShow.zamkniecieTyp}}</td>
+        <td>{{'ROOF-WINDOWS-DATA.' + windowToShow.zamkniecieTyp | translate}}</td>
       </tr>
       <tr>
         <th scope="row">17</th>
         <td>{{ 'SINGLE-PRODUCT.windowHandleColor' | translate}}</td>
-        <td>{{windowToShow.zamkniecieKolor}}</td>
+        <td>{{'ROOF-WINDOWS-DATA.' + windowToShow.zamkniecieKolor | translate}}</td>
       </tr>
       <tr>
         <th scope="row">18</th>
         <td>{{ 'SINGLE-PRODUCT.innerAccessoryColor' | translate}}</td>
-        <td>{{windowToShow.kolorTworzywWew}}</td>
+        <td>{{'ROOF-WINDOWS-DATA.' + windowToShow.kolorTworzywWew | translate}}</td>
       </tr>
       <tr>
         <th scope="row">19</th>

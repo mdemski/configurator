@@ -6,6 +6,9 @@ import {DatabaseService} from './database.service';
 import {Flashing} from '../models/flashing';
 import {map} from 'rxjs/operators';
 import {Accessory} from '../models/accessory';
+import {RoofWindowState} from '../store/roof-window/roof-window.state';
+import {Store} from '@ngxs/store';
+import {state} from '@angular/animations';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +35,8 @@ export class LoadConfigurationService {
   accessoryData$: BehaviorSubject<Accessory> = new BehaviorSubject(this.newAccessory);
 
   constructor(private crud: CrudService,
-              private db: DatabaseService) {
+              private db: DatabaseService,
+              private store: Store) {
   }
 
   getWindowToReconfiguration(user: string, formName: string, windowCode: string): Observable<RoofWindowSkylight> {
@@ -47,7 +51,8 @@ export class LoadConfigurationService {
         return of(this.newWindow);
       }
       if (formName === 'no-name' && windowCode !== undefined) {
-        return this.db.getWindowByCode(windowCode);
+        return this.store.select(RoofWindowState.roofWindowByCode)
+          .pipe(map(filterFn => filterFn(windowCode)));
       }
       // tslint:disable-next-line:max-line-length
       // TODO dodać opcję gdy wklejony zostanie link z konfiguracji zalogowanego użytkownika, a w trakcie wklejania użytkownik jest wylogowany

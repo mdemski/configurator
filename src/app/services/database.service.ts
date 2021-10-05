@@ -92,11 +92,11 @@ export class DatabaseService {
   fetchRoofWindows(): Observable<any> {
     const windows = this.getAllRoofWindowsToShopList();
     for (const window of windows) {
-      this.windowValuesSetter.setModelName(window);
-      this.windowValuesSetter.setUwAndUgValues(window);
-      this.windowValuesSetter.setNumberOfGlasses(window);
+      window.windowName = this.windowValuesSetter.getModelName(window);
+      window.windowUG = this.windowValuesSetter.getUwAndUgValues(window).windowUG;
+      window.windowUW = this.windowValuesSetter.getUwAndUgValues(window).windowUW;
+      window.numberOfGlasses = this.windowValuesSetter.getNumberOfGlasses(window);
       window.uszczelki = window.uszczelki + 2;
-      this.erpName.translateWindowsPropertiesFromERPToApp(window);
     }
     return of(windows);
   }
@@ -114,11 +114,11 @@ export class DatabaseService {
   getWindowByCode(kod: string) {
     let tempWindow: RoofWindowSkylight;
     tempWindow = this.getAllRoofWindowsToShopList().filter(window => window.kod === kod)[0];
-    this.windowValuesSetter.setModelName(tempWindow);
-    this.windowValuesSetter.setUwAndUgValues(tempWindow);
-    this.windowValuesSetter.setNumberOfGlasses(tempWindow);
+    tempWindow.windowName = this.windowValuesSetter.getModelName(tempWindow);
+    tempWindow.windowUG = this.windowValuesSetter.getUwAndUgValues(tempWindow).windowUG;
+    tempWindow.windowUW = this.windowValuesSetter.getUwAndUgValues(tempWindow).windowUW;
+    tempWindow.numberOfGlasses = this.windowValuesSetter.getNumberOfGlasses(tempWindow);
     tempWindow.uszczelki = tempWindow.uszczelki + 2;
-    // this.erpName.translateNamesFromERPToApp(tempWindow);
     return of(tempWindow);
   }
 
