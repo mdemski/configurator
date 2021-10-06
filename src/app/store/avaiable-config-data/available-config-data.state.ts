@@ -16,11 +16,11 @@ export interface AvailableConfigDataStateModel {
   configAccessories: {};
   configFlatRoofWindows: {};
   configVerticalWindows: {};
-  roofWindowsExclusions: {};
-  flashingsExclusions: {};
-  accessoriesExclusions: {};
-  flatRoofWindowsExclusions: {};
-  verticalWindowsExclusions: {};
+  roofWindowsExclusions: any[];
+  flashingsExclusions: any[];
+  accessoriesExclusions: any[];
+  flatRoofWindowsExclusions: any[];
+  verticalWindowsExclusions: any[];
   glazingOptions: GlazingType[];
 }
 
@@ -32,11 +32,11 @@ export interface AvailableConfigDataStateModel {
     configAccessories: null,
     configFlatRoofWindows: null,
     configVerticalWindows: null,
-    roofWindowsExclusions: null,
-    flashingsExclusions: null,
-    accessoriesExclusions: null,
-    flatRoofWindowsExclusions: null,
-    verticalWindowsExclusions: null,
+    roofWindowsExclusions: [],
+    flashingsExclusions: [],
+    accessoriesExclusions: [],
+    flatRoofWindowsExclusions: [],
+    verticalWindowsExclusions: [],
     glazingOptions: []
   }
 })
@@ -114,11 +114,11 @@ export class AvailableConfigDataState {
   @Action(GetExclusionsForRoofWindows)
   getExclusionsRoofWindows(ctx: StateContext<AvailableConfigDataStateModel>) {
     return this.configData.fetchAllWindowExclusions().pipe(
-      tap(result => {
+      tap((result: any[]) => {
         const state = ctx.getState();
         ctx.setState({
           ...state,
-          configRoofWindows: result
+          roofWindowsExclusions: result
         });
       }));
   }
@@ -138,7 +138,7 @@ export class AvailableConfigDataState {
   @Action(GetExclusionsForFlashings)
   getExclusionsFlashings(ctx: StateContext<AvailableConfigDataStateModel>) {
     return this.configData.fetchAllFlashingExclusions().pipe(
-      tap(result => {
+      tap((result: any[]) => {
         const state = ctx.getState();
         ctx.setState({
           ...state,

@@ -13,7 +13,6 @@ import {
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {RoofWindowSkylight} from '../../models/roof-window-skylight';
 import {CrudService} from '../../services/crud-service';
-import {ConfigurationDataService} from '../../services/configuration-data.service';
 import {AuthService} from '../../services/auth.service';
 import {RoofWindowValuesSetterService} from '../../services/roof-window-values-setter.service';
 import {
@@ -32,6 +31,8 @@ import {Select, Store} from '@ngxs/store';
 import {SetCurrentUser} from '../../store/app/app.actions';
 import {ConfigurationState} from '../../store/configuration/configuration.state';
 import {RouterState} from '@ngxs/router-plugin';
+import {AvailableConfigDataState} from '../../store/avaiable-config-data/available-config-data.state';
+import {ConfigurationDataService} from '../../services/configuration-data.service';
 
 @Component({
   selector: 'app-roof-windows-config',
@@ -41,6 +42,8 @@ import {RouterState} from '@ngxs/router-plugin';
 export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
 
   @Select(ConfigurationState.configurations) configurations$: Observable<SingleConfiguration[]>;
+  @Select(AvailableConfigDataState.configRoofWindows) configOptions$: Observable<any>;
+  @Select(AvailableConfigDataState.roofWindowsExclusions) excludeOptions$: Observable<any>;
   @Select(RouterState) params$: Observable<any>;
 
   // TODO przygotować strumień i service do publikowania tej danej po aplikacji
@@ -60,7 +63,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
     this.paramsUserFetchData$ = combineLatest(this.store.dispatch(SetCurrentUser), this.params$,
-      this.configData.fetchAllWindowsData(), this.configurations$).pipe(
+      this.configOptions$, this.configurations$).pipe(
       takeUntil(this.isDestroyed$),
       map(data => {
         return {
@@ -163,6 +166,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.paramsUserFetchData$.pipe(
       takeUntil(this.isDestroyed$),
       map((data: { params: ObservedValueOf<Observable<Params>>; user: string; fetch: any; configurations: SingleConfiguration[] }) => {
+        console.log(data.fetch);
         this.coatsFromFile = this.objectMaker(data.fetch.coats);
         this.extrasFromFile = this.objectMaker(data.fetch.extras);
         this.windowModelsToCalculatePrice = data.fetch.models;
@@ -497,7 +501,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       let errors = {
         'empty material': true
       };
-      this.configData.fetchAllWindowsData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
+      this.configOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
         options = data.materials;
         for (const option of options) {
           if (control.value === option) {
@@ -516,7 +520,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       let errors = {
         'empty openingType': true
       };
-      this.configData.fetchAllWindowsData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
+      this.configOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
         options = data.openingTypes;
         for (const option of options) {
           if (control.value === option) {
@@ -535,7 +539,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       let errors = {
         'empty glazingType': true
       };
-      this.configData.fetchAllWindowsData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
+      this.configOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
         options = data.glazingTypes;
         for (const option of options) {
           if (control.value === option) {
@@ -554,7 +558,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       let errors = {
         'empty innerColor': true
       };
-      this.configData.fetchAllWindowsData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
+      this.configOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
         options = data.innerColors;
         for (const option of options) {
           if (control.value === option) {
@@ -575,7 +579,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       let errors = {
         'empty outerMaterial': true
       };
-      this.configData.fetchAllWindowsData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
+      this.configOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
         materialOptions = data.outerMaterials;
         // colorOptions = this.configData.outerColor;
         finishOptions = data.outerColorFinishes;
@@ -607,7 +611,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       let errors = {
         'empty ventilation': true
       };
-      this.configData.fetchAllWindowsData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
+      this.configOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
         options = data.ventilations;
         for (const option of options) {
           if (control.value === option) {
@@ -626,7 +630,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       let errors = {
         'empty handle': true
       };
-      this.configData.fetchAllWindowsData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
+      this.configOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
         options = data.handles;
         for (const option of options) {
           if (control.value === option) {
@@ -1006,7 +1010,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   setDisabled(configuredWindow: RoofWindowSkylight) {
     this.resetAllArrays(this.materials, this.openingTypes, this.innerColors, this.outerMaterials, this.outerColors, this.outerColorFinishes,
       this.glazingTypes, this.coatsFromFile, this.extrasFromFile, this.ventilations, this.handles, this.handleColors);
-    this.configData.fetchAllWindowExclusions().pipe(takeUntil(this.isDestroyed$)).subscribe(exclusions => {
+    this.excludeOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(exclusions => {
       const excludedOptions = [];
       for (const configurationOption in configuredWindow) {
         if (configurationOption === '_kolorTworzywZew') {
