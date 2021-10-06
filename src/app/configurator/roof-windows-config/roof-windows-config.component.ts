@@ -2,7 +2,6 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
 import {
-  BehaviorSubject,
   combineLatest,
   Observable,
   ObservedValueOf,
@@ -33,6 +32,12 @@ import {ConfigurationState} from '../../store/configuration/configuration.state'
 import {RouterState} from '@ngxs/router-plugin';
 import {AvailableConfigDataState} from '../../store/avaiable-config-data/available-config-data.state';
 import {ConfigurationDataService} from '../../services/configuration-data.service';
+import {RoofWindowState} from '../../store/roof-window/roof-window.state';
+import {
+  AddGlobalConfiguration,
+  AddRoofWindowConfiguration,
+  UpdateRoofWindowConfiguration, UpdateRoofWindowFormByFormName
+} from '../../store/configuration/configuration.actions';
 
 @Component({
   selector: 'app-roof-windows-config',
@@ -42,6 +47,8 @@ import {ConfigurationDataService} from '../../services/configuration-data.servic
 export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
 
   @Select(ConfigurationState.configurations) configurations$: Observable<SingleConfiguration[]>;
+  @Select(ConfigurationState.userConfigurations) userConfigurations$: Observable<SingleConfiguration[]>;
+  @Select(RoofWindowState.roofWindows) roofWindows$: Observable<RoofWindowSkylight[]>;
   @Select(AvailableConfigDataState.configRoofWindows) configOptions$: Observable<any>;
   @Select(AvailableConfigDataState.roofWindowsExclusions) excludeOptions$: Observable<any>;
   @Select(RouterState) params$: Observable<any>;
@@ -195,7 +202,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         this.loadConfig.getWindowToReconfiguration(this.currentUser, this.formName, this.windowCode).pipe(takeUntil(this.isDestroyed$))
           .subscribe(windowToReconfiguration => {
             this.configuredWindow = windowToReconfiguration;
-            console.log(this.configuredWindow);
             this.form = this.fb.group({
               material: new FormControl(this.configuredWindow.stolarkaMaterial, [], [this.validateMaterials.bind(this)]),
               openingType: new FormControl(this.configuredWindow.otwieranie, [], [this.validateOpenings.bind(this)]),
@@ -261,7 +267,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
           });
       }
     });
-    this.dataBase.fetchRoofWindows().pipe(takeUntil(this.isDestroyed$)).subscribe(roofWindows => {
+    this.roofWindows$.pipe(takeUntil(this.isDestroyed$)).subscribe(roofWindows => {
       this.roofWindowsFormDataBase = roofWindows;
     });
     this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
@@ -670,55 +676,53 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       active: true
     };
     this.loading = true;
-    this.authService.returnUser().pipe(takeUntil(this.isDestroyed$)).subscribe(user => {
-      if (this.configId === '-1' || this.configId === '') {
-        this.crud.readAllUserConfigurations(user).pipe(
-          takeUntil(this.isDestroyed$),
-          map((data: Array<any>) => {
-            return data.filter(x => x !== null);
-          })).subscribe(userConfigurations => {
-          this.userConfigs = userConfigurations;
-          this.highestUserId = this.hd.getHighestIdForUser(userConfigurations);
-          this.newWindowConfig.userId = this.highestUserId;
-          // wersja 2 lub 1
-          if (this.userConfigs.length !== 0) {
-            this.userConfigs.push(this.newWindowConfig);
-            this.loading = false;
-            this.chooseConfigNamePopup = true;
-            // wersja 1
-          } else {
-            this.newWindowConfig.products.windows.forEach(element => element.configLink = String(
-              this.router['location']._platformLocation.location.origin + this.router.url
-              + '/' + this.globalId
-              + '/' + this.formName
-              + '/' + this.configuredWindow.kod));
-            this.crud.createConfigurationForUser(user, this.newWindowConfig).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
-            this.router.navigate(['/' + this.configurationSummary]);
-            this.loading = false;
-          }
-        });
-      } else {
-        // wersja 2
-        if (this.windowId === 1) {
-          const temporaryLink = String(
+    if (this.configId === '-1' || this.configId === '') {
+      this.userConfigurations$.pipe(
+        takeUntil(this.isDestroyed$),
+        map((data: Array<any>) => {
+          return data.filter(x => x !== null);
+        })).subscribe(userConfigurations => {
+        this.userConfigs = userConfigurations;
+        this.highestUserId = this.hd.getHighestIdForUser(userConfigurations);
+        this.newWindowConfig.userId = this.highestUserId;
+        // wersja 2 lub 1
+        if (this.userConfigs.length !== 0) {
+          this.userConfigs.push(this.newWindowConfig);
+          this.loading = false;
+          this.chooseConfigNamePopup = true;
+          // wersja 1
+        } else {
+          this.newWindowConfig.products.windows.forEach(element => element.configLink = String(
             this.router['location']._platformLocation.location.origin + this.router.url
             + '/' + this.globalId
             + '/' + this.formName
-            + '/' + this.configuredWindow.kod);
-          this.crud.createWindowConfigurationIntoGlobalConfiguration(this.globalConfiguration, this.configuredWindow,
-            this.formName, this.form.value, temporaryLink)
-            .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
-          // wersja 3
-        } else {
-          this.crud.updateWindowConfigurationIntoGlobalConfiguration(this.globalConfiguration, this.windowId, this.configuredWindow)
-            .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
-          this.crud.updateWindowFormDataByFormName(this.globalConfiguration, this.formName, this.form.value)
-            .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+            + '/' + this.configuredWindow.kod));
+          this.store.dispatch(new AddGlobalConfiguration(this.currentUser, this.newWindowConfig)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+          this.router.navigate(['/' + this.configurationSummary]);
+          this.loading = false;
         }
-        this.router.navigate(['/' + this.configurationSummary]);
-        this.loading = false;
+      });
+    } else {
+      // wersja 2
+      if (this.windowId === 1) {
+        const temporaryLink = String(
+          this.router['location']._platformLocation.location.origin + this.router.url
+          + '/' + this.globalId
+          + '/' + this.formName
+          + '/' + this.configuredWindow.kod);
+        this.store.dispatch(new AddRoofWindowConfiguration(this.globalConfiguration, this.configuredWindow,
+          this.formName, this.form.value, temporaryLink))
+          .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+        // wersja 3
+      } else {
+        this.store.dispatch(new UpdateRoofWindowConfiguration(this.globalConfiguration, this.windowId, this.configuredWindow))
+          .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+        this.store.dispatch(new UpdateRoofWindowFormByFormName(this.globalConfiguration, this.formName, this.form.value))
+          .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
       }
-    });
+      this.router.navigate(['/' + this.configurationSummary]);
+      this.loading = false;
+    }
   }
 
   chooseConfigId(configForm: any) {
@@ -729,7 +733,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         + '/' + this.globalId
         + '/' + this.formName
         + '/' + this.configuredWindow.kod));
-      this.crud.createConfigurationForUser(this.currentUser, this.newWindowConfig)
+      this.store.dispatch(new AddGlobalConfiguration(this.currentUser, this.newWindowConfig))
         .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
       // wersja 2
     } else {
@@ -740,8 +744,8 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         + '/' + this.configuredWindow.kod);
       this.configId = String('configuration-' + parseInt(configForm.value.configWindowFormId, 10));
       // TODO zamienić na configuredWindow
-      this.crud.createWindowConfigurationIntoGlobalConfiguration(this.globalConfiguration,
-        this.tempConfiguredWindow, this.formName, this.form.value, temporaryLink)
+      this.store.dispatch(new AddRoofWindowConfiguration(this.globalConfiguration,
+        this.tempConfiguredWindow, this.formName, this.form.value, temporaryLink))
         .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
     }
     this.chooseConfigNamePopup = false;
@@ -786,12 +790,12 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         + '/' + this.configuredWindow.kod;
       // wersja 2
       if (this.windowId === 1) {
-        this.crud.createWindowConfigurationIntoGlobalConfiguration(this.globalConfiguration, this.configuredWindow,
-          this.formName, this.form.value, temporaryUrl)
+        this.store.dispatch(new AddRoofWindowConfiguration(this.globalConfiguration, this.configuredWindow,
+          this.formName, this.form.value, temporaryUrl))
           .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
         // wersja 3
       } else {
-        this.crud.updateWindowConfigurationIntoGlobalConfiguration(this.globalConfiguration, this.windowId, this.configuredWindow)
+        this.store.dispatch(new UpdateRoofWindowConfiguration(this.globalConfiguration, this.windowId, this.configuredWindow))
           .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
       }
       // wersja 1
@@ -801,7 +805,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         + '/' + this.globalId
         + '/' + this.formName
         + '/' + this.configuredWindow.kod));
-      this.crud.createConfigurationForUser('anonym', this.newWindowConfig)
+      this.store.dispatch(new AddGlobalConfiguration('anonym', this.newWindowConfig))
         .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
       temporaryUrl = this.router['location']._platformLocation.location.origin + this.router.url
         + '/' + this.newWindowConfig.globalId
