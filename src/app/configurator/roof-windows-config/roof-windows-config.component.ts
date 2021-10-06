@@ -137,7 +137,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   windowsConfigurator: string;
   formData$;
   subscription: Subscription;
-  glazingName$ = new BehaviorSubject('Okno:E01');
   isDestroyed$ = new Subject();
   loading;
 
@@ -166,7 +165,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.paramsUserFetchData$.pipe(
       takeUntil(this.isDestroyed$),
       map((data: { params: ObservedValueOf<Observable<Params>>; user: string; fetch: any; configurations: SingleConfiguration[] }) => {
-        console.log(data.fetch);
         this.coatsFromFile = this.objectMaker(data.fetch.coats);
         this.extrasFromFile = this.objectMaker(data.fetch.extras);
         this.windowModelsToCalculatePrice = data.fetch.models;
