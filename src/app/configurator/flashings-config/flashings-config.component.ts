@@ -8,11 +8,10 @@ import {
   ViewChildren
 } from '@angular/core';
 import {LoadConfigurationService} from '../../services/load-configuration.service';
-import {ConfigurationDataService} from '../../services/configuration-data.service';
 import {TranslateService} from '@ngx-translate/core';
 import {combineLatest, Observable, ObservedValueOf, Observer, Subject} from 'rxjs';
 import {AuthService} from '../../services/auth.service';
-import {ActivatedRoute, Params, Router} from '@angular/router';
+import {Params, Router} from '@angular/router';
 import {CrudService} from '../../services/crud-service';
 import {map, takeUntil} from 'rxjs/operators';
 import {SingleConfiguration} from '../../models/single-configuration';
@@ -25,8 +24,10 @@ import {FlashingValueSetterService} from '../../services/flashing-value-setter.s
 import cryptoRandomString from 'crypto-random-string';
 import {Select, Store} from '@ngxs/store';
 import {FlashingState} from '../../store/flashing/flashing.state';
-import {GetFlashings} from '../../store/flashing/flashing.actions';
 import {SetCurrentUser} from '../../store/app/app.actions';
+import {RouterState} from '@ngxs/router-plugin';
+import {ConfigurationState} from '../../store/configuration/configuration.state';
+import {AvailableConfigDataState} from '../../store/avaiable-config-data/available-config-data.state';
 
 @Component({
   selector: 'app-flashings-config',
@@ -35,15 +36,19 @@ import {SetCurrentUser} from '../../store/app/app.actions';
 })
 export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  constructor(private activeRouter: ActivatedRoute,
-              private router: Router,
+  @Select(ConfigurationState.configurations) configurations$: Observable<SingleConfiguration[]>;
+  @Select(AvailableConfigDataState.configFlashings) configOptions$: Observable<any>;
+  @Select(AvailableConfigDataState.flashingsExclusions) excludeOptions$: Observable<any>;
+  @Select(FlashingState.flashings) flashings$: Observable<Flashing[]>;
+  @Select(RouterState) params$: Observable<any>;
+
+  constructor(private router: Router,
               private fb: FormBuilder,
               private store: Store,
               private changeDetector: ChangeDetectorRef,
               private authService: AuthService,
               private loadData: LoadConfigurationService,
               private flashingSetter: FlashingValueSetterService,
-              private configData: ConfigurationDataService,
               private crud: CrudService,
               private hd: HighestIdGetterService,
               private modal: ModalService,
@@ -51,21 +56,20 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
     this.loading = true;
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
-    this.paramsUserFetchData$ = combineLatest(this.store.dispatch(SetCurrentUser), this.activeRouter.params,
-      this.store.dispatch(new GetFlashings()), this.crud.readAllConfigurationsFromMongoDB()
+    this.paramsUserFetchData$ = combineLatest(this.store.dispatch(SetCurrentUser), this.params$,
+      this.configOptions$, this.configurations$
     ).pipe(
       takeUntil(this.isDestroyed$),
       map(data => {
         return {
           user: data[0],
-          params: data[1],
+          params: data[1].state.params,
           fetch: data[2],
           configurations: data[3]
         };
       }));
   }
 
-  @Select(FlashingState.flashings) flashings$: Observable<Flashing[]>;
   @ViewChildren('dimensionsPresentationDivs') dimPresentDivs: QueryList<ElementRef>;
   @ViewChildren('dimensionsPresentationDivsEqual') dimPresentDivsEqual: QueryList<ElementRef>;
   @ViewChildren('dimensionsPresentationDivsH1') dimPresentDivsH1: QueryList<ElementRef>;
@@ -185,6 +189,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
       takeUntil(this.isDestroyed$),
       map((data: { params: ObservedValueOf<Observable<Params>>; user: string; fetch: any; configurations: SingleConfiguration[] }) => {
         this.flashingModels = data.fetch.models;
+        console.log(data.fetch);
         this.flashingTypes = FlashingsConfigComponent.objectsMaker(data.fetch.flashingTypes);
         this.lShaped = FlashingsConfigComponent.objectsMaker(data.fetch.lShapeds);
         this.availableOptions = FlashingsConfigComponent.objectsMaker(data.fetch.availableOptions);
@@ -571,7 +576,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
       let errors = {
         'empty flashingType': true
       };
-      this.configData.fetchAllFlashingsData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
+      this.configOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
         options = data.flashingTypes;
         for (const option of options) {
           if (control.value === option) {
@@ -592,7 +597,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
       let errors = {
         'empty outerMaterial': true
       };
-      this.configData.fetchAllFlashingsData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
+      this.configOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
         materialOptions = data.outerMaterials;
         // colorOptions = this.configData.outerColor;
         finishOptions = data.outerColorFinishes;
@@ -624,7 +629,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
       let errors = {
         'empty apronType': true
       };
-      this.configData.fetchAllFlashingsData().pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
+      this.configOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
         options = data.apronTypes;
         for (const option of options) {
           if (control.value === option) {
@@ -1135,7 +1140,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
 
   setDisabled(configuredFlashing: Flashing) {
     this.resetAllArrays(this.flashingTypes, this.apronTypes, this.lShaped, this.outerMaterials, this.outerColors, this.outerColorFinishes);
-    this.configData.fetchAllFlashingExclusions().pipe(takeUntil(this.isDestroyed$)).subscribe(exclusions => {
+    this.excludeOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(exclusions => {
       const excludedOptions = [];
       // tslint:disable-next-line:forin
       for (const configuratedOption in configuredFlashing) {
