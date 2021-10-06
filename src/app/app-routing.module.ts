@@ -13,6 +13,7 @@ import {FlashingsGuard} from './store/flashing/flashings.guard';
 import {AccessoriesGuard} from './store/accessory/accessories.guard';
 import {SkylightsGuard} from './store/skylight/skylights.guard';
 import {FlatRoofWindowsGuard} from './store/flat-roof-window/flat-roof-windows.guard';
+import {AvailableConfigDataGuard} from './store/avaiable-config-data/available-config-data.guard';
 
 const appRoutes: Routes = [
   {path: 'sklep', loadChildren: () => import('./shop/shop.module').then(m => m.ShopModule)},
@@ -20,7 +21,7 @@ const appRoutes: Routes = [
   {path: 'okna-pionowe', component: VerticalWindowsComponent},
 
   {path: 'konfigurator', loadChildren: () => import('./configurator/configurator.module').then(m => m.ConfiguratorModule),
-    canActivate: [ConfigurationsGuard]},
+    canActivate: [ConfigurationsGuard, AvailableConfigDataGuard]},
 
   {path: '', component: HomeComponent},
   {path: 'moje-konto', component: MyAccountComponent, canActivate: [AuthGuardService]},
@@ -33,7 +34,8 @@ const appRoutes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(appRoutes, {scrollPositionRestoration: 'enabled'})],
   exports: [RouterModule],
-  providers: [ConfigurationsGuard, RoofWindowsGuard, FlashingsGuard, AccessoriesGuard, SkylightsGuard, FlatRoofWindowsGuard]
+  providers: [ConfigurationsGuard, RoofWindowsGuard, FlashingsGuard, AccessoriesGuard,
+    SkylightsGuard, FlatRoofWindowsGuard, AvailableConfigDataGuard]
 })
 export class AppRoutingModule {
 }

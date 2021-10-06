@@ -16,11 +16,13 @@ import {ConfigurationState} from '../store/configuration/configuration.state';
 import {AccessoryState} from '../store/accessory/accessory.state';
 import {SkylightsState} from '../store/skylight/skylights.state';
 import {FlatRoofWindowState} from '../store/flat-roof-window/flat-roof-window.state';
+import {AvailableConfigDataState} from '../store/avaiable-config-data/available-config-data.state';
 
 @NgModule({
   imports: [
     SharedModule,
-    NgxsModule.forFeature([ConfigurationState, RoofWindowState, FlashingState, AccessoryState, SkylightsState, FlatRoofWindowState]),
+    NgxsModule.forFeature([ConfigurationState, RoofWindowState, FlashingState, AccessoryState,
+      SkylightsState, FlatRoofWindowState, AvailableConfigDataState]),
     ConfiguratorRoutingModule
   ],
   declarations: [

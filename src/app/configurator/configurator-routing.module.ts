@@ -13,26 +13,27 @@ import {FlashingsGuard} from '../store/flashing/flashings.guard';
 import {AccessoriesGuard} from '../store/accessory/accessories.guard';
 import {FlatRoofWindowsGuard} from '../store/flat-roof-window/flat-roof-windows.guard';
 import {ConfigurationsGuard} from '../store/configuration/configurations.guard';
+import {AvailableConfigDataGuard} from '../store/avaiable-config-data/available-config-data.guard';
 
 const routes: Routes = [
   {path: '', component: ConfiguratorComponent},
   {path: 'okna-dachowe', component: RoofWindowsConfigComponent,
-    canActivate: [RoofWindowsGuard, ConfigurationsGuard]},
+    canActivate: [RoofWindowsGuard, ConfigurationsGuard, AvailableConfigDataGuard]},
   {path: 'okna-dachowe/:configId/:formName/:productCode', component: RoofWindowsConfigComponent,
-    canActivate: [RoofWindowsGuard, ConfigurationsGuard]},
+    canActivate: [RoofWindowsGuard, ConfigurationsGuard, AvailableConfigDataGuard]},
   {path: 'kolnierze', component: FlashingsConfigComponent,
-    canActivate: [FlashingsGuard, ConfigurationsGuard]},
+    canActivate: [FlashingsGuard, ConfigurationsGuard, AvailableConfigDataGuard]},
   {path: 'kolnierze/:configId/:formName/:productCode', component: FlashingsConfigComponent,
-    canActivate: [FlashingsGuard, ConfigurationsGuard]},
+    canActivate: [FlashingsGuard, ConfigurationsGuard, AvailableConfigDataGuard]},
   {path: 'akcesoria', component: AccessoriesConfigComponent,
-    canActivate: [AccessoriesGuard, ConfigurationsGuard]},
+    canActivate: [AccessoriesGuard, ConfigurationsGuard, AvailableConfigDataGuard]},
   {path: 'akcesoria/:configId/:formName/:productCode', component: AccessoriesConfigComponent,
-    canActivate: [AccessoriesGuard, ConfigurationsGuard]},
+    canActivate: [AccessoriesGuard, ConfigurationsGuard, AvailableConfigDataGuard]},
   {path: 'okna-pionowe', component: VerticalWindowsConfigComponent},
   {path: 'dach-plaski', component: FlatRoofWindowsConfigComponent,
-    canActivate: [FlatRoofWindowsGuard, ConfigurationsGuard]},
+    canActivate: [FlatRoofWindowsGuard, ConfigurationsGuard, AvailableConfigDataGuard]},
   {path: 'dach-plaski/:configId/:formName/:productCode', component: FlatRoofWindowsConfigComponent,
-    canActivate: [FlatRoofWindowsGuard, ConfigurationsGuard]},
+    canActivate: [FlatRoofWindowsGuard, ConfigurationsGuard, AvailableConfigDataGuard]},
   {path: 'podsumowanie', component: ConfigurationSummaryComponent,
     canActivate: [ConfigurationsGuard]},
   {path: 'podsumowanie/:configId', component: SingleConfigurationSummaryComponent,
