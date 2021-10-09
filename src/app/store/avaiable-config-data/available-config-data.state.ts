@@ -1,4 +1,4 @@
-import {Action, Selector, State, StateContext} from '@ngxs/store';
+import {Action, NgxsOnInit, Selector, State, StateContext} from '@ngxs/store';
 import {ConfigurationDataService} from '../../services/configuration-data.service';
 import {
   GetAvailableGlazingsData,
@@ -12,32 +12,54 @@ import {GlazingType} from '../../models/glazing-type';
 
 export interface AvailableConfigDataStateModel {
   configRoofWindows: {};
+  roofWindowConfigLoaded: boolean;
   configFlashings: {};
+  flashingConfigLoaded: boolean;
   configAccessories: {};
+  accessoryConfigLoaded: boolean;
   configFlatRoofWindows: {};
+  flatWindowConfigLoaded: boolean;
   configVerticalWindows: {};
+  verticalWindowConfigLoaded: boolean;
   roofWindowsExclusions: any[];
+  roofWindowExclusionsLoaded: boolean;
   flashingsExclusions: any[];
+  flashingExclusionsLoaded: boolean;
   accessoriesExclusions: any[];
+  accessoryExclusionsLoaded: boolean;
   flatRoofWindowsExclusions: any[];
+  flatWindowExclusionsLoaded: boolean;
   verticalWindowsExclusions: any[];
+  verticalWindowExclusionsLoaded: boolean;
   glazingOptions: GlazingType[];
+  glazingOptionsLoaded: boolean;
 }
 
 @State<AvailableConfigDataStateModel>({
   name: 'availableConfigData',
   defaults: {
     configRoofWindows: null,
+    roofWindowConfigLoaded: false,
     configFlashings: null,
+    flashingConfigLoaded: false,
     configAccessories: null,
+    accessoryConfigLoaded: false,
     configFlatRoofWindows: null,
+    flatWindowConfigLoaded: false,
     configVerticalWindows: null,
+    verticalWindowConfigLoaded: false,
     roofWindowsExclusions: [],
+    roofWindowExclusionsLoaded: false,
     flashingsExclusions: [],
+    flashingExclusionsLoaded: false,
     accessoriesExclusions: [],
+    accessoryExclusionsLoaded: false,
     flatRoofWindowsExclusions: [],
+    flatWindowExclusionsLoaded: false,
     verticalWindowsExclusions: [],
-    glazingOptions: []
+    verticalWindowExclusionsLoaded: false,
+    glazingOptions: [],
+    glazingOptionsLoaded: false
   }
 })
 export class AvailableConfigDataState {
@@ -50,8 +72,18 @@ export class AvailableConfigDataState {
   }
 
   @Selector()
+  static roofWindowsConfigLoaded(state: AvailableConfigDataStateModel) {
+    return state.roofWindowConfigLoaded;
+  }
+
+  @Selector()
   static roofWindowsExclusions(state: AvailableConfigDataStateModel) {
     return state.roofWindowsExclusions;
+  }
+
+  @Selector()
+  static roofWindowsExclusionsLoaded(state: AvailableConfigDataStateModel) {
+    return state.roofWindowExclusionsLoaded;
   }
 
   @Selector()
@@ -60,8 +92,18 @@ export class AvailableConfigDataState {
   }
 
   @Selector()
+  static flashingsConfigLoaded(state: AvailableConfigDataStateModel) {
+    return state.flashingConfigLoaded;
+  }
+
+  @Selector()
   static flashingsExclusions(state: AvailableConfigDataStateModel) {
     return state.flashingsExclusions;
+  }
+
+  @Selector()
+  static flashingsExclusionsLoaded(state: AvailableConfigDataStateModel) {
+    return state.flashingExclusionsLoaded;
   }
 
   @Selector()
@@ -70,8 +112,18 @@ export class AvailableConfigDataState {
   }
 
   @Selector()
+  static accessoriesConfigLoaded(state: AvailableConfigDataStateModel) {
+    return state.accessoryConfigLoaded;
+  }
+
+  @Selector()
   static accessoriesExclusions(state: AvailableConfigDataStateModel) {
     return state.accessoriesExclusions;
+  }
+
+  @Selector()
+  static accessoriesExclusionsLoaded(state: AvailableConfigDataStateModel) {
+    return state.accessoryExclusionsLoaded;
   }
 
   @Selector()
@@ -80,8 +132,18 @@ export class AvailableConfigDataState {
   }
 
   @Selector()
+  static flatRoofWindowsConfigLoaded(state: AvailableConfigDataStateModel) {
+    return state.flatWindowConfigLoaded;
+  }
+
+  @Selector()
   static flatRoofWindowsExclusions(state: AvailableConfigDataStateModel) {
     return state.flatRoofWindowsExclusions;
+  }
+
+  @Selector()
+  static flatRoofWindowsExclusionsLoaded(state: AvailableConfigDataStateModel) {
+    return state.flatWindowExclusionsLoaded;
   }
 
   @Selector()
@@ -90,13 +152,28 @@ export class AvailableConfigDataState {
   }
 
   @Selector()
+  static verticalWindowsConfigLoaded(state: AvailableConfigDataStateModel) {
+    return state.verticalWindowConfigLoaded;
+  }
+
+  @Selector()
   static verticalWindowsExclusions(state: AvailableConfigDataStateModel) {
     return state.verticalWindowsExclusions;
   }
 
   @Selector()
+  static verticalWindowsExclusionsLoaded(state: AvailableConfigDataStateModel) {
+    return state.verticalWindowExclusionsLoaded;
+  }
+
+  @Selector()
   static glazingOptions(state: AvailableConfigDataStateModel) {
     return state.glazingOptions;
+  }
+
+  @Selector()
+  static glazingOptionsLoaded(state: AvailableConfigDataStateModel) {
+    return state.glazingOptionsLoaded;
   }
 
   @Action(GetRoofWindowsAvailableConfigData)
@@ -106,7 +183,8 @@ export class AvailableConfigDataState {
         const state = ctx.getState();
         ctx.setState({
           ...state,
-          configRoofWindows: result
+          configRoofWindows: result,
+          roofWindowConfigLoaded: true
         });
       }));
   }

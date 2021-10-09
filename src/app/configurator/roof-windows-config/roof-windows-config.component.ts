@@ -2,17 +2,13 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
 import {
-  combineLatest,
   Observable,
-  ObservedValueOf,
   Observer,
   Subject,
   Subscription
 } from 'rxjs';
-import {ActivatedRoute, Params, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {RoofWindowSkylight} from '../../models/roof-window-skylight';
-import {CrudService} from '../../services/crud-service';
-import {AuthService} from '../../services/auth.service';
 import {RoofWindowValuesSetterService} from '../../services/roof-window-values-setter.service';
 import {
   filter,
@@ -22,22 +18,20 @@ import {
 } from 'rxjs/operators';
 import {LoadConfigurationService} from '../../services/load-configuration.service';
 import {HighestIdGetterService} from '../../services/highest-id-getter.service';
-import {DatabaseService} from '../../services/database.service';
 import cryptoRandomString from 'crypto-random-string';
 import {WindowConfig} from '../../models/window-config';
 import {SingleConfiguration} from '../../models/single-configuration';
 import {Select, Store} from '@ngxs/store';
-import {SetCurrentUser} from '../../store/app/app.actions';
 import {ConfigurationState} from '../../store/configuration/configuration.state';
 import {RouterState} from '@ngxs/router-plugin';
 import {AvailableConfigDataState} from '../../store/avaiable-config-data/available-config-data.state';
-import {ConfigurationDataService} from '../../services/configuration-data.service';
 import {RoofWindowState} from '../../store/roof-window/roof-window.state';
 import {
   AddGlobalConfiguration,
   AddRoofWindowConfiguration,
   UpdateRoofWindowConfiguration, UpdateRoofWindowFormByFormName
 } from '../../store/configuration/configuration.actions';
+import {AppState} from '../../store/app/app.state';
 
 @Component({
   selector: 'app-roof-windows-config',
@@ -46,44 +40,34 @@ import {
 })
 export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
 
+  @Select(AppState) user$: Observable<{ currentUser }>;
   @Select(ConfigurationState.configurations) configurations$: Observable<SingleConfiguration[]>;
-  @Select(ConfigurationState.userConfigurations) userConfigurations$: Observable<SingleConfiguration[]>;
   @Select(RoofWindowState.roofWindows) roofWindows$: Observable<RoofWindowSkylight[]>;
   @Select(AvailableConfigDataState.configRoofWindows) configOptions$: Observable<any>;
+  @Select(AvailableConfigDataState.roofWindowsConfigLoaded) configOptionsLoaded$: Observable<boolean>;
   @Select(AvailableConfigDataState.roofWindowsExclusions) excludeOptions$: Observable<any>;
   @Select(RouterState) params$: Observable<any>;
 
   // TODO przygotować strumień i service do publikowania tej danej po aplikacji
-  constructor(private authService: AuthService,
-              private store: Store,
-              private configData: ConfigurationDataService,
-              private dataBase: DatabaseService,
+  constructor(private store: Store,
               private windowValuesSetter: RoofWindowValuesSetterService,
               private loadConfig: LoadConfigurationService,
-              private crud: CrudService,
               private hd: HighestIdGetterService,
               private router: Router,
-              private activeRouter: ActivatedRoute,
               private fb: FormBuilder,
               public translate: TranslateService) {
     this.loading = true;
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
-    this.paramsUserFetchData$ = combineLatest(this.store.dispatch(SetCurrentUser), this.params$,
-      this.configOptions$, this.configurations$).pipe(
-      takeUntil(this.isDestroyed$),
-      map(data => {
-        return {
-          user: data[0],
-          params: data[1].state.params,
-          fetch: data[2],
-          configurations: data[3]
-        };
-      }));
+    this.configOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(configOptions => this.configOptions = configOptions);
+    this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.currentUser = user.currentUser);
+    this.configurations$.pipe(takeUntil(this.isDestroyed$)).subscribe(configurations => this.configurations = configurations);
+    this.params$.pipe(takeUntil(this.isDestroyed$)).subscribe(params => this.routerParams = params);
+    this.roofWindows$.pipe(takeUntil(this.isDestroyed$)).subscribe(roofWindows => {
+      this.roofWindowsFormDataBase = roofWindows;
+    });
   }
 
-  // tslint:disable-next-line:max-line-length
-  private paramsUserFetchData$: Observable<{ params: ObservedValueOf<Observable<Params>>; user: string; fetch: any; configurations: SingleConfiguration[] }>;
   configuredWindow: RoofWindowSkylight;
   form: FormGroup;
   configWindowFormId: number;
@@ -94,9 +78,11 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   popupConfig = true;
   chooseConfigNamePopup = false;
   copyLinkToConfigurationPopup = false;
-  private glazingName = 'Okno:E01';
+  private glazingName = 'Okno:EXX';
+  private routerParams = null;
   private globalId = '';
   private highestUserId;
+  private configurations: SingleConfiguration[];
   private globalConfiguration: SingleConfiguration = null;
   private newWindowConfig: SingleConfiguration;
   private currentUser: string;
@@ -146,6 +132,9 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   isDestroyed$ = new Subject();
   loading;
+  configOptions;
+  configByName$: Observable<WindowConfig>;
+  userConfigurations$: Observable<SingleConfiguration[]> = new Subject() as Observable<SingleConfiguration[]>;
 
   static setDimensions(dimensions) {
     return dimensions;
@@ -161,7 +150,29 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
 
 
   // 'width': new FormControl(78, [this.validateWidth.bind(this), Validators.required]), własnym walidator
-  ngOnInit(): void {
+  ngOnInit() {
+    this.configOptionsLoaded$.subscribe(loaded => {
+      if (loaded) {
+        this.coatsFromFile = this.objectMaker(this.configOptions.coats);
+        this.extrasFromFile = this.objectMaker(this.configOptions.extras);
+        this.windowModelsToCalculatePrice = this.configOptions.models;
+        this.availableOptions = this.configOptions.availableOptions;
+        this.glazingTypes = this.objectMaker(this.configOptions.glazingTypes);
+        this.materials = this.objectMaker(this.configOptions.materials);
+        this.openingTypes = this.objectMaker(this.configOptions.openingTypes);
+        this.innerColors = this.objectMaker(this.configOptions.innerColors);
+        this.outerMaterials = this.objectMaker(this.configOptions.outerMaterials);
+        this.outerColors = this.objectMaker(this.configOptions.outerColor);
+        this.outerColorFinishes = this.objectMaker(this.configOptions.outerColorFinishes);
+        this.dimensions = RoofWindowsConfigComponent.setDimensions(this.configOptions.dimensions);
+        this.ventilations = this.objectMaker(this.configOptions.ventilations);
+        this.handles = this.objectMaker(this.configOptions.handles);
+        this.handleColors = this.objectMaker(this.configOptions.handleColors);
+        this.loadForm();
+      }
+    });
+    this.userConfigurations$ = this.store.select(ConfigurationState.userConfigurations)
+      .pipe(map(filterFn => filterFn(this.currentUser)));
     this.highestUserId = 1;
     this.tempConfiguredWindow = new RoofWindowSkylight(
       '1O-ISO-V-E02-KL00-A7022P-079119-OKPO01', 'Okno dachowe tymczasowe', 'ISOV E2 79x119', 'I-Okno', 'NPL-Okno', 'Nowy', 'Okno:ISOV', 'Okno:E02', 'dwuszybowy', 79,
@@ -169,107 +180,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       // tslint:disable-next-line:max-line-length
       'RAL9999', 'Aluminium:Półmat', 'Okno:ExtraSecure', 'Okno:RAL7048', false, 2, ['78x118'], ['zewnetrznaHartowana', false, false, false, false, false, false, false, false],
       ['https://www.okpol.pl/wp-content/uploads/2017/02/1_ISO.jpg'], ['Okno:Zasuwka', false, false], 1332.80, 1, 1.2, 5, 'Okno:RAL7048', 'Okno:RAL7048', null, 2, 'PL');
-    this.paramsUserFetchData$.pipe(
-      takeUntil(this.isDestroyed$),
-      map((data: { params: ObservedValueOf<Observable<Params>>; user: string; fetch: any; configurations: SingleConfiguration[] }) => {
-        this.coatsFromFile = this.objectMaker(data.fetch.coats);
-        this.extrasFromFile = this.objectMaker(data.fetch.extras);
-        this.windowModelsToCalculatePrice = data.fetch.models;
-        this.availableOptions = data.fetch.availableOptions;
-        this.glazingTypes = this.objectMaker(data.fetch.glazingTypes);
-        this.materials = this.objectMaker(data.fetch.materials);
-        this.openingTypes = this.objectMaker(data.fetch.openingTypes);
-        this.innerColors = this.objectMaker(data.fetch.innerColors);
-        this.outerMaterials = this.objectMaker(data.fetch.outerMaterials);
-        this.outerColors = this.objectMaker(data.fetch.outerColor);
-        this.outerColorFinishes = this.objectMaker(data.fetch.outerColorFinishes);
-        this.dimensions = RoofWindowsConfigComponent.setDimensions(data.fetch.dimensions);
-        this.ventilations = this.objectMaker(data.fetch.ventilations);
-        this.handles = this.objectMaker(data.fetch.handles);
-        this.handleColors = this.objectMaker(data.fetch.handleColors);
-        this.currentUser = data.user;
-        this.formName = data.params.formName;
-        this.windowCode = data.params.productCode;
-        if (data.params.configId === undefined || data.params.configId === -1) {
-          this.globalId = this.hd.getHighestGlobalIdFormMongoDB(data.configurations);
-        } else {
-          this.globalId = data.params.configId;
-          this.globalConfiguration = data.configurations.find(item => item.globalId === this.globalId);
-        }
-      })).subscribe(() => {
-      if (this.formName === 'no-name' || this.formName === undefined) {
-        // tslint:disable-next-line:max-line-length
-        this.loadConfig.getWindowToReconfiguration(this.currentUser, this.formName, this.windowCode).pipe(takeUntil(this.isDestroyed$))
-          .subscribe(windowToReconfiguration => {
-            this.configuredWindow = windowToReconfiguration;
-            this.form = this.fb.group({
-              material: new FormControl(this.configuredWindow.stolarkaMaterial, [], [this.validateMaterials.bind(this)]),
-              openingType: new FormControl(this.configuredWindow.otwieranie, [], [this.validateOpenings.bind(this)]),
-              control: new FormControl(RoofWindowsConfigComponent.getControlType(this.configuredWindow.otwieranie)),
-              glazing: new FormControl(this.configuredWindow.glazingToCalculation, [], [this.validateGlazing.bind(this)]),
-              coats: new FormArray(this.builtCoatsArray(this.coatsFromFile)),
-              width: new FormControl(this.configuredWindow.szerokosc),
-              height: new FormControl(this.configuredWindow.wysokosc),
-              innerColor: new FormControl(this.configuredWindow.stolarkaKolor, [], [this.validateInnerColor.bind(this)]),
-              outer: new FormGroup({
-                outerMaterial: new FormControl(this.configuredWindow.oblachowanieMaterial),
-                outerColor: new FormControl(this.configuredWindow.oblachowanieKolor),
-                outerColorFinish: new FormControl(this.configuredWindow.oblachowanieFinisz)
-              }, [], [this.validateOuterMaterial.bind(this)]),
-              ventilation: new FormControl(this.configuredWindow.wentylacja, [], [this.validateVentilation.bind(this)]),
-              closure: new FormGroup({
-                handle: new FormControl(this.configuredWindow.zamkniecieTyp, [], [this.validateHandle.bind(this)]),
-                handleColor: new FormControl(this.configuredWindow.zamkniecieKolor)
-              }),
-              extras: new FormArray(this.builtExtrasArray(this.extrasFromFile))
-            });
-            this.windowId = 1;
-            this.formChanges(); // TODO które usunąć to, czy poniżej - raczej poniżej wiersz, bo tam brak ustawiania formArray
-            this.setConfiguredValues(this.form.value); // TODO ten i poprzedni wiersz mają odwołanie do tej samej metody setConfigureValues - czy można jedno usunąć?
-            this.formName = cryptoRandomString({length: 12, type: 'alphanumeric'});
-            this.loading = false;
-          });
-      } else {
-        this.loadConfig.getWindowConfigurationByFormName(this.formName)
-          .pipe(takeUntil(this.isDestroyed$))
-          .subscribe((windowConfiguration: WindowConfig) => {
-            this.form = this.fb.group({
-              material: new FormControl(windowConfiguration.windowFormData.material, [], [this.validateMaterials.bind(this)]),
-              openingType: new FormControl(windowConfiguration.windowFormData.openingType, [], [this.validateOpenings.bind(this)]),
-              control: new FormControl(RoofWindowsConfigComponent.getControlType(windowConfiguration.windowFormData.otwieranie)),
-              glazing: new FormControl(windowConfiguration.windowFormData.glazing, [], [this.validateGlazing.bind(this)]),
-              width: new FormControl(windowConfiguration.windowFormData.width),
-              height: new FormControl(windowConfiguration.windowFormData.height),
-              coats: this.fb.array(windowConfiguration.windowFormData.coats),
-              innerColor: new FormControl(windowConfiguration.windowFormData.innerColor, [], [this.validateInnerColor.bind(this)]),
-              outer: new FormGroup({
-                outerMaterial: new FormControl(windowConfiguration.windowFormData.outer
-                === undefined ? null : windowConfiguration.windowFormData.outer.outerMaterial),
-                outerColor: new FormControl(windowConfiguration.windowFormData.outer
-                === undefined ? null : windowConfiguration.windowFormData.outer.outerColor),
-                outerColorFinish: new FormControl(windowConfiguration.windowFormData.outer
-                === undefined ? null : windowConfiguration.windowFormData.outer.outerColorFinish)
-              }, [], [this.validateOuterMaterial.bind(this)]),
-              ventilation: new FormControl(windowConfiguration.windowFormData.ventilation, [], [this.validateVentilation.bind(this)]),
-              closure: new FormGroup({
-                handle: new FormControl(windowConfiguration.windowFormData.closure
-                === undefined ? null : windowConfiguration.windowFormData.closure.handle, [], [this.validateHandle.bind(this)]),
-                handleColor: new FormControl(windowConfiguration.windowFormData.closure
-                === undefined ? null : windowConfiguration.windowFormData.closure.handleColor)
-              }),
-              extras: this.fb.array(windowConfiguration.windowFormData.extras)
-            });
-            this.configuredWindow = windowConfiguration.window;
-            this.windowId = windowConfiguration.id;
-            this.setConfiguredValues(this.form.value); // TODO ten kolejny wiersz mają odwołanie do tej samej metody setConfigureValues - czy można jedno usunąć?
-            this.formChanges(); // TODO które usunąć to, czy poprzednie - raczej poprzedni wiersz, bo tam brak ustawiania formArray
-            this.loading = false;
-          });
-      }
-    });
-    this.roofWindows$.pipe(takeUntil(this.isDestroyed$)).subscribe(roofWindows => {
-      this.roofWindowsFormDataBase = roofWindows;
-    });
     this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
       this.shopRoofWindowLink = text.shopRoofWindows;
     });
@@ -286,6 +196,76 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.isDestroyed$.next();
+  }
+
+  private loadForm() {
+    if (this.formName === 'no-name' || this.formName === undefined) {
+      this.loadConfig.getWindowToReconfiguration(this.currentUser, this.formName, this.routerParams.windowCode).pipe(takeUntil(this.isDestroyed$))
+        .subscribe(windowToReconfiguration => {
+          this.configuredWindow = windowToReconfiguration;
+          this.form = this.fb.group({
+            material: new FormControl(this.configuredWindow.stolarkaMaterial, [], [this.validateMaterials.bind(this)]),
+            openingType: new FormControl(this.configuredWindow.otwieranie, [], [this.validateOpenings.bind(this)]),
+            control: new FormControl(RoofWindowsConfigComponent.getControlType(this.configuredWindow.otwieranie)),
+            glazing: new FormControl(this.configuredWindow.glazingToCalculation, [], [this.validateGlazing.bind(this)]),
+            coats: new FormArray(this.builtCoatsArray(this.coatsFromFile)),
+            width: new FormControl(this.configuredWindow.szerokosc),
+            height: new FormControl(this.configuredWindow.wysokosc),
+            innerColor: new FormControl(this.configuredWindow.stolarkaKolor, [], [this.validateInnerColor.bind(this)]),
+            outer: new FormGroup({
+              outerMaterial: new FormControl(this.configuredWindow.oblachowanieMaterial),
+              outerColor: new FormControl(this.configuredWindow.oblachowanieKolor),
+              outerColorFinish: new FormControl(this.configuredWindow.oblachowanieFinisz)
+            }, [], [this.validateOuterMaterial.bind(this)]),
+            ventilation: new FormControl(this.configuredWindow.wentylacja, [], [this.validateVentilation.bind(this)]),
+            closure: new FormGroup({
+              handle: new FormControl(this.configuredWindow.zamkniecieTyp, [], [this.validateHandle.bind(this)]),
+              handleColor: new FormControl(this.configuredWindow.zamkniecieKolor)
+            }),
+            extras: new FormArray(this.builtExtrasArray(this.extrasFromFile))
+          });
+          this.windowId = 1;
+          this.formChanges(); // TODO które usunąć to, czy poniżej - raczej poniżej wiersz, bo tam brak ustawiania formArray
+          this.setConfiguredValues(this.form.value); // TODO ten i poprzedni wiersz mają odwołanie do tej samej metody setConfigureValues - czy można jedno usunąć?
+          this.formName = cryptoRandomString({length: 12, type: 'alphanumeric'});
+          this.loading = false;
+        });
+    } else {
+      this.configByName$.pipe(takeUntil(this.isDestroyed$))
+        .subscribe((windowConfiguration: WindowConfig) => {
+          this.form = this.fb.group({
+            material: new FormControl(windowConfiguration.windowFormData.material, [], [this.validateMaterials.bind(this)]),
+            openingType: new FormControl(windowConfiguration.windowFormData.openingType, [], [this.validateOpenings.bind(this)]),
+            control: new FormControl(RoofWindowsConfigComponent.getControlType(windowConfiguration.windowFormData.otwieranie)),
+            glazing: new FormControl(windowConfiguration.windowFormData.glazing, [], [this.validateGlazing.bind(this)]),
+            width: new FormControl(windowConfiguration.windowFormData.width),
+            height: new FormControl(windowConfiguration.windowFormData.height),
+            coats: this.fb.array(windowConfiguration.windowFormData.coats),
+            innerColor: new FormControl(windowConfiguration.windowFormData.innerColor, [], [this.validateInnerColor.bind(this)]),
+            outer: new FormGroup({
+              outerMaterial: new FormControl(windowConfiguration.windowFormData.outer
+              === undefined ? null : windowConfiguration.windowFormData.outer.outerMaterial),
+              outerColor: new FormControl(windowConfiguration.windowFormData.outer
+              === undefined ? null : windowConfiguration.windowFormData.outer.outerColor),
+              outerColorFinish: new FormControl(windowConfiguration.windowFormData.outer
+              === undefined ? null : windowConfiguration.windowFormData.outer.outerColorFinish)
+            }, [], [this.validateOuterMaterial.bind(this)]),
+            ventilation: new FormControl(windowConfiguration.windowFormData.ventilation, [], [this.validateVentilation.bind(this)]),
+            closure: new FormGroup({
+              handle: new FormControl(windowConfiguration.windowFormData.closure
+              === undefined ? null : windowConfiguration.windowFormData.closure.handle, [], [this.validateHandle.bind(this)]),
+              handleColor: new FormControl(windowConfiguration.windowFormData.closure
+              === undefined ? null : windowConfiguration.windowFormData.closure.handleColor)
+            }),
+            extras: this.fb.array(windowConfiguration.windowFormData.extras)
+          });
+          this.configuredWindow = windowConfiguration.window;
+          this.windowId = windowConfiguration.id;
+          this.setConfiguredValues(this.form.value); // TODO ten kolejny wiersz mają odwołanie do tej samej metody setConfigureValues - czy można jedno usunąć?
+          this.formChanges(); // TODO które usunąć to, czy poprzednie - raczej poprzedni wiersz, bo tam brak ustawiania formArray
+          this.loading = false;
+        });
+    }
   }
 
   get coats(): FormArray {
@@ -353,7 +333,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       pairwise(),
       tap(([prevForm, form]: [any, any]) => {
         this.windowValuesSetter.glazingTypeSetter(form[1].material, form[1].glazing, form[1].coats, 'Okno').subscribe(glazingName => {
-          // this.glazingName$.next(glazingName);
           this.glazingName = glazingName;
           this.configuredWindow.pakietSzybowy = glazingName;
         });
@@ -418,9 +397,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.showHeightMessage = this.standardHeights.includes(form.height);
     this.setDisabled(this.configuredWindow);
   }
-
-  //
-
 
   priceCalculation(configuredWindow: RoofWindowSkylight) {
     // ... spread operator pozwala niezagnieżdżać jendego elementu w drugi
@@ -501,148 +477,145 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   // VALIDATORS
   validateMaterials<AsyncValidatorFn>(control: FormControl) {
     return new Observable((observer: Observer<ValidationErrors | null>) => {
-      let options = [];
       let errors = {
         'empty material': true
       };
-      this.configOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
-        options = data.materials;
-        for (const option of options) {
-          if (control.value === option) {
-            errors = null;
+      this.configOptionsLoaded$.pipe(takeUntil(this.isDestroyed$)).subscribe(loaded => {
+        if (loaded) {
+          for (const option of this.configOptions.materials) {
+            if (control.value === option) {
+              errors = null;
+            }
           }
+          observer.next(errors);
+          observer.complete();
         }
-        observer.next(errors);
-        observer.complete();
       });
     });
   }
 
   validateOpenings<AsyncValidatorFn>(control: FormControl) {
     return new Observable((observer: Observer<ValidationErrors | null>) => {
-      let options = [];
       let errors = {
         'empty openingType': true
       };
-      this.configOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
-        options = data.openingTypes;
-        for (const option of options) {
-          if (control.value === option) {
-            errors = null;
+      this.configOptionsLoaded$.pipe(takeUntil(this.isDestroyed$)).subscribe(loaded => {
+        if (loaded) {
+          for (const option of this.configOptions.openingTypes) {
+            if (control.value === option) {
+              errors = null;
+            }
           }
+          observer.next(errors);
+          observer.complete();
         }
-        observer.next(errors);
-        observer.complete();
       });
     });
   }
 
   validateGlazing<AsyncValidatorFn>(control: FormControl) {
     return new Observable((observer: Observer<ValidationErrors | null>) => {
-      let options = [];
       let errors = {
         'empty glazingType': true
       };
-      this.configOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
-        options = data.glazingTypes;
-        for (const option of options) {
-          if (control.value === option) {
-            errors = null;
+      this.configOptionsLoaded$.pipe(takeUntil(this.isDestroyed$)).subscribe(loaded => {
+        if (loaded) {
+          for (const option of this.configOptions.glazingTypes) {
+            if (control.value === option) {
+              errors = null;
+            }
           }
+          observer.next(errors);
+          observer.complete();
         }
-        observer.next(errors);
-        observer.complete();
       });
     });
   }
 
   validateInnerColor<AsyncValidatorFn>(control: FormControl) {
     return new Observable((observer: Observer<ValidationErrors | null>) => {
-      let options = [];
       let errors = {
         'empty innerColor': true
       };
-      this.configOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
-        options = data.innerColors;
-        for (const option of options) {
-          if (control.value === option) {
-            errors = null;
+      this.configOptionsLoaded$.pipe(takeUntil(this.isDestroyed$)).subscribe(loaded => {
+        if (loaded) {
+          for (const option of this.configOptions.innerColors) {
+            if (control.value === option) {
+              errors = null;
+            }
           }
+          observer.next(errors);
+          observer.complete();
         }
-        observer.next(errors);
-        observer.complete();
       });
     });
   }
 
   validateOuterMaterial<AsyncValidatorFn>(group: FormGroup) {
     return new Observable((observer: Observer<ValidationErrors | null>) => {
-      let materialOptions = [];
-      // let colorOptions = [];
-      let finishOptions = [];
       let errors = {
         'empty outerMaterial': true
       };
-      this.configOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
-        materialOptions = data.outerMaterials;
-        // colorOptions = this.configData.outerColor;
-        finishOptions = data.outerColorFinishes;
-        for (const option of materialOptions) {
-          if (group.controls.outerMaterial.value === option) {
-            errors = null;
+
+      this.configOptionsLoaded$.pipe(takeUntil(this.isDestroyed$)).subscribe(loaded => {
+        if (loaded) {
+          for (const option of this.configOptions.outerMaterials) {
+            if (group.controls.outerMaterial.value === option) {
+              errors = null;
+            }
           }
-        }
-        // TODO odkomentować kod po wprowadzeniu listy zewnętrznych koloróœ
-        // for (const option of colorOptions) {
-        //   if (group.controls.outerColor.value === option) {
-        //     errors = null;
-        //   }
-        // }
-        for (const option of finishOptions) {
-          if (group.controls.outerColorFinish.value === option) {
-            errors = null;
+          // TODO odkomentować kod po wprowadzeniu listy zewnętrznych kolorów
+          // for (const option of this.configOptions.outerColors) {
+          //   if (group.controls.outerMaterial.value === option) {
+          //     errors = null;
+          //   }
+          // }
+          for (const option of this.configOptions.outerColorFinishes) {
+            if (group.controls.outerMaterial.value === option) {
+              errors = null;
+            }
           }
+          observer.next(errors);
+          observer.complete();
         }
-        observer.next(errors);
-        observer.complete();
       });
     });
   }
 
   validateVentilation<AsyncValidatorFn>(control: FormControl) {
     return new Observable((observer: Observer<ValidationErrors | null>) => {
-      let options = [];
       let errors = {
         'empty ventilation': true
       };
-      this.configOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
-        options = data.ventilations;
-        for (const option of options) {
-          if (control.value === option) {
-            errors = null;
+      this.configOptionsLoaded$.pipe(takeUntil(this.isDestroyed$)).subscribe(loaded => {
+        if (loaded) {
+          for (const option of this.configOptions.ventilations) {
+            if (control.value === option) {
+              errors = null;
+            }
           }
+          observer.next(errors);
+          observer.complete();
         }
-        observer.next(errors);
-        observer.complete();
       });
     });
   }
 
   validateHandle<AsyncValidatorFn>(control: FormControl) {
     return new Observable((observer: Observer<ValidationErrors | null>) => {
-      let options = [];
       let errors = {
         'empty handle': true
       };
-      this.configOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
-        options = data.handles;
-        for (const option of options) {
-          if (control.value === option) {
-            errors = null;
+      this.configOptionsLoaded$.pipe(takeUntil(this.isDestroyed$)).subscribe(loaded => {
+        if (loaded) {
+          for (const option of this.configOptions.handles) {
+            if (control.value === option) {
+              errors = null;
+            }
           }
+          observer.next(errors);
+          observer.complete();
         }
-        observer.next(errors);
-        observer.complete();
       });
     });
   }
