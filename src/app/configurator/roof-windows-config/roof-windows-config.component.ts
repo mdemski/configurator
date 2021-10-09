@@ -168,6 +168,15 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         this.ventilations = this.objectMaker(this.configOptions.ventilations);
         this.handles = this.objectMaker(this.configOptions.handles);
         this.handleColors = this.objectMaker(this.configOptions.handleColors);
+        this.formName = this.routerParams.formName;
+        this.windowCode = this.routerParams.windowCode;
+        this.configId = this.routerParams.configId === undefined ? '-1' : this.routerParams.configId;
+        if (this.routerParams.configId === undefined) {
+          this.globalId = this.hd.getHighestGlobalIdFormMongoDB(this.configurations);
+        } else {
+          this.globalId = this.routerParams.configId;
+          this.globalConfiguration = this.configurations.find(item => item.globalId === this.globalId);
+        }
         this.loadForm();
       }
     });
