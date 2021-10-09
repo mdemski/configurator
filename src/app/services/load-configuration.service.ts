@@ -59,10 +59,6 @@ export class LoadConfigurationService {
     }
   }
 
-  getWindowConfigurationByFormName(formName: string) {
-    return this.crud.readConfigurationByFormName(formName);
-  }
-
   getFlashingToReconfiguration(user: string, formName: string, flashingCode: string): Observable<Flashing> {
     if (user !== '' || user !== undefined) {
       if (formName === 'no-name' && flashingCode === undefined) {
