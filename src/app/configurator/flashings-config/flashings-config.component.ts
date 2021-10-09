@@ -9,10 +9,8 @@ import {
 } from '@angular/core';
 import {LoadConfigurationService} from '../../services/load-configuration.service';
 import {TranslateService} from '@ngx-translate/core';
-import {combineLatest, Observable, ObservedValueOf, Observer, Subject} from 'rxjs';
-import {AuthService} from '../../services/auth.service';
-import {Params, Router} from '@angular/router';
-import {CrudService} from '../../services/crud-service';
+import {Observable, Observer, Subject} from 'rxjs';
+import {Router} from '@angular/router';
 import {map, takeUntil} from 'rxjs/operators';
 import {SingleConfiguration} from '../../models/single-configuration';
 import {Flashing} from '../../models/flashing';
@@ -24,10 +22,16 @@ import {FlashingValueSetterService} from '../../services/flashing-value-setter.s
 import cryptoRandomString from 'crypto-random-string';
 import {Select, Store} from '@ngxs/store';
 import {FlashingState} from '../../store/flashing/flashing.state';
-import {SetCurrentUser} from '../../store/app/app.actions';
 import {RouterState} from '@ngxs/router-plugin';
 import {ConfigurationState} from '../../store/configuration/configuration.state';
 import {AvailableConfigDataState} from '../../store/avaiable-config-data/available-config-data.state';
+import {AppState} from '../../store/app/app.state';
+import {
+  AddFlashingConfiguration,
+  AddFlashingConfigurations,
+  AddGlobalConfiguration,
+  UpdateFlashingConfiguration, UpdateFlashingConfigurations, UpdateFlashingFormByFormName
+} from '../../store/configuration/configuration.actions';
 
 @Component({
   selector: 'app-flashings-config',
@@ -36,37 +40,33 @@ import {AvailableConfigDataState} from '../../store/avaiable-config-data/availab
 })
 export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewInit {
 
+  @Select(AppState) user$: Observable<{ currentUser }>;
   @Select(ConfigurationState.configurations) configurations$: Observable<SingleConfiguration[]>;
-  @Select(AvailableConfigDataState.configFlashings) configOptions$: Observable<any>;
-  @Select(AvailableConfigDataState.flashingsExclusions) excludeOptions$: Observable<any>;
   @Select(FlashingState.flashings) flashings$: Observable<Flashing[]>;
+  @Select(AvailableConfigDataState.configFlashings) configOptions$: Observable<any>;
+  @Select(AvailableConfigDataState.flashingsConfigLoaded) configOptionsLoaded$: Observable<boolean>;
+  @Select(AvailableConfigDataState.flashingsExclusions) excludeOptions$: Observable<any>;
   @Select(RouterState) params$: Observable<any>;
 
   constructor(private router: Router,
               private fb: FormBuilder,
               private store: Store,
               private changeDetector: ChangeDetectorRef,
-              private authService: AuthService,
               private loadData: LoadConfigurationService,
               private flashingSetter: FlashingValueSetterService,
-              private crud: CrudService,
               private hd: HighestIdGetterService,
               private modal: ModalService,
               public translate: TranslateService) {
     this.loading = true;
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
-    this.paramsUserFetchData$ = combineLatest(this.store.dispatch(SetCurrentUser), this.params$,
-      this.configOptions$, this.configurations$).pipe(
-      takeUntil(this.isDestroyed$),
-      map(data => {
-        return {
-          user: data[0],
-          params: data[1].state.params,
-          fetch: data[2],
-          configurations: data[3]
-        };
-      }));
+    this.configOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(configOptions => this.configOptions = configOptions);
+    this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.currentUser = user.currentUser);
+    this.configurations$.pipe(takeUntil(this.isDestroyed$)).subscribe(configurations => this.configurations = configurations);
+    this.params$.pipe(takeUntil(this.isDestroyed$)).subscribe(params => this.routerParams = params);
+    this.flashings$.pipe(takeUntil(this.isDestroyed$)).subscribe(flashings => {
+      this.flashingsFromDataBase = flashings;
+    });
   }
 
   @ViewChildren('dimensionsPresentationDivs') dimPresentDivs: QueryList<ElementRef>;
@@ -75,14 +75,16 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
   @ViewChildren('dimensionsPresentationDivsW1') dimPresentDivsW1: QueryList<ElementRef>;
   @ViewChildren('dimensionsPresentationTD') dimPresentTDS: QueryList<ElementRef>;
 
-  // tslint:disable-next-line:max-line-length
-  private paramsUserFetchData$: Observable<{ params: ObservedValueOf<Observable<Params>>; user: string; fetch: any; configurations: SingleConfiguration[] }>;
   private isDestroyed$ = new Subject();
   private tempConfigFlashing: Flashing;
   private flashingId: number;
   private configuredFlashingIDsArray: number[];
   private columns: ElementRef[] = [];
   private divs: ElementRef[] = [];
+  private routerParams = null;
+  private configOptions;
+  private configurations: SingleConfiguration[];
+  userConfigurations$: Observable<SingleConfiguration[]> = new Subject() as Observable<SingleConfiguration[]>;
   reverseModelsArrayIndex: number[];
   summaryFlashingsPrice: number;
   globalId = '';
@@ -158,13 +160,6 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
     return objectsArray;
   }
 
-  private static objectMaker(option: string): {} {
-    return {
-      option,
-      disabled: null
-    };
-  }
-
   ngOnInit(): void {
     this.minVerticalNumber = 1;
     this.minHorizontalNumber = 1;
@@ -184,104 +179,33 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
     this.tempConfigFlashing = new Flashing('1K-1-U-UO------A7022P-055098-OKPK01', 'UN/O 055x098 Kołnierz uniwersalny /A7022P/UO/OKPK01', 'Kołnierz U 55x98 UO', 'I-KOLNIERZ', 'NPL-KOLNIERZ', 'Nowy', 'U', 55, 98, 'KołnierzUszczelniający',
       'KolnierzUszczelniający', 'Kołnierz:U', 'KołnierzUszczelniający:K-1', 'KołnierzUszczelniający', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'U', 0, 'UO', 5, 0, 0,
       270, ['78x118', '78x140'], ['assets/img/products/flashings.jpg'], 'PL', false, null);
-    this.paramsUserFetchData$.pipe(
-      takeUntil(this.isDestroyed$),
-      map((data: { params: ObservedValueOf<Observable<Params>>; user: string; fetch: any; configurations: SingleConfiguration[] }) => {
-        this.flashingModels = data.fetch.models;
-        console.log(data.fetch);
-        this.flashingTypes = FlashingsConfigComponent.objectsMaker(data.fetch.flashingTypes);
-        this.lShaped = FlashingsConfigComponent.objectsMaker(data.fetch.lShapeds);
-        this.availableOptions = FlashingsConfigComponent.objectsMaker(data.fetch.availableOptions);
-        this.verticalSpacingsFromFile = data.fetch.verticalSpacings;
-        this.horizontalSpacingsFromFile = data.fetch.horizontalSpacings;
-        this.dimensionsFromFile = FlashingsConfigComponent.setDimensions(data.fetch.dimensions);
-        this.apronTypes = FlashingsConfigComponent.objectsMaker(data.fetch.apronTypes);
-        this.outerMaterials = FlashingsConfigComponent.objectsMaker(data.fetch.outerMaterials);
-        this.outerColors = FlashingsConfigComponent.objectsMaker(data.fetch.outerColor);
-        this.outerColorFinishes = FlashingsConfigComponent.objectsMaker(data.fetch.outerColorFinishes);
-        this.currentUser = data.user;
-        this.formName = data.params.formName;
-        this.flashingCode = data.params.productCode;
-        this.configId = data.params.configId === undefined ? '-1' : data.params.configId;
-        if (data.params.configId === undefined) {
-          this.globalId = this.hd.getHighestGlobalIdFormMongoDB(data.configurations);
+    this.configOptionsLoaded$.pipe(takeUntil(this.isDestroyed$)).subscribe(loaded => {
+      if (loaded) {
+        this.flashingModels = this.configOptions.models;
+        this.flashingTypes = FlashingsConfigComponent.objectsMaker(this.configOptions.flashingTypes);
+        this.lShaped = FlashingsConfigComponent.objectsMaker(this.configOptions.lShapeds);
+        this.availableOptions = FlashingsConfigComponent.objectsMaker(this.configOptions.availableOptions);
+        this.verticalSpacingsFromFile = this.configOptions.verticalSpacings;
+        this.horizontalSpacingsFromFile = this.configOptions.horizontalSpacings;
+        this.dimensionsFromFile = FlashingsConfigComponent.setDimensions(this.configOptions.dimensions);
+        this.apronTypes = FlashingsConfigComponent.objectsMaker(this.configOptions.apronTypes);
+        this.outerMaterials = FlashingsConfigComponent.objectsMaker(this.configOptions.outerMaterials);
+        this.outerColors = FlashingsConfigComponent.objectsMaker(this.configOptions.outerColor);
+        this.outerColorFinishes = FlashingsConfigComponent.objectsMaker(this.configOptions.outerColorFinishes);
+        this.formName = this.routerParams.state.params.formName;
+        this.flashingCode = this.routerParams.state.params.productCode;
+        this.configId = this.routerParams.state.params.configId === undefined ? '-1' : this.routerParams.state.params.configId;
+        if (this.routerParams.state.params.configId === undefined) {
+          this.globalId = this.hd.getHighestGlobalIdFormMongoDB(this.configurations);
         } else {
-          this.globalId = data.params.configId;
-          this.globalConfiguration = data.configurations.find(item => item.globalId === this.globalId);
+          this.globalId = this.routerParams.state.params.configId;
+          this.globalConfiguration = this.configurations.find(item => item.globalId === this.globalId);
         }
-      })).subscribe(() => {
-      if (this.formName === 'no-name' || this.formName === undefined) {
-        this.loadData.getFlashingToReconfiguration(this.currentUser, this.formName, this.flashingCode).pipe(
-          takeUntil(this.isDestroyed$)).subscribe(flashingToReconfiguration => {
-          this.configuredFlashing = flashingToReconfiguration;
-          this.form = this.fb.group({
-            flashingType: new FormControl(this.configuredFlashing.typKolnierza, [], [this.validateFlashingType.bind(this)]),
-            apronType: new FormControl(this.configuredFlashing.typFartucha, [], [this.validateApronType.bind(this)]),
-            outer: new FormGroup({
-              outerMaterial: new FormControl(this.configuredFlashing.oblachowanieMaterial),
-              outerColor: new FormControl(this.configuredFlashing.oblachowanieKolor),
-              outerColorFinish: new FormControl(this.configuredFlashing.oblachowanieFinisz)
-            }, [], [this.validateOuterMaterial.bind(this)]),
-            composition: new FormGroup({
-              // TODO przestawić wyjściowo na 1 i 1
-              verticalNumber: new FormControl(1),
-              horizontalNumber: new FormControl(1),
-            }),
-            dimensions: this.fb.group({
-              widths: this.fb.array([new FormControl(this.configuredFlashing.szerokosc)]),
-              heights: this.fb.array([new FormControl(this.configuredFlashing.wysokosc)]),
-              verticalSpacings: this.fb.array([]),
-              horizontalSpacings: this.fb.array([])
-            }, {
-              asyncValidators: [this.validateDimensions.bind(this)]
-            }),
-            lShaped: new FormControl(null),
-            windchestLength: new FormControl(80)
-          });
-          this.formName = cryptoRandomString({length: 12, type: 'alphanumeric'});
-        });
-        this.flashingId = 1;
-        this.configuredFlashingIDsArray = [this.flashingId];
-        this.formChanges();
-        this.loading = false;
-      } else {
-        this.loadData.getFlashingConfigurationByFormName(this.formName)
-          .pipe(takeUntil(this.isDestroyed$))
-          .subscribe((flashingConfigurations: FlashingConfig[]) => {
-            this.configuredFlashing = flashingConfigurations[0].flashing;
-            flashingConfigurations.forEach(flashingConfig => this.configuredFlashingIDsArray.push(flashingConfig.id));
-            flashingConfigurations.forEach(flashingConfig => this.configuredFlashingArray.push(flashingConfig.flashing));
-            this.flashingId = flashingConfigurations[0].id; // w tym zwraca pierwszy id gdy znajdzie pasujący formName
-            const flashingFormData = flashingConfigurations[0].flashingFormData;
-            this.form = this.fb.group({
-              flashingType: new FormControl(flashingFormData.flashingType, [], [this.validateFlashingType.bind(this)]),
-              apronType: new FormControl(flashingFormData.apronType, [], [this.validateApronType.bind(this)]),
-              outer: new FormGroup({
-                outerMaterial: new FormControl(flashingFormData.outer.outerMaterial),
-                outerColor: new FormControl(flashingFormData.outer.outerColor),
-                outerColorFinish: new FormControl(flashingFormData.outer.outerColorFinish),
-              }),
-              composition: new FormGroup({
-                verticalNumber: new FormControl(flashingFormData.composition.verticalNumber),
-                horizontalNumber: new FormControl(flashingFormData.composition.horizontalNumber),
-              }),
-              dimensions: new FormGroup({
-                widths: this.fb.array(flashingFormData.dimensions.widths),
-                heights: this.fb.array(flashingFormData.dimensions.heights),
-                verticalSpacings: this.fb.array(flashingFormData.dimensions.verticalSpacings),
-                horizontalSpacings: this.fb.array(flashingFormData.dimensions.horizontalSpacings),
-              }),
-              lShaped: new FormControl(flashingFormData.lShaped),
-              windchestLenght: new FormControl(flashingFormData.windchestLenght)
-            });
-            this.formChanges();
-            this.loading = false;
-          });
+        this.loadForm();
       }
     });
-    this.flashings$.pipe(takeUntil(this.isDestroyed$)).subscribe(flashings => {
-      this.flashingsFromDataBase = flashings;
-    });
+    this.userConfigurations$ = this.store.select(ConfigurationState.userConfigurations)
+      .pipe(map(filterFn => filterFn(this.currentUser)));
     this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
       this.shopFlashingLink = text.shopFlashings;
     });
@@ -318,6 +242,77 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
 
   ngOnDestroy(): void {
     this.isDestroyed$.next();
+  }
+
+  private loadForm() {
+    if (this.formName === 'no-name' || this.formName === undefined) {
+      this.loadData.getFlashingToReconfiguration(this.currentUser, this.formName, this.flashingCode).pipe(
+        takeUntil(this.isDestroyed$)).subscribe(flashingToReconfiguration => {
+        this.configuredFlashing = flashingToReconfiguration;
+        this.form = this.fb.group({
+          flashingType: new FormControl(this.configuredFlashing.typKolnierza, [], [this.validateFlashingType.bind(this)]),
+          apronType: new FormControl(this.configuredFlashing.typFartucha, [], [this.validateApronType.bind(this)]),
+          outer: new FormGroup({
+            outerMaterial: new FormControl(this.configuredFlashing.oblachowanieMaterial),
+            outerColor: new FormControl(this.configuredFlashing.oblachowanieKolor),
+            outerColorFinish: new FormControl(this.configuredFlashing.oblachowanieFinisz)
+          }, [], [this.validateOuterMaterial.bind(this)]),
+          composition: new FormGroup({
+            // TODO przestawić wyjściowo na 1 i 1
+            verticalNumber: new FormControl(1),
+            horizontalNumber: new FormControl(1),
+          }),
+          dimensions: this.fb.group({
+            widths: this.fb.array([new FormControl(this.configuredFlashing.szerokosc)]),
+            heights: this.fb.array([new FormControl(this.configuredFlashing.wysokosc)]),
+            verticalSpacings: this.fb.array([]),
+            horizontalSpacings: this.fb.array([])
+          }, {
+            asyncValidators: [this.validateDimensions.bind(this)]
+          }),
+          lShaped: new FormControl(null),
+          windchestLength: new FormControl(80)
+        });
+        this.formName = cryptoRandomString({length: 12, type: 'alphanumeric'});
+      });
+      this.flashingId = 1;
+      this.configuredFlashingIDsArray = [this.flashingId];
+      this.formChanges();
+      this.loading = false;
+    } else {
+      this.loadData.getFlashingConfigurationByFormName(this.formName)
+        .pipe(takeUntil(this.isDestroyed$))
+        .subscribe((flashingConfigurations: FlashingConfig[]) => {
+          this.configuredFlashing = flashingConfigurations[0].flashing;
+          flashingConfigurations.forEach(flashingConfig => this.configuredFlashingIDsArray.push(flashingConfig.id));
+          flashingConfigurations.forEach(flashingConfig => this.configuredFlashingArray.push(flashingConfig.flashing));
+          this.flashingId = flashingConfigurations[0].id; // w tym zwraca pierwszy id gdy znajdzie pasujący formName
+          const flashingFormData = flashingConfigurations[0].flashingFormData;
+          this.form = this.fb.group({
+            flashingType: new FormControl(flashingFormData.flashingType, [], [this.validateFlashingType.bind(this)]),
+            apronType: new FormControl(flashingFormData.apronType, [], [this.validateApronType.bind(this)]),
+            outer: new FormGroup({
+              outerMaterial: new FormControl(flashingFormData.outer.outerMaterial),
+              outerColor: new FormControl(flashingFormData.outer.outerColor),
+              outerColorFinish: new FormControl(flashingFormData.outer.outerColorFinish),
+            }),
+            composition: new FormGroup({
+              verticalNumber: new FormControl(flashingFormData.composition.verticalNumber),
+              horizontalNumber: new FormControl(flashingFormData.composition.horizontalNumber),
+            }),
+            dimensions: new FormGroup({
+              widths: this.fb.array(flashingFormData.dimensions.widths),
+              heights: this.fb.array(flashingFormData.dimensions.heights),
+              verticalSpacings: this.fb.array(flashingFormData.dimensions.verticalSpacings),
+              horizontalSpacings: this.fb.array(flashingFormData.dimensions.horizontalSpacings),
+            }),
+            lShaped: new FormControl(flashingFormData.lShaped),
+            windchestLenght: new FormControl(flashingFormData.windchestLenght)
+          });
+          this.formChanges();
+          this.loading = false;
+        });
+    }
   }
 
   get dimensions() {
@@ -571,72 +566,68 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
   // VALIDATORS
   validateFlashingType<AsyncValidatorFn>(control: FormControl) {
     return new Observable((observer: Observer<ValidationErrors | null>) => {
-      let options = [];
       let errors = {
         'empty flashingType': true
       };
-      this.configOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
-        options = data.flashingTypes;
-        for (const option of options) {
-          if (control.value === option) {
-            errors = null;
+      this.configOptionsLoaded$.pipe(takeUntil(this.isDestroyed$)).subscribe(loaded => {
+        if (loaded) {
+          for (const option of this.configOptions.flashingTypes) {
+            if (control.value === option) {
+              errors = null;
+            }
           }
+          observer.next(errors);
+          observer.complete();
         }
-        observer.next(errors);
-        observer.complete();
       });
     });
   }
 
   validateOuterMaterial<AsyncValidatorFn>(group: FormGroup) {
     return new Observable((observer: Observer<ValidationErrors | null>) => {
-      let materialOptions = [];
-      // let colorOptions = [];
-      let finishOptions = [];
       let errors = {
         'empty outerMaterial': true
       };
-      this.configOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
-        materialOptions = data.outerMaterials;
-        // colorOptions = this.configData.outerColor;
-        finishOptions = data.outerColorFinishes;
-        for (const option of materialOptions) {
-          if (group.controls.outerMaterial.value === option) {
-            errors = null;
+      this.configOptionsLoaded$.pipe(takeUntil(this.isDestroyed$)).subscribe(loaded => {
+        if (loaded) {
+          for (const option of this.configOptions.outerMaterials) {
+            if (group.controls.outerMaterial.value === option) {
+              errors = null;
+            }
           }
-        }
-        // TODO odkomentować kod po wprowadzeniu listy zewnętrznych koloróœ
-        // for (const option of colorOptions) {
-        //   if (group.controls.outerColor.value === option) {
-        //     errors = null;
-        //   }
-        // }
-        for (const option of finishOptions) {
-          if (group.controls.outerColorFinish.value === option) {
-            errors = null;
+          // TODO odkomentować kod po wprowadzeniu listy zewnętrznych kolorów
+          // for (const option of this.configOptions.outerColors) {
+          //   if (group.controls.outerMaterial.value === option) {
+          //     errors = null;
+          //   }
+          // }
+          for (const option of this.configOptions.outerColorFinishes) {
+            if (group.controls.outerMaterial.value === option) {
+              errors = null;
+            }
           }
+          observer.next(errors);
+          observer.complete();
         }
-        observer.next(errors);
-        observer.complete();
       });
     });
   }
 
   validateApronType<AsyncValidatorFn>(control: FormControl) {
     return new Observable((observer: Observer<ValidationErrors | null>) => {
-      let options = [];
       let errors = {
         'empty apronType': true
       };
-      this.configOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(data => {
-        options = data.apronTypes;
-        for (const option of options) {
-          if (control.value === option) {
-            errors = null;
+      this.configOptionsLoaded$.pipe(takeUntil(this.isDestroyed$)).subscribe(loaded => {
+        if (loaded) {
+          for (const option of this.configOptions.apronTypes) {
+            if (control.value === option) {
+              errors = null;
+            }
           }
+          observer.next(errors);
+          observer.complete();
         }
-        observer.next(errors);
-        observer.complete();
       });
     });
   }
@@ -879,74 +870,71 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
       };
     }
     this.loading = true;
-    this.authService.returnUser().pipe(takeUntil(this.isDestroyed$)).subscribe(user => {
-      if (this.configId === '-1' || this.configId === '') {
-        this.crud.readAllUserConfigurations(user).pipe(
-          takeUntil(this.isDestroyed$),
-          map((data: Array<any>) => {
-            return data.filter(x => x !== null);
-          })).subscribe(userConfigurations => {
-          this.userConfigs = userConfigurations;
-          this.highestUserId = this.hd.getHighestIdForUser(userConfigurations);
-          this.newFlashingConfig.userId = this.highestUserId;
-          // wersja 1 lub 2
-          if (this.userConfigs.length !== 0) {
-            this.userConfigs.push(this.newFlashingConfig);
-            this.loading = false;
-            this.chooseConfigNamePopup = true;
-            // wersja 1
-          } else {
-            this.newFlashingConfig.products.flashings.forEach(element2 => element2.configLink = String(
-              this.router['location']._platformLocation.location.origin + this.router.url
-              + '/' + this.newFlashingConfig.globalId
-              + '/' + element2.flashingFormName
-              + '/' + element2.flashing.kod));
-            this.crud.createConfigurationForUser(user, this.newFlashingConfig)
-              .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
-            this.router.navigate(['/' + this.configurationSummary]);
-            this.loading = false;
-          }
-        });
-      } else {
-        // wersja 2
-        const temporaryLink = String(
-          this.router['location']._platformLocation.location.origin
-          + '/' + this.newFlashingConfig.globalId
-          + '/' + this.formName
-          + '/' + this.configuredFlashing.kod);
-        if (this.flashingId === 1) {
-          if (this.configuredFlashingArray.length === 0) {
-            // tslint:disable-next-line:max-line-length
-            this.crud.createFlashingConfigurationIntoGlobalConfiguration(this.globalConfiguration, this.configuredFlashing,
-              this.formName, this.form.value, temporaryLink)
-              .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
-          } else {
-            this.crud.createFlashingsArrayConfigurationIntoGlobalConfiguration(this.globalConfiguration,
-              this.newFlashingConfig.products.flashings).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
-          }
-          // wersja 3
+    if (this.configId === '-1' || this.configId === '') {
+      this.userConfigurations$.pipe(
+        takeUntil(this.isDestroyed$),
+        map((data: Array<any>) => {
+          return data.filter(x => x !== null);
+        })).subscribe(userConfigurations => {
+        this.userConfigs = userConfigurations;
+        this.highestUserId = this.hd.getHighestIdForUser(userConfigurations);
+        this.newFlashingConfig.userId = this.highestUserId;
+        // wersja 1 lub 2
+        if (this.userConfigs.length !== 0) {
+          this.userConfigs.push(this.newFlashingConfig);
+          this.loading = false;
+          this.chooseConfigNamePopup = true;
+          // wersja 1
         } else {
-          if (this.configuredFlashingArray.length === 0) {
-            this.crud.updateFlashingConfigurationIntoGlobalConfiguration(this.globalConfiguration, this.flashingId, this.configuredFlashing)
-              .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
-          } else {
-            this.crud.updateFlashingsArrayConfigurationIntoGlobalConfiguration(this.globalConfiguration,
-              this.newFlashingConfig.products.flashings)
-              .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
-          }
-          this.crud.updateFlashingFormDataByFormName(this.globalConfiguration, this.formName, this.form.value)
+          this.newFlashingConfig.products.flashings.forEach(element2 => element2.configLink = String(
+            this.router['location']._platformLocation.location.origin + this.router.url
+            + '/' + this.newFlashingConfig.globalId
+            + '/' + element2.flashingFormName
+            + '/' + element2.flashing.kod));
+          this.store.dispatch(new AddGlobalConfiguration(this.currentUser, this.newFlashingConfig))
             .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+          this.router.navigate(['/' + this.configurationSummary]);
+          this.loading = false;
         }
-        this.router.navigate(['/' + this.configurationSummary]);
-        this.loading = false;
+      });
+    } else {
+      // wersja 2
+      const temporaryLink = String(
+        this.router['location']._platformLocation.location.origin
+        + '/' + this.newFlashingConfig.globalId
+        + '/' + this.formName
+        + '/' + this.configuredFlashing.kod);
+      if (this.flashingId === 1) {
+        if (this.configuredFlashingArray.length === 0) {
+          // tslint:disable-next-line:max-line-length
+          this.store.dispatch(new AddFlashingConfiguration(this.globalConfiguration, this.configuredFlashing,
+            this.formName, this.form.value, temporaryLink))
+            .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+        } else {
+          this.store.dispatch(new AddFlashingConfigurations(this.globalConfiguration,
+            this.newFlashingConfig.products.flashings)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+        }
+        // wersja 3
+      } else {
+        if (this.configuredFlashingArray.length === 0) {
+          this.store.dispatch(new UpdateFlashingConfiguration(this.globalConfiguration, this.flashingId, this.configuredFlashing))
+            .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+        } else {
+          this.store.dispatch(new UpdateFlashingConfigurations(this.globalConfiguration,
+            this.newFlashingConfig.products.flashings)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+        }
+        this.store.dispatch(new UpdateFlashingFormByFormName(this.globalConfiguration, this.formName, this.form.value))
+          .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
       }
-    });
+      this.router.navigate(['/' + this.configurationSummary]);
+      this.loading = false;
+    }
   }
 
   chooseConfigId(configForm: any) {
     // wersja 1
     if (configForm.value.configFlashingFormId === undefined) {
-      this.crud.createConfigurationForUser(this.currentUser, this.newFlashingConfig)
+      this.store.dispatch(new AddGlobalConfiguration(this.currentUser, this.newFlashingConfig))
         .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
       // wersja 2
     } else {
@@ -958,12 +946,11 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
       this.configId = String('configuration-' + parseInt(configForm.value.configFlashingFormId, 10));
       if (this.configuredFlashingArray.length === 0) {
         // tslint:disable-next-line:max-line-length
-        this.crud.createFlashingConfigurationIntoGlobalConfiguration(this.globalConfiguration, this.configuredFlashing,
-          this.formName, this.form.value, temporaryLink)
-          .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+        this.store.dispatch(new AddFlashingConfiguration(this.globalConfiguration, this.configuredFlashing,
+          this.formName, this.form.value, temporaryLink)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
       } else {
-        this.crud.createFlashingsArrayConfigurationIntoGlobalConfiguration(this.globalConfiguration,
-          this.newFlashingConfig.products.flashings).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+        this.store.dispatch(new AddFlashingConfigurations(this.globalConfiguration,
+          this.newFlashingConfig.products.flashings)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
       }
     }
     this.chooseConfigNamePopup = false;
@@ -1010,12 +997,11 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
           + '/' + this.formName
           + '/' + this.configuredFlashing.kod;
         if (this.flashingId === 1) {
-          this.crud.createFlashingConfigurationIntoGlobalConfiguration(this.globalConfiguration, this.configuredFlashing,
-            this.formName, this.form.value, temporaryUrl)
-            .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+          this.store.dispatch(new AddFlashingConfiguration(this.globalConfiguration, this.configuredFlashing,
+            this.formName, this.form.value, temporaryUrl)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
           // wersja 3
         } else {
-          this.crud.updateFlashingConfigurationIntoGlobalConfiguration(this.globalConfiguration, this.flashingId, this.configuredFlashing)
+          this.store.dispatch(new UpdateFlashingConfiguration(this.globalConfiguration, this.flashingId, this.configuredFlashing))
             .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
         }
         // wersja 1
@@ -1025,7 +1011,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
           + '/' + this.newFlashingConfig.globalId
           + '/' + element2.flashingFormName
           + '/' + element2.flashing.kod));
-        this.crud.createConfigurationForUser('anonym', this.newFlashingConfig)
+        this.store.dispatch(new AddGlobalConfiguration('anonym', this.newFlashingConfig))
           .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
         temporaryUrl = this.router['location']._platformLocation.location.origin + this.router.url
           + '/' + this.newFlashingConfig.globalId
@@ -1075,11 +1061,11 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
       if (this.configId === this.globalId) {
         // wersja 2
         if (this.flashingId === 1) {
-          this.crud.createFlashingsArrayConfigurationIntoGlobalConfiguration(this.globalConfiguration, temporaryFlashingConfigsArray)
+          this.store.dispatch(new AddFlashingConfigurations(this.globalConfiguration, temporaryFlashingConfigsArray))
             .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
           // wersja 3
         } else {
-          this.crud.updateFlashingsArrayConfigurationIntoGlobalConfiguration(this.globalConfiguration, temporaryFlashingConfigsArray)
+          this.store.dispatch(new UpdateFlashingConfigurations(this.globalConfiguration, temporaryFlashingConfigsArray))
             .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
         }
         temporaryUrl = this.router['location']._platformLocation.location.origin
@@ -1093,7 +1079,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
           + '/' + this.newFlashingConfig.globalId
           + '/' + element2.flashingFormName
           + '/' + element2.flashing.kod));
-        this.crud.createConfigurationForUser('anonym', this.newFlashingConfig)
+        this.store.dispatch(new AddGlobalConfiguration('anonym', this.newFlashingConfig))
           .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
         temporaryUrl = this.router['location']._platformLocation.location.origin + this.router.url
           + '/' + this.newFlashingConfig.globalId

@@ -168,13 +168,13 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         this.ventilations = this.objectMaker(this.configOptions.ventilations);
         this.handles = this.objectMaker(this.configOptions.handles);
         this.handleColors = this.objectMaker(this.configOptions.handleColors);
-        this.formName = this.routerParams.formName;
-        this.windowCode = this.routerParams.windowCode;
-        this.configId = this.routerParams.configId === undefined ? '-1' : this.routerParams.configId;
-        if (this.routerParams.configId === undefined) {
+        this.formName = this.routerParams.state.params.formName;
+        this.windowCode = this.routerParams.state.params.productCode;
+        this.configId = this.routerParams.state.params.configId === undefined ? '-1' : this.routerParams.state.params.configId;
+        if (this.routerParams.state.params.configId === undefined) {
           this.globalId = this.hd.getHighestGlobalIdFormMongoDB(this.configurations);
         } else {
-          this.globalId = this.routerParams.configId;
+          this.globalId = this.routerParams.state.params.configId;
           this.globalConfiguration = this.configurations.find(item => item.globalId === this.globalId);
         }
         this.loadForm();
@@ -209,8 +209,9 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
 
   private loadForm() {
     if (this.formName === 'no-name' || this.formName === undefined) {
-      this.loadConfig.getWindowToReconfiguration(this.currentUser, this.formName, this.routerParams.windowCode).pipe(takeUntil(this.isDestroyed$))
+      this.loadConfig.getWindowToReconfiguration(this.currentUser, this.formName, this.routerParams.state.params.productCode).pipe(takeUntil(this.isDestroyed$))
         .subscribe(windowToReconfiguration => {
+          console.log(this.routerParams.state.params.productCode);
           this.configuredWindow = windowToReconfiguration;
           this.form = this.fb.group({
             material: new FormControl(this.configuredWindow.stolarkaMaterial, [], [this.validateMaterials.bind(this)]),
