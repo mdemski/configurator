@@ -70,119 +70,151 @@ export class ConfigurationState {
   }
 
   @Selector()
-  static userConfigurations(state: SingleConfiguration[], user) {
-    return state.filter(configuration => configuration.user === user);
+  static userConfigurations(state: ConfigurationStateModel) {
+    return (user: string) => {
+      return state.configurations.filter(configuration => configuration.user === user);
+    };
   }
 
   @Selector()
-  static configurationByMongoID(state: SingleConfiguration[], mongoId) {
-    return state.find(configuration => configuration._id === mongoId);
+  static configurationByMongoID(state: ConfigurationStateModel) {
+    return (mongoId) => {
+      return state.configurations.find(configuration => configuration._id === mongoId);
+    };
   }
 
   @Selector()
-  static configurationByGlobalID(state: SingleConfiguration[], globalId) {
-    return state.find(configuration => configuration.globalId === globalId);
+  static configurationByGlobalID(state: ConfigurationStateModel) {
+    return (globalId: string) => {
+      return state.configurations.find(configuration => configuration.globalId === globalId);
+    };
   }
 
   @Selector()
-  static configurationByName(state: SingleConfiguration[], configName: string) {
-    return state.find(configuration => configuration.name === configName);
+  static configurationByName(state: ConfigurationStateModel) {
+    return (configName: string) => {
+      return state.configurations.find(configuration => configuration.name === configName);
+    };
   }
 
   @Selector()
-  static configurationByFormName(state: SingleConfiguration[], formName) {
-    return state.forEach(configuration => {
-      configuration.products.windows.forEach(windowConfig => {
-        if (windowConfig.windowFormName === formName) {
-          return configuration;
-        }
+  static configurationByFormName(state: SingleConfiguration[]) {
+    return (formName: string) => {
+      let configurationByName;
+      state.forEach(configuration => {
+        configuration.products.windows.forEach(windowConfig => {
+          if (windowConfig.windowFormName === formName) {
+            return state;
+          }
+        });
+        configuration.products.flashings.forEach(flashingConfig => {
+          if (flashingConfig.flashingFormName === formName) {
+            configurationByName = configuration;
+          }
+        });
+        configuration.products.accessories.forEach(accessoryConfig => {
+          if (accessoryConfig.accessoryFormName === formName) {
+            configurationByName = configuration;
+          }
+        });
+        configuration.products.flats.forEach(flatConfig => {
+          if (flatConfig.flatFormName === formName) {
+            configurationByName = configuration;
+          }
+        });
+        configuration.products.verticals.forEach(verticalConfig => {
+          if (verticalConfig.verticalFormName === formName) {
+            configurationByName = configuration;
+          }
+        });
+        return configurationByName;
       });
-      configuration.products.flashings.forEach(flashingConfig => {
-        if (flashingConfig.flashingFormName === formName) {
-          return configuration;
-        }
-      });
-      configuration.products.accessories.forEach(accessoryConfig => {
-        if (accessoryConfig.accessoryFormName === formName) {
-          return configuration;
-        }
-      });
-      configuration.products.flats.forEach(flatConfig => {
-        if (flatConfig.flatFormName === formName) {
-          return configuration;
-        }
-      });
-      configuration.products.verticals.forEach(verticalConfig => {
-        if (verticalConfig.verticalFormName === formName) {
-          return configuration;
-        }
-      });
-    });
+    };
   }
 
   // ---------------------------------------------------------------------------------------------------------- //
 
   // Roof window configurations selectors
   @Selector()
-  static roofWindowConfigurationsByGlobalId(state: ConfigurationStateModel, globalId: string) {
-    return state.configurations[globalId].products.windows;
+  static roofWindowConfigurationsByGlobalId(state: ConfigurationStateModel) {
+    return (globalId: string) => {
+      return state.configurations[globalId].products.windows;
+    };
   }
 
   @Selector()
-  static roofWindowConfigurationByIdByGlobalId(state: ConfigurationStateModel, globalId: string, windowId: number) {
-    return state.configurations[globalId].products.windows[windowId];
+  static roofWindowConfigurationByIdByGlobalId(state: ConfigurationStateModel) {
+    return (globalId: string, windowId: number) => {
+      return state.configurations[globalId].products.windows[windowId];
+    };
   }
 
   // ---------------------------------------------------------------------------------------------------------- //
 
   // Flashing configurations selectors
   @Selector()
-  static flashingConfigurationsByGlobalId(state: ConfigurationStateModel, globalId: string) {
-    return state.configurations[globalId].products.flashings;
+  static flashingConfigurationsByGlobalId(state: ConfigurationStateModel) {
+    return (globalId: string) => {
+      return state.configurations[globalId].products.flashings;
+    };
   }
 
   @Selector()
-  static flashingConfigurationByIdByGlobalId(state: ConfigurationStateModel, globalId: string, flashingId: number) {
-    return state.configurations[globalId].products.flashings[flashingId];
+  static flashingConfigurationByIdByGlobalId(state: ConfigurationStateModel) {
+    return (globalId: string, flashingId: number) => {
+      return state.configurations[globalId].products.flashings[flashingId];
+    };
   }
 
   // ---------------------------------------------------------------------------------------------------------- //
 
   // Accessory configurations selectors
   @Selector()
-  static accessoryConfigurationsByGlobalId(state: ConfigurationStateModel, globalId: string) {
-    return state.configurations[globalId].products.accessories;
+  static accessoryConfigurationsByGlobalId(state: ConfigurationStateModel) {
+    return (globalId: string) => {
+      return state.configurations[globalId].products.accessories;
+    };
   }
 
   @Selector()
-  static accessoryConfigurationByIdByGlobalId(state: ConfigurationStateModel, globalId: string, accessoryId: number) {
-    return state.configurations[globalId].products.accessories[accessoryId];
+  static accessoryConfigurationByIdByGlobalId(state: ConfigurationStateModel) {
+    return (globalId: string, accessoryId: number) => {
+      return state.configurations[globalId].products.accessories[accessoryId];
+    };
   }
 
   // ---------------------------------------------------------------------------------------------------------- //
 
   // Flat roof window configurations selectors
   @Selector()
-  static flatRoofConfigurationsByGlobalId(state: ConfigurationStateModel, globalId: string) {
-    return state.configurations[globalId].products.flats;
+  static flatRoofConfigurationsByGlobalId(state: ConfigurationStateModel) {
+    return (globalId: string) => {
+      return state.configurations[globalId].products.flats;
+    };
   }
 
   @Selector()
-  static flatRoofConfigurationByIdByGlobalId(state: ConfigurationStateModel, globalId: string, flatId: number) {
-    return state.configurations[globalId].products.flats[flatId];
+  static flatRoofConfigurationByIdByGlobalId(state: ConfigurationStateModel) {
+    return (globalId: string, flatId: number) => {
+      return state.configurations[globalId].products.flats[flatId];
+    };
   }
 
   // ---------------------------------------------------------------------------------------------------------- //
 
   // Vertical roof window configurations selectors
   @Selector()
-  static verticalWindowConfigurationsByGlobalId(state: ConfigurationStateModel, globalId: string) {
-    return state.configurations[globalId].products.flats;
+  static verticalWindowConfigurationsByGlobalId(state: ConfigurationStateModel) {
+    return (globalId: string) => {
+      return state.configurations[globalId].products.flats;
+    };
   }
 
   @Selector()
-  static verticalWindowConfigurationByIdByGlobalId(state: ConfigurationStateModel, globalId: string, verticalId: number) {
-    return state.configurations[globalId].products.verticals[verticalId];
+  static verticalWindowConfigurationByIdByGlobalId(state: ConfigurationStateModel) {
+    return (globalId: string, verticalId: number) => {
+      return state.configurations[globalId].products.verticals[verticalId];
+    };
   }
 
   // ---------------------------------------------------------------------------------------------------------- //
