@@ -6,12 +6,14 @@ import {tap} from 'rxjs/operators';
 
 export interface FlatRoofWindowStateModel {
   flats: FlatRoofWindow[];
+  flatsLoaded: boolean;
 }
 
 @State<FlatRoofWindowStateModel>({
   name: 'flat',
   defaults: {
-    flats: []
+    flats: [],
+    flatsLoaded: false
   }
 })
 export class FlatRoofWindowState {
@@ -30,7 +32,8 @@ export class FlatRoofWindowState {
         const state = ctx.getState();
         ctx.setState({
           ...state,
-          flats: result
+          flats: result,
+          flatsLoaded: true
         });
       }));
   }

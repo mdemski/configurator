@@ -6,12 +6,14 @@ import {GetFlashings} from './flashing.actions';
 
 export interface FlashingStateModel {
   flashings: Flashing[];
+  flashingsLoaded: boolean;
 }
 
 @State<FlashingStateModel>({
   name: 'flashing',
   defaults: {
-    flashings: []
+    flashings: [],
+    flashingsLoaded: false
   }
 })
 export class FlashingState {
@@ -30,7 +32,8 @@ export class FlashingState {
         const state = ctx.getState();
         ctx.setState({
           ...state,
-          flashings: result
+          flashings: result,
+          flashingsLoaded: true
         });
       }));
   }

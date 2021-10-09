@@ -57,8 +57,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
     this.paramsUserFetchData$ = combineLatest(this.store.dispatch(SetCurrentUser), this.params$,
-      this.configOptions$, this.configurations$
-    ).pipe(
+      this.configOptions$, this.configurations$).pipe(
       takeUntil(this.isDestroyed$),
       map(data => {
         return {

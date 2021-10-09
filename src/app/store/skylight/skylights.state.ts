@@ -6,12 +6,14 @@ import {tap} from 'rxjs/operators';
 
 export interface SkylightStateModel {
   skylights: RoofWindowSkylight[];
+  skylightsLoaded: boolean;
 }
 
 @State<SkylightStateModel>({
   name: 'skylight',
   defaults: {
-    skylights: []
+    skylights: [],
+    skylightsLoaded: false
   }
 })
 export class SkylightsState {
@@ -30,7 +32,8 @@ export class SkylightsState {
         const state = ctx.getState();
         ctx.setState({
           ...state,
-          skylights: result
+          skylights: result,
+          skylightsLoaded: true
         });
       }));
   }
