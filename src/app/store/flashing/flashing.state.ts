@@ -25,6 +25,13 @@ export class FlashingState {
     return state.flashings;
   }
 
+  @Selector()
+  static flashingByCode(state: FlashingStateModel) {
+    return (flashingCode: string) => {
+      return state.flashings.find(flashing => flashing.kod === flashingCode);
+    };
+  }
+
   @Action(GetFlashings)
   getFlashings(ctx: StateContext<FlashingStateModel>) {
     return this.db.fetchFlashings().pipe(

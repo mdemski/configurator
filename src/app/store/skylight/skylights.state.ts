@@ -25,6 +25,13 @@ export class SkylightsState {
     return state.skylights;
   }
 
+  @Selector()
+  static skylightByCode(state: SkylightStateModel) {
+    return (skylightCode: string) => {
+      return state.skylights.find(skylight => skylight.kod === skylightCode);
+    };
+  }
+
   @Action(GetSkylights)
   getSkylights(ctx: StateContext<SkylightStateModel>) {
     return this.db.fetchSkylights().pipe(

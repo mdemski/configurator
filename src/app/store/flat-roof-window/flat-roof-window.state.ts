@@ -25,6 +25,13 @@ export class FlatRoofWindowState {
     return state.flats;
   }
 
+  @Selector()
+  static flatByCode(state: FlatRoofWindowStateModel) {
+    return (flatCode: string) => {
+      return state.flats.find(flat => flat.kod === flatCode);
+    };
+  }
+
   @Action(GetFlatRoofWindows)
   getFlatRoofWindows(ctx: StateContext<FlatRoofWindowStateModel>) {
     return this.db.fetchFlatRoofWindows().pipe(
