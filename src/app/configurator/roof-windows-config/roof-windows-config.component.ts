@@ -1113,106 +1113,106 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       }
     }
   }
-
-  // OLD VALIDATORS
-  // private validateHeight(control: FormControl): { [s: string]: boolean } {
-  //     if (control.value > 160 && control.value < 98) {
-  //       return {'roofWindowToHeight': true};
-  //     } else {
-  //       return null;
-  //     }
-  //   }
-  //
-  //   private validateWidth(control: FormControl): { [s: string]: boolean } {
-  //     if (control.value > 134 && control.value < 55) {
-  //       return {'roofWindowToWidth': true};
-  //     } else {
-  //       return null;
-  //     }
-  //   }
-  //
-  //   private validateSurface(): { [s: string]: boolean } {
-  //     if (this.configuredWindow.windowWidth * this.configuredWindow.windowHeight > 12597) {
-  //       return {'roofWindowToLarge': true};
-  //     } else {
-  //       return null;
-  //     }
-  //   }
-
-  // tslint:disable-next-line:max-line-length
-  // setSetsDisabledOptions(setNumber: number, selectedOption: string, materials: { option: string; disabled: boolean }[],openingTypes: { option: string; disabled: boolean }[],
-  //                        innerColors: { option: string; disabled: boolean }[], outerMaterials: { option: string; disabled: boolean }[],
-  // tslint:disable-next-line:max-line-length
-  //                        outerColors: { option: string; disabled: boolean }[], outerColorFinishes: { option: string; disabled: boolean }[],
-  //                        glazingTypes: { option: string; disabled: boolean }[], chosenCoats: { option: string; disabled: boolean }[],
-  //                        chosenExtras: { option: string; disabled: boolean }[], ventilations: { option: string; disabled: boolean }[],
-  //                        handles: { option: string; disabled: boolean }[], handleColors: { option: string; disabled: boolean }[], sets) {
-  //   for (const set of sets) {
-  //     if (setNumber > 0 && Object.values(set)[0] === setNumber) {
-  //       const optionToChange = Object.keys(set)[0];
-  //       console.log(setNumber); // zwraca wartości liczbowe w setach
-  //       console.log(optionToChange); // zwraca nazwy watości w setach
-  //       for (const material of materials) {
-  //         if (material.option === optionToChange && setNumber !== set[selectedOption]) {
-  //           material.disabled = true;
-  //         }
-  //       }
-  //       for (const openingType of openingTypes) {
-  //         if (openingType.option === optionToChange && setNumber !== set[selectedOption]) {
-  //           openingType.disabled = true;
-  //         }
-  //       }
-  //       for (const innerColor of innerColors) {
-  //         if (innerColor.option === optionToChange && setNumber !== set[selectedOption]) {
-  //           innerColor.disabled = true;
-  //         }
-  //       }
-  //       for (const outerMaterial of outerMaterials) {
-  //         if (outerMaterial.option === optionToChange && setNumber !== set[selectedOption]) {
-  //           outerMaterial.disabled = true;
-  //         }
-  //       }
-  //       for (const outerColor of outerColors) {
-  //         if (outerColor.option === optionToChange && setNumber !== set[selectedOption]) {
-  //           outerColor.disabled = true;
-  //         }
-  //       }
-  //       for (const outerColorFinish of outerColorFinishes) {
-  //         if (outerColorFinish.option === optionToChange && setNumber !== set[selectedOption]) {
-  //           outerColorFinish.disabled = true;
-  //         }
-  //       }
-  //       for (const glazingType of glazingTypes) {
-  //         if (glazingType.option === optionToChange && setNumber !== set[selectedOption]) {
-  //           glazingType.disabled = true;
-  //         }
-  //       }
-  //       for (const chosenCoat of chosenCoats) {
-  //         if (chosenCoat.option === optionToChange && setNumber !== set[selectedOption]) {
-  //           chosenCoat.disabled = true;
-  //         }
-  //       }
-  //       for (const chosenExtra of chosenExtras) {
-  //         if (chosenExtra.option === optionToChange && setNumber !== set[selectedOption]) {
-  //           chosenExtra.disabled = true;
-  //         }
-  //       }
-  //       for (const ventilation of ventilations) {
-  //         if (ventilation.option === optionToChange && setNumber !== set[selectedOption]) {
-  //           ventilation.disabled = true;
-  //         }
-  //       }
-  //       for (const handle of handles) {
-  //         if (handle.option === optionToChange && setNumber !== set[selectedOption]) {
-  //           handle.disabled = true;
-  //         }
-  //       }
-  //       for (const handleColor of handleColors) {
-  //         if (handleColor.option === optionToChange && setNumber !== set[selectedOption]) {
-  //           handleColor.disabled = true;
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
 }
+
+// OLD VALIDATORS
+// private validateHeight(control: FormControl): { [s: string]: boolean } {
+//     if (control.value > 160 && control.value < 98) {
+//       return {'roofWindowToHeight': true};
+//     } else {
+//       return null;
+//     }
+//   }
+//
+//   private validateWidth(control: FormControl): { [s: string]: boolean } {
+//     if (control.value > 134 && control.value < 55) {
+//       return {'roofWindowToWidth': true};
+//     } else {
+//       return null;
+//     }
+//   }
+//
+//   private validateSurface(): { [s: string]: boolean } {
+//     if (this.configuredWindow.windowWidth * this.configuredWindow.windowHeight > 12597) {
+//       return {'roofWindowToLarge': true};
+//     } else {
+//       return null;
+//     }
+//   }
+
+// tslint:disable-next-line:max-line-length
+// setSetsDisabledOptions(setNumber: number, selectedOption: string, materials: { option: string; disabled: boolean }[],openingTypes: { option: string; disabled: boolean }[],
+//                        innerColors: { option: string; disabled: boolean }[], outerMaterials: { option: string; disabled: boolean }[],
+// tslint:disable-next-line:max-line-length
+//                        outerColors: { option: string; disabled: boolean }[], outerColorFinishes: { option: string; disabled: boolean }[],
+//                        glazingTypes: { option: string; disabled: boolean }[], chosenCoats: { option: string; disabled: boolean }[],
+//                        chosenExtras: { option: string; disabled: boolean }[], ventilations: { option: string; disabled: boolean }[],
+//                        handles: { option: string; disabled: boolean }[], handleColors: { option: string; disabled: boolean }[], sets) {
+//   for (const set of sets) {
+//     if (setNumber > 0 && Object.values(set)[0] === setNumber) {
+//       const optionToChange = Object.keys(set)[0];
+//       console.log(setNumber); // zwraca wartości liczbowe w setach
+//       console.log(optionToChange); // zwraca nazwy watości w setach
+//       for (const material of materials) {
+//         if (material.option === optionToChange && setNumber !== set[selectedOption]) {
+//           material.disabled = true;
+//         }
+//       }
+//       for (const openingType of openingTypes) {
+//         if (openingType.option === optionToChange && setNumber !== set[selectedOption]) {
+//           openingType.disabled = true;
+//         }
+//       }
+//       for (const innerColor of innerColors) {
+//         if (innerColor.option === optionToChange && setNumber !== set[selectedOption]) {
+//           innerColor.disabled = true;
+//         }
+//       }
+//       for (const outerMaterial of outerMaterials) {
+//         if (outerMaterial.option === optionToChange && setNumber !== set[selectedOption]) {
+//           outerMaterial.disabled = true;
+//         }
+//       }
+//       for (const outerColor of outerColors) {
+//         if (outerColor.option === optionToChange && setNumber !== set[selectedOption]) {
+//           outerColor.disabled = true;
+//         }
+//       }
+//       for (const outerColorFinish of outerColorFinishes) {
+//         if (outerColorFinish.option === optionToChange && setNumber !== set[selectedOption]) {
+//           outerColorFinish.disabled = true;
+//         }
+//       }
+//       for (const glazingType of glazingTypes) {
+//         if (glazingType.option === optionToChange && setNumber !== set[selectedOption]) {
+//           glazingType.disabled = true;
+//         }
+//       }
+//       for (const chosenCoat of chosenCoats) {
+//         if (chosenCoat.option === optionToChange && setNumber !== set[selectedOption]) {
+//           chosenCoat.disabled = true;
+//         }
+//       }
+//       for (const chosenExtra of chosenExtras) {
+//         if (chosenExtra.option === optionToChange && setNumber !== set[selectedOption]) {
+//           chosenExtra.disabled = true;
+//         }
+//       }
+//       for (const ventilation of ventilations) {
+//         if (ventilation.option === optionToChange && setNumber !== set[selectedOption]) {
+//           ventilation.disabled = true;
+//         }
+//       }
+//       for (const handle of handles) {
+//         if (handle.option === optionToChange && setNumber !== set[selectedOption]) {
+//           handle.disabled = true;
+//         }
+//       }
+//       for (const handleColor of handleColors) {
+//         if (handleColor.option === optionToChange && setNumber !== set[selectedOption]) {
+//           handleColor.disabled = true;
+//         }
+//       }
+//     }
+//   }
+// }
