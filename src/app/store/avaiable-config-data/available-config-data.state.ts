@@ -196,7 +196,8 @@ export class AvailableConfigDataState {
         const state = ctx.getState();
         ctx.setState({
           ...state,
-          roofWindowsExclusions: result
+          roofWindowsExclusions: result,
+          roofWindowExclusionsLoaded: true
         });
       }));
   }
@@ -208,7 +209,8 @@ export class AvailableConfigDataState {
         const state = ctx.getState();
         ctx.setState({
           ...state,
-          configFlashings: result
+          configFlashings: result,
+          flashingConfigLoaded: true
         });
       }));
   }
@@ -220,7 +222,8 @@ export class AvailableConfigDataState {
         const state = ctx.getState();
         ctx.setState({
           ...state,
-          flashingsExclusions: result
+          flashingsExclusions: result,
+          flashingExclusionsLoaded: true
         });
       }));
   }
@@ -232,7 +235,8 @@ export class AvailableConfigDataState {
         const state = ctx.getState();
         ctx.setState({
           ...state,
-          glazingOptions: result
+          glazingOptions: result,
+          glazingOptionsLoaded: true
         });
       }));
   }
