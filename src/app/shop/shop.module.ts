@@ -10,7 +10,6 @@ import {VerticalWindowDetailsComponent} from './vertical-windows/vertical-window
 import {SkylightDetailsComponent} from './skylights/skylight-details/skylight-details.component';
 import {AccessorieDetailsComponent} from './accessories/accessorie-details/accessorie-details.component';
 import {RoofWindowFiltrationComponent} from './roof-windows/roof-window-filtration/roof-window-filtration.component';
-import {FilterPipe} from '../pipes/filter.pipe';
 import {NgxsModule} from '@ngxs/store';
 import {RoofWindowState} from '../store/roof-window/roof-window.state';
 import {FlashingsComponent} from './flashings/flashings.component';
@@ -32,7 +31,6 @@ import {NgxPaginationModule} from 'ngx-pagination';
     NgxPaginationModule
   ],
   declarations: [
-    FilterPipe,
     ShopComponent,
     RoofWindowDetailsComponent,
     RoofWindowFiltrationComponent,
