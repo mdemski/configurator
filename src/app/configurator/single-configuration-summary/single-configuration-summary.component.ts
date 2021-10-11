@@ -1,13 +1,14 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {SingleConfiguration} from '../../models/single-configuration';
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
-import {CrudService} from '../../services/crud-service';
-import {DatabaseService} from '../../services/database.service';
-import {AuthService} from '../../services/auth.service';
+import {Observable, Subject} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
 import {map, takeUntil} from 'rxjs/operators';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import {Select, Store} from '@ngxs/store';
+import {AppState} from '../../store/app/app.state';
+import {ConfigurationState} from '../../store/configuration/configuration.state';
+import {RouterState} from '@ngxs/router-plugin';
 
 @Component({
   selector: 'app-single-configuration-summary',
@@ -16,37 +17,27 @@ import html2canvas from 'html2canvas';
 })
 export class SingleConfigurationSummaryComponent implements OnInit, OnDestroy {
 
+  @Select(AppState) user$: Observable<{ currentUser }>;
+  @Select(RouterState) params$: Observable<any>;
+  @Select(ConfigurationState.configurationByGlobalID) configurations$: Observable<SingleConfiguration[]>;
   @ViewChild('configurationData') configurationData: ElementRef;
-  configuration: SingleConfiguration;
-  configurationSubject: BehaviorSubject<SingleConfiguration>;
+  private configurations: SingleConfiguration[];
+  private routerParams;
   configuration$: Observable<SingleConfiguration>;
   currentUser;
   uneditable = true;
   loading;
-  tempSingleConfig: SingleConfiguration;
   isDestroyed$ = new Subject();
 
-  constructor(private crud: CrudService,
-              private db: DatabaseService,
-              private authService: AuthService,
-              private activeRouter: ActivatedRoute) {
+  constructor(private store: Store) {
     this.loading = true;
+    this.params$.pipe(takeUntil(this.isDestroyed$)).subscribe(params => this.routerParams = params);
   }
 
   ngOnInit() {
-    this.configurationSubject = new BehaviorSubject<SingleConfiguration>(null);
-    this.configuration$ = this.configurationSubject.asObservable();
-    this.activeRouter.params.pipe(
-      takeUntil(this.isDestroyed$),
-      map(param => {
-      this.crud.readConfigurationByMongoId(param.configId).pipe(
-        takeUntil(this.isDestroyed$),
-        map(configuration => {
-        this.configuration = configuration;
-        this.configurationSubject.next(this.configuration);
-        this.loading = false;
-      })).subscribe();
-    })).subscribe();
+    this.configuration$ = this.store.select(ConfigurationState.configurationByGlobalID)
+      .pipe(map(filterFn => filterFn(this.routerParams.state.params.configId)));
+    this.loading = false;
   }
 
   builtNameForTranslation(prefix: string, option: string) {
@@ -58,20 +49,21 @@ export class SingleConfigurationSummaryComponent implements OnInit, OnDestroy {
   }
 
   saveToPDF() {
-    const configurationData = document.getElementById('configurationData');
-    console.log(configurationData);
-    html2canvas(configurationData).then(canvas => {
+    this.configuration$.pipe(takeUntil(this.isDestroyed$)).subscribe(configuration => {
+      const configurationData = document.getElementById('configurationData');
+      html2canvas(configurationData).then(canvas => {
 
-      console.log(canvas);
-      const fileWidth = 208;
-      const fileHeight = canvas.height * fileWidth / canvas.width;
-      console.log(fileHeight);
-      const FILEURI = canvas.toDataURL('image/png');
-      const PDF = new jsPDF('p', 'mm', 'a4');
-      const position = 0;
-      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
+        console.log(canvas);
+        const fileWidth = 208;
+        const fileHeight = canvas.height * fileWidth / canvas.width;
+        console.log(fileHeight);
+        const FILEURI = canvas.toDataURL('image/png');
+        const PDF = new jsPDF('p', 'mm', 'a4');
+        const position = 0;
+        PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
 
-      PDF.save(this.configuration.name + '.pdf');
+        PDF.save(configuration.name + '.pdf');
+      });
     });
   }
 }

@@ -5,8 +5,8 @@ import {Pipe, PipeTransform} from '@angular/core';
 })
 export class EmptyArrayPipe implements PipeTransform {
   transform(objects: any[]) {
-    if (objects) {
-      return 1;
+    if (!objects) {
+      return undefined;
     }
   }
 }

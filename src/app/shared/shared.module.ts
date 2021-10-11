@@ -38,7 +38,8 @@ import {EmptyArrayPipe} from '../pipes/empty-array.pipe';
     DisableControlDirective,
     ModalComponent,
     BouncingLoaderComponent,
-    TranslateModule
+    TranslateModule,
+    EmptyArrayPipe
   ]
 })
 export class SharedModule { }
