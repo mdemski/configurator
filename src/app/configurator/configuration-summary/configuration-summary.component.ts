@@ -1,20 +1,26 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CrudService} from '../../services/crud-service';
 import {DatabaseService} from '../../services/database.service';
-import {AuthService} from '../../services/auth.service';
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {SingleConfiguration} from '../../models/single-configuration';
 import {map, takeUntil} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {WindowConfig} from '../../models/window-config';
-import {LoadConfigurationService} from '../../services/load-configuration.service';
 import {FlashingConfig} from '../../models/flashing-config';
-import {Store} from '@ngxs/store';
+import {Select, Store} from '@ngxs/store';
 import {
+  DeleteAccessoryConfigurationByConfigAndAccessoryId,
+  DeleteFlashingConfigurationByConfigAndFlashingId, DeleteGlobalConfiguration,
   DeleteRoofWindowConfigurationByConfigAndWindowId,
+  UpdateAccessoryQuantityByConfigAndAccessoryId,
+  UpdateFlashingQuantityByConfigAndFlashingId, UpdateGlobalConfigurationNameByConfigId,
   UpdateRoofWindowQuantityByConfigAndWindowId
 } from '../../store/configuration/configuration.actions';
+import {AppState} from '../../store/app/app.state';
+import {ConfigurationState} from '../../store/configuration/configuration.state';
+import {SetChosenFlashing} from '../../store/flashing/flashing.actions';
+import {SetChosenRoofWindow} from '../../store/roof-window/roof-window.actions';
 
 @Component({
   selector: 'app-configuration-summary',
@@ -23,15 +29,14 @@ import {
 })
 export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
 
-  configurations: SingleConfiguration[];
-  configurationsSubject: BehaviorSubject<SingleConfiguration[]>;
-  configurations$: Observable<SingleConfiguration[]>;
+  @Select(AppState) user$: Observable<{ currentUser }>;
+
+  userConfigurations$: Observable<SingleConfiguration[]> = new Subject() as Observable<SingleConfiguration[]>;
   currentUser;
   uneditable = true;
   loading;
   chooseWindowPopup = false;
   chooseFlashingPopup = false;
-  tempSingleConfig: SingleConfiguration;
   isDestroyed$ = new Subject();
   windowId: number;
   flashingId: number;
@@ -43,40 +48,22 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
   emptyAccessoryConfiguration: string;
   addingProduct: string;
 
-  constructor(private crud: CrudService,
-              private db: DatabaseService,
-              private authService: AuthService,
+  constructor(private db: DatabaseService,
               private router: Router,
               private store: Store,
-              private loadConfig: LoadConfigurationService,
               public translate: TranslateService) {
     this.loading = true;
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
+    this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.currentUser = user.currentUser);
   }
 
   ngOnInit() {
-    // this.crud.deleteWindowConfigurationFromConfigurationById('configuration-1', 2).subscribe(console.log);
-    // this.db.fetchRoofWindows().subscribe(windows => {
-    //   this.crud.updateWindowConfigurationIntoConfigurationById('configuration-1', 1, windows[3]).subscribe(console.log);
-    // });
-    this.crud.readConfigurationByMongoId('60ba1b0bed679217c0d76f43').subscribe(console.log);
-    this.configurationsSubject = new BehaviorSubject<SingleConfiguration[]>([]);
-    this.configurations$ = this.configurationsSubject.asObservable();
-    this.authService.returnUser().pipe(takeUntil(this.isDestroyed$)).subscribe(currentUser => {
-      this.crud.readAllUserConfigurations(currentUser).pipe(
-        map((data: Array<any>) => {
-          return data.filter(x => x !== null);
-        }),
-        map(configurations => {
-          return configurations.filter(config => config.active === true);
-        }),
-        takeUntil(this.isDestroyed$)).subscribe(activeConfigurations => {
-        this.configurations = activeConfigurations;
-        this.configurationsSubject.next(this.configurations);
-        this.loading = currentUser === '';
-      });
-    });
+    this.userConfigurations$ = this.store.select(ConfigurationState.userConfigurations)
+      .pipe(
+        takeUntil(this.isDestroyed$),
+        map(filterFn => filterFn(this.currentUser)));
+    this.loading = false;
     // TODO do wywalenia - kod testowy
     // this.db.fetchRoofWindows().pipe(takeUntil(this.isDestroyed$)).subscribe(windows => {
     //   this.tempSingleConfig = {
@@ -133,16 +120,15 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
     quantity = quantity + delta;
     if (product.window !== undefined) {
       product.quantity = product.quantity + delta;
-      this.store.dispatch(new UpdateRoofWindowQuantityByConfigAndWindowId(globalConfiguration, productId, quantity)).subscribe(console.log);
-      // this.crud.updateWindowQuantity(globalConfiguration, productId, quantity).subscribe(console.log);
+      this.store.dispatch(new UpdateRoofWindowQuantityByConfigAndWindowId(globalConfiguration, productId, quantity)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
     }
     if (product.flashing !== undefined) {
       product.quantity = product.quantity + delta;
-      this.crud.updateFlashingQuantity(globalConfiguration, productId, quantity).subscribe(console.log);
+      this.store.dispatch(new UpdateFlashingQuantityByConfigAndFlashingId(globalConfiguration, productId, quantity)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
     }
     if (product.accessory !== undefined) {
       product.quantity = product.quantity + delta;
-      this.crud.updateAccessoryQuantity(globalConfiguration, productId, quantity).subscribe(console.log);
+      this.store.dispatch(new UpdateAccessoryQuantityByConfigAndAccessoryId(globalConfiguration, productId, quantity)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
     }
   }
 
@@ -168,7 +154,7 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
   }
 
   configurationNameSave(mongoId: string, newConfigName: string) {
-    this.crud.updateNameConfigurationByMongoId(mongoId, newConfigName).subscribe(() => console.log('Nazwa została zmieniona'));
+    this.store.dispatch(new UpdateGlobalConfigurationNameByConfigId(mongoId, newConfigName)).pipe(takeUntil(this.isDestroyed$)).subscribe(() => console.log('Nazwa została zmieniona'));
     if (this.uneditable === null) {
       this.uneditable = true;
     } else {
@@ -178,18 +164,18 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
 
   removeProductConfiguration(globalConfiguration: SingleConfiguration, productId: number, product) {
     if (product.window !== undefined) {
-      this.store.dispatch(new DeleteRoofWindowConfigurationByConfigAndWindowId(globalConfiguration, productId));
+      this.store.dispatch(new DeleteRoofWindowConfigurationByConfigAndWindowId(globalConfiguration, productId)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
     }
     if (product.flashing !== undefined) {
-      this.crud.deleteFlashingConfigurationFromConfigurationById(globalConfiguration, productId);
+      this.store.dispatch(new DeleteFlashingConfigurationByConfigAndFlashingId(globalConfiguration, productId)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
     }
     if (product.accessory !== undefined) {
-      this.crud.deleteAccessoryConfigurationFromConfigurationById(globalConfiguration, productId);
+      this.store.dispatch(new DeleteAccessoryConfigurationByConfigAndAccessoryId(globalConfiguration, productId)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
     }
   }
 
   removeHoleConfiguration(globalConfiguration: SingleConfiguration) {
-    this.crud.deleteConfiguration(globalConfiguration);
+    this.store.dispatch(new DeleteGlobalConfiguration(globalConfiguration)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
   }
 
   // TODO sprawdzić co dokładnie wrzuca się do koszyka i odpowiednio to obsługiwać
@@ -223,8 +209,9 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
       configLink: ''
     });
     if (configuration.products.windows.length === 1) {
-      this.crud.readWindowByIdFromConfigurationByGlobalId(configuration.globalId, configuration.products.windows[0].id)
-        .subscribe(window =>  this.loadConfig.windowData$.next(window.window));
+      this.store.select(ConfigurationState.roofWindowConfigurationByIdByGlobalId).pipe(
+        takeUntil(this.isDestroyed$),
+        map(filterFn => filterFn(configuration.globalId, configuration.products.windows[0].id))).subscribe(roofWindow => this.store.dispatch(new SetChosenRoofWindow(roofWindow)).subscribe());
     }
     // Do wyboru jeśli w konfiguracji jest wiele okien do wyboru
     if (configuration.products.windows.length > 1) {
@@ -243,11 +230,10 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
   }
 
   chooseWindowId(windowId: number) {
-    if (windowId === undefined || windowId === 0) {
-      this.loadConfig.windowData$.next(null);
-    } else {
-      this.crud.readWindowByIdFromConfigurationByGlobalId(this.chosenConfig.globalId, windowId)
-        .subscribe(window =>  this.loadConfig.windowData$.next(window.window));
+    if (windowId !== undefined || windowId !== 0) {
+      this.store.select(ConfigurationState.roofWindowConfigurationByIdByGlobalId).pipe(
+        takeUntil(this.isDestroyed$),
+        map(filterFn => filterFn(this.chosenConfig.globalId, windowId))).subscribe(roofWindow => this.store.dispatch(new SetChosenRoofWindow(roofWindow)).subscribe());
     }
     if (this.addingProduct === 'flashing') {
       this.router.navigate(['/' + this.emptyFlashingConfiguration +
@@ -272,8 +258,9 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
       configLink: ''
     });
     if (configuration.products.flashings.length === 1) {
-      this.crud.readFlashingByIdFromConfigurationByGlobalId(configuration.globalId, configuration.products.flashings[0].id)
-        .subscribe(flashing =>  this.loadConfig.flashingData$.next(flashing.flashing));
+      this.store.select(ConfigurationState.flashingConfigurationByIdByGlobalId).pipe(
+        takeUntil(this.isDestroyed$),
+        map(filterFn => filterFn(configuration.globalId, configuration.products.flashings[0].id))).subscribe(flashing => this.store.dispatch(new SetChosenFlashing(flashing)).subscribe());
     }
     // Do wyboru jeśli w konfiguracji jest wiele okien do wyboru
     if (configuration.products.flashings.length > 1) {
@@ -285,11 +272,10 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
   }
 
   chooseFlashingId(flashingId: number) {
-    if (flashingId === undefined || flashingId === 0) {
-      this.loadConfig.flashingData$.next(null);
-    } else {
-      this.crud.readFlashingByIdFromConfigurationByGlobalId(this.chosenConfig.globalId, flashingId)
-        .subscribe(flashing =>  this.loadConfig.flashingData$.next(flashing.flashing));
+    if (flashingId !== undefined || flashingId !== 0) {
+      this.store.select(ConfigurationState.flashingConfigurationByIdByGlobalId).pipe(
+        takeUntil(this.isDestroyed$),
+        map(filterFn => filterFn(this.chosenConfig.globalId, flashingId))).subscribe(flashing => this.store.dispatch(new SetChosenFlashing(flashing)).subscribe());
     }
     this.router.navigate(['/' + this.emptyWindowConfiguration +
     '/' + this.chosenConfig.globalId + '/' + 'no-name' + '/' + '-1']);
