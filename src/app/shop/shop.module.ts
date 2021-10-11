@@ -18,7 +18,7 @@ import {SharedModule} from '../shared/shared.module';
 import {FlashingState} from '../store/flashing/flashing.state';
 import { FlatRoofWindowsComponent } from './flat-roof-windows/flat-roof-windows.component';
 import { FlatRoofWidnowDetailsComponent } from './flat-roof-windows/flat-roof-widnow-details/flat-roof-widnow-details.component';
-import {SkylightsState} from '../store/skylight/skylights.state';
+import {SkylightState} from '../store/skylight/skylight.state';
 import {AccessoryState} from '../store/accessory/accessory.state';
 import {FlatRoofWindowState} from '../store/flat-roof-window/flat-roof-window.state';
 import {NgxPaginationModule} from 'ngx-pagination';
@@ -26,7 +26,7 @@ import {NgxPaginationModule} from 'ngx-pagination';
 @NgModule({
   imports: [
     SharedModule,
-    NgxsModule.forFeature([RoofWindowState, FlashingState, AccessoryState, SkylightsState, FlatRoofWindowState]),
+    NgxsModule.forFeature([RoofWindowState, FlashingState, AccessoryState, SkylightState, FlatRoofWindowState]),
     ShopRoutingModule,
     NgxPaginationModule
   ],

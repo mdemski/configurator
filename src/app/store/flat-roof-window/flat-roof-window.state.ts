@@ -1,19 +1,21 @@
 import {FlatRoofWindow} from '../../models/flat-roof-window';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {DatabaseService} from '../../services/database.service';
-import {GetFlatRoofWindows} from './flat-roof-window.actions';
+import {GetFlatRoofWindows, SetChosenFlatRoofWindow} from './flat-roof-window.actions';
 import {tap} from 'rxjs/operators';
 
 export interface FlatRoofWindowStateModel {
   flats: FlatRoofWindow[];
   flatsLoaded: boolean;
+  chosenFlatRoofWindow: FlatRoofWindow;
 }
 
 @State<FlatRoofWindowStateModel>({
   name: 'flat',
   defaults: {
     flats: [],
-    flatsLoaded: false
+    flatsLoaded: false,
+    chosenFlatRoofWindow: null
   }
 })
 export class FlatRoofWindowState {
@@ -23,6 +25,11 @@ export class FlatRoofWindowState {
   @Selector()
   static flats(state: FlatRoofWindowStateModel) {
     return state.flats;
+  }
+
+  @Selector()
+  static flat(state: FlatRoofWindowStateModel) {
+    return state.chosenFlatRoofWindow;
   }
 
   @Selector()
@@ -43,5 +50,14 @@ export class FlatRoofWindowState {
           flatsLoaded: true
         });
       }));
+  }
+
+  @Action(SetChosenFlatRoofWindow)
+  setFlatRoofWindow(ctx: StateContext<FlatRoofWindowStateModel>, {flatRoof}: SetChosenFlatRoofWindow) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      chosenFlatRoofWindow: flatRoof
+    });
   }
 }

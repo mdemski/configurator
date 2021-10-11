@@ -1,28 +1,35 @@
 import {RoofWindowSkylight} from '../../models/roof-window-skylight';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {DatabaseService} from '../../services/database.service';
-import {GetSkylights} from './skylight.actions';
+import {GetSkylights, SetChosenSkylight} from './skylight.actions';
 import {tap} from 'rxjs/operators';
 
 export interface SkylightStateModel {
   skylights: RoofWindowSkylight[];
   skylightsLoaded: boolean;
+  chosenSkylight: RoofWindowSkylight;
 }
 
 @State<SkylightStateModel>({
   name: 'skylight',
   defaults: {
     skylights: [],
-    skylightsLoaded: false
+    skylightsLoaded: false,
+    chosenSkylight: null
   }
 })
-export class SkylightsState {
+export class SkylightState {
   constructor(private db: DatabaseService) {
   }
 
   @Selector()
   static skylights(state: SkylightStateModel) {
     return state.skylights;
+  }
+
+  @Selector()
+  static chosenSkylight(state: SkylightStateModel) {
+    return state.chosenSkylight;
   }
 
   @Selector()
@@ -43,5 +50,14 @@ export class SkylightsState {
           skylightsLoaded: true
         });
       }));
+  }
+
+  @Action(SetChosenSkylight)
+  setChosenSkylight(ctx: StateContext<SkylightStateModel>, {skylight}: SetChosenSkylight) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      chosenSkylight: skylight
+    });
   }
 }

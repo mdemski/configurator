@@ -1,19 +1,21 @@
 import {RoofWindowSkylight} from '../../models/roof-window-skylight';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {DatabaseService} from '../../services/database.service';
-import {GetRoofWindows} from './roof-window.actions';
+import {GetRoofWindows, SetChosenRoofWindow} from './roof-window.actions';
 import {tap} from 'rxjs/operators';
 
 export interface RoofWindowStateModel {
   roofWindows: RoofWindowSkylight[];
   roofWindowsLoaded: boolean;
+  chosenRoofWindow: RoofWindowSkylight;
 }
 
 @State<RoofWindowStateModel>({
   name: 'roofWindow',
   defaults: {
     roofWindows: [],
-    roofWindowsLoaded: false
+    roofWindowsLoaded: false,
+    chosenRoofWindow: null
   }
 })
 export class RoofWindowState {
@@ -23,6 +25,11 @@ export class RoofWindowState {
   @Selector([RoofWindowState])
   static roofWindows(state: RoofWindowStateModel) {
     return state.roofWindows;
+  }
+
+  @Selector()
+  static chosenRoofWindow(state: RoofWindowStateModel) {
+    return state.chosenRoofWindow;
   }
 
   @Selector([RoofWindowState])
@@ -43,5 +50,14 @@ export class RoofWindowState {
           roofWindowsLoaded: true
         });
       }));
+  }
+
+  @Action(SetChosenRoofWindow)
+  setChosenRoofWindow(ctx: StateContext<RoofWindowStateModel>, {roofWindow}: SetChosenRoofWindow) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      chosenRoofWindow: roofWindow
+    });
   }
 }

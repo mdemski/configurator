@@ -2,18 +2,20 @@ import {Flashing} from '../../models/flashing';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {DatabaseService} from '../../services/database.service';
 import {tap} from 'rxjs/operators';
-import {GetFlashings} from './flashing.actions';
+import {GetFlashings, SetChosenFlashing} from './flashing.actions';
 
 export interface FlashingStateModel {
   flashings: Flashing[];
   flashingsLoaded: boolean;
+  chosenFlashing: Flashing;
 }
 
 @State<FlashingStateModel>({
   name: 'flashing',
   defaults: {
     flashings: [],
-    flashingsLoaded: false
+    flashingsLoaded: false,
+    chosenFlashing: null
   }
 })
 export class FlashingState {
@@ -23,6 +25,11 @@ export class FlashingState {
   @Selector()
   static flashings(state: FlashingStateModel) {
     return state.flashings;
+  }
+
+  @Selector()
+  static chosenFlashing(state: FlashingStateModel) {
+    return state.chosenFlashing;
   }
 
   @Selector()
@@ -43,5 +50,14 @@ export class FlashingState {
           flashingsLoaded: true
         });
       }));
+  }
+
+  @Action(SetChosenFlashing)
+  setChosenFlashing(ctx: StateContext<FlashingStateModel>, {flashing}: SetChosenFlashing) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      chosenFlashing: flashing
+    });
   }
 }
