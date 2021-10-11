@@ -14,7 +14,7 @@ import {SharedModule} from '../shared/shared.module';
 import {FlashingState} from '../store/flashing/flashing.state';
 import {ConfigurationState} from '../store/configuration/configuration.state';
 import {AccessoryState} from '../store/accessory/accessory.state';
-import {SkylightsState} from '../store/skylight/skylights.state';
+import {SkylightState} from '../store/skylight/skylight.state';
 import {FlatRoofWindowState} from '../store/flat-roof-window/flat-roof-window.state';
 import {AvailableConfigDataState} from '../store/avaiable-config-data/available-config-data.state';
 
@@ -22,7 +22,7 @@ import {AvailableConfigDataState} from '../store/avaiable-config-data/available-
   imports: [
     SharedModule,
     NgxsModule.forFeature([ConfigurationState, RoofWindowState, FlashingState, AccessoryState,
-      SkylightsState, FlatRoofWindowState, AvailableConfigDataState]),
+      SkylightState, FlatRoofWindowState, AvailableConfigDataState]),
     ConfiguratorRoutingModule
   ],
   declarations: [
