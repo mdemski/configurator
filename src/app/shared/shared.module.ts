@@ -8,10 +8,12 @@ import {FilterPipeModule} from 'ngx-filter-pipe';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {HttpLoaderFactory} from '../app.module';
 import {HttpClient} from '@angular/common/http';
+import {EmptyArrayPipe} from '../pipes/empty-array.pipe';
 
 @NgModule({
   declarations: [
     DisableControlDirective,
+    EmptyArrayPipe,
     ModalComponent,
     BouncingLoaderComponent,
   ],
