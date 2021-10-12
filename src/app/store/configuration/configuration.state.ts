@@ -34,7 +34,6 @@ import {
   UpdateVerticalWindowQuantityByConfigAndWindowId
 } from './configuration.actions';
 import {tap} from 'rxjs/operators';
-import {WindowConfig} from '../../models/window-config';
 
 export interface ConfigurationStateModel {
   // w razie problemów z wydajnością zmienić wczytywanie tylko na konfiguracje user'a a pełną listę brać wyłącznie do nadawania numerów
@@ -102,32 +101,43 @@ export class ConfigurationState {
   static configurationByFormName(state: SingleConfiguration[]) {
     return (formName: string) => {
       let productConfig = null;
-      state.forEach(configuration => {
-        configuration.products.windows.find(windowConfig => {
-          if (windowConfig.windowFormName === formName) {
-            productConfig = windowConfig;
-          }
-        });
-        configuration.products.flashings.find(flashingConfig => {
-          if (flashingConfig.flashingFormName === formName) {
-            productConfig = flashingConfig;
-          }
-        });
-        configuration.products.accessories.find(accessoryConfig => {
-          if (accessoryConfig.accessoryFormName === formName) {
-            productConfig = accessoryConfig;
-          }
-        });
-        configuration.products.flats.find(flatConfig => {
-          if (flatConfig.flatFormName === formName) {
-            productConfig = flatConfig;
-          }
-        });
-        configuration.products.verticals.find(verticalConfig => {
-          if (verticalConfig.verticalFormName === formName) {
-            productConfig = verticalConfig;
-          }
-        });
+      // @ts-ignore
+      state.configurations.forEach(configuration => {
+        if (configuration.products.windows) {
+          configuration.products.windows.find(windowConfig => {
+            if (windowConfig.windowFormName === formName) {
+              productConfig = windowConfig;
+            }
+          });
+        }
+        if (configuration.products.flashings) {
+          configuration.products.flashings.find(flashingConfig => {
+            if (flashingConfig.flashingFormName === formName) {
+              productConfig = flashingConfig;
+            }
+          });
+        }
+        if (configuration.products.accessories) {
+          configuration.products.accessories.find(accessoryConfig => {
+            if (accessoryConfig.accessoryFormName === formName) {
+              productConfig = accessoryConfig;
+            }
+          });
+        }
+        if (configuration.products.flats) {
+          configuration.products.flats.find(flatConfig => {
+            if (flatConfig.flatFormName === formName) {
+              productConfig = flatConfig;
+            }
+          });
+        }
+        if (configuration.products.verticals) {
+          configuration.products.verticals.find(verticalConfig => {
+            if (verticalConfig.verticalFormName === formName) {
+              productConfig = verticalConfig;
+            }
+          });
+        }
       });
       return productConfig;
     };
