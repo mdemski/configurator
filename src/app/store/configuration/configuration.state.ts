@@ -34,6 +34,7 @@ import {
   UpdateVerticalWindowQuantityByConfigAndWindowId
 } from './configuration.actions';
 import {tap} from 'rxjs/operators';
+import {WindowConfig} from '../../models/window-config';
 
 export interface ConfigurationStateModel {
   // w razie problemów z wydajnością zmienić wczytywanie tylko na konfiguracje user'a a pełną listę brać wyłącznie do nadawania numerów
@@ -100,35 +101,35 @@ export class ConfigurationState {
   @Selector()
   static configurationByFormName(state: SingleConfiguration[]) {
     return (formName: string) => {
-      let configurationByName;
+      let productConfig = null;
       state.forEach(configuration => {
-        configuration.products.windows.forEach(windowConfig => {
+        configuration.products.windows.find(windowConfig => {
           if (windowConfig.windowFormName === formName) {
-            return state;
+            productConfig = windowConfig;
           }
         });
-        configuration.products.flashings.forEach(flashingConfig => {
+        configuration.products.flashings.find(flashingConfig => {
           if (flashingConfig.flashingFormName === formName) {
-            configurationByName = configuration;
+            productConfig = flashingConfig;
           }
         });
-        configuration.products.accessories.forEach(accessoryConfig => {
+        configuration.products.accessories.find(accessoryConfig => {
           if (accessoryConfig.accessoryFormName === formName) {
-            configurationByName = configuration;
+            productConfig = accessoryConfig;
           }
         });
-        configuration.products.flats.forEach(flatConfig => {
+        configuration.products.flats.find(flatConfig => {
           if (flatConfig.flatFormName === formName) {
-            configurationByName = configuration;
+            productConfig = flatConfig;
           }
         });
-        configuration.products.verticals.forEach(verticalConfig => {
+        configuration.products.verticals.find(verticalConfig => {
           if (verticalConfig.verticalFormName === formName) {
-            configurationByName = configuration;
+            productConfig = verticalConfig;
           }
         });
-        return configurationByName;
       });
+      return productConfig;
     };
   }
 
