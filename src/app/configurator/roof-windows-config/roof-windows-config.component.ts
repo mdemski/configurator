@@ -148,9 +148,11 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     }
   }
 
-
   // 'width': new FormControl(78, [this.validateWidth.bind(this), Validators.required]), własnym walidator
   ngOnInit() {
+    this.configByName$ = this.store.select(ConfigurationState.configurationByFormName).pipe(
+      takeUntil(this.isDestroyed$),
+      map(filterFn => filterFn(this.routerParams.state.params.formName)));
     this.configOptionsLoaded$.subscribe(loaded => {
       if (loaded) {
         this.coatsFromFile = this.objectMaker(this.configOptions.coats);
@@ -181,7 +183,8 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       }
     });
     this.userConfigurations$ = this.store.select(ConfigurationState.userConfigurations)
-      .pipe(map(filterFn => filterFn(this.currentUser)));
+      .pipe(takeUntil(this.isDestroyed$),
+        map(filterFn => filterFn(this.currentUser)));
     this.highestUserId = 1;
     this.tempConfiguredWindow = new RoofWindowSkylight(
       '1O-ISO-V-E02-KL00-A7022P-079119-OKPO01', 'Okno dachowe tymczasowe', 'ISOV E2 79x119', 'I-Okno', 'NPL-Okno', 'Nowy', 'Okno:ISOV', 'Okno:E02', 'dwuszybowy', 79,
@@ -211,7 +214,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     if (this.formName === 'no-name' || this.formName === undefined) {
       this.loadConfig.getWindowToReconfiguration(this.currentUser, this.formName, this.routerParams.state.params.productCode).pipe(takeUntil(this.isDestroyed$))
         .subscribe(windowToReconfiguration => {
-          console.log(this.routerParams.state.params.productCode);
           this.configuredWindow = windowToReconfiguration;
           this.form = this.fb.group({
             material: new FormControl(this.configuredWindow.stolarkaMaterial, [], [this.validateMaterials.bind(this)]),
