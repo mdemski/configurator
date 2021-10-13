@@ -85,6 +85,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
   private configOptions;
   private configurations: SingleConfiguration[];
   userConfigurations$: Observable<SingleConfiguration[]> = new Subject() as Observable<SingleConfiguration[]>;
+  configByName$: Observable<FlashingConfig[]>;
   reverseModelsArrayIndex: number[];
   summaryFlashingsPrice: number;
   globalId = '';
@@ -179,6 +180,9 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
     this.tempConfigFlashing = new Flashing('1K-1-U-UO------A7022P-055098-OKPK01', 'UN/O 055x098 Kołnierz uniwersalny /A7022P/UO/OKPK01', 'Kołnierz U 55x98 UO', 'I-KOLNIERZ', 'NPL-KOLNIERZ', 'Nowy', 'U', 55, 98, 'KołnierzUszczelniający',
       'KolnierzUszczelniający', 'Kołnierz:U', 'KołnierzUszczelniający:K-1', 'KołnierzUszczelniający', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'U', 0, 'UO', 5, 0, 0,
       270, ['78x118', '78x140'], ['assets/img/products/flashings.jpg'], 'PL', false, null);
+    this.configByName$ = this.store.select(ConfigurationState.configurationByFlashingFormName).pipe(
+      takeUntil(this.isDestroyed$),
+      map(filterFn => filterFn(this.routerParams.state.params.formName)));
     this.configOptionsLoaded$.pipe(takeUntil(this.isDestroyed$)).subscribe(loaded => {
       if (loaded) {
         this.flashingModels = this.configOptions.models;
@@ -280,7 +284,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
       this.formChanges();
       this.loading = false;
     } else {
-      this.loadData.getFlashingConfigurationByFormName(this.formName)
+      this.configByName$
         .pipe(takeUntil(this.isDestroyed$))
         .subscribe((flashingConfigurations: FlashingConfig[]) => {
           this.configuredFlashing = flashingConfigurations[0].flashing;

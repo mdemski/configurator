@@ -34,6 +34,11 @@ import {
   UpdateVerticalWindowQuantityByConfigAndWindowId
 } from './configuration.actions';
 import {tap} from 'rxjs/operators';
+import {WindowConfig} from '../../models/window-config';
+import {FlashingConfig} from '../../models/flashing-config';
+import {AccessoryConfig} from '../../models/accessory-config';
+import {FlatConfig} from '../../models/flat-config';
+import {VerticalConfig} from '../../models/vertical-config';
 
 export interface ConfigurationStateModel {
   // w razie problemów z wydajnością zmienić wczytywanie tylko na konfiguracje user'a a pełną listę brać wyłącznie do nadawania numerów
@@ -98,48 +103,92 @@ export class ConfigurationState {
   }
 
   @Selector()
-  static configurationByFormName(state: SingleConfiguration[]) {
+  static configurationByWindowFormName(state: SingleConfiguration[]) {
     return (formName: string) => {
-      let productConfig = null;
+      let chosenWindowConfig: WindowConfig = null;
       // @ts-ignore
       state.configurations.forEach(configuration => {
         if (configuration.products.windows) {
-          configuration.products.windows.find(windowConfig => {
+          configuration.products.windows.filter(windowConfig => {
             if (windowConfig.windowFormName === formName) {
-              productConfig = windowConfig;
-            }
-          });
-        }
-        if (configuration.products.flashings) {
-          configuration.products.flashings.find(flashingConfig => {
-            if (flashingConfig.flashingFormName === formName) {
-              productConfig = flashingConfig;
-            }
-          });
-        }
-        if (configuration.products.accessories) {
-          configuration.products.accessories.find(accessoryConfig => {
-            if (accessoryConfig.accessoryFormName === formName) {
-              productConfig = accessoryConfig;
-            }
-          });
-        }
-        if (configuration.products.flats) {
-          configuration.products.flats.find(flatConfig => {
-            if (flatConfig.flatFormName === formName) {
-              productConfig = flatConfig;
-            }
-          });
-        }
-        if (configuration.products.verticals) {
-          configuration.products.verticals.find(verticalConfig => {
-            if (verticalConfig.verticalFormName === formName) {
-              productConfig = verticalConfig;
+              chosenWindowConfig = windowConfig;
             }
           });
         }
       });
-      return productConfig;
+      return chosenWindowConfig;
+    };
+  }
+
+  @Selector()
+  static configurationByFlashingFormName(state: SingleConfiguration[]) {
+    return (formName: string) => {
+      const productConfigs: FlashingConfig[] = [];
+      // @ts-ignore
+      state.configurations.forEach(configuration => {
+        if (configuration.products.flashings) {
+          configuration.products.flashings.filter(flashingConfig => {
+            if (flashingConfig.flashingFormName === formName) {
+              productConfigs.push(flashingConfig);
+            }
+          });
+        }
+      });
+      return productConfigs;
+    };
+  }
+
+  @Selector()
+  static configurationByAccessoryFormName(state: SingleConfiguration[]) {
+    return (formName: string) => {
+      let chosenAccessoryConfig: AccessoryConfig = null;
+      // @ts-ignore
+      state.configurations.forEach(configuration => {
+        if (configuration.products.accessories) {
+          configuration.products.accessories.filter(accessoryConfig => {
+            if (accessoryConfig.accessoryFormName === formName) {
+              chosenAccessoryConfig = accessoryConfig;
+            }
+          });
+        }
+      });
+      return chosenAccessoryConfig;
+    };
+  }
+
+  @Selector()
+  static configurationByFlatRoofFormName(state: SingleConfiguration[]) {
+    return (formName: string) => {
+      let chosenFlatRoofConfig: FlatConfig = null;
+      // @ts-ignore
+      state.configurations.forEach(configuration => {
+        if (configuration.products.flats) {
+          configuration.products.flats.filter(flatConfig => {
+            if (flatConfig.flatFormName === formName) {
+              chosenFlatRoofConfig = flatConfig;
+            }
+          });
+        }
+      });
+      return chosenFlatRoofConfig;
+    };
+  }
+
+  @Selector()
+  static configurationByVerticalWindowFormName(state: SingleConfiguration[]) {
+    return (formName: string) => {
+      let chosenVerticalWindowConfig: VerticalConfig = null;
+      // @ts-ignore
+      state.configurations.forEach(configuration => {
+        if (configuration.products.verticals) {
+          configuration.products.verticals.filter(verticalConfig => {
+            if (verticalConfig.verticalFormName === formName) {
+              chosenVerticalWindowConfig = verticalConfig;
+            }
+          });
+        }
+      });
+      return chosenVerticalWindowConfig;
     };
   }
 

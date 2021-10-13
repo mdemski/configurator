@@ -150,9 +150,9 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
 
   // 'width': new FormControl(78, [this.validateWidth.bind(this), Validators.required]), własnym walidator
   ngOnInit() {
-    this.configByName$ = this.store.select(ConfigurationState.configurationByFormName).pipe(
+    this.configByName$ = this.store.select(ConfigurationState.configurationByWindowFormName).pipe(
       takeUntil(this.isDestroyed$),
-      map(filterFn => filterFn(this.routerParams.state.params.formName)[0]));
+      map(filterFn => filterFn(this.routerParams.state.params.formName)));
     this.configOptionsLoaded$.subscribe(loaded => {
       if (loaded) {
         this.coatsFromFile = this.objectMaker(this.configOptions.coats);
@@ -245,6 +245,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     } else {
       this.configByName$.pipe(takeUntil(this.isDestroyed$))
         .subscribe((windowConfiguration: WindowConfig) => {
+          console.log(windowConfiguration);
           this.form = this.fb.group({
             material: new FormControl(windowConfiguration.windowFormData.material, [], [this.validateMaterials.bind(this)]),
             openingType: new FormControl(windowConfiguration.windowFormData.openingType, [], [this.validateOpenings.bind(this)]),
