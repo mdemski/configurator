@@ -108,10 +108,6 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
     });
   }
 
-  builtNameForTranslation(prefix: string, option: string) {
-    return String(prefix + option);
-  }
-
   ngOnDestroy(): void {
     this.isDestroyed$.next();
   }
