@@ -9,6 +9,8 @@ import {Accessory} from '../models/accessory';
 import {RoofWindowState} from '../store/roof-window/roof-window.state';
 import {Store} from '@ngxs/store';
 import {state} from '@angular/animations';
+import {FlashingState} from '../store/flashing/flashing.state';
+import {AccessoryState} from '../store/accessory/accessory.state';
 
 @Injectable({
   providedIn: 'root'
@@ -68,16 +70,27 @@ export class LoadConfigurationService {
         return of(this.newFlashing);
       }
       if (formName === 'no-name' && flashingCode !== undefined) {
-        return this.db.getFlashingByCode(flashingCode);
+        return this.store.select(FlashingState.flashingByCode).pipe(
+          map(filterFn => filterFn(flashingCode)));
       }
     }
   }
 
-  getFlashingConfigurationByFormName(formName: string) {
-    return this.crud.readConfigurationByFormName(formName);
-  }
-
-  getAccessoryToReconfiguration() {
-
+  getAccessoryToReconfiguration(user: string, formName: string, accessoryCode: string): Observable<Accessory> {
+    if (user !== '' || user !== undefined) {
+      if (formName === 'no-name' && accessoryCode === undefined) {
+        return of(this.newAccessory);
+      }
+      if (formName === 'no-name' && accessoryCode === '-1') {
+        return of(this.newAccessory);
+      }
+      if (formName === undefined && accessoryCode === undefined) {
+        return of(this.newAccessory);
+      }
+      if (formName === 'no-name' && accessoryCode !== undefined) {
+        return this.store.select(AccessoryState.accessoryByCode).pipe(
+          map(filterFn => filterFn(accessoryCode)));
+      }
+    }
   }
 }
