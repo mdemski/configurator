@@ -77,28 +77,28 @@ export class ConfigurationState {
   @Selector()
   static userConfigurations(state: ConfigurationStateModel) {
     return (user: string) => {
-      return state.configurations.filter(configuration => configuration.user === user);
+      return state.configurations.filter(configuration => configuration.user === user && configuration.active === true);
     };
   }
 
   @Selector()
   static configurationByMongoID(state: ConfigurationStateModel) {
     return (mongoId) => {
-      return state.configurations.find(configuration => configuration._id === mongoId);
+      return state.configurations.find(configuration => configuration._id === mongoId && configuration.active === true);
     };
   }
 
   @Selector()
   static configurationByGlobalID(state: ConfigurationStateModel) {
     return (globalId: string) => {
-      return state.configurations.find(configuration => configuration.globalId === globalId);
+      return state.configurations.find(configuration => configuration.globalId === globalId && configuration.active === true);
     };
   }
 
   @Selector()
   static configurationByName(state: ConfigurationStateModel) {
     return (configName: string) => {
-      return state.configurations.find(configuration => configuration.name === configName);
+      return state.configurations.find(configuration => configuration.name === configName && configuration.active === true);
     };
   }
 
