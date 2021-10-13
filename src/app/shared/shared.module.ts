@@ -9,6 +9,7 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {HttpLoaderFactory} from '../app.module';
 import {HttpClient} from '@angular/common/http';
 import {EmptyArrayPipe} from '../pipes/empty-array.pipe';
+import {OkpolLoaderComponent} from '../loaders/okpol-loader/okpol-loader.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import {EmptyArrayPipe} from '../pipes/empty-array.pipe';
     EmptyArrayPipe,
     ModalComponent,
     BouncingLoaderComponent,
+    OkpolLoaderComponent
   ],
   imports: [
     CommonModule,
@@ -39,7 +41,8 @@ import {EmptyArrayPipe} from '../pipes/empty-array.pipe';
     ModalComponent,
     BouncingLoaderComponent,
     TranslateModule,
-    EmptyArrayPipe
+    EmptyArrayPipe,
+    OkpolLoaderComponent
   ]
 })
 export class SharedModule { }

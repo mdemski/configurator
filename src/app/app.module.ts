@@ -38,49 +38,49 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HeaderComponent,
-    LoginComponent,
-    RegisterComponent,
-    RegulationsComponent,
-    FooterComponent,
-    ContactComponent,
-    HomeComponent,
-    ShoppingCartComponent,
-    MyAccountComponent,
-    RegisterConfirmationPageComponent
-  ],
-  imports: [
-    SharedModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    AppRoutingModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFirestoreModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
-    }),
-    IonicModule.forRoot(),
-    NgxsModule.forRoot([
-      RouterState,
-      AppState
-    ], {
-      developmentMode: !environment.production,
-      selectorOptions: {injectContainerState: false}
-    }),
-    NgxsReduxDevtoolsPluginModule.forRoot(),
-    NgxsLoggerPluginModule.forRoot(),
-    NgxsRouterPluginModule.forRoot()
-  ],
-  providers: [DatabaseService, AuthService,
-    {provide: RouterStateSerializer, useClass: CustomRouterStateSerializer}],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        HeaderComponent,
+        LoginComponent,
+        RegisterComponent,
+        RegulationsComponent,
+        FooterComponent,
+        ContactComponent,
+        HomeComponent,
+        ShoppingCartComponent,
+        MyAccountComponent,
+        RegisterConfirmationPageComponent
+    ],
+    imports: [
+        SharedModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        HttpClientModule,
+        AppRoutingModule,
+        AngularFireModule.initializeApp(environment.firebaseConfig),
+        AngularFirestoreModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [HttpClient]
+            }
+        }),
+        IonicModule.forRoot(),
+        NgxsModule.forRoot([
+            RouterState,
+            AppState
+        ], {
+            developmentMode: !environment.production,
+            selectorOptions: {injectContainerState: false}
+        }),
+        NgxsReduxDevtoolsPluginModule.forRoot(),
+        NgxsLoggerPluginModule.forRoot(),
+        NgxsRouterPluginModule.forRoot()
+    ],
+    providers: [DatabaseService, AuthService,
+        {provide: RouterStateSerializer, useClass: CustomRouterStateSerializer}],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }

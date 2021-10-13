@@ -24,12 +24,12 @@ import {FlatRoofWindowState} from '../store/flat-roof-window/flat-roof-window.st
 import {NgxPaginationModule} from 'ngx-pagination';
 
 @NgModule({
-  imports: [
-    SharedModule,
-    NgxsModule.forFeature([RoofWindowState, FlashingState, AccessoryState, SkylightState, FlatRoofWindowState]),
-    ShopRoutingModule,
-    NgxPaginationModule
-  ],
+    imports: [
+        SharedModule,
+        NgxsModule.forFeature([RoofWindowState, FlashingState, AccessoryState, SkylightState, FlatRoofWindowState]),
+        ShopRoutingModule,
+        NgxPaginationModule
+    ],
   declarations: [
     ShopComponent,
     RoofWindowDetailsComponent,
