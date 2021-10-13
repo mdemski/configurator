@@ -152,7 +152,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.configByName$ = this.store.select(ConfigurationState.configurationByFormName).pipe(
       takeUntil(this.isDestroyed$),
-      map(filterFn => filterFn(this.routerParams.state.params.formName)));
+      map(filterFn => filterFn(this.routerParams.state.params.formName)[0]));
     this.configOptionsLoaded$.subscribe(loaded => {
       if (loaded) {
         this.coatsFromFile = this.objectMaker(this.configOptions.coats);
