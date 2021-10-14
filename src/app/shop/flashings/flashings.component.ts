@@ -13,10 +13,18 @@ import {GetFlashings} from '../../store/flashing/flashing.actions';
 export class FlashingsComponent implements OnInit {
 
   @Select(FlashingState.flashings) flashings$: Observable<Flashing[]>;
+  isFiltering: any;
   constructor(private store: Store) { }
 
   ngOnInit(): void {
+    this.isFiltering = true;
+    setTimeout(() => {
+      this.isFiltering = false;
+    }, 2000);
     this.store.dispatch(new GetFlashings());
   }
 
+  filtersInput($event: any) {
+    // TODO przygotować metodę do filtrowania
+  }
 }

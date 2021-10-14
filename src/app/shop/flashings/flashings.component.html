@@ -1,1 +1,14 @@
-<p>flashings works!</p>
+<div class="navbar-background">
+  <img src="assets/img/navbar_backgrounds/david-jorre-9f1gCaLkZBU-unsplash.jpg" alt="roof windows">
+</div>
+<div class="full-width-container" style="height: 100px; border: grey solid 2px; text-align: center">Baner</div>
+<app-roof-window-filtration (filtersEmitter)="filtersInput($event)"></app-roof-window-filtration>
+<!--TODO Menu boczne do filtrowania okien do zakupu-->
+
+<div class="md-container">
+  <div class="loader-container" *ngIf="isFiltering; else elseBlock">
+    <app-okpol-loader></app-okpol-loader>
+  </div>
+  <ng-template #elseBlock>
+  </ng-template>
+</div>
