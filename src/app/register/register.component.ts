@@ -64,6 +64,7 @@ export class RegisterComponent implements OnInit {
     this.registerUser.rePassword = this.registerForm.value.rePassword;
     this.registerUser.role = this.registerForm.value.role;
     this.registerUser.uuid = this.generateUUID();
+    this.registerUser.activated = false;
     this.userBody = JSON.stringify(this.registerUser);
     this.registerCompany.nip = this.registerForm.value.nip;
     this.registerCompany.name = this.registerForm.value.companyName;
