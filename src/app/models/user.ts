@@ -1,8 +1,5 @@
-import {Address} from './address';
-
 export class User {
-  private _firstName: string;
-  private _lastName: string;
+  public _id?: string;
   private _email: string;
   private _password: string;
   private _rePassword: string;
@@ -11,12 +8,11 @@ export class User {
   private _uuid: string;
   private _discount: number;
   private _companyNip: string;
-  private _address: Address;
+  private _ipAddress?: string;
 
   // tslint:disable-next-line:max-line-length
-  constructor(firstName: string, lastName: string, email: string, password: string, rePassword: string, role: string, activated: boolean, uuid: string, discount: number, companyNip: string, address: Address) {
-    this._firstName = firstName;
-    this._lastName = lastName;
+  constructor(id: string, email: string, password: string, rePassword: string, role: string, activated: boolean, uuid: string, discount: number, companyNip: string, ipAddress: string) {
+    this._id = id;
     this._email = email;
     this._password = password;
     this._rePassword = rePassword;
@@ -25,24 +21,15 @@ export class User {
     this._uuid = uuid;
     this._discount = discount;
     this._companyNip = companyNip;
-    this._address = address;
+    this._ipAddress = ipAddress;
   }
 
-
-  get firstName(): string {
-    return this._firstName;
+  get id(): string {
+    return this._id;
   }
 
-  set firstName(value: string) {
-    this._firstName = value;
-  }
-
-  get lastName(): string {
-    return this._lastName;
-  }
-
-  set lastName(value: string) {
-    this._lastName = value;
+  set id(value: string) {
+    this._id = value;
   }
 
   get email(): string {
@@ -109,11 +96,11 @@ export class User {
     this._companyNip = value;
   }
 
-  get address(): Address {
-    return this._address;
+  get ipAddress(): string {
+    return this._ipAddress;
   }
 
-  set address(value: Address) {
-    this._address = value;
+  set ipAddress(value: string) {
+    this._ipAddress = value;
   }
 }
