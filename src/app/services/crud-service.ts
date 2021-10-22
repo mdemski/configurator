@@ -224,7 +224,7 @@ export class CrudService {
         // @ts-ignore
         coordinateB: geoLocationObject.results[0].geometry.location.lng
       };
-      const addressToCreate: Address = new Address('', address.firstName, address.lastName, address.phoneNumber, address.street,
+      const addressToCreate: Address = new Address(address.firstName, address.lastName, address.phoneNumber, address.street,
         address.localNumber, address.zipCode, address.city, address.country, localization);
       return this.http.post(url, addressToCreate).pipe(catchError(err => err));
     });
