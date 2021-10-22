@@ -1,8 +1,5 @@
-const express = require('express');
-const app = express();
-const configurationRoute = express.Router();
-
-let SingleConfiguration = require('../models/SingleConfiguration');
+const configurationRoute = require('express').Router()
+const SingleConfiguration = require('../models/SingleConfiguration');
 
 //Add configuration
 configurationRoute.route('/create').post((req, res, next) => {
