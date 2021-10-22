@@ -4,6 +4,7 @@ import {Address} from './address';
 export class Company {
   private _name: string;
   private _nip: string;
+  private _discount: number;
   private _address: Address;
   private _agentOkpol: string;
   private _salesVolume: number;
@@ -13,9 +14,10 @@ export class Company {
   private _logotype: File;
 
   // tslint:disable-next-line:max-line-length
-  constructor(name: string, nip: string, address: Address, agentOkpol: string, salesVolume: number, salesVolumeLastYear: number, salesVolumeTwoYears: number, orders: Order[], logotype: File) {
+  constructor(name: string, nip: string, discount: number, address: Address, agentOkpol: string, salesVolume: number, salesVolumeLastYear: number, salesVolumeTwoYears: number, orders: Order[], logotype: File) {
     this._name = name;
     this._nip = nip;
+    this._discount = discount;
     this._address = address;
     this._agentOkpol = agentOkpol;
     this._salesVolume = salesVolume;
@@ -39,6 +41,14 @@ export class Company {
 
   set nip(value: string) {
     this._nip = value;
+  }
+
+  get discount(): number {
+    return this._discount;
+  }
+
+  set discount(value: number) {
+    this._discount = value;
   }
 
   get address(): Address {

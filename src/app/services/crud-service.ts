@@ -15,6 +15,10 @@ import {FlashingConfig} from '../models/flashing-config';
 import {AccessoryConfig} from '../models/accessory-config';
 import {VerticalConfig} from '../models/vertical-config';
 import {FlatConfig} from '../models/flat-config';
+import {User} from '../models/user';
+import {environment} from '../../environments/environment';
+import {Address} from '../models/address';
+import {Company} from '../models/company';
 
 @Injectable({
   providedIn: 'root'
@@ -30,11 +34,54 @@ export class CrudService {
   // where data is your object, key is the variable to store the key name and value is the variable to store the value.
 
   baseUri = 'http://localhost:4000/api';
+  usersBaseUri = 'http://localhost:4000/api/users';
+  addressesBaseUri = 'http://localhost:4000/api/addresses';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   temporaryConfigurations: Observable<any[]>;
 
   private urlToUpdateSetter(globalConfiguration: SingleConfiguration) {
     return `${this.baseUri}/update/${globalConfiguration._id}`;
+  }
+
+  getGeoLocation(street: string, localNumber: string, zipCode: string, city: string, country: string) {
+    const requestURL = 'https://maps.googleapis.com/maps/api/geocode/json?address='
+      + localNumber + ' ' + street + ', ' + zipCode + ' ' + city + ', ' + country
+      + '&key=' + environment.firebaseConfig.apiKey;
+    return this.http.get(requestURL);
+  }
+
+  readAllCompaniesFromERP(): Observable<Company[]> {
+    // TODO poprawić adres który ma być odpytany z eNova
+    return this.http.get('URL do zapytania do eNova').pipe(map((companies: Company[]) => {
+      return companies;
+    }));
+  }
+
+  readAllUsersFromMongoDB(): Observable<User[]> {
+    return this.http.get(this.usersBaseUri).pipe(map((users: User[]) => {
+      return users;
+    }));
+  }
+
+  readUserByMongoId(mongoId: string): Observable<User> {
+    return this.http.get(this.usersBaseUri).pipe(map((users: User[]) => users
+      .find(user => user.id === mongoId)));
+  }
+
+  readUserByEmail(email: string): Observable<User> {
+    return this.http.get(this.usersBaseUri).pipe(map((users: User[]) => users
+      .find(user => user.email === email)));
+  }
+
+  readAllAddressesFromMongoDB(): Observable<Address[]> {
+    return this.http.get(this.addressesBaseUri).pipe(map((addresses: Address[]) => {
+      return addresses;
+    }));
+  }
+
+  readAddressByMongoId(mongoId: string): Observable<Address> {
+    return this.http.get(this.addressesBaseUri).pipe(map((addresses: Address[]) => addresses
+      .find(address => address.id === mongoId)));
   }
 
   readAllConfigurationsFromMongoDB(): Observable<SingleConfiguration[]> {
@@ -167,6 +214,28 @@ export class CrudService {
     }));
   }
 
+  createAddress(address: Address) {
+    const url = `${this.addressesBaseUri}/add`;
+    return this.getGeoLocation(address.street, address.localNumber, address.zipCode, address.city, address.country).subscribe(geoLocationObject => {
+      console.log(geoLocationObject);
+      const localization = {
+        // @ts-ignore
+        coordinateA: geoLocationObject.results[0].geometry.location.lat,
+        // @ts-ignore
+        coordinateB: geoLocationObject.results[0].geometry.location.lng
+      };
+      const addressToCreate: Address = new Address('', address.firstName, address.lastName, address.phoneNumber, address.street,
+        address.localNumber, address.zipCode, address.city, address.country, localization);
+      return this.http.post(url, addressToCreate).pipe(catchError(err => err));
+    });
+  }
+
+  createUser(user: User) {
+    const url = `${this.usersBaseUri}/register`;
+    const userToCreate: User = new User('', user.email, user.password, user.rePassword, user.role, false, user.uuid, 0, user.companyNip, '', '');
+    return this.http.post(url, userToCreate).pipe(catchError(err => err));
+  }
+
   createConfigurationForUser(user: string, configuration: SingleConfiguration) {
     const url = `${this.baseUri}/create`;
     const configurationToCreate: SingleConfiguration = {
@@ -286,6 +355,46 @@ export class CrudService {
     globalConfiguration.lastUpdate = new Date();
     globalConfiguration.products.flats.push(flatConfig);
     return this.http.put(url, globalConfiguration, {headers: this.headers}).pipe(catchError(err => err));
+  }
+
+  updateAddressByMongoId(address: Address) {
+    const url = `${this.addressesBaseUri}/update/${address.id}`;
+    this.http.put(url, address, {headers: this.headers}).pipe(catchError(err => err));
+  }
+
+  updateUserByMongoId(user: User, addressData: Address | null, companyData: Company | null) {
+    const url = `${this.usersBaseUri}/update/${user.id}`;
+    if (addressData) {
+      user.mainAddressId = addressData.id;
+    }
+    if (companyData) {
+      user.companyNip = companyData.nip;
+      user.discount = companyData.discount;
+      user.mainAddressId = companyData.address.id;
+    }
+    this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
+  }
+
+  setAddressToSendForUser(user: User, addressToSend: Address) {
+    const url = `${this.usersBaseUri}/update/${user.id}`;
+    if (addressToSend) {
+      user.addressToSendId = addressToSend.id;
+    }
+    this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
+  }
+
+  setDiscountForIndividualUser(user: User, discount: number, adminPassword: string | null, code: string | null) {
+    const url = `${this.usersBaseUri}/update/${user.id}`;
+    if (adminPassword) {
+      user.discount = discount;
+    }
+    // TODO dorobić obsługę listy kodów rabatowych
+    // @ts-ignore
+    this.discountList.forEach((discountObject: {code: string, value: number}) => {
+      if (discountObject.code === code) {
+        user.discount = discount;
+      }});
+    this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
   }
 
   updateNameConfigurationByMongoId(mongoId: string, configName: string) {
@@ -511,6 +620,17 @@ export class CrudService {
     }
     globalConfiguration.lastUpdate = new Date();
     return this.http.put(url, globalConfiguration, {headers: this.headers}).pipe(catchError(err => err));
+  }
+
+  deleteAddress(address: Address) {
+    const url = `${this.addressesBaseUri}/delete/${address.id}`;
+    return this.http.delete(url, {headers: this.headers}).pipe(catchError(err => err));
+  }
+
+  deleteUser(user: User) {
+    const url = `${this.usersBaseUri}/delete/${user.id}`;
+    user.activated = false;
+    return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
   }
 
   // 1 usuwanie całej konfiguracji

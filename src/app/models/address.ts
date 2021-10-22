@@ -4,8 +4,9 @@ export class Address {
   private _lastName: string;
   private _phoneNumber: string;
   private _street: string;
-  private _address: string;
+  private _localNumber: string;
   private _zipCode: string;
+  private _city: string;
   private _country: string;
   private _localization: {
     coordinateA: number;
@@ -13,14 +14,15 @@ export class Address {
   };
 
   // tslint:disable-next-line:max-line-length
-  constructor(id: string, firstName: string, lastName: string, phoneNumber: string, street: string, address: string, zipCode: string, country: string, localization: { coordinateA: number; coordinateB: number }) {
+  constructor(id: string, firstName: string, lastName: string, phoneNumber: string, street: string, localNumber: string, zipCode: string, city: string, country: string, localization: { coordinateA: number; coordinateB: number }) {
     this._id = id;
     this._firstName = firstName;
     this._lastName = lastName;
     this._phoneNumber = phoneNumber;
     this._street = street;
-    this._address = address;
+    this._localNumber = localNumber;
     this._zipCode = zipCode;
+    this._city = city;
     this._country = country;
     this._localization = localization;
   }
@@ -65,12 +67,12 @@ export class Address {
     this._street = value;
   }
 
-  get address(): string {
-    return this._address;
+  get localNumber(): string {
+    return this._localNumber;
   }
 
-  set address(value: string) {
-    this._address = value;
+  set localNumber(value: string) {
+    this._localNumber = value;
   }
 
   get zipCode(): string {
@@ -79,6 +81,14 @@ export class Address {
 
   set zipCode(value: string) {
     this._zipCode = value;
+  }
+
+  get city(): string {
+    return this._city;
+  }
+
+  set city(value: string) {
+    this._city = value;
   }
 
   get country(): string {
