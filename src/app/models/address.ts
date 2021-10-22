@@ -14,8 +14,7 @@ export class Address {
   };
 
   // tslint:disable-next-line:max-line-length
-  constructor(id: string, firstName: string, lastName: string, phoneNumber: string, street: string, localNumber: string, zipCode: string, city: string, country: string, localization: { coordinateA: number; coordinateB: number }) {
-    this._id = id;
+  constructor(firstName: string, lastName: string, phoneNumber: string, street: string, localNumber: string, zipCode: string, city: string, country: string, localization: { coordinateA: number; coordinateB: number }) {
     this._firstName = firstName;
     this._lastName = lastName;
     this._phoneNumber = phoneNumber;
