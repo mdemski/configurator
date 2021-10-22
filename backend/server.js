@@ -2,8 +2,9 @@ let express = require('express'),
   path = require('path'),
   mongoose = require('mongoose'),
   cors = require('cors'),
-  bodyParser = require('body-parser'),
   dbConfig = require('./database/db');
+require('dotenv').config();
+const passport = require('passport');
 
 // Connecting with mongo db
 mongoose.Promise = global.Promise;
@@ -14,18 +15,24 @@ mongoose.connect(dbConfig.db, { useNewUrlParser: true, useUnifiedTopology: true 
     console.log('Database could not connected: ' + error)
   }
 )
+const app = express();
+require('./config/passport')(passport);
+app.use(passport.initialize(undefined));
 
 // Setting up port with express js
-const singleConfigurationRoute = require('../backend/routes/singleConfiguration.route')
-const app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-  extended: false
+const userRoute = require('../backend/routes/user.route');
+const singleConfigurationRoute = require('../backend/routes/singleConfiguration.route');
+const addressRoute = require("./routes/address.route");
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
 }));
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'dist/window-configurator-crud-app')));
 app.use('/', express.static(path.join(__dirname, 'dist/window-configurator-crud-app')));
 app.use('/api', singleConfigurationRoute);
+app.use('/api/users', userRoute);
+app.use('/api/addresses', addressRoute);
 // routes.initialize(app);
 
 // Create port
