@@ -8,10 +8,11 @@ export class User {
   private _uuid: string;
   private _discount: number;
   private _companyNip: string;
-  private _ipAddress?: string;
+  private _mainAddressId?: string;
+  private _addressToSendId?: string;
 
   // tslint:disable-next-line:max-line-length
-  constructor(id: string, email: string, password: string, rePassword: string, role: string, activated: boolean, uuid: string, discount: number, companyNip: string, ipAddress: string) {
+  constructor(id: string, email: string, password: string, rePassword: string, role: string, activated: boolean, uuid: string, discount: number, companyNip: string, mainAddressId: string, addressToSendId: string) {
     this._id = id;
     this._email = email;
     this._password = password;
@@ -21,7 +22,8 @@ export class User {
     this._uuid = uuid;
     this._discount = discount;
     this._companyNip = companyNip;
-    this._ipAddress = ipAddress;
+    this._mainAddressId = mainAddressId;
+    this._addressToSendId = addressToSendId;
   }
 
   get id(): string {
@@ -96,11 +98,19 @@ export class User {
     this._companyNip = value;
   }
 
-  get ipAddress(): string {
-    return this._ipAddress;
+  get mainAddressId(): string {
+    return this._mainAddressId;
   }
 
-  set ipAddress(value: string) {
-    this._ipAddress = value;
+  set mainAddressId(value: string) {
+    this._mainAddressId = value;
+  }
+
+  get addressToSendId(): string {
+    return this._addressToSendId;
+  }
+
+  set addressToSendId(value: string) {
+    this._addressToSendId = value;
   }
 }
