@@ -6,7 +6,7 @@ let AccessoryConfig = new Schema({
     type: Number
   },
   accessory: {
-    type: mongoose.Schema.Types.ObjectID,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Accessory"
   },
   quantity: {
