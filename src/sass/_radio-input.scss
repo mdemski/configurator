@@ -121,6 +121,17 @@
   }
 }
 
+.disabled {
+  background-color: $color-grey;
+  color: $color-light-grey;
+
+  &:hover,
+  &:focus {
+    background-color: $color-grey;
+    color: $color-light-grey;
+  }
+}
+
 @keyframes HideList {
   from {
     transform: scaleY(1);
