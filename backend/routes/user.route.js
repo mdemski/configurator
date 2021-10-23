@@ -32,13 +32,13 @@ userRoute.route('/:userId').get(((req, res, next) => {
 
 //Login user
 userRoute.post('/login', function (req, res, next) {
-  User.findOne({email: req.body.email})
+  User.findOne({email: req.body._email})
     .then((user) => {
       if (!user) {
         return res.status(401).json({success: false, msg: 'Could not find user'});
       }
 
-      const isValid = utils.validPassword(req.body.password, user.hash, user.salt);
+      const isValid = utils.validPassword(req.body._password, user.hash, user.salt);
 
       if (isValid) {
         const tokenObject = utils.issueJWT(user);
@@ -52,21 +52,20 @@ userRoute.post('/login', function (req, res, next) {
 
 //Register a new user
 userRoute.post('/register', function (req, res, next) {
-  const saltHash = utils.genPassword(req.body.password);
+  console.log(req.body)
+  const saltHash = utils.genPassword(req.body._password);
 
   const salt = saltHash.salt;
   const hash = saltHash.hash;
   const newUser = new User({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
+    email: req.body._email,
     hash: hash,
     salt: salt,
-    role: req.body.role,
-    activated: req.body.activated,
-    uuid: req.body.uuid,
-    discount: req.body.discount,
-    companyNip: req.body.companyNip
+    role: req.body._role,
+    activated: req.body._activated,
+    uuid: req.body._uuid,
+    discount: req.body._discount,
+    companyNip: req.body._companyNip
   });
 
   try {

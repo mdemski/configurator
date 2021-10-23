@@ -9,7 +9,7 @@ const passport = require('passport');
 // Connecting with mongo db
 mongoose.Promise = global.Promise;
 mongoose.connect(dbConfig.db, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
-    console.log('Database sucessfully connected')
+    console.log('Database successfully connected')
   },
   error => {
     console.log('Database could not connected: ' + error)
