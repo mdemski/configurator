@@ -10,7 +10,7 @@ const PUB_KEY = fs.readFileSync(pathToKey, 'utf8');
 const options = {
   _jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   _secretOrKeyProvider: PUB_KEY,
-  algorithms: ['RSA256']
+  algorithms: ['RS256']
 };
 
 module.exports = (passport) => {
