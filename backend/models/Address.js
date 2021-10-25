@@ -1,31 +1,40 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-let LocalizationSchema = new Schema({
-  coordinateA: {
-    type: Number
-  },
-  coordinateB: {
-    type: Number
-  }
-})
+// let LocalizationSchema = new Schema({
+//   coordinateA: {
+//     type: Number
+//   },
+//   coordinateB: {
+//     type: Number
+//   }
+// })
 
 // Define collection and schema
 let Address = new Schema({
+  firstName: {
+    type: String
+  },
+  lastName: {
+    type: String
+  },
+  phoneNumber: {
+    type: String
+  },
   street: {
     type: String
   },
-  address: {
+  localNumber: {
     type: String
   },
   zipCode: {
     type: String
   },
-  country: {
+  city: {
     type: String
   },
-  localization: {
-    type: LocalizationSchema
+  country: {
+    type: String
   }
 }, {
   collection: 'addresses'
