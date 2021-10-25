@@ -43,12 +43,19 @@ export class CrudService {
     return `${this.baseUri}/update/${globalConfiguration._id}`;
   }
 
-  getGeoLocation(street: string, localNumber: string, zipCode: string, city: string, country: string) {
-    const requestURL = 'https://maps.googleapis.com/maps/api/geocode/json?address='
-      + localNumber + ' ' + street + ', ' + zipCode + ' ' + city + ', ' + country
-      + '&key=' + environment.firebaseConfig.apiKey;
-    return this.http.get(requestURL);
+  getCountryList() {
+    return this.http.get('https://countriesnow.space/api/v0.1/countries').pipe(map((object: { error: boolean, msg: string, data: [{ country: string, cities: [] }] }) => {
+      return object.data.map(response => response.country);
+    }));
   }
+
+  // Zawieszone ze względu na koszty zapytanie 5USD/1k zapytań
+  // getGeoLocation(street: string, localNumber: string, zipCode: string, city: string, country: string) {
+  //   const requestURL = 'https://maps.googleapis.com/maps/api/geocode/json?address='
+  //     + localNumber + '+' + street + ',+' + zipCode + '+' + city + ',+' + country
+  //     + '&key=' + environment.firebaseConfig.apiKey;
+  //   return this.http.get(requestURL);
+  // }
 
   readAllCompaniesFromERP(): Observable<Company[]> {
     // TODO poprawić adres który ma być odpytany z eNova
@@ -216,18 +223,19 @@ export class CrudService {
 
   createAddress(address: Address) {
     const url = `${this.addressesBaseUri}/add`;
-    return this.getGeoLocation(address.street, address.localNumber, address.zipCode, address.city, address.country).subscribe(geoLocationObject => {
-      console.log(geoLocationObject);
-      const localization = {
-        // @ts-ignore
-        coordinateA: geoLocationObject.results[0].geometry.location.lat,
-        // @ts-ignore
-        coordinateB: geoLocationObject.results[0].geometry.location.lng
-      };
-      const addressToCreate: Address = new Address(address.firstName, address.lastName, address.phoneNumber, address.street,
-        address.localNumber, address.zipCode, address.city, address.country, localization);
-      return this.http.post(url, addressToCreate).pipe(catchError(err => err));
-    });
+    // return this.getGeoLocation(address.street, address.localNumber, address.zipCode, address.city, address.country)
+    //   .pipe(map(geoLocationObject => {
+    //   console.log(geoLocationObject);
+    //   const localization = {
+    //     // @ts-ignore
+    //     coordinateA: geoLocationObject.results[0].geometry.location.lat,
+    //     // @ts-ignore
+    //     coordinateB: geoLocationObject.results[0].geometry.location.lng
+    //   };
+    const addressToCreate: Address = new Address(address.firstName, address.lastName, address.phoneNumber, address.street,
+      address.localNumber, address.zipCode, address.city, address.country);
+    return this.http.post(url, addressToCreate).pipe(catchError(err => err));
+    // }));
   }
 
   createUser(user: User) {
@@ -390,10 +398,11 @@ export class CrudService {
     }
     // TODO dorobić obsługę listy kodów rabatowych
     // @ts-ignore
-    this.discountList.forEach((discountObject: {code: string, value: number}) => {
+    this.discountList.forEach((discountObject: { code: string, value: number }) => {
       if (discountObject.code === code) {
         user.discount = discount;
-      }});
+      }
+    });
     this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
   }
 

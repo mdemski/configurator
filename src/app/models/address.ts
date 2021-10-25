@@ -8,13 +8,13 @@ export class Address {
   private _zipCode: string;
   private _city: string;
   private _country: string;
-  private _localization: {
-    coordinateA: number;
-    coordinateB: number;
-  };
+  // private _localization: {
+  //   coordinateA: number;
+  //   coordinateB: number;
+  // };
 
   // tslint:disable-next-line:max-line-length
-  constructor(firstName: string, lastName: string, phoneNumber: string, street: string, localNumber: string, zipCode: string, city: string, country: string, localization: { coordinateA: number; coordinateB: number }) {
+  constructor(firstName: string, lastName: string, phoneNumber: string, street: string, localNumber: string, zipCode: string, city: string, country: string) {
     this._firstName = firstName;
     this._lastName = lastName;
     this._phoneNumber = phoneNumber;
@@ -23,7 +23,6 @@ export class Address {
     this._zipCode = zipCode;
     this._city = city;
     this._country = country;
-    this._localization = localization;
   }
 
   get id(): string {
@@ -96,13 +95,5 @@ export class Address {
 
   set country(value: string) {
     this._country = value;
-  }
-
-  get localization(): { coordinateA: number; coordinateB: number } {
-    return this._localization;
-  }
-
-  set localization(value: { coordinateA: number; coordinateB: number }) {
-    this._localization = value;
   }
 }
