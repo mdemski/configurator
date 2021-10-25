@@ -3,13 +3,21 @@ const Address = require('../models/Address');
 
 //Add address
 addressRoute.route('/add').post((req, res, next) => {
-  Address.create(req.body, (error, data) => {
-    if (error){
-      return next(error)
-    } else {
-      res.json(data)
-    }
+  const newAddress = new Address({
+    firstName: req.body._firstName,
+    lastName: req.body._lastName,
+    phoneNumber: req.body._phoneNumber,
+    street: req.body._street,
+    localNumber: req.body._localNumber,
+    zipCode: req.body._zipCode,
+    city: req.body._city,
+    country: req.body._country
   })
+  try {
+    newAddress.save().then(address => res.json({success: true, address: address}))
+  } catch (err) {
+    res.json({success: false, msg: err})
+  }
 })
 
 // Get All addresses
