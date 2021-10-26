@@ -3,12 +3,10 @@ import {RoofWindowSkylight} from '../models/roof-window-skylight';
 import {Observable, of, Subject} from 'rxjs';
 import {Accessory} from '../models/accessory';
 import {Company} from '../models/company';
-import {PropertyValueTranslatorService} from './property-value-translator.service';
 import {RoofWindowValuesSetterService} from './roof-window-values-setter.service';
 import {Flashing} from '../models/flashing';
 import {SingleConfiguration} from '../models/single-configuration';
 import {HttpClient} from '@angular/common/http';
-import {ErpNameTranslatorService} from './erp-name-translator.service';
 import cryptoRandomString from 'crypto-random-string';
 import {FlashingValueSetterService} from './flashing-value-setter.service';
 import {Address} from '../models/address';
@@ -16,9 +14,7 @@ import {Address} from '../models/address';
 @Injectable()
 export class DatabaseService {
 
-  constructor(private valueTranslator: PropertyValueTranslatorService,
-              private windowValuesSetter: RoofWindowValuesSetterService,
-              private erpName: ErpNameTranslatorService,
+  constructor(private windowValuesSetter: RoofWindowValuesSetterService,
               private flashingValueSetter: FlashingValueSetterService,
               private http: HttpClient) {
     // this.accessories = this.getAllAccessoriesToShopList();

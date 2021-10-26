@@ -5,7 +5,6 @@ import {map} from 'rxjs/operators';
 import {GlazingType} from '../models/glazing-type';
 import * as _ from 'lodash';
 import {Observable} from 'rxjs';
-import {ErpNameTranslatorService} from './erp-name-translator.service';
 import {isString} from 'util';
 
 @Injectable({
@@ -13,8 +12,7 @@ import {isString} from 'util';
 })
 export class RoofWindowValuesSetterService {
 
-  constructor(private erpNames: ErpNameTranslatorService,
-              private configData: ConfigurationDataService) {
+  constructor(private configData: ConfigurationDataService) {
   }
 
   private static isPrimitive(obj) {

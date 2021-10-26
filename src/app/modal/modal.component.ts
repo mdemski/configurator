@@ -1,6 +1,5 @@
 import {Component, ElementRef, Input, OnDestroy, OnInit} from '@angular/core';
 import {ModalService} from './modal.service';
-import {ErpNameTranslatorService} from '../services/erp-name-translator.service';
 import {RoofWindowValuesSetterService} from '../services/roof-window-values-setter.service';
 
 @Component({

@@ -1,14 +1,13 @@
 import {Injectable} from '@angular/core';
 import {CrudService} from './crud-service';
 import {RoofWindowSkylight} from '../models/roof-window-skylight';
-import {BehaviorSubject, Observable, of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {DatabaseService} from './database.service';
 import {Flashing} from '../models/flashing';
 import {map} from 'rxjs/operators';
 import {Accessory} from '../models/accessory';
 import {RoofWindowState} from '../store/roof-window/roof-window.state';
 import {Store} from '@ngxs/store';
-import {state} from '@angular/animations';
 import {FlashingState} from '../store/flashing/flashing.state';
 import {AccessoryState} from '../store/accessory/accessory.state';
 
