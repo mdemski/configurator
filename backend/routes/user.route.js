@@ -52,7 +52,6 @@ userRoute.post('/login', function (req, res, next) {
 
 //Register a new user
 userRoute.post('/register', function (req, res, next) {
-  console.log(req.body)
   const saltHash = utils.genPassword(req.body._password);
 
   const salt = saltHash.salt;
@@ -65,7 +64,9 @@ userRoute.post('/register', function (req, res, next) {
     activated: req.body._activated,
     uuid: req.body._uuid,
     discount: req.body._discount,
-    companyNip: req.body._companyNip
+    companyNip: req.body._companyNip,
+    mainAddressId: '',
+    addressToSendId: ''
   });
 
   try {
@@ -77,6 +78,7 @@ userRoute.post('/register', function (req, res, next) {
 
 //Update user
 userRoute.route('/update/:userId').put(((req, res, next) => {
+  console.log(req.params.userId);
   User.findByIdAndUpdate(req.params.userId, {
     $set: req.body
   }, (error, data) => {
