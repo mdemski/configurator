@@ -27,9 +27,11 @@ let User = new Schema({
   companyNip: {
     type: String
   },
-  address: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Address"
+  mainAddressId: {
+    type: String
+  },
+  addressToSendId: {
+    type: String
   }
 }, {
   collection: 'users'
