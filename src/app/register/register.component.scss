@@ -1,5 +1,6 @@
 @import 'src/sass/base/variables';
 @import 'src/sass/buttons';
+@import 'src/sass/radio-input';
 
 .md-container {
   margin: 10rem 0;
@@ -8,7 +9,6 @@
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
   0 10px 10px rgba(0, 0, 0, 0.22);
   position: relative;
-  overflow: hidden;
   width: 80%;
   min-height: 480px;
   max-width: 100%;
@@ -91,4 +91,24 @@ button.ghost {
 
 button:disabled {
   background-color: $color-light-red;
+}
+
+.extra-info {
+  font-size: 1rem;
+}
+
+.paginating {
+  width: 100%;
+}
+
+.sorting {
+  width: 100%;
+}
+
+.margin-bottom-2 {
+  margin-bottom: 2rem;
+}
+
+.margin-bottom-0 {
+  margin-bottom: 0;
 }

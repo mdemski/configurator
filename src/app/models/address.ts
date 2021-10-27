@@ -1,5 +1,5 @@
 export class Address {
-  private _id?: string;
+  public _id?: string;
   private _firstName: string;
   private _lastName: string;
   private _phoneNumber: string;

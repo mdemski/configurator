@@ -18,38 +18,6 @@
         <h1 class="register-title">{{'REGISTER.registerTitle' | translate}}</h1>
 
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-          <!--        <label for="firstName" class="register-form-labels">{{'REGISTER.firstName' | translate}}</label>-->
-          <div class="md-form mt-3">
-            <input type="text"
-                   id="firstName"
-                   formControlName="firstName"
-                   class="form-control"
-                   placeholder="{{'REGISTER.firstName' | translate}}">
-          </div>
-          <div
-            class="invalid-contact-data"
-            *ngIf="registerForm.get('firstName').value != null &&
-          registerForm.get('firstName').value.length == 0 &&
-          registerForm.get('firstName').dirty &&
-          registerForm.get('firstName').invalid">
-            {{'REGISTER.requiredField' | translate}}
-          </div>
-          <!--        <label for="lastName" class="register-form-labels">{{ 'REGISTER.lastName' | translate}}</label>-->
-          <div class="md-form mt-3">
-            <input type="text"
-                   id="lastName"
-                   formControlName="lastName"
-                   class="form-control"
-                   placeholder="{{'REGISTER.lastName' | translate}}">
-          </div>
-          <div
-            class="invalid-contact-data"
-            *ngIf="registerForm.get('lastName').value != null &&
-          registerForm.get('lastName').value.length == 0 &&
-          registerForm.get('lastName').dirty &&
-          registerForm.get('lastName').invalid">
-            {{'REGISTER.requiredField' | translate}}
-          </div>
           <!--        <label for="email" class="register-form-labels">{{ 'REGISTER.email' | translate}}</label>-->
           <div class="md-form mt-3">
             <input type="email"
@@ -63,13 +31,13 @@
             *ngIf="registerForm.get('email').value != null &&
           registerForm.get('email').value.length == 0 &&
           registerForm.get('email').dirty &&
-          registerForm.get('email').invalid">
+          registerForm.get('email').touched">
             {{'REGISTER.requiredField' | translate}}
           </div>
           <div
             class="invalid-contact-data"
             *ngIf="registerForm.get('email').invalid &&
-          registerForm.get('email').dirty">
+          registerForm.get('email').touched">
             {{'REGISTER.wrongEmail' | translate}}
           </div>
           <!--        <label for="password" class="register-form-labels">{{ 'REGISTER.password' | translate}}</label>-->
@@ -103,16 +71,105 @@
         registerForm.get('rePassword').invalid">
             {{'REGISTER.differentPasswords' | translate}}
           </div>
-          <input type="hidden"
-                 id="role"
-                 formControlName="role"
-                 value="user">
 
           <div class="register-check-box"
-               (click)="setClientTypeToTrue()">{{ 'REGISTER.companyClient' | translate}}</div>
+               (click)="setCompanyClientTypeToTrue()">{{ 'REGISTER.companyClient' | translate}}
+            <p class="extra-info">{{ 'REGISTER.or' | translate}}</p>
+          </div>
+          <div class="register-check-box"
+               (click)="setIndividualClientTypeToTrue()">{{ 'REGISTER.contactDetails' | translate}}
+            <p class="extra-info">{{ 'REGISTER.contactDetailsInfo' | translate}}</p>
+          </div>
 
           <hr class="register-horizontal-line">
-          <div *ngIf="clientType">
+          <div *ngIf="individualClient">
+
+            <!--        <label for="firstName" class="register-form-labels">{{'REGISTER.firstName' | translate}}</label>-->
+            <div class="md-form mt-3">
+              <input type="text"
+                     id="firstName"
+                     formControlName="firstName"
+                     class="form-control"
+                     placeholder="{{'REGISTER.firstName' | translate}}">
+            </div>
+            <!--        <label for="lastName" class="register-form-labels">{{ 'REGISTER.lastName' | translate}}</label>-->
+            <div class="md-form mt-3">
+              <input type="text"
+                     id="lastName"
+                     formControlName="lastName"
+                     class="form-control"
+                     placeholder="{{'REGISTER.lastName' | translate}}">
+            </div>
+            <div class="md-form mt-3">
+              <input type="text"
+                     id="individualPhoneNumber"
+                     formControlName="individualPhoneNumber"
+                     class="form-control"
+                     placeholder="{{'REGISTER.phoneNumber' | translate}}">
+            </div>
+            <div class="invalid-contact-data" *ngIf="
+            registerForm.get('individualPhoneNumber').value != null
+        &&  registerForm.get('individualPhoneNumber').touched
+        &&  registerForm.get('individualPhoneNumber').invalid">
+              {{'REGISTER.wrongPhoneNumber' | translate}}
+            </div>
+            <div class="md-form mt-3">
+              <input type="text"
+                     id="individualStreet"
+                     formControlName="individualStreet"
+                     class="form-control"
+                     placeholder="{{'REGISTER.street' | translate}}">
+            </div>
+            <!--          <label for="number" class="register-form-labels">{{ 'REGISTER.number' | translate}}</label>-->
+            <div class="md-form mt-3">
+              <input type="text"
+                     id="individualLocalNumber"
+                     formControlName="individualLocalNumber"
+                     class="form-control"
+                     placeholder="{{'REGISTER.number' | translate}}">
+            </div>
+            <!--          <label for="zipCode" class="register-form-labels">{{ 'REGISTER.zipCode' | translate}}</label>-->
+            <div class="md-form mt-3">
+              <input type="text"
+                     id="individualZipCode"
+                     formControlName="individualZipCode"
+                     class="form-control"
+                     placeholder="{{'REGISTER.zipCode' | translate}}">
+            </div>
+            <div class="md-form mt-3">
+              <input type="text"
+                     id="individualCity"
+                     formControlName="individualCity"
+                     class="form-control"
+                     placeholder="{{'REGISTER.city' | translate}}">
+            </div>
+
+            <div class="select-box sorting margin-bottom-2">
+              <div class="select-box__current" tabindex="1">  <!--Usunięcie tabindex rozwala selecta-->
+                <div class="select-box__value" *ngFor="let country of this.countries | async">
+                  <input class="select-box__input" type="radio" id="{{country}}" value="{{country}}"
+                         formControlName="individualCountry"/>
+                  <p class="select-box__input-text">{{country}}</p>
+                </div>
+                <div class="select-box__value">
+                  <input class="select-box__input disabled" type="radio" id="disabledCountry" value="disabled"
+                         formControlName="individualCountry" checked/>
+                  <p class="select-box__input-text disabled">{{'REGISTER.country' | translate}}</p>
+                </div>
+                <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg"
+                     alt="Arrow Icon" aria-hidden="true"/>
+              </div>
+              <ul class="select-box__list overflow-scroll-Y">
+                <li *ngFor="let country of this.countries | async"><label class="select-box__option margin-bottom-0"
+                           for="{{country}}" aria-hidden="aria-hidden">{{country}}</label></li>
+                <li><label class="select-box__option disabled" for="disabledCountry"
+                           aria-hidden="aria-hidden">{{'REGISTER.country' | translate}}</label></li>
+              </ul>
+            </div>
+
+          </div>
+
+          <div *ngIf="companyClientType">
             <!--          <label for="companyName" class="register-form-labels">{{ 'REGISTER.companyName' | translate}}</label>-->
             <div class="md-form mt-3">
               <input type="text"
@@ -129,6 +186,19 @@
                      class="form-control"
                      placeholder="{{'REGISTER.NIP' | translate}}">
             </div>
+            <div class="md-form mt-3">
+              <input type="text"
+                     id="phoneNumber"
+                     formControlName="phoneNumber"
+                     class="form-control"
+                     placeholder="{{'REGISTER.phoneNumber' | translate}}">
+            </div>
+            <div class="invalid-contact-data" *ngIf="
+            registerForm.get('phoneNumber').value != null
+        &&  registerForm.get('phoneNumber').touched
+        &&  registerForm.get('phoneNumber').invalid">
+              {{'REGISTER.wrongPhoneNumber' | translate}}
+            </div>
             <!--          <label for="street" class="register-form-labels">{{ 'REGISTER.street' | translate}}</label>-->
             <div class="md-form mt-3">
               <input type="text"
@@ -141,7 +211,7 @@
             <div class="md-form mt-3">
               <input type="text"
                      id="number"
-                     formControlName="number"
+                     formControlName="localNumber"
                      class="form-control"
                      placeholder="{{'REGISTER.number' | translate}}">
             </div>
@@ -152,6 +222,36 @@
                      formControlName="zipCode"
                      class="form-control"
                      placeholder="{{'REGISTER.zipCode' | translate}}">
+            </div>
+            <div class="md-form mt-3">
+              <input type="text"
+                     id="city"
+                     formControlName="city"
+                     class="form-control"
+                     placeholder="{{'REGISTER.city' | translate}}">
+            </div>
+
+            <div class="select-box sorting margin-bottom-2">
+              <div class="select-box__current" tabindex="1">  <!--Usunięcie tabindex rozwala selecta-->
+                <div class="select-box__value" *ngFor="let companyCountry of this.countries | async">
+                  <input class="select-box__input" type="radio" id="{{companyCountry}}" value="{{companyCountry}}"
+                         formControlName="country"/>
+                  <p class="select-box__input-text">{{companyCountry}}</p>
+                </div>
+                <div class="select-box__value">
+                  <input class="select-box__input disabled" type="radio" id="disabledCompanyCountry" value="disabled"
+                         formControlName="country" checked/>
+                  <p class="select-box__input-text disabled">{{'REGISTER.country' | translate}}</p>
+                </div>
+                <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg"
+                     alt="Arrow Icon" aria-hidden="true"/>
+              </div>
+              <ul class="select-box__list overflow-scroll-Y">
+                <li *ngFor="let companyCountry of this.countries | async"><label class="select-box__option margin-bottom-0"
+                                                                          for="{{companyCountry}}" aria-hidden="aria-hidden">{{companyCountry}}</label></li>
+                <li><label class="select-box__option disabled" for="disabledCompanyCountry"
+                           aria-hidden="aria-hidden">{{'REGISTER.country' | translate}}</label></li>
+              </ul>
             </div>
             <!--          <label for="agent" class="register-form-labels">{{ 'REGISTER.agent' | translate}}</label>-->
             <div class="md-form mt-3">

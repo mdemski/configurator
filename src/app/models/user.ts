@@ -1,5 +1,5 @@
 export class User {
-  private _id?: string;
+  public _id?: string;
   private _email: string;
   private _password: string;
   private _rePassword: string;

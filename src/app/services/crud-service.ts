@@ -16,7 +16,6 @@ import {AccessoryConfig} from '../models/accessory-config';
 import {VerticalConfig} from '../models/vertical-config';
 import {FlatConfig} from '../models/flat-config';
 import {User} from '../models/user';
-import {environment} from '../../environments/environment';
 import {Address} from '../models/address';
 import {Company} from '../models/company';
 
@@ -221,6 +220,11 @@ export class CrudService {
     }));
   }
 
+  createCompany(registerCompany: Company) {
+    // TODO przygotować odpowiednią metodę komunikacyjną z eNova
+    return this.http.post('urlToEnova', registerCompany);
+  }
+
   createAddress(address: Address) {
     const url = `${this.addressesBaseUri}/add`;
     // return this.getGeoLocation(address.street, address.localNumber, address.zipCode, address.city, address.country)
@@ -366,25 +370,25 @@ export class CrudService {
   }
 
   updateAddressByMongoId(address: Address) {
-    const url = `${this.addressesBaseUri}/update/${address.id}`;
+    const url = `${this.addressesBaseUri}/update/${address._id}`;
     this.http.put(url, address, {headers: this.headers}).pipe(catchError(err => err));
   }
 
   updateUserByMongoId(user: User, addressData: Address | null, companyData: Company | null) {
-    const url = `${this.usersBaseUri}/update/${user.id}`;
+    const url = `${this.usersBaseUri}/update/${user._id}`;
     if (addressData) {
-      user.mainAddressId = addressData.id;
+      user.mainAddressId = addressData._id;
     }
     if (companyData) {
       user.companyNip = companyData.nip;
       user.discount = companyData.discount;
       user.mainAddressId = companyData.address.id;
     }
-    this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
+    return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
   }
 
   setAddressToSendForUser(user: User, addressToSend: Address) {
-    const url = `${this.usersBaseUri}/update/${user.id}`;
+    const url = `${this.usersBaseUri}/update/${user._id}`;
     if (addressToSend) {
       user.addressToSendId = addressToSend.id;
     }
@@ -392,7 +396,7 @@ export class CrudService {
   }
 
   setDiscountForIndividualUser(user: User, discount: number, adminPassword: string | null, code: string | null) {
-    const url = `${this.usersBaseUri}/update/${user.id}`;
+    const url = `${this.usersBaseUri}/update/${user._id}`;
     if (adminPassword) {
       user.discount = discount;
     }
@@ -632,12 +636,12 @@ export class CrudService {
   }
 
   deleteAddress(address: Address) {
-    const url = `${this.addressesBaseUri}/delete/${address.id}`;
+    const url = `${this.addressesBaseUri}/delete/${address._id}`;
     return this.http.delete(url, {headers: this.headers}).pipe(catchError(err => err));
   }
 
   deleteUser(user: User) {
-    const url = `${this.usersBaseUri}/delete/${user.id}`;
+    const url = `${this.usersBaseUri}/delete/${user._id}`;
     user.activated = false;
     return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
   }
