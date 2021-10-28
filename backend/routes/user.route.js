@@ -2,6 +2,8 @@ const userRoute = require('express').Router();
 const User = require('../models/User');
 const passport = require('passport');
 const utils = require('../lib/utils');
+const nodemailer = require("nodemailer");
+const smtpConfig = require('../config/smtpConfig');
 
 userRoute.get('/protected', passport.authenticate('jwt', {session: false}, function (req, res, next) {
   res.status(200).json({success: true, msg: 'You are successfully authenticated to this route!'});
@@ -70,7 +72,11 @@ userRoute.post('/register', function (req, res, next) {
   });
 
   try {
-    newUser.save().then(user => res.json({success: true, user: user}));
+    newUser.save().then(user => {
+      res.json({success: true, user: user})
+
+      sendActivationMail(user).catch(console.error);
+    });
   } catch (err) {
     res.json(({success: false, msg: err}));
   }
@@ -104,5 +110,25 @@ userRoute.route('/delete/:userId').delete(((req, res, next) => {
     }
   })
 }))
+
+async function sendActivationMail(user) {
+  const transporter = smtpConfig.transporter;
+  const mailConfig = nodemailer.createTransport(transporter);
+  console.log(user);
+  const dataToSend = {
+    from: '"Fred Foo 👻"' + transporter.auth.user, // sender address
+    to: "m.demski@okpol.pl, " + user.email, // list of receivers
+    subject: "Aktywacja konta ✔", // Subject line
+    text: "Hello world?", // plain text body
+    html: "<b>Hello world?</b>", // html body
+  };
+  let info = await mailConfig.sendMail(dataToSend).then(() => console.log(`Mail send too ${user.email}`));
+
+  console.log("Message sent: %s", info.messageId);
+  // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+
+  // Preview only available when sending through an Ethereal account
+  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+}
 
 module.exports = userRoute;
