@@ -32,7 +32,7 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(appRoutes, {scrollPositionRestoration: 'enabled'})],
+  imports: [RouterModule.forRoot(appRoutes, {scrollPositionRestoration: 'enabled', useHash: true})],
   exports: [RouterModule],
   providers: [ConfigurationsGuard, RoofWindowsGuard, FlashingsGuard, AccessoriesGuard,
     SkylightsGuard, FlatRoofWindowsGuard, AvailableConfigDataGuard]
