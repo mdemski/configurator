@@ -1,15 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
 import {User} from '../models/user';
 import {Company} from '../models/company';
 import {UUID} from 'angular2-uuid';
 import {Router} from '@angular/router';
-import {AuthService} from '../services/auth.service';
 import {Address} from '../models/address';
 import {CrudService} from '../services/crud-service';
 import {Observable, Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {map, takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-register',
@@ -33,39 +32,35 @@ export class RegisterComponent implements OnInit, OnDestroy {
   // bez dodatkowego przeładowania strony
   constructor(public translate: TranslateService,
               private crud: CrudService,
-              private router: Router,
-              private authService: AuthService) {
+              private router: Router) {
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
     this.countries = this.crud.getCountryList();
-    // this.countries = of(['Polska', 'Niemcy', 'Zimbabwe', 'USA', 'Australia', 'England']);
-    // const browserLang = translate.getBrowserLang();
-    // translate.use(browserLang.match(/en|pl|de|fr/) ? browserLang : 'pl');
-    // translate.use('pl');
   }
 
   ngOnInit(): void {
     this.registerForm = new FormGroup({
-      email: new FormControl(null, [Validators.required, Validators.email]),
+      email: new FormControl(null, [Validators.required, Validators.email], [this.emailExists.bind(this)]),
       // TODO dodać warunek sprawdzający długość hasła: Validators.min(8)
-      password: new FormControl(null, [Validators.required]),
-      rePassword: new FormControl(null, [Validators.required]),
-      nip: new FormControl(null, [Validators.pattern('[0-9]{10}'), this.requiredIfCompanyClient]),
-      companyName: new FormControl(null, [this.requiredIfCompanyClient]),
-      firstName: new FormControl(null),
-      lastName: new FormControl(null),
-      phoneNumber: new FormControl(null, [Validators.pattern('^\\+?[0-9]{3}-?[0-9]{6,12}$')]),
-      individualPhoneNumber: new FormControl(null, [Validators.pattern('^\\+?[0-9]{3}-?[0-9]{6,12}$')]),
-      street: new FormControl(null, [this.requiredIfCompanyClient]),
-      individualStreet: new FormControl(null, [this.requiredIfIndividualClient]),
+      password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
+      rePassword: new FormControl(null, [Validators.required, Validators.minLength(8)]),
+      // TODO zweryfikować czy ten pattern zadziała dla klientów zagranicznych? Jak to chce otrzymać eNova?
+      nip: new FormControl(null, [Validators.pattern('[0-9]{10}'), this.requiredIfCompanyClient.bind(this)]),
+      companyName: new FormControl(null, [this.requiredIfCompanyClient.bind(this)]),
+      firstName: new FormControl(null, [this.requiredIf.bind(this)]),
+      lastName: new FormControl(null, [this.requiredIf.bind(this)]),
+      phoneNumber: new FormControl(null, [this.requiredIfCompanyClient.bind(this), Validators.pattern('^\\+?[0-9]{3}-?[0-9]{6,12}$')]),
+      individualPhoneNumber: new FormControl(null, [this.requiredIfIndividualClient.bind(this), Validators.pattern('^\\+?[0-9]{3}-?[0-9]{6,12}$')]),
+      street: new FormControl(null, [this.requiredIfCompanyClient.bind(this)]),
+      individualStreet: new FormControl(null, [this.requiredIfIndividualClient.bind(this)]),
       localNumber: new FormControl(null),
       individualLocalNumber: new FormControl(null),
-      zipCode: new FormControl(null, [Validators.pattern('[0-9]{2}-[0-9]{3}'), this.requiredIfCompanyClient]),
-      individualZipCode: new FormControl(null, [Validators.pattern('[0-9]{2}-[0-9]{3}'), this.requiredIfIndividualClient]),
-      city: new FormControl(null, [this.requiredIfCompanyClient]),
-      individualCity: new FormControl(null, [this.requiredIfIndividualClient]),
-      country: new FormControl('disabled'),
-      individualCountry: new FormControl('disabled'),
+      zipCode: new FormControl(null, [Validators.pattern('[0-9]{2}-[0-9]{3}'), this.requiredIfCompanyClient.bind(this)]),
+      individualZipCode: new FormControl(null, [Validators.pattern('[0-9]{2}-[0-9]{3}'), this.requiredIfIndividualClient.bind(this)]),
+      city: new FormControl(null, [this.requiredIfCompanyClient.bind(this)]),
+      individualCity: new FormControl(null, [this.requiredIfIndividualClient.bind(this)]),
+      country: new FormControl('disabled', [this.requiredIfCompanyClient.bind(this)]),
+      individualCountry: new FormControl('disabled', [this.requiredIfIndividualClient.bind(this)]),
       agent: new FormControl(null),
     }, this.comparePasswordAndRePassword);
     this.isLoading = false;
@@ -107,16 +102,18 @@ export class RegisterComponent implements OnInit, OnDestroy {
       this.registerCompany.agentOkpol = this.registerForm.value.agent;
       this.crud.createCompany(this.registerCompany).subscribe(console.log);
     }
-    this.crud.createUser(this.registerUser).subscribe((response: { success: boolean, user: any }) => {
-      if (this.individualClient || this.companyClientType) {
-        this.crud.createAddress(this.registerAddress).subscribe((addressResponse: { success: boolean, address: any }) => {
-          if (addressResponse.success && this.individualClient) {
-            this.crud.updateUserByMongoId(response.user, addressResponse.address, null).subscribe(() => console.log('User updated'));
-          }
-        });
+    this.crud.createUser(this.registerUser).subscribe((response: { success: boolean, data: any | string }) => {
+      if (response.success) {
+        if (this.individualClient || this.companyClientType) {
+          this.crud.createAddress(this.registerAddress).subscribe((addressResponse: { success: boolean, address: any }) => {
+            if (addressResponse.success && this.individualClient) {
+              this.crud.updateUserByMongoId(response.data, addressResponse.address, null).subscribe(() => console.log('User updated'));
+            }
+          });
+        }
       }
     });
-    // this.router.navigate(['/']);
+    this.router.navigate(['/']);
     this.registerForm.reset();
     this.isLoading = false;
   }
@@ -155,29 +152,60 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.companyClientType = false;
   }
 
-  requiredIfCompanyClient(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-      if (this.companyClientType) {
-        return {required: true};
-      } else {
-        return null;
+  requiredIf<ValidatorFn>(control: FormControl) {
+    const value = control.value;
+    if (this.companyClientType || this.individualClient) {
+      if (value === null || value === '') {
+        return {
+          ifRequired: true
+        } as ValidationErrors;
       }
-    };
+    } else {
+      return null;
+    }
   }
 
-  requiredIfIndividualClient(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-      if (this.individualClient) {
-        return {required: true};
-      } else {
-        return null;
+  requiredIfCompanyClient<ValidatorFn>(control: FormControl) {
+    const value = control.value;
+    if (this.companyClientType) {
+      if (value === null || value === '' || value === 'disabled') {
+        return {
+          companyRequired: true
+        } as ValidationErrors;
       }
-    };
+    } else {
+      return null;
+    }
+  }
+
+  requiredIfIndividualClient<ValidatorFn>(control: FormControl) {
+    const value = control.value;
+    if (this.individualClient) {
+      if (value === null || value === '' || value === 'disabled') {
+        return {
+          individualRequired: true
+        } as ValidationErrors;
+      }
+    } else {
+      return null;
+    }
   }
 
   comparePasswordAndRePassword(group: FormGroup) {
     const pass = group.get('password').value;
     const rePass = group.get('rePassword').value;
     return pass === rePass ? null : {mismatch: true};
+  }
+
+  emailExists<AsyncValidator>(control: FormControl): Observable<ValidationErrors | null> {
+    const value = control.value;
+
+    return this.crud.readUserByEmail(value)
+      .pipe(takeUntil(this.isDestroyed$),
+        map(user => {
+          return user ? {
+            emailExists: true
+          } : null;
+        }));
   }
 }

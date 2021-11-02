@@ -70,13 +70,13 @@ export class CrudService {
   }
 
   readUserByMongoId(mongoId: string): Observable<User> {
-    return this.http.get(this.usersBaseUri).pipe(map((users: User[]) => users
-      .find(user => user.id === mongoId)));
+    const url = this.usersBaseUri + '/' + mongoId;
+    return this.http.get(url).pipe(map((user: User) => user));
   }
 
   readUserByEmail(email: string): Observable<User> {
-    return this.http.get(this.usersBaseUri).pipe(map((users: User[]) => users
-      .find(user => user.email === email)));
+    const url = this.usersBaseUri + '/email/' + email;
+    return this.http.get(url).pipe(map((user: User) => user));
   }
 
   readAllAddressesFromMongoDB(): Observable<Address[]> {
