@@ -4,6 +4,7 @@ const passport = require('passport');
 const utils = require('../lib/utils');
 const nodemailer = require("nodemailer");
 const smtpConfig = require('../config/smtpConfig');
+const {throwError} = require("rxjs");
 
 userRoute.get('/protected', passport.authenticate('jwt', {session: false}, function (req, res, next) {
   res.status(200).json({success: true, msg: 'You are successfully authenticated to this route!'});
@@ -20,10 +21,21 @@ userRoute.route('/').get(((req, res, next) => {
   })
 }))
 
-//Get single user
+//Get single user by mongo ID
 // TODO dodałem next do tych funkcji mogą stanowic problem do usunięcia
 userRoute.route('/:userId').get(((req, res, next) => {
   User.findById(req.params.userId, (error, data) => {
+    if (error) {
+      return next(error)
+    } else {
+      res.json(data)
+    }
+  })
+}))
+
+//Get single user by email
+userRoute.route('/email/:email').get(((req, res, next) => {
+  User.findOne({email: req.params.email}, (error, data) => {
     if (error) {
       return next(error)
     } else {
@@ -37,7 +49,10 @@ userRoute.post('/login', function (req, res, next) {
   User.findOne({email: req.body._email})
     .then((user) => {
       if (!user) {
-        return res.status(401).json({success: false, msg: 'Could not find user'});
+        return res.status(401).json({success: false, msg: 'EMAIL_NOT_FOUND'});
+      }
+      if (!user.activated) {
+        return res.status(401).json({success: false, msg: 'USER_DISABLED'});
       }
 
       const isValid = utils.validPassword(req.body._password, user.hash, user.salt);
@@ -45,9 +60,14 @@ userRoute.post('/login', function (req, res, next) {
       if (isValid) {
         const tokenObject = utils.issueJWT(user);
 
-        res.status(200).json({success: true, token: tokenObject.token, expiresIn: tokenObject.expires});
+        res.status(200).json({
+          success: true,
+          email: user.email,
+          token: tokenObject.token,
+          expiresIn: tokenObject.expires
+        });
       } else {
-        res.status(401).json({success: false, msg: 'Wrong password'});
+        res.status(401).json({success: false, msg: 'INVALID_PASSWORD'});
       }
     })
 })
@@ -73,9 +93,18 @@ userRoute.post('/register', function (req, res, next) {
 
   try {
     newUser.save().then(user => {
-      res.json({success: true, user: user})
+
+      const id = user._id;
+
+      res.json({
+        success: true, user: user,
+        // token: jwt.token, expiresIn: jwt.expires});
+      });
 
       sendActivationMail(user).catch(console.error);
+
+      // TODO Pytanie czy to już tutaj potrzebne, czy dopiero po zalogowaniu???
+      // const jwt = utils.issueJWT(user);
     });
   } catch (err) {
     res.json(({success: false, msg: err}));
@@ -84,7 +113,6 @@ userRoute.post('/register', function (req, res, next) {
 
 //Update user
 userRoute.route('/update/:userId').put(((req, res, next) => {
-  console.log(req.params.userId);
   User.findByIdAndUpdate(req.params.userId, {
     $set: req.body
   }, (error, data) => {
@@ -114,17 +142,16 @@ userRoute.route('/delete/:userId').delete(((req, res, next) => {
 async function sendActivationMail(user) {
   const transporter = smtpConfig.transporter;
   const mailConfig = nodemailer.createTransport(transporter);
-  console.log(user);
   const dataToSend = {
     from: '"Fred Foo 👻"' + transporter.auth.user, // sender address
-    to: "m.demski@okpol.pl, " + user.email, // list of receivers
+    to: user.email, // list of receivers with comas in one string "okpol@okpol.pl, zamowienia@okpol.pl, " + user.email,
     subject: "Aktywacja konta ✔", // Subject line
     text: "Hello world?", // plain text body
     html: "<b>Hello world?</b>", // html body
   };
   let info = await mailConfig.sendMail(dataToSend).then(() => console.log(`Mail send too ${user.email}`));
 
-  console.log("Message sent: %s", info.messageId);
+  // console.log("Message sent: %s", info.messageId);
   // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
 
   // Preview only available when sending through an Ethereal account
