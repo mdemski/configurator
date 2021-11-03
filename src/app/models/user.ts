@@ -10,9 +10,10 @@ export class User {
   private _companyNip: string;
   private _mainAddressId?: string;
   private _addressToSendId?: string;
+  private _activationLink: string;
 
   // tslint:disable-next-line:max-line-length
-  constructor(id: string, email: string, password: string, rePassword: string, role: string, activated: boolean, uuid: string, discount: number, companyNip: string, mainAddressId: string, addressToSendId: string) {
+  constructor(id: string, email: string, password: string, rePassword: string, role: string, activated: boolean, uuid: string, discount: number, companyNip: string, mainAddressId: string, addressToSendId: string, activationLink: string) {
     this._id = id;
     this._email = email;
     this._password = password;
@@ -24,6 +25,7 @@ export class User {
     this._companyNip = companyNip;
     this._mainAddressId = mainAddressId;
     this._addressToSendId = addressToSendId;
+    this._activationLink = activationLink;
   }
 
   get id(): string {
@@ -112,5 +114,13 @@ export class User {
 
   set addressToSendId(value: string) {
     this._addressToSendId = value;
+  }
+
+  get activationLink(): string {
+    return this._activationLink;
+  }
+
+  set activationLink(value: string) {
+    this._activationLink = value;
   }
 }
