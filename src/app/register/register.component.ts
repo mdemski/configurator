@@ -9,6 +9,7 @@ import {Address} from '../models/address';
 import {CrudService} from '../services/crud-service';
 import {Observable, Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
+import cryptoRandomString from 'crypto-random-string';
 
 @Component({
   selector: 'app-register',
@@ -82,6 +83,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.registerUser.companyNip = this.registerForm.value.nip;
     this.registerUser.mainAddressId = '';
     this.registerUser.addressToSendId = '';
+    this.registerUser.activationLink = window.location.origin + '/#/confirmation/' + cryptoRandomString({length: 6, type: 'alphanumeric'}) + '/' + this.registerUser.uuid;
     if (this.individualClient || this.companyClientType) {
       this.registerAddress.firstName = this.registerForm.value.firstName;
       this.registerAddress.lastName = this.registerForm.value.lastName;
@@ -107,7 +109,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         if (this.individualClient || this.companyClientType) {
           this.crud.createAddress(this.registerAddress).subscribe((addressResponse: { success: boolean, address: any }) => {
             if (addressResponse.success && this.individualClient) {
-              this.crud.updateUserByMongoId(response.data, addressResponse.address, null).subscribe(() => console.log('User updated'));
+              this.crud.updateUserAddressByMongoId(response.data, addressResponse.address, null).subscribe(() => console.log('User updated'));
             }
           });
         }

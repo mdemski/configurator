@@ -74,6 +74,11 @@ export class CrudService {
     return this.http.get(url).pipe(map((user: User) => user));
   }
 
+  readUserByUUID(uuid: string): Observable<User> {
+    const url = this.usersBaseUri + '/uuid/' + uuid;
+    return this.http.get(url).pipe(map((user: User) => user));
+  }
+
   readUserByEmail(email: string): Observable<User> {
     const url = this.usersBaseUri + '/email/' + email;
     return this.http.get(url).pipe(map((user: User) => user));
@@ -244,7 +249,7 @@ export class CrudService {
 
   createUser(user: User) {
     const url = `${this.usersBaseUri}/register`;
-    const userToCreate: User = new User('', user.email, user.password, user.rePassword, user.role, false, user.uuid, 0, user.companyNip, '', '');
+    const userToCreate: User = new User('', user.email, user.password, user.rePassword, user.role, false, user.uuid, 0, user.companyNip, '', '', user.activationLink);
     return this.http.post(url, userToCreate).pipe(catchError(err => err));
   }
 
@@ -374,7 +379,12 @@ export class CrudService {
     this.http.put(url, address, {headers: this.headers}).pipe(catchError(err => err));
   }
 
-  updateUserByMongoId(user: User, addressData: Address | null, companyData: Company | null) {
+  updateUserByMongoId(user: User) {
+    const url = `${this.usersBaseUri}/update/${user._id}`;
+    return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
+  }
+
+  updateUserAddressByMongoId(user: User, addressData: Address | null, companyData: Company | null) {
     const url = `${this.usersBaseUri}/update/${user._id}`;
     if (addressData) {
       user.mainAddressId = addressData._id;

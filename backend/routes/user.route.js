@@ -4,7 +4,6 @@ const passport = require('passport');
 const utils = require('../lib/utils');
 const nodemailer = require("nodemailer");
 const smtpConfig = require('../config/smtpConfig');
-const {throwError} = require("rxjs");
 
 userRoute.get('/protected', passport.authenticate('jwt', {session: false}, function (req, res, next) {
   res.status(200).json({success: true, msg: 'You are successfully authenticated to this route!'});
@@ -36,6 +35,17 @@ userRoute.route('/:userId').get(((req, res, next) => {
 //Get single user by email
 userRoute.route('/email/:email').get(((req, res, next) => {
   User.findOne({email: req.params.email}, (error, data) => {
+    if (error) {
+      return next(error)
+    } else {
+      res.json(data)
+    }
+  })
+}))
+
+//Get single user by email
+userRoute.route('/uuid/:uuid').get(((req, res, next) => {
+  User.findOne({uuid: req.params.uuid}, (error, data) => {
     if (error) {
       return next(error)
     } else {
@@ -88,7 +98,8 @@ userRoute.post('/register', function (req, res, next) {
     discount: req.body._discount,
     companyNip: req.body._companyNip,
     mainAddressId: '',
-    addressToSendId: ''
+    addressToSendId: '',
+    activationLink: req.body._activationLink
   });
 
   try {
@@ -146,8 +157,10 @@ async function sendActivationMail(user) {
     from: '"Fred Foo 👻"' + transporter.auth.user, // sender address
     to: user.email, // list of receivers with comas in one string "okpol@okpol.pl, zamowienia@okpol.pl, " + user.email,
     subject: "Aktywacja konta ✔", // Subject line
-    text: "Hello world?", // plain text body
-    html: "<b>Hello world?</b>", // html body
+    text: `Aktywuj konto klikając w poniższy link <br>" +
+      "<a href=${user.activationLink}>Link aktywacyjny</a>`, // plain text body
+    html: 'Aktywuj konto klikając w poniższy link <br>' +
+      '<a href="' + user.activationLink + '">Link aktywacyjny</a>'
   };
   let info = await mailConfig.sendMail(dataToSend).then(() => console.log(`Mail send too ${user.email}`));
 

@@ -25,7 +25,8 @@
     "toShortPassword": "Hasło jest za krótkie, podaj 8 znakowe",
     "differentPasswords": "Podane hasła są różne",
     "registrationConfirmationAlert": "Rejestracja przebiegła pomyślnie",
-    "confirmation": "Gratulacje! Konto zostało założone i aktywowane poprawnie",
+    "confirmation": "Aktywuj konto klikając w link otrzymany na adres mailowy wskazany podczas rejestracji",
+    "confirmationSuccess": "Gratulacje! Konto zostało założone i aktywowane poprawnie",
     "registerTitle": "Zarejestruj się",
     "emailExists": "Podany adres już istnieje, proszę podać inny",
     "wrongPassword": "Podane hasło jest niepoprawne",
@@ -88,6 +89,7 @@
     "userBlocked": "Twoje konto zostało zablokowane przez admministratora - skontaktuj się Biurem Obsługi Klienta firmy OKPOL"
   },
   "LINK": {
+    "homePage": "Strona główna",
     "shop": "sklep",
     "shopRoofWindows": "sklep/okna-dachowe",
     "configurationSummary": "konfigurator/podsumowanie",
@@ -105,7 +107,8 @@
     "contact": "kontakt",
     "signIn": "rejestracja",
     "about": "o-aplikacji",
-    "login": "logowanie",
+    "login": "/logowanie",
+    "loginPage": "Strona logowania",
     "website": "www.okpol.pl",
     "mailTo": "mailto:okpol@okpol.pl",
     "newPassword": "/ustalanie-nowego-hasla",
