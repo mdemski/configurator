@@ -1,29 +1,33 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Company} from '../models/company';
-import {User} from '../models/user';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {catchError, map, tap} from 'rxjs/operators';
 import {BehaviorSubject, throwError} from 'rxjs';
 import {TranslateService} from '@ngx-translate/core';
 import {LoginUser} from '../models/loginUser';
 import {Router} from '@angular/router';
 import {IpService} from './ip.service';
+import moment from 'moment';
+import DurationConstructor = moment.unitOfTime.DurationConstructor;
+import {Store} from '@ngxs/store';
+import {UpdateCurrentUser} from '../store/app/app.actions';
 
 interface AuthResponseData {
-  idToken: string;
+  success: boolean;
   email: string;
-  refreshToken: string;
+  username: string;
+  token: string;
   expiresIn: string;
-  localId: string;
 }
 
 @Injectable()
 export class AuthService {
   user = new BehaviorSubject<LoginUser>(null);
-  tokenExpirationTimer: any;
-  loginLink: string;
+  private tokenExpirationTimer: any;
+  private loginLink: string;
+  private isLogged = false;
 
   constructor(private http: HttpClient,
+              private store: Store,
               private router: Router,
               private ipService: IpService,
               public translate: TranslateService) {
@@ -31,12 +35,14 @@ export class AuthService {
     translate.setDefaultLang('pl');
   }
 
-  // TODO poprawić service po wprowadzeniu logowania i zaczytywania z bazy użytkowników
-  isLogged = false;
-
   returnUser() {
+    console.log(this.isLogged);
     return this.isLogged ? this.user.pipe(map(user => user)).pipe(map(user => {
-        return user.email;
+        if (user && user.username !== '' && user.username) {
+          return user.username;
+        } else {
+          return user.email;
+        }
       }))
       : this.ipService.getIpAddress().pipe(map(userIp => userIp)).pipe(map(userIp => {
         // @ts-ignore
@@ -44,14 +50,13 @@ export class AuthService {
       }));
   }
 
-  // TODO brakuje http request do bazy danych z użytkownikami do zakładania i logowania użytkwoników
-
   login(email: string, password: string) {
-    return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBYX38DKMbLQyk8sRaLARGheE_r8ojrevE', {
+    const headers = new HttpHeaders({'Content-type': 'application/json'});
+
+    return this.http.post<AuthResponseData>('http://localhost:4000/api/users/login', {
       email,
-      password,
-      returnSecureToken: true
-    })
+      password
+    }, {headers})
       .pipe(
         catchError(errorRes => {
           let errorMessage: string;
@@ -61,7 +66,7 @@ export class AuthService {
           if (!errorRes.error || !errorRes.error.error) {
             return throwError(errorRes);
           } else {
-            switch (errorRes.error.error.message) {
+            switch (errorRes.error.error.msg) {
               case 'EMAIL_NOT_FOUND':
                 errorRes = this.translate.get('LOGIN').subscribe(text => {
                   errorMessage = text.wrongCredential;
@@ -81,80 +86,31 @@ export class AuthService {
             return throwError(errorMessage);
           }
         }), tap(resData => {
-          this.authenticationHandler(resData.email, resData.localId, resData.idToken, +resData.expiresIn);
+          this.authenticationHandler(resData.success, resData.email, resData.username, resData.token, resData.expiresIn);
         }));
   }
 
   autoLogin() {
-    const loginUser: {
-      email: string,
-      localId: string,
-      _token: string,
-      _expireDate: string
-    } = JSON.parse(localStorage.getItem('loginUser'));
+    const loginUser: LoginUser = JSON.parse(localStorage.getItem('loginUser'));
     if (!loginUser) {
       return;
     }
-    const loadedUser = new LoginUser(
-      loginUser.email,
-      loginUser.localId,
-      loginUser._token,
-      new Date(loginUser._expireDate)
-    );
+    const loadedUser = new LoginUser(loginUser.email, loginUser.username, loginUser.token, loginUser.expireDate);
 
     if (loadedUser.token) {
       this.user.next(loadedUser);
-      const expirationDuration = new Date(loginUser._expireDate).getTime() - new Date().getTime();
+      const expirationDuration = new Date(loginUser.expireDate).getTime() - new Date().getTime();
       this.autoLogout(expirationDuration);
     }
   }
 
-  // TODO jakie dane zwrócić w odpowiedzi na błędne logowanie
-  singIn(user: User, company: Company) {
-    return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBYX38DKMbLQyk8sRaLARGheE_r8ojrevE', {
-      email: user.email,
-      password: user.password,
-      returnSecureToken: true
-    })
-      .pipe(
-        catchError(errorRes => {
-          let errorMessage: string;
-          this.translate.get('LOGIN').subscribe(text => {
-            errorMessage = text.unknownError;
-          });
-          if (!errorRes.error || !errorRes.error.error) {
-            return throwError(errorMessage);
-          }
-          switch (errorRes.error.error.message) {
-            case 'EMAIL_EXISTS':
-              errorRes = this.translate.get('REGISTER').subscribe(text => {
-                errorMessage = text.emailExists;
-              });
-              break;
-            case 'OPERATION_NOT_ALLOWED':
-              errorRes = this.translate.get('REGISTER').subscribe(text => {
-                errorMessage = text.wrongPassword;
-              });
-              break;
-            case 'TOO_MANY_ATTEMPTS_TRY_LATER':
-              errorRes = this.translate.get('REGISTER').subscribe(text => {
-                errorMessage = text.tooManyAttempts;
-              });
-              break;
-          }
-          return throwError(errorMessage);
-        }), tap(resData => {
-          this.authenticationHandler(resData.email, resData.localId, resData.idToken, +resData.expiresIn);
-        }));
-  }
-
   logout() {
-    this.user.next(null);
+    this.isLogged = false;
+    this.store.dispatch(UpdateCurrentUser);
+    localStorage.removeItem('loginUser');
     this.translate.get('LINK').subscribe(text => {
       this.loginLink = text.login;
     });
-    this.isLogged = false;
-    localStorage.removeItem('loginUser');
     this.router.navigate(['/' + this.loginLink]);
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
@@ -162,19 +118,28 @@ export class AuthService {
     this.tokenExpirationTimer = null;
   }
 
-  autoLogout(expirationDuration: number) {
+  autoLogout(expirationDurationMS: number) {
     this.tokenExpirationTimer = setTimeout(() => {
       this.logout();
-    }, expirationDuration);
+    }, expirationDurationMS);
   }
 
-  private authenticationHandler(email: string, localId: string, idToken: string, expiresIn: number) {
-    this.isLogged = true;
-    const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
-    const user = new LoginUser(email, localId, idToken, expirationDate);
-    this.user.next(user);
-    this.autoLogout(expiresIn * 1000);
-    localStorage.setItem('loginUser', JSON.stringify(user));
+  private authenticationHandler(success: boolean, email: string, username: string, token: string, expiresIn: string) {
+    if (success) {
+      this.isLogged = true;
+      // tslint:disable-next-line:radix
+      const first = Number.parseInt(expiresIn.split(' ')[0]) as number;
+      const second = expiresIn.split(' ')[1] as DurationConstructor;
+      const date = moment().add(first, second);
+      const durationLeftMS = date.valueOf() - Date.now().valueOf();
+      const expireDate = new Date(moment().add(first, second).toDate());
+      const user = new LoginUser(email, username, token, expireDate);
+      this.user.next(user);
+      this.autoLogout(durationLeftMS);
+
+      this.store.dispatch(UpdateCurrentUser);
+      localStorage.setItem('loginUser', JSON.stringify(user));
+    }
   }
 }
 

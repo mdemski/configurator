@@ -9,14 +9,39 @@
 
   <div *ngIf="!isLoading" class="container" id="container">
     <div class="form-container sign-in-container">
-      <form #authForm='ngForm' (ngSubmit)="onSubmit(authForm)">
+      <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
         <h1>{{'LOGIN.loginTitle' | translate}}</h1>
         <a routerLink="../{{ 'LINK.registerLink' | translate}}"
            class="navigation-link">{{ 'LINK.register' | translate}}</a>
-        <input id="email" type="email" ngModel name="email" required email
+        <input id="email" type="email" formControlName="email"
                placeholder="{{ 'LOGIN.email' | translate}}">
-        <input id="password" type="password" ngModel name="password" required minlength="6"
+        <div class="invalid-contact-container" *ngIf="authForm.get('email').dirty || authForm.get('email').touched">
+          <div class="invalid-contact-data" *ngIf="authForm.get('email').hasError('emailNotExists')">
+            {{'LOGIN.emailNotExists' | translate}}
+          </div>
+          <div
+            class="invalid-contact-data" *ngIf="authForm.get('email').hasError('required')">
+            {{'LOGIN.requiredField' | translate}}
+          </div>
+          <div
+            class="invalid-contact-data" *ngIf="authForm.get('email').hasError('email')">
+            {{'LOGIN.wrongEmail' | translate}}
+          </div>
+        </div>
+        <input id="password" type="password" formControlName="password"
                placeholder="{{ 'LOGIN.password' | translate}}">
+        <div class="invalid-contact-container" *ngIf="authForm.get('password').dirty || authForm.get('password').touched">
+          <div
+            class="invalid-contact-data" *ngIf="authForm.get('password').touched &&
+              authForm.get('password').errors && authForm.get('password').errors.minlength">
+            {{'LOGIN.tooShortPassword' | translate}}
+          </div>
+          <div
+            class="invalid-contact-data"
+            *ngIf="authForm.get('password').dirty && authForm.get('password').hasError('required')">
+            {{'LOGIN.requiredField' | translate}}
+          </div>
+        </div>
         <a routerLink="{{ 'LINK.newPassword' | translate}}"
            class="navigation-link">{{ 'LOGIN.forgotPassword' | translate}}</a>
         <button type="submit" [disabled]="authForm.invalid">{{ 'LOGIN.login' | translate}}</button>

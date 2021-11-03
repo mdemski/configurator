@@ -80,6 +80,10 @@ button:focus {
   outline: none;
 }
 
+button:disabled {
+  background-color: $color-light-red;
+}
+
 button.ghost {
   background-color: transparent;
   border-color: $color-white;
@@ -191,10 +195,6 @@ input {
   }
 }
 
-button:disabled {
-  background-color: $color-light-red;
-}
-
 .social-container {
   margin: 3rem 0;
 }
@@ -208,4 +208,15 @@ button:disabled {
   margin: 0 5px;
   height: 40px;
   width: 40px;
+}
+
+.invalid-contact-data {
+  padding: 1rem;
+  font-size: 1.2rem;
+  background-color: $color-light-red;
+  color: $color-darkest-red;
+}
+
+.invalid-contact-container {
+  width: 100%;
 }

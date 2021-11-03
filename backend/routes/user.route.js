@@ -67,7 +67,7 @@ userRoute.route('/uuid/:uuid').get(((req, res, next) => {
 
 //Login user
 userRoute.post('/login', function (req, res, next) {
-  User.findOne({email: req.body._email})
+  User.findOne({email: req.body.email})
     .then((user) => {
       if (!user) {
         return res.status(401).json({success: false, msg: 'EMAIL_NOT_FOUND'});
@@ -76,7 +76,7 @@ userRoute.post('/login', function (req, res, next) {
         return res.status(401).json({success: false, msg: 'USER_DISABLED'});
       }
 
-      const isValid = utils.validPassword(req.body._password, user.hash, user.salt);
+      const isValid = utils.validPassword(req.body.password, user.hash, user.salt);
 
       if (isValid) {
         const tokenObject = utils.issueJWT(user);
@@ -84,6 +84,7 @@ userRoute.post('/login', function (req, res, next) {
         res.status(200).json({
           success: true,
           email: user.email,
+          username: user.username,
           token: tokenObject.token,
           expiresIn: tokenObject.expires
         });
