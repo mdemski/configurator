@@ -5,6 +5,8 @@
     "email": "Email",
     "password": "Hasło",
     "rePassword": "Powtórz hasło",
+    "username": "Użytkownik (opcjonalnie)",
+    "usernameExists": "Użytkownik jest już zajęty, proszę wybrać inny",
     "contactDetails": "Dane teleadresowe",
     "or": "lub",
     "contactDetailsInfo": "Możesz je uzupełnić nieco później",

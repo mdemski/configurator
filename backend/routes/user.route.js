@@ -104,6 +104,7 @@ userRoute.post('/register', function (req, res, next) {
     hash: hash,
     salt: salt,
     role: req.body._role,
+    username: req.body._username,
     activated: req.body._activated,
     uuid: req.body._uuid,
     discount: req.body._discount,
