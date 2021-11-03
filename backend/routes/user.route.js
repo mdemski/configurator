@@ -43,6 +43,17 @@ userRoute.route('/email/:email').get(((req, res, next) => {
   })
 }))
 
+//Get single user by username
+userRoute.route('/username/:username').get(((req, res, next) => {
+  User.findOne({username: req.params.username}, (error, data) => {
+    if (error) {
+      return next(error)
+    } else {
+      res.json(data)
+    }
+  })
+}))
+
 //Get single user by email
 userRoute.route('/uuid/:uuid').get(((req, res, next) => {
   User.findOne({uuid: req.params.uuid}, (error, data) => {

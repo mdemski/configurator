@@ -3,6 +3,7 @@ export class User {
   private _email: string;
   private _password: string;
   private _rePassword: string;
+  private _username: string;
   private _role: string;
   private _activated: boolean;
   private _uuid: string;
@@ -13,11 +14,12 @@ export class User {
   private _activationLink: string;
 
   // tslint:disable-next-line:max-line-length
-  constructor(id: string, email: string, password: string, rePassword: string, role: string, activated: boolean, uuid: string, discount: number, companyNip: string, mainAddressId: string, addressToSendId: string, activationLink: string) {
+  constructor(id: string, email: string, password: string, rePassword: string, username: string, role: string, activated: boolean, uuid: string, discount: number, companyNip: string, mainAddressId: string, addressToSendId: string, activationLink: string) {
     this._id = id;
     this._email = email;
     this._password = password;
     this._rePassword = rePassword;
+    this._username = username;
     this._role = role;
     this._activated = activated;
     this._uuid = uuid;
@@ -58,6 +60,14 @@ export class User {
 
   set rePassword(value: string) {
     this._rePassword = value;
+  }
+
+  get username(): string {
+    return this._username;
+  }
+
+  set username(value: string) {
+    this._username = value;
   }
 
   get role(): string {

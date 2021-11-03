@@ -45,6 +45,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       // TODO dodać warunek sprawdzający długość hasła: Validators.min(8)
       password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
       rePassword: new FormControl(null, [Validators.required, Validators.minLength(8)]),
+      username: new FormControl(null, [], [this.usernameExists.bind(this)]),
       // TODO zweryfikować czy ten pattern zadziała dla klientów zagranicznych? Jak to chce otrzymać eNova?
       nip: new FormControl(null, [Validators.pattern('[0-9]{10}'), this.requiredIfCompanyClient.bind(this)]),
       companyName: new FormControl(null, [this.requiredIfCompanyClient.bind(this)]),
@@ -76,6 +77,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.registerUser.email = this.registerForm.value.email;
     this.registerUser.password = this.registerForm.value.password;
     this.registerUser.rePassword = this.registerForm.value.rePassword;
+    this.registerUser.username = this.registerForm.value.username;
     this.registerUser.role = 'user';
     this.registerUser.uuid = this.generateUUID();
     this.registerUser.activated = false;
@@ -207,6 +209,18 @@ export class RegisterComponent implements OnInit, OnDestroy {
         map(user => {
           return user ? {
             emailExists: true
+          } : null;
+        }));
+  }
+
+  usernameExists<AsyncValidator>(control: FormControl): Observable<ValidationErrors | null> {
+    const value = control.value;
+
+    return this.crud.readUserByUsername(value)
+      .pipe(takeUntil(this.isDestroyed$),
+        map(user => {
+          return user ? {
+            usernameExists: true
           } : null;
         }));
   }

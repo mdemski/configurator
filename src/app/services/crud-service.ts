@@ -84,6 +84,11 @@ export class CrudService {
     return this.http.get(url).pipe(map((user: User) => user));
   }
 
+  readUserByUsername(username: string): Observable<User> {
+    const url = this.usersBaseUri + '/username/' + username;
+    return this.http.get(url).pipe(map((user: User) => user));
+  }
+
   readAllAddressesFromMongoDB(): Observable<Address[]> {
     return this.http.get(this.addressesBaseUri).pipe(map((addresses: Address[]) => {
       return addresses;
@@ -249,7 +254,7 @@ export class CrudService {
 
   createUser(user: User) {
     const url = `${this.usersBaseUri}/register`;
-    const userToCreate: User = new User('', user.email, user.password, user.rePassword, user.role, false, user.uuid, 0, user.companyNip, '', '', user.activationLink);
+    const userToCreate: User = new User('', user.email, user.password, user.rePassword, user.username, user.role, false, user.uuid, 0, user.companyNip, '', '', user.activationLink);
     return this.http.post(url, userToCreate).pipe(catchError(err => err));
   }
 
