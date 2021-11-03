@@ -46,6 +46,7 @@ export class RegisterConfirmationPageComponent implements OnInit, OnDestroy {
           if (this.uuid === user.uuid) {
             this.verifySuccess = true;
             user.activated = true;
+            user.lastUpdate = new Date();
             this.crud.updateUserByMongoId(user).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
           }
         }

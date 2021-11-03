@@ -112,7 +112,9 @@ userRoute.post('/register', function (req, res, next) {
     companyNip: req.body._companyNip,
     mainAddressId: '',
     addressToSendId: '',
-    activationLink: req.body._activationLink
+    activationLink: req.body._activationLink,
+    created: req.body._created,
+    lastUpdate: req.body._lastUpdate
   });
 
   try {

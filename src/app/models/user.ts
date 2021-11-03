@@ -12,9 +12,11 @@ export class User {
   private _mainAddressId?: string;
   private _addressToSendId?: string;
   private _activationLink: string;
+  private _created: Date;
+  private _lastUpdate: Date;
 
   // tslint:disable-next-line:max-line-length
-  constructor(id: string, email: string, password: string, rePassword: string, username: string, role: string, activated: boolean, uuid: string, discount: number, companyNip: string, mainAddressId: string, addressToSendId: string, activationLink: string) {
+  constructor(id: string, email: string, password: string, rePassword: string, username: string, role: string, activated: boolean, uuid: string, discount: number, companyNip: string, mainAddressId: string, addressToSendId: string, activationLink: string, created: Date, lastUpdate: Date) {
     this._id = id;
     this._email = email;
     this._password = password;
@@ -28,6 +30,8 @@ export class User {
     this._mainAddressId = mainAddressId;
     this._addressToSendId = addressToSendId;
     this._activationLink = activationLink;
+    this._created = created;
+    this._lastUpdate = lastUpdate;
   }
 
   get id(): string {
@@ -132,5 +136,21 @@ export class User {
 
   set activationLink(value: string) {
     this._activationLink = value;
+  }
+
+  get created(): Date {
+    return this._created;
+  }
+
+  set created(value: Date) {
+    this._created = value;
+  }
+
+  get lastUpdate(): Date {
+    return this._lastUpdate;
+  }
+
+  set lastUpdate(value: Date) {
+    this._lastUpdate = value;
   }
 }

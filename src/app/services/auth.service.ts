@@ -36,7 +36,6 @@ export class AuthService {
   }
 
   returnUser() {
-    console.log(this.isLogged);
     return this.isLogged ? this.user.pipe(map(user => user)).pipe(map(user => {
         if (user && user.username !== '' && user.username) {
           return user.username;

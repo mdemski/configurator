@@ -254,7 +254,8 @@ export class CrudService {
 
   createUser(user: User) {
     const url = `${this.usersBaseUri}/register`;
-    const userToCreate: User = new User('', user.email, user.password, user.rePassword, user.username, user.role, false, user.uuid, 0, user.companyNip, '', '', user.activationLink);
+    const userToCreate: User = new User('', user.email, user.password, user.rePassword, user.username, user.role, false, user.uuid,
+      0, user.companyNip, '', '', user.activationLink, new Date(), new Date());
     return this.http.post(url, userToCreate).pipe(catchError(err => err));
   }
 
