@@ -51,7 +51,7 @@
             <div
               class="invalid-contact-data" *ngIf="registerForm.get('password').touched &&
               registerForm.get('password').errors && registerForm.get('password').errors.minlength">
-              {{'REGISTER.toShortPassword' | translate}}
+              {{'REGISTER.tooShortPassword' | translate}}
             </div>
             <div
               class="invalid-contact-data"
