@@ -19,9 +19,7 @@ import {RegisterConfirmationPageComponent} from './register/register-confirmatio
 import {AuthService} from './services/auth.service';
 
 import { IonicModule } from '@ionic/angular';
-import {AngularFireModule} from '@angular/fire';
 import {environment} from '../environments/environment';
-import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {NgxsModule} from '@ngxs/store';
 import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
 import {NgxsLoggerPluginModule} from '@ngxs/logger-plugin';
@@ -57,8 +55,6 @@ export function HttpLoaderFactory(http: HttpClient) {
         BrowserAnimationsModule,
         HttpClientModule,
         AppRoutingModule,
-        AngularFireModule.initializeApp(environment.firebaseConfig),
-        AngularFirestoreModule,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
