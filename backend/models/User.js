@@ -32,6 +32,9 @@ let User = new Schema({
   },
   addressToSendId: {
     type: String
+  },
+  activationLink: {
+    type: String
   }
 }, {
   collection: 'users'
