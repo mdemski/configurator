@@ -38,7 +38,13 @@ let User = new Schema({
   },
   activationLink: {
     type: String
-  }
+  },
+  created: {
+    type: Date
+  },
+  lastUpdate: {
+    type: Date
+  },
 }, {
   collection: 'users'
 })
