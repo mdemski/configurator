@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 import {AuthService} from './auth.service';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
-import {map, take} from 'rxjs/operators';
 import {TranslateService} from '@ngx-translate/core';
+import {LoginUser} from '../models/loginUser';
 
 @Injectable({providedIn: 'root'})
 export class AuthGuardService implements CanActivate {
@@ -20,15 +20,14 @@ export class AuthGuardService implements CanActivate {
     this.translate.get('LINK').subscribe(text => {
       this.loginLink = text.login;
     });
-    return this.authService.user.pipe(
-      take(1),
-      map(user => {
-        const isAuth = !!user;
-        if (isAuth) {
-          return true;
-        }
-        return this.router.createUrlTree(['/' + this.loginLink]);
-      }));
+    const loginUser = new LoginUser(JSON.parse(localStorage.getItem('loginUser'))._email,
+      JSON.parse(localStorage.getItem('loginUser'))._username,
+      JSON.parse(localStorage.getItem('loginUser'))._token,
+      JSON.parse(localStorage.getItem('loginUser'))._expireDate);
+    if (loginUser.token) {
+      return true;
+    }
+    return this.router.createUrlTree(['/' + this.loginLink]);
   }
 
 }
