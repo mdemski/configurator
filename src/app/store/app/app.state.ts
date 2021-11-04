@@ -1,16 +1,22 @@
 import {Action, Selector, State, StateContext} from '@ngxs/store';
-import {SetCurrentUser, UpdateCurrentUser} from './app.actions';
+import {SetCurrentUser} from './app.actions';
 import {AuthService} from '../../services/auth.service';
 import {tap} from 'rxjs/operators';
 
 export interface AppStateModel {
-  currentUser: string;
+  currentUser: {
+    user: string,
+    loggedIn: boolean
+  };
 }
 
 @State<AppStateModel>({
   name: 'app',
   defaults: {
-    currentUser: ''
+    currentUser: {
+      user: '',
+      loggedIn: false
+    }
   }
 })
 export class AppState {
@@ -30,20 +36,10 @@ export class AppState {
         const state = ctx.getState();
         ctx.setState({
           ...state,
-          currentUser: result
-        });
-      })
-    );
-  }
-
-  @Action(UpdateCurrentUser)
-  updateCurrentUser(ctx: StateContext<AppStateModel>) {
-    return this.authService.returnUser().pipe(
-      tap((result) => {
-        const state = ctx.getState();
-        ctx.setState({
-          ...state,
-          currentUser: result
+          currentUser: {
+            user: result.currentUser,
+            loggedIn: result.loggedIn
+          }
         });
       })
     );

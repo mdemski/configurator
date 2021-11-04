@@ -1,13 +1,13 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {RoofWindowSkylight} from '../../../models/roof-window-skylight';
 import {User} from '../../../models/user';
 import {Accessory} from '../../../models/accessory';
-import {Actions, ofActionSuccessful, Select, Store} from '@ngxs/store';
+import {Select, Store} from '@ngxs/store';
 import {map, takeUntil} from 'rxjs/operators';
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
-import {RouterDataResolved, RouterState} from '@ngxs/router-plugin';
+import {Observable, Subject} from 'rxjs';
+import {RouterState} from '@ngxs/router-plugin';
 import {RoofWindowState} from '../../../store/roof-window/roof-window.state';
+import {AppState} from '../../../store/app/app.state';
 
 @Component({
   selector: 'app-roof-window-details',
@@ -16,7 +16,11 @@ import {RoofWindowState} from '../../../store/roof-window/roof-window.state';
 })
 export class RoofWindowDetailsComponent implements OnInit, OnDestroy {
   window$: Observable<RoofWindowSkylight>;
-  @Input() logInUser: User;
+  @Select(AppState) user$: Observable<{ currentUser }>;
+  logInUser: {
+    user: User;
+    loggedIn: boolean
+  };
   routerData;
   windowToShow: RoofWindowSkylight;
   isDestroyed$ = new Subject();
@@ -31,6 +35,7 @@ export class RoofWindowDetailsComponent implements OnInit, OnDestroy {
   availableExtras: Accessory[] = [];
 
   constructor(private store: Store) {
+    this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.logInUser = user.currentUser);
     this.store.select(RouterState.state).pipe(takeUntil(this.isDestroyed$)).subscribe(state => {
       this.window$ = this.store.select(RoofWindowState.roofWindowByCode)
         .pipe(map(filterFn => filterFn(state['params'].windowId.toString())));
@@ -61,8 +66,8 @@ export class RoofWindowDetailsComponent implements OnInit, OnDestroy {
   }
 
   getDiscountPrice() {
-    if (this.logInUser) {
-      return (this.windowToShow.CenaDetaliczna - (this.windowToShow.CenaDetaliczna * this.logInUser.discount));
+    if (this.logInUser.loggedIn) {
+      return (this.windowToShow.CenaDetaliczna - (this.windowToShow.CenaDetaliczna * this.logInUser.user.discount));
     }
   }
 

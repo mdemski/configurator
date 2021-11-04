@@ -9,7 +9,7 @@ import {IpService} from './ip.service';
 import moment from 'moment';
 import DurationConstructor = moment.unitOfTime.DurationConstructor;
 import {Store} from '@ngxs/store';
-import {UpdateCurrentUser} from '../store/app/app.actions';
+import {SetCurrentUser} from '../store/app/app.actions';
 
 interface AuthResponseData {
   success: boolean;
@@ -36,16 +36,25 @@ export class AuthService {
   }
 
   returnUser() {
-    return this.isLogged ? this.user.pipe(map(user => user)).pipe(map(user => {
+    return this.isLogged ? this.user.pipe(map(user => {
         if (user && user.username !== '' && user.username) {
-          return user.username;
+          return {
+            currentUser: user.username,
+            loggedIn: true
+          };
         } else {
-          return user.email;
+          return {
+            currentUser: user.email,
+            loggedIn: true
+          };
         }
       }))
       : this.ipService.getIpAddress().pipe(map(userIp => userIp)).pipe(map(userIp => {
-        // @ts-ignore
-        return userIp.query;
+        return {
+          // @ts-ignore
+          currentUser: userIp.query,
+          loggedIn: false
+        };
       }));
   }
 
@@ -94,18 +103,27 @@ export class AuthService {
     if (!loginUser) {
       return;
     }
-    const loadedUser = new LoginUser(loginUser.email, loginUser.username, loginUser.token, loginUser.expireDate);
-
+    const loadedUser = new LoginUser();
+    // @ts-ignore
+    loadedUser.email = loginUser._email;
+    // @ts-ignore
+    loadedUser.username = loginUser._username;
+    // @ts-ignore
+    loadedUser.token = loginUser._token;
+    // @ts-ignore
+    loadedUser.expireDate = loginUser._expireDate;
     if (loadedUser.token) {
+      this.isLogged = true;
       this.user.next(loadedUser);
-      const expirationDuration = new Date(loginUser.expireDate).getTime() - new Date().getTime();
+      this.store.dispatch(SetCurrentUser);
+      const expirationDuration = new Date(loadedUser.expireDate).valueOf() - Date.now().valueOf();
       this.autoLogout(expirationDuration);
     }
   }
 
   logout() {
     this.isLogged = false;
-    this.store.dispatch(UpdateCurrentUser);
+    this.store.dispatch(SetCurrentUser);
     localStorage.removeItem('loginUser');
     this.translate.get('LINK').subscribe(text => {
       this.loginLink = text.login;
@@ -132,11 +150,15 @@ export class AuthService {
       const date = moment().add(first, second);
       const durationLeftMS = date.valueOf() - Date.now().valueOf();
       const expireDate = new Date(moment().add(first, second).toDate());
-      const user = new LoginUser(email, username, token, expireDate);
+      const user = new LoginUser();
+      user.email = email;
+      user.username = username;
+      user.token = token;
+      user.expireDate = expireDate;
       this.user.next(user);
       this.autoLogout(durationLeftMS);
 
-      this.store.dispatch(UpdateCurrentUser);
+      this.store.dispatch(SetCurrentUser);
       localStorage.setItem('loginUser', JSON.stringify(user));
     }
   }

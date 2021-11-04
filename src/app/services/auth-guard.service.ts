@@ -20,11 +20,12 @@ export class AuthGuardService implements CanActivate {
     this.translate.get('LINK').subscribe(text => {
       this.loginLink = text.login;
     });
-    const loginUser = new LoginUser(JSON.parse(localStorage.getItem('loginUser'))._email,
-      JSON.parse(localStorage.getItem('loginUser'))._username,
-      JSON.parse(localStorage.getItem('loginUser'))._token,
-      JSON.parse(localStorage.getItem('loginUser'))._expireDate);
-    if (loginUser.token) {
+    if (JSON.parse(localStorage.getItem('loginUser'))) {
+      const loginUser = new LoginUser();
+      loginUser.email = JSON.parse(localStorage.getItem('loginUser')).email;
+      loginUser.username = JSON.parse(localStorage.getItem('loginUser')).username;
+      loginUser.token = JSON.parse(localStorage.getItem('loginUser')).token;
+      loginUser.expireDate = JSON.parse(localStorage.getItem('loginUser')).expireDate;
       return true;
     }
     return this.router.createUrlTree(['/' + this.loginLink]);

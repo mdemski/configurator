@@ -7,12 +7,12 @@ export class LoginUser {
   private _token: string;
   private _expireDate: Date;
 
-  constructor(email: string, username: string, token: string, expireDate: Date) {
-    this._email = email;
-    this._username = username;
-    this._token = token;
-    this._expireDate = expireDate;
-  }
+  // constructor(email: string, username: string, token: string, expireDate: Date) {
+  //   this._email = email;
+  //   this._username = username;
+  //   this._token = token;
+  //   this._expireDate = expireDate;
+  // }
 
   get email(): string {
     return this._email;
