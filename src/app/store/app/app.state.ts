@@ -5,6 +5,7 @@ import {tap} from 'rxjs/operators';
 
 export interface AppStateModel {
   currentUser: {
+    email: string;
     user: string,
     loggedIn: boolean
   };
@@ -14,6 +15,7 @@ export interface AppStateModel {
   name: 'app',
   defaults: {
     currentUser: {
+      email: '',
       user: '',
       loggedIn: false
     }
@@ -37,6 +39,7 @@ export class AppState {
         ctx.setState({
           ...state,
           currentUser: {
+            email: result.email,
             user: result.currentUser,
             loggedIn: result.loggedIn
           }

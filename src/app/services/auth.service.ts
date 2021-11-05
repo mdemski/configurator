@@ -39,11 +39,13 @@ export class AuthService {
     return this.isLogged ? this.user.pipe(map(user => {
         if (user && user.username !== '' && user.username) {
           return {
+            email: user.email,
             currentUser: user.username,
             loggedIn: true
           };
         } else {
           return {
+            email: user.email,
             currentUser: user.email,
             loggedIn: true
           };
@@ -51,6 +53,7 @@ export class AuthService {
       }))
       : this.ipService.getIpAddress().pipe(map(userIp => userIp)).pipe(map(userIp => {
         return {
+          email: '',
           // @ts-ignore
           currentUser: userIp.query,
           loggedIn: false
