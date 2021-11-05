@@ -38,9 +38,9 @@
 
       <div class="configuration-summary__scores">
         <p
-          *ngIf="configuredFlashingArray.length === 0">{{this.configuredFlashing.CenaDetaliczna | currency :' ' : '' : undefined : undefined}}{{ 'FLASHINGS-CONFIG.currency' | translate}}</p>
+          *ngIf="configuredFlashingArray.length === 0">{{this.configuredFlashing.CenaDetaliczna | currency :' ' : '' : undefined : undefined}}{{ 'GENERAL.currency' | translate}}</p>
         <p
-          *ngIf="configuredFlashingArray.length !== 0">{{ 'FLASHINGS-CONFIG.summaryPrice' | translate}} {{this.summaryFlashingsPrice | currency :' ' : '' : undefined : undefined}}{{ 'FLASHINGS-CONFIG.currency' | translate}}</p>
+          *ngIf="configuredFlashingArray.length !== 0">{{ 'FLASHINGS-CONFIG.summaryPrice' | translate}} {{this.summaryFlashingsPrice | currency :' ' : '' : undefined : undefined}}{{ 'GENERAL.currency' | translate}}</p>
         <p
           *ngIf="configuredFlashingArray.length !== 0">{{ 'FLASHINGS-CONFIG.averagePrice' | translate}} {{this.summaryFlashingsPrice / this.configuredFlashingArray.length | currency :' ' : '' : undefined : undefined}}{{ 'FLASHINGS-CONFIG.currency' | translate}}</p>
       </div>

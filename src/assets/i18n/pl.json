@@ -289,7 +289,6 @@
     "appFunctions": "Dostępne fukcje w aplikacji"
   },
   "ROOF-WINDOWS-CONFIG": {
-    "currency": " zł",
     "Uw": "Uw",
     "Ug": "Ug",
     "next": "Dalej",
@@ -393,7 +392,6 @@
     "Okno:I22": "I22"
   },
   "FLASHINGS-CONFIG": {
-    "currency": "zł",
     "summaryPrice": "Łączna kwota",
     "averagePrice": "Średnia kwota za kołnierz",
     "flashingType": "Typ kołnierza",
@@ -530,5 +528,8 @@
     "chooseFlashing": "Wybierz kołnierz",
     "newConfiguration": "Nowa konfiguracja",
     "chooseList": "Lista wyboru:"
+  },
+  "GENERAL": {
+    "currency": "zł"
   }
 }
