@@ -152,6 +152,17 @@ userRoute.route('/update/:userId').put(((req, res, next) => {
   })
 }))
 
+userRoute.route('/send-mail').put(((req, res, next) => {
+  console.log(req.params);
+  if (req.params.email) {
+    const user = {
+      email: req.params.email
+    }
+    sendActivationMail(user).catch(console.error);
+    console.log('Successfully send mail to ' + user.email);
+  }
+}))
+
 //Delete user
 userRoute.route('/delete/:userId').delete(((req, res, next) => {
   User.findByIdAndRemove(req.params.userId, (error, data) => {

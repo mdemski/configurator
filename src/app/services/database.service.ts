@@ -160,7 +160,7 @@ export class DatabaseService {
 
   // Zwraca TYLKO listę wszystkich firm które są w programi.
   getAllSellers() {
-    this.availableSellers.push(new Company('Felek', '11122233344', 0.4, new Address('Lolek', 'Bolek', '123456789', 'Felkowa', '3/1', '10-150', 'Lewin', 'Polzka',),
+    this.availableSellers.push(new Company('Felek', 'm.demski@okpol.pl', '11122233344', 0.4, new Address('Lolek', 'Bolek', '123456789', 'Felkowa', '3/1', '10-150', 'Lewin', 'Polzka',),
       'DTHXX', 10000000, 5, 2, [], null));
     return this.availableSellers;
   }

@@ -400,6 +400,7 @@ export class CrudService {
       user.discount = companyData.discount;
       user.mainAddressId = companyData.address.id;
     }
+    this.http.post(`${this.usersBaseUri}/send-mail`, companyData.email).subscribe(console.log);
     return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
   }
 
