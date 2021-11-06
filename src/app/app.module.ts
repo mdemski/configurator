@@ -30,6 +30,7 @@ import {CustomRouterStateSerializer} from './store/router/custom-router-state.se
 import {SharedModule} from './shared/shared.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BrowserModule} from '@angular/platform-browser';
+import { CartComponent } from './cart/cart.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -47,7 +48,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         HomeComponent,
         ShoppingCartComponent,
         MyAccountComponent,
-        RegisterConfirmationPageComponent
+        RegisterConfirmationPageComponent,
+        CartComponent
     ],
     imports: [
         SharedModule,
