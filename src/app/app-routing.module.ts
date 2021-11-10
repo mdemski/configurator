@@ -23,7 +23,7 @@ const appRoutes: Routes = [
   {path: 'sklep', loadChildren: () => import('./shop/shop.module').then(m => m.ShopModule)},
 
   {path: 'okna-pionowe', component: VerticalWindowsComponent},
-  {path: 'cart', component: CartComponent},
+  {path: 'koszyk', component: CartComponent},
 
   {path: 'konfigurator', loadChildren: () => import('./configurator/configurator.module').then(m => m.ConfiguratorModule),
     canActivate: [ConfigurationsGuard, AvailableConfigDataGuard]},
