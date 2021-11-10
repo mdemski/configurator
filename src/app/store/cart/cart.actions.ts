@@ -1,5 +1,3 @@
-import {Item} from '../../models/item';
-
 export class AddProductToCart {
   static type = '[Cart] Add Item To Cart';
 
