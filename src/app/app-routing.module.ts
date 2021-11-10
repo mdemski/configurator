@@ -17,11 +17,13 @@ import {AvailableConfigDataGuard} from './store/avaiable-config-data/available-c
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {AuthInterceptor} from './interceptors/auth-interceptor';
 import {RegisterConfirmationPageComponent} from './register/register-confirmation-page/register-confirmation-page.component';
+import {CartComponent} from './cart/cart.component';
 
 const appRoutes: Routes = [
   {path: 'sklep', loadChildren: () => import('./shop/shop.module').then(m => m.ShopModule)},
 
   {path: 'okna-pionowe', component: VerticalWindowsComponent},
+  {path: 'cart', component: CartComponent},
 
   {path: 'konfigurator', loadChildren: () => import('./configurator/configurator.module').then(m => m.ConfiguratorModule),
     canActivate: [ConfigurationsGuard, AvailableConfigDataGuard]},

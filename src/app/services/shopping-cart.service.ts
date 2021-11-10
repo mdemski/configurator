@@ -32,6 +32,7 @@ export class ShoppingCartService {
         this.cart.cartItems.push(this.createItem(product, quantity));
       }
     }
+    return this.cart;
   }
 
   removeFromCart(product) {
@@ -45,6 +46,7 @@ export class ShoppingCartService {
         cartItem = null;
       }
     }
+    return this.cart;
   }
 
   updateQuantity(item: Item, quantity: number) {
@@ -60,7 +62,7 @@ export class ShoppingCartService {
 
   deleteCart() {
     this.cart = new Cart('Autogenerate', [], new Date(), 0, 0, 'PLN');
-    this.updateCartIntoLocalStorage(this.cart);
+    return this.cart;
   }
 
   updateCartIntoLocalStorage(cart: Cart) {
@@ -70,6 +72,6 @@ export class ShoppingCartService {
   }
 
   getCartFromLocalStorage() {
-    return localStorage.getItem('cart');
+    return JSON.parse(localStorage.getItem('cart')) as Cart;
   }
 }

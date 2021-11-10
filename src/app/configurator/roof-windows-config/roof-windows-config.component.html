@@ -72,7 +72,7 @@
            [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.dostepneRozmiary!==null}"></a>
       </div>
       <div class="configuration-summary__scores">
-        <p>{{this.configuredWindow.CenaDetaliczna | currency :' ' : '' : undefined : undefined}}{{ 'GENERAL.currency' | translate}}</p>
+        <p>{{this.configuredWindow.CenaDetaliczna | currency :' '}} {{ 'GENERAL.currency' | translate}}</p>
         <p>{{ 'ROOF-WINDOWS-CONFIG.Uw' | translate}} = {{this.configuredWindow.windowUW | number: '1.2-2'}}
           W/m²K</p>
         <p>{{ 'ROOF-WINDOWS-CONFIG.Ug' | translate}} = {{this.configuredWindow.windowUG | number: '1.2-2'}}

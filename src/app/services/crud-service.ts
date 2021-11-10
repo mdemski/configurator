@@ -56,6 +56,13 @@ export class CrudService {
   //   return this.http.get(requestURL);
   // }
 
+  loadCurrentCurrencyRate() {
+    // TODO poprawić adres który ma być odpytany z eNova
+    return this.http.get('URL do zapytania do eNova').pipe(map(rate => {
+      return rate;
+    }));
+  }
+
   readAllCompaniesFromERP(): Observable<Company[]> {
     // TODO poprawić adres który ma być odpytany z eNova
     return this.http.get('URL do zapytania do eNova').pipe(map((companies: Company[]) => {

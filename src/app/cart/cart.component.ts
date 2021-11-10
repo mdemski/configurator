@@ -7,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CartComponent implements OnInit {
 
+  value = 0;
+
   constructor() { }
 
   ngOnInit(): void {
+    this.value = 179.58;
   }
 
 }

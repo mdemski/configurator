@@ -4,6 +4,8 @@ import {Item} from './item';
 
 export class Order {
   private _orderNumber: string;
+  private _cartId: string;
+  private _erpId: string;
   private _createdAt: Date;
   private _updatedAt: Date;
   private _status: string;
@@ -15,8 +17,10 @@ export class Order {
   private _currency: string;
 
   // tslint:disable-next-line:max-line-length
-  constructor(orderNumber: string, createdAt: Date, updatedAt: Date, status: string, company: Company, user: User, items: Item[], sum: number, sumAfterDiscount: number, currency: string) {
+  constructor(orderNumber: string, cartId: string, erpId: string, createdAt: Date, updatedAt: Date, status: string, company: Company, user: User, items: Item[], sum: number, sumAfterDiscount: number, currency: string) {
     this._orderNumber = orderNumber;
+    this._cartId = cartId;
+    this._erpId = erpId;
     this._createdAt = createdAt;
     this._updatedAt = updatedAt;
     this._status = status;
@@ -34,6 +38,22 @@ export class Order {
 
   set orderNumber(value: string) {
     this._orderNumber = value;
+  }
+
+  get cartId(): string {
+    return this._cartId;
+  }
+
+  set cartId(value: string) {
+    this._cartId = value;
+  }
+
+  get erpId(): string {
+    return this._erpId;
+  }
+
+  set erpId(value: string) {
+    this._erpId = value;
   }
 
   get createdAt(): Date {
