@@ -11,6 +11,7 @@ export class CartGuard implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    console.log('Test');
     if (!this.store.selectSnapshot(CartState.cart)) {
       this.store.dispatch(new GetCart());
       return true;

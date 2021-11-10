@@ -17,7 +17,7 @@ import {DatabaseService} from './services/database.service';
 import {RegisterConfirmationPageComponent} from './register/register-confirmation-page/register-confirmation-page.component';
 import {AuthService} from './services/auth.service';
 
-import { IonicModule } from '@ionic/angular';
+import {IonicModule} from '@ionic/angular';
 import {environment} from '../environments/environment';
 import {NgxsModule} from '@ngxs/store';
 import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
@@ -29,54 +29,57 @@ import {CustomRouterStateSerializer} from './store/router/custom-router-state.se
 import {SharedModule} from './shared/shared.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BrowserModule} from '@angular/platform-browser';
-import { CartComponent } from './cart/cart.component';
+import {CartComponent} from './cart/cart.component';
+import {CartState} from './store/cart/cart.state';
+import {CartGuard} from './store/cart/cart.guard';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
 }
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        HeaderComponent,
-        LoginComponent,
-        RegisterComponent,
-        RegulationsComponent,
-        FooterComponent,
-        ContactComponent,
-        HomeComponent,
-        MyAccountComponent,
-        RegisterConfirmationPageComponent,
-        CartComponent
-    ],
-    imports: [
-        SharedModule,
-        BrowserModule,
-        BrowserAnimationsModule,
-        HttpClientModule,
-        AppRoutingModule,
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: HttpLoaderFactory,
-                deps: [HttpClient]
-            }
-        }),
-        IonicModule.forRoot(),
-        NgxsModule.forRoot([
-            RouterState,
-            AppState
-        ], {
-            developmentMode: !environment.production,
-            selectorOptions: {injectContainerState: false}
-        }),
-        NgxsReduxDevtoolsPluginModule.forRoot(),
-        NgxsLoggerPluginModule.forRoot(),
-        NgxsRouterPluginModule.forRoot()
-    ],
-    providers: [DatabaseService, AuthService,
-        {provide: RouterStateSerializer, useClass: CustomRouterStateSerializer}],
-    bootstrap: [AppComponent]
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    LoginComponent,
+    RegisterComponent,
+    RegulationsComponent,
+    FooterComponent,
+    ContactComponent,
+    HomeComponent,
+    MyAccountComponent,
+    RegisterConfirmationPageComponent,
+    CartComponent
+  ],
+  imports: [
+    SharedModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    AppRoutingModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
+    IonicModule.forRoot(),
+    NgxsModule.forRoot([
+      RouterState,
+      AppState,
+      CartState
+    ], {
+      developmentMode: !environment.production,
+      selectorOptions: {injectContainerState: false}
+    }),
+    NgxsReduxDevtoolsPluginModule.forRoot(),
+    NgxsLoggerPluginModule.forRoot(),
+    NgxsRouterPluginModule.forRoot()
+  ],
+  providers: [DatabaseService, AuthService, CartGuard,
+    {provide: RouterStateSerializer, useClass: CustomRouterStateSerializer}],
+  bootstrap: [AppComponent]
 })
 export class AppModule {
 }
