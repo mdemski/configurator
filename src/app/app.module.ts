@@ -12,7 +12,6 @@ import {FooterComponent} from './footer/footer.component';
 import {ContactComponent} from './contact/contact.component';
 import {HomeComponent} from './home/home.component';
 import {AppRoutingModule} from './app-routing.module';
-import {ShoppingCartComponent} from './shop/shopping-cart/shopping-cart.component';
 import {MyAccountComponent} from './my-account/my-account.component';
 import {DatabaseService} from './services/database.service';
 import {RegisterConfirmationPageComponent} from './register/register-confirmation-page/register-confirmation-page.component';
@@ -46,7 +45,6 @@ export function HttpLoaderFactory(http: HttpClient) {
         FooterComponent,
         ContactComponent,
         HomeComponent,
-        ShoppingCartComponent,
         MyAccountComponent,
         RegisterConfirmationPageComponent,
         CartComponent
