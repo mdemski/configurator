@@ -18,18 +18,19 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {AuthInterceptor} from './interceptors/auth-interceptor';
 import {RegisterConfirmationPageComponent} from './register/register-confirmation-page/register-confirmation-page.component';
 import {CartComponent} from './cart/cart.component';
+import {CartGuard} from './store/cart/cart.guard';
 
 const appRoutes: Routes = [
   {path: 'sklep', loadChildren: () => import('./shop/shop.module').then(m => m.ShopModule)},
 
   {path: 'okna-pionowe', component: VerticalWindowsComponent},
-  {path: 'koszyk', component: CartComponent},
+  {path: 'koszyk', component: CartComponent, canActivate: [CartGuard]},
 
   {path: 'konfigurator', loadChildren: () => import('./configurator/configurator.module').then(m => m.ConfiguratorModule),
     canActivate: [ConfigurationsGuard, AvailableConfigDataGuard]},
 
   {path: '', component: HomeComponent},
-  {path: 'moje-konto', component: MyAccountComponent, canActivate: [AuthGuardService]},
+  {path: 'moje-konto', component: MyAccountComponent, canActivate: [AuthGuardService, CartGuard]},
   {path: 'moje-konto/:id', component: MyAccountComponent, canActivate: [AuthGuardService]},
   {path: 'rejestracja', component: RegisterComponent},
   {path: 'confirmation', component: RegisterConfirmationPageComponent},
