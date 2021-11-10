@@ -18,7 +18,7 @@ export class CartState {
   }
 
   @Selector()
-  static cartItems(state: CartStateModel) {
+  static cart(state: CartStateModel) {
     return state.cart;
   }
 
