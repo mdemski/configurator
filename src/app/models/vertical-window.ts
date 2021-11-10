@@ -1,4 +1,5 @@
 export class VerticalWindow {
+  private _kod: string;
   private _verticalName: string;
   private _verticalSystem: string;
   private _verticalConstructionType: string;
@@ -13,7 +14,8 @@ export class VerticalWindow {
   private _verticalExtras: [string]; // hamulec okienny, kontaktrony, szare uszczelki, okucia antywyważeniowe RC1/RC2, nawiewnik okienny, roleta zewnętrzna
 
   // tslint:disable-next-line:max-line-length
-  constructor(verticalName: string, verticalSystem: string, verticalConstructionType: string, verticalQuantity: number, verticalWidth: number, verticalHeight: number, verticalColorCombination: string, verticalNumberOfGlasses: number, verticalSashCombination: string, verticalGlassType: string, verticalWindowSurface: number, verticalExtras: [string]) {
+  constructor(kod: string, verticalName: string, verticalSystem: string, verticalConstructionType: string, verticalQuantity: number, verticalWidth: number, verticalHeight: number, verticalColorCombination: string, verticalNumberOfGlasses: number, verticalSashCombination: string, verticalGlassType: string, verticalWindowSurface: number, verticalExtras: [string]) {
+    this._kod = kod;
     this._verticalName = verticalName;
     this._verticalSystem = verticalSystem;
     this._verticalConstructionType = verticalConstructionType;
@@ -28,6 +30,13 @@ export class VerticalWindow {
     this._verticalExtras = verticalExtras;
   }
 
+  get kod(): string {
+    return this._kod;
+  }
+
+  set kod(value: string) {
+    this._kod = value;
+  }
 
   get verticalName(): string {
     return this._verticalName;
