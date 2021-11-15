@@ -13,7 +13,7 @@ export class Item {
 
   // tslint:disable-next-line:max-line-length
   constructor(itemId: string, product: RoofWindowSkylight | Flashing | Accessory | FlatRoofWindow | VerticalWindow, quantity: number, created: Date, isOrdered: boolean) {
-    this._itemId = itemId;
+    this._itemId = this.itemId;
     this._product = product;
     this._quantity = quantity;
     this._created = created;
@@ -21,11 +21,11 @@ export class Item {
   }
 
   get itemId(): string {
-    return this._itemId;
+    return '' + Math.random().toString(36).substr(2, 9);
   }
 
   set itemId(value: string) {
-    this._itemId = '_' + Math.random().toString(36).substr(2, 9);
+    this._itemId = value;
   }
 
   get product(): RoofWindowSkylight | Flashing | Accessory | FlatRoofWindow | VerticalWindow {
