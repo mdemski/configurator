@@ -1,6 +1,4 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {CrudService} from '../../services/crud-service';
-import {DatabaseService} from '../../services/database.service';
 import {Observable, Subject} from 'rxjs';
 import {SingleConfiguration} from '../../models/single-configuration';
 import {map, takeUntil} from 'rxjs/operators';
@@ -21,6 +19,7 @@ import {AppState} from '../../store/app/app.state';
 import {ConfigurationState} from '../../store/configuration/configuration.state';
 import {SetChosenFlashing} from '../../store/flashing/flashing.actions';
 import {SetChosenRoofWindow} from '../../store/roof-window/roof-window.actions';
+import {AddProductToCart} from '../../store/cart/cart.actions';
 
 @Component({
   selector: 'app-configuration-summary',
@@ -48,8 +47,7 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
   emptyAccessoryConfiguration: string;
   addingProduct: string;
 
-  constructor(private db: DatabaseService,
-              private router: Router,
+  constructor(private router: Router,
               private store: Store,
               public translate: TranslateService) {
     this.loading = true;
@@ -176,7 +174,7 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
 
   // TODO sprawdzić co dokładnie wrzuca się do koszyka i odpowiednio to obsługiwać
   addToCart(window) {
-    this.db.addToCart(window, window.quantity);
+    this.store.dispatch(new AddProductToCart(window, window.quantity)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
   }
 
   // Options toggle

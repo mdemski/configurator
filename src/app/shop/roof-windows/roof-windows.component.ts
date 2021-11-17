@@ -1,10 +1,11 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {RoofWindowSkylight} from '../../models/roof-window-skylight';
 import {takeUntil} from 'rxjs/operators';
-import {Select} from '@ngxs/store';
+import {Select, Store} from '@ngxs/store';
 import {RoofWindowState} from '../../store/roof-window/roof-window.state';
 import {Observable, Subject} from 'rxjs';
 import _ from 'lodash';
+import {AddProductToCart} from '../../store/cart/cart.actions';
 
 @Component({
   selector: 'app-roof-windows',
@@ -31,7 +32,7 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
   pageSize = 10;
   sortBy = 'popularity';
 
-  constructor() {
+  constructor(private store: Store) {
   }
 
   ngOnInit(): void {
@@ -158,5 +159,9 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
         this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['iloscSprzedanychRok'], ['asc']);
         break;
     }
+  }
+
+  addToCart(product) {
+    this.store.dispatch(new AddProductToCart(product, 1)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
   }
 }

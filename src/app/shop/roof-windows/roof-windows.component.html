@@ -145,7 +145,7 @@
       </div>
       <div class="product-card__buttons-section">
         <!--      TODO dodać linki do odpowiednich podstron-->
-        <a class="product-card__buttons-section--link icon-btn icon-btn--red">
+        <a class="product-card__buttons-section--link icon-btn icon-btn--red" (click)="addToCart(window)">
           <i class="fas fa-cart-plus product-card__buttons-section--icon"></i>
         </a>
         <a routerLink="./{{window.kod}}" class="product-card__buttons-section--link icon-btn icon-btn--blue">
