@@ -9,7 +9,7 @@ export class Cart {
   private _currency: string;
 
   constructor(id: string, cartItems: Item[], created: Date, totalAmount: number, totalAmountAfterDiscount: number, currency: string) {
-    this._id = this.id;
+    this._id = id;
     this._cartItems = cartItems;
     this._created = created;
     this._totalAmount = totalAmount;
@@ -18,7 +18,7 @@ export class Cart {
   }
 
   get id(): string {
-    return '' + Math.random().toString(36).substr(2, 9);
+    return this._id;
   }
 
   set id(value: string) {

@@ -35,7 +35,7 @@ export class CartState {
     const newCart = this.shoppingCart.addToCart(product, quantity);
     this.shoppingCart.updateCartIntoLocalStorage(newCart);
     const state = ctx.getState();
-    ctx.setState({
+    return ctx.setState({
       ...state,
       cart: newCart
     });
@@ -54,7 +54,7 @@ export class CartState {
 
   @Action(GetCart)
   getCartItems(ctx: StateContext<CartStateModel>) {
-    const cart = this.shoppingCart.getCartFromLocalStorage();
+    const cart = this.shoppingCart.getCartFromLocalStorage() as Cart;
     const state = ctx.getState();
     ctx.setState({
       ...state,

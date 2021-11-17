@@ -5,23 +5,12 @@ import {FlatRoofWindow} from './flat-roof-window';
 import {VerticalWindow} from './vertical-window';
 
 export class Item {
-  private _itemId: string;
-  private _product: RoofWindowSkylight | Flashing | Accessory | FlatRoofWindow | VerticalWindow;
-  private _quantity: number;
-  private _created: Date;
-  private _isOrdered: boolean;
-
-  // tslint:disable-next-line:max-line-length
-  constructor(itemId: string, product: RoofWindowSkylight | Flashing | Accessory | FlatRoofWindow | VerticalWindow, quantity: number, created: Date, isOrdered: boolean) {
-    this._itemId = this.itemId;
-    this._product = product;
-    this._quantity = quantity;
-    this._created = created;
-    this._isOrdered = isOrdered;
+  constructor(private _itemId: string, private _product: RoofWindowSkylight | Flashing | Accessory | FlatRoofWindow | VerticalWindow,
+              private _quantity: number, private _created: Date, private _isOrdered: boolean) {
   }
 
   get itemId(): string {
-    return '' + Math.random().toString(36).substr(2, 9);
+    return this._itemId;
   }
 
   set itemId(value: string) {

@@ -14,20 +14,31 @@ export class ShoppingCartService {
 
   cart: Cart;
 
-  constructor() {
-    this.cart = new Cart('Autogenerate', [], new Date(), 0, 0, 'PLN');
+  private static idGenerator() {
+    return '' + Math.random().toString(36).substr(2, 9);
   }
 
   createItem(product: RoofWindowSkylight | Flashing | Accessory | FlatRoofWindow | VerticalWindow, quantity: number) {
-    return new Item('Autogenerate', product, quantity, new Date(), true);
+    return new Item(ShoppingCartService.idGenerator(), product, quantity, new Date(), true);
   }
 
   // TODO czy tutaj potrzebny jest ID Cart???
   addToCart(product, quantity: number) {
-    for (const cartItem of this.cart.cartItems) {
-      // @ts-ignore
-      if (product.kod === cartItem.product.kod) {
-        this.updateQuantity(cartItem, quantity);
+    this.cart = new Cart(ShoppingCartService.idGenerator(), [], new Date(), 0, 0, 'PLN');
+    if (this.cart.cartItems.length === 0) {
+      this.cart.currency = 'EUR';
+      const pro = this.createItem(product, quantity);
+      this.cart.cartItems.push(pro);
+    } else {
+      let foundInCart = null;
+      for (const cartItem of this.cart.cartItems) {
+        if (product.kod === cartItem.product.kod) {
+          foundInCart = cartItem;
+        }
+      }
+      if (foundInCart) {
+        const updatedQuantity = foundInCart.quantity + quantity;
+        this.updateQuantity(foundInCart, updatedQuantity);
       } else {
         this.cart.cartItems.push(this.createItem(product, quantity));
       }
@@ -37,7 +48,6 @@ export class ShoppingCartService {
 
   removeFromCart(product) {
     for (let cartItem of this.cart.cartItems) {
-      // @ts-ignore
       if (cartItem.product.kod === product.kod) {
         const index = this.cart.cartItems.indexOf(cartItem);
         if (index > -1) {
@@ -61,7 +71,7 @@ export class ShoppingCartService {
   }
 
   deleteCart() {
-    this.cart = new Cart('Autogenerate', [], new Date(), 0, 0, 'PLN');
+    this.cart = new Cart(ShoppingCartService.idGenerator(), [], new Date(), 0, 0, 'PLN');
     return this.cart;
   }
 
@@ -72,6 +82,10 @@ export class ShoppingCartService {
   }
 
   getCartFromLocalStorage() {
-    return JSON.parse(localStorage.getItem('cart')) as Cart;
+    this.cart = JSON.parse(localStorage.getItem('cart')) as Cart;
+    if (this.cart === null) {
+      this.cart = new Cart(ShoppingCartService.idGenerator(), [], new Date(), 0, 0, 'PLN');
+    }
+    return this.cart;
   }
 }
