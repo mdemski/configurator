@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {AuthService} from './services/auth.service';
+import {Store} from '@ngxs/store';
+import {GetCart} from './store/cart/cart.actions';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +12,7 @@ import {AuthService} from './services/auth.service';
 export class AppComponent implements OnInit {
   title = 'window-configurator';
 
-  constructor(private authService: AuthService, public translate: TranslateService) {
+  constructor(private authService: AuthService, public translate: TranslateService, private store: Store) {
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
     // const browserLang = translate.getBrowserLang();
@@ -19,7 +21,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('Byłem tutaj');
+    this.store.dispatch(GetCart);
     this.authService.autoLogin();
   }
 }
