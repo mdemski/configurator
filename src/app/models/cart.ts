@@ -1,17 +1,17 @@
 import {Item} from './item';
 
 export class Cart {
-  private _id: string;
+  public _id?: string;
   private _cartItems: Item[];
-  private _created: Date;
+  private _timestamp: number;
   private _totalAmount: number;
   private _totalAmountAfterDiscount: number;
   private _currency: string;
 
-  constructor(id: string, cartItems: Item[], created: Date, totalAmount: number, totalAmountAfterDiscount: number, currency: string) {
+  constructor(id: string, cartItems: Item[], timestamp: number, totalAmount: number, totalAmountAfterDiscount: number, currency: string) {
     this._id = id;
     this._cartItems = cartItems;
-    this._created = created;
+    this._timestamp = timestamp;
     this._totalAmount = totalAmount;
     this._totalAmountAfterDiscount = totalAmountAfterDiscount;
     this._currency = currency;
@@ -33,12 +33,12 @@ export class Cart {
     this._cartItems = value;
   }
 
-  get created(): Date {
-    return this._created;
+  get timestamp(): number {
+    return this._timestamp;
   }
 
-  set created(value: Date) {
-    this._created = value;
+  set timestamp(value: number) {
+    this._timestamp = value;
   }
 
   get totalAmount(): number {

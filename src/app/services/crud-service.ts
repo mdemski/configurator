@@ -280,7 +280,7 @@ export class CrudService {
 
   createCart(cart: Cart) {
     const url = `${this.cartsBaseUri}/create`;
-    const cartToCreate = new Cart('', cart.cartItems, cart.created, cart.totalAmount, cart.totalAmountAfterDiscount, cart.currency);
+    const cartToCreate = new Cart('', cart.cartItems, cart.timestamp, cart.totalAmount, cart.totalAmountAfterDiscount, cart.currency);
     return this.http.post(url, cartToCreate).pipe(catchError(err => err));
   }
 

@@ -2,6 +2,9 @@ import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {Cart} from '../../models/cart';
 import {AddProductToCart, DeleteCart, DeleteProductFromCart, GetCart} from './cart.actions';
 import {ShoppingCartService} from '../../services/shopping-cart.service';
+import {CookieService} from '../../services/cookie.service';
+import {CrudService} from '../../services/crud-service';
+import {tap} from 'rxjs/operators';
 
 export interface CartStateModel {
   cart: Cart;
@@ -14,7 +17,9 @@ export interface CartStateModel {
   }
 })
 export class CartState {
-  constructor(private shoppingCart: ShoppingCartService) {
+  constructor(private shoppingCart: ShoppingCartService,
+              private crud: CrudService,
+              private cookie: CookieService) {
   }
 
   @Selector()
@@ -30,42 +35,60 @@ export class CartState {
     };
   }
 
+  @Action(GetCart)
+  getCartItems(ctx: StateContext<CartStateModel>) {
+    const cartId = this.cookie.getCookie('trac');
+    console.log(cartId);
+    if (cartId) {
+      console.log('True cartId');
+      return this.crud.readCartByMongoId(cartId).pipe(tap((cart: Cart) => {
+        const state = ctx.getState();
+        ctx.setState({
+          ...state,
+          cart
+        });
+      }));
+    } else {
+      console.log('False cartId');
+      const newCart = this.shoppingCart.createCart();
+      return this.crud.createCart(newCart).pipe(tap((cart: Cart) => {
+        this.cookie.setCookie('trac', cart._id);
+        const state = ctx.getState();
+        ctx.setState({
+          ...state,
+          cart
+        });
+      }));
+    }
+  }
+
   @Action(AddProductToCart)
   addProductToCart(ctx: StateContext<CartStateModel>, {product, quantity}: AddProductToCart) {
-    const newCart = this.shoppingCart.addToCart(product, quantity);
-    this.shoppingCart.updateCartIntoLocalStorage(newCart);
     const state = ctx.getState();
-    return ctx.setState({
-      ...state,
-      cart: newCart
-    });
+    const updatedCart = this.shoppingCart.addToCart(state.cart, product, quantity);
+    return this.crud.updateCart(updatedCart).pipe(tap((cart: Cart) => {
+      ctx.setState({
+        ...state,
+        cart
+      });
+    }));
   }
 
   @Action(DeleteProductFromCart)
   deleteProductFromCart(ctx: StateContext<CartStateModel>, {product}: DeleteProductFromCart) {
-    const newCart = this.shoppingCart.removeFromCart(product);
-    this.shoppingCart.updateCartIntoLocalStorage(newCart);
     const state = ctx.getState();
-    ctx.setState({
-      ...state,
-      cart: newCart
-    });
-  }
-
-  @Action(GetCart)
-  getCartItems(ctx: StateContext<CartStateModel>) {
-    const cart = this.shoppingCart.getCartFromLocalStorage() as Cart;
-    const state = ctx.getState();
-    ctx.setState({
-      ...state,
-      cart
-    });
+    const updatedCart = this.shoppingCart.removeFromCart(state.cart, product);
+    return this.crud.updateCart(updatedCart).pipe(tap((cart: Cart) => {
+      ctx.setState({
+        ...state,
+        cart
+      });
+    }));
   }
 
   @Action(DeleteCart)
   deleteCart(ctx: StateContext<CartStateModel>) {
     const cart = this.shoppingCart.deleteCart();
-    this.shoppingCart.updateCartIntoLocalStorage(cart);
     const state = ctx.getState();
     ctx.setState({
       ...state,

@@ -7,12 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CartComponent implements OnInit {
 
-  value = 0;
+  value = new Date().valueOf();
 
   constructor() { }
 
   ngOnInit(): void {
-    this.value = 179.58;
   }
 
 }
