@@ -454,7 +454,7 @@ export class CrudService {
 
   updateCart(cart: Cart) {
     const url = `${this.cartsBaseUri}/update/${cart._id}`;
-    this.http.put(url, cart, {headers: this.headers}).pipe(catchError(err => err));
+    return this.http.put(url, cart, {headers: this.headers}).pipe(catchError(err => err));
   }
 
   updateNameConfigurationByMongoId(mongoId: string, configName: string) {
