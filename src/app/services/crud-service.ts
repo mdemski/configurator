@@ -18,6 +18,7 @@ import {FlatConfig} from '../models/flat-config';
 import {User} from '../models/user';
 import {Address} from '../models/address';
 import {Company} from '../models/company';
+import {Cart} from '../models/cart';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,7 @@ export class CrudService {
   baseUri = 'http://localhost:4000/api';
   usersBaseUri = 'http://localhost:4000/api/users';
   addressesBaseUri = 'http://localhost:4000/api/addresses';
+  cartsBaseUri = 'http://localhost:4000/api/carts';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   temporaryConfigurations: Observable<any[]>;
 
@@ -105,6 +107,16 @@ export class CrudService {
   readAddressByMongoId(mongoId: string): Observable<Address> {
     return this.http.get(this.addressesBaseUri).pipe(map((addresses: Address[]) => addresses
       .find(address => address.id === mongoId)));
+  }
+
+  readAllCartsFromMongoDB(): Observable<Cart[]> {
+    return this.http.get(this.cartsBaseUri).pipe(map((carts: Cart[]) => {
+      return carts;
+    }));
+  }
+
+  readCartByMongoId(mongoId: string): Observable<Cart> {
+    return this.http.get(this.cartsBaseUri).pipe(map((carts: Cart[]) => carts.find(cart => cart.id === mongoId)));
   }
 
   readAllConfigurationsFromMongoDB(): Observable<SingleConfiguration[]> {
@@ -264,6 +276,12 @@ export class CrudService {
     const userToCreate: User = new User('', user.email, user.password, user.rePassword, user.username, user.role, false, user.uuid,
       0, user.companyNip, '', '', user.activationLink, new Date(), new Date());
     return this.http.post(url, userToCreate).pipe(catchError(err => err));
+  }
+
+  createCart(cart: Cart) {
+    const url = `${this.cartsBaseUri}/create`;
+    const cartToCreate = new Cart('', cart.cartItems, cart.created, cart.totalAmount, cart.totalAmountAfterDiscount, cart.currency);
+    return this.http.post(url, cartToCreate).pipe(catchError(err => err));
   }
 
   createConfigurationForUser(user: string, configuration: SingleConfiguration) {
@@ -432,6 +450,11 @@ export class CrudService {
       }
     });
     this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
+  }
+
+  updateCart(cart: Cart) {
+    const url = `${this.cartsBaseUri}/update/${cart._id}`;
+    this.http.put(url, cart, {headers: this.headers}).pipe(catchError(err => err));
   }
 
   updateNameConfigurationByMongoId(mongoId: string, configName: string) {
@@ -668,6 +691,12 @@ export class CrudService {
     const url = `${this.usersBaseUri}/delete/${user._id}`;
     user.activated = false;
     return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
+  }
+
+  deleteCart(cart: Cart) {
+    const url = `${this.cartsBaseUri}/delete/${cart._id}`;
+    cart = null;
+    return this.http.put(url, cart, {headers: this.headers}).pipe(catchError(err => err));
   }
 
   // 1 usuwanie całej konfiguracji
