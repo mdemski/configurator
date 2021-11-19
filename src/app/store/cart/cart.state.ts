@@ -88,11 +88,16 @@ export class CartState {
 
   @Action(DeleteCart)
   deleteCart(ctx: StateContext<CartStateModel>) {
-    const cart = this.shoppingCart.deleteCart();
     const state = ctx.getState();
-    ctx.setState({
-      ...state,
-      cart
-    });
+    return this.crud.deleteCart(state.cart).pipe(tap((cart: Cart) => {
+      const newCart = this.shoppingCart.deleteCart();
+      return this.crud.createCart(newCart).pipe(tap((createdCart: Cart) => {
+        this.cookie.setCookie('trac', createdCart._id);
+        ctx.setState({
+          ...state,
+          cart: createdCart
+        });
+      }));
+    }));
   }
 }

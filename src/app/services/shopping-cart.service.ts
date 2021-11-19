@@ -34,7 +34,7 @@ export class ShoppingCartService {
   }
 
   createCart() {
-    return new Cart(ShoppingCartService.idGenerator(), [], new Date().valueOf(), 0, 0, this.currency);
+    return new Cart(ShoppingCartService.idGenerator(), [], new Date().valueOf(), 0, 0, this.currency, true, false);
   }
 
   // TODO czy tutaj potrzebny jest ID Cart???

@@ -65,6 +65,7 @@ export class CrudService {
     }));
   }
 
+  // COMPANIES
   readAllCompaniesFromERP(): Observable<Company[]> {
     // TODO poprawić adres który ma być odpytany z eNova
     return this.http.get('URL do zapytania do eNova').pipe(map((companies: Company[]) => {
@@ -72,6 +73,12 @@ export class CrudService {
     }));
   }
 
+  createCompany(registerCompany: Company) {
+    // TODO przygotować odpowiednią metodę komunikacyjną z eNova
+    return this.http.post('urlToEnova', registerCompany);
+  }
+
+  // USERS
   readAllUsersFromMongoDB(): Observable<User[]> {
     return this.http.get(this.usersBaseUri).pipe(map((users: User[]) => {
       return users;
@@ -98,6 +105,40 @@ export class CrudService {
     return this.http.get(url).pipe(map((user: User) => user));
   }
 
+  createUser(user: User) {
+    const url = `${this.usersBaseUri}/register`;
+    const userToCreate: User = new User('', user.email, user.password, user.rePassword, user.username, user.role, false, user.uuid,
+      0, user.companyNip, '', '', user.activationLink, new Date(), new Date());
+    return this.http.post(url, userToCreate).pipe(catchError(err => err));
+  }
+
+  updateUserByMongoId(user: User) {
+    const url = `${this.usersBaseUri}/update/${user._id}`;
+    return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
+  }
+
+  setDiscountForIndividualUser(user: User, discount: number, adminPassword: string | null, code: string | null) {
+    const url = `${this.usersBaseUri}/update/${user._id}`;
+    if (adminPassword) {
+      user.discount = discount;
+    }
+    // TODO dorobić obsługę listy kodów rabatowych
+    // @ts-ignore
+    this.discountList.forEach((discountObject: { code: string, value: number }) => {
+      if (discountObject.code === code) {
+        user.discount = discount;
+      }
+    });
+    this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
+  }
+
+  deleteUser(user: User) {
+    const url = `${this.usersBaseUri}/delete/${user._id}`;
+    user.activated = false;
+    return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
+  }
+
+  // ADDRESSES
   readAllAddressesFromMongoDB(): Observable<Address[]> {
     return this.http.get(this.addressesBaseUri).pipe(map((addresses: Address[]) => {
       return addresses;
@@ -109,6 +150,56 @@ export class CrudService {
       .find(address => address.id === mongoId)));
   }
 
+  createAddress(address: Address) {
+    const url = `${this.addressesBaseUri}/add`;
+    // return this.getGeoLocation(address.street, address.localNumber, address.zipCode, address.city, address.country)
+    //   .pipe(map(geoLocationObject => {
+    //   console.log(geoLocationObject);
+    //   const localization = {
+    //     // @ts-ignore
+    //     coordinateA: geoLocationObject.results[0].geometry.location.lat,
+    //     // @ts-ignore
+    //     coordinateB: geoLocationObject.results[0].geometry.location.lng
+    //   };
+    const addressToCreate: Address = new Address(address.firstName, address.lastName, address.phoneNumber, address.street,
+      address.localNumber, address.zipCode, address.city, address.country);
+    return this.http.post(url, addressToCreate).pipe(catchError(err => err));
+    // }));
+  }
+
+  updateAddressByMongoId(address: Address) {
+    const url = `${this.addressesBaseUri}/update/${address._id}`;
+    this.http.put(url, address, {headers: this.headers}).pipe(catchError(err => err));
+  }
+
+  updateUserAddressByMongoId(user: User, addressData: Address | null, companyData: Company | null) {
+    const url = `${this.usersBaseUri}/update/${user._id}`;
+    if (addressData) {
+      user.mainAddressId = addressData._id;
+    }
+    if (companyData) {
+      user.companyNip = companyData.nip;
+      user.discount = companyData.discount;
+      user.mainAddressId = companyData.address.id;
+    }
+    this.http.post(`${this.usersBaseUri}/send-mail`, companyData.email).subscribe(console.log);
+    return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
+  }
+
+  setAddressToSendForUser(user: User, addressToSend: Address) {
+    const url = `${this.usersBaseUri}/update/${user._id}`;
+    if (addressToSend) {
+      user.addressToSendId = addressToSend.id;
+    }
+    this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
+  }
+
+  deleteAddress(address: Address) {
+    const url = `${this.addressesBaseUri}/delete/${address._id}`;
+    return this.http.delete(url, {headers: this.headers}).pipe(catchError(err => err));
+  }
+
+  // CARTS
   readAllCartsFromMongoDB(): Observable<Cart[]> {
     return this.http.get(this.cartsBaseUri).pipe(map((carts: Cart[]) => {
       return carts;
@@ -116,9 +207,28 @@ export class CrudService {
   }
 
   readCartByMongoId(mongoId: string): Observable<Cart> {
-    return this.http.get(this.cartsBaseUri).pipe(map((carts: Cart[]) => carts.find(cart => cart.id === mongoId)));
+    const url = this.cartsBaseUri + '/' + mongoId;
+    return this.http.get(url).pipe(map((cart: Cart) => cart));
   }
 
+  createCart(cart: Cart) {
+    const url = `${this.cartsBaseUri}/create`;
+    const cartToCreate = new Cart('', cart.cartItems, cart.timestamp, cart.totalAmount, cart.totalAmountAfterDiscount, cart.currency, cart.active, cart.ordered);
+    return this.http.post(url, cartToCreate).pipe(catchError(err => err));
+  }
+
+  updateCart(cart: Cart) {
+    const url = `${this.cartsBaseUri}/update/${cart._id}`;
+    return this.http.put(url, cart, {headers: this.headers}).pipe(catchError(err => err));
+  }
+
+  deleteCart(cart: Cart) {
+    const url = `${this.cartsBaseUri}/update/${cart._id}`;
+    cart.active = false;
+    return this.http.put(url, cart, {headers: this.headers}).pipe(catchError(err => err));
+  }
+
+  // CONFIGURATIONS
   readAllConfigurationsFromMongoDB(): Observable<SingleConfiguration[]> {
     return this.http.get(this.baseUri).pipe(map((data: SingleConfiguration[]) => {
       return data;
@@ -249,41 +359,6 @@ export class CrudService {
     }));
   }
 
-  createCompany(registerCompany: Company) {
-    // TODO przygotować odpowiednią metodę komunikacyjną z eNova
-    return this.http.post('urlToEnova', registerCompany);
-  }
-
-  createAddress(address: Address) {
-    const url = `${this.addressesBaseUri}/add`;
-    // return this.getGeoLocation(address.street, address.localNumber, address.zipCode, address.city, address.country)
-    //   .pipe(map(geoLocationObject => {
-    //   console.log(geoLocationObject);
-    //   const localization = {
-    //     // @ts-ignore
-    //     coordinateA: geoLocationObject.results[0].geometry.location.lat,
-    //     // @ts-ignore
-    //     coordinateB: geoLocationObject.results[0].geometry.location.lng
-    //   };
-    const addressToCreate: Address = new Address(address.firstName, address.lastName, address.phoneNumber, address.street,
-      address.localNumber, address.zipCode, address.city, address.country);
-    return this.http.post(url, addressToCreate).pipe(catchError(err => err));
-    // }));
-  }
-
-  createUser(user: User) {
-    const url = `${this.usersBaseUri}/register`;
-    const userToCreate: User = new User('', user.email, user.password, user.rePassword, user.username, user.role, false, user.uuid,
-      0, user.companyNip, '', '', user.activationLink, new Date(), new Date());
-    return this.http.post(url, userToCreate).pipe(catchError(err => err));
-  }
-
-  createCart(cart: Cart) {
-    const url = `${this.cartsBaseUri}/create`;
-    const cartToCreate = new Cart('', cart.cartItems, cart.timestamp, cart.totalAmount, cart.totalAmountAfterDiscount, cart.currency);
-    return this.http.post(url, cartToCreate).pipe(catchError(err => err));
-  }
-
   createConfigurationForUser(user: string, configuration: SingleConfiguration) {
     const url = `${this.baseUri}/create`;
     const configurationToCreate: SingleConfiguration = {
@@ -403,58 +478,6 @@ export class CrudService {
     globalConfiguration.lastUpdate = new Date();
     globalConfiguration.products.flats.push(flatConfig);
     return this.http.put(url, globalConfiguration, {headers: this.headers}).pipe(catchError(err => err));
-  }
-
-  updateAddressByMongoId(address: Address) {
-    const url = `${this.addressesBaseUri}/update/${address._id}`;
-    this.http.put(url, address, {headers: this.headers}).pipe(catchError(err => err));
-  }
-
-  updateUserByMongoId(user: User) {
-    const url = `${this.usersBaseUri}/update/${user._id}`;
-    return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
-  }
-
-  updateUserAddressByMongoId(user: User, addressData: Address | null, companyData: Company | null) {
-    const url = `${this.usersBaseUri}/update/${user._id}`;
-    if (addressData) {
-      user.mainAddressId = addressData._id;
-    }
-    if (companyData) {
-      user.companyNip = companyData.nip;
-      user.discount = companyData.discount;
-      user.mainAddressId = companyData.address.id;
-    }
-    this.http.post(`${this.usersBaseUri}/send-mail`, companyData.email).subscribe(console.log);
-    return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
-  }
-
-  setAddressToSendForUser(user: User, addressToSend: Address) {
-    const url = `${this.usersBaseUri}/update/${user._id}`;
-    if (addressToSend) {
-      user.addressToSendId = addressToSend.id;
-    }
-    this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
-  }
-
-  setDiscountForIndividualUser(user: User, discount: number, adminPassword: string | null, code: string | null) {
-    const url = `${this.usersBaseUri}/update/${user._id}`;
-    if (adminPassword) {
-      user.discount = discount;
-    }
-    // TODO dorobić obsługę listy kodów rabatowych
-    // @ts-ignore
-    this.discountList.forEach((discountObject: { code: string, value: number }) => {
-      if (discountObject.code === code) {
-        user.discount = discount;
-      }
-    });
-    this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
-  }
-
-  updateCart(cart: Cart) {
-    const url = `${this.cartsBaseUri}/update/${cart._id}`;
-    return this.http.put(url, cart, {headers: this.headers}).pipe(catchError(err => err));
   }
 
   updateNameConfigurationByMongoId(mongoId: string, configName: string) {
@@ -680,23 +703,6 @@ export class CrudService {
     }
     globalConfiguration.lastUpdate = new Date();
     return this.http.put(url, globalConfiguration, {headers: this.headers}).pipe(catchError(err => err));
-  }
-
-  deleteAddress(address: Address) {
-    const url = `${this.addressesBaseUri}/delete/${address._id}`;
-    return this.http.delete(url, {headers: this.headers}).pipe(catchError(err => err));
-  }
-
-  deleteUser(user: User) {
-    const url = `${this.usersBaseUri}/delete/${user._id}`;
-    user.activated = false;
-    return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
-  }
-
-  deleteCart(cart: Cart) {
-    const url = `${this.cartsBaseUri}/delete/${cart._id}`;
-    cart = null;
-    return this.http.put(url, cart, {headers: this.headers}).pipe(catchError(err => err));
   }
 
   // 1 usuwanie całej konfiguracji
