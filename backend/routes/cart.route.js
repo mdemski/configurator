@@ -54,3 +54,5 @@ cartRoute.post('/update/:cartId').put((req, res, next) => {
     }
   });
 });
+
+module.exports = cartRoute;
