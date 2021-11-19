@@ -23,6 +23,7 @@ app.use(passport.initialize(undefined));
 const userRoute = require('../backend/routes/user.route');
 const singleConfigurationRoute = require('../backend/routes/singleConfiguration.route');
 const addressRoute = require("./routes/address.route");
+const cartRoute = require("./routes/cart.route");
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true
@@ -33,6 +34,7 @@ app.use('/', express.static(path.join(__dirname, 'dist/window-configurator-crud-
 app.use('/api', singleConfigurationRoute);
 app.use('/api/users', userRoute);
 app.use('/api/addresses', addressRoute);
+app.use('/api/carts', cartRoute);
 // routes.initialize(app);
 
 // Create port
