@@ -19,9 +19,15 @@ interface AuthResponseData {
   expiresIn: string;
 }
 
+interface CurrentUser {
+  email: string;
+  userName: string;
+  isLogged: boolean;
+}
+
 @Injectable()
 export class AuthService {
-  user = new BehaviorSubject<LoginUser>(null);
+  user$ = new BehaviorSubject<CurrentUser>(null);
   private tokenExpirationTimer: any;
   private loginLink: string;
   private isLogged = false;
@@ -36,27 +42,15 @@ export class AuthService {
   }
 
   returnUser() {
-    return this.isLogged ? this.user.pipe(map(user => {
-        if (user && user.username !== '' && user.username) {
-          return {
-            email: user.email,
-            currentUser: user.username,
-            loggedIn: true
-          };
-        } else {
-          return {
-            email: user.email,
-            currentUser: user.email,
-            loggedIn: true
-          };
-        }
+    return this.isLogged ? this.user$.pipe(map(user => {
+        return user;
       }))
       : this.ipService.getIpAddress().pipe(map(userIp => userIp)).pipe(map(userIp => {
         return {
           email: '',
           // @ts-ignore
-          currentUser: userIp.query,
-          loggedIn: false
+          userName: userIp.query,
+          isLogged: false
         };
       }));
   }
@@ -119,7 +113,12 @@ export class AuthService {
     this.autoLogout(expirationDuration);
     if (loadedUser.token) {
       this.isLogged = true;
-      this.user.next(loadedUser);
+      const currentUser: CurrentUser = {
+        email: loadedUser.email,
+        userName: loadedUser.username,
+        isLogged: this.isLogged
+      };
+      this.user$.next(currentUser);
       this.store.dispatch(SetCurrentUser);
     }
   }
@@ -158,7 +157,12 @@ export class AuthService {
       user.username = username;
       user.token = token;
       user.expireDate = expireDate;
-      this.user.next(user);
+      const currentUser: CurrentUser = {
+        email: user.email,
+        userName: user.username,
+        isLogged: this.isLogged
+      };
+      this.user$.next(currentUser);
       this.autoLogout(durationLeftMS);
 
       this.store.dispatch(SetCurrentUser);

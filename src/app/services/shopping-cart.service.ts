@@ -7,18 +7,25 @@ import {Accessory} from '../models/accessory';
 import {FlatRoofWindow} from '../models/flat-roof-window';
 import {VerticalWindow} from '../models/vertical-window';
 import {TranslateService} from '@ngx-translate/core';
+import {Select, Store} from '@ngxs/store';
+import {AppState} from '../store/app/app.state';
+import {Observable} from 'rxjs';
+import {CrudService} from './crud-service';
+import {User} from '../models/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ShoppingCartService {
 
+  @Select(AppState) user$: Observable<{ currentUser }>;
   currency: string;
+  currentUser;
 
-  constructor(public translate: TranslateService) {
+  constructor(public translate: TranslateService, private crud: CrudService, private store: Store) {
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
-    if (translate.currentLang === 'pl') {
+    if (translate.getBrowserLang() === 'pl') {
       this.currency = 'PLN';
     } else {
       this.currency = 'EUR';
@@ -44,24 +51,29 @@ export class ShoppingCartService {
     } else {
       let foundInCart = null;
       for (const cartItem of cart.cartItems) {
-        if (product.kod === cartItem.product.kod) {
+        // @ts-ignore
+        if (product.kod === cartItem._product._kod) {
           foundInCart = cartItem;
         }
       }
       if (foundInCart) {
-        const updatedQuantity = foundInCart.quantity + quantity;
+        const updatedQuantity = foundInCart._quantity + quantity;
         this.updateQuantity(cart, foundInCart, updatedQuantity);
       } else {
         cart.cartItems.push(this.createItem(product, quantity));
       }
     }
+    cart.currency = this.currency;
+    this.calculateTotalAmount(cart);
+    this.calculateTotalAmountAfterDiscount(cart);
     cart.timestamp = new Date().valueOf();
     return cart;
   }
 
   removeFromCart(cart: Cart, product) {
     for (let cartItem of cart.cartItems) {
-      if (cartItem.product.kod === product.kod) {
+      // @ts-ignore
+      if (cartItem._product._kod === product.kod) {
         const index = cart.cartItems.indexOf(cartItem);
         if (index > -1) {
           cart.cartItems.splice(index, 1);
@@ -69,14 +81,19 @@ export class ShoppingCartService {
         cartItem = null;
       }
     }
+    cart.currency = this.currency;
+    this.calculateTotalAmount(cart);
+    this.calculateTotalAmountAfterDiscount(cart);
     cart.timestamp = new Date().valueOf();
     return cart;
   }
 
   updateQuantity(cart: Cart, item: Item, quantity: number) {
     for (const cartItem of cart.cartItems) {
-      if (item.itemId === cartItem.itemId) {
-        cartItem.quantity = quantity;
+      // @ts-ignore
+      if (item._itemId === cartItem._itemId) {
+        // @ts-ignore
+        cartItem._quantity = quantity;
       }
     }
   }
@@ -86,5 +103,29 @@ export class ShoppingCartService {
 
   deleteCart() {
     return this.createCart();
+  }
+
+  calculateTotalAmount(cart) {
+    let value = 0;
+    for (const cartItem of cart.cartItems) {
+      // @ts-ignore
+      value += cartItem._product._CenaDetaliczna * cartItem._quantity;
+    }
+    cart.totalAmount = value;
+  }
+
+  calculateTotalAmountAfterDiscount(cart) {
+    this.user$.subscribe(user => {
+      this.currentUser = user.currentUser;
+      if (user.currentUser.isLogged) {
+        this.crud.readUserByEmail(user.currentUser.email).subscribe((fullUser: User) => {
+          if (this.currentUser.isLogged) {
+            cart.totalAmountAfterDiscount = cart.totalAmount - (cart.totalAmount * fullUser.discount);
+          } else {
+            cart.totalAmountAfterDiscount = cart.totalAmount;
+          }
+        });
+      }
+    });
   }
 }

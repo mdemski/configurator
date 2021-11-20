@@ -15,7 +15,6 @@ import {AppRoutingModule} from './app-routing.module';
 import {MyAccountComponent} from './my-account/my-account.component';
 import {DatabaseService} from './services/database.service';
 import {RegisterConfirmationPageComponent} from './register/register-confirmation-page/register-confirmation-page.component';
-import {AuthService} from './services/auth.service';
 
 import {IonicModule} from '@ionic/angular';
 import {environment} from '../environments/environment';
@@ -32,6 +31,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {CartComponent} from './cart/cart.component';
 import {CartState} from './store/cart/cart.state';
 import {CartGuard} from './store/cart/cart.guard';
+import {AuthService} from './services/auth.service';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -40,6 +40,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 @NgModule({
   declarations: [
     AppComponent,
+    MyAccountComponent,
     HeaderComponent,
     LoginComponent,
     RegisterComponent,
@@ -47,7 +48,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     FooterComponent,
     ContactComponent,
     HomeComponent,
-    MyAccountComponent,
     RegisterConfirmationPageComponent,
     CartComponent
   ],

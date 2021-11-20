@@ -6,8 +6,8 @@ import {tap} from 'rxjs/operators';
 export interface AppStateModel {
   currentUser: {
     email: string;
-    user: string,
-    loggedIn: boolean
+    userName: string;
+    isLogged: boolean;
   };
 }
 
@@ -16,8 +16,8 @@ export interface AppStateModel {
   defaults: {
     currentUser: {
       email: '',
-      user: '',
-      loggedIn: false
+      userName: '',
+      isLogged: false
     }
   }
 })
@@ -34,14 +34,14 @@ export class AppState {
   @Action(SetCurrentUser)
   setCurrentUser(ctx: StateContext<AppStateModel>) {
     return this.authService.returnUser().pipe(
-      tap((result) => {
+      tap((result: {email: string, userName: string, isLogged: boolean}) => {
         const state = ctx.getState();
         ctx.setState({
           ...state,
           currentUser: {
             email: result.email,
-            user: result.currentUser,
-            loggedIn: result.loggedIn
+            userName: result.userName,
+            isLogged: result.isLogged
           }
         });
       })

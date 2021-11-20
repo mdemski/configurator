@@ -20,8 +20,8 @@ export class RoofWindowDetailsComponent implements OnInit, OnDestroy {
   @Select(AppState) user$: Observable<{ currentUser }>;
   logInUser: {
     email: string;
-    user: string;
-    loggedIn: boolean
+    userName: string;
+    isLogged: boolean
   };
   routerData;
   windowToShow: RoofWindowSkylight;
@@ -68,7 +68,7 @@ export class RoofWindowDetailsComponent implements OnInit, OnDestroy {
   }
 
   getDiscountPrice() {
-    if (this.logInUser.loggedIn) {
+    if (this.logInUser.isLogged) {
       return this.crud.readUserByEmail(this.logInUser.email).pipe(takeUntil(this.isDestroyed$)).subscribe(user => {
         this.priceAfterDisc$.next(this.windowToShow.CenaDetaliczna / (1 + user.discount));
       });

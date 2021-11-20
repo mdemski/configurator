@@ -44,7 +44,7 @@
   <div class="md-container--right-side">
     <p class="product-name">{{windowToShow.windowName}}</p>
     <p class="price">{{ 'SINGLE-PRODUCT.price' | translate}} {{windowToShow.CenaDetaliczna}} {{ 'GENERAL.currency' | translate}}</p>
-    <p *ngIf="logInUser.loggedIn"
+    <p *ngIf="logInUser.isLogged"
        class="price--after-discount">{{ 'SINGLE-PRODUCT.priceAfterDisc' | translate}} {{priceAfterDisc$ | async | currency :' ' : '' : undefined : undefined}} {{ 'GENERAL.currency' | translate}}</p>
     <div class="line"></div>
     <div class="all-sizes-container">
