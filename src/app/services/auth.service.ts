@@ -115,13 +115,12 @@ export class AuthService {
     loadedUser.token = loginUser._token;
     // @ts-ignore
     loadedUser.expireDate = loginUser._expireDate;
-    this.autoLogout(loadedUser.expireDate.valueOf());
+    const expirationDuration = new Date(loadedUser.expireDate).valueOf() - Date.now().valueOf();
+    this.autoLogout(expirationDuration);
     if (loadedUser.token) {
       this.isLogged = true;
       this.user.next(loadedUser);
       this.store.dispatch(SetCurrentUser);
-      const expirationDuration = new Date(loadedUser.expireDate).valueOf() - Date.now().valueOf();
-      this.autoLogout(expirationDuration);
     }
   }
 
