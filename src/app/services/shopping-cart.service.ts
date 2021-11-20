@@ -7,11 +7,12 @@ import {Accessory} from '../models/accessory';
 import {FlatRoofWindow} from '../models/flat-roof-window';
 import {VerticalWindow} from '../models/vertical-window';
 import {TranslateService} from '@ngx-translate/core';
-import {Select, Store} from '@ngxs/store';
+import {Select} from '@ngxs/store';
 import {AppState} from '../store/app/app.state';
 import {Observable} from 'rxjs';
 import {CrudService} from './crud-service';
 import {User} from '../models/user';
+import {skip} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -20,9 +21,14 @@ export class ShoppingCartService {
 
   @Select(AppState) user$: Observable<{ currentUser }>;
   currency: string;
-  currentUser;
+  discount;
 
-  constructor(public translate: TranslateService, private crud: CrudService, private store: Store) {
+  constructor(public translate: TranslateService, private crud: CrudService) {
+    this.user$.pipe(skip(2)).subscribe(user => {
+      this.crud.readUserByEmail(user.currentUser.email).subscribe((fullUser: User) => {
+        this.discount = fullUser.discount;
+      });
+    });
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
     if (translate.getBrowserLang() === 'pl') {
@@ -115,17 +121,10 @@ export class ShoppingCartService {
   }
 
   calculateTotalAmountAfterDiscount(cart) {
-    this.user$.subscribe(user => {
-      this.currentUser = user.currentUser;
-      if (user.currentUser.isLogged) {
-        this.crud.readUserByEmail(user.currentUser.email).subscribe((fullUser: User) => {
-          if (this.currentUser.isLogged) {
-            cart.totalAmountAfterDiscount = cart.totalAmount - (cart.totalAmount * fullUser.discount);
-          } else {
-            cart.totalAmountAfterDiscount = cart.totalAmount;
-          }
-        });
-      }
-    });
+    if (this.discount > 0) {
+      cart.totalAmountAfterDiscount = cart.totalAmount - (cart.totalAmount * this.discount);
+    } else {
+      cart.totalAmountAfterDiscount = cart.totalAmount;
+    }
   }
 }
