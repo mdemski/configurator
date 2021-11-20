@@ -115,6 +115,7 @@ export class AuthService {
     loadedUser.token = loginUser._token;
     // @ts-ignore
     loadedUser.expireDate = loginUser._expireDate;
+    this.autoLogout(loadedUser.expireDate.valueOf());
     if (loadedUser.token) {
       this.isLogged = true;
       this.user.next(loadedUser);
