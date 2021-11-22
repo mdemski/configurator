@@ -12,6 +12,9 @@ let Item = new Schema({
   quantity: {
     type: Number
   },
+  discount: {
+    type: Number
+  },
   created: {
     type: Date
   },
