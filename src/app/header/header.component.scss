@@ -60,7 +60,7 @@
     padding: 2rem 0;
     height: 0;
 
-    img  {
+    img {
       height: 2.8rem;
     }
   }
@@ -77,9 +77,28 @@
     padding-top: 2rem;
     margin-left: auto;
 
-    &--icon {
-      color: $color-white;
-      font-size: 2rem;
+    &__icon-box {
+      position: relative;
+
+      &--icon {
+        color: $color-white;
+        font-size: 2rem;
+      }
+
+      &--notification {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 1.7rem;
+        height: 1.7rem;
+        position: absolute;
+        top: -7px;
+        left: 22px;
+        color: $color-white;
+        padding: 0.2rem;
+        background-color: $color-red;
+        border-radius: 50%;
+      }
     }
   }
 
@@ -107,6 +126,7 @@
           text-align: center;
           align-self: flex-end;
           list-style: none;
+
           &:not(:last-child) {
             padding-right: 5rem;
           }
@@ -114,6 +134,7 @@
           &--link {
             text-decoration: none;
             color: $color-white;
+
             &:hover p {
               transition: color .5s;
               color: $color-light-blue;
@@ -126,6 +147,7 @@
             }
           }
         }
+
         &--products {
 
           &--product-element {

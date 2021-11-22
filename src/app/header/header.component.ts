@@ -1,8 +1,11 @@
-import {Component, ElementRef, HostListener, OnInit, Renderer2} from '@angular/core';
+import {Component, ElementRef, HostListener, OnDestroy, OnInit, Renderer2} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {AuthService} from '../services/auth.service';
-import {Store} from '@ngxs/store';
+import {Select, Store} from '@ngxs/store';
 import {SetCurrentUser} from '../store/app/app.actions';
+import {CartState} from '../store/cart/cart.state';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import {skip, takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -10,13 +13,16 @@ import {SetCurrentUser} from '../store/app/app.actions';
   styleUrls: ['./header.component.scss']
 })
 
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
+  @Select(CartState) cart$: Observable<any>;
+  isDestroyed$ = new Subject();
   userId: string;
   searchInApp: string;
   shopSubMenu = {display: 'none'};
   configSubMenu = {display: 'none'};
   advicesSubMenu = {display: 'none'};
   onScroll = false;
+  quantityInCart$ = new BehaviorSubject<number>(0);
 
   constructor(private renderer: Renderer2,
               private el: ElementRef,
@@ -28,7 +34,19 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.cart$.pipe(takeUntil(this.isDestroyed$), skip(1)).subscribe((data: { cart }) => {
+      let quantityInCart = 0;
+      for (const item of data.cart.cartItems) {
+        // @ts-ignore
+        quantityInCart += item._quantity;
+      }
+      this.quantityInCart$.next(quantityInCart);
+    });
     this.store.dispatch(SetCurrentUser);
+  }
+
+  ngOnDestroy(): void {
+    this.isDestroyed$.next();
   }
 
   logout() {

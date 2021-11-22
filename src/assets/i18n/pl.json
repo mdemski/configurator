@@ -126,7 +126,8 @@
     "windowSelectionLink": "wybor-okien",
     "configurationOptionsLink": "dostepne-opcje",
     "appFunctionsLink": "fukcje-aplikacji",
-    "sellers": "dealerzy"
+    "sellers": "dealerzy",
+    "linkToCart": "koszyk"
   },
   "CONTACT": {
     "contactUs": "Skontaktuj się z nami",
