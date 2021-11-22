@@ -402,7 +402,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
           this.configuredFlashing.wysokosc = reverseHeightsArray[i];
           this.showWidthMessage = this.standardWidths.includes(form.dimensions.widths[j]);
           this.showHeightMessage = this.standardHeights.includes(reverseHeightsArray[i]);
-          this.configuredFlashing.flashingName = this.flashingSetter.buildFlashingName(form.flashingType,
+          this.configuredFlashing.productName = this.flashingSetter.buildFlashingName(form.flashingType,
             form.dimensions.widths[j], reverseHeightsArray[i]);
           this.verticalAndHorizontalSpacingSetter(i, j, form, reverseHorizontalSpacingsArray);
           this.configuredFlashing.model = flashingModelsArray[modelsArrayIndex];
@@ -429,7 +429,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
         [], [], null, false, null);
       this.configuredFlashing.model = this.flashingSetter.singleFlashingModelCreator(form.flashingType, form.apronType);
       // tslint:disable-next-line:max-line-length
-      this.configuredFlashing.flashingName = this.flashingSetter.buildFlashingName(form.flashingType, form.dimensions.widths[0], form.dimensions.heights[0]);
+      this.configuredFlashing.productName = this.flashingSetter.buildFlashingName(form.flashingType, form.dimensions.widths[0], form.dimensions.heights[0]);
       this.configuredFlashing.indeksAlgorytm = 'I-KOŁNIERZ';
       this.configuredFlashing.nazwaPLAlgorytm = 'NPL-KOŁNIERZ';
       this.configuredFlashing.status = '1. Nowy';

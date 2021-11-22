@@ -1,7 +1,7 @@
 export class Flashing {
   private _kod: string;
   private _nazwaPozycjiPL: string;
-  private _flashingName: string;
+  private _productName: string;
   private _indeksAlgorytm: string;
   private _nazwaPLAlgorytm: string;
   private _status: string;
@@ -30,10 +30,10 @@ export class Flashing {
   private _flashingCombinationCode: string | null; // pomocnicze oznaczenie zestawu nie przesyłać do ERP
 
   // tslint:disable-next-line:max-line-length
-  constructor(kod: string, nazwaPozycjiPL: string, flashingName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, rodzaj: string, rodzina: string, oblachowanieMaterial: string, oblachowanieKolor: string, oblachowanieFinisz: string, typKolnierza: string, wiatrownicaDlugosc: number, typFartucha: string, flashingTileHeight: number, rozstawPoziom: number, rozstawPion: number, CenaDetaliczna: number, dostepneRozmiary: string[], linkiDoZdjec: string[], cennik: string, flashingCombination: boolean, flashingCombinationCode: string | null) {
+  constructor(kod: string, nazwaPozycjiPL: string, productName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, rodzaj: string, rodzina: string, oblachowanieMaterial: string, oblachowanieKolor: string, oblachowanieFinisz: string, typKolnierza: string, wiatrownicaDlugosc: number, typFartucha: string, flashingTileHeight: number, rozstawPoziom: number, rozstawPion: number, CenaDetaliczna: number, dostepneRozmiary: string[], linkiDoZdjec: string[], cennik: string, flashingCombination: boolean, flashingCombinationCode: string | null) {
     this._kod = kod;
     this._nazwaPozycjiPL = nazwaPozycjiPL;
-    this._flashingName = flashingName;
+    this._productName = productName;
     this._indeksAlgorytm = indeksAlgorytm;
     this._nazwaPLAlgorytm = nazwaPLAlgorytm;
     this._status = status;
@@ -78,12 +78,12 @@ export class Flashing {
     this._nazwaPozycjiPL = value;
   }
 
-  get flashingName(): string {
-    return this._flashingName;
+  get productName(): string {
+    return this._productName;
   }
 
-  set flashingName(value: string) {
-    this._flashingName = value;
+  set productName(value: string) {
+    this._productName = value;
   }
 
   get indeksAlgorytm(): string {

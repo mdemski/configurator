@@ -88,7 +88,7 @@ export class DatabaseService {
   fetchRoofWindows(): Observable<any> {
     const windows = this.getAllRoofWindowsToShopList();
     for (const window of windows) {
-      window.windowName = this.windowValuesSetter.getModelName(window);
+      window.productName = this.windowValuesSetter.getModelName(window);
       window.windowUG = this.windowValuesSetter.getUwAndUgValues(window).windowUG;
       window.windowUW = this.windowValuesSetter.getUwAndUgValues(window).windowUW;
       window.numberOfGlasses = this.windowValuesSetter.getNumberOfGlasses(window);
@@ -110,7 +110,7 @@ export class DatabaseService {
   getWindowByCode(kod: string) {
     let tempWindow: RoofWindowSkylight;
     tempWindow = this.getAllRoofWindowsToShopList().filter(window => window.kod === kod)[0];
-    tempWindow.windowName = this.windowValuesSetter.getModelName(tempWindow);
+    tempWindow.productName = this.windowValuesSetter.getModelName(tempWindow);
     tempWindow.windowUG = this.windowValuesSetter.getUwAndUgValues(tempWindow).windowUG;
     tempWindow.windowUW = this.windowValuesSetter.getUwAndUgValues(tempWindow).windowUW;
     tempWindow.numberOfGlasses = this.windowValuesSetter.getNumberOfGlasses(tempWindow);

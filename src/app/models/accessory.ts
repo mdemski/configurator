@@ -1,7 +1,7 @@
 export class Accessory {
   private _kod: string;
   private _nazwaPozycjiPL: string;
-  private _accessoryName: string;
+  private _productName: string;
   private _indeksAlgorytm: string;
   private _nazwaPLAlgorytm: string;
   private _status: string;
@@ -28,10 +28,10 @@ export class Accessory {
   private _cennik: string;
 
   // tslint:disable-next-line:max-line-length
-  constructor(kod: string, nazwaPozycjiPL: string, accessoryName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, rodzaj: string, rodzina: string, dopasowanieRoletyDlugosc: string, dopasowanieRoletySzerokosc: string, typTkaniny: string, kolorTkaniny: string, kolorTworzywWew: string, roletyKolorOsprzetu: string, accessoryHorizontalSpacing: number, otwieranie: string, tabliczka: string, CenaDetaliczna: number, linkiDoZdjec: string[], dostepneRozmiary: string[], cennik: string) {
+  constructor(kod: string, nazwaPozycjiPL: string, productName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, rodzaj: string, rodzina: string, dopasowanieRoletyDlugosc: string, dopasowanieRoletySzerokosc: string, typTkaniny: string, kolorTkaniny: string, kolorTworzywWew: string, roletyKolorOsprzetu: string, accessoryHorizontalSpacing: number, otwieranie: string, tabliczka: string, CenaDetaliczna: number, linkiDoZdjec: string[], dostepneRozmiary: string[], cennik: string) {
     this._kod = kod;
     this._nazwaPozycjiPL = nazwaPozycjiPL;
-    this._accessoryName = accessoryName;
+    this._productName = productName;
     this._indeksAlgorytm = indeksAlgorytm;
     this._nazwaPLAlgorytm = nazwaPLAlgorytm;
     this._status = status;
@@ -74,12 +74,12 @@ export class Accessory {
     this._nazwaPozycjiPL = value;
   }
 
-  get accessoryName(): string {
-    return this._accessoryName;
+  get productName(): string {
+    return this._productName;
   }
 
-  set accessoryName(value: string) {
-    this._accessoryName = value;
+  set productName(value: string) {
+    this._productName = value;
   }
 
   get indeksAlgorytm(): string {

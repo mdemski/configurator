@@ -91,7 +91,7 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
       let widthFound = true;
       let heightFound = true;
       if (this.filters.windowName) {
-        nameFound = window.windowName.toString().trim().toLowerCase().indexOf(this.filters.windowName.toLowerCase()) !== -1;
+        nameFound = window.productName.toString().trim().toLowerCase().indexOf(this.filters.windowName.toLowerCase()) !== -1;
       }
       if (this.filters.windowWidthFrom !== undefined && this.filters.windowWidthTo !== undefined) {
         // widths

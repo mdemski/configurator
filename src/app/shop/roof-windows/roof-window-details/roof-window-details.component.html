@@ -36,13 +36,13 @@
 
     <!--Main pictures of product-->
     <div class="main-picture">
-      <img *ngFor="let url of picturesOfWindow" src="{{url}}" alt="{{windowToShow.windowName}}">
+      <img *ngFor="let url of picturesOfWindow" src="{{url}}" alt="{{windowToShow.productName}}">
     </div>
     <!--Main pictures of product-->
   </div>
 
   <div class="md-container--right-side">
-    <p class="product-name">{{windowToShow.windowName}}</p>
+    <p class="product-name">{{windowToShow.productName}}</p>
     <p class="price">{{ 'SINGLE-PRODUCT.price' | translate}} {{windowToShow.CenaDetaliczna}} {{ 'GENERAL.currency' | translate}}</p>
     <p *ngIf="logInUser.isLogged"
        class="price--after-discount">{{ 'SINGLE-PRODUCT.priceAfterDisc' | translate}} {{priceAfterDisc$ | async | currency :' ' : '' : undefined : undefined}} {{ 'GENERAL.currency' | translate}}</p>
@@ -95,7 +95,7 @@
       <tr>
         <th scope="row">1</th>
         <td>{{ 'SINGLE-PRODUCT.windowName' | translate}}</td>
-        <td>{{windowToShow.windowName}}</td>
+        <td>{{windowToShow.productName}}</td>
       </tr>
       <tr>
         <th scope="row">2</th>

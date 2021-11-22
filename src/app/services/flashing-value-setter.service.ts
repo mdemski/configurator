@@ -23,7 +23,7 @@ export class FlashingValueSetterService implements OnDestroy {
 
   setModelNameFromErpData(flashing: Flashing) {
     // tslint:disable-next-line:max-line-length
-    flashing.flashingName = this.buildFlashingName(flashing.model, flashing.szerokosc, flashing.wysokosc);
+    flashing.productName = this.buildFlashingName(flashing.model, flashing.szerokosc, flashing.wysokosc);
   }
 
   buildFlashingName(model: string, szerokosc: number, wysokosc: number) {

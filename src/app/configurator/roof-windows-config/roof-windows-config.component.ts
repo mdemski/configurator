@@ -365,7 +365,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     temporaryConfigObject.status = '1. Nowy';
     temporaryConfigObject.szerokosc = form.width;
     temporaryConfigObject.wysokosc = form.height;
-    temporaryConfigObject.windowName = this.windowValuesSetter.getModelName(temporaryConfigObject);
+    temporaryConfigObject.productName = this.windowValuesSetter.getModelName(temporaryConfigObject);
     temporaryConfigObject.indeksAlgorytm = 'I-OKNO';
     temporaryConfigObject.nazwaPLAlgorytm = 'NPL-OKNO';
     temporaryConfigObject.typ = this.windowValuesSetter.getWindowType(form.openingType);
