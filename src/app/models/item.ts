@@ -6,7 +6,7 @@ import {VerticalWindow} from './vertical-window';
 
 export class Item {
   constructor(private _itemId: string, private _product: RoofWindowSkylight | Flashing | Accessory | FlatRoofWindow | VerticalWindow,
-              private _quantity: number, private _created: Date, private _isOrdered: boolean) {
+              private _quantity: number, private _discount: number, private _created: Date, private _isOrdered: boolean) {
   }
 
   get itemId(): string {
@@ -31,6 +31,14 @@ export class Item {
 
   set quantity(value: number) {
     this._quantity = value;
+  }
+
+  get discount(): number {
+    return this._discount;
+  }
+
+  set discount(value: number) {
+    this._discount = value;
   }
 
   get created(): Date {

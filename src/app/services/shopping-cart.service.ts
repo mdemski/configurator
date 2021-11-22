@@ -43,7 +43,7 @@ export class ShoppingCartService {
   }
 
   createItem(product: RoofWindowSkylight | Flashing | Accessory | FlatRoofWindow | VerticalWindow, quantity: number) {
-    return new Item(ShoppingCartService.idGenerator(), product, quantity, new Date(), true);
+    return new Item(ShoppingCartService.idGenerator(), product, quantity, this.discount, new Date(), true);
   }
 
   createCart() {
