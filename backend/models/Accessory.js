@@ -8,7 +8,7 @@ let Accessory = new Schema({
   nazwaPozycjiPL: {
     type: String
   },
-  accessoryName: {
+  productName: {
     type: String
   },
   indeksAlgorytm: {

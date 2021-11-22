@@ -8,7 +8,7 @@ let Flat = new Schema({
   nazwaPozycjiPL: {
     type: String
   },
-  windowName: {
+  productName: {
     type: String
   },
   indeksAlgorytm: {

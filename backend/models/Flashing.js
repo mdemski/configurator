@@ -8,7 +8,7 @@ let Flashing = new Schema({
   nazwaPozycjiPL: {
     type: String
   },
-  flashingName: {
+  productName: {
     type: String
   },
   indeksAlgorytm: {

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let Vertical = new Schema({
-  verticalName: {
+  productName: {
     type: String
   },
   verticalSystem: {
