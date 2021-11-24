@@ -63,7 +63,7 @@
     top: 50%;
     right: 15px;
     transform: translateY(-50%);
-    width: 20px;
+    width: 10px;
     opacity: 0.3;
     transition: 0.2s ease;
   }
@@ -111,6 +111,7 @@
   &__option {
     display: block;
     padding: 10px;
+    margin: 0;
     background-color: $color-white;
 
     &:hover,
