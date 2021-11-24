@@ -47,7 +47,8 @@ export class AuthService {
       }))
       : this.ipService.getIpAddress().pipe(map(userIp => userIp)).pipe(map(userIp => {
         return {
-          email: '',
+          // @ts-ignore
+          email: userIp.query,
           // @ts-ignore
           userName: userIp.query,
           isLogged: false

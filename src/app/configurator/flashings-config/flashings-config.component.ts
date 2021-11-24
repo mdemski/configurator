@@ -61,7 +61,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
     this.configOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(configOptions => this.configOptions = configOptions);
-    this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.currentUser = user.currentUser.userName);
+    this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.currentUser = user.currentUser.email);
     this.configurations$.pipe(takeUntil(this.isDestroyed$)).subscribe(configurations => this.configurations = configurations);
     this.params$.pipe(takeUntil(this.isDestroyed$)).subscribe(params => this.routerParams = params);
     this.flashings$.pipe(takeUntil(this.isDestroyed$)).subscribe(flashings => {
