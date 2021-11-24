@@ -173,8 +173,8 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
   }
 
   // TODO sprawdzić co dokładnie wrzuca się do koszyka i odpowiednio to obsługiwać
-  addToCart(product) {
-    this.store.dispatch(new AddProductToCart(product, product.quantity)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+  addToCart(product, quantity) {
+    this.store.dispatch(new AddProductToCart(product, quantity)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
   }
 
   // Options toggle

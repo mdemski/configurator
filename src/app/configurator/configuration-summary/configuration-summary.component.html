@@ -160,7 +160,7 @@
                 <a class="btn btn--black remove-config-button"
                    (click)="removeProductConfiguration(configuration, singleWindow.id, singleWindow)">{{ 'CONFIG-SUMMARY.removeConfiguration' | translate}}</a>
                 <a href="" class="btn btn--green add-to-cart"
-                   (click)="addToCart(singleWindow.window)">{{ 'SINGLE-PRODUCT.addToCart' | translate}}</a>
+                   (click)="addToCart(singleWindow.window, singleWindow.quantity)">{{ 'SINGLE-PRODUCT.addToCart' | translate}}</a>
               </div>
             </div>
           </div>
@@ -306,7 +306,7 @@
                 <a class="btn btn--black remove-config-button"
                    (click)="removeProductConfiguration(configuration, singleFlashing.id, singleFlashing)">{{ 'CONFIG-SUMMARY.removeConfiguration' | translate}}</a>
                 <a href="" class="btn btn--green add-to-cart"
-                   (click)="addToCart(singleFlashing.flashing)">{{'SINGLE-PRODUCT.addToCart' | translate}}</a>
+                   (click)="addToCart(singleFlashing.flashing, singleFlashing.quantity)">{{'SINGLE-PRODUCT.addToCart' | translate}}</a>
               </div>
             </div>
           </div>
@@ -441,7 +441,7 @@
                 <a class="btn btn--black remove-config-button"
                    (click)="removeProductConfiguration(configuration, singleAccessory.id, singleAccessory)">{{ 'CONFIG-SUMMARY.removeConfiguration' | translate}}</a>
                 <a href="" class="btn btn--green add-to-cart"
-                   (click)="addToCart(singleAccessory.accessory)">{{ 'SINGLE-PRODUCT.addToCart' | translate}}</a>
+                   (click)="addToCart(singleAccessory.accessory, singleAccessory.quantity)">{{ 'SINGLE-PRODUCT.addToCart' | translate}}</a>
               </div>
             </div>
           </div>
