@@ -70,7 +70,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
 
   configuredWindow: RoofWindowSkylight;
   form: FormGroup;
-  configWindowFormId: number;
+  configFormId: number;
   userConfigs = [];
   urlToSaveConfiguration: string;
   showWidthMessage = false;
@@ -713,7 +713,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
 
   chooseConfigId(configForm: any) {
     // wersja 1
-    if (configForm.value.configWindowFormId === undefined) {
+    if (configForm.value.configFormId === undefined) {
       this.newWindowConfig.products.windows.forEach(element => element.configLink = String(
         this.router['location']._platformLocation.location.origin + this.router.url
         + '/' + this.globalId
