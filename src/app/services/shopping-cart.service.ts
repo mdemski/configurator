@@ -50,7 +50,9 @@ export class ShoppingCartService {
     return new Cart(ShoppingCartService.idGenerator(), [], new Date().valueOf(), 0, 0, this.currency, true, false);
   }
 
-  // TODO czy tutaj potrzebny jest ID Cart???
+  // Dodawanie i aktualizowanie ilości w koszyku
+  // W razie potrzeby przerobić tą metodą podłączając ją do DB
+  // - zabezpieczenie aktualizacji koszyka z wielu kart
   addToCart(cart: Cart, product, quantity: number) {
     if (cart.cartItems.length === 0) {
       cart.cartItems.push(this.createItem(product, quantity));
@@ -58,7 +60,7 @@ export class ShoppingCartService {
       let foundInCart = null;
       for (const cartItem of cart.cartItems) {
         // @ts-ignore
-        if (product.kod === cartItem._product._kod) {
+        if (product._kod === cartItem._product._kod) {
           foundInCart = cartItem;
         }
       }
@@ -79,7 +81,7 @@ export class ShoppingCartService {
   removeFromCart(cart: Cart, product) {
     for (let cartItem of cart.cartItems) {
       // @ts-ignore
-      if (cartItem._product._kod === product.kod) {
+      if (cartItem._product._kod === product._kod) {
         const index = cart.cartItems.indexOf(cartItem);
         if (index > -1) {
           cart.cartItems.splice(index, 1);

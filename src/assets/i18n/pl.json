@@ -147,6 +147,26 @@
     "wrongEmail": "Podany adres jest niepoprawny",
     "contactDesc": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Id quam sapiente molestiae numquam quas, voluptates omnis nulla ea odio quia similique corrupti magnam, doloremque laborum."
   },
+  "CART": {
+    "title": "Twój koszyk",
+    "numberInCart": "Ilość produktów w koszyku",
+    "emptyCart": "Twój koszyk jest aktualnie pusty",
+    "picture": "Miniaturka",
+    "name": "Skrócona nazwa",
+    "quantity": "Ilość",
+    "price": "Cena",
+    "priceAfterDiscount": "Cena po rabacie",
+    "summary": "Podsumowanie",
+    "product": "produkt",
+    "products": "produkty",
+    "products2": "produktów",
+    "shipping": "Sposób wysyłki",
+    "chooseShipping": "Wybierz sposób wysyłki",
+    "discountCode": "Wprowadź kod rabatowy:",
+    "order": "Złóż zamówienie",
+    "valueToPay": "Kwota do zapłaty",
+    "delete": "Usuń"
+  },
   "CONFIGURATOR": {
     "description": "To jest główny opis do konfiguratora, wybierz dowolną grupę produktów aby móc skonfigurować dowolnie wyglądający produkt, odpowiadający Twoim wymaganiom estetycznym i projektowym.",
     "roofWindows": "Okna dachowe",
