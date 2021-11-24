@@ -937,7 +937,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
 
   chooseConfigId(configForm: any) {
     // wersja 1
-    if (configForm.value.configFlashingFormId === undefined) {
+    if (configForm.value.configFormId === undefined) {
       this.store.dispatch(new AddGlobalConfiguration(this.currentUser, this.newFlashingConfig))
         .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
       // wersja 2
@@ -947,7 +947,8 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
         + '/' + this.newFlashingConfig.globalId
         + '/' + this.formName
         + '/' + this.configuredFlashing.kod);
-      this.configId = String('configuration-' + parseInt(configForm.value.configFlashingFormId, 10));
+      this.configId = String('configuration-' + parseInt(configForm.value.configFormId, 10));
+      this.globalConfiguration = this.configurations.find(config => config.globalId === this.configId);
       if (this.configuredFlashingArray.length === 0) {
         // tslint:disable-next-line:max-line-length
         this.store.dispatch(new AddFlashingConfiguration(this.globalConfiguration, this.configuredFlashing,
