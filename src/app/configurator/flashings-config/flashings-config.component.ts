@@ -106,7 +106,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
   outerColors: { option: string, disabled: boolean }[];
   outerColorFinishes: { option: string, disabled: boolean }[];
   userConfigs = [];
-  configFlashingFormId: number;
+  configFormId: number;
   minVerticalNumber: number;
   minHorizontalNumber: number;
   maxVerticalNumber: number;
