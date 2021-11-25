@@ -39,6 +39,7 @@ import {FlashingConfig} from '../../models/flashing-config';
 import {AccessoryConfig} from '../../models/accessory-config';
 import {FlatConfig} from '../../models/flat-config';
 import {VerticalConfig} from '../../models/vertical-config';
+import cloneDeep from 'lodash/cloneDeep';
 
 export interface ConfigurationStateModel {
   // w razie problemów z wydajnością zmienić wczytywanie tylko na konfiguracje user'a a pełną listę brać wyłącznie do nadawania numerów
@@ -339,10 +340,11 @@ export class ConfigurationState {
   @Action(AddRoofWindowConfiguration)
   addNewRoofWindowConfiguration(ctx: StateContext<ConfigurationStateModel>,
                                 {globalConfiguration, payload, formName, formData, configLink}: AddRoofWindowConfiguration) {
-    return this.crud.createWindowConfigurationIntoGlobalConfiguration(globalConfiguration, payload, formName, formData, configLink).pipe(
+    const configuration = cloneDeep(globalConfiguration);
+    return this.crud.createWindowConfigurationIntoGlobalConfiguration(configuration, payload, formName, formData, configLink).pipe(
       tap((result: SingleConfiguration) => {
         const state = ctx.getState();
-        ctx.patchState({
+        ctx.setState({
           ...state,
           configurations: [...state.configurations, result]
         });
@@ -352,11 +354,12 @@ export class ConfigurationState {
   @Action(UpdateRoofWindowConfiguration)
   updateRoofWindowConfiguration(ctx: StateContext<ConfigurationStateModel>,
                                 {globalConfiguration, windowId, payload}: UpdateRoofWindowConfiguration) {
-    return this.crud.updateWindowConfigurationIntoGlobalConfiguration(globalConfiguration, windowId, payload).pipe(
+    const configuration = cloneDeep(globalConfiguration);
+    return this.crud.updateWindowConfigurationIntoGlobalConfiguration(configuration, windowId, payload).pipe(
       tap(() => {
         const state = ctx.getState();
         const configList = [...state.configurations];
-        const configIndex = configList.findIndex(item => item._id === globalConfiguration._id);
+        const configIndex = configList.findIndex(item => item._id === configuration._id);
         configList[configIndex].products.windows.map(window => ({
           ...window,
           window: window.id === windowId ? payload : window
@@ -371,11 +374,12 @@ export class ConfigurationState {
   @Action(UpdateRoofWindowQuantityByConfigAndWindowId)
   updateRoofWindowQuantityConfiguration(ctx: StateContext<ConfigurationStateModel>,
                                         {globalConfiguration, windowId, payload}: UpdateRoofWindowQuantityByConfigAndWindowId) {
-    return this.crud.updateWindowQuantity(globalConfiguration, windowId, payload).pipe(
+    const configuration = cloneDeep(globalConfiguration);
+    return this.crud.updateWindowQuantity(configuration, windowId, payload).pipe(
       tap(() => {
         const state = ctx.getState();
         const configList = [...state.configurations];
-        const configIndex = configList.findIndex(item => item._id === globalConfiguration._id);
+        const configIndex = configList.findIndex(item => item._id === configuration._id);
         configList[configIndex].products.windows.map(window => ({
           ...window,
           quantity: window.id === windowId ? payload : window.quantity
@@ -390,11 +394,12 @@ export class ConfigurationState {
   @Action(UpdateRoofWindowFormByFormName)
   updateRoofWindowFormByFromName(ctx: StateContext<ConfigurationStateModel>,
                                  {globalConfiguration, windowFormName, payload}: UpdateRoofWindowFormByFormName) {
-    return this.crud.updateWindowFormDataByFormName(globalConfiguration, windowFormName, payload).pipe(
+    const configuration = cloneDeep(globalConfiguration);
+    return this.crud.updateWindowFormDataByFormName(configuration, windowFormName, payload).pipe(
       tap(() => {
         const state = ctx.getState();
         const configList = [...state.configurations];
-        const configIndex = configList.findIndex(item => item._id === globalConfiguration._id);
+        const configIndex = configList.findIndex(item => item._id === configuration._id);
         configList[configIndex].products.windows.map(window => ({
           ...window,
           windowFormData: window.windowFormName === windowFormName ? payload : window.windowFormData
@@ -409,11 +414,12 @@ export class ConfigurationState {
   @Action(DeleteRoofWindowConfigurationByConfigAndWindowId)
   deleteRoofWindowConfiguration(ctx: StateContext<ConfigurationStateModel>,
                                 {globalConfiguration, windowId}: DeleteRoofWindowConfigurationByConfigAndWindowId) {
-    return this.crud.deleteWindowConfigurationFromConfigurationById(globalConfiguration, windowId).pipe(
+    const configuration = cloneDeep(globalConfiguration);
+    return this.crud.deleteWindowConfigurationFromConfigurationById(configuration, windowId).pipe(
       tap(() => {
         const state = ctx.getState();
         const configList = [...state.configurations];
-        const configIndex = configList.findIndex(item => item._id === globalConfiguration._id);
+        const configIndex = configList.findIndex(item => item._id === configuration._id);
         const productList = configList[configIndex].products;
         configList[configIndex].products.windows.map(() => ({
           ...productList,
@@ -434,7 +440,8 @@ export class ConfigurationState {
   @Action(AddFlashingConfiguration)
   addNewFlashingConfiguration(ctx: StateContext<ConfigurationStateModel>,
                               {globalConfiguration, payload, formName, formData, configLink}: AddFlashingConfiguration) {
-    return this.crud.createFlashingConfigurationIntoGlobalConfiguration(globalConfiguration, payload, formName, formData, configLink).pipe(
+    const configuration = cloneDeep(globalConfiguration);
+    return this.crud.createFlashingConfigurationIntoGlobalConfiguration(configuration, payload, formName, formData, configLink).pipe(
       tap((result: SingleConfiguration) => {
         const state = ctx.getState();
         ctx.patchState({
@@ -447,7 +454,8 @@ export class ConfigurationState {
   @Action(AddFlashingConfigurations)
   addNewFlashingConfigurations(ctx: StateContext<ConfigurationStateModel>,
                                {globalConfiguration, payload}: AddFlashingConfigurations) {
-    return this.crud.createFlashingsArrayConfigurationIntoGlobalConfiguration(globalConfiguration, payload).pipe(
+    const configuration = cloneDeep(globalConfiguration);
+    return this.crud.createFlashingsArrayConfigurationIntoGlobalConfiguration(configuration, payload).pipe(
       tap((result: SingleConfiguration) => {
         const state = ctx.getState();
         ctx.patchState({
@@ -460,11 +468,12 @@ export class ConfigurationState {
   @Action(UpdateFlashingConfiguration)
   updateFlashingConfiguration(ctx: StateContext<ConfigurationStateModel>,
                               {globalConfiguration, flashingId, payload}: UpdateFlashingConfiguration) {
-    return this.crud.updateFlashingConfigurationIntoGlobalConfiguration(globalConfiguration, flashingId, payload).pipe(
+    const configuration = cloneDeep(globalConfiguration);
+    return this.crud.updateFlashingConfigurationIntoGlobalConfiguration(configuration, flashingId, payload).pipe(
       tap(() => {
         const state = ctx.getState();
         const configList = [...state.configurations];
-        const configIndex = configList.findIndex(item => item._id === globalConfiguration._id);
+        const configIndex = configList.findIndex(item => item._id === configuration._id);
         configList[configIndex].products.flashings.map(flashing => ({
           ...flashing,
           flashing: flashing.id === flashingId ? payload : flashing
@@ -479,11 +488,12 @@ export class ConfigurationState {
   @Action(UpdateFlashingConfigurations)
   updateFlashingConfigurations(ctx: StateContext<ConfigurationStateModel>,
                                {globalConfiguration, payload}: UpdateFlashingConfigurations) {
-    return this.crud.updateFlashingsArrayConfigurationIntoGlobalConfiguration(globalConfiguration, payload).pipe(
+    const configuration = cloneDeep(globalConfiguration);
+    return this.crud.updateFlashingsArrayConfigurationIntoGlobalConfiguration(configuration, payload).pipe(
       tap(() => {
         const state = ctx.getState();
         const configList = [...state.configurations];
-        const configIndex = configList.findIndex(item => item._id === globalConfiguration._id);
+        const configIndex = configList.findIndex(item => item._id === configuration._id);
         // TODO sprawdzić czy ten zapis zadziała poprawnie???
         const flashingConfigs = configList[configIndex].products.flashings;
         configList[configIndex].products.flashings.map(() => ({
@@ -500,11 +510,12 @@ export class ConfigurationState {
   @Action(UpdateFlashingQuantityByConfigAndFlashingId)
   updateFlashingQuantityConfiguration(ctx: StateContext<ConfigurationStateModel>,
                                       {globalConfiguration, flashingId, payload}: UpdateFlashingQuantityByConfigAndFlashingId) {
-    return this.crud.updateFlashingQuantity(globalConfiguration, flashingId, payload).pipe(
+    const configuration = cloneDeep(globalConfiguration);
+    return this.crud.updateFlashingQuantity(configuration, flashingId, payload).pipe(
       tap(() => {
         const state = ctx.getState();
         const configList = [...state.configurations];
-        const configIndex = configList.findIndex(item => item._id === globalConfiguration._id);
+        const configIndex = configList.findIndex(item => item._id === configuration._id);
         configList[configIndex].products.flashings.map(flashing => ({
           ...flashing,
           quantity: flashing.id === flashingId ? payload : flashing.quantity
@@ -519,11 +530,12 @@ export class ConfigurationState {
   @Action(UpdateFlashingFormByFormName)
   updateFlashingFormByFromName(ctx: StateContext<ConfigurationStateModel>,
                                {globalConfiguration, flashingFormName, payload}: UpdateFlashingFormByFormName) {
-    return this.crud.updateFlashingFormDataByFormName(globalConfiguration, flashingFormName, payload).pipe(
+    const configuration = cloneDeep(globalConfiguration);
+    return this.crud.updateFlashingFormDataByFormName(configuration, flashingFormName, payload).pipe(
       tap(() => {
         const state = ctx.getState();
         const configList = [...state.configurations];
-        const configIndex = configList.findIndex(item => item._id === globalConfiguration._id);
+        const configIndex = configList.findIndex(item => item._id === configuration._id);
         configList[configIndex].products.flashings.map(flashing => ({
           ...flashing,
           flashingFormData: flashing.flashingFormName === flashingFormName ? payload : flashing.flashingFormData
@@ -538,11 +550,12 @@ export class ConfigurationState {
   @Action(DeleteFlashingConfigurationByConfigAndFlashingId)
   deleteFlashingConfiguration(ctx: StateContext<ConfigurationStateModel>,
                               {globalConfiguration, flashingId}: DeleteFlashingConfigurationByConfigAndFlashingId) {
-    return this.crud.deleteFlashingConfigurationFromConfigurationById(globalConfiguration, flashingId).pipe(
+    const configuration = cloneDeep(globalConfiguration);
+    return this.crud.deleteFlashingConfigurationFromConfigurationById(configuration, flashingId).pipe(
       tap(() => {
         const state = ctx.getState();
         const configList = [...state.configurations];
-        const configIndex = configList.findIndex(item => item._id === globalConfiguration._id);
+        const configIndex = configList.findIndex(item => item._id === configuration._id);
         const productList = configList[configIndex].products;
         configList[configIndex].products.flashings.map(() => ({
           ...productList,
@@ -561,7 +574,8 @@ export class ConfigurationState {
   @Action(AddAccessoryConfiguration)
   addNewAccessoryConfiguration(ctx: StateContext<ConfigurationStateModel>,
                                {globalConfiguration, payload, formName, formData, configLink}: AddAccessoryConfiguration) {
-    return this.crud.createAccessoryConfigurationIntoGlobalConfiguration(globalConfiguration, payload, formName, formData, configLink).pipe(
+    const configuration = cloneDeep(globalConfiguration);
+    return this.crud.createAccessoryConfigurationIntoGlobalConfiguration(configuration, payload, formName, formData, configLink).pipe(
       tap((result: SingleConfiguration) => {
         const state = ctx.getState();
         ctx.patchState({
@@ -574,11 +588,12 @@ export class ConfigurationState {
   @Action(UpdateAccessoryConfiguration)
   updateAccessoryConfiguration(ctx: StateContext<ConfigurationStateModel>,
                                {globalConfiguration, accessoryId, payload}: UpdateAccessoryConfiguration) {
-    return this.crud.updateAccessoryConfigurationIntoGlobalConfiguration(globalConfiguration, accessoryId, payload).pipe(
+    const configuration = cloneDeep(globalConfiguration);
+    return this.crud.updateAccessoryConfigurationIntoGlobalConfiguration(configuration, accessoryId, payload).pipe(
       tap(() => {
         const state = ctx.getState();
         const configList = [...state.configurations];
-        const configIndex = configList.findIndex(item => item._id === globalConfiguration._id);
+        const configIndex = configList.findIndex(item => item._id === configuration._id);
         configList[configIndex].products.accessories.map(accessory => ({
           ...accessory,
           accessory: accessory.id === accessoryId ? payload : accessory
@@ -593,11 +608,12 @@ export class ConfigurationState {
   @Action(UpdateAccessoryQuantityByConfigAndAccessoryId)
   updateAccessoryQuantityConfiguration(ctx: StateContext<ConfigurationStateModel>,
                                        {globalConfiguration, accessoryId, payload}: UpdateAccessoryQuantityByConfigAndAccessoryId) {
-    return this.crud.updateAccessoryQuantity(globalConfiguration, accessoryId, payload).pipe(
+    const configuration = cloneDeep(globalConfiguration);
+    return this.crud.updateAccessoryQuantity(configuration, accessoryId, payload).pipe(
       tap(() => {
         const state = ctx.getState();
         const configList = [...state.configurations];
-        const configIndex = configList.findIndex(item => item._id === globalConfiguration._id);
+        const configIndex = configList.findIndex(item => item._id === configuration._id);
         configList[configIndex].products.accessories.map(accessory => ({
           ...accessory,
           quantity: accessory.id === accessoryId ? payload : accessory.quantity
@@ -612,11 +628,12 @@ export class ConfigurationState {
   @Action(UpdateAccessoryFormByFormName)
   updateAccessoryFormByFromName(ctx: StateContext<ConfigurationStateModel>,
                                 {globalConfiguration, accessoryFormName, payload}: UpdateAccessoryFormByFormName) {
-    return this.crud.updateAccessoryFormDataByFormName(globalConfiguration, accessoryFormName, payload).pipe(
+    const configuration = cloneDeep(globalConfiguration);
+    return this.crud.updateAccessoryFormDataByFormName(configuration, accessoryFormName, payload).pipe(
       tap(() => {
         const state = ctx.getState();
         const configList = [...state.configurations];
-        const configIndex = configList.findIndex(item => item._id === globalConfiguration._id);
+        const configIndex = configList.findIndex(item => item._id === configuration._id);
         configList[configIndex].products.accessories.map(accessory => ({
           ...accessory,
           accessoryFormData: accessory.accessoryFormName === accessoryFormName ? payload : accessory.accessoryFormData
@@ -631,11 +648,12 @@ export class ConfigurationState {
   @Action(DeleteAccessoryConfigurationByConfigAndAccessoryId)
   deleteAccessoryConfiguration(ctx: StateContext<ConfigurationStateModel>,
                                {globalConfiguration, accessoryId}: DeleteAccessoryConfigurationByConfigAndAccessoryId) {
-    return this.crud.deleteAccessoryConfigurationFromConfigurationById(globalConfiguration, accessoryId).pipe(
+    const configuration = cloneDeep(globalConfiguration);
+    return this.crud.deleteAccessoryConfigurationFromConfigurationById(configuration, accessoryId).pipe(
       tap(() => {
         const state = ctx.getState();
         const configList = [...state.configurations];
-        const configIndex = configList.findIndex(item => item._id === globalConfiguration._id);
+        const configIndex = configList.findIndex(item => item._id === configuration._id);
         const productList = configList[configIndex].products;
         configList[configIndex].products.accessories.map(() => ({
           ...productList,
@@ -654,7 +672,8 @@ export class ConfigurationState {
   @Action(AddFlatRoofConfiguration)
   addNewFlatRoofConfiguration(ctx: StateContext<ConfigurationStateModel>,
                               {globalConfiguration, payload, formName, formData, configLink}: AddFlatRoofConfiguration) {
-    return this.crud.createFlatConfigurationIntoGlobalConfiguration(globalConfiguration, payload, formName, formData, configLink).pipe(
+    const configuration = cloneDeep(globalConfiguration);
+    return this.crud.createFlatConfigurationIntoGlobalConfiguration(configuration, payload, formName, formData, configLink).pipe(
       tap((result: SingleConfiguration) => {
         const state = ctx.getState();
         ctx.patchState({
@@ -667,11 +686,12 @@ export class ConfigurationState {
   @Action(UpdateFlatRoofConfiguration)
   updateFlatRoofConfiguration(ctx: StateContext<ConfigurationStateModel>,
                               {globalConfiguration, flatId, payload}: UpdateFlatRoofConfiguration) {
-    return this.crud.updateFlatConfigurationIntoGlobalConfiguration(globalConfiguration, flatId, payload).pipe(
+    const configuration = cloneDeep(globalConfiguration);
+    return this.crud.updateFlatConfigurationIntoGlobalConfiguration(configuration, flatId, payload).pipe(
       tap(() => {
         const state = ctx.getState();
         const configList = [...state.configurations];
-        const configIndex = configList.findIndex(item => item._id === globalConfiguration._id);
+        const configIndex = configList.findIndex(item => item._id === configuration._id);
         configList[configIndex].products.flats.map(flat => ({
           ...flat,
           flat: flat.id === flatId ? payload : flat
@@ -686,11 +706,12 @@ export class ConfigurationState {
   @Action(UpdateFlatRoofQuantityByConfigAndFlatId)
   updateFlatRoofQuantityConfiguration(ctx: StateContext<ConfigurationStateModel>,
                                       {globalConfiguration, flatId, payload}: UpdateFlatRoofQuantityByConfigAndFlatId) {
-    return this.crud.updateFlatQuantity(globalConfiguration, flatId, payload).pipe(
+    const configuration = cloneDeep(globalConfiguration);
+    return this.crud.updateFlatQuantity(configuration, flatId, payload).pipe(
       tap(() => {
         const state = ctx.getState();
         const configList = [...state.configurations];
-        const configIndex = configList.findIndex(item => item._id === globalConfiguration._id);
+        const configIndex = configList.findIndex(item => item._id === configuration._id);
         configList[configIndex].products.flats.map(flat => ({
           ...flat,
           quantity: flat.id === flatId ? payload : flat.quantity
@@ -705,11 +726,12 @@ export class ConfigurationState {
   @Action(UpdateFlatRoofFormByFormName)
   updateFlatRoofFormByFromName(ctx: StateContext<ConfigurationStateModel>,
                                {globalConfiguration, flatFormName, payload}: UpdateFlatRoofFormByFormName) {
-    return this.crud.updateFlatFormDataByFormName(globalConfiguration, flatFormName, payload).pipe(
+    const configuration = cloneDeep(globalConfiguration);
+    return this.crud.updateFlatFormDataByFormName(configuration, flatFormName, payload).pipe(
       tap(() => {
         const state = ctx.getState();
         const configList = [...state.configurations];
-        const configIndex = configList.findIndex(item => item._id === globalConfiguration._id);
+        const configIndex = configList.findIndex(item => item._id === configuration._id);
         configList[configIndex].products.flats.map(flat => ({
           ...flat,
           flatFormData: flat.flatFormName === flatFormName ? payload : flat.flatFormData
@@ -724,11 +746,12 @@ export class ConfigurationState {
   @Action(DeleteFlatRoofConfigurationByConfigAndFlatId)
   deleteFlatRoofConfiguration(ctx: StateContext<ConfigurationStateModel>,
                               {globalConfiguration, flatId}: DeleteFlatRoofConfigurationByConfigAndFlatId) {
-    return this.crud.deleteFlatConfigurationFromConfigurationById(globalConfiguration, flatId).pipe(
+    const configuration = cloneDeep(globalConfiguration);
+    return this.crud.deleteFlatConfigurationFromConfigurationById(configuration, flatId).pipe(
       tap(() => {
         const state = ctx.getState();
         const configList = [...state.configurations];
-        const configIndex = configList.findIndex(item => item._id === globalConfiguration._id);
+        const configIndex = configList.findIndex(item => item._id === configuration._id);
         const productList = configList[configIndex].products;
         configList[configIndex].products.flats.map(() => ({
           ...productList,
@@ -747,7 +770,8 @@ export class ConfigurationState {
   @Action(AddVerticalWindowConfiguration)
   addNewVerticalWindowConfiguration(ctx: StateContext<ConfigurationStateModel>,
                                     {globalConfiguration, payload, formName, formData, configLink}: AddVerticalWindowConfiguration) {
-    return this.crud.createVerticalConfigurationIntoGlobalConfiguration(globalConfiguration, payload, formName, formData, configLink).pipe(
+    const configuration = cloneDeep(globalConfiguration);
+    return this.crud.createVerticalConfigurationIntoGlobalConfiguration(configuration, payload, formName, formData, configLink).pipe(
       tap((result: SingleConfiguration) => {
         const state = ctx.getState();
         ctx.patchState({
@@ -760,11 +784,12 @@ export class ConfigurationState {
   @Action(UpdateVerticalWindowConfiguration)
   updateVerticalWindowConfiguration(ctx: StateContext<ConfigurationStateModel>,
                                     {globalConfiguration, verticalId, payload}: UpdateVerticalWindowConfiguration) {
-    return this.crud.updateVerticalConfigurationIntoGlobalConfiguration(globalConfiguration, verticalId, payload).pipe(
+    const configuration = cloneDeep(globalConfiguration);
+    return this.crud.updateVerticalConfigurationIntoGlobalConfiguration(configuration, verticalId, payload).pipe(
       tap(() => {
         const state = ctx.getState();
         const configList = [...state.configurations];
-        const configIndex = configList.findIndex(item => item._id === globalConfiguration._id);
+        const configIndex = configList.findIndex(item => item._id === configuration._id);
         configList[configIndex].products.verticals.map(vertical => ({
           ...vertical,
           vertical: vertical.id === verticalId ? payload : vertical
@@ -779,11 +804,12 @@ export class ConfigurationState {
   @Action(UpdateVerticalWindowQuantityByConfigAndWindowId)
   updateVerticalWindowQuantityConfiguration(ctx: StateContext<ConfigurationStateModel>,
                                             {globalConfiguration, verticalId, payload}: UpdateVerticalWindowQuantityByConfigAndWindowId) {
-    return this.crud.updateVerticalQuantity(globalConfiguration, verticalId, payload).pipe(
+    const configuration = cloneDeep(globalConfiguration);
+    return this.crud.updateVerticalQuantity(configuration, verticalId, payload).pipe(
       tap(() => {
         const state = ctx.getState();
         const configList = [...state.configurations];
-        const configIndex = configList.findIndex(item => item._id === globalConfiguration._id);
+        const configIndex = configList.findIndex(item => item._id === configuration._id);
         configList[configIndex].products.verticals.map(vertical => ({
           ...vertical,
           quantity: vertical.id === verticalId ? payload : vertical.quantity
@@ -798,11 +824,12 @@ export class ConfigurationState {
   @Action(UpdateVerticalWindowFormByFormName)
   updateVerticalWindowFormByFromName(ctx: StateContext<ConfigurationStateModel>,
                                      {globalConfiguration, verticalFormName, payload}: UpdateVerticalWindowFormByFormName) {
-    return this.crud.updateVerticalFormDataByFormName(globalConfiguration, verticalFormName, payload).pipe(
+    const configuration = cloneDeep(globalConfiguration);
+    return this.crud.updateVerticalFormDataByFormName(configuration, verticalFormName, payload).pipe(
       tap(() => {
         const state = ctx.getState();
         const configList = [...state.configurations];
-        const configIndex = configList.findIndex(item => item._id === globalConfiguration._id);
+        const configIndex = configList.findIndex(item => item._id === configuration._id);
         configList[configIndex].products.verticals.map(vertical => ({
           ...vertical,
           verticalFormData: vertical.verticalFormName === verticalFormName ? payload : vertical.verticalFormData
@@ -817,11 +844,12 @@ export class ConfigurationState {
   @Action(DeleteVerticalWindowConfigurationByConfigAndWindowId)
   deleteVerticalWindowConfiguration(ctx: StateContext<ConfigurationStateModel>,
                                     {globalConfiguration, verticalId}: DeleteVerticalWindowConfigurationByConfigAndWindowId) {
-    return this.crud.deleteVerticalConfigurationFromConfigurationById(globalConfiguration, verticalId).pipe(
+    const configuration = cloneDeep(globalConfiguration);
+    return this.crud.deleteVerticalConfigurationFromConfigurationById(configuration, verticalId).pipe(
       tap(() => {
         const state = ctx.getState();
         const configList = [...state.configurations];
-        const configIndex = configList.findIndex(item => item._id === globalConfiguration._id);
+        const configIndex = configList.findIndex(item => item._id === configuration._id);
         const productList = configList[configIndex].products;
         configList[configIndex].products.verticals.map(() => ({
           ...productList,
