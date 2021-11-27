@@ -40,7 +40,7 @@ configurationRoute.route('/read/:configId').get(((req, res, next) => {
 configurationRoute.route('/update/:configId').put(((req, res, next) => {
   SingleConfiguration.findByIdAndUpdate(req.params.configId, {
     $set: req.body
-  }, (error, data) => {
+  }, {new: true}, (error, data) => {
     if (error) {
       console.log(error)
       return next(error)

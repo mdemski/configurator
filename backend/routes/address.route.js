@@ -48,7 +48,7 @@ addressRoute.route('/:addressId').get(((req, res, next) => {
 addressRoute.route('/update/:addressId').put(((req, res, next) => {
   Address.findByIdAndUpdate(req.params.addressId, {
     $set: req.body
-  }, (error, data) => {
+  }, {new: true}, (error, data) => {
     if (error) {
       console.log(error)
       return next(error)

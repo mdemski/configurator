@@ -141,7 +141,7 @@ userRoute.post('/register', function (req, res, next) {
 userRoute.route('/update/:userId').put(((req, res, next) => {
   User.findByIdAndUpdate(req.params.userId, {
     $set: req.body
-  }, (error, data) => {
+  }, {new: true}, (error, data) => {
     if (error) {
       console.log(error)
       return next(error)

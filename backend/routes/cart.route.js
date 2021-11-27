@@ -46,7 +46,7 @@ cartRoute.post('/create', function (req, res, next) {
 cartRoute.route('/update/:cartId').put((req, res, next) => {
   Cart.findByIdAndUpdate(req.params.cartId, {
     $set: req.body
-  }, (error, data) => {
+  }, {new: true}, (error, data) => {
     if (error) {
       return next(error);
     } else {
