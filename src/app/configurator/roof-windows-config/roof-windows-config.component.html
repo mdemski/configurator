@@ -503,7 +503,7 @@
                   <div class="select-box__value" *ngFor="let singleConfiguration of userConfigs; let i = index">
                     <input class="select-box__input" type="radio" id="{{i}}" [(ngModel)]="configFormId" [ngModelOptions]="{standalone: true}"
                            value="{{singleConfiguration.userId}}" name="configFormId"/>
-                    <p class="select-box__input-text">{{singleConfiguration.userId}}- {{singleConfiguration.name}}</p>
+                    <p class="select-box__input-text">{{singleConfiguration.userId}} - {{singleConfiguration.name}}</p>
                   </div>
                   <div class="select-box__value">
                     <input class="select-box__input" type="radio" id="999" value="{{userConfigs[0].userId}}"
