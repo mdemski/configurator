@@ -348,7 +348,8 @@
     "closeCopyLinkPopUp": "Zamknij",
     "copyLinkText": "Skopij i zapisz poniższy link",
     "saveCopyLinkPopUp": "Zapisz link do konfiguracji",
-    "resetConfigForm": "Resetuj konfigurację"
+    "resetConfigForm": "Resetuj konfigurację",
+    "backButton": "Wróć"
   },
   "ROOF-WINDOWS-DATA": {
     "Okno:IS1": "IS",

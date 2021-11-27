@@ -421,130 +421,146 @@
           </div>
         </div>
 
-          <div class="configure-form__group" formGroupName="closure"
-               [ngClass]="{'md-not-popup' : popupConfig===false}">
-            <label for="handle" (click)="onHandleHover(handleOptions)"
-                   class="configure-form__group__label">{{ 'ROOF-WINDOWS-CONFIG.handle' | translate}}</label>
-            <div class="configure-form__group__options" #handleOptions>
-              <div class="configure-form__group__options--option" *ngFor="let handle of handles">
-                <input type="radio"
-                       class="configure-form__group__options--option__input"
-                       id="{{handle.option}}"
-                       value="{{handle.option}}"
-                       formControlName="handle"
-                       [attr.disabled]="handle.disabled"/>
-                <label for="{{handle.option}}"
-                       [ngClass]="{'label--disabled' : handle.disabled}"
-                       class="configure-form__group__options--option__label"
-                       [ngStyle]="setBackgroundImage(handle.option)">{{builtNameForTranslation(handle.option) | translate}}</label>
-              </div>
+        <div class="configure-form__group" formGroupName="closure"
+             [ngClass]="{'md-not-popup' : popupConfig===false}">
+          <label for="handle" (click)="onHandleHover(handleOptions)"
+                 class="configure-form__group__label">{{ 'ROOF-WINDOWS-CONFIG.handle' | translate}}</label>
+          <div class="configure-form__group__options" #handleOptions>
+            <div class="configure-form__group__options--option" *ngFor="let handle of handles">
+              <input type="radio"
+                     class="configure-form__group__options--option__input"
+                     id="{{handle.option}}"
+                     value="{{handle.option}}"
+                     formControlName="handle"
+                     [attr.disabled]="handle.disabled"/>
+              <label for="{{handle.option}}"
+                     [ngClass]="{'label--disabled' : handle.disabled}"
+                     class="configure-form__group__options--option__label"
+                     [ngStyle]="setBackgroundImage(handle.option)">{{builtNameForTranslation(handle.option) | translate}}</label>
+            </div>
 
-              <label for="handleColor"
-                     class="configure-form__group__label--inner">{{ 'ROOF-WINDOWS-CONFIG.handleColor' | translate}}</label>
-              <div class="configure-form__group__options--option" *ngFor="let handleColor of handleColors">
-                <input type="radio"
-                       class="configure-form__group__options--option__input"
-                       id="{{handleColor.option}}"
-                       value="{{handleColor.option}}"
-                       formControlName="handleColor"
-                       [attr.disabled]="handleColor.disabled">
-                <label for="{{handleColor.option}}"
-                       [ngClass]="{'label--disabled' : handleColor.disabled}"
-                       class="configure-form__group__options--option__label"
-                >{{builtNameForTranslation(handleColor.option) | translate}}</label>
-              </div>
-              <div class="configure-form__navigation-buttons">
-                <a (click)="onVentilationHover(ventilationOptions);onHandleHover(handleOptions)"
-                   class="btn btn--grey configure-form__navigation-buttons__next-prev">
-                  {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
+            <label for="handleColor"
+                   class="configure-form__group__label--inner">{{ 'ROOF-WINDOWS-CONFIG.handleColor' | translate}}</label>
+            <div class="configure-form__group__options--option" *ngFor="let handleColor of handleColors">
+              <input type="radio"
+                     class="configure-form__group__options--option__input"
+                     id="{{handleColor.option}}"
+                     value="{{handleColor.option}}"
+                     formControlName="handleColor"
+                     [attr.disabled]="handleColor.disabled">
+              <label for="{{handleColor.option}}"
+                     [ngClass]="{'label--disabled' : handleColor.disabled}"
+                     class="configure-form__group__options--option__label"
+              >{{builtNameForTranslation(handleColor.option) | translate}}</label>
+            </div>
+            <div class="configure-form__navigation-buttons">
+              <a (click)="onVentilationHover(ventilationOptions);onHandleHover(handleOptions)"
+                 class="btn btn--grey configure-form__navigation-buttons__next-prev">
+                {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
 
-                <a (click)="onHandleHover(handleOptions);onExtrasHover(extrasOptions)"
-                   class="btn btn--blue configure-form__navigation-buttons__next-prev">
-                  {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
-              </div>
+              <a (click)="onHandleHover(handleOptions);onExtrasHover(extrasOptions)"
+                 class="btn btn--blue configure-form__navigation-buttons__next-prev">
+                {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
             </div>
           </div>
+        </div>
 
-          <div class="configure-form__group"
-               [ngClass]="{'md-not-popup' : popupConfig===false}">
-            <label for="extras" (click)="onExtrasHover(extrasOptions)"
-                   class="configure-form__group__label">{{ 'ROOF-WINDOWS-CONFIG.extras' | translate}}</label>
-            <div class="configure-form__group__options" #extrasOptions>
-              <div class="configure-form__group__options--option" formArrayName="extras"
-                   *ngFor="let extra of this.extrasFromFile; index as i">
-                <input type="checkbox"
-                       id="{{extra.option}}"
-                       value="{{extra.option}}"
-                       formControlName="{{i}}"
-                       class="configure-form__group__options--option__input"
-                       (change)="changeCheckBoxState()"
-                       [attr.disabled]="extra.disabled"/>
-                <label for="{{extra.option}}"
-                       [ngClass]="{'label--disabled' : extra.disabled}"
-                       class="configure-form__group__options--option__label"
-                       [ngStyle]="setBackgroundImage(extra.option)">{{builtNameForTranslation(extra.option) | translate}}</label>
-              </div>
-              <div class="configure-form__navigation-buttons">
-                <a (click)="onHandleHover(handleOptions);onExtrasHover(extrasOptions)"
-                   class="btn btn--grey configure-form__navigation-buttons__next-prev">
-                  {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
+        <div class="configure-form__group"
+             [ngClass]="{'md-not-popup' : popupConfig===false}">
+          <label for="extras" (click)="onExtrasHover(extrasOptions)"
+                 class="configure-form__group__label">{{ 'ROOF-WINDOWS-CONFIG.extras' | translate}}</label>
+          <div class="configure-form__group__options" #extrasOptions>
+            <div class="configure-form__group__options--option" formArrayName="extras"
+                 *ngFor="let extra of this.extrasFromFile; index as i">
+              <input type="checkbox"
+                     id="{{extra.option}}"
+                     value="{{extra.option}}"
+                     formControlName="{{i}}"
+                     class="configure-form__group__options--option__input"
+                     (change)="changeCheckBoxState()"
+                     [attr.disabled]="extra.disabled"/>
+              <label for="{{extra.option}}"
+                     [ngClass]="{'label--disabled' : extra.disabled}"
+                     class="configure-form__group__options--option__label"
+                     [ngStyle]="setBackgroundImage(extra.option)">{{builtNameForTranslation(extra.option) | translate}}</label>
+            </div>
+            <div class="configure-form__navigation-buttons">
+              <a (click)="onHandleHover(handleOptions);onExtrasHover(extrasOptions)"
+                 class="btn btn--grey configure-form__navigation-buttons__next-prev">
+                {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
 
-                <a (click)="onExtrasHover(extrasOptions)"
-                   class="btn btn--blue configure-form__navigation-buttons__next-prev">
-                  {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
-              </div>
+              <a (click)="onExtrasHover(extrasOptions)"
+                 class="btn btn--blue configure-form__navigation-buttons__next-prev">
+                {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
             </div>
           </div>
-          <div class="choose-config-popup" *ngIf="chooseConfigNamePopup">
-            <div class="choose-config-popup__content">
-              <form #configForm="ngForm" class="choose-config-popup__content__form">
-                <div class="choose-config-popup__content__form--select" tabindex="1">
-                  <ng-container *ngFor="let singleConfiguration of userConfigs; let i = index">
-                    <input value="{{singleConfiguration.userId}}" [(ngModel)]="configFormId" name="configFormId"
-                           class="choose-config-popup__content__form--select--input" type="radio" id="{{i}}"/>
-                    <label for="{{i}}"
-                           class="choose-config-popup__content__form--select--label">{{singleConfiguration.userId}}
-                      - {{singleConfiguration.name}}</label>
-                  </ng-container>
+        </div>
+        <div class="choose-config-popup" *ngIf="chooseConfigNamePopup">
+          <div class="choose-config-popup__content">
+            <form #configForm="ngForm" class="choose-config-popup__content__form">
+              <div class="select-box">
+                <div class="select-box__current" tabindex="1">
+                  <div class="select-box__value" *ngFor="let singleConfiguration of userConfigs; let i = index">
+                    <input class="select-box__input" type="radio" id="{{i}}" [(ngModel)]="configFormId" [ngModelOptions]="{standalone: true}"
+                           value="{{singleConfiguration.userId}}" name="configFormId"/>
+                    <p class="select-box__input-text">{{singleConfiguration.userId}}- {{singleConfiguration.name}}</p>
+                  </div>
+                  <div class="select-box__value">
+                    <input class="select-box__input" type="radio" id="99" value="{{userConfigs[0].userId}}"
+                           name="configFormId" checked/>
+                    <p class="select-box__input-text">1 - {{userConfigs[0].name}}</p>
+                  </div>
+                  <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg"
+                       alt="Arrow Icon" aria-hidden="true"/>
                 </div>
-                <a (click)="chooseConfigId(configForm)"
-                   class="btn btn--blue">{{ 'ROOF-WINDOWS-CONFIG.chooseConfigNameButton' | translate}}</a>
-              </form>
-            </div>
-          </div>
-          <div class="copy-link-config-popup" *ngIf="copyLinkToConfigurationPopup">
-            <div class="copy-link-config-popup__content" tabindex="1">
-              <div class="copy-link-config-popup__content__info-box">
-                <label
-                  class="copy-link-config-popup__content__info-box--label">{{ 'ROOF-WINDOWS-CONFIG.copyLinkText' | translate}}</label>
-                <input value="{{urlToSaveConfiguration}}" name="configLink" class="copy-link-config-popup__content__info-box--input"
-                       type="text" disabled id="configLink"/>
-                <a (click)="closeCopyLinkPopUp()"
-                   class="btn btn--grey copy-link-config-popup__content__info-box__button">{{ 'ROOF-WINDOWS-CONFIG.closeCopyLinkPopUp' | translate}}</a>
+                <ul class="select-box__list overflow-scroll-Y">
+                  <li *ngFor="let singleConfiguration of userConfigs; let i = index"><label
+                    class="select-box__option margin-bottom-0" for="{{i}}"
+                    aria-hidden="aria-hidden">{{singleConfiguration.userId}} - {{singleConfiguration.name}}</label></li>
+                </ul>
               </div>
+              <a (click)="chooseConfigId()"
+                 class="btn btn--blue">{{ 'ROOF-WINDOWS-CONFIG.chooseConfigNameButton' | translate}}</a>
+            </form>
+            <div class="choose-config-popup__content__back-button-container">
+              <a class="btn btn--grey" (click)="hidePopup()">{{ 'ROOF-WINDOWS-CONFIG.backButton' | translate}}</a>
             </div>
           </div>
-          <!-- TODO dokleić do przycisku i usunąć tempConfigWindow [disabled]="!windowConfigurationForm.valid"-->
-          <button class="btn btn--red configure-form__submit"
+        </div>
+        <div class="copy-link-config-popup" *ngIf="copyLinkToConfigurationPopup">
+          <div class="copy-link-config-popup__content" tabindex="1">
+            <div class="copy-link-config-popup__content__info-box">
+              <label
+                class="copy-link-config-popup__content__info-box--label">{{ 'ROOF-WINDOWS-CONFIG.copyLinkText' | translate}}</label>
+              <input value="{{urlToSaveConfiguration}}" name="configLink"
+                     class="copy-link-config-popup__content__info-box--input"
+                     type="text" disabled id="configLink"/>
+              <a (click)="closeCopyLinkPopUp()"
+                 class="btn btn--grey copy-link-config-popup__content__info-box__button">{{ 'ROOF-WINDOWS-CONFIG.closeCopyLinkPopUp' | translate}}</a>
+            </div>
+          </div>
+        </div>
+        <!-- TODO dokleić do przycisku i usunąć tempConfigWindow [disabled]="!windowConfigurationForm.valid"-->
+        <button class="btn btn--red configure-form__submit"
 
-                  [ngClass]="{'md-not-popup' : popupConfig===false}"
-                  type="submit"
-                  (click)="onSubmit()">{{ 'ROOF-WINDOWS-CONFIG.submit' | translate}}
-          </button>
-          <div class="configure-form__validation-info">
-            <p class="configure-form__validation-info--single-message"
-               *ngIf="form.get('material').hasError('empty material') ||
+                [ngClass]="{'md-not-popup' : popupConfig===false}"
+                type="submit"
+                (click)="onSubmit()">{{ 'ROOF-WINDOWS-CONFIG.submit' | translate}}
+        </button>
+        <div class="configure-form__validation-info">
+          <p class="configure-form__validation-info--single-message"
+             *ngIf="form.get('material').hasError('empty material') ||
                   form.get('openingType').hasError('empty openingType') ||
                   form.get('glazing').hasError('empty glazingType') ||
                   form.get('innerColor').hasError('empty innerColor') ||
                   form.get('outer').hasError('empty outerMaterial') ||
                   form.get('ventilation').hasError('empty ventilation') ||
                   form.get('closure').hasError('empty handle')">{{ 'ROOF-WINDOWS-CONFIG.validationInfo' | translate}}</p>
-          </div>
-          <a (click)="saveCopyLinkPopUp()"
-             class="btn btn--grey configure-form__save-button">{{ 'ROOF-WINDOWS-CONFIG.saveCopyLinkPopUp' | translate}}</a>
-          <a (click)="resetConfigForm()"
-             class="btn btn--light-blue configure-form__reset-button">{{ 'ROOF-WINDOWS-CONFIG.resetConfigForm' | translate}}</a>
+        </div>
+        <a (click)="saveCopyLinkPopUp()"
+           class="btn btn--grey configure-form__save-button">{{ 'ROOF-WINDOWS-CONFIG.saveCopyLinkPopUp' | translate}}</a>
+        <a (click)="resetConfigForm()"
+           class="btn btn--light-blue configure-form__reset-button">{{ 'ROOF-WINDOWS-CONFIG.resetConfigForm' | translate}}</a>
       </form>
     </div>
   </ng-template>

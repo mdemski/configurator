@@ -674,6 +674,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         // wersja 2 lub 1
         if (this.userConfigs.length !== 0) {
           this.userConfigs.push(this.newWindowConfig);
+          this.configFormId = this.userConfigs[0].userId;
           this.loading = false;
           this.chooseConfigNamePopup = true;
           // wersja 1
@@ -711,9 +712,14 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     }
   }
 
-  chooseConfigId(configForm: any) {
+  hidePopup() {
+    this.chooseConfigNamePopup = false;
+  }
+
+  chooseConfigId() {
+    console.log(this.configFormId);
     // wersja 1
-    if (configForm.value.configFormId === undefined) {
+    if (this.configFormId === undefined) {
       this.newWindowConfig.products.windows.forEach(element => element.configLink = String(
         this.router['location']._platformLocation.location.origin + this.router.url
         + '/' + this.globalId
@@ -728,7 +734,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         + '/' + this.globalId
         + '/' + this.formName
         + '/' + this.configuredWindow.kod);
-      this.configId = String('configuration-' + parseInt(configForm.value.configFormId, 10));
+      this.configId = String('configuration-' + this.configFormId);
       this.globalConfiguration = this.configurations.find(config => config.globalId === this.configId);
       // TODO zamienić na configuredWindow
       this.store.dispatch(new AddRoofWindowConfiguration(this.globalConfiguration,
@@ -948,6 +954,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   }
 
   closeCopyLinkPopUp() {
+    this.chooseConfigNamePopup = false;
     this.copyLinkToConfigurationPopup = false;
   }
 
