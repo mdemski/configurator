@@ -668,13 +668,14 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         map((data: Array<any>) => {
           return data.filter(x => x !== null);
         })).subscribe(userConfigurations => {
+        console.log(userConfigurations);
         this.userConfigs = userConfigurations;
+        this.configFormId = this.userConfigs[0].userId;
         this.highestUserId = this.hd.getHighestIdForUser(userConfigurations);
         this.newWindowConfig.userId = this.highestUserId;
         // wersja 2 lub 1
         if (this.userConfigs.length !== 0) {
           this.userConfigs.push(this.newWindowConfig);
-          this.configFormId = this.userConfigs[0].userId;
           this.loading = false;
           this.chooseConfigNamePopup = true;
           // wersja 1

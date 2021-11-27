@@ -506,9 +506,9 @@
                     <p class="select-box__input-text">{{singleConfiguration.userId}}- {{singleConfiguration.name}}</p>
                   </div>
                   <div class="select-box__value">
-                    <input class="select-box__input" type="radio" id="99" value="{{userConfigs[0].userId}}"
+                    <input class="select-box__input" type="radio" id="999" value="{{userConfigs[0].userId}}"
                            name="configFormId" checked/>
-                    <p class="select-box__input-text">1 - {{userConfigs[0].name}}</p>
+                    <p class="select-box__input-text">{{userConfigs[0].userId}} - {{userConfigs[0].name}}</p>
                   </div>
                   <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg"
                        alt="Arrow Icon" aria-hidden="true"/>
@@ -519,11 +519,15 @@
                     aria-hidden="aria-hidden">{{singleConfiguration.userId}} - {{singleConfiguration.name}}</label></li>
                 </ul>
               </div>
-              <a (click)="chooseConfigId()"
+              <a (click)="chooseConfigId(); closeAllHovers([materialOptions, openingOptions, glazingOptions,
+         coatOptions, dimensionOption, innerColorOptions, outerMaterialOptions,
+         ventilationOptions, handleOptions, extrasOptions])"
                  class="btn btn--blue">{{ 'ROOF-WINDOWS-CONFIG.chooseConfigNameButton' | translate}}</a>
             </div>
             <div class="choose-config-popup__content__back-button-container">
-              <a class="btn btn--grey" (click)="hidePopup()">{{ 'ROOF-WINDOWS-CONFIG.backButton' | translate}}</a>
+              <a class="btn btn--grey" (click)="hidePopup(); closeAllHovers([materialOptions, openingOptions, glazingOptions,
+         coatOptions, dimensionOption, innerColorOptions, outerMaterialOptions,
+         ventilationOptions, handleOptions, extrasOptions])">{{ 'ROOF-WINDOWS-CONFIG.backButton' | translate}}</a>
             </div>
           </div>
         </div>
