@@ -497,7 +497,7 @@
         </div>
         <div class="choose-config-popup" *ngIf="chooseConfigNamePopup">
           <div class="choose-config-popup__content">
-            <form #configForm="ngForm" class="choose-config-popup__content__form">
+            <div class="choose-config-popup__content__form">
               <div class="select-box">
                 <div class="select-box__current" tabindex="1">
                   <div class="select-box__value" *ngFor="let singleConfiguration of userConfigs; let i = index">
@@ -521,7 +521,7 @@
               </div>
               <a (click)="chooseConfigId()"
                  class="btn btn--blue">{{ 'ROOF-WINDOWS-CONFIG.chooseConfigNameButton' | translate}}</a>
-            </form>
+            </div>
             <div class="choose-config-popup__content__back-button-container">
               <a class="btn btn--grey" (click)="hidePopup()">{{ 'ROOF-WINDOWS-CONFIG.backButton' | translate}}</a>
             </div>
