@@ -668,7 +668,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         map((data: Array<any>) => {
           return data.filter(x => x !== null);
         })).subscribe(userConfigurations => {
-        console.log(userConfigurations);
         this.userConfigs = userConfigurations;
         this.configFormId = this.userConfigs[0].userId;
         this.highestUserId = this.hd.getHighestIdForUser(userConfigurations);
