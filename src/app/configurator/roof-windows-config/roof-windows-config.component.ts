@@ -717,7 +717,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   }
 
   chooseConfigId() {
-    console.log(this.configFormId);
     // wersja 1
     if (this.configFormId === undefined) {
       this.newWindowConfig.products.windows.forEach(element => element.configLink = String(
