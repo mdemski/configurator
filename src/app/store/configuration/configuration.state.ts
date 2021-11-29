@@ -40,6 +40,7 @@ import {AccessoryConfig} from '../../models/accessory-config';
 import {FlatConfig} from '../../models/flat-config';
 import {VerticalConfig} from '../../models/vertical-config';
 import cloneDeep from 'lodash/cloneDeep';
+import {patch, updateItem} from '@ngxs/store/operators';
 
 export interface ConfigurationStateModel {
   // w razie problemów z wydajnością zmienić wczytywanie tylko na konfiguracje user'a a pełną listę brać wyłącznie do nadawania numerów
@@ -286,8 +287,7 @@ export class ConfigurationState {
     return this.crud.readAllConfigurationsFromMongoDB().pipe(
       tap((result: SingleConfiguration[]) => {
         const state = ctx.getState();
-        ctx.setState({
-          ...state,
+        ctx.patchState({
           configurations: result
         });
       }));
@@ -312,8 +312,7 @@ export class ConfigurationState {
         const configList = [...state.configurations];
         const configIndex = configList.findIndex(item => item._id === mongoId);
         configList[configIndex] = result;
-        ctx.setState({
-          ...state,
+        ctx.patchState({
           configurations: configList
         });
       }));
@@ -327,8 +326,7 @@ export class ConfigurationState {
         const configList = [...state.configurations];
         const configIndex = configList.findIndex(item => item._id === payload._id);
         configList[configIndex] = result;
-        ctx.setState({
-          ...state,
+        ctx.patchState({
           configurations: configList
         });
       }));
@@ -344,9 +342,11 @@ export class ConfigurationState {
     return this.crud.createWindowConfigurationIntoGlobalConfiguration(configuration, payload, formName, formData, configLink).pipe(
       tap((result: SingleConfiguration) => {
         const state = ctx.getState();
-        ctx.setState({
-          ...state,
-          configurations: [...state.configurations, result]
+        const updateArray = [...state.configurations];
+        const updateIndex = updateArray.findIndex(updatedConfiguration => updatedConfiguration._id === result._id);
+        updateArray[updateIndex] = result;
+        ctx.patchState({
+          configurations: updateArray
         });
       }));
   }
@@ -355,39 +355,29 @@ export class ConfigurationState {
   updateRoofWindowConfiguration(ctx: StateContext<ConfigurationStateModel>,
                                 {globalConfiguration, windowId, payload}: UpdateRoofWindowConfiguration) {
     const configuration = cloneDeep(globalConfiguration);
+    const windowIndex = configuration.products.windows.findIndex(item => item.id === windowId);
+    configuration.products.windows[windowIndex].window = payload;
     return this.crud.updateWindowConfigurationIntoGlobalConfiguration(configuration, windowId, payload).pipe(
       tap(() => {
-        const state = ctx.getState();
-        const configList = [...state.configurations];
-        const configIndex = configList.findIndex(item => item._id === configuration._id);
-        configList[configIndex].products.windows.map(window => ({
-          ...window,
-          window: window.id === windowId ? payload : window
-        }));
-        ctx.setState({
-          ...state,
-          configurations: configList
-        });
+        ctx.setState(
+          patch({
+            configurations: updateItem(config => !!config && config._id === configuration._id, patch({...configuration}))
+          }));
       }));
   }
 
   @Action(UpdateRoofWindowQuantityByConfigAndWindowId)
   updateRoofWindowQuantityConfiguration(ctx: StateContext<ConfigurationStateModel>,
                                         {globalConfiguration, windowId, payload}: UpdateRoofWindowQuantityByConfigAndWindowId) {
-    const configuration = cloneDeep(globalConfiguration);
+    const configuration: SingleConfiguration = cloneDeep(globalConfiguration);
+    const windowIndex = configuration.products.windows.findIndex(item => item.id === windowId);
+    configuration.products.windows[windowIndex].quantity = payload;
     return this.crud.updateWindowQuantity(configuration, windowId, payload).pipe(
       tap(() => {
-        const state = ctx.getState();
-        const configList = [...state.configurations];
-        const configIndex = configList.findIndex(item => item._id === configuration._id);
-        configList[configIndex].products.windows.map(window => ({
-          ...window,
-          quantity: window.id === windowId ? payload : window.quantity
-        }));
-        ctx.setState({
-          ...state,
-          configurations: configList
-        });
+        ctx.setState(
+          patch({
+            configurations: updateItem(config => !!config && config._id === configuration._id, patch({...configuration}))
+          }));
       }));
   }
 
