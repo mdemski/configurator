@@ -726,7 +726,8 @@ export class CrudService {
         }
       }
     }
-    globalConfiguration.active = false;
+    globalConfiguration.lastUpdate = new Date();
+    globalConfiguration.active = this.checkIfGlobalConfigurationIsEmpty(globalConfiguration);
     return this.http.put(url, globalConfiguration, {headers: this.headers}).pipe(catchError(err => err));
   }
 
@@ -743,7 +744,8 @@ export class CrudService {
         }
       }
     }
-    globalConfiguration.active = false;
+    globalConfiguration.lastUpdate = new Date();
+    globalConfiguration.active = this.checkIfGlobalConfigurationIsEmpty(globalConfiguration);
     return this.http.put(url, globalConfiguration, {headers: this.headers}).pipe(catchError(err => err));
   }
 
@@ -760,7 +762,8 @@ export class CrudService {
         }
       }
     }
-    globalConfiguration.active = false;
+    globalConfiguration.lastUpdate = new Date();
+    globalConfiguration.active = this.checkIfGlobalConfigurationIsEmpty(globalConfiguration);
     return this.http.put(url, globalConfiguration, {headers: this.headers}).pipe(catchError(err => err));
   }
 
@@ -776,7 +779,8 @@ export class CrudService {
         }
       }
     }
-    globalConfiguration.active = false;
+    globalConfiguration.lastUpdate = new Date();
+    globalConfiguration.active = this.checkIfGlobalConfigurationIsEmpty(globalConfiguration);
     return this.http.put(url, globalConfiguration, {headers: this.headers}).pipe(catchError(err => err));
   }
 
@@ -792,7 +796,17 @@ export class CrudService {
         }
       }
     }
-    globalConfiguration.active = false;
+    globalConfiguration.lastUpdate = new Date();
+    globalConfiguration.active = this.checkIfGlobalConfigurationIsEmpty(globalConfiguration);
     return this.http.put(url, globalConfiguration, {headers: this.headers}).pipe(catchError(err => err));
+  }
+
+  // If empty return false - deactivate globalConfiguration
+  private checkIfGlobalConfigurationIsEmpty(globalConfiguration: SingleConfiguration) {
+    return !(globalConfiguration.products.windows.length === 0
+      && globalConfiguration.products.flashings.length === 0
+      && globalConfiguration.products.accessories.length === 0
+      && globalConfiguration.products.flats.length === 0
+      && globalConfiguration.products.verticals.length === 0);
   }
 }
