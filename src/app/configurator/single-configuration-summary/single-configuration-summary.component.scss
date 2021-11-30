@@ -8,125 +8,130 @@ th, td {
 
 .configuration-summary-container {
 
-&__configurations {
-   margin-top: 3rem;
+  &__configurations {
+    margin-top: 3rem;
 
- }
+  }
 
-&__single {
-   margin-bottom: 10rem;
+  &__single {
+    margin-bottom: 10rem;
 
-&--title {
-   margin-top: 3rem;
-   display: flex;
-   align-items: center;
- }
+    &--title {
+      margin-top: 3rem;
+      display: flex;
+      align-items: center;
+    }
 
-&--configuration-number {
-   margin: 0;
- }
+    &--configuration-number {
+      margin: 0;
+    }
 
-&--configuration-name {
- }
+    &--configuration-name {
+      border: none;
 
-&--product-title {
-   color: $color-black;
-   font-weight: bold;
-   margin-top: 7rem;
-   margin-bottom: 1rem;
- }
+      &:focus {
+        outline: none;
+      }
+    }
 
-&--roof-windows {
-   margin-bottom: 8rem;
-   display: flex;
+    &--product-title {
+      color: $color-black;
+      font-weight: bold;
+      margin-top: 7rem;
+      margin-bottom: 1rem;
+    }
 
-&--window-picture {
-   height: 20%;
-   width: 20%;
-   margin-right: 3rem;
- }
+    &--roof-windows {
+      margin-bottom: 8rem;
+      display: flex;
 
-&--detail {
-   width: 80%;
- }
+      &--window-picture {
+        height: 20%;
+        width: 20%;
+        margin-right: 3rem;
+      }
 
-&--table {
-   display: flex;
- }
-}
+      &--detail {
+        width: 80%;
+      }
 
-&--flashings {
-   margin-bottom: 8em;
-   display: flex;
+      &--table {
+        display: flex;
+      }
+    }
 
-&--flashing-picture {
-   height: 20%;
-   width: 20%;
-   margin-right: 3rem;
- }
+    &--flashings {
+      margin-bottom: 8em;
+      display: flex;
 
-&--detail {
-   width: 80%;
- }
+      &--flashing-picture {
+        height: 20%;
+        width: 20%;
+        margin-right: 3rem;
+      }
 
-&--table {
-   display: flex;
- }
+      &--detail {
+        width: 80%;
+      }
 
-&--warning {
-   color: $color-red;
-   font-size: 1.6rem;
- }
-}
+      &--table {
+        display: flex;
+      }
 
-&--accessories {
-   margin-bottom: 8rem;
-   display: flex;
+      &--warning {
+        color: $color-red;
+        font-size: 1.6rem;
+      }
+    }
 
-&--accessory-picture {
-   height: 20%;
-   width: 20%;
-   margin-right: 3rem;
- }
+    &--accessories {
+      margin-bottom: 8rem;
+      display: flex;
 
-&--detail {
-   width: 80%;
- }
+      &--accessory-picture {
+        height: 20%;
+        width: 20%;
+        margin-right: 3rem;
+      }
 
-&--table {
-   display: flex;
- }
-}
+      &--detail {
+        width: 80%;
+      }
 
-&__buttons {
-   display: flex;
-   justify-content: space-between;
-   margin-top: 1rem;
-   align-items: center;
- }
+      &--table {
+        display: flex;
+      }
+    }
 
-&--hole-buttons {
-   margin-top: 2rem;
-   display: flex;
-   justify-content: space-between;
- }
+    &__buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1rem;
+      align-items: center;
+    }
 
-&--add-new {
-   margin: 2rem 0 0 0;
- }
-}
+    &--hole-buttons {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+    }
 
-&__no-configurations {
-   margin: 4rem 0;
+    &--add-new {
+      margin: 2rem 0 0 0;
+    }
+  }
 
-&--text {
-   margin-bottom: 2rem;
- }
-}
+  &__no-configurations {
+    margin: 4rem 0;
 
-&__create-new {
-   margin-bottom: 3rem;
- }
+    &--text {
+      margin-bottom: 2rem;
+    }
+  }
+
+  &__create-new {
+    margin-bottom: 3rem;
+  }
 }
 
 .quantity-container {
@@ -152,7 +157,7 @@ th, td {
   margin-left: 2rem;
   padding: .35rem 1rem;
   min-height: 3.3rem;
-  min-width: 12.5rem ;
+  min-width: 12.5rem;
 }
 
 .summary-buttons {

@@ -32,6 +32,11 @@ th, td {
     }
 
     &--configuration-name {
+      border: none;
+
+      &:focus {
+        outline: none;
+      }
     }
 
     &--product-title {
