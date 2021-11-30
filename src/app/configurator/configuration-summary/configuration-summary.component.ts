@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
+import {from, Observable, Subject} from 'rxjs';
 import {SingleConfiguration} from '../../models/single-configuration';
-import {map, takeUntil} from 'rxjs/operators';
+import {concatMap, filter, map, takeUntil, tap} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {WindowConfig} from '../../models/window-config';
@@ -29,9 +29,10 @@ import {AddProductToCart} from '../../store/cart/cart.actions';
 export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
 
   @Select(AppState) user$: Observable<{ currentUser }>;
+  // @Select(ConfigurationState.userConfigurations) userConfigurations$: Observable<any>;
 
-  userConfigurations$: Observable<SingleConfiguration[]> = new Subject() as Observable<SingleConfiguration[]>;
   currentUser;
+  userConfigurations: SingleConfiguration[];
   uneditable = true;
   loading;
   chooseWindowPopup = false;
@@ -46,6 +47,7 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
   emptyFlashingConfiguration: string;
   emptyAccessoryConfiguration: string;
   addingProduct: string;
+  userConfigurations$;
 
   constructor(private router: Router,
               private store: Store,
@@ -54,13 +56,13 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
     this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.currentUser = user.currentUser.email);
+    this.userConfigurations$ = this.store.select(ConfigurationState.userConfigurations).pipe(
+      takeUntil(this.isDestroyed$),
+      map(filterFn => filterFn(this.currentUser)),
+      filter(configurations => configurations.length > 0));
   }
 
   ngOnInit() {
-    this.userConfigurations$ = this.store.select(ConfigurationState.userConfigurations)
-      .pipe(
-        takeUntil(this.isDestroyed$),
-        map(filterFn => filterFn(this.currentUser)));
     this.loading = false;
     // TODO do wywalenia - kod testowy
     // this.db.fetchRoofWindows().pipe(takeUntil(this.isDestroyed$)).subscribe(windows => {
@@ -111,18 +113,17 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
   }
 
   resize(delta: number, quantity: number, globalConfiguration: SingleConfiguration, product, productId) {
-    quantity = quantity + delta;
     if (product.window !== undefined) {
-      product.quantity = product.quantity + delta;
-      this.store.dispatch(new UpdateRoofWindowQuantityByConfigAndWindowId(globalConfiguration, productId, quantity)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+      const updatedQuantity = product.quantity + delta;
+      this.store.dispatch(new UpdateRoofWindowQuantityByConfigAndWindowId(globalConfiguration, productId, updatedQuantity)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
     }
     if (product.flashing !== undefined) {
-      product.quantity = product.quantity + delta;
-      this.store.dispatch(new UpdateFlashingQuantityByConfigAndFlashingId(globalConfiguration, productId, quantity)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+      const updatedQuantity = product.quantity + delta;
+      this.store.dispatch(new UpdateFlashingQuantityByConfigAndFlashingId(globalConfiguration, productId, updatedQuantity)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
     }
     if (product.accessory !== undefined) {
-      product.quantity = product.quantity + delta;
-      this.store.dispatch(new UpdateAccessoryQuantityByConfigAndAccessoryId(globalConfiguration, productId, quantity)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+      const updatedQuantity = product.quantity + delta;
+      this.store.dispatch(new UpdateAccessoryQuantityByConfigAndAccessoryId(globalConfiguration, productId, updatedQuantity)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
     }
   }
 
@@ -147,8 +148,8 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
     }
   }
 
-  configurationNameSave(mongoId: string, newConfigName: string) {
-    this.store.dispatch(new UpdateGlobalConfigurationNameByConfigId(mongoId, newConfigName)).pipe(takeUntil(this.isDestroyed$)).subscribe(() => console.log('Nazwa została zmieniona'));
+  configurationNameSave(mongoId: string, newConfigName: HTMLInputElement) {
+    this.store.dispatch(new UpdateGlobalConfigurationNameByConfigId(mongoId, newConfigName.value)).pipe(takeUntil(this.isDestroyed$)).subscribe(() => console.log('Nazwa została zmieniona'));
     if (this.uneditable === null) {
       this.uneditable = true;
     } else {
@@ -175,6 +176,62 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
   // TODO sprawdzić co dokładnie wrzuca się do koszyka i odpowiednio to obsługiwać
   addToCart(product, quantity) {
     this.store.dispatch(new AddProductToCart(product, quantity)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+  }
+
+  addHoleConfigurationToCart(configuration: SingleConfiguration) {
+    const productsToCart: {
+      product: any,
+      quantity: number
+    }[] = [];
+    if (configuration.products.windows) {
+      for (const window of configuration.products.windows) {
+        productsToCart.push({
+          product: window.window,
+          quantity: window.quantity
+        });
+        // this.store.dispatch(new AddProductToCart(window.window, window.quantity)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+      }
+    }
+    if (configuration.products.flashings) {
+      for (const flashing of configuration.products.flashings) {
+        productsToCart.push({
+          product: flashing.flashing,
+          quantity: flashing.quantity
+        });
+        // this.store.dispatch(new AddProductToCart(flashing.flashing, flashing.quantity)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+      }
+    }
+    if (configuration.products.accessories) {
+      for (const accessory of configuration.products.accessories) {
+        productsToCart.push({
+          product: accessory.accessory,
+          quantity: accessory.quantity
+        });
+        // this.store.dispatch(new AddProductToCart(accessory.accessory, accessory.quantity)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+      }
+    }
+    if (configuration.products.flats) {
+      for (const flat of configuration.products.flats) {
+        productsToCart.push({
+          product: flat.flat,
+          quantity: flat.quantity
+        });
+        // this.store.dispatch(new AddProductToCart(flat.flat, flat.quantity)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+      }
+    }
+    if (configuration.products.verticals) {
+      for (const vertical of configuration.products.verticals) {
+        productsToCart.push({
+          product: vertical.vertical,
+          quantity: vertical.quantity
+        });
+        // this.store.dispatch(new AddProductToCart(vertical.vertical, vertical.quantity)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+      }
+    }
+    from(productsToCart).pipe(
+      takeUntil(this.isDestroyed$),
+      concatMap((data: { product: any, quantity: number }) =>
+        this.store.dispatch(new AddProductToCart(data.product, data.quantity)))).subscribe(console.log);
   }
 
   // Options toggle

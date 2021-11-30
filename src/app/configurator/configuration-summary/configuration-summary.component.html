@@ -1,5 +1,5 @@
 <div class="navbar-background">
-  <img src="assets/img/navbar_backgrounds/city-4991094_1920.jpg" alt="roof windows">
+  <img src="assets/img/navbar_backgrounds/francois-falanga-ZteDy1TuQhY-unsplash.jpg" alt="roof windows">
 </div>
 
 <div class="container">
@@ -8,18 +8,18 @@
   </div>
   <ng-template #elseBlock>
     <div class="configuration-summary-container">
-      <div class="configuration-summary-container__configurations" *ngIf="userConfigurations$ | async; else noConfigurations">
+      <div class="configuration-summary-container__configurations" *ngIf="(userConfigurations$ | async); let i = index; else noConfigurations">
         <div class="configuration-summary-container__single"
-             *ngFor="let configuration of userConfigurations$ | async">
+             *ngFor="let configuration of (userConfigurations$ | async)">
           <div class="configuration-summary-container__single--title">
             <h1
               class="configuration-summary-container__single--configuration-number">{{'CONFIG-SUMMARY.configurationNumber' | translate}}:
-              {{configuration.userId}} - <input type="text" [(ngModel)]="configuration.name"
+              {{configuration.userId}} - <input type="text" placeholder="{{configuration.name}}" #newConfigurationName
                                             [attr.disabled]="uneditable"
                                             class="configuration-summary-container__single--configuration-name"></h1>
             <a (click)="configurationNameEdit()" *ngIf="uneditable"
                class="btn-invert btn-invert--grey edit-button">{{'CONFIG-SUMMARY.correctConfigName' | translate}}</a>
-            <a (click)="configurationNameSave(configuration._id, configuration.name)" *ngIf="!uneditable"
+            <a (click)="configurationNameSave(configuration._id, newConfigurationName)" *ngIf="!uneditable"
                class="btn-invert btn--green edit-button">{{'CONFIG-SUMMARY.saveConfigName' | translate}}</a>
           </div>
           <!--Roof window from single configuration-->
@@ -459,7 +459,7 @@
             <a class="btn btn--black remove-config-button"
                (click)="removeHoleConfiguration(configuration)">{{ 'CONFIG-SUMMARY.removeHoleConfiguration' | translate}}</a>
             <a class="btn btn--green add-hole-to-cart"
-               (click)="addToCart(configuration)">{{ 'CONFIG-SUMMARY.addHoleConfigToCart' | translate}}</a>
+               (click)="addHoleConfigurationToCart(configuration)">{{ 'CONFIG-SUMMARY.addHoleConfigToCart' | translate}}</a>
           </div>
 
         </div>
