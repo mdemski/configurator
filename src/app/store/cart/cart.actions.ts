@@ -9,6 +9,13 @@ export class GetCart {
   static type = '[Cart] Get Cart With Items';
 }
 
+export class UpdateCartCurrency {
+  static type = '[Cart] Update Currency In Cart';
+
+  constructor(public currency: string) {
+  }
+}
+
 export class DeleteProductFromCart {
   static type = '[Cart] Delete Item From Cart';
 

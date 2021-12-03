@@ -1,6 +1,6 @@
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {Cart} from '../../models/cart';
-import {AddProductToCart, DeleteCart, DeleteProductFromCart, GetCart} from './cart.actions';
+import {AddProductToCart, DeleteCart, DeleteProductFromCart, GetCart, UpdateCartCurrency} from './cart.actions';
 import {ShoppingCartService} from '../../services/shopping-cart.service';
 import {CookieService} from '../../services/cookie.service';
 import {CrudService} from '../../services/crud-service';
@@ -49,7 +49,7 @@ export class CartState {
       }));
     } else {
       const newCart = this.shoppingCart.createCart();
-      return this.crud.createCart(newCart).pipe(tap((cart: {cartId: string}) => {
+      return this.crud.createCart(newCart).pipe(tap((cart: { cartId: string }) => {
         this.cookie.setCookie('trac', cart.cartId);
         const state = ctx.getState();
         ctx.setState({
@@ -65,6 +65,19 @@ export class CartState {
     const state = ctx.getState();
     const updatedCart = cloneDeep(state.cart);
     const cartAfter = this.shoppingCart.addToCart(updatedCart, product, quantity);
+    return this.crud.updateCart(cartAfter).pipe(tap(() => {
+      ctx.setState({
+        ...state,
+        cart: cartAfter
+      });
+    }));
+  }
+
+  @Action(UpdateCartCurrency)
+  updateCurrencyInCart(ctx: StateContext<CartStateModel>, {currency}: UpdateCartCurrency) {
+    const state = ctx.getState();
+    const updatedCart = cloneDeep(state.cart);
+    const cartAfter = this.shoppingCart.changeCurrency(currency, updatedCart);
     return this.crud.updateCart(cartAfter).pipe(tap(() => {
       ctx.setState({
         ...state,

@@ -13,6 +13,7 @@ import {Observable} from 'rxjs';
 import {CrudService} from './crud-service';
 import {User} from '../models/user';
 import {skip} from 'rxjs/operators';
+import exchange from '../../assets/json/echange.json';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,7 @@ export class ShoppingCartService {
   @Select(AppState) user$: Observable<{ currentUser }>;
   currency: string;
   discount;
+  exchange: number;
 
   constructor(public translate: TranslateService, private crud: CrudService) {
     this.user$.pipe(skip(2)).subscribe(user => {
@@ -33,8 +35,10 @@ export class ShoppingCartService {
     translate.setDefaultLang('pl');
     if (translate.getBrowserLang() === 'pl') {
       this.currency = 'PLN';
+      this.exchange = 1;
     } else {
       this.currency = 'EUR';
+      this.exchange = exchange.EUR;
     }
   }
 
@@ -119,7 +123,11 @@ export class ShoppingCartService {
       // @ts-ignore
       value += cartItem._product._CenaDetaliczna * cartItem._quantity;
     }
-    cart.totalAmount = value;
+    if (cart.currency === 'PLN') {
+      cart.totalAmount = value;
+    } else {
+      cart.totalAmount = value / this.exchange;
+    }
   }
 
   calculateTotalAmountAfterDiscount(cart) {
@@ -128,5 +136,14 @@ export class ShoppingCartService {
     } else {
       cart.totalAmountAfterDiscount = cart.totalAmount;
     }
+  }
+
+  changeCurrency(newCurrency: string, cart: Cart) {
+    cart.currency = newCurrency;
+    this.currency = newCurrency;
+    this.calculateTotalAmount(cart);
+    this.calculateTotalAmountAfterDiscount(cart);
+    cart.timestamp = new Date().valueOf();
+    return cart;
   }
 }
