@@ -18,6 +18,9 @@ let Cart = new Schema({
   currency: {
     type: String
   },
+  exchange: {
+    type: Number
+  },
   active: {
     type: Boolean
   },
