@@ -2,13 +2,14 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {RoofWindowSkylight} from '../../../models/roof-window-skylight';
 import {Accessory} from '../../../models/accessory';
 import {Select, Store} from '@ngxs/store';
-import {map, takeUntil} from 'rxjs/operators';
+import {filter, map, takeUntil} from 'rxjs/operators';
 import {Observable, Subject} from 'rxjs';
 import {RouterState} from '@ngxs/router-plugin';
 import {RoofWindowState} from '../../../store/roof-window/roof-window.state';
 import {AppState} from '../../../store/app/app.state';
 import {CrudService} from '../../../services/crud-service';
 import {AddProductToCart} from '../../../store/cart/cart.actions';
+import {CartState} from '../../../store/cart/cart.state';
 
 @Component({
   selector: 'app-roof-window-details',
@@ -16,8 +17,9 @@ import {AddProductToCart} from '../../../store/cart/cart.actions';
   styleUrls: ['./roof-window-details.component.scss']
 })
 export class RoofWindowDetailsComponent implements OnInit, OnDestroy {
-  window$: Observable<RoofWindowSkylight>;
   @Select(AppState) user$: Observable<{ currentUser }>;
+  @Select(CartState) cart$: Observable<any>;
+  window$: Observable<RoofWindowSkylight>;
   logInUser: {
     email: string;
     userName: string;
@@ -61,6 +63,7 @@ export class RoofWindowDetailsComponent implements OnInit, OnDestroy {
     this.getDiscountPrice();
     // TODO napisać obsługę tej metody z wykorzystaniem store'a
     // this.availableExtras.push(this.db.getAccessoryById(1), this.db.getAccessoryById(2));
+    this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe(() => console.log);
   }
 
   ngOnDestroy() {
@@ -99,5 +102,13 @@ export class RoofWindowDetailsComponent implements OnInit, OnDestroy {
   order(quantity: number) {
     // TODO napisać obsługę tej metody z wykorzystaniem store'a
     // this.db.order(this.windowToShow, quantity);
+  }
+
+  returnCurrencyName(currency: string) {
+    if (currency === 'EUR') {
+      return '€';
+    } else {
+      return 'zł';
+    }
   }
 }

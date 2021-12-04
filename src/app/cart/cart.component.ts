@@ -77,4 +77,13 @@ export class CartComponent implements OnInit, OnDestroy {
   order() {
     // TODO przygotować proces zamówieniowy
   }
+
+
+  returnCurrencyName(currency: string) {
+    if (currency === 'EUR') {
+      return '€';
+    } else {
+      return 'zł';
+    }
+  }
 }

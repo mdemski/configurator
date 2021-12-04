@@ -552,6 +552,8 @@
     "chooseList": "Lista wyboru:"
   },
   "GENERAL": {
-    "currency": "zł"
+    "currency": "zł",
+    "actualCurrency": "Aktualna waluta",
+    "changeCurrency": "Wybierz inną walutę"
   }
 }

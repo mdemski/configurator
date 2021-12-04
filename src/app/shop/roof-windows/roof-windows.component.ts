@@ -1,11 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {RoofWindowSkylight} from '../../models/roof-window-skylight';
-import {takeUntil} from 'rxjs/operators';
+import {filter, takeUntil} from 'rxjs/operators';
 import {Select, Store} from '@ngxs/store';
 import {RoofWindowState} from '../../store/roof-window/roof-window.state';
 import {Observable, Subject} from 'rxjs';
 import _ from 'lodash';
 import {AddProductToCart} from '../../store/cart/cart.actions';
+import {CartState} from '../../store/cart/cart.state';
 
 @Component({
   selector: 'app-roof-windows',
@@ -25,6 +26,7 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
   };
   isFiltering = false;
   @Select(RoofWindowState.roofWindows) roofWindows$: Observable<RoofWindowSkylight[]>;
+  @Select(CartState) cart$: Observable<any>;
   roofWindowsList: RoofWindowSkylight[] = [];
   filteredRoofWindowsList: RoofWindowSkylight[] = [];
   private isDestroyed$ = new Subject();
@@ -40,6 +42,7 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
     this.isFiltering = true;
     this.roofWindows$.pipe(takeUntil(this.isDestroyed$)).subscribe(roofWindows => this.roofWindowsList = roofWindows);
     this.filteredRoofWindowsList = this.roofWindowsList;
+    this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe(() => console.log);
     this.isFiltering = false;
     this.sortArray();
   }

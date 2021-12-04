@@ -2,7 +2,39 @@
   <img src="assets/img/login_page/nathan-fertig-FBXuXp57eM0-unsplash.jpg" alt="roof windows">
 </div>
 
-<div class="container">
-  <p>my-account works!</p>
-  <a style="z-index: 9999" (click)="logout()" class="btn-primary">Wyloguj</a>
+<div class="md-container">
+  <div class="loader-container" *ngIf="loading; else elseBlock">
+    <app-okpol-loader></app-okpol-loader>
+  </div>
+  <ng-template #elseBlock>
+    <div class="header">
+      <p class="header--title">{{ 'GENERAL.actualCurrency' | translate}}:</p>
+      <div class="select-box">
+        <div class="select-box__current header--radio" tabindex="1">
+          <div class="select-box__value" *ngFor="let currencyOption of currencies; let i = index">
+            <input class="select-box__input" type="radio" id="{{i}}"
+                   (change)="updateCurrency(currencyOption)"
+                   value="{{currencyOption}}" name="currency">
+            <p class="select-box__input-text">{{currencyOption}}</p>
+          </div>
+          <div class="select-box__value">
+            <input class="select-box__input" type="radio" id="-1" value="{{currency$ | async}}"
+                   name="currency" checked>
+            <p class="select-box__input-text">{{currency$ | async}}</p>
+          </div>
+          <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg"
+               alt="Arrow Icon" aria-hidden="true">
+        </div>
+        <ul class="select-box__list">
+          <li *ngFor="let currencyOption of currencies; let i = index"><label
+            class="select-box__option margin-bottom-0" for="{{i}}"
+            aria-hidden="aria-hidden">{{currencyOption}}</label></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer">
+      <a (click)="logout()" class="btn btn--dark-blue">Wyloguj</a>
+    </div>
+  </ng-template>
 </div>

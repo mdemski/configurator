@@ -76,26 +76,26 @@
           <div class="select-box__value">
             <input class="select-box__input" type="radio" id="0" [(ngModel)]="pageSize" [value]="getNumberInRow()"
                    name="pageSize"
-                   [checked]="true"/>
+                   [checked]="true">
             <p class="select-box__input-text">{{getNumberInRow()}}</p>
           </div>
 
           <div class="select-box__value">
             <input class="select-box__input" type="radio" id="1" [(ngModel)]="pageSize" [value]="getNumberInRow()*5"
                    name="pageSize"
-                   checked="checked"/>
+                   checked="checked">
             <p class="select-box__input-text">{{getNumberInRow() * 5}}</p>
           </div>
 
           <div class="select-box__value">
             <input class="select-box__input" type="radio" id="2" [(ngModel)]="pageSize" [value]="getNumberInRow()*12"
                    name="pageSize"
-                   checked="checked"/>
+                   checked="checked">
             <p class="select-box__input-text">{{getNumberInRow() * 12}}</p>
           </div>
 
           <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon"
-               aria-hidden="true"/>
+               aria-hidden="true">
         </div>
         <ul class="select-box__list">
           <li><label class="select-box__option" for="0" aria-hidden="aria-hidden">{{getNumberInRow()}}</label></li>
@@ -107,7 +107,7 @@
     <div class="product-card"
          *ngFor="let window of filteredRoofWindowsList | paginate: {itemsPerPage: pageSize, currentPage: page}">
       <a routerLink="./{{window.kod}}">
-        <img src="{{window.linkiDoZdjec[0]}}" alt="{{window.grupaAsortymentowa}}" class="product-card__photo"/>
+        <img src="{{window.linkiDoZdjec[0]}}" alt="{{window.grupaAsortymentowa}}" class="product-card__photo">
       </a>
       <h3 class="product-card__title">{{window.productName}}</h3>
 
@@ -139,7 +139,7 @@
         </div>
         <div class="product-card__icons-section--info">
           <h4 class="product-card__icons-section--info--title">{{ 'SINGLE-PRODUCT.price' | translate}}</h4>
-          <p class="product-card__icons-section--info--detail">{{window.CenaDetaliczna}}</p>
+          <p class="product-card__icons-section--info--detail">{{(window.CenaDetaliczna / (cart$ | async).cart.exchange) | currency: ' '}}</p>
           <!--        <img src="assets/icons/price.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{ 'SINGLE-PRODUCT.price' | translate}}">-->
         </div>
       </div>

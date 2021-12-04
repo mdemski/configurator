@@ -43,9 +43,9 @@
 
   <div class="md-container--right-side">
     <p class="product-name">{{windowToShow.productName}}</p>
-    <p class="price">{{ 'SINGLE-PRODUCT.price' | translate}} {{windowToShow.CenaDetaliczna}} {{ 'GENERAL.currency' | translate}}</p>
+    <p class="price">{{ 'SINGLE-PRODUCT.price' | translate}} {{(windowToShow.CenaDetaliczna / (cart$ | async).cart.exchange) | currency: ' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
     <p *ngIf="logInUser.isLogged"
-       class="price--after-discount">{{ 'SINGLE-PRODUCT.priceAfterDisc' | translate}} {{priceAfterDisc$ | async | currency :' ' : '' : undefined : undefined}} {{ 'GENERAL.currency' | translate}}</p>
+       class="price--after-discount">{{ 'SINGLE-PRODUCT.priceAfterDisc' | translate}} {{((priceAfterDisc$ | async) / (cart$ | async).cart.exchange) | currency :' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
     <div class="line"></div>
     <div class="all-sizes-container">
       <p>{{ 'SINGLE-PRODUCT.availableSizes' | translate}}</p>
@@ -57,7 +57,7 @@
     <div class="quantity-container">
       <p class="quantity-desc">{{ 'SINGLE-PRODUCT.quantity' | translate}}</p>
       <i (click)="decreaseQuantity()">-</i>
-      <input type="number" class="quantity" [(ngModel)]="quantity"/>
+      <input type="number" class="quantity" [(ngModel)]="quantity">
       <i (click)="increaseQuantity()">+</i>
     </div>
     <div class="line"></div>
@@ -69,7 +69,7 @@
     <div class="extra-product-container">
       <div class="extra-product-card" *ngFor="let extra of availableExtras">
         <a routerLink="../{{extra.accessoryId}}">
-          <img src="{{extra.accessoryUrl}}" alt="{{extra.accessoryModel}}" class="extra-product-card__photo"/>
+          <img src="{{extra.accessoryUrl}}" alt="{{extra.accessoryModel}}" class="extra-product-card__photo">
         </a>
         <h3 class="extra-product-card__title">{{extra.accessoryModel}}</h3>
 
