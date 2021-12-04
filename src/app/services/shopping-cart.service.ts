@@ -51,7 +51,7 @@ export class ShoppingCartService {
   }
 
   createCart() {
-    return new Cart(ShoppingCartService.idGenerator(), [], new Date().valueOf(), 0, 0, this.currency, true, false);
+    return new Cart(ShoppingCartService.idGenerator(), [], new Date().valueOf(), 0, 0, this.currency, this.exchange, true, false);
   }
 
   // Dodawanie i aktualizowanie ilości w koszyku
@@ -141,6 +141,8 @@ export class ShoppingCartService {
   changeCurrency(newCurrency: string, cart: Cart) {
     cart.currency = newCurrency;
     this.currency = newCurrency;
+    this.exchange = exchange[this.currency];
+    cart.exchange = this.exchange;
     this.calculateTotalAmount(cart);
     this.calculateTotalAmountAfterDiscount(cart);
     cart.timestamp = new Date().valueOf();

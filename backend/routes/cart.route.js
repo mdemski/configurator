@@ -28,6 +28,7 @@ cartRoute.post('/create', function (req, res, next) {
     totalAmount: req.body._totalAmount,
     totalAmountAfterDiscount: req.body._totalAmountAfterDiscount,
     currency: req.body._currency,
+    exchange: req.body._exchange,
     active: req.body._active,
     ordered: req.body._ordered
   });

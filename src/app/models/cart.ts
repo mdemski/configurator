@@ -7,16 +7,18 @@ export class Cart {
   private _totalAmount: number;
   private _totalAmountAfterDiscount: number;
   private _currency: string;
+  private _exchange: number;
   private _active: boolean;
   private _ordered: boolean;
 
-  constructor(id: string, cartItems: Item[], timestamp: number, totalAmount: number, totalAmountAfterDiscount: number, currency: string, active: boolean, ordered: boolean) {
+  constructor(id: string, cartItems: Item[], timestamp: number, totalAmount: number, totalAmountAfterDiscount: number, currency: string, exchange: number, active: boolean, ordered: boolean) {
     this._id = id;
     this._cartItems = cartItems;
     this._timestamp = timestamp;
     this._totalAmount = totalAmount;
     this._totalAmountAfterDiscount = totalAmountAfterDiscount;
     this._currency = currency;
+    this._exchange = exchange;
     this._active = active;
     this._ordered = ordered;
   }
@@ -67,6 +69,14 @@ export class Cart {
 
   set currency(value: string) {
     this._currency = value;
+  }
+
+  get exchange(): number {
+    return this._exchange;
+  }
+
+  set exchange(value: number) {
+    this._exchange = value;
   }
 
   get active(): boolean {
