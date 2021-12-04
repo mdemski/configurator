@@ -20,6 +20,7 @@ import {ConfigurationState} from '../../store/configuration/configuration.state'
 import {SetChosenFlashing} from '../../store/flashing/flashing.actions';
 import {SetChosenRoofWindow} from '../../store/roof-window/roof-window.actions';
 import {AddProductToCart} from '../../store/cart/cart.actions';
+import {CartState} from '../../store/cart/cart.state';
 
 @Component({
   selector: 'app-configuration-summary',
@@ -29,6 +30,7 @@ import {AddProductToCart} from '../../store/cart/cart.actions';
 export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
 
   @Select(AppState) user$: Observable<{ currentUser }>;
+  @Select(CartState) cart$: Observable<any>;
   // @Select(ConfigurationState.userConfigurations) userConfigurations$: Observable<any>;
 
   currentUser;
@@ -63,6 +65,7 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe(() => console.log);
     this.loading = false;
     // TODO do wywalenia - kod testowy
     // this.db.fetchRoofWindows().pipe(takeUntil(this.isDestroyed$)).subscribe(windows => {
@@ -331,5 +334,13 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
     this.router.navigate(['/' + this.emptyWindowConfiguration +
     '/' + this.chosenConfig.globalId + '/' + 'no-name' + '/' + '-1']);
     this.chooseFlashingPopup = false;
+  }
+
+  returnCurrencyName(currency: string) {
+    if (currency === 'EUR') {
+      return '€';
+    } else {
+      return 'zł';
+    }
   }
 }

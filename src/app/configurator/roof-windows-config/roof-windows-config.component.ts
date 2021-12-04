@@ -32,6 +32,7 @@ import {
   UpdateRoofWindowConfiguration, UpdateRoofWindowFormByFormName
 } from '../../store/configuration/configuration.actions';
 import {AppState} from '../../store/app/app.state';
+import {CartState} from '../../store/cart/cart.state';
 
 @Component({
   selector: 'app-roof-windows-config',
@@ -47,6 +48,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   @Select(AvailableConfigDataState.roofWindowsConfigLoaded) configOptionsLoaded$: Observable<boolean>;
   @Select(AvailableConfigDataState.roofWindowsExclusions) excludeOptions$: Observable<any>;
   @Select(RouterState) params$: Observable<any>;
+  @Select(CartState) cart$: Observable<any>;
 
   // TODO przygotować strumień i service do publikowania tej danej po aplikacji
   constructor(private store: Store,
@@ -185,6 +187,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.userConfigurations$ = this.store.select(ConfigurationState.userConfigurations)
       .pipe(takeUntil(this.isDestroyed$),
         map(filterFn => filterFn(this.currentUser)));
+    this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe(() => console.log);
     this.highestUserId = 1;
     this.tempConfiguredWindow = new RoofWindowSkylight(
       '1O-ISO-V-E02-KL00-A7022P-079119-OKPO01', 'Okno dachowe tymczasowe', 'ISOV E2 79x119', 'I-Okno', 'NPL-Okno', 'Nowy', 'Okno:ISOV', 'Okno:E02', 'dwuszybowy', 79,
@@ -853,6 +856,14 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
 
   builtNameForTranslation(option: string) {
     return String('ROOF-WINDOWS-DATA.' + option);
+  }
+
+  returnCurrencyName(currency: string) {
+    if (currency === 'EUR') {
+      return '€';
+    } else {
+      return 'zł';
+    }
   }
 
   // Options toggle

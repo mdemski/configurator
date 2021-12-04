@@ -72,7 +72,7 @@
            [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.dostepneRozmiary!==null}"></a>
       </div>
       <div class="configuration-summary__scores">
-        <p>{{this.configuredWindow.CenaDetaliczna | currency :' '}} {{ 'GENERAL.currency' | translate}}</p>
+        <p>{{(this.configuredWindow.CenaDetaliczna / (cart$ | async).cart.exchange) | currency: ' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
         <p>{{ 'ROOF-WINDOWS-CONFIG.Uw' | translate}} = {{this.configuredWindow.windowUW | number: '1.2-2'}}
           W/m²K</p>
         <p>{{ 'ROOF-WINDOWS-CONFIG.Ug' | translate}} = {{this.configuredWindow.windowUG | number: '1.2-2'}}
@@ -180,7 +180,7 @@
                          [ngClass]="popupConfig===false ? 'md-popup__content--group__options--option__input' : 'configure-form__group__options--option__input'"
                          id="wall-switch-control"
                          value='wall-switch-control'
-                         formControlName="control"/>
+                         formControlName="control">
                   <label for="wall-switch-control"
                          [ngClass]="popupConfig === false ? 'md-popup__content--group__options--option__label' : 'configure-form__group__options--option__label'">
                     {{builtNameForTranslation('wall-switch-control') | translate}}</label>
@@ -202,7 +202,7 @@
                      id="{{glazing.option}}"
                      value='{{glazing.option}}'
                      formControlName="glazing"
-                     [attr.disabled]="glazing.disabled"/>
+                     [attr.disabled]="glazing.disabled">
               <label for="{{glazing.option}}"
                      class="configure-form__group__options--option__label"
                      [ngClass]="{'label--disabled' : glazing.disabled}"
@@ -235,7 +235,7 @@
                      class="configure-form__group__options--option__input"
                      (change)="changeCheckBoxState()"
                      [attr.disabled]="coat.disabled"
-              />
+              >
               <label for="{{coat.option}}"
                      class="configure-form__group__options--option__label"
                      [ngClass]="{'label--disabled' : coat.disabled}"
@@ -269,7 +269,7 @@
                      min="{{minWidth}}"
                      max="{{maxWidth}}"
                      formControlName="width"
-              />
+              >
               <output #outputWidth
                       class="configure-form__group__options--option__output-range">{{form.value.width}}</output>
             </div>
@@ -315,7 +315,7 @@
                      id="{{innerColor.option}}"
                      value='{{innerColor.option}}'
                      formControlName="innerColor"
-                     [attr.disabled]="innerColor.disabled"/>
+                     [attr.disabled]="innerColor.disabled">
               <label for="{{innerColor.option}}"
                      class="configure-form__group__options--option__label"
                      [ngClass]="{'label--disabled' : innerColor.disabled}"
@@ -345,7 +345,7 @@
                      id="{{outerMaterial.option}}"
                      value="{{outerMaterial.option}}"
                      formControlName="outerMaterial"
-                     [attr.disabled]="outerMaterial.disabled"/>
+                     [attr.disabled]="outerMaterial.disabled">
               <label for="{{outerMaterial.option}}"
                      class="configure-form__group__options--option__label"
                      [ngClass]="{'label--disabled' : outerMaterial.disabled}"
@@ -359,7 +359,7 @@
                      id="{{outerColor.option}}"
                      value="{{outerColor.option}}"
                      formControlName="outerColor"
-                     [attr.disabled]="outerColor.disabled"/>
+                     [attr.disabled]="outerColor.disabled">
               <label for="{{outerColor.option}}"
                      [ngClass]="{'label--disabled' : outerColor.disabled}"
                      class="configure-form__group__options--option__label">{{builtNameForTranslation(outerColor.option) | translate}}</label>
@@ -372,7 +372,7 @@
                      id="{{outerColorFinish.option}}"
                      value="{{outerColorFinish.option}}"
                      formControlName="outerColorFinish"
-                     [attr.disabled]="outerColorFinish.disabled"/>
+                     [attr.disabled]="outerColorFinish.disabled">
               <label for="{{outerColorFinish.option}}"
                      [ngClass]="{'label--disabled' : outerColorFinish.disabled}"
                      class="configure-form__group__options--option__label"
@@ -403,7 +403,7 @@
                      id="{{ventilation.option}}"
                      value="{{ventilation.option}}"
                      formControlName="ventilation"
-                     [attr.disabled]="ventilation.disabled"/>
+                     [attr.disabled]="ventilation.disabled">
               <label for="{{ventilation.option}}"
                      [ngClass]="{'label--disabled' : ventilation.disabled}"
                      class="configure-form__group__options--option__label"
@@ -432,7 +432,7 @@
                      id="{{handle.option}}"
                      value="{{handle.option}}"
                      formControlName="handle"
-                     [attr.disabled]="handle.disabled"/>
+                     [attr.disabled]="handle.disabled">
               <label for="{{handle.option}}"
                      [ngClass]="{'label--disabled' : handle.disabled}"
                      class="configure-form__group__options--option__label"
