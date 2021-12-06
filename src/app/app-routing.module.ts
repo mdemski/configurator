@@ -4,7 +4,6 @@ import {RegisterComponent} from './register/register.component';
 import {LoginComponent} from './login/login.component';
 import {ContactComponent} from './contact/contact.component';
 import {VerticalWindowsComponent} from './shop/vertical-windows/vertical-windows.component';
-import {MyAccountComponent} from './my-account/my-account.component';
 import {AuthGuardService} from './services/auth-guard.service';
 import {HomeComponent} from './home/home.component';
 import {ConfigurationsGuard} from './store/configuration/configurations.guard';
@@ -26,12 +25,17 @@ const appRoutes: Routes = [
   {path: 'okna-pionowe', component: VerticalWindowsComponent},
   {path: 'koszyk', component: CartComponent, canActivate: [CartGuard]},
 
-  {path: 'konfigurator', loadChildren: () => import('./configurator/configurator.module').then(m => m.ConfiguratorModule),
-    canActivate: [ConfigurationsGuard, AvailableConfigDataGuard]},
+  {
+    path: 'konfigurator', loadChildren: () => import('./configurator/configurator.module').then(m => m.ConfiguratorModule),
+    canActivate: [ConfigurationsGuard, AvailableConfigDataGuard]
+  },
 
   {path: '', component: HomeComponent},
-  {path: 'moje-konto', component: MyAccountComponent, canActivate: [AuthGuardService, CartGuard]},
-  {path: 'moje-konto/:id', component: MyAccountComponent, canActivate: [AuthGuardService]},
+
+  {
+    path: 'moje-konto', loadChildren: () => import('./my-account/my-account.module').then(m => m.MyAccountModule),
+    canActivate: [AuthGuardService, CartGuard]
+  },
   {path: 'rejestracja', component: RegisterComponent},
   {path: 'confirmation', component: RegisterConfirmationPageComponent},
   {path: 'confirmation/:random/:uuid', component: RegisterConfirmationPageComponent},
@@ -49,7 +53,7 @@ const appRoutes: Routes = [
       useClass: AuthInterceptor,
       multi: true
     }
-    ]
+  ]
 })
 export class AppRoutingModule {
 }
