@@ -8,9 +8,10 @@ import { MyConfigurationsComponent } from './my-configurations/my-configurations
 import { MyComplaintsComponent } from './my-complaints/my-complaints.component';
 import { MyTasksComponent } from './my-tasks/my-tasks.component';
 import { InformationsComponent } from './informations/informations.component';
+import { MyProfileComponent } from './my-profile/my-profile.component';
 
 @NgModule({
-  declarations: [MyOrdersComponent, MyConfigurationsComponent, MyComplaintsComponent, MyTasksComponent, InformationsComponent],
+  declarations: [MyOrdersComponent, MyConfigurationsComponent, MyComplaintsComponent, MyTasksComponent, InformationsComponent, MyProfileComponent],
   imports: [
     SharedModule,
     NgxsModule.forFeature([ConfigurationState]),
