@@ -20,7 +20,12 @@ export class MyAccountComponent implements OnInit, OnDestroy {
   isDestroyed$ = new Subject();
   loading = true;
   updatedCurrency: string;
-  activeOrders: boolean;
+  activeTab: string;
+  activeOrders = true;
+  activeConfigurations = false;
+  activeTasks = false;
+  activeNews = false;
+  activeComplaints = false;
 
   constructor(private authService: AuthService,
               private store: Store) {
@@ -46,7 +51,41 @@ export class MyAccountComponent implements OnInit, OnDestroy {
     this.store.dispatch(new UpdateCartCurrency(updatedCurrency));
   }
 
-  selectTab(myOrders: any) {
-
+  selectTab() {
+    if (this.activeTab === 'activeOrders') {
+      this.activeOrders = true;
+      this.activeConfigurations = false;
+      this.activeTasks = false;
+      this.activeNews = false;
+      this.activeComplaints = false;
+    }
+    if (this.activeTab === 'activeConfigurations') {
+      this.activeOrders = false;
+      this.activeConfigurations = true;
+      this.activeTasks = false;
+      this.activeNews = false;
+      this.activeComplaints = false;
+    }
+    if (this.activeTab === 'activeTasks') {
+      this.activeOrders = false;
+      this.activeConfigurations = false;
+      this.activeTasks = true;
+      this.activeNews = false;
+      this.activeComplaints = false;
+    }
+    if (this.activeTab === 'activeNews') {
+      this.activeOrders = false;
+      this.activeConfigurations = false;
+      this.activeTasks = false;
+      this.activeNews = true;
+      this.activeComplaints = false;
+    }
+    if (this.activeTab === 'activeComplaints') {
+      this.activeOrders = false;
+      this.activeConfigurations = false;
+      this.activeTasks = false;
+      this.activeNews = false;
+      this.activeComplaints = true;
+    }
   }
 }

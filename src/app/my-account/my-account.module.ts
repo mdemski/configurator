@@ -12,9 +12,13 @@ import { MyProfileComponent } from './my-profile/my-profile.component';
 
 @NgModule({
     declarations: [MyOrdersComponent, MyConfigurationsComponent, MyComplaintsComponent, MyTasksComponent, InformationsComponent, MyProfileComponent],
-    exports: [
-        MyOrdersComponent
-    ],
+  exports: [
+    MyOrdersComponent,
+    MyConfigurationsComponent,
+    MyTasksComponent,
+    InformationsComponent,
+    MyComplaintsComponent
+  ],
     imports: [
         SharedModule,
         NgxsModule.forFeature([ConfigurationState]),
