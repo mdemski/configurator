@@ -552,8 +552,18 @@
     "chooseList": "Lista wyboru:"
   },
   "GENERAL": {
+    "myProfile": "Mój profil",
+    "myProfileLink": "/moj-profil",
     "currency": "zł",
     "actualCurrency": "Aktualna waluta",
-    "changeCurrency": "Wybierz inną walutę"
+    "changeCurrency": "Wybierz inną walutę",
+    "logout": "Wyloguj"
+  },
+  "MY-ACCOUNT": {
+    "orders": "Zamówienia",
+    "configurations": "Konfiguracje",
+    "tasks": "Reklamacje",
+    "news": "Aktualności",
+    "complaints": "Reklamacje"
   }
 }

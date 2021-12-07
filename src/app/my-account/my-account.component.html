@@ -8,33 +8,63 @@
   </div>
   <ng-template #elseBlock>
     <div class="header">
-      <p class="header--title">{{ 'GENERAL.actualCurrency' | translate}}:</p>
-      <div class="select-box">
-        <div class="select-box__current header--radio" tabindex="1">
-          <div class="select-box__value" *ngFor="let currencyOption of currencies; let i = index">
-            <input class="select-box__input" type="radio" id="{{i}}"
-                   (change)="updateCurrency(currencyOption)"
-                   value="{{currencyOption}}" name="currency">
-            <p class="select-box__input-text">{{currencyOption}}</p>
+      <div class="header__my-profile">
+        <a routerLink="./{{ 'GENERAL.myProfileLink' | translate}}"
+           class="btn btn--dark-blue">{{ 'GENERAL.myProfile' | translate}}</a>
+      </div>
+      <div class="header__currency">
+        <p class="header--title">{{ 'GENERAL.actualCurrency' | translate}}:</p>
+        <div class="select-box">
+          <div class="select-box__current header--radio" tabindex="1">
+            <div class="select-box__value" *ngFor="let currencyOption of currencies; let i = index">
+              <input class="select-box__input" type="radio" id="{{i}}"
+                     (change)="updateCurrency(currencyOption)"
+                     value="{{currencyOption}}" name="currency">
+              <p class="select-box__input-text">{{currencyOption}}</p>
+            </div>
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="-1" value="{{currency$ | async}}"
+                     name="currency" checked>
+              <p class="select-box__input-text">{{currency$ | async}}</p>
+            </div>
+            <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg"
+                 alt="Arrow Icon" aria-hidden="true">
           </div>
-          <div class="select-box__value">
-            <input class="select-box__input" type="radio" id="-1" value="{{currency$ | async}}"
-                   name="currency" checked>
-            <p class="select-box__input-text">{{currency$ | async}}</p>
-          </div>
-          <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg"
-               alt="Arrow Icon" aria-hidden="true">
+          <ul class="select-box__list">
+            <li *ngFor="let currencyOption of currencies; let i = index"><label
+              class="select-box__option margin-bottom-0" for="{{i}}"
+              aria-hidden="aria-hidden">{{currencyOption}}</label></li>
+          </ul>
         </div>
-        <ul class="select-box__list">
-          <li *ngFor="let currencyOption of currencies; let i = index"><label
-            class="select-box__option margin-bottom-0" for="{{i}}"
-            aria-hidden="aria-hidden">{{currencyOption}}</label></li>
-        </ul>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="main__tabs">
+        <input class="main__tabs--input" type="radio" name="tabset" id="orders" aria-controls="orders" checked>
+        <label class="main__tabs--label" for="orders">{{'MY-ACCOUNT.orders' | translate}}</label>
+
+        <input class="main__tabs--input" type="radio" name="tabset" id="configurations" aria-controls="configurations">
+        <label class="main__tabs--label" for="configurations">{{'MY-ACCOUNT.configurations' | translate}}</label>
+
+        <input class="main__tabs--input" type="radio" name="tabset" id="tasks" aria-controls="tasks">
+        <label class="main__tabs--label" for="tasks">{{'MY-ACCOUNT.tasks' | translate}}</label>
+
+        <input class="main__tabs--input" type="radio" name="tabset" id="news" aria-controls="news">
+        <label class="main__tabs--label" for="news">{{'MY-ACCOUNT.news' | translate}}</label>
+
+        <input class="main__tabs--input" type="radio" name="tabset" id="complaints" aria-controls="complaints">
+        <label class="main__tabs--label" for="complaints">{{'MY-ACCOUNT.complaints' | translate}}</label>
+      </div>
+      <div class="main__content">
+        <section class="main__content__tab">
+          <app-my-orders [hidden]="true"></app-my-orders>
+        </section>
       </div>
     </div>
 
     <div class="footer">
-      <a (click)="logout()" class="btn btn--dark-blue">Wyloguj</a>
+      <a (click)="logout()" class="btn btn--dark-blue">{{ 'GENERAL.logout' | translate}}</a>
     </div>
   </ng-template>
 </div>

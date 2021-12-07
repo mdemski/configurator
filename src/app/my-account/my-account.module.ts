@@ -11,11 +11,14 @@ import { InformationsComponent } from './informations/informations.component';
 import { MyProfileComponent } from './my-profile/my-profile.component';
 
 @NgModule({
-  declarations: [MyOrdersComponent, MyConfigurationsComponent, MyComplaintsComponent, MyTasksComponent, InformationsComponent, MyProfileComponent],
-  imports: [
-    SharedModule,
-    NgxsModule.forFeature([ConfigurationState]),
-    MyAccountRoutingModule
-  ]
+    declarations: [MyOrdersComponent, MyConfigurationsComponent, MyComplaintsComponent, MyTasksComponent, InformationsComponent, MyProfileComponent],
+    exports: [
+        MyOrdersComponent
+    ],
+    imports: [
+        SharedModule,
+        NgxsModule.forFeature([ConfigurationState]),
+        MyAccountRoutingModule
+    ]
 })
 export class MyAccountModule { }

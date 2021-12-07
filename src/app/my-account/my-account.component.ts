@@ -4,7 +4,6 @@ import {Select, Store} from '@ngxs/store';
 import {CartState} from '../store/cart/cart.state';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {filter, takeUntil} from 'rxjs/operators';
-import {ShoppingCartService} from '../services/shopping-cart.service';
 import exchange from '../../assets/json/echange.json';
 import {UpdateCartCurrency} from '../store/cart/cart.actions';
 
@@ -21,6 +20,7 @@ export class MyAccountComponent implements OnInit, OnDestroy {
   isDestroyed$ = new Subject();
   loading = true;
   updatedCurrency: string;
+  activeOrders: boolean;
 
   constructor(private authService: AuthService,
               private store: Store) {
@@ -44,5 +44,9 @@ export class MyAccountComponent implements OnInit, OnDestroy {
 
   updateCurrency(updatedCurrency) {
     this.store.dispatch(new UpdateCartCurrency(updatedCurrency));
+  }
+
+  selectTab(myOrders: any) {
+
   }
 }

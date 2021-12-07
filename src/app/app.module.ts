@@ -32,6 +32,7 @@ import {CartComponent} from './cart/cart.component';
 import {CartState} from './store/cart/cart.state';
 import {CartGuard} from './store/cart/cart.guard';
 import {AuthService} from './services/auth.service';
+import {MyAccountModule} from './my-account/my-account.module';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -51,32 +52,33 @@ export function HttpLoaderFactory(http: HttpClient) {
     RegisterConfirmationPageComponent,
     CartComponent
   ],
-  imports: [
-    SharedModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    AppRoutingModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
-    }),
-    IonicModule.forRoot(),
-    NgxsModule.forRoot([
-      RouterState,
-      AppState,
-      CartState
-    ], {
-      developmentMode: !environment.production,
-      selectorOptions: {injectContainerState: false}
-    }),
-    NgxsReduxDevtoolsPluginModule.forRoot(),
-    NgxsLoggerPluginModule.forRoot(),
-    NgxsRouterPluginModule.forRoot()
-  ],
+    imports: [
+        SharedModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        HttpClientModule,
+        AppRoutingModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [HttpClient]
+            }
+        }),
+        IonicModule.forRoot(),
+        NgxsModule.forRoot([
+            RouterState,
+            AppState,
+            CartState
+        ], {
+            developmentMode: !environment.production,
+            selectorOptions: {injectContainerState: false}
+        }),
+        NgxsReduxDevtoolsPluginModule.forRoot(),
+        NgxsLoggerPluginModule.forRoot(),
+        NgxsRouterPluginModule.forRoot(),
+        MyAccountModule
+    ],
   providers: [DatabaseService, AuthService, CartGuard,
     {provide: RouterStateSerializer, useClass: CustomRouterStateSerializer}],
   bootstrap: [AppComponent]
