@@ -114,6 +114,7 @@ export class CrudService {
 
   updateUserByMongoId(user: User) {
     const url = `${this.usersBaseUri}/update/${user._id}`;
+    user.lastUpdate = new Date();
     return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
   }
 
@@ -129,12 +130,14 @@ export class CrudService {
         user.discount = discount;
       }
     });
+    user.lastUpdate = new Date();
     this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
   }
 
   deleteUser(user: User) {
     const url = `${this.usersBaseUri}/delete/${user._id}`;
     user.activated = false;
+    user.lastUpdate = new Date();
     return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
   }
 
