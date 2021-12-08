@@ -73,6 +73,12 @@ export class CrudService {
     }));
   }
 
+  readCompanyByNIP(nip: string): Observable<Company> {
+    return this.http.get('URL do zapytania do eNova').pipe(map((comapnies: Company[]) => {
+      return comapnies.find(company => company.nip === nip);
+    }));
+  }
+
   createCompany(registerCompany: Company) {
     // TODO przygotować odpowiednią metodę komunikacyjną z eNova
     return this.http.post('urlToEnova', registerCompany);
