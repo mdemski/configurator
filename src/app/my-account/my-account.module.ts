@@ -9,6 +9,7 @@ import { MyTasksComponent } from './my-tasks/my-tasks.component';
 import { InformationsComponent } from './informations/informations.component';
 import { MyProfileComponent } from './my-profile/my-profile.component';
 import {UserState} from '../store/user/user.state';
+import {ConfigurationState} from '../store/configuration/configuration.state';
 
 @NgModule({
     declarations: [MyOrdersComponent, MyConfigurationsComponent, MyComplaintsComponent, MyTasksComponent, InformationsComponent, MyProfileComponent],
@@ -21,7 +22,7 @@ import {UserState} from '../store/user/user.state';
   ],
     imports: [
         SharedModule,
-        NgxsModule.forFeature([UserState]),
+        NgxsModule.forFeature([UserState, ConfigurationState]),
         MyAccountRoutingModule
     ]
 })
