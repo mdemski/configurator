@@ -118,6 +118,15 @@ export class CrudService {
     return this.http.post(url, userToCreate).pipe(catchError(err => err));
   }
 
+  activateUser(user: User, link: string) {
+    const url = `${this.usersBaseUri}/update/${user._id}`;
+    if (user.activationLink === link) {
+      user.activated = true;
+      user.lastUpdate = new Date();
+    }
+    return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
+  }
+
   updateUserByMongoId(user: User) {
     const url = `${this.usersBaseUri}/update/${user._id}`;
     user.lastUpdate = new Date();
