@@ -156,7 +156,7 @@ export class CrudService {
 
   readAddressByMongoId(mongoId: string): Observable<Address> {
     return this.http.get(this.addressesBaseUri).pipe(map((addresses: Address[]) => addresses
-      .find(address => address.id === mongoId)));
+      .find(address => address._id === mongoId)));
   }
 
   createAddress(address: Address) {
