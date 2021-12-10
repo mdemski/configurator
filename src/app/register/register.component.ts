@@ -85,7 +85,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.registerUser.companyNip = this.registerForm.value.nip;
     this.registerUser.mainAddressId = '';
     this.registerUser.addressToSendId = '';
-    this.registerUser.activationLink = window.location.origin + '/#/confirmation/' + cryptoRandomString({length: 6, type: 'alphanumeric'}) + '/' + this.registerUser.uuid;
+    this.registerUser.activationLink = window.location.origin + '/#/confirmation/' + cryptoRandomString({
+      length: 6,
+      type: 'alphanumeric'
+    }) + '/' + this.registerUser.uuid;
     if (this.individualClient || this.companyClientType) {
       this.registerAddress.firstName = this.registerForm.value.firstName;
       this.registerAddress.lastName = this.registerForm.value.lastName;
@@ -99,12 +102,16 @@ export class RegisterComponent implements OnInit, OnDestroy {
       }
     }
     if (Object.keys(this.registerCompany).length === 0 && this.companyClientType) {
-      this.registerCompany.name = this.registerForm.value.companyName;
-      this.registerCompany.nip = this.registerForm.value.nip;
-      this.registerCompany.discount = 0;
-      this.registerCompany.address = this.registerAddress;
-      this.registerCompany.agentOkpol = this.registerForm.value.agent;
-      this.crud.createCompany(this.registerCompany).subscribe(console.log);
+      this.crud.readCompanyByNIP(this.registerForm.value.nip).subscribe(company => {
+        if (!company) {
+          this.registerCompany.name = this.registerForm.value.companyName;
+          this.registerCompany.nip = this.registerForm.value.nip;
+          this.registerCompany.discount = 0;
+          this.registerCompany.address = this.registerAddress;
+          this.registerCompany.agentOkpol = this.registerForm.value.agent;
+          this.crud.createCompany(this.registerCompany).subscribe(console.log);
+        }
+      });
     }
     this.crud.createUser(this.registerUser).subscribe((response: { success: boolean, data: any | string }) => {
       if (response.success) {
