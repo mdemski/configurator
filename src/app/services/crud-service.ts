@@ -146,7 +146,7 @@ export class CrudService {
       }
     });
     user.lastUpdate = new Date();
-    this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
+    return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
   }
 
   deleteUser(user: User) {
