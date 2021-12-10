@@ -185,6 +185,7 @@ export class CrudService {
     const url = `${this.usersBaseUri}/update/${user._id}`;
     if (addressData) {
       user.mainAddressId = addressData._id;
+      user.addressToSendId = addressData._id;
     }
     if (companyData) {
       user.companyNip = companyData.nip;
