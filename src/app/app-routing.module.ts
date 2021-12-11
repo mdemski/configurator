@@ -18,6 +18,7 @@ import {AuthInterceptor} from './interceptors/auth-interceptor';
 import {RegisterConfirmationPageComponent} from './register/register-confirmation-page/register-confirmation-page.component';
 import {CartComponent} from './cart/cart.component';
 import {CartGuard} from './store/cart/cart.guard';
+import {UserGuard} from './store/user/user.guard';
 
 const appRoutes: Routes = [
   {path: 'sklep', loadChildren: () => import('./shop/shop.module').then(m => m.ShopModule)},
@@ -34,7 +35,7 @@ const appRoutes: Routes = [
 
   {
     path: 'moje-konto', loadChildren: () => import('./my-account/my-account.module').then(m => m.MyAccountModule),
-    canActivate: [AuthGuardService, CartGuard]
+    canActivate: [AuthGuardService, CartGuard, ConfigurationsGuard, UserGuard]
   },
   {path: 'rejestracja', component: RegisterComponent},
   {path: 'confirmation', component: RegisterConfirmationPageComponent},
@@ -47,7 +48,7 @@ const appRoutes: Routes = [
   imports: [RouterModule.forRoot(appRoutes, {scrollPositionRestoration: 'enabled', useHash: true})],
   exports: [RouterModule],
   providers: [ConfigurationsGuard, RoofWindowsGuard, FlashingsGuard, AccessoriesGuard,
-    SkylightsGuard, FlatRoofWindowsGuard, AvailableConfigDataGuard,
+    SkylightsGuard, FlatRoofWindowsGuard, AvailableConfigDataGuard, UserGuard,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

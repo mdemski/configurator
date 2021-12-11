@@ -185,17 +185,36 @@ export class CrudService {
     // }));
   }
 
-  updateAddressByMongoId(address: Address) {
+  updateMainAddressByMongoId(user: User, address: Address) {
     const url = `${this.addressesBaseUri}/update/${address._id}`;
-    this.http.put(url, address, {headers: this.headers}).pipe(catchError(err => err));
+    let userUpdate = true;
+    if (user.mainAddressId === '') {
+      userUpdate = false;
+      this.setUserMainAddressByMongoId(user, address).subscribe(() => {
+        userUpdate = true;
+      });
+    }
+    if (userUpdate) {
+      return this.http.put(url, address, {headers: this.headers}).pipe(catchError(err => err));
+    }
   }
 
-  updateUserAddressByMongoId(user: User, addressData: Address | null, companyData: Company | null) {
-    const url = `${this.usersBaseUri}/update/${user._id}`;
-    if (addressData) {
-      user.mainAddressId = addressData._id;
-      user.addressToSendId = addressData._id;
+  updateToSendAddressByMongoId(user: User, address: Address) {
+    const url = `${this.addressesBaseUri}/update/${address._id}`;
+    let userUpdate = true;
+    if (user.addressToSendId === '') {
+      userUpdate = false;
+      this.setAddressToSendForUser(user, address).subscribe(() => {
+        userUpdate = true;
+      });
     }
+    if (userUpdate) {
+      return this.http.put(url, address, {headers: this.headers}).pipe(catchError(err => err));
+    }
+  }
+
+  updateUserWithCompanyData(user: User, companyData: Company) {
+    const url = `${this.usersBaseUri}/update/${user._id}`;
     if (companyData) {
       user.companyNip = companyData.nip;
       user.discount = companyData.discount;
@@ -205,12 +224,32 @@ export class CrudService {
     return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
   }
 
+  setUserMainAddressByMongoId(user: User, addressData: Address) {
+    const url = `${this.usersBaseUri}/update/${user._id}`;
+    if (addressData) {
+      user.mainAddressId = addressData._id;
+    }
+    user.lastUpdate = new Date();
+    return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
+  }
+
+  setUserMainAndToSendAddressByMongoId(user: User, addressData: Address) {
+    const url = `${this.usersBaseUri}/update/${user._id}`;
+    if (addressData) {
+      user.mainAddressId = addressData._id;
+      user.addressToSendId = addressData._id;
+    }
+    user.lastUpdate = new Date();
+    return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
+  }
+
   setAddressToSendForUser(user: User, addressToSend: Address) {
     const url = `${this.usersBaseUri}/update/${user._id}`;
     if (addressToSend) {
       user.addressToSendId = addressToSend.id;
     }
-    this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
+    user.lastUpdate = new Date();
+    return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
   }
 
   deleteAddress(address: Address) {

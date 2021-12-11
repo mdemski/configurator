@@ -6,6 +6,9 @@ import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {filter, takeUntil} from 'rxjs/operators';
 import exchange from '../../assets/json/echange.json';
 import {UpdateCartCurrency} from '../store/cart/cart.actions';
+import {AppState} from '../store/app/app.state';
+import {ConfigurationState} from '../store/configuration/configuration.state';
+import {CrudService} from '../services/crud-service';
 
 @Component({
   selector: 'app-my-account',
@@ -15,6 +18,9 @@ import {UpdateCartCurrency} from '../store/cart/cart.actions';
 export class MyAccountComponent implements OnInit, OnDestroy {
 
   @Select(CartState) cart$: Observable<any>;
+  @Select(AppState) user$: Observable<{ currentUser }>;
+  @Select(ConfigurationState) userConfigurations$;
+
   currency$ = new BehaviorSubject('PLN');
   currencies: string[] = [];
   isDestroyed$ = new Subject();
@@ -26,19 +32,23 @@ export class MyAccountComponent implements OnInit, OnDestroy {
   activeTasks = false;
   activeNews = false;
   activeComplaints = false;
+  currentUser: {email: string, userName: string, isLogged: boolean};
 
   constructor(private authService: AuthService,
               private store: Store) {
     this.currencies = Object.keys(exchange);
+    this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.currentUser = user.currentUser);
   }
 
   ngOnInit(): void {
+    // this.store.dispatch()
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe((data) => {
       this.currency$.next(data.cart.currency);
       this.loading = false;
     });
   }
-
+  /* tslint:disable: template-no-call-expression */
+  // /* tslint:disable:template-use-track-by-function */
   ngOnDestroy(): void {
     this.isDestroyed$.next();
   }

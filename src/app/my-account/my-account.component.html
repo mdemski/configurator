@@ -41,25 +41,25 @@
 
     <div class="main">
       <div class="main__tabs" (change)="selectTab()">
-        <input class="main__tabs--input" type="radio" name="tabset" id="orders" aria-controls="orders" checked
+        <input class="main__tabs--input" type="radio" name="tabset" id="orders" aria-controls="orders" checked autofocus
                [(ngModel)]="activeTab" [ngModelOptions]="{standalone: true}" value="activeOrders">
-        <label class="main__tabs--label" for="orders">{{'MY-ACCOUNT.orders' | translate}}</label>
+        <label class="main__tabs--label" for="orders">{{'MY-ACCOUNT.orders' | translate}} (0)</label>
 
         <input class="main__tabs--input" type="radio" name="tabset" id="configurations" aria-controls="configurations"
                [(ngModel)]="activeTab" [ngModelOptions]="{standalone: true}" value="activeConfigurations">
-        <label class="main__tabs--label" for="configurations">{{'MY-ACCOUNT.configurations' | translate}}</label>
+        <label class="main__tabs--label" for="configurations">{{'MY-ACCOUNT.configurations' | translate}} ({{(userConfigurations$ | async).configurations.length}})</label>
 
-        <input class="main__tabs--input" type="radio" name="tabset" id="tasks" aria-controls="tasks"
+        <input *ngIf="currentUser.isLogged" class="main__tabs--input" type="radio" name="tabset" id="tasks" aria-controls="tasks"
                [(ngModel)]="activeTab" [ngModelOptions]="{standalone: true}" value="activeTasks">
-        <label class="main__tabs--label" for="tasks">{{'MY-ACCOUNT.tasks' | translate}}</label>
+        <label *ngIf="currentUser.isLogged" class="main__tabs--label" for="tasks">{{'MY-ACCOUNT.tasks' | translate}} (0)</label>
 
-        <input class="main__tabs--input" type="radio" name="tabset" id="news" aria-controls="news"
+        <input *ngIf="currentUser.isLogged" class="main__tabs--input" type="radio" name="tabset" id="news" aria-controls="news"
                [(ngModel)]="activeTab" [ngModelOptions]="{standalone: true}" value="activeNews">
-        <label class="main__tabs--label" for="news">{{'MY-ACCOUNT.news' | translate}}</label>
+        <label *ngIf="currentUser.isLogged" class="main__tabs--label" for="news">{{'MY-ACCOUNT.news' | translate}} (0)</label>
 
-        <input class="main__tabs--input" type="radio" name="tabset" id="complaints" aria-controls="complaints"
+        <input *ngIf="currentUser.isLogged" class="main__tabs--input" type="radio" name="tabset" id="complaints" aria-controls="complaints"
                [(ngModel)]="activeTab" [ngModelOptions]="{standalone: true}" value="activeComplaints">
-        <label class="main__tabs--label" for="complaints">{{'MY-ACCOUNT.complaints' | translate}}</label>
+        <label *ngIf="currentUser.isLogged" class="main__tabs--label" for="complaints">{{'MY-ACCOUNT.complaints' | translate}} (0)</label>
       </div>
       <div class="main__content">
         <section class="main__content__tab">

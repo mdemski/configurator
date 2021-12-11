@@ -118,7 +118,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         if (this.individualClient || this.companyClientType) {
           this.crud.createAddress(this.registerAddress).subscribe((addressResponse: { success: boolean, address: any }) => {
             if (addressResponse.success && this.individualClient) {
-              this.crud.updateUserAddressByMongoId(response.data, addressResponse.address, null).subscribe(() => console.log('User updated'));
+              this.crud.setUserMainAndToSendAddressByMongoId(response.data, addressResponse.address).subscribe(() => console.log('User updated'));
             }
           });
         }
