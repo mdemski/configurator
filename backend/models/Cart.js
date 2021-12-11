@@ -21,6 +21,9 @@ let Cart = new Schema({
   exchange: {
     type: Number
   },
+  vatRate: {
+    type: Number
+  },
   active: {
     type: Boolean
   },
