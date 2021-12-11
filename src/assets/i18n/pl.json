@@ -235,7 +235,8 @@
   },
   "SINGLE-PRODUCT": {
     "price": "Cena",
-    "detalPrice": "Cena detaliczna",
+    "detalPrice": "Cena detaliczna netto",
+    "detalGrossPrice": "Cena detaliczna brutto",
     "priceAfterDisc": "Cena po rabacie",
     "availableSizes": "Dostępne wymiary",
     "quantity": "Ilość",

@@ -192,6 +192,11 @@
         <td>{{ 'SINGLE-PRODUCT.detalPrice' | translate}}</td>
         <td>{{windowToShow.CenaDetaliczna}}</td>
       </tr>
+      <tr>
+        <th scope="row">20</th>
+        <td>{{ 'SINGLE-PRODUCT.detalGrossPrice' | translate}}</td>
+        <td>{{(windowToShow.CenaDetaliczna) + (windowToShow.CenaDetaliczna * (cart$ | async).cart.vatRate)}}</td>
+      </tr>
       </tbody>
     </table>
   </div>

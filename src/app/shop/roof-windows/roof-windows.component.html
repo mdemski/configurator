@@ -17,36 +17,36 @@
           <div class="select-box__value">
             <input class="select-box__input" type="radio" id="popularity" [(ngModel)]="sortBy" value="popularity"
                    name="sort"
-                   checked/>
+                   checked>
             <p class="select-box__input-text">{{'SHOP.popularity' | translate}}</p>
           </div>
 
           <div class="select-box__value">
             <input class="select-box__input" type="radio" id="priceAsc" [(ngModel)]="sortBy" value="priceAsc"
-                   name="sort"/>
+                   name="sort">
             <p class="select-box__input-text">{{'SHOP.priceAsc' | translate}}</p>
           </div>
 
           <div class="select-box__value">
             <input class="select-box__input" type="radio" id="priceDesc" [(ngModel)]="sortBy" value="priceDesc"
-                   name="sort"/>
+                   name="sort">
             <p class="select-box__input-text">{{'SHOP.priceDesc' | translate}}</p>
           </div>
 
           <div class="select-box__value">
             <input class="select-box__input" type="radio" id="nameDesc" [(ngModel)]="sortBy" value="nameDesc"
-                   name="sort"/>
+                   name="sort">
             <p class="select-box__input-text">{{'SHOP.nameDesc' | translate}}</p>
           </div>
 
           <div class="select-box__value">
             <input class="select-box__input" type="radio" id="nameAsc" [(ngModel)]="sortBy" value="nameAsc"
-                   name="sort"/>
+                   name="sort">
             <p class="select-box__input-text">{{'SHOP.nameAsc' | translate}}</p>
           </div>
 
           <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon"
-               aria-hidden="true"/>
+               aria-hidden="true">
         </div>
         <ul class="select-box__list">
           <li><label class="select-box__option" for="popularity"
@@ -139,7 +139,7 @@
         </div>
         <div class="product-card__icons-section--info">
           <h4 class="product-card__icons-section--info--title">{{ 'SINGLE-PRODUCT.price' | translate}}</h4>
-          <p class="product-card__icons-section--info--detail">{{(window.CenaDetaliczna / (cart$ | async).cart.exchange) | currency: ' '}}</p>
+          <p class="product-card__icons-section--info--detail">{{(window.CenaDetaliczna / (cart$ | async).cart.exchange) + ((window.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}}</p>
           <!--        <img src="assets/icons/price.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{ 'SINGLE-PRODUCT.price' | translate}}">-->
         </div>
       </div>
