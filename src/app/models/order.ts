@@ -15,9 +15,10 @@ export class Order {
   private _sum: number;
   private _sumAfterDiscount: number;
   private _currency: string;
+  private _comments: string;
 
   // tslint:disable-next-line:max-line-length
-  constructor(orderNumber: string, cartId: string, erpId: string, createdAt: Date, updatedAt: Date, status: string, company: Company, user: User, items: Item[], sum: number, sumAfterDiscount: number, currency: string) {
+  constructor(orderNumber: string, cartId: string, erpId: string, createdAt: Date, updatedAt: Date, status: string, company: Company, user: User, items: Item[], sum: number, sumAfterDiscount: number, currency: string, comments: string) {
     this._orderNumber = orderNumber;
     this._cartId = cartId;
     this._erpId = erpId;
@@ -30,6 +31,7 @@ export class Order {
     this._sum = sum;
     this._sumAfterDiscount = sumAfterDiscount;
     this._currency = currency;
+    this._comments = comments;
   }
 
   get orderNumber(): string {
@@ -126,5 +128,13 @@ export class Order {
 
   set currency(value: string) {
     this._currency = value;
+  }
+
+  get comments(): string {
+    return this._comments;
+  }
+
+  set comments(value: string) {
+    this._comments = value;
   }
 }

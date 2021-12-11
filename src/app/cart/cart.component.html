@@ -32,6 +32,7 @@
             <th class="md-container__left-side__product-table__item--price">{{ 'CART.price' | translate}}</th>
             <th *ngIf="(cart$ | async).cart.cartItems[0]._discount > 0"
                 class="md-container__left-side__product-table__item--price">{{ 'CART.priceAfterDiscount' | translate}}</th>
+            <th class="md-container__left-side__product-table__item--price">{{ 'CART.totalAmount' | translate}}</th>
             <th class="md-container__left-side__product-table__item--trash">{{ 'CART.delete' | translate}}</th>
           </tr>
           <!--Table header-->
@@ -55,6 +56,10 @@
             <td *ngIf="cartItem._discount > 0"><p class="md-container__left-side__product-table__item--price">
               {{(cartItem._product._CenaDetaliczna - (cartItem._product._CenaDetaliczna * cartItem._discount)) / (cart$ | async).cart.exchange * cartItem._quantity | currency :' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
             </td>
+            <td><p class="md-container__left-side__product-table__item--price">
+              {{(cartItem._product._CenaDetaliczna - (cartItem._product._CenaDetaliczna * cartItem._discount)) / (cart$ | async).cart.exchange * cartItem._quantity +
+            (((cartItem._product._CenaDetaliczna - (cartItem._product._CenaDetaliczna * cartItem._discount)) / (cart$ | async).cart.exchange * cartItem._quantity) * (cart$ | async).cart.vatRate) | currency :' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
+            </td>
             <td><i class="far fa-trash-alt md-container__left-side__product-table__item--trash"
                    (click)="deleteFromCart(cartItem)"></i></td>
           </tr>
@@ -77,7 +82,7 @@
         <p *ngIf="(quantityInCart$ | async) > 5"
            class="md-container__right-side__summary--products">{{quantityInCart$ | async}} {{'CART.products2' | translate}}</p>
         <p
-          class="md-container__right-side__summary--total-price">{{(cart$ | async).cart.totalAmount | currency: ' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
+          class="md-container__right-side__summary--total-price">{{(cart$ | async).cart.totalAmount + (((cart$ | async).cart.totalAmount * ((cart$ | async).cart.vatRate))) | currency: ' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
       </div>
 
       <div class="md-container__right-side__shipping">
@@ -114,7 +119,7 @@
       <div class="md-container__right-side__summary">
         <p class="md-container__right-side__summary--summary-price">{{'CART.valueToPay' | translate}}</p>
         <p
-          class="md-container__right-side__summary--summary-price">{{(cart$ | async).cart.totalAmountAfterDiscount | currency: ' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
+          class="md-container__right-side__summary--summary-price">{{(cart$ | async).cart.totalAmountAfterDiscount + (((cart$ | async).cart.totalAmountAfterDiscount * ((cart$ | async).cart.vatRate))) | currency: ' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
       </div>
 
       <div class="md-container__right-side__order">

@@ -1,6 +1,6 @@
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {Cart} from '../../models/cart';
-import {AddProductToCart, DeleteCart, DeleteProductFromCart, GetCart, UpdateCartCurrency} from './cart.actions';
+import {AddProductToCart, DeleteCart, DeleteProductFromCart, GetCart, UpdateCartCurrency, UpdateCartVatRate} from './cart.actions';
 import {ShoppingCartService} from '../../services/shopping-cart.service';
 import {CookieService} from '../../services/cookie.service';
 import {CrudService} from '../../services/crud-service';
@@ -78,6 +78,19 @@ export class CartState {
     const state = ctx.getState();
     const updatedCart = cloneDeep(state.cart);
     const cartAfter = this.shoppingCart.changeCurrency(currency, updatedCart);
+    return this.crud.updateCart(cartAfter).pipe(tap(() => {
+      ctx.setState({
+        ...state,
+        cart: cartAfter
+      });
+    }));
+  }
+
+  @Action(UpdateCartVatRate)
+  updateVarRateInCart(ctx: StateContext<CartStateModel>, {vatRate}: UpdateCartVatRate) {
+    const state = ctx.getState();
+    const updatedCart = cloneDeep(state.cart);
+    const cartAfter = this.shoppingCart.changeVatRate(vatRate, updatedCart);
     return this.crud.updateCart(cartAfter).pipe(tap(() => {
       ctx.setState({
         ...state,

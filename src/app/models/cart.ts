@@ -8,10 +8,12 @@ export class Cart {
   private _totalAmountAfterDiscount: number;
   private _currency: string;
   private _exchange: number;
+  private _vatRate: number;
   private _active: boolean;
   private _ordered: boolean;
 
-  constructor(id: string, cartItems: Item[], timestamp: number, totalAmount: number, totalAmountAfterDiscount: number, currency: string, exchange: number, active: boolean, ordered: boolean) {
+  // tslint:disable-next-line:max-line-length
+  constructor(id: string, cartItems: Item[], timestamp: number, totalAmount: number, totalAmountAfterDiscount: number, currency: string, exchange: number, vatRate: number, active: boolean, ordered: boolean) {
     this._id = id;
     this._cartItems = cartItems;
     this._timestamp = timestamp;
@@ -19,6 +21,7 @@ export class Cart {
     this._totalAmountAfterDiscount = totalAmountAfterDiscount;
     this._currency = currency;
     this._exchange = exchange;
+    this._vatRate = vatRate;
     this._active = active;
     this._ordered = ordered;
   }
@@ -77,6 +80,14 @@ export class Cart {
 
   set exchange(value: number) {
     this._exchange = value;
+  }
+
+  get vatRate(): number {
+    return this._vatRate;
+  }
+
+  set vatRate(value: number) {
+    this._vatRate = value;
   }
 
   get active(): boolean {

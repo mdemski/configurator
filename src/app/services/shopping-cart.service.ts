@@ -24,6 +24,7 @@ export class ShoppingCartService {
   currency: string;
   discount;
   exchange: number;
+  vatRate: number;
 
   constructor(public translate: TranslateService, private crud: CrudService) {
     this.user$.pipe(skip(2)).subscribe(user => {
@@ -33,12 +34,31 @@ export class ShoppingCartService {
     });
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
-    if (translate.getBrowserLang() === 'pl') {
-      this.currency = 'PLN';
-      this.exchange = 1;
-    } else {
-      this.currency = 'EUR';
-      this.exchange = exchange.EUR;
+    switch (translate.getBrowserLang()) {
+      case 'pl': {
+        this.currency = 'PLN';
+        this.exchange = exchange.PLN;
+        this.vatRate = exchange.pl;
+        break;
+      }
+      case 'en': {
+        this.currency = 'GB';
+        this.exchange = exchange.GB;
+        this.vatRate = exchange.en;
+        break;
+      }
+      case 'de': {
+        this.currency = 'EUR';
+        this.exchange = exchange.EUR;
+        this.vatRate = exchange.de;
+        break;
+      }
+      case 'fr': {
+        this.currency = 'EUR';
+        this.exchange = exchange.EUR;
+        this.vatRate = exchange.fr;
+        break;
+      }
     }
   }
 
@@ -51,7 +71,7 @@ export class ShoppingCartService {
   }
 
   createCart() {
-    return new Cart(ShoppingCartService.idGenerator(), [], new Date().valueOf(), 0, 0, this.currency, this.exchange, true, false);
+    return new Cart(ShoppingCartService.idGenerator(), [], new Date().valueOf(), 0, 0, this.currency, this.exchange, this.vatRate, true, false);
   }
 
   // Dodawanie i aktualizowanie ilości w koszyku
@@ -76,6 +96,7 @@ export class ShoppingCartService {
       }
     }
     cart.currency = this.currency;
+    cart.vatRate = this.vatRate;
     this.calculateTotalAmount(cart);
     this.calculateTotalAmountAfterDiscount(cart);
     cart.timestamp = new Date().valueOf();
@@ -146,6 +167,12 @@ export class ShoppingCartService {
     this.calculateTotalAmount(cart);
     this.calculateTotalAmountAfterDiscount(cart);
     cart.timestamp = new Date().valueOf();
+    return cart;
+  }
+
+  changeVatRate(vatRate: number, cart: Cart) {
+    cart.vatRate = vatRate;
+    this.vatRate = vatRate;
     return cart;
   }
 }

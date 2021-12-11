@@ -16,6 +16,13 @@ export class UpdateCartCurrency {
   }
 }
 
+export class UpdateCartVatRate {
+  static type = '[Cart] Update VAT Rate In Cart';
+
+  constructor(public vatRate: number) {
+  }
+}
+
 export class DeleteProductFromCart {
   static type = '[Cart] Delete Item From Cart';
 

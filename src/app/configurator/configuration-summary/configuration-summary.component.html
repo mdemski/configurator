@@ -140,7 +140,7 @@
                   <tr>
                     <th scope="row">20</th>
                     <td>{{ 'SINGLE-PRODUCT.detalPrice' | translate}}</td>
-                    <td>{{(singleWindow.window._CenaDetaliczna / (cart$ | async).cart.exchange) | currency: ' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</td>
+                    <td>{{(singleWindow.window._CenaDetaliczna / (cart$ | async).cart.exchange) + ((singleWindow.window._CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</td>
                   </tr>
                   </tbody>
                 </table>
@@ -287,7 +287,7 @@
                   <tr>
                     <th scope="row">15</th>
                     <td>{{ 'SINGLE-PRODUCT.detalPrice' | translate}}</td>
-                    <td>{{(singleFlashing.flashing._CenaDetaliczna / (cart$ | async).cart.exchange) | currency: ' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</td>
+                    <td>{{(singleFlashing.flashing._CenaDetaliczna / (cart$ | async).cart.exchange) + ((singleFlashing.flashing._CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</td>
                   </tr>
                   </tbody>
                 </table>
@@ -422,7 +422,7 @@
                   <tr>
                     <th scope="row">11</th>
                     <td>{{ 'SINGLE-PRODUCT.detalPrice' | translate}}</td>
-                    <td>{{(singleAccessory.accessory._CenaDetaliczna / (cart$ | async).cart.exchange) | currency: ' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</td>
+                    <td>{{(singleAccessory.accessory._CenaDetaliczna / (cart$ | async).cart.exchange) + ((singleAccessory.accessory._CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</td>
                   </tr>
                   </tbody>
                 </table>

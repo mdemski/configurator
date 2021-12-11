@@ -165,6 +165,7 @@
     "discountCode": "Wprowadź kod rabatowy:",
     "order": "Złóż zamówienie",
     "valueToPay": "Kwota do zapłaty",
+    "totalAmount": "Wartość brutto",
     "delete": "Usuń"
   },
   "CONFIGURATOR": {
