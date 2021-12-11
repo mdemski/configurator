@@ -1,36 +1,27 @@
 import {Company} from './company';
 import {User} from './user';
-import {Item} from './item';
+import {Cart} from './cart';
 
 export class Order {
   private _orderNumber: string;
-  private _cartId: string;
+  private _cart: Cart;
   private _erpId: string;
   private _createdAt: Date;
   private _updatedAt: Date;
   private _status: string;
   private _company: Company;
   private _user: User;
-  private _items: Item[];
-  private _sum: number;
-  private _sumAfterDiscount: number;
-  private _currency: string;
   private _comments: string;
 
-  // tslint:disable-next-line:max-line-length
-  constructor(orderNumber: string, cartId: string, erpId: string, createdAt: Date, updatedAt: Date, status: string, company: Company, user: User, items: Item[], sum: number, sumAfterDiscount: number, currency: string, comments: string) {
+  constructor(orderNumber: string, cart: Cart, erpId: string, createdAt: Date, updatedAt: Date, status: string, company: Company, user: User, comments: string) {
     this._orderNumber = orderNumber;
-    this._cartId = cartId;
+    this._cart = cart;
     this._erpId = erpId;
     this._createdAt = createdAt;
     this._updatedAt = updatedAt;
     this._status = status;
     this._company = company;
     this._user = user;
-    this._items = items;
-    this._sum = sum;
-    this._sumAfterDiscount = sumAfterDiscount;
-    this._currency = currency;
     this._comments = comments;
   }
 
@@ -42,12 +33,12 @@ export class Order {
     this._orderNumber = value;
   }
 
-  get cartId(): string {
-    return this._cartId;
+  get cart(): Cart {
+    return this._cart;
   }
 
-  set cartId(value: string) {
-    this._cartId = value;
+  set cart(value: Cart) {
+    this._cart = value;
   }
 
   get erpId(): string {
@@ -96,38 +87,6 @@ export class Order {
 
   set user(value: User) {
     this._user = value;
-  }
-
-  get items(): Item[] {
-    return this._items;
-  }
-
-  set items(value: Item[]) {
-    this._items = value;
-  }
-
-  get sum(): number {
-    return this._sum;
-  }
-
-  set sum(value: number) {
-    this._sum = value;
-  }
-
-  get sumAfterDiscount(): number {
-    return this._sumAfterDiscount;
-  }
-
-  set sumAfterDiscount(value: number) {
-    this._sumAfterDiscount = value;
-  }
-
-  get currency(): string {
-    return this._currency;
-  }
-
-  set currency(value: string) {
-    this._currency = value;
   }
 
   get comments(): string {
