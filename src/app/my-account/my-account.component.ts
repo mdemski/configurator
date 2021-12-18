@@ -8,7 +8,8 @@ import exchange from '../../assets/json/echange.json';
 import {UpdateCartCurrency} from '../store/cart/cart.actions';
 import {AppState} from '../store/app/app.state';
 import {ConfigurationState} from '../store/configuration/configuration.state';
-import {CrudService} from '../services/crud-service';
+import {ComplaintState} from '../store/complaint/complaint.state';
+import {Complaint} from '../models/complaint';
 
 @Component({
   selector: 'app-my-account',
@@ -20,6 +21,7 @@ export class MyAccountComponent implements OnInit, OnDestroy {
   @Select(CartState) cart$: Observable<any>;
   @Select(AppState) user$: Observable<{ currentUser }>;
   @Select(ConfigurationState) userConfigurations$;
+  @Select(ComplaintState) userComplaints$: Observable<Complaint[]>;
 
   currency$ = new BehaviorSubject('PLN');
   currencies: string[] = [];
@@ -47,8 +49,9 @@ export class MyAccountComponent implements OnInit, OnDestroy {
       this.loading = false;
     });
   }
-  /* tslint:disable: template-no-call-expression */
+  // tslint:disable-next-line:component-selector
   // /* tslint:disable:template-use-track-by-function */
+  /* tslint:disable: template-no-call-expression */
   ngOnDestroy(): void {
     this.isDestroyed$.next();
   }

@@ -1,0 +1,49 @@
+@import 'src/sass/base/variables';
+@import 'src/sass/buttons';
+@import 'src/sass/radio-input';
+@import 'src/sass/components';
+
+.complaint-container {
+
+  &--no-complaints {
+
+  }
+
+  &__complaints-table {
+
+    &__header {
+
+      &--text {
+
+      }
+    }
+
+    &__item {
+
+      &--info {
+
+      }
+
+      &__products {
+
+        &__table {
+
+          &__header {
+
+            &--text {
+
+            }
+          }
+
+          &__item {
+
+            &--info {
+
+            }
+          }
+        }
+      }
+    }
+  }
+
+}

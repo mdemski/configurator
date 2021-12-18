@@ -47,8 +47,10 @@
 
         <input class="main__tabs--input" type="radio" name="tabset" id="configurations" aria-controls="configurations"
                [(ngModel)]="activeTab" [ngModelOptions]="{standalone: true}" value="activeConfigurations">
-        <label class="main__tabs--label" for="configurations">{{'MY-ACCOUNT.configurations' | translate}} ({{(userConfigurations$ | async).configurations.length}})</label>
-
+        <label class="main__tabs--label" for="configurations">{{'MY-ACCOUNT.configurations' | translate}}
+          <span *ngIf="!(userConfigurations$ | async)">(0)</span>
+          <span *ngIf="userConfigurations$ | async">({{(userConfigurations$ | async).configurations.length}})</span>
+        </label>
         <input *ngIf="currentUser.isLogged" class="main__tabs--input" type="radio" name="tabset" id="tasks" aria-controls="tasks"
                [(ngModel)]="activeTab" [ngModelOptions]="{standalone: true}" value="activeTasks">
         <label *ngIf="currentUser.isLogged" class="main__tabs--label" for="tasks">{{'MY-ACCOUNT.tasks' | translate}} (0)</label>
@@ -59,7 +61,7 @@
 
         <input *ngIf="currentUser.isLogged" class="main__tabs--input" type="radio" name="tabset" id="complaints" aria-controls="complaints"
                [(ngModel)]="activeTab" [ngModelOptions]="{standalone: true}" value="activeComplaints">
-        <label *ngIf="currentUser.isLogged" class="main__tabs--label" for="complaints">{{'MY-ACCOUNT.complaints' | translate}} (0)</label>
+        <label *ngIf="currentUser.isLogged" class="main__tabs--label" for="complaints">{{'MY-ACCOUNT.complaints' | translate}} ({{(userComplaints$ | async).complaints.length}})</label>
       </div>
       <div class="main__content">
         <section class="main__content__tab">

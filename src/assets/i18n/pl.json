@@ -567,5 +567,24 @@
     "tasks": "Otwarte zadania",
     "news": "Aktualności",
     "complaints": "Reklamacje"
+  },
+  "COMPLAINT": {
+    "noComplaints": "Wygląda na to że wszystko gra. Brak reklamacji do wyświetlenia.",
+    "erpNumber": "Numer reklamacji",
+    "registrationDate": "Data rejestracji",
+    "status": "Status",
+    "topic": "Krótki opis",
+    "owner": "Kontrahnet/Użytkownik",
+    "applicant": "Zagłaszający",
+    "leadingOperator": "Prowadzący",
+    "products": "Reklamowane produkty",
+    "edit": "Edycja",
+    "delete": "Usuń",
+    "productName": "Nazwa produktu",
+    "quantity": "Ilość",
+    "complaintType": "Rodzaj",
+    "element": "Element",
+    "description": "Szczegółowy opis",
+    "productDetails": "Szczegóły reklamowanego produktu"
   }
 }

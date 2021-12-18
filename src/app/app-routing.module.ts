@@ -19,6 +19,7 @@ import {RegisterConfirmationPageComponent} from './register/register-confirmatio
 import {CartComponent} from './cart/cart.component';
 import {CartGuard} from './store/cart/cart.guard';
 import {UserGuard} from './store/user/user.guard';
+import {ComplaintsGuard} from './store/complaint/complaints.guard';
 
 const appRoutes: Routes = [
   {path: 'sklep', loadChildren: () => import('./shop/shop.module').then(m => m.ShopModule)},
@@ -30,25 +31,27 @@ const appRoutes: Routes = [
     path: 'konfigurator', loadChildren: () => import('./configurator/configurator.module').then(m => m.ConfiguratorModule),
     canActivate: [ConfigurationsGuard, AvailableConfigDataGuard]
   },
-
   {path: '', component: HomeComponent},
-
+  {
+    path: 'complaints', loadChildren: () => import('./complaint/complaint.module').then(m => m.ComplaintModule),
+    canActivate: [UserGuard, ComplaintsGuard]
+  },
   {
     path: 'moje-konto', loadChildren: () => import('./my-account/my-account.module').then(m => m.MyAccountModule),
-    canActivate: [AuthGuardService, CartGuard, ConfigurationsGuard, UserGuard]
+    canActivate: [AuthGuardService, CartGuard, ConfigurationsGuard, UserGuard, ComplaintsGuard]
   },
   {path: 'rejestracja', component: RegisterComponent},
   {path: 'confirmation', component: RegisterConfirmationPageComponent},
   {path: 'confirmation/:random/:uuid', component: RegisterConfirmationPageComponent},
   {path: 'kontakt', component: ContactComponent},
-  {path: 'logowanie', component: LoginComponent}
+  {path: 'logowanie', component: LoginComponent},
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(appRoutes, {scrollPositionRestoration: 'enabled', useHash: true})],
   exports: [RouterModule],
   providers: [ConfigurationsGuard, RoofWindowsGuard, FlashingsGuard, AccessoriesGuard,
-    SkylightsGuard, FlatRoofWindowsGuard, AvailableConfigDataGuard, UserGuard,
+    SkylightsGuard, FlatRoofWindowsGuard, AvailableConfigDataGuard, UserGuard, ComplaintsGuard,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

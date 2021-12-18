@@ -1,1 +1,44 @@
-<p>complaint works!</p>
+<div *ngIf="isLoading" class="d-flex justify-content-center">
+  <app-okpol-loader></app-okpol-loader>
+</div>
+
+<div *ngIf="!isLoading">
+  <div *ngIf="(userComplaints$ | async).length === 0; else complaintBlock" class="complaint-container">
+    <p class="complaint-container--no-complaints">{{'COMPLAINT.noComplaints' | translate}}</p>
+  </div>
+
+  <ng-template #complaintBlock>
+
+    <table class="complaint-container__complaints-table">
+      <!--Table header-->
+      <tr class="complaint-container__complaints-table__header">
+        <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.erpNumber' | translate}}</th>
+        <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.registrationDate' | translate}}</th>
+        <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.status' | translate}}</th>
+        <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.topic' | translate}}</th>
+        <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.owner' | translate}}</th>
+        <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.applicant' | translate}}</th>
+        <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.leadingOperator' | translate}}</th>
+        <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.products' | translate}}</th>
+        <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.edit' | translate}}</th>
+        <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.delete' | translate}}</th>
+      </tr>
+
+
+      <tr class="complaint-container__complaints-table__item" *ngFor="let complaint of (userComplaints$ | async).complaints">
+        <td class="complaint-container__complaints-table__item--info">{{complaint.erpNumber}}</td>
+        <td class="complaint-container__complaints-table__item--info">{{complaint.registrationDate | date: 'dd-MM-yyyy'}}</td>
+        <td class="complaint-container__complaints-table__item--info">{{complaint.status}}</td>
+        <td class="complaint-container__complaints-table__item--info">{{complaint.topic}}</td>
+        <td class="complaint-container__complaints-table__item--info">{{complaint.owner.name}}</td>
+        <td class="complaint-container__complaints-table__item--info">{{complaint.applicant}}</td>
+        <td class="complaint-container__complaints-table__item--info">{{complaint.leadingOperator}}</td>
+        <td class="complaint-container__complaints-table__item__products">
+          <a *ngFor="let item of complaint.items" routerLink="../complaints/{{item.id}}">{{ 'COMPLAINT.productDetails' | translate}}</a>
+        </td>
+        <td class="complaint-container__complaints-table__item--info">Ikonka do edycji</td>
+        <td class="complaint-container__complaints-table__item--info">Ikonka do usuwania</td>
+      </tr>
+    </table>
+  </ng-template>
+</div>
