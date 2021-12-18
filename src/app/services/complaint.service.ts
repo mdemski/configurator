@@ -52,7 +52,7 @@ export class ComplaintService {
     // return this.http.get(url).pipe(catchError(err => err)) as Observable<Complaint[]>;
     const complaintArray: Complaint[] = [new Complaint('13123546/2021', new Date(), 'Przeciek w czapce ISO', 'Otwarta', '1323154-1315',
       'test@test.pl', new Date(), 'UlaZak', [new ComplaintItem('1234sfg54', this.windowToTests, 2, 'PRZECIEK', 'CZAPKA', 'GÓRA', 'OKNO PRZECIEKA W PRAWYM GÓRNYM ROGU', '31351321 BO 123', [])], this.companyToTests, 'Jan Kowalski', null, new Date(), new Date(), new Date(), new Date()),
-      new Complaint('13123546/2021', new Date(), 'Przeciek w czapce ISO', 'Otwarta', '1323154-1315',
+      new Complaint('13123547/2021', new Date(), 'Przeciek w czapce ISO', 'Otwarta', '1323154-1315',
         'test@test.pl', new Date(), 'UlaZak', [new ComplaintItem('1234sfgzzz', this.windowToTests, 2, 'PRZECIEK', 'KORYTKO', 'BOK', 'OKNO PRZECIEKA PD BOKU', '31351321 BO 123', [])], this.companyToTests, 'Jan Kowalski', null, new Date(), new Date(), new Date(), new Date())
     ];
     return of(complaintArray);
