@@ -1,0 +1,91 @@
+<div class="navbar-background">
+  <img src="assets/img/navbar_backgrounds/susan-wilkinson-FfC8mAqWvE8-unsplash.jpg" alt="roof windows">
+</div>
+
+<div class="md-container">
+  <div *ngIf="isLoading" class="d-flex justify-content-center">
+    <app-okpol-loader></app-okpol-loader>
+  </div>
+
+  <div class="complaint-container__complaints-table"
+       *ngIf="!isLoading && (complaint$ | async) as complaint">
+    <table class="complaint-container__complaints-table__item__products__table">
+      <tr class="complaint-container__complaints-table__item__products__table__header">
+        <th
+          class="complaint-container__complaints-table__item__products__table__header--text">{{ 'COMPLAINT.productName' | translate}}</th>
+        <th
+          class="complaint-container__complaints-table__item__products__table__header--text">{{ 'COMPLAINT.quantity' | translate}}</th>
+        <th
+          class="complaint-container__complaints-table__item__products__table__header--text">{{ 'COMPLAINT.complaintType' | translate}}</th>
+        <th
+          class="complaint-container__complaints-table__item__products__table__header--text">{{ 'COMPLAINT.element' | translate}}</th>
+        <th
+          class="complaint-container__complaints-table__item__products__table__header--text">{{ 'COMPLAINT.description' | translate}}</th>
+        <th
+          class="complaint-container__complaints-table__item__products__table__header--text">{{ 'COMPLAINT.edit' | translate}}</th>
+        <th
+          class="complaint-container__complaints-table__item__products__table__header--text">{{ 'COMPLAINT.delete' | translate}}</th>
+      </tr>
+
+      <tr class="complaint-container__complaints-table__item__products__table__item">
+        <td
+          class="complaint-container__complaints-table__item__products__table__item--info">{{complaint.items[this.itemID]?.product.productName}}</td>
+        <td
+          class="complaint-container__complaints-table__item__products__table__item--info">{{complaint.items[this.itemID]?.quantity}}</td>
+        <td
+          class="complaint-container__complaints-table__item__products__table__item--info">{{complaint.items[this.itemID]?.complaintType}}</td>
+        <td
+          class="complaint-container__complaints-table__item__products__table__item--info">{{complaint.items[this.itemID]?.element}}</td>
+        <td
+          class="complaint-container__complaints-table__item__products__table__item--info">{{complaint.items[this.itemID]?.description}}</td>
+        <td class="complaint-container__complaints-table__item__products__table__item--info">
+          <a routerLink="../complaints/update/products/{{complaint.items[this.itemID]?.id}}">
+            <i class="fas fa-edit complaint-container__complaints-table__item__products__table__item--edit"></i>
+          </a>
+        </td>
+        <td class="complaint-container__complaints-table__item__products__table__item--info"><i
+          class="far fa-trash-alt complaint-container__complaints-table__item__products__table__item--trash"
+          (click)="deleteComplaintItem(complaint, complaint.items[this.itemID])"></i></td>
+      </tr>
+    </table>
+
+    <div *ngIf="photosArray.length > 0; else noPhotos" class="complaint-container__complaints-gallery">
+      <div *ngFor="let photoLink of photosArray"
+           class="complaint-container__complaints-gallery__container">
+        <img class="complaint-container__complaints-gallery__container--single-photo"
+             src="{{photoLink}}" alt="photo">
+      </div>
+    </div>
+
+    <ng-template #noPhotos>
+      <p class="complaint-container__complaints-no-photos">{{ 'COMPLAINT.noPhotos' | translate}}</p>
+    </ng-template>
+
+    <div class="copy-link-config-popup" *ngIf="addPhotoPopup">
+      <div class="copy-link-config-popup__content">
+        <div class="copy-link-config-popup__content__info-box">
+          <label class="copy-link-config-popup__content__info-box--label-file btn btn--green">
+            <span>{{ 'COMPLAINT.addPictures' | translate}}</span>
+            <input #imageInput
+                   class="copy-link-config-popup__content__info-box--input-file"
+                   type="file" accept="images/*"
+                   (change)="processFile(imageInput, complaint.items[this.itemID])">
+          </label>
+          <a (click)="closePhotosPopup()"
+             class="btn btn--grey copy-link-config-popup__content__info-box__button">{{ 'LINK.close' | translate}}</a>
+          <div class="picture-add-successfully" *ngIf="this.filesService.uploadSuccessfully$ | async">
+            <h3>{{ 'COMPLAINT.addPictureSuccessfully' | translate}}</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="navigation-control">
+    <a (click)="addPhotosPopup()" class="btn btn--yellow">{{ 'COMPLAINT.addPicture' | translate}}</a>
+    <a routerLink="../../moje-konto" class="btn btn--blue">{{ 'LINK.backButton' | translate}}</a>
+  </div>
+
+
+</div>

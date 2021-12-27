@@ -13,10 +13,10 @@ export class ComplaintItem {
   private _localization: string; // list lokalizacji w reklamowanym wyrobie do wyboru (synchronizowany słownik z eNova)
   private _description: string;
   private _dataPlateNumber: string;
-  private _attachment: File[];
+  private _attachment: string[];
 
   // tslint:disable-next-line:max-line-length
-  constructor(id: string, product: RoofWindowSkylight | Flashing | Accessory | FlatRoofWindow | VerticalWindow, quantity: number, complaintType: string, element: string, localization: string, description: string, dataPlateNumber: string, attachment: File[]) {
+  constructor(id: string, product: RoofWindowSkylight | Flashing | Accessory | FlatRoofWindow | VerticalWindow, quantity: number, complaintType: string, element: string, localization: string, description: string, dataPlateNumber: string, attachment: string[]) {
     this._id = id;
     this._product = product;
     this._quantity = quantity;
@@ -92,11 +92,11 @@ export class ComplaintItem {
     this._dataPlateNumber = value;
   }
 
-  get attachment(): File[] {
+  get attachment(): string[] {
     return this._attachment;
   }
 
-  set attachment(value: File[]) {
+  set attachment(value: string[]) {
     this._attachment = value;
   }
 }

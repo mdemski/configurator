@@ -494,6 +494,7 @@ table {
 
 // COPY LINK CONFIG POPUP
 .copy-link-config-popup {
+  font-size: $default-font-size;
   height: 100vh;
   width: 100%;
   position: fixed;
@@ -529,8 +530,16 @@ table {
         width: 100%;
       }
 
+      &--label-file {
+        cursor: pointer;
+      }
+
       &--input {
         width: 100%;
+      }
+
+      &--input-file {
+        display: none;
       }
 
       &__button {

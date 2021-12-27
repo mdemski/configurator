@@ -13,31 +13,46 @@
       <!--Table header-->
       <tr class="complaint-container__complaints-table__header">
         <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.erpNumber' | translate}}</th>
-        <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.registrationDate' | translate}}</th>
+        <th
+          class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.registrationDate' | translate}}</th>
         <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.status' | translate}}</th>
         <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.topic' | translate}}</th>
         <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.owner' | translate}}</th>
         <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.applicant' | translate}}</th>
-        <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.leadingOperator' | translate}}</th>
-        <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.products' | translate}}</th>
+        <th
+          class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.leadingOperator' | translate}}</th>
+        <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.productDetails' | translate}}</th>
         <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.edit' | translate}}</th>
         <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.delete' | translate}}</th>
       </tr>
 
 
-      <tr class="complaint-container__complaints-table__item" *ngFor="let complaint of (userComplaints$ | async).complaints">
+      <tr class="complaint-container__complaints-table__item"
+          *ngFor="let complaint of (userComplaints$ | async).complaints">
         <td class="complaint-container__complaints-table__item--info">{{complaint.erpNumber}}</td>
-        <td class="complaint-container__complaints-table__item--info">{{complaint.registrationDate | date: 'dd-MM-yyyy'}}</td>
+        <td
+          class="complaint-container__complaints-table__item--info">{{complaint.registrationDate | date: 'dd-MM-yyyy'}}</td>
         <td class="complaint-container__complaints-table__item--info">{{complaint.status}}</td>
         <td class="complaint-container__complaints-table__item--info">{{complaint.topic}}</td>
         <td class="complaint-container__complaints-table__item--info">{{complaint.owner.name}}</td>
         <td class="complaint-container__complaints-table__item--info">{{complaint.applicant}}</td>
         <td class="complaint-container__complaints-table__item--info">{{complaint.leadingOperator}}</td>
         <td class="complaint-container__complaints-table__item__products">
-          <a *ngFor="let item of complaint.items" routerLink="../complaints/{{item.id}}">{{ 'COMPLAINT.productDetails' | translate}}</a>
+          <ul class="complaint-container__complaints-table__item__products__list">
+            <li class="complaint-container__complaints-table__item__products__list__element"
+                *ngFor="let item of complaint.items">
+              <a routerLink="../complaints/{{item.id}}">{{ 'COMPLAINT.productDetails' | translate}}</a>
+            </li>
+          </ul>
         </td>
-        <td class="complaint-container__complaints-table__item--info">Ikonka do edycji</td>
-        <td class="complaint-container__complaints-table__item--info">Ikonka do usuwania</td>
+        <td class="complaint-container__complaints-table__item--info">
+          <a routerLink="../complaints/update/{{complaint.erpNumber}}">
+            <i class="fas fa-edit complaint-container__complaints-table__item--edit"></i>
+          </a>
+        </td>
+        <td class="complaint-container__complaints-table__item--info"><i
+          class="far fa-trash-alt complaint-container__complaints-table__item--trash"
+          (click)="deleteComplaint(complaint)"></i></td>
       </tr>
     </table>
   </ng-template>

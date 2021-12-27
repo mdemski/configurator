@@ -10,37 +10,54 @@
   }
 
   &__complaints-table {
+    width: 100%;
 
     &__header {
+      width: 100%;
+      text-align: center;
+      background: $color-light-grey;
 
       &--text {
-
+        padding: 1rem;
       }
     }
 
     &__item {
+      width: 100%;
+      text-align: center;
+      vertical-align: center;
 
       &--info {
-
+        padding: 1rem;
       }
 
       &__products {
 
-        &__table {
+        &__list {
+          padding: 1rem;
+          margin: 0;
+          list-style: none;
 
-          &__header {
+          &__element {
 
-            &--text {
-
-            }
           }
+        }
+      }
 
-          &__item {
+      &--edit {
+        cursor: pointer;
+        color: $color-black;
 
-            &--info {
+        &:hover {
+          color: $color-yellow;
+        }
+      }
 
-            }
-          }
+      &--trash {
+        cursor: pointer;
+
+        &:hover {
+          color: $color-red;
         }
       }
     }

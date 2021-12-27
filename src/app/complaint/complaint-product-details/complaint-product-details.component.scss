@@ -1,0 +1,116 @@
+@import 'src/sass/base/variables';
+@import 'src/sass/base/base';
+@import 'src/sass/buttons';
+@import 'src/sass/radio-input';
+@import 'src/sass/components';
+
+.complaint-container__complaints-table {
+  width: 100%;
+  margin: 5rem 0;
+
+  &__item__products__table {
+    width: 100%;
+
+    &__header {
+      width: 100%;
+      text-align: center;
+      background: $color-light-grey;
+
+      &--text {
+        padding: 1rem;
+      }
+    }
+
+    &__item {
+      width: 100%;
+      text-align: center;
+
+      &--info {
+        padding: 1rem;
+      }
+
+      &__products {
+
+        &__table {
+
+          &__header {
+
+            &--text {
+
+            }
+          }
+
+          &__item {
+
+            &--info {
+
+            }
+          }
+        }
+      }
+
+      &--edit {
+        cursor: pointer;
+        color: $color-black;
+
+        &:hover {
+          color: $color-yellow;
+        }
+      }
+
+      &--trash {
+        cursor: pointer;
+
+        &:hover {
+          color: $color-red;
+        }
+      }
+    }
+  }
+}
+
+.complaint-container__complaints-gallery {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  &__container {
+    margin: 4px 4px;
+    height: 30rem;
+    flex: 30%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &--single-photo {
+
+    }
+  }
+}
+
+.complaint-container__complaints-no-photos {
+  margin-top: 2rem;
+}
+
+.navigation-control {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3rem;
+
+  a {
+    margin: 1rem;
+  }
+}
+
+.copy-link-config-popup__content__info-box__button {
+  margin: 0 0 0 1rem;
+}
+
+.picture-add-successfully {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 2rem;
+}

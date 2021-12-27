@@ -1,5 +1,5 @@
 import {Action, Selector, State, StateContext} from '@ngxs/store';
-import {AddComplaint, DeleteComplaint, GetComplaintsForUser, UpdateComplaint} from './complaint.actions';
+import {AddComplaint, DeleteComplaint, DeleteComplaintItem, GetComplaintsForUser, UpdateComplaint} from './complaint.actions';
 import {ComplaintService} from '../../services/complaint.service';
 import {tap} from 'rxjs/operators';
 import {Complaint} from '../../models/complaint';
@@ -56,11 +56,22 @@ export class ComplaintState {
 
   @Action(DeleteComplaint)
   deleteComplaint(ctx: StateContext<ComplaintStateModel>, {complaint}: DeleteComplaint) {
-    this.complaintService.deleteComplaint(complaint).pipe(tap(() => {
+    return this.complaintService.deleteComplaint(complaint).pipe(tap(() => {
       ctx.setState(
         patch({
           complaints: removeItem(removedComplaint => !!removedComplaint && removedComplaint.erpNumber === complaint.erpNumber)
         }));
+    }));
+  }
+
+  @Action(DeleteComplaintItem)
+  deleteComplaintItem(ctx: StateContext<ComplaintStateModel>, {complaint, complaintItem}: DeleteComplaintItem) {
+    return this.complaintService.deleteComplaintItem(complaint, complaintItem).pipe(tap((result: Complaint) => {
+      ctx.setState(
+        patch({
+          complaints: updateItem(updatedComplaint => !!updatedComplaint && updatedComplaint.erpNumber === result.erpNumber, result)
+        })
+      )
     }));
   }
 }

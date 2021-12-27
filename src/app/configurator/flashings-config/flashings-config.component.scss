@@ -1,4 +1,5 @@
 @import 'src/sass/configure-form';
+@import 'src/sass/radio-input';
 @import 'src/sass/configuration-summary-navbar';
 @import 'src/sass/base/variables';
 @import 'src/sass/components';
@@ -210,5 +211,12 @@
       margin: auto;
     }
   }
+}
 
+.choose-config-popup__content {
+  overflow: hidden;
+}
+
+.select-box {
+  width: 50%;
 }

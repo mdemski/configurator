@@ -3,6 +3,7 @@ import {Select, Store} from '@ngxs/store';
 import {Observable} from 'rxjs';
 import {ComplaintState} from '../../store/complaint/complaint.state';
 import {Complaint} from '../../models/complaint';
+import {DeleteComplaint} from '../../store/complaint/complaint.actions';
 
 @Component({
   selector: 'app-complaint',
@@ -12,7 +13,7 @@ import {Complaint} from '../../models/complaint';
 export class ComplaintComponent implements OnInit, OnDestroy {
 
   isLoading;
-  constructor() {
+  constructor(private store: Store) {
   }
 
   @Select(ComplaintState) userComplaints$: Observable<Complaint[]>;
@@ -24,4 +25,7 @@ export class ComplaintComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
   }
 
+  deleteComplaint(complaint: Complaint) {
+    this.store.dispatch(new DeleteComplaint(complaint));
+  }
 }
