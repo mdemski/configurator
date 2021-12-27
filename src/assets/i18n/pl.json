@@ -127,7 +127,9 @@
     "configurationOptionsLink": "dostepne-opcje",
     "appFunctionsLink": "fukcje-aplikacji",
     "sellers": "dealerzy",
-    "linkToCart": "koszyk"
+    "linkToCart": "koszyk",
+    "backButton": "Wróć",
+    "close": "Zamknij"
   },
   "CONTACT": {
     "contactUs": "Skontaktuj się z nami",
@@ -585,6 +587,10 @@
     "complaintType": "Rodzaj",
     "element": "Element",
     "description": "Szczegółowy opis",
-    "productDetails": "Szczegóły produktu(ów)"
+    "productDetails": "Szczegóły produktu",
+    "noPhotos": "Brak zdjęć do wyświetlenia.",
+    "addPicture": "Dodaj zdjęcie",
+    "addPictures": "Dodaj zdjęcia",
+    "addPictureSuccessfully": "Poprawnie dodano zdjęcie"
   }
 }
