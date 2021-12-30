@@ -12,7 +12,7 @@ let User = new Schema({
   salt: {
     type: String
   },
-  username: {
+  name: {
     type: String
   },
   role: {
