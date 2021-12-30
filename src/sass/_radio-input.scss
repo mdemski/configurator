@@ -146,3 +146,11 @@
   max-height: 150px;
   overflow-y: scroll;
 }
+
+.sort__input {
+  display: none;
+
+  &--label {
+    cursor: pointer;
+  }
+}

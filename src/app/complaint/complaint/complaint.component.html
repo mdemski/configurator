@@ -2,58 +2,124 @@
   <app-okpol-loader></app-okpol-loader>
 </div>
 
-<div *ngIf="!isLoading">
-  <div *ngIf="(userComplaints$ | async).length === 0; else complaintBlock" class="complaint-container">
+<div *ngIf="!isLoading && (userComplaints$ | async)?.complaints as userComplaints">
+  <div *ngIf="userComplaints.length === 0; else complaintBlock" class="complaint-container">
     <p class="complaint-container--no-complaints">{{'COMPLAINT.noComplaints' | translate}}</p>
   </div>
 
   <ng-template #complaintBlock>
 
-    <table class="complaint-container__complaints-table">
-      <!--Table header-->
-      <tr class="complaint-container__complaints-table__header">
-        <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.erpNumber' | translate}}</th>
-        <th
-          class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.registrationDate' | translate}}</th>
-        <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.status' | translate}}</th>
-        <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.topic' | translate}}</th>
-        <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.owner' | translate}}</th>
-        <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.applicant' | translate}}</th>
-        <th
-          class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.leadingOperator' | translate}}</th>
-        <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.productDetails' | translate}}</th>
-        <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.edit' | translate}}</th>
-        <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.delete' | translate}}</th>
-      </tr>
+    <form [formGroup]="filtrationForm" class="search-form">
+      <table class="complaint-container__complaints-table">
+        <!--Table header-->
+        <tr class="complaint-container__complaints-table__header">
+          <th class="complaint-container__complaints-table__header--text">
+            <label class="sort__input--label" (click)="sortByERPName()">
+              {{ 'COMPLAINT.erpNumber' | translate}}
+              <span *ngIf="!erpToggler">&#8595;</span>
+              <span *ngIf="erpToggler">&#8593;</span>
+            </label>
+          </th>
+          <th class="complaint-container__complaints-table__header--text">
+            <label class="sort__input--label" (click)="sortByRegistrationDate()">
+              {{ 'COMPLAINT.registrationDate' | translate}}
+              <span *ngIf="!dateToggler">&#8595;</span>
+              <span *ngIf="dateToggler">&#8593;</span>
+            </label>
+          </th>
+          <th class="complaint-container__complaints-table__header--text">
+            <label class="sort__input--label" (click)="sortByStatus()">
+              {{ 'COMPLAINT.status' | translate}}
+              <span *ngIf="!statusToggler">&#8595;</span>
+              <span *ngIf="statusToggler">&#8593;</span>
+            </label>
+          </th>
+          <th class="complaint-container__complaints-table__header--text">
+            <label class="sort__input--label" (click)="sortByTopic()">
+              {{ 'COMPLAINT.topic' | translate}}
+              <span *ngIf="!topicToggler">&#8595;</span>
+              <span *ngIf="topicToggler">&#8593;</span>
+            </label>
+          </th>
+          <th class="complaint-container__complaints-table__header--text">
+            <label class="sort__input--label" (click)="sortByOwner()">
+              {{ 'COMPLAINT.owner' | translate}}
+              <span *ngIf="!ownerToggler">&#8595;</span>
+              <span *ngIf="ownerToggler">&#8593;</span>
+            </label>
+          </th>
+          <th class="complaint-container__complaints-table__header--text">
+            <label class="sort__input--label" (click)="sortByApplicant()">
+              {{ 'COMPLAINT.applicant' | translate}}
+              <span *ngIf="!applicantToggler">&#8595;</span>
+              <span *ngIf="applicantToggler">&#8593;</span>
+            </label>
+          </th>
+          <th class="complaint-container__complaints-table__header--text">
+            <label class="sort__input--label" (click)="sortByLeadingOperator()">
+              {{ 'COMPLAINT.leadingOperator' | translate}}
+              <span *ngIf="!leadingOperatorToggler">&#8595;</span>
+              <span *ngIf="leadingOperatorToggler">&#8593;</span>
+            </label>
+          </th>
+          <th
+            class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.productDetails' | translate}}</th>
+          <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.edit' | translate}}</th>
+          <th class="complaint-container__complaints-table__header--text">{{ 'COMPLAINT.delete' | translate}}</th>
+        </tr>
 
+        <tr class="complaint-container__complaints-table__search-header">
+          <td class="complaint-container__complaints-table__search-header--td">
+            <input type="text" formControlName="erpSearch"
+                   class="form-control" placeholder="{{ 'COMPLAINT.erpNumber' | translate}}"></td>
+          <td class="complaint-container__complaints-table__search-header--td">
+            <input type="date" formControlName="dateSearch"
+                   class="form-control" placeholder="{{ 'COMPLAINT.registrationDate' | translate}}"></td>
+          <td class="complaint-container__complaints-table__search-header--td">
+            <input type="text" formControlName="statusSearch"
+                   class="form-control" placeholder="{{ 'COMPLAINT.status' | translate}}"></td>
+          <td class="complaint-container__complaints-table__search-header--td">
+            <input type="text" formControlName="topicSearch"
+                   class="form-control" placeholder="{{ 'COMPLAINT.topic' | translate}}"></td>
+          <td class="complaint-container__complaints-table__search-header--td">
+            <input type="text" formControlName="ownerSearch"
+                   class="form-control" placeholder="{{ 'COMPLAINT.owner' | translate}}"></td>
+          <td class="complaint-container__complaints-table__search-header--td">
+            <input type="text" formControlName="applicantSearch"
+                   class="form-control" placeholder="{{ 'COMPLAINT.applicant' | translate}}"></td>
+          <td class="complaint-container__complaints-table__search-header--td">
+            <input type="text" formControlName="leadingOperatorSearch"
+                   class="form-control" placeholder="{{ 'COMPLAINT.leadingOperator' | translate}}"></td>
+        </tr>
 
-      <tr class="complaint-container__complaints-table__item"
-          *ngFor="let complaint of (userComplaints$ | async).complaints">
-        <td class="complaint-container__complaints-table__item--info">{{complaint.erpNumber}}</td>
-        <td
-          class="complaint-container__complaints-table__item--info">{{complaint.registrationDate | date: 'dd-MM-yyyy'}}</td>
-        <td class="complaint-container__complaints-table__item--info">{{complaint.status}}</td>
-        <td class="complaint-container__complaints-table__item--info">{{complaint.topic}}</td>
-        <td class="complaint-container__complaints-table__item--info">{{complaint.owner.name}}</td>
-        <td class="complaint-container__complaints-table__item--info">{{complaint.applicant}}</td>
-        <td class="complaint-container__complaints-table__item--info">{{complaint.leadingOperator}}</td>
-        <td class="complaint-container__complaints-table__item__products">
-          <ul class="complaint-container__complaints-table__item__products__list">
-            <li class="complaint-container__complaints-table__item__products__list__element"
-                *ngFor="let item of complaint.items">
-              <a routerLink="../complaints/{{item.id}}">{{ 'COMPLAINT.productDetails' | translate}}</a>
-            </li>
-          </ul>
-        </td>
-        <td class="complaint-container__complaints-table__item--info">
-          <a routerLink="../complaints/update/{{complaint.erpNumber}}">
-            <i class="fas fa-edit complaint-container__complaints-table__item--edit"></i>
-          </a>
-        </td>
-        <td class="complaint-container__complaints-table__item--info"><i
-          class="far fa-trash-alt complaint-container__complaints-table__item--trash"
-          (click)="deleteComplaint(complaint)"></i></td>
-      </tr>
-    </table>
+        <tr class="complaint-container__complaints-table__item"
+            *ngFor="let complaint of filteredComplaints">
+          <td class="complaint-container__complaints-table__item--info">{{complaint.erpNumber}}</td>
+          <td
+            class="complaint-container__complaints-table__item--info">{{complaint.registrationDate | date: 'dd-MM-yyyy'}}</td>
+          <td class="complaint-container__complaints-table__item--info">{{complaint.status}}</td>
+          <td class="complaint-container__complaints-table__item--info">{{complaint.topic}}</td>
+          <td class="complaint-container__complaints-table__item--info">{{complaint.owner.name}}</td>
+          <td class="complaint-container__complaints-table__item--info">{{complaint.applicant}}</td>
+          <td class="complaint-container__complaints-table__item--info">{{complaint.leadingOperator}}</td>
+          <td class="complaint-container__complaints-table__item__products">
+            <ul class="complaint-container__complaints-table__item__products__list">
+              <li class="complaint-container__complaints-table__item__products__list__element"
+                  *ngFor="let item of complaint.items">
+                <a routerLink="../complaints/{{item.id}}">{{ 'COMPLAINT.productDetails' | translate}}</a>
+              </li>
+            </ul>
+          </td>
+          <td class="complaint-container__complaints-table__item--info">
+            <a routerLink="../complaints/update/{{complaint.erpNumber}}">
+              <i class="fas fa-edit complaint-container__complaints-table__item--edit"></i>
+            </a>
+          </td>
+          <td class="complaint-container__complaints-table__item--info"><i
+            class="far fa-trash-alt complaint-container__complaints-table__item--trash"
+            (click)="deleteComplaint(complaint)"></i></td>
+        </tr>
+      </table>
+    </form>
   </ng-template>
 </div>
