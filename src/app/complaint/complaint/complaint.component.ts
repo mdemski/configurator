@@ -83,7 +83,6 @@ export class ComplaintComponent implements OnInit, OnDestroy {
   sortByERPName() {
     this.erpToggler = !this.erpToggler;
     const order = this.erpToggler ? 'asc' : 'desc';
-    console.log(order);
     this.filteredComplaints = _.orderBy(this.filteredComplaints, ['erpNumber'], order);
   }
 
@@ -127,7 +126,6 @@ export class ComplaintComponent implements OnInit, OnDestroy {
   private filterTable(filtersObject: { statusSearch: string; erpSearch: string; topicSearch: string; ownerSearch: string; dateSearch: string; applicantSearch: string; leadingOperatorSearch: string }) {
     this.isFiltering = true;
     this.filteredComplaints = this.complaintList;
-    console.log(filtersObject);
     this.filteredComplaints = this.filteredComplaints.filter(complaint => {
       let erpFound = true;
       let dateFound = true;
