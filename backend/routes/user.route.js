@@ -45,7 +45,7 @@ userRoute.route('/email/:email').get(((req, res, next) => {
 
 //Get single user by username
 userRoute.route('/username/:username').get(((req, res, next) => {
-  User.findOne({username: req.params.username}, (error, data) => {
+  User.findOne({name: req.params.name}, (error, data) => {
     if (error) {
       return next(error)
     } else {
@@ -84,7 +84,7 @@ userRoute.post('/login', function (req, res, next) {
         res.status(200).json({
           success: true,
           email: user.email,
-          username: user.username,
+          name: user.name,
           token: tokenObject.token,
           expiresIn: tokenObject.expires
         });
@@ -105,7 +105,7 @@ userRoute.post('/register', function (req, res, next) {
     hash: hash,
     salt: salt,
     role: req.body._role,
-    username: req.body._username,
+    name: req.body._name,
     activated: req.body._activated,
     uuid: req.body._uuid,
     discount: req.body._discount,
