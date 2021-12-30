@@ -77,7 +77,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.registerUser.email = this.registerForm.value.email;
     this.registerUser.password = this.registerForm.value.password;
     this.registerUser.rePassword = this.registerForm.value.rePassword;
-    this.registerUser.username = this.registerForm.value.username;
+    this.registerUser.name = this.registerForm.value.username;
     this.registerUser.role = 'user';
     this.registerUser.uuid = this.generateUUID();
     this.registerUser.activated = false;

@@ -19,7 +19,7 @@ import {patch, updateItem} from '@ngxs/store/operators';
 
 export interface UserStateModel {
   email: string;
-  userName: string;
+  name: string;
   activated: boolean;
   discount: number;
   companyNip: string;
@@ -31,7 +31,7 @@ export interface UserStateModel {
   name: 'user',
   defaults: {
     email: '',
-    userName: '',
+    name: '',
     activated: false,
     discount: 0,
     companyNip: '',
@@ -73,7 +73,7 @@ export class UserState {
         const state = ctx.getState();
         const updateState = cloneDeep(state);
         updateState.email = user.email;
-        updateState.userName = user.username;
+        updateState.name = user.name;
         updateState.activated = user.activated;
         updateState.discount = user.discount;
         updateState.companyNip = user.companyNip;
@@ -82,7 +82,7 @@ export class UserState {
         ctx.setState({
           ...state,
           email: updateState.email,
-          userName: updateState.userName,
+          name: updateState.name,
           activated: updateState.activated,
           discount: updateState.discount,
           companyNip: updateState.companyNip,
@@ -98,7 +98,7 @@ export class UserState {
       ctx.setState(
         patch({
           email: updatedUser.email,
-          userName: updatedUser.username,
+          name: updatedUser.name,
           activated: updatedUser.activated,
           discount: updatedUser.discount,
           companyNip: updatedUser.companyNip
@@ -177,7 +177,7 @@ export class UserState {
       ctx.setState(
         {
           email: '',
-          userName: '',
+          name: '',
           activated: false,
           discount: 0,
           companyNip: '',
