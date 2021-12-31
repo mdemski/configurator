@@ -591,6 +591,8 @@
     "noPhotos": "Brak zdjęć do wyświetlenia.",
     "addPicture": "Dodaj zdjęcie",
     "addPictures": "Dodaj zdjęcia",
+    "updatePicture": "Zmień zdjęcia",
+    "deletePicture": "Usuń zdjęcia",
     "addPictureSuccessfully": "Poprawnie dodano zdjęcie"
   }
 }

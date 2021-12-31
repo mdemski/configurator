@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
-import {filter, map, switchMap, takeUntil, tap} from 'rxjs/operators';
+import {map, switchMap, takeUntil, tap} from 'rxjs/operators';
 import {ComplaintService} from '../../services/complaint.service';
 import {ActivatedRoute} from '@angular/router';
 import {Select, Store} from '@ngxs/store';
@@ -25,6 +25,7 @@ export class ComplaintProductDetailsComponent implements OnInit, OnDestroy {
   currentUser: { email: string, userName: string, isLogged: boolean };
   itemID: number;
   addPhotoPopup = false;
+  resultArray = [];
   photosArray: string[] = [];
 
   constructor(private complaintService: ComplaintService,
@@ -71,5 +72,19 @@ export class ComplaintProductDetailsComponent implements OnInit, OnDestroy {
 
   deleteComplaintItem(complaint: Complaint, compliantItem: ComplaintItem) {
     this.store.dispatch(new DeleteComplaintItem(complaint, compliantItem));
+  }
+
+  updateFile(imageUpdate: HTMLInputElement, photoLink: string, complaintItem: ComplaintItem) {
+    const fileName = photoLink.split('%')[2].substr(2).split('.')[0];
+    this.filesService.updatePhoto(imageUpdate, fileName, complaintItem);
+  }
+
+  deletePhoto(photoLink: string, complaintItem: ComplaintItem) {
+    const fileName = photoLink.split('%')[2].substr(2).split('.')[0];
+    this.filesService.deletePhoto(fileName, complaintItem);
+    const index = this.photosArray.indexOf(fileName, 0);
+    if (index > -1) {
+      this.photosArray.splice(index, 1);
+    }
   }
 }

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {ComplaintItem} from '../models/complaintItem';
 import {environment} from '../../environments/environment';
 import initializeApp = firebase.initializeApp;
-import {getStorage, ref, uploadBytes, listAll} from 'firebase/storage';
+import {getStorage, ref, uploadBytes, listAll, deleteObject, getDownloadURL} from 'firebase/storage';
 import firebase from 'firebase/compat';
 import {BehaviorSubject} from 'rxjs';
 
@@ -58,5 +58,35 @@ export class FilesService {
     const refNameFolderString = 'complaint-images/' + complaintId;
     const folderRef = ref(this.storage, refNameFolderString);
     return listAll(folderRef);
+  }
+
+
+  updatePhoto(imageUpdate: HTMLInputElement, fileName: string, complaintItem: ComplaintItem) {
+    const file: File = imageUpdate.files[0];
+    const reader = new FileReader();
+
+    reader.addEventListener('load', (event: any) => {
+      this.selectedFile = new ImageSnippet(event.target.result, file);
+      const refNameFileString = 'complaint-images/' + complaintItem.id + '/' + fileName + '.jpg';
+      const reference = ref(this.storage, refNameFileString);
+      uploadBytes(reference, this.selectedFile.file).then(
+        (snapshot) => {},
+        (error) => {
+          this.uploadSuccessfully$.next(false);
+          return error;
+        });
+    });
+
+    reader.readAsDataURL(file);
+  }
+
+  deletePhoto(fileName: string, complaintItem: ComplaintItem) {
+    const refNameFileString = 'complaint-images/' + complaintItem.id + '/' + fileName + '.jpg';
+    const reference = ref(this.storage, refNameFileString);
+    deleteObject(reference).then(() => {
+      // File deleted successfully
+    }).catch((error) => {
+      return error;
+    });
   }
 }

@@ -54,6 +54,16 @@
            class="complaint-container__complaints-gallery__container">
         <img class="complaint-container__complaints-gallery__container--single-photo"
              src="{{photoLink}}" alt="photo">
+        <div class="complaint-container__complaints-gallery__container--overlay"></div>
+        <div class="complaint-container__complaints-gallery__container--button">
+          <label class="btn btn--green">{{ 'COMPLAINT.updatePicture' | translate}}
+            <input #imageUpdate
+                   class="copy-link-config-popup__content__info-box--input-file"
+                   type="file" accept="images/*"
+                   (change)="updateFile(imageUpdate, photoLink, complaint.items[this.itemID])">
+          </label>
+          <p (click)="deletePhoto(photoLink, complaint.items[this.itemID])" class="btn btn--red">{{ 'COMPLAINT.deletePicture' | translate}}</p>
+        </div>
       </div>
     </div>
 
