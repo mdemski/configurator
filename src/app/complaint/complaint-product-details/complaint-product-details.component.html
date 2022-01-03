@@ -62,7 +62,8 @@
                    type="file" accept="images/*"
                    (change)="updateFile(imageUpdate, photoLink, complaint.items[this.itemID])">
           </label>
-          <p (click)="deletePhoto(photoLink, complaint.items[this.itemID])" class="btn btn--red">{{ 'COMPLAINT.deletePicture' | translate}}</p>
+          <p (click)="deletePhoto(photoLink, complaint.items[this.itemID])"
+             class="btn btn--red">{{ 'COMPLAINT.deletePicture' | translate}}</p>
         </div>
       </div>
     </div>
@@ -83,19 +84,16 @@
           </label>
           <a (click)="closePhotosPopup()"
              class="btn btn--grey copy-link-config-popup__content__info-box__button">{{ 'LINK.close' | translate}}</a>
-          <div class="picture-add-successfully" *ngIf="this.filesService.uploadSuccessfully$ | async">
+          <div class="picture-add-successfully" *ngIf="this.filesService.updatedSuccessfully$ | async">
             <h3>{{ 'COMPLAINT.addPictureSuccessfully' | translate}}</h3>
           </div>
         </div>
       </div>
     </div>
-
   </div>
+</div>
 
-  <div class="navigation-control">
-    <a (click)="addPhotosPopup()" class="btn btn--yellow">{{ 'COMPLAINT.addPicture' | translate}}</a>
-    <a routerLink="../../moje-konto" class="btn btn--blue">{{ 'LINK.backButton' | translate}}</a>
-  </div>
-
-
+<div class="navigation-control">
+  <a (click)="addPhotosPopup()" class="btn btn--yellow">{{ 'COMPLAINT.addPicture' | translate}}</a>
+  <a routerLink="../../moje-konto" class="btn btn--blue">{{ 'LINK.backButton' | translate}}</a>
 </div>

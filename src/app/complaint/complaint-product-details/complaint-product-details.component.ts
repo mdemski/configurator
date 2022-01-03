@@ -25,8 +25,8 @@ export class ComplaintProductDetailsComponent implements OnInit, OnDestroy {
   currentUser: { email: string, userName: string, isLogged: boolean };
   itemID: number;
   addPhotoPopup = false;
-  resultArray = [];
   photosArray: string[] = [];
+  paramsID = '';
 
   constructor(private complaintService: ComplaintService,
               private route: ActivatedRoute,
@@ -38,7 +38,7 @@ export class ComplaintProductDetailsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.complaint$ = this.route.paramMap.pipe(
       takeUntil(this.isDestroyed$),
-      map(params => params.get('id')),
+      map(params => this.paramsID = params.get('id')),
       tap(id => this.filesService.getFiles(id).then((array) => {
         array.items.forEach(element => getDownloadURL(element).then(url => this.photosArray.push(url)));
       })),
@@ -62,12 +62,13 @@ export class ComplaintProductDetailsComponent implements OnInit, OnDestroy {
   }
 
   closePhotosPopup() {
-    this.filesService.uploadSuccessfully$.next(false);
+    this.filesService.updatedSuccessfully$.next(false);
     this.addPhotoPopup = false;
   }
 
   processFile(imageInput: HTMLInputElement, complaintItem: ComplaintItem) {
     this.filesService.processFile(imageInput, complaintItem);
+    this.reloadArray();
   }
 
   deleteComplaintItem(complaint: Complaint, compliantItem: ComplaintItem) {
@@ -77,6 +78,7 @@ export class ComplaintProductDetailsComponent implements OnInit, OnDestroy {
   updateFile(imageUpdate: HTMLInputElement, photoLink: string, complaintItem: ComplaintItem) {
     const fileName = photoLink.split('%')[2].substr(2).split('.')[0];
     this.filesService.updatePhoto(imageUpdate, fileName, complaintItem);
+    this.reloadArray();
   }
 
   deletePhoto(photoLink: string, complaintItem: ComplaintItem) {
@@ -86,5 +88,19 @@ export class ComplaintProductDetailsComponent implements OnInit, OnDestroy {
     if (index > -1) {
       this.photosArray.splice(index, 1);
     }
+    this.reloadArray();
+  }
+
+  private reloadArray() {
+    this.isLoading = true;
+    this.photosArray = [];
+    this.filesService.updatedSuccessfully$.pipe(takeUntil(this.isDestroyed$)).subscribe(booleanValue => {
+      if (booleanValue) {
+        this.filesService.getFiles(this.paramsID).then(array => {
+          array.items.forEach(element => getDownloadURL(element).then(url => this.photosArray.push(url)));
+          this.isLoading = false;
+        });
+      }
+    });
   }
 }

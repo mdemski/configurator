@@ -16,7 +16,7 @@ class ImageSnippet {
 })
 export class FilesService {
 
-  uploadSuccessfully$ = new BehaviorSubject(false);
+  updatedSuccessfully$ = new BehaviorSubject(false);
   selectedFile: ImageSnippet;
   firebaseApp = initializeApp(environment.firebaseConfig);
   storage = getStorage(this.firebaseApp);
@@ -33,12 +33,12 @@ export class FilesService {
       this.uploadImage(this.selectedFile.file, complaintItem).then(
         (snapshot) => {
           if (snapshot.metadata.size > 0) {
-            this.uploadSuccessfully$.next(true);
+            this.updatedSuccessfully$.next(true);
             // complaintItem.attachment.push(snapshot.metadata.fullPath);
           }
         },
         (error) => {
-          this.uploadSuccessfully$.next(false);
+          this.updatedSuccessfully$.next(false);
           return error;
         });
     });
@@ -57,6 +57,7 @@ export class FilesService {
   getFiles(complaintId: string) {
     const refNameFolderString = 'complaint-images/' + complaintId;
     const folderRef = ref(this.storage, refNameFolderString);
+    this.updatedSuccessfully$.next(false);
     return listAll(folderRef);
   }
 
@@ -70,9 +71,11 @@ export class FilesService {
       const refNameFileString = 'complaint-images/' + complaintItem.id + '/' + fileName + '.jpg';
       const reference = ref(this.storage, refNameFileString);
       uploadBytes(reference, this.selectedFile.file).then(
-        (snapshot) => {},
+        (snapshot) => {
+          this.updatedSuccessfully$.next(true);
+        },
         (error) => {
-          this.uploadSuccessfully$.next(false);
+          this.updatedSuccessfully$.next(false);
           return error;
         });
     });
@@ -84,8 +87,10 @@ export class FilesService {
     const refNameFileString = 'complaint-images/' + complaintItem.id + '/' + fileName + '.jpg';
     const reference = ref(this.storage, refNameFileString);
     deleteObject(reference).then(() => {
+      this.updatedSuccessfully$.next(true);
       // File deleted successfully
     }).catch((error) => {
+      this.updatedSuccessfully$.next(true);
       return error;
     });
   }
