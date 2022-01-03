@@ -14,9 +14,24 @@
   align-items: center;
   margin: 3rem 0;
 
-  &__currency {
+  &__my-profile {
+
+  }
+
+  &__foreign-exchange {
     display: flex;
     align-items: center;
+
+    &__currency {
+      display: flex;
+      align-items: center;
+      margin-left: 1rem;
+    }
+
+    &__vat-rate {
+      display: flex;
+      align-items: center;
+    }
   }
 
   &--title {

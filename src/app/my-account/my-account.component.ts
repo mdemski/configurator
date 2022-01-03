@@ -5,7 +5,8 @@ import {CartState} from '../store/cart/cart.state';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {filter, takeUntil} from 'rxjs/operators';
 import exchange from '../../assets/json/echange.json';
-import {UpdateCartCurrency} from '../store/cart/cart.actions';
+import vatRates from '../../assets/json/vatRates.json';
+import {UpdateCartCurrency, UpdateCartVatRate} from '../store/cart/cart.actions';
 import {AppState} from '../store/app/app.state';
 import {ConfigurationState} from '../store/configuration/configuration.state';
 import {ComplaintState} from '../store/complaint/complaint.state';
@@ -24,7 +25,9 @@ export class MyAccountComponent implements OnInit, OnDestroy {
   @Select(ComplaintState) userComplaints$: Observable<Complaint[]>;
 
   currency$ = new BehaviorSubject('PLN');
+  vatRate$ = new BehaviorSubject(0.23);
   currencies: string[] = [];
+  rates: number[] = [];
   isDestroyed$ = new Subject();
   loading = true;
   updatedCurrency: string;
@@ -39,6 +42,7 @@ export class MyAccountComponent implements OnInit, OnDestroy {
   constructor(private authService: AuthService,
               private store: Store) {
     this.currencies = Object.keys(exchange);
+    this.rates = Object.values(vatRates);
     this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.currentUser = user.currentUser);
   }
 
@@ -46,6 +50,7 @@ export class MyAccountComponent implements OnInit, OnDestroy {
     // this.store.dispatch()
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe((data) => {
       this.currency$.next(data.cart.currency);
+      this.vatRate$.next(data.cart.vatRate);
       this.loading = false;
     });
   }
@@ -62,6 +67,10 @@ export class MyAccountComponent implements OnInit, OnDestroy {
 
   updateCurrency(updatedCurrency) {
     this.store.dispatch(new UpdateCartCurrency(updatedCurrency));
+  }
+
+  updateVATRate(rateOption: number) {
+    this.store.dispatch(new UpdateCartVatRate(rateOption));
   }
 
   selectTab() {

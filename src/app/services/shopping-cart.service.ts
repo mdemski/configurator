@@ -14,6 +14,7 @@ import {CrudService} from './crud-service';
 import {User} from '../models/user';
 import {skip} from 'rxjs/operators';
 import exchange from '../../assets/json/echange.json';
+import vatRate from '../../assets/json/vatRates.json';
 
 @Injectable({
   providedIn: 'root'
@@ -38,25 +39,25 @@ export class ShoppingCartService {
       case 'pl': {
         this.currency = 'PLN';
         this.exchange = exchange.PLN;
-        this.vatRate = exchange.pl;
+        this.vatRate = vatRate.pl;
         break;
       }
       case 'en': {
         this.currency = 'GB';
         this.exchange = exchange.GB;
-        this.vatRate = exchange.en;
+        this.vatRate = vatRate.en;
         break;
       }
       case 'de': {
         this.currency = 'EUR';
         this.exchange = exchange.EUR;
-        this.vatRate = exchange.de;
+        this.vatRate = vatRate.de;
         break;
       }
       case 'fr': {
         this.currency = 'EUR';
         this.exchange = exchange.EUR;
-        this.vatRate = exchange.fr;
+        this.vatRate = vatRate.fr;
         break;
       }
     }
@@ -170,9 +171,9 @@ export class ShoppingCartService {
     return cart;
   }
 
-  changeVatRate(vatRate: number, cart: Cart) {
-    cart.vatRate = vatRate;
-    this.vatRate = vatRate;
+  changeVatRate(newVatRate: number, cart: Cart) {
+    cart.vatRate = newVatRate;
+    this.vatRate = newVatRate;
     return cart;
   }
 }

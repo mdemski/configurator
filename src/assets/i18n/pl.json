@@ -560,6 +560,7 @@
     "myProfileLink": "/moj-profil",
     "currency": "zł",
     "actualCurrency": "Aktualna waluta",
+    "actualVATRate": "Aktualna stawka VAT",
     "changeCurrency": "Wybierz inną walutę",
     "logout": "Wyloguj"
   },

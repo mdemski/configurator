@@ -12,29 +12,59 @@
         <a routerLink="./{{ 'GENERAL.myProfileLink' | translate}}"
            class="btn btn--dark-blue">{{ 'GENERAL.myProfile' | translate}}</a>
       </div>
-      <div class="header__currency">
-        <p class="header--title">{{ 'GENERAL.actualCurrency' | translate}}:</p>
-        <div class="select-box">
-          <div class="select-box__current header--radio" tabindex="1">
-            <div class="select-box__value" *ngFor="let currencyOption of currencies; let i = index">
-              <input class="select-box__input" type="radio" id="{{i}}"
-                     (change)="updateCurrency(currencyOption)"
-                     value="{{currencyOption}}" name="currency">
-              <p class="select-box__input-text">{{currencyOption}}</p>
+
+      <div class="header__foreign-exchange">
+
+        <div class="header__foreign-exchange__vat-rate">
+          <p class="header--title">{{ 'GENERAL.actualVATRate' | translate}}:</p>
+          <div class="select-box">
+            <div class="select-box__current header--radio" tabindex="1">
+              <div class="select-box__value" *ngFor="let rateOption of rates; let i = index">
+                <input class="select-box__input" type="radio" id="{{i}}"
+                       (change)="updateVATRate(rateOption)"
+                       value="{{rateOption}}" name="rate">
+                <p class="select-box__input-text">{{rateOption * 100}}%</p>
+              </div>
+              <div class="select-box__value">
+                <input class="select-box__input" type="radio" id="-2" value="{{vatRate$ | async}}"
+                       name="rate" checked>
+                <p class="select-box__input-text">{{(vatRate$ | async) * 100}}%</p>
+              </div>
+              <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg"
+                   alt="Arrow Icon" aria-hidden="true">
             </div>
-            <div class="select-box__value">
-              <input class="select-box__input" type="radio" id="-1" value="{{currency$ | async}}"
-                     name="currency" checked>
-              <p class="select-box__input-text">{{currency$ | async}}</p>
-            </div>
-            <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg"
-                 alt="Arrow Icon" aria-hidden="true">
+            <ul class="select-box__list">
+              <li *ngFor="let rateOption of rates; let i = index"><label
+                class="select-box__option margin-bottom-0" for="{{i}}"
+                aria-hidden="aria-hidden">{{rateOption * 100}}%</label></li>
+            </ul>
           </div>
-          <ul class="select-box__list">
-            <li *ngFor="let currencyOption of currencies; let i = index"><label
-              class="select-box__option margin-bottom-0" for="{{i}}"
-              aria-hidden="aria-hidden">{{currencyOption}}</label></li>
-          </ul>
+        </div>
+
+        <div class="header__foreign-exchange__currency">
+          <p class="header--title">{{ 'GENERAL.actualCurrency' | translate}}:</p>
+          <div class="select-box">
+            <div class="select-box__current header--radio" tabindex="1">
+              <div class="select-box__value" *ngFor="let currencyOption of currencies; let i = index">
+                <input class="select-box__input" type="radio" id="{{i}}"
+                       (change)="updateCurrency(currencyOption)"
+                       value="{{currencyOption}}" name="currency">
+                <p class="select-box__input-text">{{currencyOption}}</p>
+              </div>
+              <div class="select-box__value">
+                <input class="select-box__input" type="radio" id="-1" value="{{currency$ | async}}"
+                       name="currency" checked>
+                <p class="select-box__input-text">{{currency$ | async}}</p>
+              </div>
+              <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg"
+                   alt="Arrow Icon" aria-hidden="true">
+            </div>
+            <ul class="select-box__list">
+              <li *ngFor="let currencyOption of currencies; let i = index"><label
+                class="select-box__option margin-bottom-0" for="{{i}}"
+                aria-hidden="aria-hidden">{{currencyOption}}</label></li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -51,17 +81,24 @@
           <span *ngIf="!(userConfigurations$ | async)">(0)</span>
           <span *ngIf="userConfigurations$ | async">({{(userConfigurations$ | async)?.configurations.length}})</span>
         </label>
-        <input *ngIf="currentUser.isLogged" class="main__tabs--input" type="radio" name="tabset" id="tasks" aria-controls="tasks"
+        <input *ngIf="currentUser.isLogged" class="main__tabs--input" type="radio" name="tabset" id="tasks"
+               aria-controls="tasks"
                [(ngModel)]="activeTab" [ngModelOptions]="{standalone: true}" value="activeTasks">
-        <label *ngIf="currentUser.isLogged" class="main__tabs--label" for="tasks">{{'MY-ACCOUNT.tasks' | translate}} (0)</label>
+        <label *ngIf="currentUser.isLogged" class="main__tabs--label" for="tasks">{{'MY-ACCOUNT.tasks' | translate}}
+          (0)</label>
 
-        <input *ngIf="currentUser.isLogged" class="main__tabs--input" type="radio" name="tabset" id="news" aria-controls="news"
+        <input *ngIf="currentUser.isLogged" class="main__tabs--input" type="radio" name="tabset" id="news"
+               aria-controls="news"
                [(ngModel)]="activeTab" [ngModelOptions]="{standalone: true}" value="activeNews">
-        <label *ngIf="currentUser.isLogged" class="main__tabs--label" for="news">{{'MY-ACCOUNT.news' | translate}} (0)</label>
+        <label *ngIf="currentUser.isLogged" class="main__tabs--label" for="news">{{'MY-ACCOUNT.news' | translate}}
+          (0)</label>
 
-        <input *ngIf="currentUser.isLogged" class="main__tabs--input" type="radio" name="tabset" id="complaints" aria-controls="complaints"
+        <input *ngIf="currentUser.isLogged" class="main__tabs--input" type="radio" name="tabset" id="complaints"
+               aria-controls="complaints"
                [(ngModel)]="activeTab" [ngModelOptions]="{standalone: true}" value="activeComplaints">
-        <label *ngIf="currentUser.isLogged" class="main__tabs--label" for="complaints">{{'MY-ACCOUNT.complaints' | translate}} ({{(userComplaints$ | async)?.complaints.length}})</label>
+        <label *ngIf="currentUser.isLogged" class="main__tabs--label"
+               for="complaints">{{'MY-ACCOUNT.complaints' | translate}}
+          ({{(userComplaints$ | async)?.complaints.length}})</label>
       </div>
       <div class="main__content">
         <section class="main__content__tab">
