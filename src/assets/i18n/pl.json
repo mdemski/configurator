@@ -514,6 +514,7 @@
     "correctConfigName": "Edytuj nazwę",
     "saveConfigName": "Zapisz nazwę",
     "configurationName": "o nazwie",
+    "configName": "Nazwa",
     "window": "Okno dachowe",
     "feature": "Cecha",
     "value": "Wartość cechy",
@@ -553,7 +554,13 @@
     "chooseWindow": "Wybierz okno",
     "chooseFlashing": "Wybierz kołnierz",
     "newConfiguration": "Nowa konfiguracja",
-    "chooseList": "Lista wyboru:"
+    "chooseList": "Lista wyboru:",
+    "quantity": "Sztuk",
+    "created": "Utowrzona",
+    "updated": "Zaktualizowana",
+    "userID": "Numer własny",
+    "productList": "Lista produktów",
+    "delete": "Usuń"
   },
   "GENERAL": {
     "myProfile": "Mój profil",

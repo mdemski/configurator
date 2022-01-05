@@ -1,1 +1,190 @@
-<p>my-configurations works!</p>
+<div class="container">
+  <div class="loader-container" *ngIf="isLoading">
+    <app-okpol-loader></app-okpol-loader>
+  </div>
+
+  <div *ngIf="!isLoading && userConfigurations$ | async as userConfigs">
+    <div *ngIf="userConfigs.length === 0; else configBlock" class="configuration-container">
+      <p class="configuration-container--no-configurations">{{'CONFIG-SUMMARY.noConfigurations' | translate}}</p>
+    </div>
+
+    <ng-template #configBlock>
+
+      <form [formGroup]="filtrationForm" class="search-form">
+        <table class="configuration-container__configurations-table">
+          <!--Table header-->
+          <tr class="configuration-container__configurations-table__header">
+            <th class="configuration-container__configurations-table__header--text">
+              <label class="sort__input--label" (click)="sortByGlobalID()">
+                {{ 'CONFIG-SUMMARY.configurationNumber' | translate}}
+                <span *ngIf="!globalIDToggler">&#8595;</span>
+                <span *ngIf="globalIDToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="configuration-container__configurations-table__header--text">
+              <label class="sort__input--label" (click)="sortByName()">
+                {{ 'CONFIG-SUMMARY.configName' | translate}}
+                <span *ngIf="!nameToggler">&#8595;</span>
+                <span *ngIf="nameToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="configuration-container__configurations-table__header--text">
+              <label class="sort__input--label" (click)="sortByUserID()">
+                {{ 'CONFIG-SUMMARY.userID' | translate}}
+                <span *ngIf="!userIDToggler">&#8595;</span>
+                <span *ngIf="userIDToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="configuration-container__configurations-table__header--text">
+              <label class="sort__input--label" (click)="sortByCreatedDate()">
+                {{ 'CONFIG-SUMMARY.created' | translate}}
+                <span *ngIf="!createdToggler">&#8595;</span>
+                <span *ngIf="createdToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="configuration-container__configurations-table__header--text">
+              <label class="sort__input--label" (click)="sortByUpdatedDate()">
+                {{ 'CONFIG-SUMMARY.updated' | translate}}
+                <span *ngIf="!updatedToggler">&#8595;</span>
+                <span *ngIf="updatedToggler">&#8593;</span>
+              </label>
+            </th>
+            <th
+              class="configuration-container__configurations-table__header--text">{{ 'CONFIG-SUMMARY.productList' | translate}}</th>
+            <th
+              class="configuration-container__configurations-table__header--text">{{ 'CONFIG-SUMMARY.quantity' | translate}}</th>
+            <th
+              class="configuration-container__configurations-table__header--text">{{ 'CONFIG-SUMMARY.delete' | translate}}</th>
+          </tr>
+
+          <tr class="configuration-container__configurations-table__search-header">
+            <td class="configuration-container__configurations-table__search-header--td">
+              <input type="text" formControlName="globalIDSearch"
+                     class="form-control" placeholder="{{ 'CONFIG-SUMMARY.configurationNumber' | translate}}"></td>
+            <td class="configuration-container__configurations-table__search-header--td">
+              <input type="text" formControlName="nameSearch"
+                     class="form-control" placeholder="{{ 'CONFIG-SUMMARY.configName' | translate}}"></td>
+            <td class="configuration-container__configurations-table__search-header--td">
+              <input type="text" formControlName="userIDSearch"
+                     class="form-control" placeholder="{{ 'CONFIG-SUMMARY.userID' | translate}}"></td>
+            <td class="configuration-container__configurations-table__search-header--td">
+              <input type="date" formControlName="createdSearch"
+                     class="form-control" placeholder="{{ 'CONFIG-SUMMARY.created' | translate}}"></td>
+            <td class="configuration-container__configurations-table__search-header--td">
+              <input type="date" formControlName="updatedSearch"
+                     class="form-control" placeholder="{{ 'CONFIG-SUMMARY.updated' | translate}}"></td>
+          </tr>
+
+          <tr class="configuration-container__configurations-table__item"
+              *ngFor="let configuration of filteredConfigurations">
+            <td class="configuration-container__configurations-table__item--info">
+              <a routerLink="../konfigurator/podsumowanie/{{configuration.globalId}}">{{configuration.globalId}}</a>
+            </td>
+            <td
+              class="configuration-container__configurations-table__item--info">{{configuration.name}}</td>
+            <td class="configuration-container__configurations-table__item--info">{{configuration.userId}}</td>
+            <td
+              class="configuration-container__configurations-table__item--info">{{configuration.created | date: 'dd-MM-yyyy'}}</td>
+            <td
+              class="configuration-container__configurations-table__item--info">{{configuration.lastUpdate | date: 'dd-MM-yyyy'}}</td>
+            <td class="configuration-container__configurations-table__item__products"
+                [ngClass]="{'no-display': configuration.products.windows === null}">
+              <ul class="configuration-container__configurations-table__item__products__list">
+                <li class="configuration-container__configurations-table__item__products__list__element"
+                    *ngFor="let item of configuration.products.windows">
+                  <a routerLink="../konfigurator/okna-dachowe/{{item.window._kod}}">{{item.window._productName}}</a>
+                </li>
+              </ul>
+
+              <ul class="configuration-container__configurations-table__item__products__list"
+                  [ngClass]="{'no-display': configuration.products.flashings === null}">
+                <li class="configuration-container__configurations-table__item__products__list__element"
+                    *ngFor="let item of configuration.products.flashings">
+                  <a routerLink="../konfigurator/okna-dachowe/{{item.flashing._kod}}">{{item.flashing._productName}}</a>
+                </li>
+              </ul>
+
+              <ul class="configuration-container__configurations-table__item__products__list"
+                  [ngClass]="{'no-display': configuration.products.accessories === null}">
+                <li class="configuration-container__configurations-table__item__products__list__element"
+                    *ngFor="let item of configuration.products.accessories">
+                  <a
+                    routerLink="../konfigurator/okna-dachowe/{{item.accessory._kod}}">{{item.accessory._productName}}</a>
+                </li>
+              </ul>
+
+              <ul class="configuration-container__configurations-table__item__products__list"
+                  [ngClass]="{'no-display': configuration.products.flats === null}">
+                <li class="configuration-container__configurations-table__item__products__list__element"
+                    *ngFor="let item of configuration.products.flats">
+                  <a routerLink="../konfigurator/okna-dachowe/{{item.flat._kod}}">{{item.flat._productName}}</a>
+                </li>
+              </ul>
+
+              <ul class="configuration-container__configurations-table__item__products__list"
+                  [ngClass]="{'no-display': configuration.products.verticals === null}">
+                <li class="configuration-container__configurations-table__item__products__list__element"
+                    *ngFor="let item of configuration.products.verticals">
+                  <a routerLink="../konfigurator/okna-dachowe/{{item.vertical._kod}}">{{item.vertical._productName}}</a>
+                </li>
+              </ul>
+            </td>
+
+            <td class="configuration-container__configurations-table__item__products">
+              <ul class="configuration-container__configurations-table__item__products__list"
+                [ngClass]="{'no-display': configuration.products.windows === null}">
+                <li class="configuration-container__configurations-table__item__products__list__element"
+                    *ngFor="let item of configuration.products.windows">
+                  <p
+                    class="configuration-container__configurations-table__item__products__list__element--paragraph">{{item.quantity}}</p>
+                </li>
+              </ul>
+
+              <ul class="configuration-container__configurations-table__item__products__list"
+                  [ngClass]="{'no-display': configuration.products.flashings === null}">
+                <li class="configuration-container__configurations-table__item__products__list__element"
+                    *ngFor="let item of configuration.products.flashings">
+                  <p
+                    class="configuration-container__configurations-table__item__products__list__element--paragraph">{{item.quantity}}</p>
+                </li>
+              </ul>
+
+              <ul class="configuration-container__configurations-table__item__products__list"
+                  [ngClass]="{'no-display': configuration.products.accessories === null}">
+                <li class="configuration-container__configurations-table__item__products__list__element"
+                    *ngFor="let item of configuration.products.accessories">
+                  <p
+                    class="configuration-container__configurations-table__item__products__list__element--paragraph">{{item.quantity}}</p>
+                </li>
+              </ul>
+
+              <ul class="configuration-container__configurations-table__item__products__list"
+                  [ngClass]="{'no-display': configuration.products.flats === null}">
+                <li class="configuration-container__configurations-table__item__products__list__element"
+                    *ngFor="let item of configuration.products.flats">
+                  <p
+                    class="configuration-container__configurations-table__item__products__list__element--paragraph">{{item.quantity}}</p>
+                </li>
+              </ul>
+
+              <ul class="configuration-container__configurations-table__item__products__list"
+                  [ngClass]="{'no-display': configuration.products.verticals === null}">
+                <li class="configuration-container__configurations-table__item__products__list__element"
+                    *ngFor="let item of configuration.products.verticals">
+                  <p
+                    class="configuration-container__configurations-table__item__products__list__element--paragraph">{{item.quantity}}</p>
+                </li>
+              </ul>
+            </td>
+
+            <td class="configuration-container__configurations-table__item--info"><i
+              class="far fa-trash-alt configuration-container__configurations-table__item--trash"
+              (click)="deleteConfiguration(configuration)"></i></td>
+          </tr>
+
+        </table>
+      </form>
+
+    </ng-template>
+  </div>
+</div>
