@@ -602,5 +602,18 @@
     "updatePicture": "Zmień zdjęcia",
     "deletePicture": "Usuń zdjęcia",
     "addPictureSuccessfully": "Poprawnie dodano zdjęcie"
+  },
+  "ORDER": {
+    "number": "Numer zamówienia",
+    "innerNumber": "Numer OKPOL",
+    "status": "Status zamówienia",
+    "created": "Data złożenia",
+    "updated": "Data ostatniej aktualizacji",
+    "user": "Zamawiający",
+    "comment": "Komentarz",
+    "productList": "Lista produktów",
+    "quantity": "Ilość zamówiona",
+    "delete": "Usuń",
+
   }
 }
