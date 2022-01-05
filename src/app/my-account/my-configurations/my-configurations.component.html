@@ -92,7 +92,7 @@
               <ul class="configuration-container__configurations-table__item__products__list">
                 <li class="configuration-container__configurations-table__item__products__list__element"
                     *ngFor="let item of configuration.products.windows">
-                  <a routerLink="../konfigurator/okna-dachowe/{{item.window._kod}}">{{item.window._productName}}</a>
+                  <a routerLink="../konfigurator/okna-dachowe/{{configuration.globalId}}/{{item.windowFormName}}/{{item.window._kod}}">{{item.window._productName}}</a>
                 </li>
               </ul>
 
@@ -100,7 +100,7 @@
                   [ngClass]="{'no-display': configuration.products.flashings === null}">
                 <li class="configuration-container__configurations-table__item__products__list__element"
                     *ngFor="let item of configuration.products.flashings">
-                  <a routerLink="../konfigurator/okna-dachowe/{{item.flashing._kod}}">{{item.flashing._productName}}</a>
+                  <a routerLink="../konfigurator/okna-dachowe/{{configuration.globalId}}/{{item.flashingFormName}}/{{item.flashing._kod}}">{{item.flashing._productName}}</a>
                 </li>
               </ul>
 
@@ -109,7 +109,7 @@
                 <li class="configuration-container__configurations-table__item__products__list__element"
                     *ngFor="let item of configuration.products.accessories">
                   <a
-                    routerLink="../konfigurator/okna-dachowe/{{item.accessory._kod}}">{{item.accessory._productName}}</a>
+                    routerLink="../konfigurator/okna-dachowe/{{configuration.globalId}}/{{item.accessoryFormName}}/{{item.accessory._kod}}">{{item.accessory._productName}}</a>
                 </li>
               </ul>
 
@@ -117,7 +117,7 @@
                   [ngClass]="{'no-display': configuration.products.flats === null}">
                 <li class="configuration-container__configurations-table__item__products__list__element"
                     *ngFor="let item of configuration.products.flats">
-                  <a routerLink="../konfigurator/okna-dachowe/{{item.flat._kod}}">{{item.flat._productName}}</a>
+                  <a routerLink="../konfigurator/okna-dachowe/{{configuration.globalId}}/{{item.flatFormName}}/{{item.flat._kod}}">{{item.flat._productName}}</a>
                 </li>
               </ul>
 
@@ -125,7 +125,7 @@
                   [ngClass]="{'no-display': configuration.products.verticals === null}">
                 <li class="configuration-container__configurations-table__item__products__list__element"
                     *ngFor="let item of configuration.products.verticals">
-                  <a routerLink="../konfigurator/okna-dachowe/{{item.vertical._kod}}">{{item.vertical._productName}}</a>
+                  <a routerLink="../konfigurator/okna-dachowe/{{configuration.globalId}}/{{item.verticalFormName}}/{{item.vertical._kod}}">{{item.vertical._productName}}</a>
                 </li>
               </ul>
             </td>
