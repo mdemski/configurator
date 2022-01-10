@@ -1,62 +1,62 @@
-<div class="container">
+<div class="md-container">
   <div class="loader-container" *ngIf="isLoading">
     <app-okpol-loader></app-okpol-loader>
   </div>
 
   <div *ngIf="!isLoading && userOrders$ | async as userOrderList">
-    <div *ngIf="userOrderList.length === 0; else ordersBlock" class="configuration-container">
-      <p class="configuration-container--no-configurations">{{'ORDER.noConfigurations' | translate}}</p>
+    <div *ngIf="userOrderList.length === 0; else ordersBlock" class="order-container">
+      <p class="order-container--no-orders">{{'ORDER.noorders' | translate}}</p>
     </div>
 
     <ng-template #ordersBlock>
 
       <form [formGroup]="filtrationForm" class="search-form">
-        <table class="configuration-container__configurations-table">
+        <table class="order-container__orders-table">
           <!--Table header-->
-          <tr class="configuration-container__configurations-table__header">
-            <th class="configuration-container__configurations-table__header--text">
+          <tr class="order-container__orders-table__header">
+            <th class="order-container__orders-table__header--text">
               <label class="sort__input--label" (click)="sortByNumber()">
                 {{ 'ORDER.number' | translate}}
                 <span *ngIf="!numberToggler">&#8595;</span>
                 <span *ngIf="numberToggler">&#8593;</span>
               </label>
             </th>
-            <th class="configuration-container__configurations-table__header--text">
+            <th class="order-container__orders-table__header--text">
               <label class="sort__input--label" (click)="sortByInnerNumber()">
                 {{ 'ORDER.innerNumber' | translate}}
-                <span *ngIf="!innerNumber">&#8595;</span>
-                <span *ngIf="innerNumber">&#8593;</span>
+                <span *ngIf="!innerNumberToggler">&#8595;</span>
+                <span *ngIf="innerNumberToggler">&#8593;</span>
               </label>
             </th>
-            <th class="configuration-container__configurations-table__header--text">
+            <th class="order-container__orders-table__header--text">
               <label class="sort__input--label" (click)="sortByStatus()">
                 {{ 'ORDER.status' | translate}}
                 <span *ngIf="!statusToggler">&#8595;</span>
                 <span *ngIf="statusToggler">&#8593;</span>
               </label>
             </th>
-            <th class="configuration-container__configurations-table__header--text">
+            <th class="order-container__orders-table__header--text">
               <label class="sort__input--label" (click)="sortByCreatedDate()">
                 {{ 'ORDER.created' | translate}}
                 <span *ngIf="!createdToggler">&#8595;</span>
                 <span *ngIf="createdToggler">&#8593;</span>
               </label>
             </th>
-            <th class="configuration-container__configurations-table__header--text">
+            <th class="order-container__orders-table__header--text">
               <label class="sort__input--label" (click)="sortByUpdatedDate()">
                 {{ 'ORDER.updated' | translate}}
                 <span *ngIf="!updatedToggler">&#8595;</span>
                 <span *ngIf="updatedToggler">&#8593;</span>
               </label>
             </th>
-            <th class="configuration-container__configurations-table__header--text">
+            <th class="order-container__orders-table__header--text">
               <label class="sort__input--label" (click)="sortByUser()">
                 {{ 'ORDER.user' | translate}}
                 <span *ngIf="!userToggler">&#8595;</span>
                 <span *ngIf="userToggler">&#8593;</span>
               </label>
             </th>
-            <th class="configuration-container__configurations-table__header--text">
+            <th class="order-container__orders-table__header--text">
               <label class="sort__input--label" (click)="sortByComment()">
                 {{ 'ORDER.comment' | translate}}
                 <span *ngIf="!commentToggler">&#8595;</span>
@@ -64,142 +64,74 @@
               </label>
             </th>
             <th
-              class="configuration-container__configurations-table__header--text">{{ 'ORDER.productList' | translate}}</th>
+              class="order-container__orders-table__header--text">{{ 'ORDER.productList' | translate}}</th>
             <th
-              class="configuration-container__configurations-table__header--text">{{ 'ORDER.quantity' | translate}}</th>
+              class="order-container__orders-table__header--text">{{ 'ORDER.quantity' | translate}}</th>
             <th
-              class="configuration-container__configurations-table__header--text">{{ 'ORDER.delete' | translate}}</th>
+              class="order-container__orders-table__header--text">{{ 'ORDER.delete' | translate}}</th>
           </tr>
 
-          <tr class="configuration-container__configurations-table__search-header">
-            <td class="configuration-container__configurations-table__search-header--td">
+          <tr class="order-container__orders-table__search-header">
+            <td class="order-container__orders-table__search-header--td">
               <input type="text" formControlName="numberSearch"
                      class="form-control" placeholder="{{ 'ORDER.number' | translate}}"></td>
-            <td class="configuration-container__configurations-table__search-header--td">
+            <td class="order-container__orders-table__search-header--td">
               <input type="text" formControlName="innerNumberSearch"
                      class="form-control" placeholder="{{ 'ORDER.innerNumber' | translate}}"></td>
-            <td class="configuration-container__configurations-table__search-header--td">
+            <td class="order-container__orders-table__search-header--td">
               <input type="text" formControlName="statusSearch"
                      class="form-control" placeholder="{{ 'ORDER.status' | translate}}"></td>
-            <td class="configuration-container__configurations-table__search-header--td">
+            <td class="order-container__orders-table__search-header--td">
               <input type="date" formControlName="createdSearch"
                      class="form-control" placeholder="{{ 'ORDER.created' | translate}}"></td>
-            <td class="configuration-container__configurations-table__search-header--td">
+            <td class="order-container__orders-table__search-header--td">
               <input type="date" formControlName="updatedSearch"
                      class="form-control" placeholder="{{ 'ORDER.updated' | translate}}"></td>
-            <td class="configuration-container__configurations-table__search-header--td">
+            <td class="order-container__orders-table__search-header--td">
               <input type="text" formControlName="userSearch"
                      class="form-control" placeholder="{{ 'ORDER.user' | translate}}"></td>
-            <td class="configuration-container__configurations-table__search-header--td">
+            <td class="order-container__orders-table__search-header--td">
               <input type="text" formControlName="commentSearch"
                      class="form-control" placeholder="{{ 'ORDER.comment' | translate}}"></td>
           </tr>
 
-          <tr class="configuration-container__configurations-table__item"
+          <tr class="order-container__orders-table__item"
               *ngFor="let order of filteredOrders">
-            <td class="configuration-container__configurations-table__item--info">
-              <a routerLink="../konfigurator/podsumowanie/{{order.globalId}}">{{order.globalId}}</a>
-            </td>
+            <td class="order-container__orders-table__item--info">{{order.orderNumber}}</td>
             <td
-              class="configuration-container__configurations-table__item--info">{{order.name}}</td>
-            <td class="configuration-container__configurations-table__item--info">{{order.userId}}</td>
+              class="order-container__orders-table__item--info">{{order.erpId}}</td>
+            <td class="order-container__orders-table__item--info">{{order.status}}</td>
             <td
-              class="configuration-container__configurations-table__item--info">{{order.created | date: 'dd-MM-yyyy'}}</td>
+              class="order-container__orders-table__item--info">{{order.createdAt | date: 'dd-MM-yyyy'}}</td>
             <td
-              class="configuration-container__configurations-table__item--info">{{order.lastUpdate | date: 'dd-MM-yyyy'}}</td>
-            <td class="configuration-container__configurations-table__item__products"
-                [ngClass]="{'no-display': order.products.windows === null}">
-              <ul class="configuration-container__configurations-table__item__products__list">
-                <li class="configuration-container__configurations-table__item__products__list__element"
-                    *ngFor="let item of order.products.windows">
-                  <a routerLink="../konfigurator/okna-dachowe/{{order.globalId}}/{{item.windowFormName}}/{{item.window._kod}}">{{item.window._productName}}</a>
-                </li>
-              </ul>
-
-              <ul class="configuration-container__configurations-table__item__products__list"
-                  [ngClass]="{'no-display': order.products.flashings === null}">
-                <li class="configuration-container__configurations-table__item__products__list__element"
-                    *ngFor="let item of order.products.flashings">
-                  <a routerLink="../konfigurator/okna-dachowe/{{order.globalId}}/{{item.flashingFormName}}/{{item.flashing._kod}}">{{item.flashing._productName}}</a>
-                </li>
-              </ul>
-
-              <ul class="configuration-container__configurations-table__item__products__list"
-                  [ngClass]="{'no-display': order.products.accessories === null}">
-                <li class="configuration-container__configurations-table__item__products__list__element"
-                    *ngFor="let item of order.products.accessories">
-                  <a
-                    routerLink="../konfigurator/okna-dachowe/{{order.globalId}}/{{item.accessoryFormName}}/{{item.accessory._kod}}">{{item.accessory._productName}}</a>
-                </li>
-              </ul>
-
-              <ul class="configuration-container__configurations-table__item__products__list"
-                  [ngClass]="{'no-display': order.products.flats === null}">
-                <li class="configuration-container__configurations-table__item__products__list__element"
-                    *ngFor="let item of order.products.flats">
-                  <a routerLink="../konfigurator/okna-dachowe/{{order.globalId}}/{{item.flatFormName}}/{{item.flat._kod}}">{{item.flat._productName}}</a>
-                </li>
-              </ul>
-
-              <ul class="configuration-container__configurations-table__item__products__list"
-                  [ngClass]="{'no-display': order.products.verticals === null}">
-                <li class="configuration-container__configurations-table__item__products__list__element"
-                    *ngFor="let item of order.products.verticals">
-                  <a routerLink="../konfigurator/okna-dachowe/{{order.globalId}}/{{item.verticalFormName}}/{{item.vertical._kod}}">{{item.vertical._productName}}</a>
+              class="order-container__orders-table__item--info">{{order.updatedAt | date: 'dd-MM-yyyy'}}</td>
+            <td class="order-container__orders-table__item--info">{{order.user.name}}</td>
+            <td class="order-container__orders-table__item--info">{{order.comments}}</td>
+            <td class="order-container__orders-table__item__products"
+                [ngClass]="{'no-display': order.cart.cartItems === null}">
+              <ul class="order-container__orders-table__item__products__list">
+                <li class="order-container__orders-table__item__products__list__element"
+                    *ngFor="let item of order.cart.cartItems">
+                  <p
+                    class="order-container__orders-table__item__products__list__element--paragraph">{{item.product.productName}}</p>
                 </li>
               </ul>
             </td>
 
-            <td class="configuration-container__configurations-table__item__products">
-              <ul class="configuration-container__configurations-table__item__products__list"
-                  [ngClass]="{'no-display': order.products.windows === null}">
-                <li class="configuration-container__configurations-table__item__products__list__element"
-                    *ngFor="let item of order.products.windows">
+            <td class="order-container__orders-table__item__products">
+              <ul class="order-container__orders-table__item__products__list display-flex-space"
+                  [ngClass]="{'no-display': order.cart.cartItems === null}">
+                <li class="order-container__orders-table__item__products__list__element"
+                    *ngFor="let item of order.cart.cartItems">
                   <p
-                    class="configuration-container__configurations-table__item__products__list__element--paragraph">{{item.quantity}}</p>
-                </li>
-              </ul>
-
-              <ul class="configuration-container__configurations-table__item__products__list"
-                  [ngClass]="{'no-display': order.products.flashings === null}">
-                <li class="configuration-container__configurations-table__item__products__list__element"
-                    *ngFor="let item of order.products.flashings">
-                  <p
-                    class="configuration-container__configurations-table__item__products__list__element--paragraph">{{item.quantity}}</p>
-                </li>
-              </ul>
-
-              <ul class="configuration-container__configurations-table__item__products__list"
-                  [ngClass]="{'no-display': order.products.accessories === null}">
-                <li class="configuration-container__configurations-table__item__products__list__element"
-                    *ngFor="let item of order.products.accessories">
-                  <p
-                    class="configuration-container__configurations-table__item__products__list__element--paragraph">{{item.quantity}}</p>
-                </li>
-              </ul>
-
-              <ul class="configuration-container__configurations-table__item__products__list"
-                  [ngClass]="{'no-display': order.products.flats === null}">
-                <li class="configuration-container__configurations-table__item__products__list__element"
-                    *ngFor="let item of order.products.flats">
-                  <p
-                    class="configuration-container__configurations-table__item__products__list__element--paragraph">{{item.quantity}}</p>
-                </li>
-              </ul>
-
-              <ul class="configuration-container__configurations-table__item__products__list"
-                  [ngClass]="{'no-display': order.products.verticals === null}">
-                <li class="configuration-container__configurations-table__item__products__list__element"
-                    *ngFor="let item of order.products.verticals">
-                  <p
-                    class="configuration-container__configurations-table__item__products__list__element--paragraph">{{item.quantity}}</p>
+                    class="order-container__orders-table__item__products__list__element--paragraph">{{item.quantity}}</p>
                 </li>
               </ul>
             </td>
 
-            <td class="configuration-container__configurations-table__item--info"><i
-              class="far fa-trash-alt configuration-container__configurations-table__item--trash"
-              (click)="deleteConfiguration(order)"></i></td>
+            <td class="order-container__orders-table__item--info"><i
+              class="far fa-trash-alt order-container__orders-table__item--trash"
+              (click)="deleteOrder(order)"></i></td>
           </tr>
 
         </table>

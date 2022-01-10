@@ -11,6 +11,8 @@ import {AppState} from '../store/app/app.state';
 import {ConfigurationState} from '../store/configuration/configuration.state';
 import {ComplaintState} from '../store/complaint/complaint.state';
 import {Complaint} from '../models/complaint';
+import {Order} from '../models/order';
+import {OrderService} from '../services/order.service';
 
 @Component({
   selector: 'app-my-account',
@@ -26,6 +28,7 @@ export class MyAccountComponent implements OnInit, OnDestroy {
 
   currency$ = new BehaviorSubject('PLN');
   vatRate$ = new BehaviorSubject(0.23);
+  userOrders$: Observable<Order[]>;
   currencies: string[] = [];
   rates: number[] = [];
   isDestroyed$ = new Subject();
@@ -40,10 +43,12 @@ export class MyAccountComponent implements OnInit, OnDestroy {
   currentUser: {email: string, userName: string, isLogged: boolean};
 
   constructor(private authService: AuthService,
-              private store: Store) {
+              private store: Store,
+              private orderService: OrderService) {
     this.currencies = Object.keys(exchange);
     this.rates = Object.values(vatRates);
     this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.currentUser = user.currentUser);
+    this.userOrders$ = this.orderService.getUserOrders().pipe(takeUntil(this.isDestroyed$));
   }
 
   ngOnInit(): void {

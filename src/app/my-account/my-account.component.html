@@ -73,7 +73,10 @@
       <div class="main__tabs" (change)="selectTab()">
         <input class="main__tabs--input" type="radio" name="tabset" id="orders" aria-controls="orders" checked autofocus
                [(ngModel)]="activeTab" [ngModelOptions]="{standalone: true}" value="activeOrders">
-        <label class="main__tabs--label" for="orders">{{'MY-ACCOUNT.orders' | translate}} (0)</label>
+        <label class="main__tabs--label" for="orders">
+          <span *ngIf="!(userOrders$ | async)">{{'MY-ACCOUNT.orders' | translate}} (0)</span>
+          <span *ngIf="(userOrders$ | async)">{{'MY-ACCOUNT.orders' | translate}} ({{(userOrders$ | async)?.length}})</span>
+        </label>
 
         <input class="main__tabs--input" type="radio" name="tabset" id="configurations" aria-controls="configurations"
                [(ngModel)]="activeTab" [ngModelOptions]="{standalone: true}" value="activeConfigurations">

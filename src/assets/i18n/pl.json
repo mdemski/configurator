@@ -607,13 +607,12 @@
     "number": "Numer zamówienia",
     "innerNumber": "Numer OKPOL",
     "status": "Status zamówienia",
-    "created": "Data złożenia",
-    "updated": "Data ostatniej aktualizacji",
+    "created": "Data zamówienia",
+    "updated": "Data aktualizacji",
     "user": "Zamawiający",
     "comment": "Komentarz",
     "productList": "Lista produktów",
     "quantity": "Ilość zamówiona",
-    "delete": "Usuń",
-
+    "delete": "Usuń"
   }
 }
