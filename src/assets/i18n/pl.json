@@ -535,6 +535,8 @@
     "correctWindowConfigLink": "/okna-dachowe",
     "correctFlashingConfigLink": "/kolnierze",
     "correctAccessoryConfigLink": "/akcesoria",
+    "correctFlatConfigLink": "/dach-plaski",
+    "correctVerticalConfigLink": "/okna-pionowe",
     "correctConfig": "Zmień",
     "removeConfiguration": "Usuń",
     "noConfigurations": "Nie posiadasz jeszcze żadnej konfiguracji. Stwórz nową.",
