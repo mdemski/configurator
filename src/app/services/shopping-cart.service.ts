@@ -30,7 +30,11 @@ export class ShoppingCartService {
   constructor(public translate: TranslateService, private crud: CrudService) {
     this.user$.pipe(skip(2)).subscribe(user => {
       this.crud.readUserByEmail(user.currentUser.email).subscribe((fullUser: User) => {
-        this.discount = fullUser.discount;
+        if (fullUser) {
+          this.discount = fullUser.discount;
+        } else {
+          this.discount = 0;
+        }
       });
     });
     translate.addLangs(['pl', 'en', 'fr', 'de']);
