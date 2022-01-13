@@ -7,6 +7,7 @@ import {Accessory} from './accessory';
 export class ComplaintItem {
   private _id?: string;
   private _product: RoofWindowSkylight | Flashing | Accessory | FlatRoofWindow | VerticalWindow;
+  private _productName: string;
   private _quantity: number;
   private _complaintType: string; // list rodzajów reklamacji do wyboru (synchronizowany słownik z eNova)
   private _element: string; // list elementów reklamowanego wyrobu do wyboru (synchronizowany słownik z eNova)
@@ -16,9 +17,10 @@ export class ComplaintItem {
   private _attachment: string[];
 
   // tslint:disable-next-line:max-line-length
-  constructor(id: string, product: RoofWindowSkylight | Flashing | Accessory | FlatRoofWindow | VerticalWindow, quantity: number, complaintType: string, element: string, localization: string, description: string, dataPlateNumber: string, attachment: string[]) {
+  constructor(id: string, product: RoofWindowSkylight | Flashing | Accessory | FlatRoofWindow | VerticalWindow, productName: string, quantity: number, complaintType: string, element: string, localization: string, description: string, dataPlateNumber: string, attachment: string[]) {
     this._id = id;
     this._product = product;
+    this._productName = productName;
     this._quantity = quantity;
     this._complaintType = complaintType;
     this._element = element;
@@ -42,6 +44,14 @@ export class ComplaintItem {
 
   set product(value: RoofWindowSkylight | Flashing | Accessory | FlatRoofWindow | VerticalWindow) {
     this._product = value;
+  }
+
+  get productName(): string {
+    return this._productName;
+  }
+
+  set productName(value: string) {
+    this._productName = value;
   }
 
   get quantity(): number {

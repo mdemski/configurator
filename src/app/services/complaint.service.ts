@@ -52,13 +52,13 @@ export class ComplaintService {
     // return this.http.get(url).pipe(catchError(err => err)) as Observable<Complaint[]>;
     const complaintArray: Complaint[] = [new Complaint('13123546/2021', new Date(), 'Przeciek w czapce ISO', 'Otwarta', '1323154-1315',
       'test@test.pl', new Date(), 'UlaZak',
-      [new ComplaintItem('1234sfg54', this.windowToTests, 2, 'PRZECIEK', 'CZAPKA', 'GÓRA', 'OKNO PRZECIEKA W PRAWYM GÓRNYM ROGU', '31351321 BO 123',
+      [new ComplaintItem('1234sfg54', this.windowToTests, this.windowToTests.productName, 2, 'PRZECIEK', 'CZAPKA', 'GÓRA', 'OKNO PRZECIEKA W PRAWYM GÓRNYM ROGU', '31351321 BO 123',
         ['https://images.unsplash.com/photo-1640007973870-deb7956b1d86?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
           'https://images.unsplash.com/photo-1639998571817-89e01d982f2e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxM3x8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60',
         'https://images.unsplash.com/photo-1639918976310-8e8c9c7201ad?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5M3x8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60']),
-        new ComplaintItem('1234sfg23', this.windowToTests, 1, 'KRZYWA RAMA', 'RAMA', 'BOK', 'OKNO JEST KRZYWE', '11231313 BO 999', [])], this.companyToTests, 'Jan Kowalski', null, new Date(), new Date(), new Date(), new Date()),
+        new ComplaintItem('1234sfg23', this.windowToTests, this.windowToTests.productName, 1, 'KRZYWA RAMA', 'RAMA', 'BOK', 'OKNO JEST KRZYWE', '11231313 BO 999', [])], this.companyToTests, 'Jan Kowalski', null, new Date(), new Date(), new Date(), new Date()),
       new Complaint('13123547/2021', new Date(), 'Przeciek w czapce ISO', 'Otwarta', '1323154-1315',
-        'test@test.pl', new Date(), 'UlaZak', [new ComplaintItem('1234sfgzzz', this.windowToTests, 2, 'PRZECIEK', 'KORYTKO', 'BOK', 'OKNO PRZECIEKA PD BOKU', '31351321 BO 123', [])], this.companyToTests, 'Jan Kowalski', null, new Date(), new Date(), new Date(), new Date())
+        'test@test.pl', new Date(), 'UlaZak', [new ComplaintItem('1234sfgzzz', this.windowToTests, this.windowToTests.productName, 2, 'PRZECIEK', 'KORYTKO', 'BOK', 'OKNO PRZECIEKA PD BOKU', '31351321 BO 123', [])], this.companyToTests, 'Jan Kowalski', null, new Date(), new Date(), new Date(), new Date())
     ];
     return of(complaintArray);
   }
@@ -81,7 +81,7 @@ export class ComplaintService {
   // COMPLAINT ITEMS METHODS
   createComplaintItem(complaintItem: ComplaintItem) {
     const id = '' + Math.random().toString(36).substr(2, 9);
-    return new ComplaintItem(id, complaintItem.product, complaintItem.quantity, complaintItem.complaintType,
+    return new ComplaintItem(id, complaintItem.product, complaintItem.productName, complaintItem.quantity, complaintItem.complaintType,
       complaintItem.element, complaintItem.localization, complaintItem.description, complaintItem.dataPlateNumber, complaintItem.attachment);
   }
 
