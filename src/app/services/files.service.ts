@@ -17,6 +17,7 @@ class ImageSnippet {
 export class FilesService {
 
   updatedSuccessfully$ = new BehaviorSubject(false);
+  urlAddress$ = new BehaviorSubject('');
   selectedFile: ImageSnippet;
   firebaseApp = initializeApp(environment.firebaseConfig);
   storage = getStorage(this.firebaseApp);
@@ -34,6 +35,7 @@ export class FilesService {
         (snapshot) => {
           if (snapshot.metadata.size > 0) {
             this.updatedSuccessfully$.next(true);
+            getDownloadURL(snapshot.ref).then(link => this.urlAddress$.next(link));
             // complaintItem.attachment.push(snapshot.metadata.fullPath);
           }
         },
@@ -58,6 +60,7 @@ export class FilesService {
     const refNameFolderString = 'complaint-images/' + complaintId;
     const folderRef = ref(this.storage, refNameFolderString);
     this.updatedSuccessfully$.next(false);
+    this.urlAddress$.next('');
     return listAll(folderRef);
   }
 
@@ -88,9 +91,11 @@ export class FilesService {
     const reference = ref(this.storage, refNameFileString);
     deleteObject(reference).then(() => {
       this.updatedSuccessfully$.next(true);
+      this.urlAddress$.next('');
       // File deleted successfully
     }).catch((error) => {
-      this.updatedSuccessfully$.next(true);
+      this.updatedSuccessfully$.next(false);
+      this.urlAddress$.next('');
       return error;
     });
   }
