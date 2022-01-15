@@ -31,6 +31,10 @@
   }
 }
 
+button:disabled {
+  background-color: $color-light-red;
+}
+
 .register-title {
   text-align: center;
   font-size: 1.8rem;

@@ -382,7 +382,7 @@
             </div>
           </div>
 
-          <button type="submit">{{ 'REGISTER.register' | translate}}</button>
+          <button type="submit" [disabled]="registerForm.invalid">{{ 'REGISTER.register' | translate}}</button>
         </form>
       </div>
 
