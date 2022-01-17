@@ -50,7 +50,7 @@
     </table>
 
     <div *ngIf="photosArray.length > 0; else noPhotos" class="complaint-container__complaints-gallery">
-      <div *ngFor="let photoLink of photosArray"
+      <div *ngFor="let photoLink of complaint.items[this.itemID].attachment"
            class="complaint-container__complaints-gallery__container">
         <img class="complaint-container__complaints-gallery__container--single-photo"
              src="{{photoLink}}" alt="photo">
@@ -84,7 +84,7 @@
           </label>
           <a (click)="closePhotosPopup()"
              class="btn btn--grey copy-link-config-popup__content__info-box__button">{{ 'LINK.close' | translate}}</a>
-          <div class="picture-add-successfully" *ngIf="this.filesService.updatedSuccessfully$ | async">
+          <div class="picture-add-successfully" *ngIf="this.complaintService.updatedSuccessfully$ | async">
             <h3>{{ 'COMPLAINT.addPictureSuccessfully' | translate}}</h3>
           </div>
         </div>

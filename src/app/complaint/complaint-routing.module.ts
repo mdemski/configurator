@@ -1,15 +1,12 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {RouterModule, Routes} from '@angular/router';
 import {ComplaintProductDetailsComponent} from './complaint-product-details/complaint-product-details.component';
-import {ComplaintsGuard} from '../store/complaint/complaints.guard';
-import {ComplaintComponent} from './complaint/complaint.component';
+import {ComplaintFormComponent} from './complaint-form/complaint-form.component';
 
 const routes: Routes = [
-  // {path: 'complaints', component: ComplaintComponent},
-  {
-    path: ':id', component: ComplaintProductDetailsComponent
-  }];
+  {path: 'zgloszenie', component: ComplaintFormComponent},
+  {path: ':id', component: ComplaintProductDetailsComponent}
+];
 
 @NgModule({
   declarations: [],

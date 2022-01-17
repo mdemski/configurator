@@ -6,7 +6,6 @@ import {ActivatedRoute} from '@angular/router';
 import {Select, Store} from '@ngxs/store';
 import {AppState} from '../../store/app/app.state';
 import {Complaint} from '../../models/complaint';
-import {FilesService} from '../../services/files.service';
 import {ComplaintItem} from '../../models/complaintItem';
 import {getDownloadURL} from 'firebase/storage';
 import {DeleteComplaintItem} from '../../store/complaint/complaint.actions';
@@ -28,9 +27,8 @@ export class ComplaintProductDetailsComponent implements OnInit, OnDestroy {
   photosArray: string[] = [];
   paramsID = '';
 
-  constructor(private complaintService: ComplaintService,
+  constructor(public complaintService: ComplaintService,
               private route: ActivatedRoute,
-              public filesService: FilesService,
               private store: Store) {
     this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.currentUser = user.currentUser);
   }
@@ -39,7 +37,7 @@ export class ComplaintProductDetailsComponent implements OnInit, OnDestroy {
     this.complaint$ = this.route.paramMap.pipe(
       takeUntil(this.isDestroyed$),
       map(params => this.paramsID = params.get('id')),
-      tap(id => this.filesService.getFiles(id).then((array) => {
+      tap(id => this.complaintService.getFiles(id).then((array) => {
         array.items.forEach(element => getDownloadURL(element).then(url => this.photosArray.push(url)));
       })),
       switchMap(id => this.complaintService.getComplaintByItemID(id, this.currentUser.email)));
@@ -49,8 +47,8 @@ export class ComplaintProductDetailsComponent implements OnInit, OnDestroy {
         if (foundID > -1) {
           this.itemID = foundID;
         }
-      }))).subscribe();
-    this.isLoading = false;
+      }))).subscribe(() => this.isLoading = false);
+    // this.isLoading = false;
   }
 
   ngOnDestroy(): void {
@@ -62,12 +60,12 @@ export class ComplaintProductDetailsComponent implements OnInit, OnDestroy {
   }
 
   closePhotosPopup() {
-    this.filesService.updatedSuccessfully$.next(false);
+    this.complaintService.updatedSuccessfully$.next(false);
     this.addPhotoPopup = false;
   }
 
   processFile(imageInput: HTMLInputElement, complaintItem: ComplaintItem) {
-    this.filesService.processFile(imageInput, complaintItem);
+    this.complaintService.processFile(imageInput, complaintItem);
     this.reloadArray();
   }
 
@@ -77,13 +75,13 @@ export class ComplaintProductDetailsComponent implements OnInit, OnDestroy {
 
   updateFile(imageUpdate: HTMLInputElement, photoLink: string, complaintItem: ComplaintItem) {
     const fileName = photoLink.split('%')[2].substr(2).split('.')[0];
-    this.filesService.updatePhoto(imageUpdate, fileName, complaintItem);
+    this.complaintService.updatePhoto(imageUpdate, fileName, complaintItem);
     this.reloadArray();
   }
 
   deletePhoto(photoLink: string, complaintItem: ComplaintItem) {
     const fileName = photoLink.split('%')[2].substr(2).split('.')[0];
-    this.filesService.deletePhoto(fileName, complaintItem);
+    this.complaintService.deletePhoto(fileName, complaintItem);
     const index = this.photosArray.indexOf(fileName, 0);
     if (index > -1) {
       this.photosArray.splice(index, 1);
@@ -94,9 +92,9 @@ export class ComplaintProductDetailsComponent implements OnInit, OnDestroy {
   private reloadArray() {
     this.isLoading = true;
     this.photosArray = [];
-    this.filesService.updatedSuccessfully$.pipe(takeUntil(this.isDestroyed$)).subscribe(booleanValue => {
+    this.complaintService.updatedSuccessfully$.pipe(takeUntil(this.isDestroyed$)).subscribe(booleanValue => {
       if (booleanValue) {
-        this.filesService.getFiles(this.paramsID).then(array => {
+        this.complaintService.getFiles(this.paramsID).then(array => {
           array.items.forEach(element => getDownloadURL(element).then(url => this.photosArray.push(url)));
           this.isLoading = false;
         });

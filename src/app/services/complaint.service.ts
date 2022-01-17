@@ -1,18 +1,31 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {catchError, switchMap} from 'rxjs/operators';
+import {catchError, switchMap, tap} from 'rxjs/operators';
 import {Complaint} from '../models/complaint';
 import {ComplaintItem} from '../models/complaintItem';
-import {Observable, of} from 'rxjs';
+import {BehaviorSubject, Observable, of} from 'rxjs';
 import {RoofWindowSkylight} from '../models/roof-window-skylight';
 import {Company} from '../models/company';
 import {Address} from '../models/address';
+import {environment} from '../../environments/environment';
+import initializeApp = firebase.initializeApp;
+import {getStorage, ref, uploadBytes, listAll, deleteObject, getDownloadURL} from 'firebase/storage';
+import firebase from 'firebase/compat';
+
+class ImageSnippet {
+  constructor(public src: string, public file: File) {
+  }
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class ComplaintService {
 
+  updatedSuccessfully$ = new BehaviorSubject(false);
+  selectedFile: ImageSnippet;
+  firebaseApp = initializeApp(environment.firebaseConfig);
+  storage = getStorage(this.firebaseApp);
   baseUrlComplaint = '';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   windowToTests = new RoofWindowSkylight('1O-ISO-V-E02-KL00-A7022P-078118-OKPO01', 'ISO E02 78x118', 'ISO E02 78x118', 'I-OKNO', 'NPL-OKNO', 'Sprawdzony', 'Okno:ISOV', 'Okno:E02', 'dwuszybowy',
@@ -52,14 +65,15 @@ export class ComplaintService {
     // return this.http.get(url).pipe(catchError(err => err)) as Observable<Complaint[]>;
     const complaintArray: Complaint[] = [new Complaint('13123546/2021', new Date(), 'Przeciek w czapce ISO', 'Otwarta', '1323154-1315',
       'test@test.pl', new Date(), 'UlaZak',
-      [new ComplaintItem('1234sfg54', this.windowToTests, this.windowToTests.productName, 2, 'PRZECIEK', 'CZAPKA', 'GÓRA', 'OKNO PRZECIEKA W PRAWYM GÓRNYM ROGU', '31351321 BO 123',
-        ['https://images.unsplash.com/photo-1640007973870-deb7956b1d86?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-          'https://images.unsplash.com/photo-1639998571817-89e01d982f2e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxM3x8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60',
-        'https://images.unsplash.com/photo-1639918976310-8e8c9c7201ad?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5M3x8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60']),
+      [new ComplaintItem('1234sfg54', this.windowToTests, this.windowToTests.productName, 2, 'PRZECIEK', 'CZAPKA', 'GÓRA', 'OKNO PRZECIEKA W PRAWYM GÓRNYM ROGU', '31351321 BO 123', []),
         new ComplaintItem('1234sfg23', this.windowToTests, this.windowToTests.productName, 1, 'KRZYWA RAMA', 'RAMA', 'BOK', 'OKNO JEST KRZYWE', '11231313 BO 999', [])], this.companyToTests, 'Jan Kowalski', null, new Date(), new Date(), new Date(), new Date()),
       new Complaint('13123547/2021', new Date(), 'Przeciek w czapce ISO', 'Otwarta', '1323154-1315',
         'test@test.pl', new Date(), 'UlaZak', [new ComplaintItem('1234sfgzzz', this.windowToTests, this.windowToTests.productName, 2, 'PRZECIEK', 'KORYTKO', 'BOK', 'OKNO PRZECIEKA PD BOKU', '31351321 BO 123', [])], this.companyToTests, 'Jan Kowalski', null, new Date(), new Date(), new Date(), new Date())
     ];
+    // TODO poprawić ten fragment z dogrywaniem zdjęć do reklamacji
+    for (const complaint of complaintArray) {
+      complaint.items.forEach(complaintItem => this.complaintItemPicturesSetter(complaintItem));
+    }
     return of(complaintArray);
   }
 
@@ -112,6 +126,13 @@ export class ComplaintService {
       })));
   }
 
+  async complaintItemPicturesSetter(complaintItem: ComplaintItem) {
+    complaintItem.attachment = [];
+    await this.getFiles(complaintItem.id)
+      .then(references => references.items.forEach(reference => getDownloadURL(reference)
+        .then(url => complaintItem.attachment.push(url))));
+  }
+
   sameID(complaintItem: ComplaintItem, id: string) {
     return complaintItem.id === id;
   }
@@ -143,5 +164,77 @@ export class ComplaintService {
         item.quantity = quantity;
       }
     }
+  }
+
+  // FILES PROCESSING
+  processFile(imageInput: HTMLInputElement, complaintItem: ComplaintItem) {
+    const file: File = imageInput.files[0];
+    const reader = new FileReader();
+
+    reader.addEventListener('load', (event: any) => {
+      this.selectedFile = new ImageSnippet(event.target.result, file);
+      this.uploadImage(this.selectedFile.file, complaintItem).then(
+        (snapshot) => {
+          if (snapshot.metadata.size > 0) {
+            this.complaintItemPicturesSetter(complaintItem).then(() => this.updatedSuccessfully$.next(true));
+            // complaintItem.attachment.push(snapshot.metadata.fullPath);
+          }
+        },
+        (error) => {
+          this.updatedSuccessfully$.next(false);
+          return error;
+        });
+    });
+
+    reader.readAsDataURL(file);
+  }
+
+  uploadImage(image: File, complaintItem: ComplaintItem) {
+    const refNameFolderString = 'complaint-images/' + complaintItem.id + '/';
+    const name = '' + Math.random().toString(36).substr(2, 9);
+    const refNameFileString = refNameFolderString + name + '.jpg';
+    const newComplaintFolderRef = ref(this.storage, refNameFileString);
+    return uploadBytes(newComplaintFolderRef, image);
+  }
+
+  getFiles(complaintId: string) {
+    const refNameFolderString = 'complaint-images/' + complaintId;
+    const folderRef = ref(this.storage, refNameFolderString);
+    this.updatedSuccessfully$.next(false);
+    return listAll(folderRef);
+  }
+
+
+  updatePhoto(imageUpdate: HTMLInputElement, fileName: string, complaintItem: ComplaintItem) {
+    const file: File = imageUpdate.files[0];
+    const reader = new FileReader();
+
+    reader.addEventListener('load', (event: any) => {
+      this.selectedFile = new ImageSnippet(event.target.result, file);
+      const refNameFileString = 'complaint-images/' + complaintItem.id + '/' + fileName + '.jpg';
+      const reference = ref(this.storage, refNameFileString);
+      uploadBytes(reference, this.selectedFile.file).then(
+        (snapshot) => {
+          this.complaintItemPicturesSetter(complaintItem).then(() => this.updatedSuccessfully$.next(true));
+        },
+        (error) => {
+          this.updatedSuccessfully$.next(false);
+          return error;
+        });
+    });
+
+    reader.readAsDataURL(file);
+  }
+
+  deletePhoto(fileName: string, complaintItem: ComplaintItem) {
+    const refNameFileString = 'complaint-images/' + complaintItem.id + '/' + fileName + '.jpg';
+    const reference = ref(this.storage, refNameFileString);
+    deleteObject(reference).then(() => {
+      this.complaintItemPicturesSetter(complaintItem).then(() => this.updatedSuccessfully$.next(true));
+      // File deleted successfully
+    }).catch((error) => {
+      this.updatedSuccessfully$.next(false);
+      return error;
+    });
   }
 }
