@@ -326,6 +326,25 @@
           </div>
         </div>
 
+        <div class="md-form-control mt-3">
+          <input type="text"
+                 id="installationDate"
+                 formControlName="installationDate"
+                 class="form-control"
+                 placeholder="{{'COMPLAINT.installationDate' | translate}}"
+                 onfocus="(this.type='date')"
+                 onblur="(this.type='text')"
+          >
+        </div>
+        <div class="invalid-data__container"
+             *ngIf="complaintForm.get('installationDate').dirty || complaintForm.get('installationDate').touched">
+          <div
+            class="invalid-data__container--text"
+            *ngIf="complaintForm.get('installationDate').hasError('required')">
+            {{'COMPLAINT.requiredField' | translate}}
+          </div>
+        </div>
+
       </div>
 
     </div>
@@ -339,12 +358,12 @@
           <div class="select-box sorting margin-bottom-2">
             <div class="select-box__current" tabindex="1">  <!--Usunięcie tabindex rozwala selecta-->
               <div class="select-box__value" *ngFor="let group of this.groups">
-                <input class="select-box__input" type="radio" id="{{group}}" value="{{group}}"
+                <input class="select-box__input" type="radio" id="{{group + i}}" value="{{group}}"
                        formControlName="type"/>
                 <p class="select-box__input-text">{{'COMPLAINT.' + group | translate}}</p>
               </div>
               <div class="select-box__value">
-                <input class="select-box__input disabled" type="radio" id="disabledType" value="disabled"
+                <input class="select-box__input disabled" type="radio" id="disabledType {{i}}" value="disabled"
                        formControlName="type" checked/>
                 <p class="select-box__input-text disabled">{{'COMPLAINT.disabled' | translate}}</p>
               </div>
@@ -353,10 +372,10 @@
             </div>
             <ul class="select-box__list overflow-scroll-Y">
               <li *ngFor="let group of this.groups"><label class="select-box__option margin-bottom-0"
-                                                           for="{{group}}"
+                                                           for="{{group + i}}"
                                                            aria-hidden="aria-hidden">{{'COMPLAINT.' + group | translate}}</label>
               </li>
-              <li><label class="select-box__option disabled" for="disabledType"
+              <li><label class="select-box__option disabled" for="disabledType {{i}}"
                          aria-hidden="aria-hidden">{{'COMPLAINT.disabled' | translate}}</label></li>
             </ul>
           </div>
@@ -517,8 +536,7 @@
         </div>
 
         <div class="md-container__right-side__add-product">
-          <a class="btn btn--green" (click)="addNewProduct()">{{'COMPLAINT.addProduct' | translate}}</a>
-          <a class="btn btn--red" (click)="removeProduct(i)">{{'COMPLAINT.removeProduct' | translate}}</a>
+          <a class="btn btn--red" *ngIf="complaintItems.length > 1" (click)="removeProduct(i)">{{'COMPLAINT.removeProduct' | translate}}</a>
         </div>
 
         <div class="copy-link-config-popup" *ngIf="addPhotoPopup">
@@ -542,8 +560,10 @@
 
       </div>
 
-    </div>
+      <a class="btn btn--green margin-top-1" (click)="addNewProduct()">{{'COMPLAINT.addProduct' | translate}}</a>
 
-    <button type="submit" [disabled]="complaintForm.invalid">{{ 'COMPLAINT.register' | translate}}</button>
+    </div>
+                      <!--[disabled]="complaintForm.invalid" -->
+    <button type="submit">{{ 'COMPLAINT.register' | translate}}</button>
   </form>
 </div>

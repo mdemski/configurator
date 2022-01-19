@@ -32,7 +32,7 @@
         flex-wrap: wrap;
 
         &__picture-container {
-          width: 27%;
+          width: 29%;
           height: 15rem;
           overflow: hidden;
 
@@ -51,7 +51,7 @@
 
     &__add-product {
       display: flex;
-      justify-content: center;
+      justify-content: flex-end;
 
       a {
         margin: 1rem;
@@ -203,4 +203,13 @@ button:disabled {
   justify-content: center;
   width: 100%;
   margin-top: 2rem;
+}
+
+.select-box__input-text {
+  background-color: $color-light-grey;
+}
+
+.disabled {
+  background-color: $color-grey;
+  color: $color-light-grey;
 }

@@ -587,7 +587,7 @@
     "status": "Status",
     "topic": "Krótki opis",
     "owner": "Kontrahnet/Użytkownik",
-    "applicant": "Zagłaszający",
+    "applicant": "Zagłaszający (Imię i nazwisko)",
     "leadingOperator": "Prowadzący",
     "products": "Reklamowane produkty",
     "edit": "Edycja",
@@ -641,7 +641,8 @@
     "complaintItemPhoto": "Zdjęcie reklamowanego produktu",
     "buyingDate": "Data zakupu produktu",
     "detectedDate": "Data wykrycia usterki",
-    "startUsingDate": "Data rozpoczęcia użytkowania produktu"
+    "startUsingDate": "Data rozpoczęcia użytkowania produktu",
+    "installationDate": "Data montażu"
   },
   "ORDER": {
     "number": "Numer zamówienia",
