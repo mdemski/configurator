@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {catchError, switchMap, tap} from 'rxjs/operators';
+import {catchError, map, switchMap, tap} from 'rxjs/operators';
 import {Complaint} from '../models/complaint';
 import {ComplaintItem} from '../models/complaintItem';
 import {BehaviorSubject, Observable, of} from 'rxjs';
@@ -57,6 +57,15 @@ export class ComplaintService {
   getComplaints() {
     const url = `${this.baseUrlComplaint}/`;
     return this.http.get(url).pipe(catchError(err => err)) as Observable<Complaint[]>;
+  }
+
+  getComplaintByID(complaintID: string) {
+    // TODO włączyć jak będzie dostępne API z eNova
+    // const url = `${this.baseUrlComplaint}/:` + complaintID;
+    // return this.http.get(url).pipe(catchError(err => err)) as Observable<Complaint[]>;
+    return this.getComplaintsByEmail('test@test.pl').pipe(map(complaints => {
+      return complaints.find(complaint => complaint.erpNumber === complaintID);
+    }));
   }
 
   getComplaintsByEmail(email: string): Observable<Complaint[]> {

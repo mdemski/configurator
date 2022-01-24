@@ -13,6 +13,13 @@ import {FlashingValueSetterService} from '../../services/flashing-value-setter.s
 import {RoofWindowSkylight} from '../../models/roof-window-skylight';
 import {Flashing} from '../../models/flashing';
 import {Complaint} from '../../models/complaint';
+import {ActivatedRoute} from '@angular/router';
+import {takeUntil} from 'rxjs/operators';
+import {User} from '../../models/user';
+import moment, {defaultFormat} from 'moment';
+import {Accessory} from '../../models/accessory';
+import {FlatRoofWindow} from '../../models/flat-roof-window';
+import {VerticalWindow} from '../../models/vertical-window';
 
 @Component({
   selector: 'app-complaint-form',
@@ -24,6 +31,7 @@ export class ComplaintFormComponent implements OnInit, OnDestroy {
   @Select(UserState) user$: Observable<any>;
   isDestroyed$ = new Subject();
   isLoading = true;
+  loadedComplaint;
   complaintForm: FormGroup;
   companyApplicant = false;
   individualApplicant = false;
@@ -32,8 +40,12 @@ export class ComplaintFormComponent implements OnInit, OnDestroy {
   groups = ['roofWindow', 'skylight', 'flashing', 'accessory', 'flatRoofWindow', 'verticalWindow'];
   complaintItems: ComplaintItem[] = [];
   addPhotoPopup = false;
+  ID = '';
+  complaintYear = '';
+  complaintID = '';
 
   constructor(public translate: TranslateService,
+              private route: ActivatedRoute,
               public complaintService: ComplaintService,
               private roofWindowSetter: RoofWindowValuesSetterService,
               private flashingSetter: FlashingValueSetterService) {
@@ -43,10 +55,33 @@ export class ComplaintFormComponent implements OnInit, OnDestroy {
       this.userAddress = user.address;
       this.userCompany = user.company;
     });
+    this.route.paramMap.pipe(
+      takeUntil(this.isDestroyed$))
+      .subscribe(params => {
+        this.ID = params.get('id');
+        this.complaintYear = params.get('year');
+        if (this.ID) {
+          this.complaintID = String(this.ID + '/' + this.complaintYear);
+          this.complaintService.getComplaintByID(this.complaintID).pipe(takeUntil(this.isDestroyed$)).subscribe(complaint => this.loadedComplaint = complaint);
+        }
+      });
   }
 
   ngOnInit(): void {
-    // wczytać tutaj reklamowane itemy z routera jeśli edytowany jest element, a nie tworzony nowy
+    if (this.complaintID === '' || this.complaintID === undefined) {
+      this.loadEmptyComplaintForm();
+    } else {
+      this.loadComplaintFormWithID();
+    }
+    this.complaintItems.push(this.createNewComplaintItem(0));
+    this.isLoading = false;
+  }
+
+  ngOnDestroy(): void {
+    this.isDestroyed$.next();
+  }
+
+  private loadEmptyComplaintForm() {
     this.complaintForm = new FormGroup({
       applicant: new FormControl(null, [Validators.required]),
       email: new FormControl(null, [Validators.required, Validators.email]),
@@ -79,12 +114,111 @@ export class ComplaintFormComponent implements OnInit, OnDestroy {
       startUsingDate: new FormControl(null, Validators.required),
       installationDate: new FormControl(null, Validators.required),
     });
-    this.complaintItems.push(this.createNewComplaintItem(0));
-    this.isLoading = false;
   }
 
-  ngOnDestroy(): void {
-    this.isDestroyed$.next();
+  private loadComplaintFormWithID() {
+    const complaint = this.loadedComplaint;
+    let name = null;
+    let companyNIP = null;
+    let street = null;
+    let localNumber = null;
+    let zipCode = null;
+    let city = null;
+    let country = null;
+    let companyAgent = null;
+    if (complaint.owner instanceof Company) {
+      name = complaint.owner.name;
+      companyNIP = complaint.owner.nip;
+      street = complaint.owner.address.street;
+      localNumber = complaint.owner.address.localNumber;
+      zipCode = complaint.owner.address.zipCode;
+      city = complaint.owner.address.city;
+      country = complaint.owner.address.country;
+      companyAgent = complaint.owner.agentOkpol;
+    }
+    if (complaint.owner instanceof User) {
+      name = complaint.owner.name;
+      street = complaint.owner.address.street;
+      localNumber = complaint.owner.address.localNumber;
+      zipCode = complaint.owner.address.zipCode;
+      city = complaint.owner.address.city;
+      country = complaint.owner.address.country;
+    }
+    if (complaint.defectAddress) {
+      name = complaint.defectAddress.name;
+      street = complaint.defectAddress.street;
+      localNumber = complaint.defectAddress.localNumber;
+      zipCode = complaint.defectAddress.zipCode;
+      city = complaint.defectAddress.city;
+      country = complaint.defectAddress.country;
+    }
+    let productsArray = new FormArray([]);
+    if (complaint.items.length > 0) {
+      this.complaintItems = complaint.items;
+      for (const complaintItem of complaint.items) {
+        let productType;
+        switch (complaintItem.product.constructor) {
+          case RoofWindowSkylight:
+            if (complaintItem.product.productName.toString().substr(0, 1) === 'W') {
+              productType = 'skylight';
+            } else {
+              productType = 'roofWindow';
+            }
+            break;
+          case Flashing:
+            productType = 'flashing';
+            break;
+          case Accessory:
+            productType = 'accessory';
+            break;
+          case FlatRoofWindow:
+            productType = 'flatRoofWindow';
+            break;
+          case VerticalWindow:
+            productType = 'verticalWindow';
+            break;
+          default:
+            productType = 'roofWindow';
+            break;
+        }
+        const temporaryFormGroup = new FormGroup({
+          type: new FormControl(productType, Validators.required),
+          model: new FormControl(complaintItem.product.model.split(':')[1], Validators.required),
+          glazing: new FormControl(complaintItem.product.pakietSzybowy.split(':')[1], Validators.required),
+          width: new FormControl(complaintItem.product.szerokosc, Validators.required),
+          height: new FormControl(complaintItem.product.wysokosc, Validators.required),
+          quantity: new FormControl(complaintItem.quantity, Validators.required),
+          description: new FormControl(complaintItem.description, Validators.required),
+          dataPlateNumber: new FormControl(complaintItem.dataPlateNumber, Validators.required)
+        });
+        productsArray.push(temporaryFormGroup);
+      }
+    } else {
+      productsArray = new FormArray([this.buildNewProducts()]);
+    }
+    this.complaintForm = new FormGroup({
+      applicant: new FormControl(complaint.applicant, [Validators.required]),
+      email: new FormControl(complaint.email, [Validators.required, Validators.email]),
+      phoneNumber: new FormControl(complaint.phone, [Validators.required, Validators.pattern('^\\+?[0-9]{3}-?[0-9]{6,12}$')]),
+      individualStreet: new FormControl(street, [this.requiredIfIndividualClient.bind(this)]),
+      individualLocalNumber: new FormControl(localNumber),
+      individualZipCode: new FormControl(zipCode, [Validators.pattern('[0-9]{2}-[0-9]{3}'), this.requiredIfIndividualClient.bind(this)]),
+      individualCity: new FormControl(city, [this.requiredIfIndividualClient.bind(this)]),
+      individualCountry: new FormControl(country, [this.requiredIfIndividualClient.bind(this)]),
+      companyName: new FormControl(name, [this.requiredIfCompanyClient.bind(this)]),
+      nip: new FormControl(companyNIP, [this.requiredIfCompanyClient.bind(this)]),
+      street: new FormControl(street, [this.requiredIfCompanyClient.bind(this)]),
+      localNumber: new FormControl(localNumber),
+      zipCode: new FormControl(zipCode, [Validators.pattern('[0-9]{2}-[0-9]{3}'), this.requiredIfCompanyClient.bind(this)]),
+      city: new FormControl(city, [this.requiredIfCompanyClient.bind(this)]),
+      country: new FormControl(country, [this.requiredIfCompanyClient.bind(this)]),
+      agent: new FormControl(companyAgent),
+      products: productsArray,
+      buyingDate: new FormControl(moment(complaint.buyingDate).format('DD-MM-YYYY'), Validators.required),
+      detectedDate: new FormControl(moment(complaint.detectedDate).format('DD-MM-YYYY'), Validators.required),
+      startUsingDate: new FormControl(moment(complaint.startUsingDate).format('DD-MM-YYYY'), Validators.required),
+      installationDate: new FormControl(moment(complaint.installationDate).format('DD-MM-YYYY'), Validators.required),
+    });
   }
 
   get products() {
@@ -183,7 +317,8 @@ export class ComplaintFormComponent implements OnInit, OnDestroy {
       defectAddress.city = this.complaintForm.get('individualCity').value;
       defectAddress.country = this.complaintForm.get('individualCountry').value;
     }
-    const registeredComplaint: Complaint = new Complaint('', new Date(), this.products.controls[0].get('description').value, 'Aktywna', this.complaintForm.get('phoneNumber').value,
+    const temporaryErpNumber = String('temp' + Math.random().toString(36).substr(2, 5).toUpperCase() + '/' + new Date().getFullYear());
+    const registeredComplaint: Complaint = new Complaint(temporaryErpNumber, new Date(), this.products.controls[0].get('description').value, 'Aktywna', this.complaintForm.get('phoneNumber').value,
       this.complaintForm.get('email').value, null, '', [], null, this.complaintForm.get('applicant').value, defectAddress, new Date(this.complaintForm.get('installationDate').value),
       new Date(this.complaintForm.get('buyingDate').value), new Date(this.complaintForm.get('detectedDate').value), new Date(this.complaintForm.get('detectedDate').value));
     // tslint:disable-next-line:prefer-for-of
@@ -235,10 +370,6 @@ export class ComplaintFormComponent implements OnInit, OnDestroy {
           break;
         }
       }
-      console.log(product);
-      console.log(productName);
-      console.log(i);
-      console.log(this.complaintItems);
       this.complaintItems[i].product = product;
       this.complaintItems[i].productName = productName;
       this.complaintItems[i].quantity = quantity;
