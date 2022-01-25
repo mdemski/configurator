@@ -44,7 +44,7 @@
             {{'COMPLAINT.requiredField' | translate}}
           </div>
           <div
-            class="invalid-data__container--text" *ngIf="complaintForm.get('email').hasError('email')">
+            class="invalid-data__container--text" *ngIf="complaintForm.get('email').hasError('email') && complaintForm.get('email').touched">
             {{'COMPLAINT.wrongEmail' | translate}}
           </div>
         </div>
@@ -61,7 +61,7 @@
             class="invalid-data__container--text" *ngIf="complaintForm.get('phoneNumber').hasError('required')">
             {{'COMPLAINT.requiredField' | translate}}
           </div>
-          <div class="invalid-data__container--text" *ngIf="complaintForm.get('phoneNumber').invalid">
+          <div class="invalid-data__container--text" *ngIf="complaintForm.get('phoneNumber').invalid  && complaintForm.get('phoneNumber').touched">
             {{'COMPLAINT.wrongPhoneNumber' | translate}}
           </div>
         </div>
@@ -408,7 +408,11 @@
             </div>
 
             <div class="two-control-container__control">
-              <div class="md-form-control mt-3">
+              <div *ngIf="this.products.controls[i].get('type').value === 'disabled'
+              || this.products.controls[i].get('type').value === 'roofWindow'
+              || this.products.controls[i].get('type').value === 'skylight'
+              || this.products.controls[i].get('type').value === 'flatRoofWindow'
+              || this.products.controls[i].get('type').value === 'verticalWindow'" class="md-form-control mt-3">
                 <input type="text"
                        id="glazing"
                        formControlName="glazing"
@@ -484,7 +488,11 @@
             </div>
 
             <div class="two-control-container__control">
-              <div class="md-form-control mt-3">
+              <div *ngIf="this.products.controls[i].get('type').value === 'disabled'
+              || this.products.controls[i].get('type').value === 'roofWindow'
+              || this.products.controls[i].get('type').value === 'skylight'
+              || this.products.controls[i].get('type').value === 'flatRoofWindow'
+              || this.products.controls[i].get('type').value === 'verticalWindow'" class="md-form-control mt-3">
                 <input type="text"
                        id="dataPlateNumber"
                        formControlName="dataPlateNumber"
@@ -536,7 +544,8 @@
         </div>
 
         <div class="md-container__right-side__add-product">
-          <a class="btn btn--red" *ngIf="complaintItems.length > 1" (click)="removeProduct(i)">{{'COMPLAINT.removeProduct' | translate}}</a>
+          <a class="btn btn--red" *ngIf="complaintItems.length > 1"
+             (click)="removeProduct(i)">{{'COMPLAINT.removeProduct' | translate}}</a>
         </div>
 
         <div class="copy-link-config-popup" *ngIf="addPhotoPopup">
@@ -563,7 +572,6 @@
       <a class="btn btn--green margin-top-1" (click)="addNewProduct()">{{'COMPLAINT.addProduct' | translate}}</a>
 
     </div>
-                      <!--[disabled]="complaintForm.invalid" -->
-    <button type="submit">{{ 'COMPLAINT.register' | translate}}</button>
+    <button type="submit" [disabled]="complaintForm.invalid">{{ 'COMPLAINT.register' | translate}}</button>
   </form>
 </div>

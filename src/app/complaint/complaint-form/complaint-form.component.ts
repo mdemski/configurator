@@ -406,18 +406,24 @@ export class ComplaintFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  // requiredIfGlazing<ValidatorFn>(control: FormControl) {
-  //   const value = control.value;
-  //   if (this.products.controls[i].get('type').value) {
-  //     if (value === null || value === '' || value === 'disabled') {
-  //       return {
-  //         glazingRequired: true
-  //       } as ValidationErrors;
-  //     }
-  //   } else {
-  //     return null;
-  //   }
-  // }
+  requiredIfGlazing<ValidatorFn>(control: FormControl) {
+    const value = control.value;
+    for (const productControl of this.products.controls) {
+      if (productControl.get('type').value === 'roofWindow'
+        || productControl.get('type').value === 'skylight'
+        || productControl.get('type').value === 'flatRoofWindow'
+        || productControl.get('type').value === 'verticalWindow'
+      ) {
+        if (value === null || value === '' || value === 'disabled') {
+          return {
+            glazingRequired: true
+          } as ValidationErrors;
+        }
+      } else {
+        return null;
+      }
+    }
+  }
 
   closePhotosPopup() {
     this.addPhotoPopup = false;
