@@ -151,6 +151,7 @@
   display: none;
 
   &--label {
+    white-space: pre-wrap;
     cursor: pointer;
   }
 }
