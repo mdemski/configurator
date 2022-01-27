@@ -655,5 +655,20 @@
     "productList": "Lista produktów",
     "quantity": "Ilość zamówiona",
     "delete": "Usuń"
+  },
+  "TASK": {
+    "number": "Numer zadania",
+    "topic": "Tytuł",
+    "created": "Data utworzenia",
+    "status": "Status",
+    "leadingOperator": "Prowadzący",
+    "updated": "Data aktualizacji",
+    "nextStep": "Data kolejnego kroku",
+    "deadline": "Data zakończenia",
+    "priority": "Priorytet",
+    "description": "Opis",
+    "crmProject": "W ramach projektu",
+    "edit": "Edytuj",
+    "delete": "Usuń"
   }
 }

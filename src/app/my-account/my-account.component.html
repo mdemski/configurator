@@ -84,15 +84,19 @@
           <span *ngIf="!(userConfigurations$ | async)">(0)</span>
           <span *ngIf="userConfigurations$ | async">({{(userConfigurations$ | async)?.configurations.length}})</span>
         </label>
+<!--     TODO odkomentować    <input *ngIf="currentUser.isLogged && (user$ | async)?.company" class="main__tabs&#45;&#45;input" type="radio" name="tabset" id="tasks"-->
         <input *ngIf="currentUser.isLogged" class="main__tabs--input" type="radio" name="tabset" id="tasks"
                aria-controls="tasks"
                [(ngModel)]="activeTab" [ngModelOptions]="{standalone: true}" value="activeTasks">
+<!--       TODO odkomentować  <label *ngIf="currentUser.isLogged  && (user$ | async)?.company" class="main__tabs&#45;&#45;label" for="tasks">{{'MY-ACCOUNT.tasks' | translate}}-->
         <label *ngIf="currentUser.isLogged" class="main__tabs--label" for="tasks">{{'MY-ACCOUNT.tasks' | translate}}
-          (0)</label>
+          ({{(userTask$ | async)?.length}})</label>
 
+<!--     TODO odkomentować   <input *ngIf="currentUser.isLogged && (user$ | async)?.company" class="main__tabs&#45;&#45;input" type="radio" name="tabset" id="news"-->
         <input *ngIf="currentUser.isLogged" class="main__tabs--input" type="radio" name="tabset" id="news"
                aria-controls="news"
                [(ngModel)]="activeTab" [ngModelOptions]="{standalone: true}" value="activeNews">
+<!--       TODO odkomentować  <label *ngIf="currentUser.isLogged && (user$ | async)?.company" class="main__tabs&#45;&#45;label" for="news">{{'MY-ACCOUNT.news' | translate}}-->
         <label *ngIf="currentUser.isLogged" class="main__tabs--label" for="news">{{'MY-ACCOUNT.news' | translate}}
           (0)</label>
 

@@ -3,7 +3,7 @@ import {AuthService} from '../services/auth.service';
 import {Select, Store} from '@ngxs/store';
 import {CartState} from '../store/cart/cart.state';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
-import {filter, takeUntil} from 'rxjs/operators';
+import {filter, map, takeUntil} from 'rxjs/operators';
 import exchange from '../../assets/json/echange.json';
 import vatRates from '../../assets/json/vatRates.json';
 import {UpdateCartCurrency, UpdateCartVatRate} from '../store/cart/cart.actions';
@@ -13,6 +13,10 @@ import {ComplaintState} from '../store/complaint/complaint.state';
 import {Complaint} from '../models/complaint';
 import {Order} from '../models/order';
 import {OrderService} from '../services/order.service';
+import {UserState} from '../store/user/user.state';
+import {TaskLogger} from 'protractor/built/taskLogger';
+import { Task } from '../models/task';
+import {TaskService} from '../services/task.service';
 
 @Component({
   selector: 'app-my-account',
@@ -22,13 +26,15 @@ import {OrderService} from '../services/order.service';
 export class MyAccountComponent implements OnInit, OnDestroy {
 
   @Select(CartState) cart$: Observable<any>;
-  @Select(AppState) user$: Observable<{ currentUser }>;
+  @Select(AppState) currentUser$: Observable<{ currentUser }>;
+  @Select(UserState) user$: Observable<any>;
   @Select(ConfigurationState) userConfigurations$;
   @Select(ComplaintState) userComplaints$: Observable<Complaint[]>;
 
   currency$ = new BehaviorSubject('PLN');
   vatRate$ = new BehaviorSubject(0.23);
   userOrders$: Observable<Order[]>;
+  userTask$: Observable<Task[]>;
   currencies: string[] = [];
   rates: number[] = [];
   isDestroyed$ = new Subject();
@@ -44,15 +50,18 @@ export class MyAccountComponent implements OnInit, OnDestroy {
 
   constructor(private authService: AuthService,
               private store: Store,
+              private taskService: TaskService,
               private orderService: OrderService) {
     this.currencies = Object.keys(exchange);
     this.rates = Object.values(vatRates);
-    this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.currentUser = user.currentUser);
+    this.currentUser$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.currentUser = user.currentUser);
     this.userOrders$ = this.orderService.getUserOrders().pipe(takeUntil(this.isDestroyed$));
+    this.userTask$ = this.taskService.getUserTasks().pipe(takeUntil(this.isDestroyed$), map((tasks: Task[]) => tasks.filter(task => task.status  === 'Aktywne')));
   }
 
   ngOnInit(): void {
     // this.store.dispatch()
+    this.user$.subscribe(console.log);
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe((data) => {
       this.currency$.next(data.cart.currency);
       this.vatRate$.next(data.cart.vatRate);
