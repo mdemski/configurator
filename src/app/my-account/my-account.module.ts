@@ -17,9 +17,9 @@ import { TaskFormComponent } from './my-tasks/task-form/task-form.component';
   declarations: [MyOrdersComponent, MyConfigurationsComponent, MyComplaintsComponent, MyTasksComponent, InformationsComponent, MyProfileComponent, TaskFormComponent],
   imports: [
     SharedModule,
-    ComplaintModule,
+    MyAccountRoutingModule,
     NgxsModule.forFeature([UserState, ConfigurationState]),
-    MyAccountRoutingModule
+    ComplaintModule
   ],
   exports: [
     MyOrdersComponent,
