@@ -31,7 +31,6 @@ const appRoutes: Routes = [
     path: 'konfigurator', loadChildren: () => import('./configurator/configurator.module').then(m => m.ConfiguratorModule),
     canActivate: [ConfigurationsGuard, AvailableConfigDataGuard]
   },
-  {path: '', component: HomeComponent},
   {
     path: 'complaints', loadChildren: () => import('./complaint/complaint.module').then(m => m.ComplaintModule),
     canActivate: [UserGuard, ComplaintsGuard]
@@ -45,6 +44,8 @@ const appRoutes: Routes = [
   {path: 'confirmation/:random/:uuid', component: RegisterConfirmationPageComponent},
   {path: 'kontakt', component: ContactComponent},
   {path: 'logowanie', component: LoginComponent},
+  {path: '', component: HomeComponent},
+  {path: '**', component: HomeComponent}
 ];
 
 @NgModule({
