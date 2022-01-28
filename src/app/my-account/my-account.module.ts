@@ -15,6 +15,12 @@ import { TaskFormComponent } from './my-tasks/task-form/task-form.component';
 
 @NgModule({
   declarations: [MyOrdersComponent, MyConfigurationsComponent, MyComplaintsComponent, MyTasksComponent, InformationsComponent, MyProfileComponent, TaskFormComponent],
+  imports: [
+    SharedModule,
+    ComplaintModule,
+    NgxsModule.forFeature([UserState, ConfigurationState]),
+    MyAccountRoutingModule
+  ],
   exports: [
     MyOrdersComponent,
     MyConfigurationsComponent,
@@ -22,12 +28,6 @@ import { TaskFormComponent } from './my-tasks/task-form/task-form.component';
     InformationsComponent,
     MyComplaintsComponent
   ],
-  imports: [
-    SharedModule,
-    ComplaintModule,
-    NgxsModule.forFeature([UserState, ConfigurationState]),
-    MyAccountRoutingModule
-  ]
 })
 export class MyAccountModule {
 }
