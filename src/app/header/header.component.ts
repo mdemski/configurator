@@ -6,6 +6,7 @@ import {SetCurrentUser} from '../store/app/app.actions';
 import {CartState} from '../store/cart/cart.state';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {skip, takeUntil} from 'rxjs/operators';
+import {AppState} from '../store/app/app.state';
 
 @Component({
   selector: 'app-header',
@@ -15,6 +16,7 @@ import {skip, takeUntil} from 'rxjs/operators';
 
 export class HeaderComponent implements OnInit, OnDestroy {
   @Select(CartState) cart$: Observable<any>;
+  @Select(AppState) currentUser$: Observable<{ currentUser }>;
   isDestroyed$ = new Subject();
   userId: string;
   searchInApp: string;

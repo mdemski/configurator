@@ -28,6 +28,12 @@
       </a>
     </div>
 
+    <div *ngIf="(currentUser$ | async)?.currentUser.isLogged" class="md-navbar__user-area__icon-box">
+      <a class="nav-link" (click)="logout()">
+        <i class="fas fa-sign-out-alt md-navbar__user-area__icon-box--icon"></i>
+      </a>
+    </div>
+
     <div class="md-navbar__user-area__icon-box">
       <a class="nav-link" routerLink="{{ 'LINK.linkToCart' | translate}}">
         <i class="fas fa-shopping-cart md-navbar__user-area__icon-box--icon"></i>
