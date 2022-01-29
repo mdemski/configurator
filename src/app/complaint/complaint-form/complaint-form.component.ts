@@ -380,7 +380,7 @@ export class ComplaintFormComponent implements OnInit, OnDestroy {
       this.complaintItems[i].dataPlateNumber = this.products.controls[i].get('dataPlateNumber').value;
     }
     registeredComplaint.items = this.complaintItems;
-    console.log(registeredComplaint);
+    // TODO tu się nic dalej z tym nie dzieje - brakuje HTTP i reset formularza
   }
 
   requiredIfCompanyClient<ValidatorFn>(control: FormControl) {
