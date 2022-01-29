@@ -14,7 +14,7 @@ import {RoofWindowSkylight} from '../../models/roof-window-skylight';
 import {Flashing} from '../../models/flashing';
 import {Complaint} from '../../models/complaint';
 import {ActivatedRoute} from '@angular/router';
-import {takeUntil} from 'rxjs/operators';
+import {filter, takeUntil} from 'rxjs/operators';
 import {User} from '../../models/user';
 import moment, {defaultFormat} from 'moment';
 import {Accessory} from '../../models/accessory';
@@ -51,7 +51,10 @@ export class ComplaintFormComponent implements OnInit, OnDestroy {
               private flashingSetter: FlashingValueSetterService) {
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
-    this.user$.subscribe((user) => {
+    this.user$.pipe(
+      takeUntil(this.isDestroyed$),
+      filter(user => !user))
+      .subscribe((user) => {
       this.userAddress = user.address;
       this.userCompany = user.company;
     });
