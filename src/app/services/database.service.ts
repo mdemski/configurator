@@ -152,6 +152,7 @@ export class DatabaseService {
 
   // Musi zwracać listę 3 produktów z których 1 jest oknem, 2 to kołnierz, 3 akcesorium
   getMostRecentProductsHomePage() {
+    this.mostRecentProducts = [];
     this.mostRecentProducts.push(this.windows[0]);
     this.mostRecentProducts.push(this.windows[1]);
     this.mostRecentProducts.push(this.accessories[2]);
