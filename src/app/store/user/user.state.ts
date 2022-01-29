@@ -11,11 +11,11 @@ import {
   UpdateUserData,
   UpdateUserMainAddress, UpdateUserToSendAddress
 } from './user.actions';
-import {map, switchMap, tap} from 'rxjs/operators';
+import {filter, map, switchMap, tap} from 'rxjs/operators';
 import {User} from '../../models/user';
 import cloneDeep from 'lodash/cloneDeep';
 import {of} from 'rxjs';
-import {patch, updateItem} from '@ngxs/store/operators';
+import {patch} from '@ngxs/store/operators';
 
 export interface UserStateModel {
   email: string;
@@ -51,6 +51,7 @@ export class UserState {
   @Action(GetUserData)
   getUser(ctx: StateContext<UserStateModel>, {email}: GetUserData) {
     return this.crud.readUserByEmail(email).pipe(
+      filter(user => user !== null),
       switchMap((user: User) => {
         if ((user.mainAddressId === '' || user.mainAddressId === null)) {
           return of([user, null]);
