@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {of} from 'rxjs';
 import {Task} from '../models/task';
 import moment from 'moment';
-import {catchError} from 'rxjs/operators';
+import {catchError, filter, map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,11 @@ export class TaskService {
     // return this.http.get(url);
     return of([new Task('123/354/2022', moment(new Date()).add(-5, 'day').toDate(), 'Wycena',
       'Proszę o kontakt', 'Wysoki', 'Aktywne', '123-456-789', 'test@test.pl',
-      'Olek', moment(new Date()).add(2, 'day').toDate(), moment(new Date()).add(5, 'day').toDate(), null, new Date(), false, '')]);
+      'Olek', moment(new Date()).add(2, 'day').toDate(), moment(new Date()).add(5, 'day').toDate(), null, new Date(), false, 'Promocja Versa')]);
+  }
+
+  getTaskByID(taskID: string) {
+    return this.getUserTasks().pipe(map(tasks => tasks.find(task => task.erpNumber === taskID)));
   }
 
   getOpenCRMProjects() {

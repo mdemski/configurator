@@ -1,0 +1,168 @@
+<div class="navbar-background">
+  <img src="assets/img/navbar_backgrounds/eugene-golovesov-A3T424bN-gw-unsplash.jpg" alt="tasks">
+</div>
+
+<div class="d-flex justify-content-center">
+  <div *ngIf="isLoading" class="d-flex justify-content-center">
+    <app-okpol-loader></app-okpol-loader>
+  </div>
+
+  <form *ngIf="!isLoading" class="md-container__form-window" [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+    <div class="md-container__form-window__form-container">
+
+      <div>
+        <h1 class="form-title">{{'TASK.title' | translate}}</h1>
+
+
+        <!--        <label for="email" class="TASK-form-labels">{{ 'TASK.email' | translate}}</label>-->
+        <div class="md-form-control mt-3">
+          <input type="text"
+                 id="topic"
+                 formControlName="topic"
+                 class="form-control--input"
+                 placeholder="{{'TASK.topic' | translate}}">
+        </div>
+        <div class="invalid-data__container"
+             *ngIf="taskForm.get('topic').dirty || taskForm.get('topic').touched">
+          <div
+            class="invalid-data__container--text" *ngIf="taskForm.get('topic').hasError('required')">
+            {{'TASK.requiredField' | translate}}
+          </div>
+        </div>
+        <!--        <label for="password" class="TASK-form-labels">{{ 'TASK.password' | translate}}</label>-->
+        <div class="md-form-control mt-3">
+          <textarea type="text"
+                 id="description"
+                 formControlName="description"
+                 class="form-control--input"
+                    placeholder="{{'TASK.description' | translate}}"></textarea>
+        </div>
+        <div class="invalid-data__container"
+             *ngIf="taskForm.get('description').dirty || taskForm.get('description').touched">
+          <div
+            class="invalid-data__container--text" *ngIf="taskForm.get('description').hasError('required')">
+            {{'TASK.requiredField' | translate}}
+          </div>
+        </div>
+
+        <div class="select-box sorting margin-bottom-2">
+          <div class="select-box__current" tabindex="1">  <!--Usunięcie tabindex rozwala selecta-->
+            <div class="select-box__value" *ngFor="let priority of this.priorities$ | async; let i = index">
+              <input class="select-box__input" type="radio" id="{{priority}}" value="{{priority}}"
+                     formControlName="priority"/>
+              <p class="select-box__input-text">{{'TASK.' + priority | translate}}</p>
+            </div>
+            <div class="select-box__value">
+              <input class="select-box__input disabled" type="radio" id="disabledPriority" value="disabledPriority"
+                     formControlName="priority" checked/>
+              <p class="select-box__input-text disabled">{{'TASK.disabledPriority' | translate}}</p>
+            </div>
+            <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg"
+                 alt="Arrow Icon" aria-hidden="true"/>
+          </div>
+          <ul class="select-box__list overflow-scroll-Y">
+            <li *ngFor="let priority of this.priorities$ | async"><label class="select-box__option margin-bottom-0"
+                                                         for="{{priority}}"
+                                                         aria-hidden="aria-hidden">{{'TASK.' + priority | translate}}</label>
+            </li>
+            <li><label class="select-box__option disabled" for="disabledPriority"
+                       aria-hidden="aria-hidden">{{'TASK.disabledPriority' | translate}}</label></li>
+          </ul>
+        </div>
+
+        <div class="md-form-control mt-3">
+          <input type="email"
+                 id="email"
+                 formControlName="email"
+                 class="form-control--input"
+                 placeholder="{{'TASK.email' | translate}}">
+        </div>
+        <div class="invalid-data__container"
+             *ngIf="taskForm.get('email').dirty || taskForm.get('email').touched">
+          <div
+            class="invalid-data__container--text" *ngIf="taskForm.get('email').hasError('required')">
+            {{'TASK.requiredField' | translate}}
+          </div>
+          <div
+            class="invalid-data__container--text"
+            *ngIf="taskForm.get('email').hasError('email') && taskForm.get('email').touched">
+            {{'TASK.wrongEmail' | translate}}
+          </div>
+        </div>
+
+        <div class="md-form-control mt-3">
+          <input type="text"
+                 id="phone"
+                 formControlName="phone"
+                 class="form-control--input"
+                 placeholder="{{'TASK.phone' | translate}}">
+        </div>
+        <div class="invalid-data__container"
+             *ngIf="taskForm.get('phone').dirty || taskForm.get('phone').touched">
+          <div
+            class="invalid-data__container--text" *ngIf="taskForm.get('phone').hasError('required')">
+            {{'TASK.requiredField' | translate}}
+          </div>
+          <div class="invalid-data__container--text"
+               *ngIf="taskForm.get('phone').invalid  && taskForm.get('phone').touched">
+            {{'TASK.wrongPhoneNumber' | translate}}
+          </div>
+        </div>
+
+        <div class="md-form-control mt-3">
+          <input type="text"
+                 id="nextStepDate"
+                 formControlName="nextStepDate"
+                 class="form-control--input"
+                 placeholder="{{'TASK.nextStep' | translate}}"
+                 onfocus="(this.type='date')"
+                 onblur="(this.type='text')"
+          >
+        </div>
+
+        <div class="md-form-control mt-3">
+          <input type="text"
+                 id="deadlineDate"
+                 formControlName="deadlineDate"
+                 class="form-control--input"
+                 placeholder="{{'TASK.deadline' | translate}}"
+                 onfocus="(this.type='date')"
+                 onblur="(this.type='text')"
+          >
+        </div>
+
+        <div class="select-box sorting margin-bottom-2">
+          <div class="select-box__current" tabindex="1">  <!--Usunięcie tabindex rozwala selecta-->
+            <div class="select-box__value" *ngFor="let crm of this.crmProjects$ | async; let i = index">
+              <input class="select-box__input" type="radio" id="{{crm}}" value="{{crm}}"
+                     formControlName="crmProject"/>
+              <p class="select-box__input-text">{{crm}}</p>
+            </div>
+            <div class="select-box__value">
+              <input class="select-box__input disabled" type="radio" id="disabledCRM" value="disabledCRM"
+                     formControlName="crmProject" checked/>
+              <p class="select-box__input-text disabled">{{'TASK.disabledCRM' | translate}}</p>
+            </div>
+            <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg"
+                 alt="Arrow Icon" aria-hidden="true"/>
+          </div>
+          <ul class="select-box__list overflow-scroll-Y">
+            <li *ngFor="let crm of this.crmProjects$ | async"><label class="select-box__option margin-bottom-0"
+                                                                         for="{{crm}}"
+                                                                         aria-hidden="aria-hidden">{{crm}}</label>
+            </li>
+            <li><label class="select-box__option disabled" for="disabledCRM"
+                       aria-hidden="aria-hidden">{{'TASK.disabledCRM' | translate}}</label></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <button type="submit" [disabled]="taskForm.invalid">{{ 'TASK.register' | translate}}</button>
+
+    </div>
+    <div class="md-container__form-window__right-side">
+      <div class="md-container__form-window__right-side__img"></div>
+    </div>
+  </form>
+</div>

@@ -658,6 +658,7 @@
   },
   "TASK": {
     "number": "Numer zadania",
+    "title": "Zadanie",
     "topic": "Tytuł",
     "created": "Data utworzenia",
     "status": "Status",
@@ -667,8 +668,19 @@
     "deadline": "Data zakończenia",
     "priority": "Priorytet",
     "description": "Opis",
+    "phone": "Numer telefonu",
+    "email": "Adres email",
+    "disabledPriority": "Wybierz priorytet",
+    "disabledCRM": "Wybierz projekt",
     "crmProject": "W ramach projektu",
+    "requiredField": "Pole jest wymagane",
+    "wrongEmail": "Podaj poprawny adres email",
+    "wrongPhoneNumber": "Podaj poprawny numer telefonu",
+    "Niski": "Niski",
+    "Wysoki": "Wysoki",
+    "Normalny": "Normalny",
     "edit": "Edytuj",
-    "delete": "Usuń"
+    "delete": "Usuń",
+    "register": "Zarejestruj zadanie"
   }
 }
