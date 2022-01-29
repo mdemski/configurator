@@ -40,7 +40,7 @@ export class ComplaintFormComponent implements OnInit, OnDestroy {
   groups = ['roofWindow', 'skylight', 'flashing', 'accessory', 'flatRoofWindow', 'verticalWindow'];
   complaintItems: ComplaintItem[] = [];
   addPhotoPopup = false;
-  ID = '';
+  private ID = '';
   complaintYear = '';
   complaintID = '';
 
