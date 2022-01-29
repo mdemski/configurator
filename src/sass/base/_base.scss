@@ -41,6 +41,16 @@ body {
   font-size: 1.6rem;
 }
 
+.md-container--table {
+  position: relative;
+  max-width: 140rem;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  font-size: 1.6rem;
+}
+
 .navbar-background {
   height: 20rem;
   overflow: hidden;

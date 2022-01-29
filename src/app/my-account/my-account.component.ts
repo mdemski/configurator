@@ -61,7 +61,6 @@ export class MyAccountComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // this.store.dispatch()
-    this.user$.subscribe(console.log);
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe((data) => {
       this.currency$.next(data.cart.currency);
       this.vatRate$.next(data.cart.vatRate);

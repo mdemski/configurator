@@ -1,33 +1,20 @@
 @import 'src/sass/base/variables';
 @import 'src/sass/buttons';
 @import 'src/sass/radio-input';
+@import 'src/sass/components';
 
-.md-container {
-  margin: 10rem 0;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
-  0 10px 10px rgba(0, 0, 0, 0.22);
-  position: relative;
-  width: 80%;
-  min-height: 480px;
-  max-width: 100%;
+.md-container__form-window__right-side {
+  width: 50%;
+  padding: 0;
 
-  &__form-container {
-    text-align: center;
-    padding: 5rem 10rem;
-    width: 50%;
-  }
-
-  &__right-side {
-    width: 50%;
-    &__img {
-      height: 100%;
-      background-image: url("src/assets/img/register_page/thom-milkovic-cBS0qKJM-P4-unsplash.jpg");
-      background-size: cover;
-      background-position: center;
-      opacity: .7;
-    }
+  &__img {
+    height: 100%;
+    background-image: url("src/assets/img/register_page/thom-milkovic-cBS0qKJM-P4-unsplash.jpg");
+    background-size: cover;
+    background-position: center;
+    opacity: .7;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
   }
 }
 
@@ -35,21 +22,8 @@ button:disabled {
   background-color: $color-light-red;
 }
 
-.register-title {
-  text-align: center;
-  font-size: 1.8rem;
-}
-
-.form-control {
-  font-size: $default-font-size;
-  background-color: $color-light-grey;
-  border: none;
-  padding: 2rem 1.5rem;
-  margin: 2rem 0;
-  width: 100%;
-}
-
 .register-check-box {
+  margin-top: 1rem;
   text-align: center;
   font-size: 1.6rem;
   cursor: pointer;
@@ -58,43 +32,6 @@ button:disabled {
 .register-button {
   margin: 3rem 0 1rem 0;
   width: 100%;
-}
-
-.invalid-contact-data {
-  padding: 1rem;
-  font-size: 1.2rem;
-  background-color: $color-light-red;
-  color: $color-darkest-red;
-}
-
-button {
-  border-radius: 20px;
-  border: 1px solid #FF4B2B;
-  background-color: #FF4B2B;
-  color: #FFFFFF;
-  font-size: 12px;
-  font-weight: bold;
-  padding: 12px 45px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  transition: transform 80ms ease-in;
-}
-
-button:active {
-  transform: scale(0.95);
-}
-
-button:focus {
-  outline: none;
-}
-
-button.ghost {
-  background-color: transparent;
-  border-color: $color-white;
-}
-
-button:disabled {
-  background-color: $color-light-red;
 }
 
 .extra-info {

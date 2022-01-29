@@ -668,3 +668,211 @@ table {
     }
   }
 }
+
+// FORMS COMPONENTS (REGISTER, LOGIN, COMPLAINT, TASK, ETC.)
+.form-title {
+  text-align: center;
+  font-size: 2.2rem;
+  margin-bottom: 3rem;
+  font-weight: bold;
+}
+
+.md-container__form-window {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 10rem 0;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
+  0 10px 10px rgba(0, 0, 0, 0.22);
+  position: relative;
+  width: 80%;
+  min-height: 480px;
+  max-width: 100%;
+
+  &__form-container {
+    text-align: center;
+    padding: 5rem 4rem 5rem 10rem;
+    width: 50%;
+  }
+
+  &__right-side {
+    width: 50%;
+    padding: 5rem 10rem 5rem 4rem;
+
+    &__products {
+
+      &__pictures {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+
+        &__picture-container {
+          width: 29%;
+          height: 15rem;
+          overflow: hidden;
+
+          img {
+            max-width: 100%;
+            max-height: 100%;
+          }
+        }
+      }
+
+      &__add-button {
+        display: flex;
+        justify-content: flex-start;
+      }
+    }
+
+    &__add-product {
+      display: flex;
+      justify-content: flex-end;
+
+      a {
+        margin: 1rem;
+      }
+    }
+
+  }
+}
+
+.form-control--input {
+  font-size: $default-font-size;
+  background-color: $color-light-grey;
+  border: none;
+  padding: 1rem;
+  margin: 0;
+  width: 100%;
+  outline: none;
+}
+
+// If you set width to %,it will take the width of their parent element
+// In your case.the div takes the width of the parent element i.e td
+
+.invalid-data__container {
+  width: 100%;
+
+  &--text {
+    text-align: left;
+    padding: 1rem;
+    font-size: 1.2rem;
+    background-color: $color-light-red;
+    color: $color-darkest-red;
+  }
+}
+
+.invalid-contact-data {
+  padding: 1rem;
+  font-size: 1.2rem;
+  background-color: $color-light-red;
+  color: $color-darkest-red;
+}
+
+.two-control-container {
+  width: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+
+  &__control {
+    width: 48%;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
+.md-form-control {
+  width: 100%;
+  margin: 0;
+}
+
+.info-data {
+  padding: 1rem;
+  font-size: 1.2rem;
+  background-color: $color-light-green;
+  color: $color-dark-green;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+button {
+  border-radius: 20px;
+  border: 1px solid $color-red;
+  background-color: $color-red;
+  color: $color-white;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 6px 23px;
+  margin: 2rem 1rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: transform 80ms ease-in;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+button:focus {
+  outline: none;
+}
+
+button.ghost {
+  background-color: transparent;
+  border-color: $color-white;
+}
+
+button:disabled {
+  background-color: $color-light-red;
+}
+
+.extra-info {
+  font-size: 1rem;
+}
+
+.paginating {
+  width: 100%;
+}
+
+.sorting {
+  width: 100%;
+}
+
+.margin-bottom-2 {
+  margin-bottom: 2rem;
+}
+
+.margin-bottom-0 {
+  margin-bottom: 0;
+}
+
+.select-box {
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+
+.copy-link-config-popup__content__info-box__button {
+  margin: 0 0 0 1rem;
+}
+
+.picture-add-successfully {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.select-box__input-text {
+  background-color: $color-light-grey;
+}
+
+.disabled {
+  background-color: $color-grey;
+  color: $color-light-grey;
+}

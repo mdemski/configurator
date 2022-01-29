@@ -7,11 +7,11 @@
     <app-okpol-loader></app-okpol-loader>
   </div>
 
-  <form *ngIf="!isLoading" class="md-container" [formGroup]="complaintForm" (ngSubmit)="onSubmit()">
-    <div class="md-container__form-container">
+  <form *ngIf="!isLoading" class="md-container__form-window" [formGroup]="complaintForm" (ngSubmit)="onSubmit()">
+    <div class="md-container__form-window__form-container">
 
       <div>
-        <h1 class="complaint-title">{{'COMPLAINT.complaintForm' | translate}}</h1>
+        <h1 class="form-title">{{'COMPLAINT.complaintForm' | translate}}</h1>
 
 
         <!--        <label for="email" class="complaint-form-labels">{{ 'COMPLAINT.email' | translate}}</label>-->
@@ -19,7 +19,7 @@
           <input type="applicant"
                  id="applicant"
                  formControlName="applicant"
-                 class="form-control"
+                 class="form-control--input"
                  placeholder="{{'COMPLAINT.applicantName' | translate}}">
         </div>
         <div class="invalid-data__container"
@@ -34,7 +34,7 @@
           <input type="email"
                  id="email"
                  formControlName="email"
-                 class="form-control"
+                 class="form-control--input"
                  placeholder="{{'COMPLAINT.email' | translate}}">
         </div>
         <div class="invalid-data__container"
@@ -44,7 +44,8 @@
             {{'COMPLAINT.requiredField' | translate}}
           </div>
           <div
-            class="invalid-data__container--text" *ngIf="complaintForm.get('email').hasError('email') && complaintForm.get('email').touched">
+            class="invalid-data__container--text"
+            *ngIf="complaintForm.get('email').hasError('email') && complaintForm.get('email').touched">
             {{'COMPLAINT.wrongEmail' | translate}}
           </div>
         </div>
@@ -52,7 +53,7 @@
           <input type="phoneNumber"
                  id="phoneNumber"
                  formControlName="phoneNumber"
-                 class="form-control"
+                 class="form-control--input"
                  placeholder="{{'COMPLAINT.phoneNumber' | translate}}">
         </div>
         <div class="invalid-data__container"
@@ -61,7 +62,8 @@
             class="invalid-data__container--text" *ngIf="complaintForm.get('phoneNumber').hasError('required')">
             {{'COMPLAINT.requiredField' | translate}}
           </div>
-          <div class="invalid-data__container--text" *ngIf="complaintForm.get('phoneNumber').invalid  && complaintForm.get('phoneNumber').touched">
+          <div class="invalid-data__container--text"
+               *ngIf="complaintForm.get('phoneNumber').invalid  && complaintForm.get('phoneNumber').touched">
             {{'COMPLAINT.wrongPhoneNumber' | translate}}
           </div>
         </div>
@@ -81,7 +83,7 @@
             <input type="text"
                    id="individualStreet"
                    formControlName="individualStreet"
-                   class="form-control"
+                   class="form-control--input"
                    placeholder="{{'COMPLAINT.street' | translate}}">
           </div>
           <div class="invalid-data__container"
@@ -97,7 +99,7 @@
             <input type="text"
                    id="individualLocalNumber"
                    formControlName="individualLocalNumber"
-                   class="form-control"
+                   class="form-control--input"
                    placeholder="{{'COMPLAINT.number' | translate}}">
           </div>
           <!--          <label for="zipCode" class="complaint-form-labels">{{ 'COMPLAINT.zipCode' | translate}}</label>-->
@@ -105,7 +107,7 @@
             <input type="text"
                    id="individualZipCode"
                    formControlName="individualZipCode"
-                   class="form-control"
+                   class="form-control--input"
                    placeholder="{{'COMPLAINT.zipCode' | translate}}">
           </div>
           <div class="invalid-data__container"
@@ -120,7 +122,7 @@
             <input type="text"
                    id="individualCity"
                    formControlName="individualCity"
-                   class="form-control"
+                   class="form-control--input"
                    placeholder="{{'COMPLAINT.city' | translate}}">
           </div>
           <div class="invalid-data__container"
@@ -136,7 +138,7 @@
             <input type="text"
                    id="individualCountry"
                    formControlName="individualCountry"
-                   class="form-control"
+                   class="form-control--input"
                    placeholder="{{'COMPLAINT.country' | translate}}">
           </div>
           <div class="invalid-data__container"
@@ -158,7 +160,7 @@
             <input type="text"
                    id="companyName"
                    formControlName="companyName"
-                   class="form-control"
+                   class="form-control--input"
                    placeholder="{{'COMPLAINT.companyName' | translate}}">
           </div>
           <div class="invalid-data__container"
@@ -174,7 +176,7 @@
             <input type="text"
                    id="nip"
                    formControlName="nip"
-                   class="form-control"
+                   class="form-control--input"
                    placeholder="{{'COMPLAINT.NIP' | translate}}">
           </div>
           <div class="invalid-data__container"
@@ -190,7 +192,7 @@
             <input type="text"
                    id="street"
                    formControlName="street"
-                   class="form-control"
+                   class="form-control--input"
                    placeholder="{{'COMPLAINT.street' | translate}}">
           </div>
           <div class="invalid-data__container"
@@ -206,7 +208,7 @@
             <input type="text"
                    id="localNumber"
                    formControlName="localNumber"
-                   class="form-control"
+                   class="form-control--input"
                    placeholder="{{'COMPLAINT.number' | translate}}">
           </div>
           <!--          <label for="zipCode" class="complaint-form-labels">{{ 'COMPLAINT.zipCode' | translate}}</label>-->
@@ -214,7 +216,7 @@
             <input type="text"
                    id="zipCode"
                    formControlName="zipCode"
-                   class="form-control"
+                   class="form-control--input"
                    placeholder="{{'COMPLAINT.zipCode' | translate}}">
           </div>
           <div class="invalid-data__container"
@@ -229,7 +231,7 @@
             <input type="text"
                    id="city"
                    formControlName="city"
-                   class="form-control"
+                   class="form-control--input"
                    placeholder="{{'COMPLAINT.city' | translate}}">
           </div>
           <div class="invalid-data__container"
@@ -245,7 +247,7 @@
             <input type="text"
                    id="country"
                    formControlName="country"
-                   class="form-control"
+                   class="form-control--input"
                    placeholder="{{'COMPLAINT.country' | translate}}">
           </div>
           <div class="invalid-data__container"
@@ -261,7 +263,7 @@
             <input type="text"
                    id="agent"
                    formControlName="agent"
-                   class="form-control"
+                   class="form-control--input"
                    placeholder="{{'COMPLAINT.agent' | translate}}">
           </div>
 
@@ -273,7 +275,7 @@
           <input type="text"
                  id="buyingDate"
                  formControlName="buyingDate"
-                 class="form-control"
+                 class="form-control--input"
                  placeholder="{{'COMPLAINT.buyingDate' | translate}}"
                  onfocus="(this.type='date')"
                  onblur="(this.type='text')"
@@ -292,7 +294,7 @@
           <input type="text"
                  id="detectedDate"
                  formControlName="detectedDate"
-                 class="form-control"
+                 class="form-control--input"
                  placeholder="{{'COMPLAINT.detectedDate' | translate}}"
                  onfocus="(this.type='date')"
                  onblur="(this.type='text')"
@@ -311,7 +313,7 @@
           <input type="text"
                  id="startUsingDate"
                  formControlName="startUsingDate"
-                 class="form-control"
+                 class="form-control--input"
                  placeholder="{{'COMPLAINT.startUsingDate' | translate}}"
                  onfocus="(this.type='date')"
                  onblur="(this.type='text')"
@@ -330,7 +332,7 @@
           <input type="text"
                  id="installationDate"
                  formControlName="installationDate"
-                 class="form-control"
+                 class="form-control--input"
                  placeholder="{{'COMPLAINT.installationDate' | translate}}"
                  onfocus="(this.type='date')"
                  onblur="(this.type='text')"
@@ -348,12 +350,12 @@
       </div>
 
     </div>
-    <div class="md-container__right-side">
-      <h1 class="complaint-title">{{'COMPLAINT.complaintProducts' | translate}}</h1>
+    <div class="md-container__form-window__right-side">
+      <h1 class="form-title">{{'COMPLAINT.complaintProducts' | translate}}</h1>
 
-      <div class="md-container__right-side__products" formArrayName="products"
+      <div class="md-container__form-window__right-side__products" formArrayName="products"
            *ngFor="let product of products.controls; let i = index">
-        <div [formGroupName]="i" class="md-container__right-side__products__product">
+        <div [formGroupName]="i" class="md-container__form-window__right-side__products__product">
 
           <div class="select-box sorting margin-bottom-2">
             <div class="select-box__current" tabindex="1">  <!--Usunięcie tabindex rozwala selecta-->
@@ -394,7 +396,7 @@
                 <input type="text"
                        id="model"
                        formControlName="model"
-                       class="form-control"
+                       class="form-control--input"
                        placeholder="{{'COMPLAINT.model' | translate}}">
               </div>
               <div class="invalid-data__container"
@@ -416,7 +418,7 @@
                 <input type="text"
                        id="glazing"
                        formControlName="glazing"
-                       class="form-control"
+                       class="form-control--input"
                        placeholder="{{'COMPLAINT.glazing' | translate}}">
               </div>
               <div class="invalid-data__container"
@@ -436,7 +438,7 @@
                 <input type="number"
                        id="width"
                        formControlName="width"
-                       class="form-control"
+                       class="form-control--input"
                        placeholder="{{'COMPLAINT.width' | translate}}">
               </div>
               <div class="invalid-data__container"
@@ -454,7 +456,7 @@
                 <input type="number"
                        id="height"
                        formControlName="height"
-                       class="form-control"
+                       class="form-control--input"
                        placeholder="{{'COMPLAINT.height' | translate}}">
               </div>
               <div class="invalid-data__container"
@@ -474,7 +476,7 @@
                 <input type="number"
                        id="quantity"
                        formControlName="quantity"
-                       class="form-control"
+                       class="form-control--input"
                        placeholder="{{'COMPLAINT.quantity' | translate}}">
               </div>
               <div class="invalid-data__container"
@@ -496,7 +498,7 @@
                 <input type="text"
                        id="dataPlateNumber"
                        formControlName="dataPlateNumber"
-                       class="form-control"
+                       class="form-control--input"
                        placeholder="{{'COMPLAINT.dataPlateNumber' | translate}}">
               </div>
               <div class="invalid-data__container"
@@ -514,7 +516,7 @@
               <textarea type="text"
                         id="description"
                         formControlName="description"
-                        class="form-control"
+                        class="form-control--input"
                         placeholder="{{'COMPLAINT.description' | translate}}"></textarea>
           </div>
           <div class="invalid-data__container"
@@ -531,19 +533,19 @@
             </div>
           </div>
 
-          <div class="md-container__right-side__products__pictures">
-            <div class="md-container__right-side__products__pictures__picture-container margin-top-1"
+          <div class="md-container__form-window__right-side__products__pictures">
+            <div class="md-container__form-window__right-side__products__pictures__picture-container margin-top-1"
                  *ngFor="let pictureURL of this.complaintItems[i].attachment">
               <img *ngIf="pictureURL !== ''" src="{{pictureURL}}" alt="{{'COMPLAINT.complaintItemPhoto' | translate}}">
             </div>
           </div>
-          <div class="md-container__right-side__products__add-button margin-top-1">
+          <div class="md-container__form-window__right-side__products__add-button margin-top-1">
             <a (click)="addPicture(i)" class="btn btn--yellow">{{'COMPLAINT.addPicture' | translate}}</a>
           </div>
 
         </div>
 
-        <div class="md-container__right-side__add-product">
+        <div class="md-container__form-window__right-side__add-product">
           <a class="btn btn--red" *ngIf="complaintItems.length > 1"
              (click)="removeProduct(i)">{{'COMPLAINT.removeProduct' | translate}}</a>
         </div>
@@ -572,6 +574,8 @@
       <a class="btn btn--green margin-top-1" (click)="addNewProduct()">{{'COMPLAINT.addProduct' | translate}}</a>
 
     </div>
-    <button type="submit" [disabled]="complaintForm.invalid">{{ 'COMPLAINT.register' | translate}}</button>
+    <div class="button-container">
+      <button type="submit" [disabled]="complaintForm.invalid">{{ 'COMPLAINT.register' | translate}}</button>
+    </div>
   </form>
 </div>
