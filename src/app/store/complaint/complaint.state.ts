@@ -36,7 +36,7 @@ export class ComplaintState {
 
   @Action(AddComplaint)
   addComplaint(ctx: StateContext<ComplaintStateModel>, {email, complaint}: AddComplaint) {
-    return this.complaintService.addComplaint(complaint, email).pipe(tap((result: Complaint) => {
+    return this.complaintService.createComplaint(complaint, email).pipe(tap((result: Complaint) => {
       ctx.setState(
         patch({
           complaints: insertItem(result)

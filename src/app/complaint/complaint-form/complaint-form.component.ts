@@ -13,10 +13,10 @@ import {FlashingValueSetterService} from '../../services/flashing-value-setter.s
 import {RoofWindowSkylight} from '../../models/roof-window-skylight';
 import {Flashing} from '../../models/flashing';
 import {Complaint} from '../../models/complaint';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {filter, takeUntil} from 'rxjs/operators';
 import {User} from '../../models/user';
-import moment, {defaultFormat} from 'moment';
+import moment from 'moment';
 import {Accessory} from '../../models/accessory';
 import {FlatRoofWindow} from '../../models/flat-roof-window';
 import {VerticalWindow} from '../../models/vertical-window';
@@ -41,11 +41,13 @@ export class ComplaintFormComponent implements OnInit, OnDestroy {
   complaintItems: ComplaintItem[] = [];
   addPhotoPopup = false;
   private ID = '';
+  private myAccountLink = '';
   complaintYear = '';
   complaintID = '';
 
   constructor(public translate: TranslateService,
               private route: ActivatedRoute,
+              private router: Router,
               public complaintService: ComplaintService,
               private roofWindowSetter: RoofWindowValuesSetterService,
               private flashingSetter: FlashingValueSetterService) {
@@ -78,6 +80,9 @@ export class ComplaintFormComponent implements OnInit, OnDestroy {
     }
     this.complaintItems.push(this.createNewComplaintItem(0));
     this.isLoading = false;
+    this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
+      this.myAccountLink = text.myAccount;
+    });
   }
 
   ngOnDestroy(): void {
@@ -304,6 +309,7 @@ export class ComplaintFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    const email = this.complaintForm.get('email').value;
     const defectAddress: Address = new Address(this.complaintForm.get('applicant').value.toString().split(' ')[0], this.complaintForm.get('applicant').value.toString().split(' ')[1],
       this.complaintForm.get('phoneNumber').value, '', '', '', '', '');
     if (this.companyApplicant) {
@@ -322,7 +328,7 @@ export class ComplaintFormComponent implements OnInit, OnDestroy {
     }
     const temporaryErpNumber = String('temp' + Math.random().toString(36).substr(2, 5).toUpperCase() + '/' + new Date().getFullYear());
     const registeredComplaint: Complaint = new Complaint(temporaryErpNumber, new Date(), this.products.controls[0].get('description').value, 'Aktywna', this.complaintForm.get('phoneNumber').value,
-      this.complaintForm.get('email').value, null, '', [], null, this.complaintForm.get('applicant').value, defectAddress, new Date(this.complaintForm.get('installationDate').value),
+      email, null, '', [], null, this.complaintForm.get('applicant').value, defectAddress, new Date(this.complaintForm.get('installationDate').value),
       new Date(this.complaintForm.get('buyingDate').value), new Date(this.complaintForm.get('detectedDate').value), new Date(this.complaintForm.get('detectedDate').value));
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < this.products.controls.length; i++) {
@@ -380,7 +386,18 @@ export class ComplaintFormComponent implements OnInit, OnDestroy {
       this.complaintItems[i].dataPlateNumber = this.products.controls[i].get('dataPlateNumber').value;
     }
     registeredComplaint.items = this.complaintItems;
-    // TODO tu się nic dalej z tym nie dzieje - brakuje HTTP i reset formularza
+    if (this.loadedComplaint) {
+      registeredComplaint.erpNumber = this.loadedComplaint.erpNumber;
+      registeredComplaint.registrationDate = this.loadedComplaint.registrationDate;
+      registeredComplaint.leadingOperator = this.loadedComplaint.leadingOperator;
+      registeredComplaint.documentationCompletionDate = this.loadedComplaint.documentationCompletionDate;
+      registeredComplaint.owner = this.loadedComplaint.owner;
+      this.complaintService.updateComplaint(registeredComplaint).pipe(takeUntil(this.isDestroyed$)).subscribe();
+    } else {
+      this.complaintService.createComplaint(registeredComplaint, email).pipe(takeUntil(this.isDestroyed$)).subscribe();
+    }
+    this.complaintForm.reset();
+    this.router.navigate(['/' + this.myAccountLink]);
   }
 
   requiredIfCompanyClient<ValidatorFn>(control: FormControl) {

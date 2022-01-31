@@ -86,13 +86,13 @@ export class ComplaintService {
     return of(complaintArray);
   }
 
-  addComplaint(complaint: Complaint, email: string) {
+  createComplaint(complaint: Complaint, email: string) {
     const url = `${this.baseUrlComplaint}/add/${email}`;
     return this.http.post(url, complaint).pipe(catchError(err => err));
   }
 
   updateComplaint(complaint: Complaint) {
-    const url = `${this.baseUrlComplaint}/update`;
+    const url = `${this.baseUrlComplaint}/update` + complaint.erpNumber;
     return this.http.put(url, complaint).pipe(catchError(err => err));
   }
 
