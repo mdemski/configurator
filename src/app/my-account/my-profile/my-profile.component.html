@@ -1,1 +1,11 @@
-<p>my-profile works!</p>
+<div class="navbar-background">
+  <img src="assets/img/navbar_backgrounds/susan-wilkinson-142yqe8MewQ-unsplash.jpg" alt="roof windows">
+</div>
+
+<div class="md-container">
+  <div class="loader-container" *ngIf="loading; else elseBlock">
+    <app-okpol-loader></app-okpol-loader>
+  </div>
+  <ng-template #elseBlock>
+  </ng-template>
+</div>
