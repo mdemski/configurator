@@ -43,8 +43,19 @@ export class TaskService {
     return of(['Niski', 'Normalny', 'Wysoki']);
   }
 
+  createTask(task: Task) {
+    const url = `${this.erpBaseUri}/createTask`;
+    return this.http.put(url, task, {headers: this.headers}).pipe(catchError(err => err));
+  }
+
+  updateTask(task: Task) {
+    const url = `${this.erpBaseUri}/updateTask` + task.erpNumber;
+    task.updatedAt = new Date();
+    return this.http.put(url, task, {headers: this.headers}).pipe(catchError(err => err));
+  }
+
   deleteTask(task: Task, status: string) {
-    const url = `${this.erpBaseUri}/updateTask`;
+    const url = `${this.erpBaseUri}/updateTask` + task.erpNumber;
     task.status = status;
     task.updatedAt = new Date();
     return this.http.put(url, task, {headers: this.headers}).pipe(catchError(err => err));

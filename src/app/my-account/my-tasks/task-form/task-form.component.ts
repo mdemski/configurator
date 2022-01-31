@@ -4,7 +4,7 @@ import {UserState} from '../../../store/user/user.state';
 import {Observable, Subject} from 'rxjs';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {skip, takeUntil} from 'rxjs/operators';
 import {TaskService} from '../../../services/task.service';
 import {Task} from '../../../models/task';
@@ -25,12 +25,14 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   loadedTask;
   taskForm: FormGroup;
   private ID = '';
+  private myAccountLink = '';
   taskYear = '';
   taskMonth = '';
   taskID = '';
 
   constructor(public translate: TranslateService,
               private route: ActivatedRoute,
+              private router: Router,
               public taskService: TaskService) {
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
@@ -55,6 +57,9 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     } else {
       this.loadTaskFormWithID();
     }
+    this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
+      this.myAccountLink = text.myAccount;
+    });
   }
 
   ngOnDestroy(): void {
@@ -77,7 +82,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
           topic: new FormControl(null, Validators.required),
           description: new FormControl(null),
           priority: new FormControl('disabledPriority'),
-          phone: new FormControl(phone, [Validators.pattern('[0-9]{2}-[0-9]{3}')]),
+          phone: new FormControl(phone, [Validators.pattern('^\\+?[0-9]{3}-?[0-9]{6,12}$')]),
           email: new FormControl(email, [Validators.email]),
           nextStepDate: new FormControl(null),
           deadlineDate: new FormControl(null),
@@ -102,7 +107,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
           topic: new FormControl(this.loadedTask.topic, Validators.required),
           description: new FormControl(this.loadedTask.description),
           priority: new FormControl(this.loadedTask.priority),
-          phone: new FormControl(phone, [Validators.pattern('[0-9]{2}-[0-9]{3}')]),
+          phone: new FormControl(phone, [Validators.pattern('^\\+?[0-9]{3}-?[0-9]{6,12}$')]),
           email: new FormControl(email, [Validators.email]),
           nextStepDate: new FormControl(moment(this.loadedTask.nextStepDate).format('DD-MM-YYYY')),
           deadlineDate: new FormControl(moment(this.loadedTask.deadlineDate).format('DD-MM-YYYY')),
@@ -113,17 +118,20 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    const email = this.taskForm.get('email').value;
     const task = new Task(
       '', new Date(), this.taskForm.get('topic').value, this.taskForm.get('description').value, this.taskForm.get('priority').value,
-      'Aktywne', this.taskForm.get('phone').value, this.taskForm.get('email').value, '', this.taskForm.get('nextStepDate').value,
+      'Aktywne', this.taskForm.get('phone').value, email, '', this.taskForm.get('nextStepDate').value,
       this.taskForm.get('deadlineDate').value, null, new Date(), false, this.taskForm.get('crmProject').value);
     if (this.loadedTask) {
       task.erpNumber = this.loadedTask.erpNumber;
       task.registrationDate = this.loadedTask.registrationDate;
       task.leadingOperator = this.loadedTask.leadingOperator;
-      this.taskService.updateTask(task);
+      this.taskService.updateTask(task).pipe(takeUntil(this.isDestroyed$)).subscribe();
     } else {
-      this.taskService.createTask(task);
+      this.taskService.createTask(task).pipe(takeUntil(this.isDestroyed$)).subscribe();
     }
+    this.taskForm.reset();
+    this.router.navigate(['/' + this.myAccountLink]);
   }
 }
