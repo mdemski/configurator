@@ -31,8 +31,9 @@ export class OrderService {
     [new Item('34234fg', this.windowToTests, 2, 0, new Date(), true),
       new Item('vcxzv3423', this.temporaryFlashing, 1, 0, new Date(), true)],
     new Date().valueOf(), this.windowToTests.CenaDetaliczna, this.windowToTests.CenaDetaliczna, 'PLN', 1, 0.23, true, true);
-  companyToTests = new Company('Felek', 'm.demski@okpol.pl', '11122233344', 0.4, new Address('Lolek', 'Bolek', '123456789', 'Felkowa', '3/1', '10-150', 'Lewin', 'Polzka'),
-    'DTHXX', 10000000, 5, 2, [], null);
+  companyToTests = new Company('', 'Felek', 'm.demski@okpol.pl', '11122233344', 0.02, 0.38, 0.38, 0.38, 0.38, 0.38, 0.63,
+    50000, new Address('Lolek', 'Bolek', '123456789', 'Felkowa', '3/1', '10-150', 'Lewin', 'Polzka'),
+    'DTHXX', 10000000, 11000000, 10, 20, 30, 40, 50, 0, [], [], null);
   userToTest = new User('34t435345235', 'test@test.pl', '1234', '1234', 'User Test', 'user', true, 'asgasgagd-agwegah-wtwet2352af',
     0, '11122233344', '132353634lj3453', null, 'www', new Date(), new Date());
 

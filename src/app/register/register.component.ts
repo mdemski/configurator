@@ -106,7 +106,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
         if (!company) {
           this.registerCompany.name = this.registerForm.value.companyName;
           this.registerCompany.nip = this.registerForm.value.nip;
-          this.registerCompany.discount = 0;
+          this.registerCompany.basicDiscount = 0;
+          this.registerCompany.roofWindowsDiscount = 0;
+          this.registerCompany.skylightsDiscount = 0;
+          this.registerCompany.flashingsDiscount = 0;
+          this.registerCompany.flatRoofWindowsDiscount = 0;
+          this.registerCompany.accessoriesDiscount = 0;
+          this.registerCompany.verticalWindowsDiscount = 0;
           this.registerCompany.address = this.registerAddress;
           this.registerCompany.agentOkpol = this.registerForm.value.agent;
           this.crud.createCompany(this.registerCompany).subscribe(console.log);
@@ -150,7 +156,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this.registerForm.value.city = this.registerCompany.address.city;
         this.registerForm.value.country = this.registerCompany.address.country;
         this.registerForm.value.agent = this.registerCompany.agentOkpol;
-        this.registerUser.discount = this.registerCompany.discount;
+        this.registerUser.discount = this.registerCompany.basicDiscount + this.registerCompany.roofWindowsDiscount;
         this.isLoading = false;
       });
     } else {
