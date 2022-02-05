@@ -136,8 +136,7 @@ export class ShoppingCartService {
     }
     cart.currency = this.currency;
     cart.vatRate = this.vatRate;
-    this.calculateTotalAmount(cart);
-    this.calculateTotalAmountAfterDiscount(cart);
+    this.calculateTotalAmounts(cart);
     cart.timestamp = new Date().valueOf();
     return cart;
   }
@@ -154,8 +153,7 @@ export class ShoppingCartService {
       }
     }
     cart.currency = this.currency;
-    this.calculateTotalAmount(cart);
-    this.calculateTotalAmountAfterDiscount(cart);
+    this.calculateTotalAmounts(cart);
     cart.timestamp = new Date().valueOf();
     return cart;
   }
@@ -177,44 +175,50 @@ export class ShoppingCartService {
     return this.createCart();
   }
 
-  calculateTotalAmount(cart) {
+  calculateTotalAmounts(cart) {
     let value = 0;
+    let valueAfterDiscount = 0;
     for (const cartItem of cart.cartItems) {
       // @ts-ignore
       value += cartItem._product._CenaDetaliczna * cartItem._quantity;
+      if (cartItem._product._grupaAsortymentowa === 'OknoDachowe') {
+        valueAfterDiscount += value - (value * (this.roofWindowsDiscount + this.basicDiscount));
+      }
+      if (cartItem._product._grupaAsortymentowa === 'OknoZintegrowane') {
+        valueAfterDiscount += value - (value * (this.roofWindowsDiscount + this.basicDiscount));
+      }
+      if (cartItem._product._grupaAsortymentowa === 'OknoDachoweReset') {
+        valueAfterDiscount += value - (value * (this.roofWindowsDiscount + this.basicDiscount));
+      }
+      if (cartItem._product._grupaAsortymentowa === 'OknoKolankowe') {
+        valueAfterDiscount += value - (value * (this.roofWindowsDiscount + this.basicDiscount));
+      }
+      if (cartItem._product._grupaAsortymentowa === 'WyłazDachowy') {
+        valueAfterDiscount += value - (value * (this.skylightsDiscount + this.basicDiscount));
+      }
+      if (cartItem._product._grupaAsortymentowa === 'WyłazReset') {
+        valueAfterDiscount += value - (value * (this.skylightsDiscount + this.basicDiscount));
+      }
+      if (cartItem._product._grupaAsortymentowa === 'KołnierzUszczelniający') {
+        valueAfterDiscount += value - (value * (this.flashingsDiscount + this.basicDiscount));
+      }
+      if (cartItem._product._grupaAsortymentowa === 'DachPłaski') {
+        valueAfterDiscount += value - (value * (this.flatRoofWindowsDiscount + this.basicDiscount));
+      }
+      if (cartItem._product._grupaAsortymentowa === 'Akcesorium') {
+        valueAfterDiscount += value - (value * (this.accessoriesDiscount + this.basicDiscount));
+      }
+      if (cartItem._product._grupaAsortymentowa === 'Fasadowe') {
+        valueAfterDiscount += value - (value * (this.verticalWindowsDiscount + this.basicDiscount));
+      }
     }
     if (cart.currency === 'PLN') {
       cart.totalAmount = value;
+      cart.totalAmountAfterDiscount = valueAfterDiscount;
     } else {
       cart.totalAmount = value / this.exchange;
+      cart.totalAmountAfterDiscount = valueAfterDiscount / this.exchange;
     }
-  }
-
-  calculateTotalAmountAfterDiscount(cart) {
-    let tempTotalAmountAfterDiscount = 0;
-    if (this.basicDiscount > 0) {
-      tempTotalAmountAfterDiscount = cart.totalAmount - (cart.totalAmount * this.basicDiscount);
-    } else {
-      tempTotalAmountAfterDiscount = cart.totalAmount;
-    }
-    for (const product of cart.cartItems) {
-      if (product instanceof RoofWindowSkylight) {
-        tempTotalAmountAfterDiscount = tempTotalAmountAfterDiscount - (tempTotalAmountAfterDiscount * this.roofWindowsDiscount);
-      }
-      if (product instanceof Flashing) {
-        tempTotalAmountAfterDiscount = tempTotalAmountAfterDiscount - (tempTotalAmountAfterDiscount * this.flashingsDiscount);
-      }
-      if (product instanceof FlatRoofWindow) {
-        tempTotalAmountAfterDiscount = tempTotalAmountAfterDiscount - (tempTotalAmountAfterDiscount * this.flashingsDiscount);
-      }
-      if (product instanceof Accessory) {
-        tempTotalAmountAfterDiscount = tempTotalAmountAfterDiscount - (tempTotalAmountAfterDiscount * this.accessoriesDiscount);
-      }
-      if (product instanceof VerticalWindow) {
-        tempTotalAmountAfterDiscount = tempTotalAmountAfterDiscount - (tempTotalAmountAfterDiscount * this.verticalWindowsDiscount);
-      }
-    }
-    cart.totalAmountAfterDiscount = tempTotalAmountAfterDiscount;
   }
 
   changeCurrency(newCurrency: string, cart: Cart) {
@@ -222,8 +226,7 @@ export class ShoppingCartService {
     this.currency = newCurrency;
     this.exchange = exchange[this.currency];
     cart.exchange = this.exchange;
-    this.calculateTotalAmount(cart);
-    this.calculateTotalAmountAfterDiscount(cart);
+    this.calculateTotalAmounts(cart);
     cart.timestamp = new Date().valueOf();
     return cart;
   }
