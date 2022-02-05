@@ -24,7 +24,25 @@ let User = new Schema({
   uuid: {
     type: String
   },
-  discount: {
+  basicDiscount: {
+    type: Number
+  },
+  roofWindowsDiscount: {
+    type: Number
+  },
+  flashingsDiscount: {
+    type: Number
+  },
+  accessoriesDiscount: {
+    type: Number
+  },
+  skylightsDiscount: {
+    type: Number
+  },
+  flatRoofWindowsDiscount: {
+    type: Number
+  },
+  verticalWindowsDiscount: {
     type: Number
   },
   companyNip: {
