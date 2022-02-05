@@ -23,7 +23,13 @@ export class ShoppingCartService {
 
   @Select(AppState) user$: Observable<{ currentUser }>;
   currency: string;
-  discount;
+  private basicDiscount: number;
+  private roofWindowsDiscount: number;
+  private skylightsDiscount: number;
+  private flashingsDiscount: number;
+  private accessoriesDiscount: number;
+  private flatRoofWindowsDiscount: number;
+  private verticalWindowsDiscount: number;
   exchange: number;
   vatRate: number;
 
@@ -31,9 +37,21 @@ export class ShoppingCartService {
     this.user$.pipe(skip(2)).subscribe(user => {
       this.crud.readUserByEmail(user.currentUser.email).subscribe((fullUser: User) => {
         if (fullUser) {
-          this.discount = fullUser.discount;
+          this.basicDiscount = fullUser.basicDiscount;
+          this.roofWindowsDiscount = fullUser.roofWindowsDiscount;
+          this.skylightsDiscount = fullUser.skylightsDiscount;
+          this.flashingsDiscount = fullUser.flashingsDiscount;
+          this.accessoriesDiscount = fullUser.accessoriesDiscount;
+          this.flatRoofWindowsDiscount = fullUser.flatRoofWindowsDiscount;
+          this.verticalWindowsDiscount = fullUser.verticalWindowsDiscount;
         } else {
-          this.discount = 0;
+          this.basicDiscount = 0;
+          this.roofWindowsDiscount = 0;
+          this.skylightsDiscount = 0;
+          this.flashingsDiscount = 0;
+          this.accessoriesDiscount = 0;
+          this.flatRoofWindowsDiscount = 0;
+          this.verticalWindowsDiscount = 0;
         }
       });
     });
@@ -72,7 +90,23 @@ export class ShoppingCartService {
   }
 
   createItem(product: RoofWindowSkylight | Flashing | Accessory | FlatRoofWindow | VerticalWindow, quantity: number) {
-    return new Item(ShoppingCartService.idGenerator(), product, quantity, this.discount, new Date(), true);
+    let totalDiscount = 0;
+    if (product instanceof RoofWindowSkylight) {
+      totalDiscount = this.basicDiscount + this.roofWindowsDiscount;
+    }
+    if (product instanceof Flashing) {
+      totalDiscount = this.basicDiscount + this.flashingsDiscount;
+    }
+    if (product instanceof FlatRoofWindow) {
+      totalDiscount = this.basicDiscount + this.flashingsDiscount;
+    }
+    if (product instanceof Accessory) {
+      totalDiscount = this.basicDiscount + this.accessoriesDiscount;
+    }
+    if (product instanceof VerticalWindow) {
+      totalDiscount = this.basicDiscount + this.verticalWindowsDiscount;
+    }
+    return new Item(ShoppingCartService.idGenerator(), product, quantity, totalDiscount, new Date(), true);
   }
 
   createCart() {
@@ -157,11 +191,30 @@ export class ShoppingCartService {
   }
 
   calculateTotalAmountAfterDiscount(cart) {
-    if (this.discount > 0) {
-      cart.totalAmountAfterDiscount = cart.totalAmount - (cart.totalAmount * this.discount);
+    let tempTotalAmountAfterDiscount = 0;
+    if (this.basicDiscount > 0) {
+      tempTotalAmountAfterDiscount = cart.totalAmount - (cart.totalAmount * this.basicDiscount);
     } else {
-      cart.totalAmountAfterDiscount = cart.totalAmount;
+      tempTotalAmountAfterDiscount = cart.totalAmount;
     }
+    for (const product of cart.cartItems) {
+      if (product instanceof RoofWindowSkylight) {
+        tempTotalAmountAfterDiscount = tempTotalAmountAfterDiscount - (tempTotalAmountAfterDiscount * this.roofWindowsDiscount);
+      }
+      if (product instanceof Flashing) {
+        tempTotalAmountAfterDiscount = tempTotalAmountAfterDiscount - (tempTotalAmountAfterDiscount * this.flashingsDiscount);
+      }
+      if (product instanceof FlatRoofWindow) {
+        tempTotalAmountAfterDiscount = tempTotalAmountAfterDiscount - (tempTotalAmountAfterDiscount * this.flashingsDiscount);
+      }
+      if (product instanceof Accessory) {
+        tempTotalAmountAfterDiscount = tempTotalAmountAfterDiscount - (tempTotalAmountAfterDiscount * this.accessoriesDiscount);
+      }
+      if (product instanceof VerticalWindow) {
+        tempTotalAmountAfterDiscount = tempTotalAmountAfterDiscount - (tempTotalAmountAfterDiscount * this.verticalWindowsDiscount);
+      }
+    }
+    cart.totalAmountAfterDiscount = tempTotalAmountAfterDiscount;
   }
 
   changeCurrency(newCurrency: string, cart: Cart) {

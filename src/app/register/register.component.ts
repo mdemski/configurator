@@ -81,7 +81,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.registerUser.role = 'user';
     this.registerUser.uuid = this.generateUUID();
     this.registerUser.activated = false;
-    this.registerUser.discount = 0;
+    this.registerUser.basicDiscount = 0;
+    this.registerUser.roofWindowsDiscount = 0;
+    this.registerUser.flashingsDiscount = 0;
+    this.registerUser.accessoriesDiscount = 0;
+    this.registerUser.skylightsDiscount = 0;
+    this.registerUser.flatRoofWindowsDiscount = 0;
+    this.registerUser.verticalWindowsDiscount = 0;
     this.registerUser.companyNip = this.registerForm.value.nip;
     this.registerUser.mainAddressId = '';
     this.registerUser.addressToSendId = '';
@@ -156,7 +162,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this.registerForm.value.city = this.registerCompany.address.city;
         this.registerForm.value.country = this.registerCompany.address.country;
         this.registerForm.value.agent = this.registerCompany.agentOkpol;
-        this.registerUser.discount = this.registerCompany.basicDiscount + this.registerCompany.roofWindowsDiscount;
+        this.registerUser.basicDiscount = this.registerCompany.basicDiscount;
+        this.registerUser.roofWindowsDiscount = this.registerCompany.roofWindowsDiscount;
+        this.registerUser.flashingsDiscount = this.registerCompany.flashingsDiscount;
+        this.registerUser.accessoriesDiscount = this.registerCompany.accessoriesDiscount;
+        this.registerUser.skylightsDiscount = this.registerCompany.skylightsDiscount;
+        this.registerUser.flashingsDiscount = this.registerCompany.flashingsDiscount;
+        this.registerUser.verticalWindowsDiscount = this.registerCompany.verticalWindowsDiscount;
         this.isLoading = false;
       });
     } else {

@@ -21,7 +21,13 @@ export interface UserStateModel {
   email: string;
   name: string;
   activated: boolean;
-  discount: number;
+  basicDiscount: number;
+  roofWindowsDiscount: number;
+  skylightsDiscount: number;
+  flashingsDiscount: number;
+  accessoriesDiscount: number;
+  flatRoofWindowsDiscount: number;
+  verticalWindowsDiscount: number;
   companyNip: string;
   company: Company;
   address: Address;
@@ -33,7 +39,13 @@ export interface UserStateModel {
     email: '',
     name: '',
     activated: false,
-    discount: 0,
+    basicDiscount: 0,
+    roofWindowsDiscount: 0,
+    skylightsDiscount: 0,
+    flashingsDiscount: 0,
+    accessoriesDiscount: 0,
+    flatRoofWindowsDiscount: 0,
+    verticalWindowsDiscount: 0,
     companyNip: '',
     company: null,
     address: null
@@ -76,7 +88,13 @@ export class UserState {
         updateState.email = user.email;
         updateState.name = user.name;
         updateState.activated = user.activated;
-        updateState.discount = user.discount;
+        updateState.basicDiscount = user.basicDiscount;
+        updateState.roofWindowsDiscount = user.roofWindowsDiscount;
+        updateState.flashingsDiscount = user.flashingsDiscount;
+        updateState.accessoriesDiscount = user.accessoriesDiscount;
+        updateState.skylightsDiscount = user.skylightsDiscount;
+        updateState.flatRoofWindowsDiscount = user.flatRoofWindowsDiscount;
+        updateState.verticalWindowsDiscount = user.verticalWindowsDiscount;
         updateState.companyNip = user.companyNip;
         updateState.address = address;
         updateState.company = company;
@@ -85,7 +103,13 @@ export class UserState {
           email: updateState.email,
           name: updateState.name,
           activated: updateState.activated,
-          discount: updateState.discount,
+          basicDiscount: updateState.basicDiscount,
+          roofWindowsDiscount: updateState.roofWindowsDiscount,
+          flashingsDiscount: updateState.flashingsDiscount,
+          accessoriesDiscount: updateState.accessoriesDiscount,
+          skylightsDiscount: updateState.skylightsDiscount,
+          flatRoofWindowsDiscount: updateState.flatRoofWindowsDiscount,
+          verticalWindowsDiscount: updateState.verticalWindowsDiscount,
           companyNip: updateState.companyNip,
           company: updateState.company,
           address: updateState.address
@@ -101,7 +125,13 @@ export class UserState {
           email: updatedUser.email,
           name: updatedUser.name,
           activated: updatedUser.activated,
-          discount: updatedUser.discount,
+          basicDiscount: updatedUser.basicDiscount,
+          roofWindowsDiscount: updatedUser.roofWindowsDiscount,
+          flashingsDiscount: updatedUser.flashingsDiscount,
+          accessoriesDiscount: updatedUser.accessoriesDiscount,
+          skylightsDiscount: updatedUser.skylightsDiscount,
+          flatRoofWindowsDiscount: updatedUser.flatRoofWindowsDiscount,
+          verticalWindowsDiscount: updatedUser.verticalWindowsDiscount,
           companyNip: updatedUser.companyNip
         }));
     }));
@@ -112,7 +142,7 @@ export class UserState {
     return this.crud.setDiscountForIndividualUser(user, discount, null, code).pipe(tap((result: User) => {
       ctx.setState(
         patch({
-          discount: result.discount
+          basicDiscount: result.basicDiscount
         }));
     }));
   }
@@ -180,7 +210,13 @@ export class UserState {
           email: '',
           name: '',
           activated: false,
-          discount: 0,
+          basicDiscount: 0,
+          roofWindowsDiscount: 0,
+          skylightsDiscount: 0,
+          flashingsDiscount: 0,
+          accessoriesDiscount: 0,
+          flatRoofWindowsDiscount: 0,
+          verticalWindowsDiscount: 0,
           companyNip: '',
           company: null,
           address: null

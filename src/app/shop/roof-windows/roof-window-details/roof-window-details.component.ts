@@ -73,7 +73,7 @@ export class RoofWindowDetailsComponent implements OnInit, OnDestroy {
   getDiscountPrice() {
     if (this.logInUser.isLogged) {
       return this.crud.readUserByEmail(this.logInUser.email).pipe(takeUntil(this.isDestroyed$)).subscribe(user => {
-        this.priceAfterDisc$.next(this.windowToShow.CenaDetaliczna / (1 + user.discount));
+        this.priceAfterDisc$.next(this.windowToShow.CenaDetaliczna / (1 + user.basicDiscount + user.roofWindowsDiscount));
       });
     }
   }
