@@ -7,7 +7,13 @@ export class User {
   private _role: string;
   private _activated: boolean;
   private _uuid: string;
-  private _discount: number;
+  private _basicDiscount: number;
+  private _roofWindowsDiscount: number;
+  private _skylightsDiscount: number;
+  private _flashingsDiscount: number;
+  private _accessoriesDiscount: number;
+  private _flatRoofWindowsDiscount: number;
+  private _verticalWindowsDiscount: number;
   private _companyNip: string;
   private _mainAddressId?: string;
   private _addressToSendId?: string;
@@ -16,7 +22,7 @@ export class User {
   private _lastUpdate: Date;
 
   // tslint:disable-next-line:max-line-length
-  constructor(id: string, email: string, password: string, rePassword: string, name: string, role: string, activated: boolean, uuid: string, discount: number, companyNip: string, mainAddressId: string, addressToSendId: string, activationLink: string, created: Date, lastUpdate: Date) {
+  constructor(id: string, email: string, password: string, rePassword: string, name: string, role: string, activated: boolean, uuid: string, basicDiscount: number, roofWindowsDiscount: number, skylightsDiscount: number, flashingsDiscount: number, accessoriesDiscount: number, flatRoofWindowsDiscount: number, verticalWindowsDiscount: number, companyNip: string, mainAddressId: string, addressToSendId: string, activationLink: string, created: Date, lastUpdate: Date) {
     this._id = id;
     this._email = email;
     this._password = password;
@@ -25,7 +31,13 @@ export class User {
     this._role = role;
     this._activated = activated;
     this._uuid = uuid;
-    this._discount = discount;
+    this._basicDiscount = basicDiscount;
+    this._roofWindowsDiscount = roofWindowsDiscount;
+    this._skylightsDiscount = skylightsDiscount;
+    this._flashingsDiscount = flashingsDiscount;
+    this._accessoriesDiscount = accessoriesDiscount;
+    this._flatRoofWindowsDiscount = flatRoofWindowsDiscount;
+    this._verticalWindowsDiscount = verticalWindowsDiscount;
     this._companyNip = companyNip;
     this._mainAddressId = mainAddressId;
     this._addressToSendId = addressToSendId;
@@ -98,12 +110,60 @@ export class User {
     this._uuid = value;
   }
 
-  get discount(): number {
-    return this._discount;
+  get basicDiscount(): number {
+    return this._basicDiscount;
   }
 
-  set discount(value: number) {
-    this._discount = value;
+  set basicDiscount(value: number) {
+    this._basicDiscount = value;
+  }
+
+  get roofWindowsDiscount(): number {
+    return this._roofWindowsDiscount;
+  }
+
+  set roofWindowsDiscount(value: number) {
+    this._roofWindowsDiscount = value;
+  }
+
+  get skylightsDiscount(): number {
+    return this._skylightsDiscount;
+  }
+
+  set skylightsDiscount(value: number) {
+    this._skylightsDiscount = value;
+  }
+
+  get flashingsDiscount(): number {
+    return this._flashingsDiscount;
+  }
+
+  set flashingsDiscount(value: number) {
+    this._flashingsDiscount = value;
+  }
+
+  get accessoriesDiscount(): number {
+    return this._accessoriesDiscount;
+  }
+
+  set accessoriesDiscount(value: number) {
+    this._accessoriesDiscount = value;
+  }
+
+  get flatRoofWindowsDiscount(): number {
+    return this._flatRoofWindowsDiscount;
+  }
+
+  set flatRoofWindowsDiscount(value: number) {
+    this._flatRoofWindowsDiscount = value;
+  }
+
+  get verticalWindowsDiscount(): number {
+    return this._verticalWindowsDiscount;
+  }
+
+  set verticalWindowsDiscount(value: number) {
+    this._verticalWindowsDiscount = value;
   }
 
   get companyNip(): string {

@@ -114,7 +114,8 @@ export class CrudService {
   createUser(user: User) {
     const url = `${this.usersBaseUri}/register`;
     const userToCreate: User = new User('', user.email, user.password, user.rePassword, user.name, user.role, false, user.uuid,
-      0, user.companyNip, '', '', user.activationLink, new Date(), new Date());
+      user.basicDiscount, user.roofWindowsDiscount, user.skylightsDiscount, user.flashingsDiscount, user.accessoriesDiscount, user.flatRoofWindowsDiscount,
+      user.verticalWindowsDiscount, user.companyNip, user.mainAddressId, user.addressToSendId, user.activationLink, new Date(), new Date());
     return this.http.post(url, userToCreate).pipe(catchError(err => err));
   }
 
@@ -136,13 +137,13 @@ export class CrudService {
   setDiscountForIndividualUser(user: User, discount: number, adminPassword: string | null, code: string | null) {
     const url = `${this.usersBaseUri}/update/${user._id}`;
     if (adminPassword) {
-      user.discount = discount;
+      user.basicDiscount = discount;
     }
     // TODO dorobić obsługę listy kodów rabatowych
     // @ts-ignore
     this.discountList.forEach((discountObject: { code: string, value: number }) => {
       if (discountObject.code === code) {
-        user.discount = discount;
+        user.basicDiscount = discount;
       }
     });
     user.lastUpdate = new Date();
@@ -217,7 +218,14 @@ export class CrudService {
     const url = `${this.usersBaseUri}/update/${user._id}`;
     if (companyData) {
       user.companyNip = companyData.nip;
-      user.discount = companyData.discount;
+      // TODO przerobić to po poprawieniu kodu z podziałem rabatu na grupy asortymentowe
+      user.basicDiscount = companyData.basicDiscount;
+      user.roofWindowsDiscount = companyData.roofWindowsDiscount;
+      user.flashingsDiscount = companyData.flashingsDiscount;
+      user.accessoriesDiscount = companyData.accessoriesDiscount;
+      user.skylightsDiscount = companyData.skylightsDiscount;
+      user.flatRoofWindowsDiscount = companyData.flatRoofWindowsDiscount;
+      user.verticalWindowsDiscount = companyData.verticalWindowsDiscount;
       user.mainAddressId = companyData.address.id;
     }
     this.http.post(`${this.usersBaseUri}/send-mail`, companyData.email).subscribe(console.log);
