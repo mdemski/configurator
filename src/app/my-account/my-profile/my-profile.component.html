@@ -105,6 +105,113 @@
       </div>
     </div>
 
+    <!--    <div *ngIf="(user$ | async)?.company as company" class="cooperation-section">-->
+    <div *ngIf="testCompany as company" class="invoices-section">
+      <h1 class="cooperation-section--title">{{'MY-PROFILE.invoicesSection' | translate}}</h1>
+
+      <form [formGroup]="filtrationForm" class="search-form">
+        <table class="invoices-section__invoices-table">
+          <!--Table header-->
+          <tr class="invoices-section__invoices-table__header">
+            <th class="invoices-section__invoices-table__header--text">
+              <label class="sort__input--label" (click)="sortByERPNumber()">
+                {{ 'MY-PROFILE.invoiceNumber' | translate}}
+                <span *ngIf="!numberToggler">&#8595;</span>
+                <span *ngIf="numberToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="invoices-section__invoices-table__header--text">
+              <label class="sort__input--label" (click)="sortByRegistrationDate()">
+                {{ 'MY-PROFILE.registrationDate' | translate}}
+                <span *ngIf="!dateToggler">&#8595;</span>
+                <span *ngIf="dateToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="invoices-section__invoices-table__header--text">
+              <label class="sort__input--label" (click)="sortByDeliveryDate()">
+                {{ 'MY-PROFILE.deliveryDate' | translate}}
+                <span *ngIf="!deliveryDateToggler">&#8595;</span>
+                <span *ngIf="deliveryDateToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="invoices-section__invoices-table__header--text">
+              <label class="sort__input--label" (click)="sortByNetPrice()">
+                {{ 'MY-PROFILE.netPrice' | translate}}
+                <span *ngIf="!netPriceToggler">&#8595;</span>
+                <span *ngIf="netPriceToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="invoices-section__invoices-table__header--text">
+              <label class="sort__input--label" (click)="sortByVAT()">
+                {{ 'MY-PROFILE.vat' | translate}}
+                <span *ngIf="!vatToggler">&#8595;</span>
+                <span *ngIf="vatToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="invoices-section__invoices-table__header--text">
+              <label class="sort__input--label" (click)="sortByGrossPrice()">
+                {{ 'MY-PROFILE.grossPrice' | translate}}
+                <span *ngIf="!grossPriceToggler">&#8595;</span>
+                <span *ngIf="grossPriceToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="invoices-section__invoices-table__header--text">
+              <label class="sort__input--label" (click)="sortByStatus()">
+                {{ 'MY-PROFILE.status' | translate}}
+                <span *ngIf="!statusToggler">&#8595;</span>
+                <span *ngIf="statusToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="invoices-section__invoices-table__header--text">
+              <label class="sort__input--label" (click)="sortByCorrectingInvoice()">
+                {{ 'MY-PROFILE.correctingInvoice' | translate}}
+                <span *ngIf="!correctingInvoiceToggler">&#8595;</span>
+                <span *ngIf="correctingInvoiceToggler">&#8593;</span>
+              </label>
+            </th>
+          </tr>
+
+          <tr class="invoices-section__invoices-table__search-header">
+            <td class="invoices-section__invoices-table__search-header--td">
+              <input type="text" formControlName="invoiceNumberSearch"
+                     class="form-control" placeholder="{{ 'MY-PROFILE.invoiceNumber' | translate}}"></td>
+            <td class="invoices-section__invoices-table__search-header--td">
+              <input type="date" formControlName="dateSearch"
+                     class="form-control" placeholder="{{ 'MY-PROFILE.registrationDate' | translate}}"></td>
+            <td class="invoices-section__invoices-table__search-header--td">
+              <input type="date" formControlName="deliveryDateSearch"
+                     class="form-control" placeholder="{{ 'MY-PROFILE.deliveryDate' | translate}}"></td>
+            <td class="invoices-section__invoices-table__search-header--td">
+              <input type="text" formControlName="netPriceSearch"
+                     class="form-control" placeholder="{{ 'MY-PROFILE.netPrice' | translate}}"></td>
+            <td class="invoices-section__invoices-table__search-header--td">
+              <input type="text" formControlName="vatSearch"
+                     class="form-control" placeholder="{{ 'MY-PROFILE.vat' | translate}}"></td>
+            <td class="invoices-section__invoices-table__search-header--td">
+              <input type="text" formControlName="grossPriceSearch"
+                     class="form-control" placeholder="{{ 'MY-PROFILE.grossPrice' | translate}}"></td>
+            <td class="invoices-section__invoices-table__search-header--td">
+              <input type="text" formControlName="statusSearch"
+                     class="form-control" placeholder="{{ 'MY-PROFILE.status' | translate}}"></td>
+          </tr>
+
+          <tr class="invoices-section__invoices-table__item"
+              *ngFor="let invoice of filteredInvoices">
+            <td class="invoices-section__invoices-table__item--info">{{invoice.fvNumber}}</td>
+            <td
+              class="invoices-section__invoices-table__item--info">{{invoice.createdAt | date: 'dd-MM-yyyy'}}</td>
+            <td class="invoices-section__invoices-table__item--info">{{invoice.deliveryDate | date: 'dd-MM-yyyy'}}</td>
+            <td class="invoices-section__invoices-table__item--info">{{invoice.totalNetValue}}</td>
+            <td class="invoices-section__invoices-table__item--info">{{invoice.vat}}</td>
+            <td class="invoices-section__invoices-table__item--info">{{invoice.grossAmount}}</td>
+            <td class="invoices-section__invoices-table__item--info">{{'MY-PROFILE.' + invoice.isPaid | translate}}</td>
+            <td class="invoices-section__invoices-table__item--info">{{invoice.correctionReason}}</td>
+          </tr>
+        </table>
+      </form>
+
+    </div>
+
     <div class="footer">
       <a (click)="logout()" class="btn btn--dark-blue">{{ 'GENERAL.logout' | translate}}</a>
     </div>

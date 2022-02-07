@@ -10,6 +10,7 @@ import {HttpClient} from '@angular/common/http';
 import cryptoRandomString from 'crypto-random-string';
 import {FlashingValueSetterService} from './flashing-value-setter.service';
 import {Address} from '../models/address';
+import {Invoice} from '../models/invoice';
 
 @Injectable()
 export class DatabaseService {
@@ -163,7 +164,14 @@ export class DatabaseService {
   getAllSellers() {
     this.availableSellers.push(new Company('', 'Felek', 'm.demski@okpol.pl', '11122233344', 0.02, 0.38, 0.38, 0.38, 0.38, 0.38, 0.63,
       50000, new Address('Lolek', 'Bolek', '123456789', 'Felkowa', '3/1', '10-150', 'Lewin', 'Polzka'),
-      'DTHXX', 50, 100, 10, 20, 30, 40, 50, 0, [], [], null));
+      'DTHXX', 50, 100, 10, 20, 30, 40, 50, 0, [], [
+        new Invoice('122/01/2021', new Date('2021-01-21'), new Date('2021-01-20'), 12345678, 'PLN', 23568, 14254652, 'cd', 0, true),
+        new Invoice('122/01/2021', new Date('2021-01-21'), new Date('2021-01-20'), 12345678, 'PLN', 23568, 14254652, 'cd', 0, false),
+        new Invoice('122/01/2021', new Date('2021-01-21'), new Date('2021-01-20'), 12345678, 'PLN', 23568, 14254652, 'cd', 0, true),
+        new Invoice('122/01/2021', new Date('2021-01-21'), new Date('2021-01-20'), 12345678, 'PLN', 23568, 14254652, 'cd', 0, false),
+        new Invoice('122/01/2021', new Date('2021-01-21'), new Date('2021-01-20'), 12345678, 'PLN', 23568, 14254652, 'cd', 0, true),
+        new Invoice('122/01/2021', new Date('2021-01-21'), new Date('2021-01-20'), 12345678, 'PLN', 23568, 14254652, 'cd', 0, true),
+      ], null));
     return this.availableSellers;
   }
 

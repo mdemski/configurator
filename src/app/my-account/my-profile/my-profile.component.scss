@@ -111,3 +111,89 @@
   justify-content: center;
   margin: 2rem 0;
 }
+
+
+// INVOICES SECTION
+
+.invoices-section {
+  margin-top: 6rem;
+  width: 100%;
+  max-height: 40rem;
+  overflow-y: scroll;
+
+  h1 {
+    width: 100%;
+  }
+
+  &--no-complaints {
+
+  }
+
+  &__invoices-table {
+    width: 100%;
+
+    &__header {
+      width: 100%;
+      text-align: center;
+      background: $color-light-grey;
+
+      &--text {
+        padding: 1rem;
+      }
+    }
+
+    &__search-header {
+      margin: 1rem 0;
+
+
+      &--td {
+        padding: .5rem;
+
+      }
+    }
+
+    &__item {
+      width: 100%;
+      text-align: center;
+      vertical-align: center;
+
+      &--info {
+        padding: 1rem;
+      }
+
+      &__products {
+
+        &__list {
+          padding: 1rem;
+          margin: 0;
+          list-style: none;
+
+          &__element {
+
+          }
+        }
+      }
+
+      &--edit {
+        cursor: pointer;
+        color: $color-black;
+
+        &:hover {
+          color: $color-yellow;
+        }
+      }
+
+      &--trash {
+        cursor: pointer;
+
+        &:hover {
+          color: $color-red;
+        }
+      }
+    }
+  }
+}
+
+.search-form {
+
+}

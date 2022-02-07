@@ -592,7 +592,18 @@
     "verticalWindows": "Okna pionowe",
     "saleTerms": "Warunki handlowe",
     "basicDiscount": "Rabat podstawowy",
-    "tradeCredit": "Limit kupiecki"
+    "tradeCredit": "Limit kupiecki",
+    "invoicesSection": "Lista faktur (tylko do odczytu)",
+    "invoiceNumber": "Numer FV",
+    "registrationDate": "Data wystawienia",
+    "deliveryDate": "Data wystawienia",
+    "netPrice": "Wartość netto",
+    "grossPrice": "Wartość brutto",
+    "vat": "Stawka VAT",
+    "status": "Czy opłacona",
+    "correctingInvoice": "Korekta FV",
+    "true": "Tak",
+    "false": "Nie"
   },
   "COMPLAINT": {
     "noComplaints": "Wygląda na to że wszystko gra. Brak reklamacji do wyświetlenia.",
