@@ -14,7 +14,6 @@ import {Complaint} from '../models/complaint';
 import {Order} from '../models/order';
 import {OrderService} from '../services/order.service';
 import {UserState} from '../store/user/user.state';
-import {TaskLogger} from 'protractor/built/taskLogger';
 import { Task } from '../models/task';
 import {TaskService} from '../services/task.service';
 

@@ -580,6 +580,20 @@
     "news": "Aktualności",
     "complaints": "Reklamacje"
   },
+  "MY-PROFILE": {
+    "cooperationSummaryTitle": "Podsumowanie współpracy",
+    "sale": "Dynamika współpracy",
+    "salesShare": "Podział sprzedaży",
+    "roofWindows": "Okna dachowe",
+    "flashings": "Kołnierze dachowy",
+    "skylights":  "Wyłazy dachowy",
+    "accessories":  "Akcesoria",
+    "flatRoofWindows": "Okna dach płaski",
+    "verticalWindows": "Okna pionowe",
+    "saleTerms": "Warunki handlowe",
+    "basicDiscount": "Rabat podstawowy",
+    "tradeCredit": "Limit kupiecki"
+  },
   "COMPLAINT": {
     "noComplaints": "Wygląda na to że wszystko gra. Brak reklamacji do wyświetlenia.",
     "erpNumber": "Numer reklamacji",

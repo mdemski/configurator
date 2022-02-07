@@ -163,7 +163,7 @@ export class DatabaseService {
   getAllSellers() {
     this.availableSellers.push(new Company('', 'Felek', 'm.demski@okpol.pl', '11122233344', 0.02, 0.38, 0.38, 0.38, 0.38, 0.38, 0.63,
       50000, new Address('Lolek', 'Bolek', '123456789', 'Felkowa', '3/1', '10-150', 'Lewin', 'Polzka'),
-      'DTHXX', 10000000, 11000000, 10, 20, 30, 40, 50, 0, [], [], null));
+      'DTHXX', 50, 100, 10, 20, 30, 40, 50, 0, [], [], null));
     return this.availableSellers;
   }
 

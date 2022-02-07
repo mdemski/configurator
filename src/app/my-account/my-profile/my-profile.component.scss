@@ -3,3 +3,111 @@
 @import 'src/sass/base/base';
 @import 'src/sass/radio-input';
 
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 3rem 0;
+
+  &__my-profile {
+
+  }
+
+  &__foreign-exchange {
+    display: flex;
+    align-items: center;
+
+    &__currency {
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      margin-left: 1rem;
+    }
+
+    &__vat-rate {
+      z-index: 5;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &--title {
+    margin-right: 1rem;
+  }
+
+  &--radio {
+    width: 8rem;
+  }
+}
+
+.cooperation-section {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+
+  &--title {
+    margin-bottom: 1rem;
+    width: 100%;
+    font-weight: bold;
+  }
+
+  &__container {
+    width: 100%;
+    display: flex;
+
+    &__first-part {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
+      background-color: $color-light-grey;
+      padding: 1rem;
+
+      p {
+        margin: 0 1rem;
+      }
+    }
+
+    &__second-part {
+      text-align: center;
+      flex: 1;
+
+      &__canvas {
+
+      }
+    }
+
+    &__third-part {
+      text-align: center;
+      flex: 1;
+      background-color: $color-light-grey;
+      padding: 1rem;
+      ul {
+        margin-left: 2rem;
+        text-align: left;
+        list-style: inside;
+      }
+    }
+
+    &__forth-part {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
+      padding: 1rem;
+
+      p {
+        margin: 0 1rem;
+      }
+    }
+  }
+}
+
+.footer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}

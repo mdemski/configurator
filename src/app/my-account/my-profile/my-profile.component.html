@@ -7,5 +7,106 @@
     <app-okpol-loader></app-okpol-loader>
   </div>
   <ng-template #elseBlock>
+    <div class="header">
+      <div class="header__my-profile">
+        <a routerLink="./{{ 'GENERAL.myProfileLink' | translate}}"
+           class="btn btn--dark-blue">{{ 'GENERAL.myProfile' | translate}}</a>
+      </div>
+
+      <div class="header__foreign-exchange">
+
+        <div class="header__foreign-exchange__vat-rate">
+          <p class="header--title">{{ 'GENERAL.actualVATRate' | translate}}:</p>
+          <div class="select-box">
+            <div class="select-box__current header--radio" tabindex="1">
+              <div class="select-box__value" *ngFor="let rateOption of rates; let i = index">
+                <input class="select-box__input" type="radio" id="{{i}}"
+                       (change)="updateVATRate(rateOption)"
+                       value="{{rateOption}}" name="rate">
+                <p class="select-box__input-text">{{rateOption * 100}}%</p>
+              </div>
+              <div class="select-box__value">
+                <input class="select-box__input" type="radio" id="-2" value="{{vatRate$ | async}}"
+                       name="rate" checked>
+                <p class="select-box__input-text">{{(vatRate$ | async) * 100}}%</p>
+              </div>
+              <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg"
+                   alt="Arrow Icon" aria-hidden="true">
+            </div>
+            <ul class="select-box__list">
+              <li *ngFor="let rateOption of rates; let i = index"><label
+                class="select-box__option margin-bottom-0" for="{{i}}"
+                aria-hidden="aria-hidden">{{rateOption * 100}}%</label></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="header__foreign-exchange__currency">
+          <p class="header--title">{{ 'GENERAL.actualCurrency' | translate}}:</p>
+          <div class="select-box">
+            <div class="select-box__current header--radio" tabindex="1">
+              <div class="select-box__value" *ngFor="let currencyOption of currencies; let i = index">
+                <input class="select-box__input" type="radio" id="{{i}}"
+                       (change)="updateCurrency(currencyOption)"
+                       value="{{currencyOption}}" name="currency">
+                <p class="select-box__input-text">{{currencyOption}}</p>
+              </div>
+              <div class="select-box__value">
+                <input class="select-box__input" type="radio" id="-1" value="{{currency$ | async}}"
+                       name="currency" checked>
+                <p class="select-box__input-text">{{currency$ | async}}</p>
+              </div>
+              <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg"
+                   alt="Arrow Icon" aria-hidden="true">
+            </div>
+            <ul class="select-box__list">
+              <li *ngFor="let currencyOption of currencies; let i = index"><label
+                class="select-box__option margin-bottom-0" for="{{i}}"
+                aria-hidden="aria-hidden">{{currencyOption}}</label></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<!--    <div *ngIf="(user$ | async)?.company as company" class="cooperation-section">-->
+    <div *ngIf="testCompany as company" class="cooperation-section">
+      <h1 class="cooperation-section--title">{{'MY-PROFILE.cooperationSummaryTitle' | translate}}</h1>
+      <div class="cooperation-section__container">
+        <div class="cooperation-section__container__first-part">
+          <p>{{'MY-PROFILE.sale' | translate}}</p>
+<!--          <span *ngIf="company.salesVolume - company.salesVolumeLastYear > 0">+</span>-->
+<!--          <span *ngIf="company.salesVolume - company.salesVolumeLastYear < 0">-</span>-->
+<!--          <span *ngIf="company.salesVolume - company.salesVolumeLastYear === 0"></span>-->
+          <p [ngStyle]="{'color': company.salesVolume - company.salesVolumeLastYear > 0 ? 'green' : 'red'}">
+            {{(company.salesVolume - company.salesVolumeLastYear)/company.salesVolumeLastYear | percent: '1.1-2'}}</p>
+        </div>
+        <div class="cooperation-section__container__second-part">
+          <p>{{'MY-PROFILE.salesShare' | translate}}</p>
+          <canvas #pieCanvas class="cooperation-section__container__second-part__canvas"></canvas>
+        </div>
+        <div class="cooperation-section__container__third-part">
+          <p>{{'MY-PROFILE.saleTerms' | translate}}</p>
+          <ul>
+            <li>{{'MY-PROFILE.basicDiscount' | translate}} - {{company.basicDiscount | percent}}</li>
+            <li>{{'MY-PROFILE.roofWindows' | translate}} - {{company.roofWindowsDiscount | percent}}</li>
+            <li>{{'MY-PROFILE.skylights' | translate}} - {{company.skylightsDiscount | percent}}</li>
+            <li>{{'MY-PROFILE.flashings' | translate}} - {{company.flashingsDiscount | percent}}</li>
+            <li>{{'MY-PROFILE.accessories' | translate}} - {{company.accessoriesDiscount | percent}}</li>
+            <li>{{'MY-PROFILE.flatRoofWindows' | translate}} - {{company.flatRoofWindowsDiscount | percent}}</li>
+          </ul>
+
+        </div>
+        <div class="cooperation-section__container__forth-part">
+          <p>{{'MY-PROFILE.tradeCredit' | translate}}</p>
+          <p [ngStyle]="{'color': company.tradeCredit > 0 ? 'green' : 'red'}">{{company.tradeCredit | currency: ' '}} {{(cart$ | async).cart.currency}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <a (click)="logout()" class="btn btn--dark-blue">{{ 'GENERAL.logout' | translate}}</a>
+    </div>
   </ng-template>
 </div>
