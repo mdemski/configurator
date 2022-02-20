@@ -54,13 +54,30 @@ userRoute.route('/username/:username').get(((req, res, next) => {
   })
 }))
 
-//Get single user by email
+//Get single user by uuid
 userRoute.route('/uuid/:uuid').get(((req, res, next) => {
   User.findOne({uuid: req.params.uuid}, (error, data) => {
     if (error) {
       return next(error)
     } else {
       res.json(data)
+    }
+  })
+}))
+
+//Get user to update
+userRoute.route('/update/:email').get(((req, res, next) => {
+  User.findOne({email: req.params.email}, (error, data) => {
+    if (error) {
+      return next(error)
+    } else {
+
+      const resData = {
+        email: data.email,
+        username: data.username,
+        password:
+      }
+      res.json(resData)
     }
   })
 }))
@@ -105,7 +122,7 @@ userRoute.post('/register', function (req, res, next) {
     hash: hash,
     salt: salt,
     role: req.body._role,
-    name: req.body._name,
+    username: req.body._name,
     activated: req.body._activated,
     uuid: req.body._uuid,
     basicDiscount: req.body._basicDiscount,
@@ -145,6 +162,21 @@ userRoute.post('/register', function (req, res, next) {
 
 //Update user
 userRoute.route('/update/:userId').put(((req, res, next) => {
+  User.findByIdAndUpdate(req.params.userId, {
+    $set: req.body
+  }, {new: true}, (error, data) => {
+    if (error) {
+      console.log(error)
+      return next(error)
+    } else {
+      res.json(data)
+      console.log(req.params.userId + ' successfully updated')
+    }
+  })
+}))
+
+//Update user by email
+userRoute.route('/update/:email').put(((req, res, next) => {
   User.findByIdAndUpdate(req.params.userId, {
     $set: req.body
   }, {new: true}, (error, data) => {
