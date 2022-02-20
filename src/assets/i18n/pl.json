@@ -603,7 +603,10 @@
     "status": "Czy opłacona",
     "correctingInvoice": "Korekta FV",
     "true": "Tak",
-    "false": "Nie"
+    "false": "Nie",
+    "title": "Mój profil",
+    "userData": "Dane osobowe",
+    "companyData": "Dane firmowe"
   },
   "COMPLAINT": {
     "noComplaints": "Wygląda na to że wszystko gra. Brak reklamacji do wyświetlenia.",

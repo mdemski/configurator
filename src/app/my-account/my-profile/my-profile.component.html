@@ -70,17 +70,17 @@
     </div>
 
 
-<!--    <div *ngIf="(user$ | async)?.company as company" class="cooperation-section">-->
+    <!--    <div *ngIf="(user$ | async)?.company as company" class="cooperation-section">-->
     <div *ngIf="testCompany as company" class="cooperation-section">
       <h1 class="cooperation-section--title">{{'MY-PROFILE.cooperationSummaryTitle' | translate}}</h1>
       <div class="cooperation-section__container">
         <div class="cooperation-section__container__first-part">
           <p>{{'MY-PROFILE.sale' | translate}}</p>
-<!--          <span *ngIf="company.salesVolume - company.salesVolumeLastYear > 0">+</span>-->
-<!--          <span *ngIf="company.salesVolume - company.salesVolumeLastYear < 0">-</span>-->
-<!--          <span *ngIf="company.salesVolume - company.salesVolumeLastYear === 0"></span>-->
+          <!--          <span *ngIf="company.salesVolume - company.salesVolumeLastYear > 0">+</span>-->
+          <!--          <span *ngIf="company.salesVolume - company.salesVolumeLastYear < 0">-</span>-->
+          <!--          <span *ngIf="company.salesVolume - company.salesVolumeLastYear === 0"></span>-->
           <p [ngStyle]="{'color': company.salesVolume - company.salesVolumeLastYear > 0 ? 'green' : 'red'}">
-            {{(company.salesVolume - company.salesVolumeLastYear)/company.salesVolumeLastYear | percent: '1.1-2'}}</p>
+            {{(company.salesVolume - company.salesVolumeLastYear) / company.salesVolumeLastYear | percent: '1.1-2'}}</p>
         </div>
         <div class="cooperation-section__container__second-part">
           <p>{{'MY-PROFILE.salesShare' | translate}}</p>
@@ -100,7 +100,8 @@
         </div>
         <div class="cooperation-section__container__forth-part">
           <p>{{'MY-PROFILE.tradeCredit' | translate}}</p>
-          <p [ngStyle]="{'color': company.tradeCredit > 0 ? 'green' : 'red'}">{{company.tradeCredit | currency: ' '}} {{(cart$ | async).cart.currency}}</p>
+          <p
+            [ngStyle]="{'color': company.tradeCredit > 0 ? 'green' : 'red'}">{{company.tradeCredit | currency: ' '}} {{(cart$ | async).cart.currency}}</p>
         </div>
       </div>
     </div>
@@ -108,7 +109,6 @@
     <!--    <div *ngIf="(user$ | async)?.company as company" class="cooperation-section">-->
     <div *ngIf="testCompany as company" class="invoices-section">
       <h1 class="cooperation-section--title">{{'MY-PROFILE.invoicesSection' | translate}}</h1>
-
       <form [formGroup]="filtrationForm" class="search-form">
         <table class="invoices-section__invoices-table">
           <!--Table header-->
@@ -209,7 +209,28 @@
           </tr>
         </table>
       </form>
+    </div>
 
+    <div class="my-profile-section">
+      <h1 class="my-profile-section--title">{{'MY-PROFILE.title' | translate}}</h1>
+      <div class="my-profile-section__left-side">
+        <h2 class="my-profile-section__left-side--title">{{'MY-PROFILE.userData' | translate}}</h2>
+        {{(userToUpdate$ | async)?.email}}
+        {{(userToUpdate$ | async)?.hash}} // jak to rozhaszować?
+        {{(userToUpdate$ | async)?.rePassword}}
+        {{(userToUpdate$ | async)?.username}}
+        {{(userToUpdate$ | async)?.mainAddressId}}
+        Load data for user to update
+
+      </div>
+
+      <!--    <div *ngIf="(user$ | async)?.company as company" class="cooperation-section">-->
+      <div *ngIf="testCompany as company" class="my-profile-section__right-side">
+        <h2 class="my-profile-section__right-side--title">{{'MY-PROFILE.companyData' | translate}}</h2>
+
+        Load data for company if exists to update
+
+      </div>
     </div>
 
     <div class="footer">

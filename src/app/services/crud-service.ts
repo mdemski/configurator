@@ -106,6 +106,11 @@ export class CrudService {
     return this.http.get(url).pipe(map((user: User) => user));
   }
 
+  readUserByEmailToUpdate(email: string): Observable<User> {
+    const url = this.usersBaseUri + '/update/' + email;
+    return this.http.get(url).pipe(map((user: User) => user));
+  }
+
   readUserByUsername(username: string): Observable<User> {
     const url = this.usersBaseUri + '/username/' + username;
     return this.http.get(url).pipe(map((user: User) => user));

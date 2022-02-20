@@ -109,7 +109,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  margin: 2rem 0;
+  margin: 6rem 0 3rem 0;
 }
 
 
@@ -196,4 +196,37 @@
 
 .search-form {
 
+}
+
+// MY PROFILE SECTION
+
+.my-profile-section {
+  margin-top: 6rem;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+
+  &--title {
+    width: 100%;
+    font-weight: bold;
+  }
+
+  &__left-side {
+    margin-top: 1rem;
+    flex: 1;
+
+    &--title {
+
+    }
+  }
+
+  &__right-side {
+    margin-top: 1rem;
+    flex: 1;
+
+
+    &--title {
+
+    }
+  }
 }

@@ -5,7 +5,7 @@ import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {User} from '../../models/user';
 import {UpdateCartCurrency, UpdateCartVatRate} from '../../store/cart/cart.actions';
 import {AuthService} from '../../services/auth.service';
-import {filter, map, takeUntil} from 'rxjs/operators';
+import {filter, map, shareReplay, takeUntil} from 'rxjs/operators';
 import {CartState} from '../../store/cart/cart.state';
 import exchange from '../../../assets/json/echange.json';
 import vatRates from '../../../assets/json/vatRates.json';
@@ -16,6 +16,7 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {Invoice} from '../../models/invoice';
 import _ from 'lodash';
 import moment from 'moment';
+import {CrudService} from '../../services/crud-service';
 
 @Component({
   selector: 'app-my-profile',
@@ -29,6 +30,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   @Select(CartState) cart$: Observable<any>;
   currency$ = new BehaviorSubject('PLN');
   vatRate$ = new BehaviorSubject(0.23);
+  userToUpdate$: Observable<User>;
   isDestroyed$ = new Subject();
   loading = true;
   currencies: string[] = [];
@@ -62,6 +64,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
               private fb: FormBuilder,
               private authService: AuthService,
               private store: Store,
+              private crud: CrudService,
               private db: DatabaseService) {
     this.testCompany = this.db.getAllSellers()[0];
     this.invoices = this.db.getAllSellers()[0].invoices;
@@ -77,6 +80,13 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.user$.pipe(
+      takeUntil(this.isDestroyed$))
+      .subscribe(user => {
+        if (!this.userToUpdate$ && user.email !== '') {
+          this.userToUpdate$ = this.crud.readUserByEmailToUpdate(user.email).pipe(shareReplay());
+        }
+      });
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe((data) => {
       this.currency$.next(data.cart.currency);
       this.vatRate$.next(data.cart.vatRate);
@@ -106,7 +116,6 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.testCompany.invoices = this.invoices;
     this.filteredInvoices = this.invoices;
-    console.log(this.invoices);
     this.loading = false;
   }
 
