@@ -57,6 +57,9 @@ let User = new Schema({
   activationLink: {
     type: String
   },
+  preferredLanguage: {
+    type: String
+  },
   created: {
     type: Date
   },
