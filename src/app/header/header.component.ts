@@ -2,7 +2,7 @@ import {Component, ElementRef, HostListener, OnDestroy, OnInit, Renderer2} from 
 import {TranslateService} from '@ngx-translate/core';
 import {AuthService} from '../services/auth.service';
 import {Select, Store} from '@ngxs/store';
-import {SetCurrentUser} from '../store/app/app.actions';
+import {SetCurrentUser, SetPreferredLanguage} from '../store/app/app.actions';
 import {CartState} from '../store/cart/cart.state';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {skip, takeUntil} from 'rxjs/operators';
@@ -25,6 +25,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   advicesSubMenu = {display: 'none'};
   onScroll = false;
   quantityInCart$ = new BehaviorSubject<number>(0);
+  userEmail = '';
 
   constructor(private renderer: Renderer2,
               private el: ElementRef,
@@ -33,6 +34,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private store: Store) {
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
+    this.currentUser$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.userEmail = user.currentUser.email);
   }
 
   ngOnInit() {
@@ -44,7 +46,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
       this.quantityInCart$.next(quantityInCart);
     });
-    this.store.dispatch(SetCurrentUser);
+    this.store.dispatch([SetCurrentUser, new SetPreferredLanguage(this.userEmail)]);
   }
 
   ngOnDestroy(): void {

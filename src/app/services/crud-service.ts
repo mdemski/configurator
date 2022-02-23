@@ -9,7 +9,7 @@ import {VerticalWindow} from '../models/vertical-window';
 import {FlatRoofWindow} from '../models/flat-roof-window';
 import {SingleConfiguration} from '../models/single-configuration';
 import {HighestIdGetterService} from './highest-id-getter.service';
-import {catchError, map} from 'rxjs/operators';
+import {catchError, map, takeLast} from 'rxjs/operators';
 import {WindowConfig} from '../models/window-config';
 import {FlashingConfig} from '../models/flashing-config';
 import {AccessoryConfig} from '../models/accessory-config';
@@ -120,7 +120,7 @@ export class CrudService {
     const url = `${this.usersBaseUri}/register`;
     const userToCreate: User = new User('', user.email, user.password, user.rePassword, user.name, user.role, false, user.uuid,
       user.basicDiscount, user.roofWindowsDiscount, user.skylightsDiscount, user.flashingsDiscount, user.accessoriesDiscount, user.flatRoofWindowsDiscount,
-      user.verticalWindowsDiscount, user.companyNip, user.mainAddressId, user.addressToSendId, user.activationLink, new Date(), new Date());
+      user.verticalWindowsDiscount, user.companyNip, user.mainAddressId, user.addressToSendId, user.activationLink, user.preferredLanguage, new Date(), new Date());
     return this.http.post(url, userToCreate).pipe(catchError(err => err));
   }
 

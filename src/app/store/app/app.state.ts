@@ -1,7 +1,8 @@
 import {Action, Selector, State, StateContext} from '@ngxs/store';
-import {SetCurrentUser} from './app.actions';
+import {SetCurrentUser, SetPreferredLanguage} from './app.actions';
 import {AuthService} from '../../services/auth.service';
-import {tap} from 'rxjs/operators';
+import {filter, take, takeLast, tap} from 'rxjs/operators';
+import {CrudService} from '../../services/crud-service';
 
 export interface AppStateModel {
   currentUser: {
@@ -9,6 +10,7 @@ export interface AppStateModel {
     userName: string;
     isLogged: boolean;
   };
+  preferredLanguage: string;
 }
 
 @State<AppStateModel>({
@@ -18,12 +20,14 @@ export interface AppStateModel {
       email: '',
       userName: '',
       isLogged: false
-    }
+    },
+    preferredLanguage: ''
   }
 })
 export class AppState {
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService,
+              private crud: CrudService) {
   }
 
   @Selector([AppState])
@@ -44,7 +48,18 @@ export class AppState {
             isLogged: result.isLogged
           }
         });
-      })
-    );
+      }));
+  }
+
+  @Action(SetPreferredLanguage)
+  setPreferredLanguage(ctx: StateContext<AppStateModel>, {email}: SetPreferredLanguage) {
+    return this.crud.readUserByEmail(email).pipe(
+      tap(result => {
+        const state = ctx.getState();
+        ctx.setState({
+          ...state,
+          preferredLanguage: result.preferredLanguage
+        });
+      }));
   }
 }
