@@ -74,8 +74,7 @@ userRoute.route('/update/:email').get(((req, res, next) => {
 
       const resData = {
         email: data.email,
-        username: data.username,
-        password:
+        username: data.username
       }
       res.json(resData)
     }
@@ -136,6 +135,7 @@ userRoute.post('/register', function (req, res, next) {
     mainAddressId: '',
     addressToSendId: '',
     activationLink: req.body._activationLink,
+    preferredLanguage: req.body._preferredLanguage,
     created: req.body._created,
     lastUpdate: req.body._lastUpdate
   });
