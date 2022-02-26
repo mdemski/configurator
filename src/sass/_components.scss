@@ -876,3 +876,9 @@ button:disabled {
   background-color: $color-grey;
   color: $color-light-grey;
 }
+
+.form-control-field-title {
+  margin-bottom: 0;
+  text-align: left;
+  font-size: $default-font-size;
+}

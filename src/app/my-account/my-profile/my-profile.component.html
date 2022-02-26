@@ -75,7 +75,7 @@
       <h1 class="cooperation-section--title">{{'MY-PROFILE.cooperationSummaryTitle' | translate}}</h1>
       <div class="cooperation-section__container">
         <div class="cooperation-section__container__first-part">
-          <p>{{'MY-PROFILE.sale' | translate}}</p>
+          <p class="form-control-field-title">{{'MY-PROFILE.sale' | translate}}</p>
           <!--          <span *ngIf="company.salesVolume - company.salesVolumeLastYear > 0">+</span>-->
           <!--          <span *ngIf="company.salesVolume - company.salesVolumeLastYear < 0">-</span>-->
           <!--          <span *ngIf="company.salesVolume - company.salesVolumeLastYear === 0"></span>-->
@@ -83,11 +83,11 @@
             {{(company.salesVolume - company.salesVolumeLastYear) / company.salesVolumeLastYear | percent: '1.1-2'}}</p>
         </div>
         <div class="cooperation-section__container__second-part">
-          <p>{{'MY-PROFILE.salesShare' | translate}}</p>
+          <p class="form-control-field-title">{{'MY-PROFILE.salesShare' | translate}}</p>
           <canvas #pieCanvas class="cooperation-section__container__second-part__canvas"></canvas>
         </div>
         <div class="cooperation-section__container__third-part">
-          <p>{{'MY-PROFILE.saleTerms' | translate}}</p>
+          <p class="form-control-field-title">{{'MY-PROFILE.saleTerms' | translate}}</p>
           <ul>
             <li>{{'MY-PROFILE.basicDiscount' | translate}} - {{company.basicDiscount | percent}}</li>
             <li>{{'MY-PROFILE.roofWindows' | translate}} - {{company.roofWindowsDiscount | percent}}</li>
@@ -99,7 +99,7 @@
 
         </div>
         <div class="cooperation-section__container__forth-part">
-          <p>{{'MY-PROFILE.tradeCredit' | translate}}</p>
+          <p class="form-control-field-title">{{'MY-PROFILE.tradeCredit' | translate}}</p>
           <p
             [ngStyle]="{'color': company.tradeCredit > 0 ? 'green' : 'red'}">{{company.tradeCredit | currency: ' '}} {{(cart$ | async).cart.currency}}</p>
         </div>
@@ -222,7 +222,7 @@
                  class="form-control--input"
           >
           <div class="md-form-control mt-3">
-            <p>{{'MY-PROFILE.email' | translate}}:</p>
+            <p class="form-control-field-title">{{'MY-PROFILE.email' | translate}}:</p>
             <input type="text"
                    id="email"
                    formControlName="email"
@@ -243,7 +243,7 @@
             </div>
           </div>
           <div class="md-form-control mt-3">
-            <p>{{'MY-PROFILE.name' | translate}}:</p>
+            <p class="form-control-field-title">{{'MY-PROFILE.name' | translate}}:</p>
             <input type="text"
                    id="name"
                    formControlName="name"
@@ -251,7 +251,7 @@
                    >
           </div>
           <div class="select-box sorting margin-bottom-2">
-            <p>{{'MY-PROFILE.preferredLanguage' | translate}}:</p>
+            <p class="form-control-field-title">{{'MY-PROFILE.preferredLanguage' | translate}}:</p>
             <div class="select-box__current" tabindex="1">  <!--Usunięcie tabindex rozwala selecta-->
               <div class="select-box__value" *ngFor="let lang of this.languages">
                 <input class="select-box__input" type="radio" id="{{lang}}" value="{{lang}}"
@@ -274,7 +274,7 @@
             </ul>
           </div>
           <div class="md-form-control mt-3">
-            <p>{{'MY-PROFILE.firstName' | translate}}:</p>
+            <p class="form-control-field-title">{{'MY-PROFILE.firstName' | translate}}:</p>
             <input type="text"
                    id="firstName"
                    formControlName="firstName"
@@ -288,7 +288,7 @@
             </div>
           </div>
           <div class="md-form-control mt-3">
-            <p>{{'MY-PROFILE.lastName' | translate}}:</p>
+            <p class="form-control-field-title">{{'MY-PROFILE.lastName' | translate}}:</p>
             <input type="text"
                    id="lastName"
                    formControlName="lastName"
@@ -302,7 +302,7 @@
             </div>
           </div>
           <div class="md-form-control mt-3">
-            <p>{{'MY-PROFILE.street' | translate}}:</p>
+            <p class="form-control-field-title">{{'MY-PROFILE.street' | translate}}:</p>
             <input type="text"
                    id="street"
                    formControlName="street"
@@ -316,7 +316,7 @@
             </div>
           </div>
           <div class="md-form-control mt-3">
-            <p>{{'MY-PROFILE.localNumber' | translate}}:</p>
+            <p class="form-control-field-title">{{'MY-PROFILE.localNumber' | translate}}:</p>
             <input type="text"
                    id="localNumber"
                    formControlName="localNumber"
@@ -324,7 +324,7 @@
                    >
           </div>
           <div class="md-form-control mt-3">
-            <p>{{'MY-PROFILE.zipCode' | translate}}:</p>
+            <p class="form-control-field-title">{{'MY-PROFILE.zipCode' | translate}}:</p>
             <input type="text"
                    id="zipCode"
                    formControlName="zipCode"
@@ -341,7 +341,7 @@
             </div>
           </div>
           <div class="md-form-control mt-3">
-            <p>{{'MY-PROFILE.city' | translate}}:</p>
+            <p class="form-control-field-title">{{'MY-PROFILE.city' | translate}}:</p>
             <input type="text"
                    id="city"
                    formControlName="city"
@@ -355,7 +355,7 @@
             </div>
           </div>
           <div class="select-box sorting margin-bottom-2">
-            <p>{{'MY-PROFILE.country' | translate}}:</p>
+            <p class="form-control-field-title">{{'MY-PROFILE.country' | translate}}:</p>
             <div class="select-box__current" tabindex="1">  <!--Usunięcie tabindex rozwala selecta-->
               <div class="select-box__value" *ngFor="let country of this.countries$ | async">
                 <input class="select-box__input" type="radio" id="{{country}}" value="{{country}}"
@@ -378,7 +378,7 @@
             </ul>
           </div>
           <div class="md-form-control mt-3">
-            <p>{{'MY-PROFILE.phoneNumber' | translate}}:</p>
+            <p class="form-control-field-title">{{'MY-PROFILE.phoneNumber' | translate}}:</p>
             <input type="text"
                    id="phoneNumber"
                    formControlName="phoneNumber"
