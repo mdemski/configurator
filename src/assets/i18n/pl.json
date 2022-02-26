@@ -669,6 +669,7 @@
     "register": "Zarejestruj zgłoszenie",
     "agent": "Opiekun OKPOL",
     "complaintProducts": "Zgłaszane produkty",
+    "productType": "Typ produktu",
     "disabled": "Wybierz typ produktu",
     "roofWindow": "okno dachowe",
     "flashing": "kołnierz dachowy",
