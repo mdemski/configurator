@@ -31,6 +31,7 @@ export interface UserStateModel {
   companyNip: string;
   company: Company;
   address: Address;
+  preferredLanguage: string;
 }
 
 @State<UserStateModel>({
@@ -48,7 +49,8 @@ export interface UserStateModel {
     verticalWindowsDiscount: 0,
     companyNip: '',
     company: null,
-    address: null
+    address: null,
+    preferredLanguage: ''
   }
 })
 export class UserState {
@@ -98,6 +100,7 @@ export class UserState {
         updateState.companyNip = user.companyNip;
         updateState.address = address;
         updateState.company = company;
+        updateState.preferredLanguage = user.preferredLanguage;
         ctx.setState({
           ...state,
           email: updateState.email,
@@ -112,7 +115,8 @@ export class UserState {
           verticalWindowsDiscount: updateState.verticalWindowsDiscount,
           companyNip: updateState.companyNip,
           company: updateState.company,
-          address: updateState.address
+          address: updateState.address,
+          preferredLanguage: updateState.preferredLanguage
         });
       }));
   }
@@ -132,7 +136,8 @@ export class UserState {
           skylightsDiscount: updatedUser.skylightsDiscount,
           flatRoofWindowsDiscount: updatedUser.flatRoofWindowsDiscount,
           verticalWindowsDiscount: updatedUser.verticalWindowsDiscount,
-          companyNip: updatedUser.companyNip
+          companyNip: updatedUser.companyNip,
+          preferredLanguage: updatedUser.preferredLanguage
         }));
     }));
   }
@@ -219,7 +224,8 @@ export class UserState {
           verticalWindowsDiscount: 0,
           companyNip: '',
           company: null,
-          address: null
+          address: null,
+          preferredLanguage: ''
         });
     }));
   }
