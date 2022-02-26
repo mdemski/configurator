@@ -191,6 +191,9 @@
                 *ngIf="registerForm.get('individualZipCode').hasError('individualRequired')">
                 {{'REGISTER.requiredField' | translate}}
               </div>
+              <div class="invalid-contact-data" *ngIf="registerForm.get('individualZipCode').invalid">
+                {{'REGISTER.wrongZipCode' | translate}}
+              </div>
             </div>
             <div class="md-form mt-3">
               <input type="text"
@@ -325,6 +328,9 @@
                 class="invalid-contact-data"
                 *ngIf="registerForm.get('zipCode').hasError('companyRequired')">
                 {{'REGISTER.requiredField' | translate}}
+              </div>
+              <div class="invalid-contact-data" *ngIf="registerForm.get('zipCode').invalid">
+                {{'REGISTER.wrongZipCode' | translate}}
               </div>
             </div>
             <div class="md-form mt-3">
