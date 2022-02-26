@@ -47,7 +47,16 @@ addressRoute.route('/:addressId').get(((req, res, next) => {
 //Update address
 addressRoute.route('/update/:addressId').put(((req, res, next) => {
   Address.findByIdAndUpdate(req.params.addressId, {
-    $set: req.body
+    $set: {
+      firstName: req.body._firstName,
+      lastName: req.body._lastName,
+      phoneNumber: req.body._phoneNumber,
+      street: req.body._street,
+      localNumber: req.body._localNumber,
+      zipCode: req.body._zipCode,
+      city: req.body._city,
+      country: req.body._country
+    }
   }, {new: true}, (error, data) => {
     if (error) {
       console.log(error)

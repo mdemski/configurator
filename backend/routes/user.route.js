@@ -163,7 +163,23 @@ userRoute.post('/register', function (req, res, next) {
 //Update user
 userRoute.route('/update/:userId').put(((req, res, next) => {
   User.findByIdAndUpdate(req.params.userId, {
-    $set: req.body
+    $set: {
+      email: req.body._email,
+      username: req.body._name,
+      activated: req.body._activated,
+      basicDiscount: req.body._basicDiscount,
+      roofWindowsDiscount: req.body._roofWindowsDiscount,
+      skylightsDiscount: req.body._skylightsDiscount,
+      flashingsDiscount: req.body._flashingsDiscount,
+      accessoriesDiscount: req.body._accessoriesDiscount,
+      flatRoofWindowsDiscount: req.body._flatRoofWindowsDiscount,
+      verticalWindowsDiscount: req.body._verticalWindowsDiscount,
+      companyNip: req.body._companyNip,
+      mainAddressId: req.body._mainAddressId,
+      addressToSendId: req.body._addressToSendId,
+      preferredLanguage: req.body._preferredLanguage,
+      lastUpdate: req.body._lastUpdate
+    }
   }, {new: true}, (error, data) => {
     if (error) {
       console.log(error)
