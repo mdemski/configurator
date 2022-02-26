@@ -16,6 +16,7 @@
 
         <!--        <label for="email" class="complaint-form-labels">{{ 'COMPLAINT.email' | translate}}</label>-->
         <div class="md-form-control mt-3">
+          <p>{{'COMPLAINT.applicantName' | translate}}:</p>
           <input type="text"
                  id="applicant"
                  formControlName="applicant"
@@ -31,6 +32,7 @@
         </div>
         <!--        <label for="password" class="complaint-form-labels">{{ 'COMPLAINT.password' | translate}}</label>-->
         <div class="md-form-control mt-3">
+          <p>{{'COMPLAINT.email' | translate}}:</p>
           <input type="email"
                  id="email"
                  formControlName="email"
@@ -50,6 +52,7 @@
           </div>
         </div>
         <div class="md-form-control mt-3">
+          <p>{{'COMPLAINT.phoneNumber' | translate}}:</p>
           <input type="text"
                  id="phoneNumber"
                  formControlName="phoneNumber"
@@ -80,6 +83,7 @@
         <hr class="complaint-horizontal-line">
         <div *ngIf="individualApplicant">
           <div class="md-form-control mt-3">
+            <p>{{'COMPLAINT.street' | translate}}:</p>
             <input type="text"
                    id="individualStreet"
                    formControlName="individualStreet"
@@ -96,6 +100,7 @@
           </div>
           <!--          <label for="number" class="complaint-form-labels">{{ 'COMPLAINT.number' | translate}}</label>-->
           <div class="md-form-control mt-3">
+            <p>{{'COMPLAINT.number' | translate}}:</p>
             <input type="text"
                    id="individualLocalNumber"
                    formControlName="individualLocalNumber"
@@ -104,6 +109,7 @@
           </div>
           <!--          <label for="zipCode" class="complaint-form-labels">{{ 'COMPLAINT.zipCode' | translate}}</label>-->
           <div class="md-form-control mt-3">
+            <p>{{'COMPLAINT.zipCode' | translate}}:</p>
             <input type="text"
                    id="individualZipCode"
                    formControlName="individualZipCode"
@@ -119,6 +125,7 @@
             </div>
           </div>
           <div class="md-form-control mt-3">
+            <p>{{'COMPLAINT.city' | translate}}:</p>
             <input type="text"
                    id="individualCity"
                    formControlName="individualCity"
@@ -135,6 +142,7 @@
           </div>
 
           <div class="md-form-control mt-3">
+            <p>{{'COMPLAINT.country' | translate}}:</p>
             <input type="text"
                    id="individualCountry"
                    formControlName="individualCountry"
@@ -157,6 +165,7 @@
         <div *ngIf="companyApplicant">
           <!--          <label for="companyName" class="complaint-form-labels">{{ 'COMPLAINT.companyName' | translate}}</label>-->
           <div class="md-form-control mt-3">
+            <p>{{'COMPLAINT.companyName' | translate}}:</p>
             <input type="text"
                    id="companyName"
                    formControlName="companyName"
@@ -173,6 +182,7 @@
           </div>
           <!--          <label for="nip" class="complaint-form-labels">{{ 'COMPLAINT.NIP' | translate}}</label>-->
           <div class="md-form-control mt-3">
+            <p>{{'COMPLAINT.NIP' | translate}}:</p>
             <input type="text"
                    id="nip"
                    formControlName="nip"
@@ -189,6 +199,7 @@
           </div>
           <!--          <label for="street" class="complaint-form-labels">{{ 'COMPLAINT.street' | translate}}</label>-->
           <div class="md-form-control mt-3">
+            <p>{{'COMPLAINT.street' | translate}}:</p>
             <input type="text"
                    id="street"
                    formControlName="street"
@@ -205,6 +216,7 @@
           </div>
           <!--          <label for="number" class="complaint-form-labels">{{ 'COMPLAINT.number' | translate}}</label>-->
           <div class="md-form-control mt-3">
+            <p>{{'COMPLAINT.number' | translate}}:</p>
             <input type="text"
                    id="localNumber"
                    formControlName="localNumber"
@@ -213,6 +225,7 @@
           </div>
           <!--          <label for="zipCode" class="complaint-form-labels">{{ 'COMPLAINT.zipCode' | translate}}</label>-->
           <div class="md-form-control mt-3">
+            <p>{{'COMPLAINT.zipCode' | translate}}:</p>
             <input type="text"
                    id="zipCode"
                    formControlName="zipCode"
@@ -228,6 +241,7 @@
             </div>
           </div>
           <div class="md-form-control mt-3">
+            <p>{{'COMPLAINT.city' | translate}}:</p>
             <input type="text"
                    id="city"
                    formControlName="city"
@@ -244,6 +258,7 @@
           </div>
 
           <div class="md-form-control mt-3">
+            <p>{{'COMPLAINT.country' | translate}}:</p>
             <input type="text"
                    id="country"
                    formControlName="country"
@@ -260,6 +275,7 @@
           </div>
           <!--          <label for="agent" class="complaint-form-labels">{{ 'COMPLAINT.agent' | translate}}</label>-->
           <div class="md-form-control mt-3">
+            <p>{{'COMPLAINT.agent' | translate}}:</p>
             <input type="text"
                    id="agent"
                    formControlName="agent"
@@ -272,6 +288,7 @@
         </div>
 
         <div class="md-form-control mt-3">
+          <p>{{'COMPLAINT.buyingDate' | translate}}:</p>
           <input type="text"
                  id="buyingDate"
                  formControlName="buyingDate"
@@ -291,6 +308,7 @@
         </div>
 
         <div class="md-form-control mt-3">
+          <p>{{'COMPLAINT.detectedDate' | translate}}:</p>
           <input type="text"
                  id="detectedDate"
                  formControlName="detectedDate"
@@ -310,6 +328,7 @@
         </div>
 
         <div class="md-form-control mt-3">
+          <p>{{'COMPLAINT.startUsingDate' | translate}}:</p>
           <input type="text"
                  id="startUsingDate"
                  formControlName="startUsingDate"
@@ -329,6 +348,7 @@
         </div>
 
         <div class="md-form-control mt-3">
+          <p>{{'COMPLAINT.installationDate' | translate}}:</p>
           <input type="text"
                  id="installationDate"
                  formControlName="installationDate"
@@ -358,6 +378,7 @@
         <div [formGroupName]="i" class="md-container__form-window__right-side__products__product">
 
           <div class="select-box sorting margin-bottom-2">
+            <p>{{'COMPLAINT.product' | translate}}:</p>
             <div class="select-box__current" tabindex="1">  <!--Usunięcie tabindex rozwala selecta-->
               <div class="select-box__value" *ngFor="let group of this.groups">
                 <input class="select-box__input" type="radio" id="{{group + i}}" value="{{group}}"
@@ -393,6 +414,7 @@
           <div class="two-control-container">
             <div class="two-control-container__control">
               <div class="md-form-control mt-3">
+                <p>{{'COMPLAINT.model' | translate}}:</p>
                 <input type="text"
                        id="model"
                        formControlName="model"
@@ -415,6 +437,7 @@
               || this.products.controls[i].get('type').value === 'skylight'
               || this.products.controls[i].get('type').value === 'flatRoofWindow'
               || this.products.controls[i].get('type').value === 'verticalWindow'" class="md-form-control mt-3">
+                <p>{{'COMPLAINT.glazing' | translate}}:</p>
                 <input type="text"
                        id="glazing"
                        formControlName="glazing"
@@ -435,6 +458,7 @@
           <div class="two-control-container">
             <div class="two-control-container__control">
               <div class="md-form-control mt-3">
+                <p>{{'COMPLAINT.width' | translate}}:</p>
                 <input type="number"
                        id="width"
                        formControlName="width"
@@ -453,6 +477,7 @@
 
             <div class="two-control-container__control">
               <div class="md-form-control mt-3">
+                <p>{{'COMPLAINT.height' | translate}}:</p>
                 <input type="number"
                        id="height"
                        formControlName="height"
@@ -473,6 +498,7 @@
           <div class="two-control-container">
             <div class="two-control-container__control">
               <div class="md-form-control mt-3">
+                <p>{{'COMPLAINT.quantity' | translate}}:</p>
                 <input type="number"
                        id="quantity"
                        formControlName="quantity"
@@ -495,6 +521,7 @@
               || this.products.controls[i].get('type').value === 'skylight'
               || this.products.controls[i].get('type').value === 'flatRoofWindow'
               || this.products.controls[i].get('type').value === 'verticalWindow'" class="md-form-control mt-3">
+                <p>{{'COMPLAINT.dataPlateNumber' | translate}}:</p>
                 <input type="text"
                        id="dataPlateNumber"
                        formControlName="dataPlateNumber"
@@ -513,6 +540,7 @@
           </div>
 
           <div class="md-form-control mt-3">
+            <p>{{'COMPLAINT.description' | translate}}:</p>
               <textarea type="text"
                         id="description"
                         formControlName="description"
