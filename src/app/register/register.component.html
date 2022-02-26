@@ -20,6 +20,7 @@
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
           <!--        <label for="email" class="register-form-labels">{{ 'REGISTER.email' | translate}}</label>-->
           <div class="md-form mt-3">
+            <p class="form-control-field-title">{{'REGISTER.email' | translate}}:</p>
             <input type="email"
                    id="email"
                    formControlName="email"
@@ -41,6 +42,7 @@
           </div>
           <!--        <label for="password" class="register-form-labels">{{ 'REGISTER.password' | translate}}</label>-->
           <div class="md-form mt-3">
+            <p class="form-control-field-title">{{'REGISTER.password' | translate}}:</p>
             <input type="password"
                    id="password"
                    formControlName="password"
@@ -61,6 +63,7 @@
           </div>
           <!--        <label for="rePassword" class="register-form-labels">{{ 'REGISTER.rePassword' | translate}}</label>-->
           <div class="md-form mt-3">
+            <p class="form-control-field-title">{{'REGISTER.rePassword' | translate}}:</p>
             <input type="password"
                    id="rePassword"
                    formControlName="rePassword"
@@ -85,6 +88,7 @@
             </div>
           </div>
           <div class="md-form mt-3">
+            <p class="form-control-field-title">{{'REGISTER.username' | translate}}:</p>
             <input type="text"
                    id="username"
                    formControlName="username"
@@ -96,8 +100,6 @@
               {{'REGISTER.usernameExists' | translate}}
             </div>
           </div>
-
-
 
           <div class="register-check-box"
                (click)="setCompanyClientTypeToTrue()">{{ 'REGISTER.companyClient' | translate}}
@@ -113,6 +115,7 @@
 
             <!--        <label for="firstName" class="register-form-labels">{{'REGISTER.firstName' | translate}}</label>-->
             <div class="md-form mt-3">
+              <p class="form-control-field-title">{{'REGISTER.firstName' | translate}}:</p>
               <input type="text"
                      id="firstName"
                      formControlName="firstName"
@@ -127,6 +130,7 @@
             </div>
             <!--        <label for="lastName" class="register-form-labels">{{ 'REGISTER.lastName' | translate}}</label>-->
             <div class="md-form mt-3">
+              <p class="form-control-field-title">{{'REGISTER.lastName' | translate}}:</p>
               <input type="text"
                      id="lastName"
                      formControlName="lastName"
@@ -140,6 +144,7 @@
               </div>
             </div>
             <div class="md-form mt-3">
+              <p class="form-control-field-title">{{'REGISTER.phoneNumber' | translate}}:</p>
               <input type="text"
                      id="individualPhoneNumber"
                      formControlName="individualPhoneNumber"
@@ -156,6 +161,7 @@
               </div>
             </div>
             <div class="md-form mt-3">
+              <p class="form-control-field-title">{{'REGISTER.street' | translate}}:</p>
               <input type="text"
                      id="individualStreet"
                      formControlName="individualStreet"
@@ -171,6 +177,7 @@
             </div>
             <!--          <label for="number" class="register-form-labels">{{ 'REGISTER.number' | translate}}</label>-->
             <div class="md-form mt-3">
+              <p class="form-control-field-title">{{'REGISTER.number' | translate}}:</p>
               <input type="text"
                      id="individualLocalNumber"
                      formControlName="individualLocalNumber"
@@ -179,6 +186,7 @@
             </div>
             <!--          <label for="zipCode" class="register-form-labels">{{ 'REGISTER.zipCode' | translate}}</label>-->
             <div class="md-form mt-3">
+              <p class="form-control-field-title">{{'REGISTER.zipCode' | translate}}:</p>
               <input type="text"
                      id="individualZipCode"
                      formControlName="individualZipCode"
@@ -196,6 +204,7 @@
               </div>
             </div>
             <div class="md-form mt-3">
+              <p class="form-control-field-title">{{'REGISTER.city' | translate}}:</p>
               <input type="text"
                      id="individualCity"
                      formControlName="individualCity"
@@ -211,6 +220,7 @@
             </div>
 
             <div class="select-box sorting margin-bottom-2">
+              <p class="form-control-field-title">{{'REGISTER.country' | translate}}:</p>
               <div class="select-box__current" tabindex="1">  <!--Usunięcie tabindex rozwala selecta-->
                 <div class="select-box__value" *ngFor="let country of this.countries | async">
                   <input class="select-box__input" type="radio" id="{{country}}" value="{{country}}"
@@ -247,6 +257,7 @@
           <div *ngIf="companyClientType">
             <!--          <label for="companyName" class="register-form-labels">{{ 'REGISTER.companyName' | translate}}</label>-->
             <div class="md-form mt-3">
+              <p class="form-control-field-title">{{'REGISTER.companyName' | translate}}:</p>
               <input type="text"
                      id="companyName"
                      formControlName="companyName"
@@ -262,6 +273,7 @@
             </div>
             <!--          <label for="nip" class="register-form-labels">{{ 'REGISTER.NIP' | translate}}</label>-->
             <div class="md-form mt-3">
+              <p class="form-control-field-title">{{'REGISTER.NIP' | translate}}:</p>
               <input type="text"
                      id="nip"
                      formControlName="nip"
@@ -276,6 +288,7 @@
               </div>
             </div>
             <div class="md-form mt-3">
+              <p class="form-control-field-title">{{'REGISTER.phoneNumber' | translate}}:</p>
               <input type="text"
                      id="phoneNumber"
                      formControlName="phoneNumber"
@@ -294,6 +307,7 @@
             </div>
             <!--          <label for="street" class="register-form-labels">{{ 'REGISTER.street' | translate}}</label>-->
             <div class="md-form mt-3">
+              <p class="form-control-field-title">{{'REGISTER.street' | translate}}:</p>
               <input type="text"
                      id="street"
                      formControlName="street"
@@ -309,6 +323,7 @@
             </div>
             <!--          <label for="number" class="register-form-labels">{{ 'REGISTER.number' | translate}}</label>-->
             <div class="md-form mt-3">
+              <p class="form-control-field-title">{{'REGISTER.number' | translate}}:</p>
               <input type="text"
                      id="number"
                      formControlName="localNumber"
@@ -317,6 +332,7 @@
             </div>
             <!--          <label for="zipCode" class="register-form-labels">{{ 'REGISTER.zipCode' | translate}}</label>-->
             <div class="md-form mt-3">
+              <p class="form-control-field-title">{{'REGISTER.zipCode' | translate}}:</p>
               <input type="text"
                      id="zipCode"
                      formControlName="zipCode"
@@ -334,6 +350,7 @@
               </div>
             </div>
             <div class="md-form mt-3">
+              <p class="form-control-field-title">{{'REGISTER.city' | translate}}:</p>
               <input type="text"
                      id="city"
                      formControlName="city"
@@ -349,6 +366,7 @@
             </div>
 
             <div class="select-box sorting margin-bottom-2">
+              <p class="form-control-field-title">{{'REGISTER.country' | translate}}:</p>
               <div class="select-box__current" tabindex="1">  <!--Usunięcie tabindex rozwala selecta-->
                 <div class="select-box__value" *ngFor="let companyCountry of this.countries | async">
                   <input class="select-box__input" type="radio" id="{{companyCountry}}" value="{{companyCountry}}"
@@ -380,6 +398,7 @@
             </div>
             <!--          <label for="agent" class="register-form-labels">{{ 'REGISTER.agent' | translate}}</label>-->
             <div class="md-form mt-3">
+              <p class="form-control-field-title">{{'REGISTER.agent' | translate}}:</p>
               <input type="text"
                      id="agent"
                      formControlName="agent"

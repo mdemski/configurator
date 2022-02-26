@@ -16,6 +16,7 @@
 
         <!--        <label for="email" class="TASK-form-labels">{{ 'TASK.email' | translate}}</label>-->
         <div class="md-form-control mt-3">
+          <p class="form-control-field-title">{{'TASK.topic' | translate}}:</p>
           <input type="text"
                  id="topic"
                  formControlName="topic"
@@ -31,6 +32,7 @@
         </div>
         <!--        <label for="password" class="TASK-form-labels">{{ 'TASK.password' | translate}}</label>-->
         <div class="md-form-control mt-3">
+          <p class="form-control-field-title">{{'TASK.description' | translate}}:</p>
           <textarea type="text"
                  id="description"
                  formControlName="description"
@@ -46,6 +48,7 @@
         </div>
 
         <div class="select-box sorting margin-bottom-2">
+          <p class="form-control-field-title">{{'TASK.disabledPriority' | translate}}:</p>
           <div class="select-box__current" tabindex="1">  <!--Usunięcie tabindex rozwala selecta-->
             <div class="select-box__value" *ngFor="let priority of this.priorities$ | async; let i = index">
               <input class="select-box__input" type="radio" id="{{priority}}" value="{{priority}}"
@@ -71,6 +74,7 @@
         </div>
 
         <div class="md-form-control mt-3">
+          <p class="form-control-field-title">{{'TASK.email' | translate}}:</p>
           <input type="email"
                  id="email"
                  formControlName="email"
@@ -91,6 +95,7 @@
         </div>
 
         <div class="md-form-control mt-3">
+          <p class="form-control-field-title">{{'TASK.phone' | translate}}:</p>
           <input type="text"
                  id="phone"
                  formControlName="phone"
@@ -110,6 +115,7 @@
         </div>
 
         <div class="md-form-control mt-3">
+          <p class="form-control-field-title">{{'TASK.nextStep' | translate}}:</p>
           <input type="text"
                  id="nextStepDate"
                  formControlName="nextStepDate"
@@ -121,6 +127,7 @@
         </div>
 
         <div class="md-form-control mt-3">
+          <p class="form-control-field-title">{{'TASK.deadline' | translate}}:</p>
           <input type="text"
                  id="deadlineDate"
                  formControlName="deadlineDate"
@@ -132,6 +139,7 @@
         </div>
 
         <div class="select-box sorting margin-bottom-2">
+          <p class="form-control-field-title">{{'TASK.disabledCRM' | translate}}:</p>
           <div class="select-box__current" tabindex="1">  <!--Usunięcie tabindex rozwala selecta-->
             <div class="select-box__value" *ngFor="let crm of this.crmProjects$ | async; let i = index">
               <input class="select-box__input" type="radio" id="{{crm}}" value="{{crm}}"
