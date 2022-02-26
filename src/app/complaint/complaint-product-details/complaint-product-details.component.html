@@ -39,7 +39,7 @@
         <td
           class="complaint-container__complaints-table__item__products__table__item--info">{{complaint.items[this.itemID]?.description}}</td>
         <td class="complaint-container__complaints-table__item__products__table__item--info">
-          <a routerLink="../complaints/update/products/{{complaint.items[this.itemID]?.id}}">
+          <a routerLink="../update/{{complaint.erpNumber}}">
             <i class="fas fa-edit complaint-container__complaints-table__item__products__table__item--edit"></i>
           </a>
         </td>
