@@ -213,15 +213,194 @@
 
     <div class="my-profile-section">
       <h1 class="my-profile-section--title">{{'MY-PROFILE.title' | translate}}</h1>
-      <div class="my-profile-section__left-side">
+      <div class="my-profile-section__left-side" *ngIf="user$ | async as user">
         <h2 class="my-profile-section__left-side--title">{{'MY-PROFILE.userData' | translate}}</h2>
-        {{(userToUpdate$ | async)?.email}}
-        {{(userToUpdate$ | async)?.hash}} // jak to rozhaszować?
-        {{(userToUpdate$ | async)?.rePassword}}
-        {{(userToUpdate$ | async)?.username}}
-        {{(userToUpdate$ | async)?.mainAddressId}}
-        Load data for user to update
-
+        <form [formGroup]="updateUserForm" (ngSubmit)="onSubmit()">
+          <input type="hidden"
+                 id="id"
+                 formControlName="id"
+                 class="form-control--input"
+          >
+          <div class="md-form-control mt-3">
+            <p>{{'MY-PROFILE.email' | translate}}:</p>
+            <input type="text"
+                   id="email"
+                   formControlName="email"
+                   class="form-control--input"
+                   >
+          </div>
+          <div *ngIf="updateUserForm.get('email').dirty || updateUserForm.get('email').touched">
+            <div class="invalid-contact-data" *ngIf="updateUserForm.get('email').hasError('emailExists')">
+              {{'REGISTER.emailExists' | translate}}
+            </div>
+            <div
+              class="invalid-contact-data" *ngIf="updateUserForm.get('email').hasError('required')">
+              {{'REGISTER.requiredField' | translate}}
+            </div>
+            <div
+              class="invalid-contact-data" *ngIf="updateUserForm.get('email').hasError('email')">
+              {{'REGISTER.wrongEmail' | translate}}
+            </div>
+          </div>
+          <div class="md-form-control mt-3">
+            <p>{{'MY-PROFILE.name' | translate}}:</p>
+            <input type="text"
+                   id="name"
+                   formControlName="name"
+                   class="form-control--input"
+                   >
+          </div>
+          <div class="select-box sorting margin-bottom-2">
+            <p>{{'MY-PROFILE.preferredLanguage' | translate}}:</p>
+            <div class="select-box__current" tabindex="1">  <!--Usunięcie tabindex rozwala selecta-->
+              <div class="select-box__value" *ngFor="let lang of this.languages">
+                <input class="select-box__input" type="radio" id="{{lang}}" value="{{lang}}"
+                       formControlName="preferredLanguage"/>
+                <p class="select-box__input-text">{{'MY-PROFILE.' + lang | translate}}</p>
+              </div>
+              <div class="select-box__value">
+                <input class="select-box__input disabled" type="radio" id="{{(user$ | async).preferredLanguage}}" value="disabled"
+                       formControlName="preferredLanguage" checked/>
+                <p class="select-box__input-text disabled">{{'MY-PROFILE.' + (user$ | async).preferredLanguage | translate}}</p>
+              </div>
+              <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg"
+                   alt="Arrow Icon" aria-hidden="true"/>
+            </div>
+            <ul class="select-box__list">
+              <li *ngFor="let lang of this.languages">
+                <label class="select-box__option margin-bottom-0"
+                       for="{{lang}}" aria-hidden="aria-hidden">{{'MY-PROFILE.' + lang | translate}}</label>
+              </li>
+            </ul>
+          </div>
+          <div class="md-form-control mt-3">
+            <p>{{'MY-PROFILE.firstName' | translate}}:</p>
+            <input type="text"
+                   id="firstName"
+                   formControlName="firstName"
+                   class="form-control--input"
+                   >
+          </div>
+          <div *ngIf="updateUserForm.get('firstName').dirty || updateUserForm.get('firstName').touched">
+            <div
+              class="invalid-contact-data" *ngIf="updateUserForm.get('firstName').hasError('required')">
+              {{'REGISTER.requiredField' | translate}}
+            </div>
+          </div>
+          <div class="md-form-control mt-3">
+            <p>{{'MY-PROFILE.lastName' | translate}}:</p>
+            <input type="text"
+                   id="lastName"
+                   formControlName="lastName"
+                   class="form-control--input"
+                   >
+          </div>
+          <div *ngIf="updateUserForm.get('lastName').dirty || updateUserForm.get('lastName').touched">
+            <div
+              class="invalid-contact-data" *ngIf="updateUserForm.get('lastName').hasError('required')">
+              {{'REGISTER.requiredField' | translate}}
+            </div>
+          </div>
+          <div class="md-form-control mt-3">
+            <p>{{'MY-PROFILE.street' | translate}}:</p>
+            <input type="text"
+                   id="street"
+                   formControlName="street"
+                   class="form-control--input"
+                   >
+          </div>
+          <div *ngIf="updateUserForm.get('street').dirty || updateUserForm.get('street').touched">
+            <div
+              class="invalid-contact-data" *ngIf="updateUserForm.get('street').hasError('required')">
+              {{'REGISTER.requiredField' | translate}}
+            </div>
+          </div>
+          <div class="md-form-control mt-3">
+            <p>{{'MY-PROFILE.localNumber' | translate}}:</p>
+            <input type="text"
+                   id="localNumber"
+                   formControlName="localNumber"
+                   class="form-control--input"
+                   >
+          </div>
+          <div class="md-form-control mt-3">
+            <p>{{'MY-PROFILE.zipCode' | translate}}:</p>
+            <input type="text"
+                   id="zipCode"
+                   formControlName="zipCode"
+                   class="form-control--input"
+                   >
+          </div>
+          <div *ngIf="updateUserForm.get('zipCode').dirty || updateUserForm.get('zipCode').touched">
+            <div
+              class="invalid-contact-data" *ngIf="updateUserForm.get('zipCode').hasError('required')">
+              {{'REGISTER.requiredField' | translate}}
+            </div>
+            <div class="invalid-contact-data" *ngIf="updateUserForm.get('zipCode').invalid">
+              {{'REGISTER.wrongPhoneNumber' | translate}}
+            </div>
+          </div>
+          <div class="md-form-control mt-3">
+            <p>{{'MY-PROFILE.city' | translate}}:</p>
+            <input type="text"
+                   id="city"
+                   formControlName="city"
+                   class="form-control--input"
+                   >
+          </div>
+          <div *ngIf="updateUserForm.get('city').dirty || updateUserForm.get('city').touched">
+            <div
+              class="invalid-contact-data" *ngIf="updateUserForm.get('city').hasError('required')">
+              {{'REGISTER.requiredField' | translate}}
+            </div>
+          </div>
+          <div class="select-box sorting margin-bottom-2">
+            <p>{{'MY-PROFILE.country' | translate}}:</p>
+            <div class="select-box__current" tabindex="1">  <!--Usunięcie tabindex rozwala selecta-->
+              <div class="select-box__value" *ngFor="let country of this.countries$ | async">
+                <input class="select-box__input" type="radio" id="{{country}}" value="{{country}}"
+                       formControlName="country"/>
+                <p class="select-box__input-text">{{country}}</p>
+              </div>
+              <div class="select-box__value">
+                <input class="select-box__input disabled" type="radio" id="{{(user$ | async).address?.country}}" value="disabled"
+                       formControlName="country" checked/>
+                <p class="select-box__input-text disabled">{{(user$ | async).address?.country}}</p>
+              </div>
+              <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg"
+                   alt="Arrow Icon" aria-hidden="true"/>
+            </div>
+            <ul class="select-box__list overflow-scroll-Y">
+              <li *ngFor="let country of this.countries$ | async">
+                <label class="select-box__option margin-bottom-0"
+                       for="{{country}}" aria-hidden="aria-hidden">{{country}}</label>
+              </li>
+            </ul>
+          </div>
+          <div class="md-form-control mt-3">
+            <p>{{'MY-PROFILE.phoneNumber' | translate}}:</p>
+            <input type="text"
+                   id="phoneNumber"
+                   formControlName="phoneNumber"
+                   class="form-control--input"
+                   >
+          </div>
+          <div *ngIf="updateUserForm.get('phoneNumber').dirty || updateUserForm.get('phoneNumber').touched">
+            <div class="invalid-contact-data" *ngIf="updateUserForm.get('phoneNumber').invalid">
+              {{'REGISTER.wrongPhoneNumber' | translate}}
+            </div>
+          </div>
+          <input type="hidden"
+                 id="addressId"
+                 formControlName="addressId"
+                 class="form-control--input"
+          >
+          <div class="button-container">
+            <button *ngIf="!isUpdating" type="submit" [disabled]="updateUserForm.invalid">{{ 'MY-PROFILE.update' | translate}}</button>
+            <app-bouncing-loader class="loading" *ngIf="isUpdating"></app-bouncing-loader>
+            <button class="reset-password-button" type="button" routerLink="/reset">{{ 'MY-PROFILE.changePassword' | translate}}</button>
+          </div>
+        </form>
       </div>
 
       <!--    <div *ngIf="(user$ | async)?.company as company" class="cooperation-section">-->

@@ -2,21 +2,22 @@ import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from
 import {Select, Store} from '@ngxs/store';
 import {UserState} from '../../store/user/user.state';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
-import {User} from '../../models/user';
 import {UpdateCartCurrency, UpdateCartVatRate} from '../../store/cart/cart.actions';
 import {AuthService} from '../../services/auth.service';
-import {filter, map, shareReplay, takeUntil} from 'rxjs/operators';
+import {filter, map, take, takeUntil} from 'rxjs/operators';
 import {CartState} from '../../store/cart/cart.state';
 import exchange from '../../../assets/json/echange.json';
 import vatRates from '../../../assets/json/vatRates.json';
 import {DatabaseService} from '../../services/database.service';
 import Chart from 'chart.js';
 import {TranslateService} from '@ngx-translate/core';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {Invoice} from '../../models/invoice';
 import _ from 'lodash';
 import moment from 'moment';
 import {CrudService} from '../../services/crud-service';
+import {Address} from '../../models/address';
+import {UpdateUserData} from '../../store/user/user.actions';
 
 @Component({
   selector: 'app-my-profile',
@@ -26,16 +27,18 @@ import {CrudService} from '../../services/crud-service';
 export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('pieCanvas') private pieCanvas: ElementRef;
-  @Select(UserState) user$: Observable<User>;
+  @Select(UserState) user$: Observable<any>;
   @Select(CartState) cart$: Observable<any>;
+  updateUserForm: FormGroup;
   currency$ = new BehaviorSubject('PLN');
   vatRate$ = new BehaviorSubject(0.23);
-  userToUpdate$: Observable<User>;
   isDestroyed$ = new Subject();
   loading = true;
+  isUpdating = false;
   currencies: string[] = [];
   rates: number[] = [];
   pieChart: any;
+  countries$;
   testCompany;
   filteredInvoices: Invoice[] = [];
   invoices: Invoice[] = [];
@@ -50,6 +53,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   grossPriceToggler = true;
   statusToggler = true;
   correctingInvoiceToggler = true;
+  languages = ['pl', 'en', 'fr', 'de'];
   private filtersObject = {
     invoiceNumberSearch: '',
     dateSearch: '',
@@ -77,16 +81,10 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.translatedLabels.push(text[label]);
       }
     });
+    this.countries$ = this.crud.getCountryList();
   }
 
   ngOnInit(): void {
-    this.user$.pipe(
-      takeUntil(this.isDestroyed$))
-      .subscribe(user => {
-        if (!this.userToUpdate$ && user.email !== '') {
-          this.userToUpdate$ = this.crud.readUserByEmailToUpdate(user.email).pipe(shareReplay());
-        }
-      });
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe((data) => {
       this.currency$.next(data.cart.currency);
       this.vatRate$.next(data.cart.vatRate);
@@ -113,6 +111,38 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.filtersObject.statusSearch = data.statusSearch;
       })).subscribe(() => {
       this.filterTable(this.filtersObject);
+    });
+    this.updateUserForm = this.fb.group({
+      id: new FormControl(null),
+      email: new FormControl(null, [Validators.required, Validators.email], [this.emailExists.bind(this)]),
+      name: new FormControl(null),
+      preferredLanguage: new FormControl(null),
+      firstName: new FormControl(null, Validators.required),
+      lastName: new FormControl(null, Validators.required),
+      street: new FormControl(null, Validators.required),
+      localNumber: new FormControl(null),
+      zipCode: new FormControl(null, [Validators.pattern('[0-9]{2}-[0-9]{3}'), Validators.required]),
+      city: new FormControl(null, Validators.required),
+      country: new FormControl(null, Validators.required),
+      phoneNumber: new FormControl(null, [Validators.pattern('^\\+?[0-9]{3}-?[0-9]{6,12}$')]),
+      addressId: new FormControl(null)
+    });
+    this.user$.pipe(takeUntil(this.isDestroyed$), filter(user => user.email !== '')).subscribe(userData => {
+      this.updateUserForm.patchValue({
+        id: userData.id,
+        email: userData.email,
+        name: userData.name,
+        preferredLanguage: userData.preferredLanguage,
+        firstName: userData.address.firstName,
+        lastName: userData.address.lastName,
+        street: userData.address.street,
+        localNumber: userData.address.localNumber,
+        zipCode: userData.address.zipCode,
+        city: userData.address.city,
+        country: userData.address.country,
+        phoneNumber: userData.address.phoneNumber,
+        addressId: userData.address._id
+      }, {emitEvent: false});
     });
     this.testCompany.invoices = this.invoices;
     this.filteredInvoices = this.invoices;
@@ -150,6 +180,22 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           ],
         }]
       }
+    });
+  }
+
+  onSubmit() {
+    this.isUpdating = true;
+    const updatedAddress = new Address(
+      this.updateUserForm.value.firstName, this.updateUserForm.value.lastName, this.updateUserForm.value.phoneNumber, this.updateUserForm.value.street,
+      this.updateUserForm.value.localNumber, this.updateUserForm.value.zipCode, this.updateUserForm.value.city , this.updateUserForm.value.country);
+    // this.crud.updateAddress(updatedAddress, this.updateUserForm.value.addressId).pipe().subscribe(() => console.log('Address updated successfully'));
+    this.user$.pipe(takeUntil(this.isDestroyed$), take(1)).subscribe(user => {
+      const updatedUser = _.cloneDeep(user);
+      updatedUser.email = this.updateUserForm.value.email;
+      updatedUser.name = this.updateUserForm.value.name;
+      updatedUser.preferredLanguage = this.updateUserForm.value.preferredLanguage;
+      this.store.dispatch(new UpdateUserData(updatedUser));
+      this.isUpdating = false;
     });
   }
 
@@ -251,5 +297,24 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     this.correctingInvoiceToggler = !this.correctingInvoiceToggler;
     const order = this.correctingInvoiceToggler ? 'asc' : 'desc';
     this.filteredInvoices = _.orderBy(this.filteredInvoices, ['correctionReason'], order);
+  }
+
+  emailExists<AsyncValidator>(control: FormControl): Observable<ValidationErrors | null> {
+    const value = control.value;
+
+    return this.user$.pipe(takeUntil(this.isDestroyed$),
+      map(user => {
+        if (user.email === value) {
+          return null;
+        } else {
+          this.crud.readUserByEmail(value)
+            .pipe(takeUntil(this.isDestroyed$),
+              map(newUser => {
+                return newUser ? {
+                  emailExists: true
+                } : null;
+              }));
+        }
+      }));
   }
 }

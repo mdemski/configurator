@@ -18,6 +18,7 @@ import {of} from 'rxjs';
 import {patch} from '@ngxs/store/operators';
 
 export interface UserStateModel {
+  _id: string;
   email: string;
   name: string;
   activated: boolean;
@@ -37,6 +38,7 @@ export interface UserStateModel {
 @State<UserStateModel>({
   name: 'user',
   defaults: {
+    _id: '',
     email: '',
     name: '',
     activated: false,
@@ -87,6 +89,7 @@ export class UserState {
         const company: Company = values[2];
         const state = ctx.getState();
         const updateState = cloneDeep(state);
+        updateState._id = user._id;
         updateState.email = user.email;
         updateState.name = user.name;
         updateState.activated = user.activated;
@@ -103,6 +106,7 @@ export class UserState {
         updateState.preferredLanguage = user.preferredLanguage;
         ctx.setState({
           ...state,
+          _id: updateState._id,
           email: updateState.email,
           name: updateState.name,
           activated: updateState.activated,
@@ -126,6 +130,7 @@ export class UserState {
     return this.crud.updateUserByMongoId(user).pipe(tap((updatedUser: User) => {
       ctx.setState(
         patch({
+          _id: updatedUser._id,
           email: updatedUser.email,
           name: updatedUser.name,
           activated: updatedUser.activated,
@@ -212,6 +217,7 @@ export class UserState {
     return this.crud.deleteUser(user).pipe(tap(() => {
       ctx.setState(
         {
+          _id: '',
           email: '',
           name: '',
           activated: false,

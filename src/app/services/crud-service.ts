@@ -186,6 +186,11 @@ export class CrudService {
     // }));
   }
 
+  updateAddress(address: Address, addressId: string) {
+    const url = `${this.addressesBaseUri}/update/${addressId}`;
+    return this.http.put(url, address, {headers: this.headers}).pipe(catchError(err => err));
+  }
+
   updateMainAddressByMongoId(user: User, address: Address) {
     const url = `${this.addressesBaseUri}/update/${address._id}`;
     let userUpdate = true;

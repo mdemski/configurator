@@ -2,6 +2,7 @@
 @import 'src/sass/buttons';
 @import 'src/sass/base/base';
 @import 'src/sass/radio-input';
+@import 'src/sass/components';
 
 .header {
   width: 100%;
@@ -214,6 +215,7 @@
   &__left-side {
     margin-top: 1rem;
     flex: 1;
+    padding-right: 10rem;
 
     &--title {
 
@@ -229,4 +231,18 @@
 
     }
   }
+}
+
+.select-box {
+  color: $color-black;
+}
+
+.reset-password-button {
+  color: $color-black;
+  border-color: $color-yellow;
+  background-color: $color-yellow;
+}
+
+.loading {
+  width: 13rem;
 }

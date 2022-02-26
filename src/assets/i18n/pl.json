@@ -32,6 +32,7 @@
     "registerTitle": "Zarejestruj się",
     "emailExists": "Podany adres już istnieje, proszę podać inny",
     "wrongPassword": "Podane hasło jest niepoprawne",
+    "wrongZipCode": "Podany kod jest niepoprawny",
     "tooManyAttempts": "Zarejestrowaliśmy zbyt dużo prób logowania z tego urządzenia, spróbuj ponownie później"
   },
   "HOME": {
@@ -606,7 +607,24 @@
     "false": "Nie",
     "title": "Mój profil",
     "userData": "Dane osobowe",
-    "companyData": "Dane firmowe"
+    "companyData": "Dane firmowe",
+    "name": "Nazwa",
+    "firstName": "Imię",
+    "lastName": "Nazwisko",
+    "preferredLanguage": "Preferowany język",
+    "email": "Email",
+    "street": "Ulica",
+    "localNumber": "Numer",
+    "zipCode": "Kod pocztowy",
+    "city": "Miejscowość",
+    "country": "Kraj",
+    "phoneNumber": "Numer kontaktowy",
+    "pl": "polski",
+    "en": "angielski",
+    "fr": "francuski",
+    "de": "niemiecki",
+    "changePassword": "Resetuj hasło",
+    "update": "Aktualizuj"
   },
   "COMPLAINT": {
     "noComplaints": "Wygląda na to że wszystko gra. Brak reklamacji do wyświetlenia.",
