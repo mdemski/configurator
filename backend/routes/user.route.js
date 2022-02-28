@@ -43,8 +43,8 @@ userRoute.route('/email/:email').get(((req, res, next) => {
   })
 }))
 
-//Get single user by username
-userRoute.route('/username/:username').get(((req, res, next) => {
+//Get single user by name
+userRoute.route('/name/:name').get(((req, res, next) => {
   User.findOne({name: req.params.name}, (error, data) => {
     if (error) {
       return next(error)
@@ -74,7 +74,7 @@ userRoute.route('/update/:email').get(((req, res, next) => {
 
       const resData = {
         email: data.email,
-        username: data.username
+        name: data.name
       }
       res.json(resData)
     }
@@ -121,7 +121,7 @@ userRoute.post('/register', function (req, res, next) {
     hash: hash,
     salt: salt,
     role: req.body._role,
-    username: req.body._name,
+    name: req.body._name,
     activated: req.body._activated,
     uuid: req.body._uuid,
     basicDiscount: req.body._basicDiscount,
@@ -164,21 +164,20 @@ userRoute.post('/register', function (req, res, next) {
 userRoute.route('/update/:userId').put(((req, res, next) => {
   User.findByIdAndUpdate(req.params.userId, {
     $set: {
-      email: req.body._email,
-      username: req.body._name,
-      activated: req.body._activated,
-      basicDiscount: req.body._basicDiscount,
-      roofWindowsDiscount: req.body._roofWindowsDiscount,
-      skylightsDiscount: req.body._skylightsDiscount,
-      flashingsDiscount: req.body._flashingsDiscount,
-      accessoriesDiscount: req.body._accessoriesDiscount,
-      flatRoofWindowsDiscount: req.body._flatRoofWindowsDiscount,
-      verticalWindowsDiscount: req.body._verticalWindowsDiscount,
-      companyNip: req.body._companyNip,
-      mainAddressId: req.body._mainAddressId,
-      addressToSendId: req.body._addressToSendId,
-      preferredLanguage: req.body._preferredLanguage,
-      lastUpdate: req.body._lastUpdate
+      email: req.body.email,
+      name: req.body.name,
+      activated: req.body.activated,
+      basicDiscount: req.body.basicDiscount,
+      roofWindowsDiscount: req.body.roofWindowsDiscount,
+      skylightsDiscount: req.body.skylightsDiscount,
+      flashingsDiscount: req.body.flashingsDiscount,
+      accessoriesDiscount: req.body.accessoriesDiscount,
+      flatRoofWindowsDiscount: req.body.flatRoofWindowsDiscount,
+      verticalWindowsDiscount: req.body.verticalWindowsDiscount,
+      companyNip: req.body.companyNip,
+      mainAddressId: req.body.address._id,
+      preferredLanguage: req.body.preferredLanguage,
+      lastUpdate: req.body.lastUpdate
     }
   }, {new: true}, (error, data) => {
     if (error) {
@@ -189,6 +188,37 @@ userRoute.route('/update/:userId').put(((req, res, next) => {
       console.log(req.params.userId + ' successfully updated')
     }
   })
+}))
+
+//Change password for user
+userRoute.route('/update/change-password/:userId').put(((req, res, next) => {
+  const saltHash = utils.genPassword(req.body.oldPassword);
+  const salt = saltHash.salt;
+  const hash = saltHash.hash;
+  const isValid = utils.validPassword(req.body.oldPassword, hash, salt);
+
+  const saltHash2 = utils.genPassword(req.body.password);
+  const salt2 = saltHash2.salt;
+  const hash2 = saltHash2.hash;
+
+  if (isValid) {
+    User.findOneAndUpdate(req.params.userId, {
+      $set: {
+        hash: hash2,
+        salt: salt2
+      }
+    }, {new: true}, (error, data) => {
+      if (error) {
+        console.log(error)
+        return next(error)
+      } else {
+        // TODO dodać logikę wysyłania potwierdzenia zmiany hasła
+        // sendChangePasswordMail(user).catch(console.error);
+        res.json(data)
+        console.log(req.params.userId + ' successfully updated')
+      }
+    })
+  }
 }))
 
 //Update user by email
