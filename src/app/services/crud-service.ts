@@ -9,7 +9,7 @@ import {VerticalWindow} from '../models/vertical-window';
 import {FlatRoofWindow} from '../models/flat-roof-window';
 import {SingleConfiguration} from '../models/single-configuration';
 import {HighestIdGetterService} from './highest-id-getter.service';
-import {catchError, map, takeLast} from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 import {WindowConfig} from '../models/window-config';
 import {FlashingConfig} from '../models/flashing-config';
 import {AccessoryConfig} from '../models/accessory-config';
@@ -126,6 +126,16 @@ export class CrudService {
       user.lastUpdate = new Date();
     }
     return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
+  }
+
+  changePassword(id: string, oldPassword: string, password: string, rePassword: string) {
+    const url = `${this.usersBaseUri}/update/change-password/${id}`;
+    const passwordObject = {
+      oldPassword,
+      password,
+      rePassword
+    };
+    return this.http.put(url, passwordObject, {headers: this.headers}).pipe(catchError(err => err));
   }
 
   updateUserByMongoId(user: User) {
