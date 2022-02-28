@@ -132,7 +132,8 @@
     "sellers": "dealerzy",
     "linkToCart": "koszyk",
     "backButton": "Wróć",
-    "close": "Zamknij"
+    "close": "Zamknij",
+    "back": "Wróc"
   },
   "CONTACT": {
     "contactUs": "Skontaktuj się z nami",

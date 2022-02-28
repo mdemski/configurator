@@ -680,7 +680,7 @@ table {
 .md-container__form-window {
   display: flex;
   flex-wrap: wrap;
-  margin: 10rem 0;
+  margin: 5rem 0;
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
@@ -735,6 +735,13 @@ table {
     }
 
   }
+}
+
+.back-button-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 5rem;
 }
 
 .form-control--input {
