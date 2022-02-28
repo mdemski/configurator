@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { RegisterConfirmationPageComponent } from './register-confirmation-page.component';
+import {RegisterConfirmationPageComponent} from './register-confirmation-page.component';
 
 describe('RegisterConfirmationPageComponent', () => {
     let component: RegisterConfirmationPageComponent;

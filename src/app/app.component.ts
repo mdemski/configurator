@@ -3,6 +3,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {AuthService} from './services/auth.service';
 import {Store} from '@ngxs/store';
 import {GetCart} from './store/cart/cart.actions';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

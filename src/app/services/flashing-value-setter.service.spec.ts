@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { FlashingValueSetterService } from './flashing-value-setter.service';
+import {FlashingValueSetterService} from './flashing-value-setter.service';
 
 describe('FlashingValueSetterService', () => {
   let service: FlashingValueSetterService;

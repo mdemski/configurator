@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { HighestIdGetterService } from './highest-id-getter.service';
+import {HighestIdGetterService} from './highest-id-getter.service';
 
 describe('HighestIdGetterService', () => {
   let service: HighestIdGetterService;

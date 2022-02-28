@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { RoofWindowValuesSetterService } from './roof-window-values-setter.service';
+import {RoofWindowValuesSetterService} from './roof-window-values-setter.service';
 
 describe('WindowDynamicValuesSetterService', () => {
   let service: RoofWindowValuesSetterService;

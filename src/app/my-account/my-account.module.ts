@@ -11,10 +11,11 @@ import {MyProfileComponent} from './my-profile/my-profile.component';
 import {UserState} from '../store/user/user.state';
 import {ConfigurationState} from '../store/configuration/configuration.state';
 import {ComplaintModule} from '../complaint/complaint.module';
-import { TaskFormComponent } from './my-tasks/task-form/task-form.component';
+import {TaskFormComponent} from './my-tasks/task-form/task-form.component';
+import {ResetPasswordComponent} from './my-profile/reset-password/reset-password.component';
 
 @NgModule({
-  declarations: [MyOrdersComponent, MyConfigurationsComponent, MyComplaintsComponent, MyTasksComponent, InformationsComponent, MyProfileComponent, TaskFormComponent],
+  declarations: [MyOrdersComponent, MyConfigurationsComponent, MyComplaintsComponent, MyTasksComponent, InformationsComponent, MyProfileComponent, TaskFormComponent, ResetPasswordComponent],
   imports: [
     SharedModule,
     MyAccountRoutingModule,

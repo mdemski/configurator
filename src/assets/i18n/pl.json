@@ -5,6 +5,7 @@
     "email": "Email",
     "password": "Hasło",
     "rePassword": "Powtórz hasło",
+    "oldPassword": "Bieżące hasło",
     "username": "Użytkownik (opcjonalnie)",
     "usernameExists": "Użytkownik jest już zajęty, proszę wybrać inny",
     "contactDetails": "Dane teleadresowe",
@@ -112,6 +113,7 @@
     "configuratorFlashing": "konfigurator/kolnierze",
     "configuratorAccessory": "konfigurator/akcesoria",
     "myAccount": "moje-konto",
+    "myProfile": "moj-profil",
     "contact": "kontakt",
     "signIn": "rejestracja",
     "about": "o-aplikacji",
@@ -624,7 +626,8 @@
     "fr": "francuski",
     "de": "niemiecki",
     "changePassword": "Resetuj hasło",
-    "update": "Aktualizuj"
+    "update": "Aktualizuj",
+    "resetPasswordTitle": "Zresetuj swoje hasło"
   },
   "COMPLAINT": {
     "noComplaints": "Wygląda na to że wszystko gra. Brak reklamacji do wyświetlenia.",

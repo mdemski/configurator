@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { SingleConfigurationSummaryComponent } from './single-configuration-summary.component';
+import {SingleConfigurationSummaryComponent} from './single-configuration-summary.component';
 
 describe('SingleConfigurationSummaryComponent', () => {
   let component: SingleConfigurationSummaryComponent;

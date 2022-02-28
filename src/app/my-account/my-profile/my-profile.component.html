@@ -398,7 +398,7 @@
           <div class="button-container">
             <button *ngIf="!isUpdating" type="submit" [disabled]="updateUserForm.invalid">{{ 'MY-PROFILE.update' | translate}}</button>
             <app-bouncing-loader class="loading" *ngIf="isUpdating"></app-bouncing-loader>
-            <button class="reset-password-button" type="button" routerLink="/reset">{{ 'MY-PROFILE.changePassword' | translate}}</button>
+            <button class="reset-password-button" type="button" routerLink="../../reset">{{ 'MY-PROFILE.changePassword' | translate}}</button>
           </div>
         </form>
       </div>

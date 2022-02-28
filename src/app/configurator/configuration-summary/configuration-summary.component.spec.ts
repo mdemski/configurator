@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ConfigurationSummaryComponent } from './configuration-summary.component';
+import {ConfigurationSummaryComponent} from './configuration-summary.component';
 
 describe('ConfigurationSummaryComponent', () => {
     let component: ConfigurationSummaryComponent;

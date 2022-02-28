@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {catchError, map, switchMap, tap} from 'rxjs/operators';
+import {catchError, map, switchMap} from 'rxjs/operators';
 import {Complaint} from '../models/complaint';
 import {ComplaintItem} from '../models/complaintItem';
 import {BehaviorSubject, Observable, of} from 'rxjs';
@@ -8,9 +8,9 @@ import {RoofWindowSkylight} from '../models/roof-window-skylight';
 import {Company} from '../models/company';
 import {Address} from '../models/address';
 import {environment} from '../../environments/environment';
-import initializeApp = firebase.initializeApp;
-import {getStorage, ref, uploadBytes, listAll, deleteObject, getDownloadURL} from 'firebase/storage';
+import {deleteObject, getDownloadURL, getStorage, listAll, ref, uploadBytes} from 'firebase/storage';
 import firebase from 'firebase/compat';
+import initializeApp = firebase.initializeApp;
 
 class ImageSnippet {
   constructor(public src: string, public file: File) {

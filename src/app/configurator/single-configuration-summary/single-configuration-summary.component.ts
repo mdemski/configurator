@@ -1,7 +1,6 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {SingleConfiguration} from '../../models/single-configuration';
 import {Observable, Subject} from 'rxjs';
-import {ActivatedRoute} from '@angular/router';
 import {filter, map, takeUntil} from 'rxjs/operators';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';

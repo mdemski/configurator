@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {from, Observable, Subject} from 'rxjs';
 import {SingleConfiguration} from '../../models/single-configuration';
-import {concatMap, filter, map, takeUntil, tap} from 'rxjs/operators';
+import {concatMap, filter, map, takeUntil} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {WindowConfig} from '../../models/window-config';
@@ -9,10 +9,12 @@ import {FlashingConfig} from '../../models/flashing-config';
 import {Select, Store} from '@ngxs/store';
 import {
   DeleteAccessoryConfigurationByConfigAndAccessoryId,
-  DeleteFlashingConfigurationByConfigAndFlashingId, DeleteGlobalConfiguration,
+  DeleteFlashingConfigurationByConfigAndFlashingId,
+  DeleteGlobalConfiguration,
   DeleteRoofWindowConfigurationByConfigAndWindowId,
   UpdateAccessoryQuantityByConfigAndAccessoryId,
-  UpdateFlashingQuantityByConfigAndFlashingId, UpdateGlobalConfigurationNameByConfigId,
+  UpdateFlashingQuantityByConfigAndFlashingId,
+  UpdateGlobalConfigurationNameByConfigId,
   UpdateRoofWindowQuantityByConfigAndWindowId
 } from '../../store/configuration/configuration.actions';
 import {AppState} from '../../store/app/app.state';

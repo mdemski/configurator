@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { VerticalWindowDetailsComponent } from './vertical-window-details.component';
+import {VerticalWindowDetailsComponent} from './vertical-window-details.component';
 
 describe('VerticalWindowDetailsComponent', () => {
     let component: VerticalWindowDetailsComponent;

@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
       email: new FormControl(null, [Validators.required], [this.emailNotExists.bind(this)]),
       password: new FormControl(null, [Validators.minLength(8)])
     });
-    this.translate.get('LINK').subscribe(text => {
+    this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
       this.myAccountLink = text.myAccount;
     });
   }

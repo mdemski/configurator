@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FlatRoofWidnowDetailsComponent } from './flat-roof-widnow-details.component';
+import {FlatRoofWidnowDetailsComponent} from './flat-roof-widnow-details.component';
 
 describe('FlatRoofWidnowDetailsComponent', () => {
   let component: FlatRoofWidnowDetailsComponent;

@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { OkpolLoaderComponent } from './okpol-loader.component';
+import {OkpolLoaderComponent} from './okpol-loader.component';
 
 describe('OkpolLoaderComponent', () => {
   let component: OkpolLoaderComponent;

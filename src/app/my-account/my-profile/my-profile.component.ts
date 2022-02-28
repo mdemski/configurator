@@ -129,7 +129,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.user$.pipe(takeUntil(this.isDestroyed$), filter(user => user.email !== '')).subscribe(userData => {
       this.updateUserForm.patchValue({
-        id: userData.id,
+        id: userData._id,
         email: userData.email,
         name: userData.name,
         preferredLanguage: userData.preferredLanguage,

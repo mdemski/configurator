@@ -7,9 +7,9 @@ import {LoginUser} from '../models/loginUser';
 import {Router} from '@angular/router';
 import {IpService} from './ip.service';
 import moment from 'moment';
-import DurationConstructor = moment.unitOfTime.DurationConstructor;
 import {Store} from '@ngxs/store';
 import {SetCurrentUser} from '../store/app/app.actions';
+import DurationConstructor = moment.unitOfTime.DurationConstructor;
 
 interface AuthResponseData {
   success: boolean;

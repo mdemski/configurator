@@ -1,7 +1,7 @@
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {SetCurrentUser, SetPreferredLanguage} from './app.actions';
 import {AuthService} from '../../services/auth.service';
-import {filter, take, takeLast, tap} from 'rxjs/operators';
+import {tap} from 'rxjs/operators';
 import {CrudService} from '../../services/crud-service';
 
 export interface AppStateModel {

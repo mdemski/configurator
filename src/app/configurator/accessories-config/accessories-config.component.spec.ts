@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AccessoriesConfigComponent } from './accessories-config.component';
+import {AccessoriesConfigComponent} from './accessories-config.component';
 
 describe('AccessoriesConfigComponent', () => {
     let component: AccessoriesConfigComponent;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Select, Store} from '@ngxs/store';
 import {FlashingState} from '../../store/flashing/flashing.state';
 import {Observable} from 'rxjs';

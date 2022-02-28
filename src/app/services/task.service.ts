@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {of} from 'rxjs';
 import {Task} from '../models/task';
 import moment from 'moment';
-import {catchError, filter, map} from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'

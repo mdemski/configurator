@@ -4,11 +4,13 @@ import {Store} from '@ngxs/store';
 import {Observable} from 'rxjs';
 import {AvailableConfigDataState} from './available-config-data.state';
 import {
-  GetAccessoriesAvailableConfigData, GetAvailableGlazingsData,
+  GetAccessoriesAvailableConfigData,
+  GetAvailableGlazingsData,
   GetExclusionsForAccessories,
   GetExclusionsForFlashings,
   GetExclusionsForFlatRoofWindows,
-  GetExclusionsForRoofWindows, GetExclusionsForVerticalWindows,
+  GetExclusionsForRoofWindows,
+  GetExclusionsForVerticalWindows,
   GetFlashingsAvailableConfigData,
   GetFlatRoofWindowsAvailableConfigData,
   GetRoofWindowsAvailableConfigData,

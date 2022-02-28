@@ -3,7 +3,7 @@ import {Select, Store} from '@ngxs/store';
 import {AppState} from '../../store/app/app.state';
 import {Observable, Subject} from 'rxjs';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {filter, map, takeUntil} from 'rxjs/operators';
+import {map, takeUntil} from 'rxjs/operators';
 import {Task} from '../../models/task';
 import {TaskService} from '../../services/task.service';
 import moment from 'moment/moment';

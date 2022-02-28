@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {DisableControlDirective} from '../directives/disable-control.directive';
 import {ModalComponent} from '../modal/modal.component';
 import {BouncingLoaderComponent} from '../loaders/bouncing-loader.component';

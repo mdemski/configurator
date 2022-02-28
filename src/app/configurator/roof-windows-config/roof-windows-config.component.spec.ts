@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { RoofWindowsConfigComponent } from './roof-windows-config.component';
+import {RoofWindowsConfigComponent} from './roof-windows-config.component';
 
 describe('RoofWindowsConfigComponent', () => {
     let component: RoofWindowsConfigComponent;

@@ -1,12 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit, QueryList,
-  ViewChildren
-} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {LoadConfigurationService} from '../../services/load-configuration.service';
 import {TranslateService} from '@ngx-translate/core';
 import {Observable, Observer, Subject} from 'rxjs';
@@ -30,7 +22,9 @@ import {
   AddFlashingConfiguration,
   AddFlashingConfigurations,
   AddGlobalConfiguration,
-  UpdateFlashingConfiguration, UpdateFlashingConfigurations, UpdateFlashingFormByFormName
+  UpdateFlashingConfiguration,
+  UpdateFlashingConfigurations,
+  UpdateFlashingFormByFormName
 } from '../../store/configuration/configuration.actions';
 import {CartState} from '../../store/cart/cart.state';
 

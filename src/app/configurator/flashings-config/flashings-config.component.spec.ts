@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FlashingsConfigComponent } from './flashings-config.component';
+import {FlashingsConfigComponent} from './flashings-config.component';
 
 describe('FlashingsConfigComponent', () => {
     let component: FlashingsConfigComponent;

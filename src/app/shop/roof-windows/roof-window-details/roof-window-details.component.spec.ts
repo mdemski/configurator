@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { RoofWindowDetailsComponent } from './roof-window-details.component';
+import {RoofWindowDetailsComponent} from './roof-window-details.component';
 
 describe('RoofWindowDetailsComponent', () => {
     let component: RoofWindowDetailsComponent;

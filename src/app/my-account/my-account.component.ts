@@ -14,7 +14,7 @@ import {Complaint} from '../models/complaint';
 import {Order} from '../models/order';
 import {OrderService} from '../services/order.service';
 import {UserState} from '../store/user/user.state';
-import { Task } from '../models/task';
+import {Task} from '../models/task';
 import {TaskService} from '../services/task.service';
 
 @Component({

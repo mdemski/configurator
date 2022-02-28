@@ -4,12 +4,15 @@ import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {CrudService} from '../../services/crud-service';
 import {
   DeleteUser,
-  GetUserData, SetCompanyUserForUser,
-  SetUserMainAddress, SetUserMainAndToSendSameAddress,
+  GetUserData,
+  SetCompanyUserForUser,
+  SetUserMainAddress,
+  SetUserMainAndToSendSameAddress,
   SetUserToSendAddress,
   UpdateDiscountForUser,
   UpdateUserData,
-  UpdateUserMainAddress, UpdateUserToSendAddress
+  UpdateUserMainAddress,
+  UpdateUserToSendAddress
 } from './user.actions';
 import {filter, map, switchMap, tap} from 'rxjs/operators';
 import {User} from '../../models/user';

@@ -1,21 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
-import {
-  Observable,
-  Observer,
-  Subject,
-  Subscription
-} from 'rxjs';
+import {Observable, Observer, Subject, Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 import {RoofWindowSkylight} from '../../models/roof-window-skylight';
 import {RoofWindowValuesSetterService} from '../../services/roof-window-values-setter.service';
-import {
-  filter,
-  map, pairwise, startWith,
-  takeUntil,
-  tap
-} from 'rxjs/operators';
+import {filter, map, pairwise, startWith, takeUntil, tap} from 'rxjs/operators';
 import {LoadConfigurationService} from '../../services/load-configuration.service';
 import {HighestIdGetterService} from '../../services/highest-id-getter.service';
 import cryptoRandomString from 'crypto-random-string';
@@ -29,7 +19,8 @@ import {RoofWindowState} from '../../store/roof-window/roof-window.state';
 import {
   AddGlobalConfiguration,
   AddRoofWindowConfiguration,
-  UpdateRoofWindowConfiguration, UpdateRoofWindowFormByFormName
+  UpdateRoofWindowConfiguration,
+  UpdateRoofWindowFormByFormName
 } from '../../store/configuration/configuration.actions';
 import {AppState} from '../../store/app/app.state';
 import {CartState} from '../../store/cart/cart.state';

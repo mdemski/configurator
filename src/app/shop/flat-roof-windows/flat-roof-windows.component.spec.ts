@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FlatRoofWindowsComponent } from './flat-roof-windows.component';
+import {FlatRoofWindowsComponent} from './flat-roof-windows.component';
 
 describe('FlatRoofWindowsComponent', () => {
   let component: FlatRoofWindowsComponent;

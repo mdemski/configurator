@@ -20,6 +20,7 @@ import {CartComponent} from './cart/cart.component';
 import {CartGuard} from './store/cart/cart.guard';
 import {UserGuard} from './store/user/user.guard';
 import {ComplaintsGuard} from './store/complaint/complaints.guard';
+import {ResetPasswordComponent} from './my-account/my-profile/reset-password/reset-password.component';
 
 const appRoutes: Routes = [
   {path: 'sklep', loadChildren: () => import('./shop/shop.module').then(m => m.ShopModule)},
@@ -44,6 +45,7 @@ const appRoutes: Routes = [
   {path: 'confirmation/:random/:uuid', component: RegisterConfirmationPageComponent},
   {path: 'kontakt', component: ContactComponent},
   {path: 'logowanie', component: LoginComponent},
+  {path: 'reset', component: ResetPasswordComponent},
   {path: '', component: HomeComponent},
   {path: '**', component: HomeComponent}
 ];

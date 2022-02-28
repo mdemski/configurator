@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { VerticalWindowsConfigComponent } from './vertical-windows-config.component';
+import {VerticalWindowsConfigComponent} from './vertical-windows-config.component';
 
 describe('VerticalWindowsConfigComponent', () => {
     let component: VerticalWindowsConfigComponent;
