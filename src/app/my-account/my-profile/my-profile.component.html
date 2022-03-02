@@ -9,7 +9,7 @@
   <ng-template #elseBlock>
     <div class="header">
       <div class="header__my-profile">
-        <a routerLink="./{{ 'GENERAL.myProfileLink' | translate}}"
+        <a routerLink="/{{ 'LINK.myAccount' | translate}}/{{ 'LINK.myProfile' | translate}}"
            class="btn btn--dark-blue">{{ 'GENERAL.myProfile' | translate}}</a>
       </div>
 
@@ -594,8 +594,11 @@
       </div>
     </div>
 
+<!--    <div class="footer">-->
+<!--      <a (click)="logout()" class="btn btn&#45;&#45;dark-blue">{{ 'GENERAL.logout' | translate}}</a>-->
+<!--    </div>-->
     <div class="footer">
-      <a (click)="logout()" class="btn btn--dark-blue">{{ 'GENERAL.logout' | translate}}</a>
+      <a routerLink="../" class="btn btn--dark-blue">{{ 'LINK.back' | translate}}</a>
     </div>
   </ng-template>
 </div>
