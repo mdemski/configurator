@@ -133,7 +133,8 @@
     "linkToCart": "koszyk",
     "backButton": "Wróć",
     "close": "Zamknij",
-    "back": "Wróć"
+    "back": "Wróć",
+    "newTask": "zadanie"
   },
   "CONTACT": {
     "contactUs": "Skontaktuj się z nami",
@@ -735,6 +736,7 @@
     "Normalny": "Normalny",
     "edit": "Edytuj",
     "delete": "Usuń",
+    "addNewTask": "Dodaj nowe zadanie",
     "register": "Zarejestruj zadanie"
   }
 }
