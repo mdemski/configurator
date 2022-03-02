@@ -70,8 +70,8 @@
     </div>
 
 
-    <!--    <div *ngIf="(user$ | async)?.company as company" class="cooperation-section">-->
-    <div *ngIf="testCompany as company" class="cooperation-section">
+    <div *ngIf="(user$ | async)?.company as company" class="cooperation-section">
+      <!--    <div *ngIf="testCompany as company" class="cooperation-section">-->
       <h1 class="cooperation-section--title">{{'MY-PROFILE.cooperationSummaryTitle' | translate}}</h1>
       <div class="cooperation-section__container">
         <div class="cooperation-section__container__first-part">
@@ -106,8 +106,8 @@
       </div>
     </div>
 
-    <!--    <div *ngIf="(user$ | async)?.company as company" class="cooperation-section">-->
-    <div *ngIf="testCompany as company" class="invoices-section">
+    <div *ngIf="(user$ | async)?.company as company" class="invoices-section">
+      <!--    <div *ngIf="testCompany as company" class="invoices-section">-->
       <h1 class="cooperation-section--title">{{'MY-PROFILE.invoicesSection' | translate}}</h1>
       <form [formGroup]="filtrationForm" class="search-form">
         <table class="invoices-section__invoices-table">
@@ -408,8 +408,8 @@
         </form>
       </div>
 
-      <!--    <div *ngIf="(user$ | async)?.company as company" class="cooperation-section">-->
-      <div *ngIf="testCompany as company" class="my-profile-section__right-side">
+      <div *ngIf="(user$ | async)?.company as company" class="my-profile-section__right-side">
+        <!--      <div *ngIf="testCompany as company" class="my-profile-section__right-side">-->
         <h2 class="my-profile-section__right-side--title">{{'MY-PROFILE.companyData' | translate}}</h2>
         <form [formGroup]="updateCompanyForm" (ngSubmit)="onSubmitCompany()">
           <input type="hidden"
