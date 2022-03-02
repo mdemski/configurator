@@ -134,7 +134,9 @@
     "backButton": "Wróć",
     "close": "Zamknij",
     "back": "Wróć",
-    "newTask": "zadanie"
+    "newTask": "zadanie",
+    "complaints": "complaints",
+    "newComplaint": "zgloszenie"
   },
   "CONTACT": {
     "contactUs": "Skontaktuj się z nami",
@@ -635,6 +637,7 @@
     "resetPasswordTitle": "Zresetuj swoje hasło"
   },
   "COMPLAINT": {
+    "addNewComplaint": "Dodaj nową reklamację",
     "noComplaints": "Wygląda na to że wszystko gra. Brak reklamacji do wyświetlenia.",
     "erpNumber": "Numer reklamacji",
     "registrationDate": "Data rejestracji",
