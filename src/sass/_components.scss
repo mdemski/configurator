@@ -754,6 +754,13 @@ table {
   outline: none;
 }
 
+.footer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 6rem 0 3rem 0;
+}
+
 // If you set width to %,it will take the width of their parent element
 // In your case.the div takes the width of the parent element i.e td
 
