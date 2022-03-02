@@ -612,6 +612,8 @@
     "userData": "Dane osobowe",
     "companyData": "Dane firmowe",
     "name": "Nazwa",
+    "companyName": "Nazwa firmy",
+    "nip": "Numer NIP",
     "firstName": "Imię",
     "lastName": "Nazwisko",
     "preferredLanguage": "Preferowany język",
@@ -628,6 +630,7 @@
     "de": "niemiecki",
     "changePassword": "Resetuj hasło",
     "update": "Aktualizuj",
+    "updateCompany": "Aktualizuj dane firmowe",
     "resetPasswordTitle": "Zresetuj swoje hasło"
   },
   "COMPLAINT": {

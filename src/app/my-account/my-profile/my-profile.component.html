@@ -227,7 +227,7 @@
                    id="email"
                    formControlName="email"
                    class="form-control--input"
-                   >
+            >
           </div>
           <div *ngIf="updateUserForm.get('email').dirty || updateUserForm.get('email').touched">
             <div class="invalid-contact-data" *ngIf="updateUserForm.get('email').hasError('emailExists')">
@@ -248,7 +248,7 @@
                    id="name"
                    formControlName="name"
                    class="form-control--input"
-                   >
+            >
           </div>
           <div class="select-box sorting margin-bottom-2">
             <p class="form-control-field-title">{{'MY-PROFILE.preferredLanguage' | translate}}:</p>
@@ -259,9 +259,11 @@
                 <p class="select-box__input-text">{{'MY-PROFILE.' + lang | translate}}</p>
               </div>
               <div class="select-box__value">
-                <input class="select-box__input disabled" type="radio" id="{{(user$ | async).preferredLanguage}}" value="disabled"
+                <input class="select-box__input disabled" type="radio" id="{{(user$ | async).preferredLanguage}}"
+                       value="disabled"
                        formControlName="preferredLanguage" checked/>
-                <p class="select-box__input-text disabled">{{'MY-PROFILE.' + (user$ | async).preferredLanguage | translate}}</p>
+                <p
+                  class="select-box__input-text disabled">{{'MY-PROFILE.' + (user$ | async).preferredLanguage | translate}}</p>
               </div>
               <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg"
                    alt="Arrow Icon" aria-hidden="true"/>
@@ -279,7 +281,7 @@
                    id="firstName"
                    formControlName="firstName"
                    class="form-control--input"
-                   >
+            >
           </div>
           <div *ngIf="updateUserForm.get('firstName').dirty || updateUserForm.get('firstName').touched">
             <div
@@ -293,7 +295,7 @@
                    id="lastName"
                    formControlName="lastName"
                    class="form-control--input"
-                   >
+            >
           </div>
           <div *ngIf="updateUserForm.get('lastName').dirty || updateUserForm.get('lastName').touched">
             <div
@@ -307,7 +309,7 @@
                    id="street"
                    formControlName="street"
                    class="form-control--input"
-                   >
+            >
           </div>
           <div *ngIf="updateUserForm.get('street').dirty || updateUserForm.get('street').touched">
             <div
@@ -321,7 +323,7 @@
                    id="localNumber"
                    formControlName="localNumber"
                    class="form-control--input"
-                   >
+            >
           </div>
           <div class="md-form-control mt-3">
             <p class="form-control-field-title">{{'MY-PROFILE.zipCode' | translate}}:</p>
@@ -329,7 +331,7 @@
                    id="zipCode"
                    formControlName="zipCode"
                    class="form-control--input"
-                   >
+            >
           </div>
           <div *ngIf="updateUserForm.get('zipCode').dirty || updateUserForm.get('zipCode').touched">
             <div
@@ -346,7 +348,7 @@
                    id="city"
                    formControlName="city"
                    class="form-control--input"
-                   >
+            >
           </div>
           <div *ngIf="updateUserForm.get('city').dirty || updateUserForm.get('city').touched">
             <div
@@ -363,7 +365,8 @@
                 <p class="select-box__input-text">{{country}}</p>
               </div>
               <div class="select-box__value">
-                <input class="select-box__input disabled" type="radio" id="{{(user$ | async).address?.country}}" value="disabled"
+                <input class="select-box__input disabled" type="radio" id="{{(user$ | async).address?.country}}"
+                       value="disabled"
                        formControlName="country" checked/>
                 <p class="select-box__input-text disabled">{{(user$ | async).address?.country}}</p>
               </div>
@@ -383,7 +386,7 @@
                    id="phoneNumber"
                    formControlName="phoneNumber"
                    class="form-control--input"
-                   >
+            >
           </div>
           <div *ngIf="updateUserForm.get('phoneNumber').dirty || updateUserForm.get('phoneNumber').touched">
             <div class="invalid-contact-data" *ngIf="updateUserForm.get('phoneNumber').invalid">
@@ -396,9 +399,11 @@
                  class="form-control--input"
           >
           <div class="button-container">
-            <button *ngIf="!isUpdating" type="submit" [disabled]="updateUserForm.invalid">{{ 'MY-PROFILE.update' | translate}}</button>
+            <button *ngIf="!isUpdating" type="submit"
+                    [disabled]="updateUserForm.invalid">{{ 'MY-PROFILE.update' | translate}}</button>
             <app-bouncing-loader class="loading" *ngIf="isUpdating"></app-bouncing-loader>
-            <button class="reset-password-button" type="button" routerLink="../../reset">{{ 'MY-PROFILE.changePassword' | translate}}</button>
+            <button class="reset-password-button" type="button"
+                    routerLink="../../reset">{{ 'MY-PROFILE.changePassword' | translate}}</button>
           </div>
         </form>
       </div>
@@ -406,9 +411,186 @@
       <!--    <div *ngIf="(user$ | async)?.company as company" class="cooperation-section">-->
       <div *ngIf="testCompany as company" class="my-profile-section__right-side">
         <h2 class="my-profile-section__right-side--title">{{'MY-PROFILE.companyData' | translate}}</h2>
+        <form [formGroup]="updateCompanyForm" (ngSubmit)="onSubmitCompany()">
+          <input type="hidden"
+                 id="companyCode"
+                 formControlName="companyCode"
+                 class="form-control--input"
+          >
+          <div class="md-form-control mt-3">
+            <p class="form-control-field-title">{{'MY-PROFILE.companyName' | translate}}:</p>
+            <input type="text"
+                   id="companyName"
+                   formControlName="companyName"
+                   class="form-control--input"
+                   disabled>
+          </div>
+          <div *ngIf="updateCompanyForm.get('companyName').dirty || updateCompanyForm.get('companyName').touched">
+            <div
+              class="invalid-contact-data" *ngIf="updateCompanyForm.get('companyName').hasError('required')">
+              {{'REGISTER.requiredField' | translate}}
+            </div>
+          </div>
+          <div class="md-form-control mt-3">
+            <p class="form-control-field-title">{{'MY-PROFILE.email' | translate}}:</p>
+            <input type="text"
+                   id="companyEmail"
+                   formControlName="companyEmail"
+                   class="form-control--input"
+            >
+          </div>
+          <div *ngIf="updateCompanyForm.get('companyEmail').dirty || updateCompanyForm.get('companyEmail').touched">
+            <div class="invalid-contact-data" *ngIf="updateCompanyForm.get('companyEmail').hasError('emailExists')">
+              {{'REGISTER.emailExists' | translate}}
+            </div>
+            <div
+              class="invalid-contact-data" *ngIf="updateCompanyForm.get('companyEmail').hasError('required')">
+              {{'REGISTER.requiredField' | translate}}
+            </div>
+            <div
+              class="invalid-contact-data" *ngIf="updateCompanyForm.get('companyEmail').hasError('companyEmail')">
+              {{'REGISTER.wrongEmail' | translate}}
+            </div>
+          </div>
+          <div class="md-form-control mt-3">
+            <p class="form-control-field-title">{{'MY-PROFILE.nip' | translate}}:</p>
+            <input type="text"
+                   id="nip"
+                   formControlName="nip"
+                   class="form-control--input"
+                   disabled
+            >
+          </div>
 
-        Load data for company if exists to update
+          <div class="md-form-control mt-3">
+            <p class="form-control-field-title">{{'MY-PROFILE.firstName' | translate}}:</p>
+            <input type="text"
+                   id="companyFirstName"
+                   formControlName="companyFirstName"
+                   class="form-control--input"
+            >
+          </div>
+          <div
+            *ngIf="updateCompanyForm.get('companyFirstName').dirty || updateCompanyForm.get('companyFirstName').touched">
+            <div
+              class="invalid-contact-data" *ngIf="updateCompanyForm.get('companyFirstName').hasError('required')">
+              {{'REGISTER.requiredField' | translate}}
+            </div>
+          </div>
+          <div class="md-form-control mt-3">
+            <p class="form-control-field-title">{{'MY-PROFILE.lastName' | translate}}:</p>
+            <input type="text"
+                   id="companyLastName"
+                   formControlName="companyLastName"
+                   class="form-control--input"
+            >
+          </div>
+          <div
+            *ngIf="updateCompanyForm.get('companyLastName').dirty || updateCompanyForm.get('companyLastName').touched">
+            <div
+              class="invalid-contact-data" *ngIf="updateCompanyForm.get('companyLastName').hasError('required')">
+              {{'REGISTER.requiredField' | translate}}
+            </div>
+          </div>
+          <div class="md-form-control mt-3">
+            <p class="form-control-field-title">{{'MY-PROFILE.street' | translate}}:</p>
+            <input type="text"
+                   id="companyStreet"
+                   formControlName="companyStreet"
+                   class="form-control--input"
+            >
+          </div>
+          <div *ngIf="updateCompanyForm.get('companyStreet').dirty || updateCompanyForm.get('companyStreet').touched">
+            <div
+              class="invalid-contact-data" *ngIf="updateCompanyForm.get('companyStreet').hasError('required')">
+              {{'REGISTER.requiredField' | translate}}
+            </div>
+          </div>
+          <div class="md-form-control mt-3">
+            <p class="form-control-field-title">{{'MY-PROFILE.localNumber' | translate}}:</p>
+            <input type="text"
+                   id="companyLocalNumber"
+                   formControlName="companyLocalNumber"
+                   class="form-control--input"
+            >
+          </div>
+          <div class="md-form-control mt-3">
+            <p class="form-control-field-title">{{'MY-PROFILE.zipCode' | translate}}:</p>
+            <input type="text"
+                   id="companyZipCode"
+                   formControlName="companyZipCode"
+                   class="form-control--input"
+            >
+          </div>
+          <div *ngIf="updateCompanyForm.get('companyZipCode').dirty || updateCompanyForm.get('companyZipCode').touched">
+            <div
+              class="invalid-contact-data" *ngIf="updateCompanyForm.get('companyZipCode').hasError('required')">
+              {{'REGISTER.requiredField' | translate}}
+            </div>
+            <div class="invalid-contact-data" *ngIf="updateCompanyForm.get('companyZipCode').invalid">
+              {{'REGISTER.wrongPhoneNumber' | translate}}
+            </div>
+          </div>
+          <div class="md-form-control mt-3">
+            <p class="form-control-field-title">{{'MY-PROFILE.city' | translate}}:</p>
+            <input type="text"
+                   id="companyCity"
+                   formControlName="companyCity"
+                   class="form-control--input"
+            >
+          </div>
+          <div *ngIf="updateCompanyForm.get('companyCity').dirty || updateCompanyForm.get('companyCity').touched">
+            <div
+              class="invalid-contact-data" *ngIf="updateCompanyForm.get('companyCity').hasError('required')">
+              {{'REGISTER.requiredField' | translate}}
+            </div>
+          </div>
+          <div class="select-box sorting margin-bottom-2">
+            <p class="form-control-field-title">{{'MY-PROFILE.country' | translate}}:</p>
+            <div class="select-box__current" tabindex="1">  <!--Usunięcie tabindex rozwala selecta-->
+              <div class="select-box__value" *ngFor="let companyCountry of this.countries$ | async; let i = index">
+                <input class="select-box__input" type="radio" id="{{companyCountry + i}}" value="{{companyCountry}}"
+                       formControlName="companyCountry"/>
+                <p class="select-box__input-text">{{companyCountry}}</p>
+              </div>
+              <div class="select-box__value">
+                <input class="select-box__input disabled" type="radio" id="{{company.address?._country}}"
+                       value="disabledCompany"
+                       formControlName="companyCountry" checked/>
+                <p class="select-box__input-text disabled">{{company.address?._country}}</p>
+              </div>
+              <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg"
+                   alt="Arrow Icon" aria-hidden="true"/>
+            </div>
+            <ul class="select-box__list overflow-scroll-Y">
+              <li *ngFor="let companyCountry of this.countries$ | async; let i = index">
+                <label class="select-box__option margin-bottom-0"
+                       for="{{companyCountry + i}}" aria-hidden="aria-hidden">{{companyCountry}}</label>
+              </li>
+            </ul>
+          </div>
+          <div class="md-form-control mt-3">
+            <p class="form-control-field-title">{{'MY-PROFILE.phoneNumber' | translate}}:</p>
+            <input type="text"
+                   id="companyPhoneNumber"
+                   formControlName="companyPhoneNumber"
+                   class="form-control--input"
+            >
+          </div>
+          <div
+            *ngIf="updateCompanyForm.get('companyPhoneNumber').dirty || updateCompanyForm.get('companyPhoneNumber').touched">
+            <div class="invalid-contact-data" *ngIf="updateCompanyForm.get('companyPhoneNumber').invalid">
+              {{'REGISTER.wrongPhoneNumber' | translate}}
+            </div>
+          </div>
 
+          <div class="button-container">
+            <button *ngIf="!isUpdatingCompany" type="submit"
+                    [disabled]="updateCompanyForm.invalid">{{ 'MY-PROFILE.updateCompany' | translate}}</button>
+            <app-bouncing-loader class="loading" *ngIf="isUpdatingCompany"></app-bouncing-loader>
+          </div>
+
+        </form>
       </div>
     </div>
 

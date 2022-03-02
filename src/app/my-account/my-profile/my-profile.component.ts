@@ -18,6 +18,7 @@ import moment from 'moment';
 import {CrudService} from '../../services/crud-service';
 import {Address} from '../../models/address';
 import {UpdateUserData} from '../../store/user/user.actions';
+import {Company} from '../../models/company';
 
 @Component({
   selector: 'app-my-profile',
@@ -29,16 +30,19 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('pieCanvas') private pieCanvas: ElementRef;
   @Select(UserState) user$: Observable<any>;
   @Select(CartState) cart$: Observable<any>;
+  company$ = new BehaviorSubject<Company>(null);
   updateUserForm: FormGroup;
+  updateCompanyForm: FormGroup;
   currency$ = new BehaviorSubject('PLN');
   vatRate$ = new BehaviorSubject(0.23);
   isDestroyed$ = new Subject();
   loading = true;
   isUpdating = false;
+  isUpdatingCompany = false;
   currencies: string[] = [];
   rates: number[] = [];
   pieChart: any;
-  countries$;
+  countries$ = new BehaviorSubject(null);
   testCompany;
   filteredInvoices: Invoice[] = [];
   invoices: Invoice[] = [];
@@ -70,7 +74,9 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
               private store: Store,
               private crud: CrudService,
               private db: DatabaseService) {
+    // TODO poprawić na dane z api eNova
     this.testCompany = this.db.getAllSellers()[0];
+    this.company$.next(this.testCompany);
     this.invoices = this.db.getAllSellers()[0].invoices;
     this.currencies = Object.keys(exchange);
     this.rates = Object.values(vatRates);
@@ -81,7 +87,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.translatedLabels.push(text[label]);
       }
     });
-    this.countries$ = this.crud.getCountryList();
+    this.crud.getCountryList().pipe(takeUntil(this.isDestroyed$)).subscribe(countries => this.countries$.next(countries));
   }
 
   ngOnInit(): void {
@@ -144,7 +150,36 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         addressId: userData.address._id
       }, {emitEvent: false});
     });
-    this.testCompany.invoices = this.invoices;
+    this.updateCompanyForm = this.fb.group({
+      companyCode: new FormControl(null),
+      companyEmail: new FormControl(null, [Validators.required, Validators.email], [this.emailExists.bind(this)]),
+      companyName: new FormControl(null),
+      nip: new FormControl(null),
+      companyFirstName: new FormControl(null, Validators.required),
+      companyLastName: new FormControl(null, Validators.required),
+      companyStreet: new FormControl(null, Validators.required),
+      companyLocalNumber: new FormControl(null),
+      companyZipCode: new FormControl(null, [Validators.pattern('[0-9]{2}-[0-9]{3}'), Validators.required]),
+      companyCity: new FormControl(null, Validators.required),
+      companyCountry: new FormControl(null, Validators.required),
+      companyPhoneNumber: new FormControl(null, [Validators.pattern('^\\+?[0-9]{3}-?[0-9]{6,12}$')])
+    });
+    this.company$.pipe(takeUntil(this.isDestroyed$)).subscribe(companyData => {
+      this.updateCompanyForm.patchValue({
+        companyCode: companyData.companyCode,
+        companyEmail: companyData.email,
+        companyName: companyData.name,
+        nip: companyData.nip,
+        companyFirstName: companyData.address.firstName,
+        companyLastName: companyData.address.lastName,
+        companyStreet: companyData.address.street,
+        companyLocalNumber: companyData.address.localNumber,
+        companyZipCode: companyData.address.zipCode,
+        companyCity: companyData.address.city,
+        companyCountry: companyData.address.country,
+        companyPhoneNumber: companyData.address.phoneNumber
+      }, {emitEvent: false});
+    });
     this.filteredInvoices = this.invoices;
     this.loading = false;
   }
@@ -188,7 +223,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     const updatedAddress = new Address(
       this.updateUserForm.value.firstName, this.updateUserForm.value.lastName, this.updateUserForm.value.phoneNumber, this.updateUserForm.value.street,
       this.updateUserForm.value.localNumber, this.updateUserForm.value.zipCode, this.updateUserForm.value.city , this.updateUserForm.value.country);
-    // this.crud.updateAddress(updatedAddress, this.updateUserForm.value.addressId).pipe().subscribe(() => console.log('Address updated successfully'));
+    this.crud.updateAddress(updatedAddress, this.updateUserForm.value.addressId).pipe().subscribe(() => console.log('Address updated successfully'));
     this.user$.pipe(takeUntil(this.isDestroyed$), take(1)).subscribe(user => {
       const updatedUser = _.cloneDeep(user);
       updatedUser.email = this.updateUserForm.value.email;
@@ -196,6 +231,25 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       updatedUser.preferredLanguage = this.updateUserForm.value.preferredLanguage;
       this.store.dispatch(new UpdateUserData(updatedUser));
       this.isUpdating = false;
+    });
+  }
+
+  onSubmitCompany() {
+    this.isUpdatingCompany = true;
+    this.company$.pipe(takeUntil(this.isDestroyed$), take(1)).subscribe(company => {
+      const updatedCompany = _.cloneDeep(company);
+      updatedCompany.email = this.updateCompanyForm.value.email;
+      updatedCompany.address.firstName = this.updateCompanyForm.value.firstName;
+      updatedCompany.address.lastName = this.updateCompanyForm.value.lastName;
+      updatedCompany.address.phoneNumber = this.updateCompanyForm.value.phoneNumber;
+      updatedCompany.address.street = this.updateCompanyForm.value.companyStreet;
+      updatedCompany.address.localNumber = this.updateCompanyForm.value.companyLocalNumber;
+      updatedCompany.address.zipCode = this.updateCompanyForm.value.companyZipCode;
+      updatedCompany.address.city = this.updateCompanyForm.value.companyCity;
+      updatedCompany.address.country = this.updateCompanyForm.value.companyCountry;
+      this.crud.updateCompany(updatedCompany).pipe(takeUntil(this.isDestroyed$)).subscribe(() => {
+        this.isUpdatingCompany = false;
+      });
     });
   }
 

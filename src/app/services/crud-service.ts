@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {DatabaseService} from './database.service';
 import {RoofWindowSkylight} from '../models/roof-window-skylight';
@@ -45,9 +45,11 @@ export class CrudService {
   }
 
   getCountryList() {
-    return this.http.get('https://countriesnow.space/api/v0.1/countries').pipe(map((object: { error: boolean, msg: string, data: [{ country: string, cities: [] }] }) => {
-      return object.data.map(response => response.country);
-    }));
+    // TODO pobierać listę krajów z eNova, a w widoku wyświetlać przetłumaczoną formę
+    return of(['Polska', 'Niemcy', 'Włochy', 'Francja', 'Holandia', 'Wielka Brytania', 'Afghanistan', 'Polzka']);
+    // return this.http.get('https://countriesnow.space/api/v0.1/countries').pipe(map((object: { error: boolean, msg: string, data: [{ country: string, cities: [] }] }) => {
+    //   return object.data.map(response => response.country);
+    // }));
   }
 
   // Zawieszone ze względu na koszty zapytanie 5USD/1k zapytań
@@ -82,6 +84,11 @@ export class CrudService {
   createCompany(registerCompany: Company) {
     // TODO przygotować odpowiednią metodę komunikacyjną z eNova
     return this.http.post('urlToEnova', registerCompany);
+  }
+
+  updateCompany(updatedCompany: Company) {
+    // TODO przygotować odpowiednią metodę komunikacyjną z eNova
+    return this.http.put('urlToEnova', updatedCompany, {headers: this.headers}).pipe(catchError(err => err));
   }
 
   // USERS
