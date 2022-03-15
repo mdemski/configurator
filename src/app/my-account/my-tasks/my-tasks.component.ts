@@ -94,7 +94,7 @@ export class MyTasksComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.isDestroyed$.next();
+    this.isDestroyed$.next(null);
   }
 
   // tslint:disable-next-line:max-line-length

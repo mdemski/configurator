@@ -17,7 +17,7 @@ export class FlashingValueSetterService implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.isDestroyed$.next();
+    this.isDestroyed$.next(null);
   }
 
 

@@ -37,6 +37,7 @@
     "circular-json": "^0.5.9",
     "compass": "^0.1.1",
     "compass-mixins": "^0.12.11",
+    "crypto-browserify": "^3.12.0",
     "crypto-js": "^4.1.1",
     "crypto-random-string": "^4.0.0",
     "easy-pie-chart": "^2.1.7",
@@ -57,6 +58,7 @@
     "zone.js": "~0.11.5"
   },
   "devDependencies": {
+    "@angular-builders/custom-webpack": "^13.1.0",
     "@angular-devkit/architect": "^0.1302",
     "@angular-devkit/build-angular": "^13.0.0",
     "@angular/cli": "^13.0.0",
@@ -88,6 +90,6 @@
     "protractor": "~7.0.0",
     "ts-node": "~10.6.0",
     "tslint": "~6.1.0",
-    "typescript": "^4.6.2"
+    "typescript": "^4.5.5"
   }
 }

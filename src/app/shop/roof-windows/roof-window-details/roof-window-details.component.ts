@@ -67,7 +67,7 @@ export class RoofWindowDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.isDestroyed$.next();
+    this.isDestroyed$.next(null);
   }
 
   getDiscountPrice() {

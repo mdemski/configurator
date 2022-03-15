@@ -133,7 +133,7 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.isDestroyed$.next();
+    this.isDestroyed$.next(null);
   }
 
   getNumberInRow() {

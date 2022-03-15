@@ -242,7 +242,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   ngOnDestroy(): void {
-    this.isDestroyed$.next();
+    this.isDestroyed$.next(null);
   }
 
   private loadForm() {

@@ -56,7 +56,7 @@ export class RegisterConfirmationPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.isDestroyed$.next();
+    this.isDestroyed$.next(null);
   }
 
 }

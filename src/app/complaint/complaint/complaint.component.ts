@@ -73,7 +73,7 @@ export class ComplaintComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.isDestroyed$.next();
+    this.isDestroyed$.next(null);
   }
 
   deleteComplaint(complaint: Complaint) {

@@ -11,7 +11,8 @@ import moment from 'moment';
 import {DeleteGlobalConfiguration} from '../../store/configuration/configuration.actions';
 
 @Component({
-  selector: 'app-my-configurations',
+  selector: 'app-my-configurations' +
+    '',
   templateUrl: './my-configurations.component.html',
   styleUrls: ['./my-configurations.component.scss']
 })
@@ -77,7 +78,7 @@ export class MyConfigurationsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.isDestroyed$.next();
+    this.isDestroyed$.next(null);
   }
 
   private filterTable(filtersObject: { nameSearch: string; userIDSearch: string; globalIDSearch: string; updatedSearch: string; createdSearch: string }) {

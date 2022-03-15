@@ -78,7 +78,7 @@ export class RoofWindowFiltrationComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.isDestroyed$.next();
+    this.isDestroyed$.next(null);
   }
 
   search(filtersObject: any): void {

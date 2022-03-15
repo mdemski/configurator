@@ -70,7 +70,7 @@ export class MyAccountComponent implements OnInit, OnDestroy {
   // /* tslint:disable:template-use-track-by-function */
   /* tslint:disable: template-no-call-expression */
   ngOnDestroy(): void {
-    this.isDestroyed$.next();
+    this.isDestroyed$.next(null);
   }
 
   logout() {

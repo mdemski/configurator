@@ -201,7 +201,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   // TODO Wyświetlanie ceny podstawowej z eNovy podczas natrafienia na kod będący w eNova i zaproponowanie prześcia do sklepu
 
   ngOnDestroy() {
-    this.isDestroyed$.next();
+    this.isDestroyed$.next(null);
   }
 
   private loadForm() {

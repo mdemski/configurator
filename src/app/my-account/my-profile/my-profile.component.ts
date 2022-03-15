@@ -9,7 +9,6 @@ import {CartState} from '../../store/cart/cart.state';
 import exchange from '../../../assets/json/echange.json';
 import vatRates from '../../../assets/json/vatRates.json';
 import {DatabaseService} from '../../services/database.service';
-import Chart from 'chart.js';
 import {TranslateService} from '@ngx-translate/core';
 import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {Invoice} from '../../models/invoice';
@@ -19,6 +18,8 @@ import {CrudService} from '../../services/crud-service';
 import {Address} from '../../models/address';
 import {UpdateUserData} from '../../store/user/user.actions';
 import {Company} from '../../models/company';
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
 
 @Component({
   selector: 'app-my-profile',
@@ -189,7 +190,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy(): void {
-    this.isDestroyed$.next();
+    this.isDestroyed$.next(null);
   }
 
   pieChartBrowser() {

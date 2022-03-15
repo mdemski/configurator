@@ -114,7 +114,7 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.isDestroyed$.next();
+    this.isDestroyed$.next(null);
   }
 
   resize(delta: number, quantity: number, globalConfiguration: SingleConfiguration, product, productId) {

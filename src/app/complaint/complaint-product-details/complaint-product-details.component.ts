@@ -52,7 +52,7 @@ export class ComplaintProductDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.isDestroyed$.next();
+    this.isDestroyed$.next(null);
   }
 
   addPhotosPopup() {
