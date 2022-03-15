@@ -59,6 +59,7 @@ export class ComplaintState {
     return this.complaintService.deleteComplaint(complaint).pipe(tap(() => {
       ctx.setState(
         patch({
+          // @ts-ignore
           complaints: removeItem(removedComplaint => !!removedComplaint && removedComplaint.erpNumber === complaint.erpNumber)
         }));
     }));
@@ -70,8 +71,7 @@ export class ComplaintState {
       ctx.setState(
         patch({
           complaints: updateItem(updatedComplaint => !!updatedComplaint && updatedComplaint.erpNumber === result.erpNumber, result)
-        })
-      )
+        }));
     }));
   }
 }
