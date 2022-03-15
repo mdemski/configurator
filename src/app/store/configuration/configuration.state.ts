@@ -310,6 +310,7 @@ export class ConfigurationState {
       tap((result: SingleConfiguration) => {
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(updatedConfiguration => !!updatedConfiguration && updatedConfiguration._id === mongoId, patch({...result}))
           }));
       }));
@@ -321,6 +322,7 @@ export class ConfigurationState {
       tap((result: SingleConfiguration) => {
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(updatedConfiguration => !!updatedConfiguration && updatedConfiguration._id === result._id, patch({...result}))
           }));
       }));
@@ -337,6 +339,7 @@ export class ConfigurationState {
       tap((result: SingleConfiguration) => {
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(updatedConfiguration => !!updatedConfiguration && updatedConfiguration._id === result._id, patch({...result}))
           }));
       }));
@@ -352,6 +355,7 @@ export class ConfigurationState {
       tap(() => {
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(config => !!config && config._id === configuration._id, patch({...configuration}))
           }));
       }));
@@ -367,6 +371,7 @@ export class ConfigurationState {
       tap(() => {
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(config => !!config && config._id === configuration._id, patch({...configuration}))
           }));
       }));
@@ -384,6 +389,7 @@ export class ConfigurationState {
       tap(() => {
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(config => !!config && config._id === configuration._id, patch({...configuration}))
           }));
       }));
@@ -404,6 +410,7 @@ export class ConfigurationState {
         // configList[configIndex].products.windows = configList[configIndex].products.windows.filter(window => window.id !== windowId);
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(config => !!config && config._id === configuration._id, patch({...configuration}))
           }));
       }));
@@ -420,6 +427,7 @@ export class ConfigurationState {
       tap((result: SingleConfiguration) => {
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(updatedConfiguration => !!updatedConfiguration && updatedConfiguration._id === result._id, patch({...result}))
           }));
       }));
@@ -433,6 +441,7 @@ export class ConfigurationState {
       tap((result: SingleConfiguration) => {
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(updatedConfiguration => !!updatedConfiguration && updatedConfiguration._id === result._id, patch({...result}))
           }));
       }));
@@ -448,6 +457,7 @@ export class ConfigurationState {
       tap(() => {
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(config => !!config && config._id === configuration._id, patch({...configuration}))
           }));
       }));
@@ -463,6 +473,7 @@ export class ConfigurationState {
       tap(() => {
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(config => !!config && config._id === configuration._id, patch({...configuration}))
           }));
       }));
@@ -478,6 +489,7 @@ export class ConfigurationState {
       tap(() => {
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(config => !!config && config._id === configuration._id, patch({...configuration}))
           }));
       }));
@@ -495,6 +507,7 @@ export class ConfigurationState {
       tap(() => {
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(config => !!config && config._id === configuration._id, patch({...configuration}))
           }));
       }));
@@ -513,6 +526,7 @@ export class ConfigurationState {
       tap(() => {
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(config => !!config && config._id === configuration._id, patch({...configuration}))
           }));
       }));
@@ -529,6 +543,7 @@ export class ConfigurationState {
       tap((result: SingleConfiguration) => {
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(updatedConfiguration => !!updatedConfiguration && updatedConfiguration._id === result._id, patch({...result}))
           }));
       }));
@@ -544,6 +559,7 @@ export class ConfigurationState {
       tap(() => {
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(config => !!config && config._id === configuration._id, patch({...configuration}))
           }));
       }));
@@ -559,6 +575,7 @@ export class ConfigurationState {
       tap(() => {
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(config => !!config && config._id === configuration._id, patch({...configuration}))
           }));
       }));
@@ -576,6 +593,7 @@ export class ConfigurationState {
       tap(() => {
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(config => !!config && config._id === configuration._id, patch({...configuration}))
           }));
       }));
@@ -594,6 +612,7 @@ export class ConfigurationState {
       tap(() => {
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(config => !!config && config._id === configuration._id, patch({...configuration}))
           }));
       }));
@@ -610,6 +629,7 @@ export class ConfigurationState {
       tap((result: SingleConfiguration) => {
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(updatedConfiguration => !!updatedConfiguration && updatedConfiguration._id === result._id, patch({...result}))
           }));
       }));
@@ -625,6 +645,7 @@ export class ConfigurationState {
       tap(() => {
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(config => !!config && config._id === configuration._id, patch({...configuration}))
           }));
       }));
@@ -640,6 +661,7 @@ export class ConfigurationState {
       tap(() => {
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(config => !!config && config._id === configuration._id, patch({...configuration}))
           }));
       }));
@@ -657,6 +679,7 @@ export class ConfigurationState {
       tap(() => {
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(config => !!config && config._id === configuration._id, patch({...configuration}))
           }));
       }));
@@ -675,6 +698,7 @@ export class ConfigurationState {
       tap(() => {
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(config => !!config && config._id === configuration._id, patch({...configuration}))
           }));
       }));
@@ -691,6 +715,7 @@ export class ConfigurationState {
       tap((result: SingleConfiguration) => {
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(updatedConfiguration => !!updatedConfiguration && updatedConfiguration._id === result._id, patch({...result}))
           }));
       }));
@@ -706,6 +731,7 @@ export class ConfigurationState {
       tap(() => {
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(config => !!config && config._id === configuration._id, patch({...configuration}))
           }));
       }));
@@ -721,6 +747,7 @@ export class ConfigurationState {
       tap(() => {
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(config => !!config && config._id === configuration._id, patch({...configuration}))
           }));
       }));
@@ -738,6 +765,7 @@ export class ConfigurationState {
       tap(() => {
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(config => !!config && config._id === configuration._id, patch({...configuration}))
           }));
       }));
@@ -756,6 +784,7 @@ export class ConfigurationState {
       tap(() => {
         ctx.setState(
           patch({
+            // @ts-ignore
             configurations: updateItem(config => !!config && config._id === configuration._id, patch({...configuration}))
           }));
       }));
