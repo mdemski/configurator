@@ -129,7 +129,7 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
       return nameFound && widthFound && heightFound;
     });
     this.sortArray();
-    this.isFiltering = false;
+    this.isFiltering = false; //fryty
   }
 
   ngOnDestroy() {
