@@ -9,7 +9,7 @@ import {Company} from '../models/company';
 import {Address} from '../models/address';
 import {environment} from '../../environments/environment';
 import {deleteObject, getDownloadURL, getStorage, listAll, ref, uploadBytes} from 'firebase/storage';
-import firebase from 'firebase/compat';
+import firebase from 'firebase/compat/app';
 import initializeApp = firebase.initializeApp;
 
 class ImageSnippet {
