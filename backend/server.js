@@ -38,7 +38,7 @@ app.use('/api/carts', cartRoute);
 // routes.initialize(app);
 
 // Create port
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 4100;
 const server = app.listen(port, () => {
   console.log('Connected to port ' + port)
 })
