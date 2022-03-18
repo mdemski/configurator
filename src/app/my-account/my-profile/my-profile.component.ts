@@ -18,8 +18,7 @@ import {CrudService} from '../../services/crud-service';
 import {Address} from '../../models/address';
 import {UpdateUserData} from '../../store/user/user.actions';
 import {Company} from '../../models/company';
-import { Chart, registerables } from 'chart.js';
-Chart.register(...registerables);
+import { Chart } from 'chart.js';
 
 @Component({
   selector: 'app-my-profile',
