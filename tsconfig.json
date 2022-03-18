@@ -16,7 +16,10 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths":{
+      "crypto":["node_modules/crypto-js"]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
