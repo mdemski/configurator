@@ -7,7 +7,7 @@ import {Select, Store} from '@ngxs/store';
 import {AppState} from '../../store/app/app.state';
 import {Complaint} from '../../models/complaint';
 import {ComplaintItem} from '../../models/complaintItem';
-import {getDownloadURL} from 'firebase/storage';
+import { getDownloadURL } from 'firebase/storage';
 import {DeleteComplaintItem} from '../../store/complaint/complaint.actions';
 
 @Component({
