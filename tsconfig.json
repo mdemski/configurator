@@ -7,24 +7,20 @@
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
-    "module": "esnext",
     "moduleResolution": "node",
     "importHelpers": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "target": "es2015",
+    "target": "es2017",
+    "module": "es2020",
     "lib": [
-      "es2018",
+      "es2020",
       "dom"
-    ],
-    "paths":{
-      "crypto":["node_modules/crypto-js"]
-    }
+    ]
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true,
-    "enableIvy": false,
-//    "skipLibCheck": true
+    "enableIvy": false
   }
 }

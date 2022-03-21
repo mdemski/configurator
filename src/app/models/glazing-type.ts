@@ -19,6 +19,7 @@ export class GlazingType {
   private _zastosowanie: string;
 
 
+  // tslint:disable-next-line:max-line-length
   constructor(model: string, DrewnoSosna: boolean, PVC: boolean, dwuszybowy: boolean, trzyszybowy: boolean, trzyszybowyKrypton: boolean, zewnetrznaHartowana: boolean, wewnetrznaHartowana: boolean, sunGuard: boolean, bioClean: boolean, matowa: boolean, redukcjaHalasu: boolean, laminowanaP1: boolean, laminowanaP2: boolean, laminowanaP4: boolean, ug: number, gazSzlachetny: string, zastosowanie: string) {
     this._model = model;
     this._DrewnoSosna = DrewnoSosna;

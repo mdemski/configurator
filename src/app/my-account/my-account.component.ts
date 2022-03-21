@@ -16,6 +16,7 @@ import {OrderService} from '../services/order.service';
 import {UserState} from '../store/user/user.state';
 import {Task} from '../models/task';
 import {TaskService} from '../services/task.service';
+import {SingleConfiguration} from '../models/single-configuration';
 
 @Component({
   selector: 'app-my-account',
@@ -27,7 +28,7 @@ export class MyAccountComponent implements OnInit, OnDestroy {
   @Select(CartState) cart$: Observable<any>;
   @Select(AppState) currentUser$: Observable<{ currentUser }>;
   @Select(UserState) user$: Observable<any>;
-  @Select(ConfigurationState) userConfigurations$;
+  @Select(ConfigurationState) userConfigurations$: Observable<SingleConfiguration[]>;
   @Select(ComplaintState) userComplaints$: Observable<Complaint[]>;
 
   currency$ = new BehaviorSubject('PLN');

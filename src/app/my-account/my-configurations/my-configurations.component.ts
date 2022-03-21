@@ -52,7 +52,7 @@ export class MyConfigurationsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.userConfigurations$.pipe(takeUntil(this.isDestroyed$)).subscribe(configurations => {
+    this.userConfigurations$.pipe(takeUntil(this.isDestroyed$)).subscribe((configurations: SingleConfiguration[]) => {
       this.filteredConfigurations = configurations;
       this.userConfigurations = configurations;
     });

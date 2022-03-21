@@ -31,9 +31,6 @@ export class ComplaintProductDetailsComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private store: Store) {
     this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.currentUser = user.currentUser);
-  }
-
-  ngOnInit(): void {
     this.complaint$ = this.route.paramMap.pipe(
       takeUntil(this.isDestroyed$),
       map(params => this.paramsID = params.get('id')),
@@ -41,6 +38,9 @@ export class ComplaintProductDetailsComponent implements OnInit, OnDestroy {
         array.items.forEach(element => getDownloadURL(element).then(url => this.photosArray.push(url)));
       })),
       switchMap(id => this.complaintService.getComplaintByItemID(id, this.currentUser.email)));
+  }
+
+  ngOnInit(): void {
     this.route.paramMap.pipe(
       takeUntil(this.isDestroyed$),
       tap(data => this.complaintService.getComplaintItemItemIndexByID(data.get('id'), this.currentUser.email).subscribe(foundID => {

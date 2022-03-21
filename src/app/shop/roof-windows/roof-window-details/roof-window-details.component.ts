@@ -64,6 +64,10 @@ export class RoofWindowDetailsComponent implements OnInit, OnDestroy {
     // TODO napisać obsługę tej metody z wykorzystaniem store'a
     // this.availableExtras.push(this.db.getAccessoryById(1), this.db.getAccessoryById(2));
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe(() => console.log);
+    this.availableExtras.push(new Accessory('1234', 'Roletka', 'Roletka', 'NPL-ROLETAW', 'NEN-ROLETAW', '3. Dopuszczony',
+      'D37', 78, 118, 'Akcesorium', 'RoletaWewnetrzna', 'D', 'D37', 'Wewnetrzne', 'A', 'B','Zaciemniajaca',
+      'A347', 'Srebeny', 'Srebrny', 0, 'manulane', '1234',
+      123, ['a'], ['78x118'], 'PL'));
   }
 
   ngOnDestroy() {

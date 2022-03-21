@@ -15,7 +15,7 @@ import {ComplaintProductDetailsComponent} from './complaint-product-details/comp
   ],
   imports: [
     SharedModule,
-    NgxsModule.forFeature([ComplaintState]),
+    // NgxsModule.forFeature([ComplaintState]),
     ComplaintRoutingModule
   ],
   exports: [

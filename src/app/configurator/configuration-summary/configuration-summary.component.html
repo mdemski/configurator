@@ -8,9 +8,9 @@
   </div>
   <ng-template #elseBlock>
     <div class="configuration-summary-container">
-      <div class="configuration-summary-container__configurations" *ngIf="(userConfigurations$ | async); let i = index; else noConfigurations">
+      <div class="configuration-summary-container__configurations" *ngIf="(userConfigurations$ | async); else noConfigurations">
         <div class="configuration-summary-container__single"
-             *ngFor="let configuration of (userConfigurations$ | async)">
+             *ngFor="let configuration of (userConfigurations$ | async) let i = index;">
           <div class="configuration-summary-container__single--title">
             <h1
               class="configuration-summary-container__single--configuration-number">{{'CONFIG-SUMMARY.configurationNumber' | translate}}:
@@ -179,7 +179,7 @@
                     <input *ngIf="flashingConfiguration.flashing" value="{{flashingConfiguration.id}}" [(ngModel)]="flashingId" name="flashingId"
                            class="choose-window-popup__content__form--select--input" type="radio" id="{{i}}">
                     <label *ngIf="flashingConfiguration.flashing" for="{{i}}"
-                           class="choose-window-popup__content__form--select--label">{{flashingConfiguration.id}} - {{flashingConfiguration.flashing._flashingName}}</label>
+                           class="choose-window-popup__content__form--select--label">{{flashingConfiguration.id}} - {{flashingConfiguration.flashing.productName}}</label>
 
                     <input *ngIf="!flashingConfiguration.flashing" value="{{flashingConfiguration.id}}" [(ngModel)]="flashingId" name="flashingId"
                            class="choose-window-popup__content__form--select--input" type="radio" id="{{i}}" checked>
@@ -325,7 +325,7 @@
                     <input *ngIf="windowConfiguration.window" value="{{windowConfiguration.id}}" [(ngModel)]="windowId" name="windowId"
                            class="choose-window-popup__content__form--select--input" type="radio" id="{{i}}">
                     <label *ngIf="windowConfiguration.window" for="{{i}}"
-                           class="choose-window-popup__content__form--select--label">{{windowConfiguration.id}} - {{windowConfiguration.window._windowName}}</label>
+                           class="choose-window-popup__content__form--select--label">{{windowConfiguration.id}} - {{windowConfiguration.window.productName}}</label>
 
                     <input *ngIf="!windowConfiguration.window" value="{{windowConfiguration.id}}" [(ngModel)]="windowId" name="windowId"
                            class="choose-window-popup__content__form--select--input" type="radio" id="{{i}}" checked>

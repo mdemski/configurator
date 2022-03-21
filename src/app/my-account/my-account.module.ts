@@ -13,13 +13,14 @@ import {ConfigurationState} from '../store/configuration/configuration.state';
 import {ComplaintModule} from '../complaint/complaint.module';
 import {TaskFormComponent} from './my-tasks/task-form/task-form.component';
 import {ResetPasswordComponent} from './my-profile/reset-password/reset-password.component';
+import {ComplaintState} from '../store/complaint/complaint.state';
 
 @NgModule({
   declarations: [MyOrdersComponent, MyConfigurationsComponent, MyComplaintsComponent, MyTasksComponent, InformationsComponent, MyProfileComponent, TaskFormComponent, ResetPasswordComponent],
   imports: [
     SharedModule,
     MyAccountRoutingModule,
-    NgxsModule.forFeature([UserState, ConfigurationState]),
+    NgxsModule.forFeature([UserState, ConfigurationState, ComplaintState]),
     ComplaintModule
   ],
   exports: [

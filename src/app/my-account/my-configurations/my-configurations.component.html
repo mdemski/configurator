@@ -92,7 +92,7 @@
               <ul class="configuration-container__configurations-table__item__products__list">
                 <li class="configuration-container__configurations-table__item__products__list__element"
                     *ngFor="let item of configuration.products.windows">
-                  <a routerLink="..{{ 'CONFIG-SUMMARY.correctConfigLink' | translate}}{{ 'CONFIG-SUMMARY.correctWindowConfigLink' | translate}}/{{configuration.globalId}}/{{item.windowFormName}}/{{item.window._kod}}">{{item.window._productName}}</a>
+                  <a routerLink="..{{ 'CONFIG-SUMMARY.correctConfigLink' | translate}}{{ 'CONFIG-SUMMARY.correctWindowConfigLink' | translate}}/{{configuration.globalId}}/{{item.windowFormName}}/{{item.window.kod}}">{{item.window.productName}}</a>
                 </li>
               </ul>
 
@@ -100,7 +100,7 @@
                   [ngClass]="{'no-display': configuration.products.flashings === null}">
                 <li class="configuration-container__configurations-table__item__products__list__element"
                     *ngFor="let item of configuration.products.flashings">
-                  <a routerLink="..{{ 'CONFIG-SUMMARY.correctConfigLink' | translate}}{{ 'CONFIG-SUMMARY.correctFlashingConfigLink' | translate}}/{{configuration.globalId}}/{{item.flashingFormName}}/{{item.flashing._kod}}">{{item.flashing._productName}}</a>
+                  <a routerLink="..{{ 'CONFIG-SUMMARY.correctConfigLink' | translate}}{{ 'CONFIG-SUMMARY.correctFlashingConfigLink' | translate}}/{{configuration.globalId}}/{{item.flashingFormName}}/{{item.flashing.kod}}">{{item.flashing.productName}}</a>
                 </li>
               </ul>
 
@@ -109,7 +109,7 @@
                 <li class="configuration-container__configurations-table__item__products__list__element"
                     *ngFor="let item of configuration.products.accessories">
                   <a
-                    routerLink="..{{ 'CONFIG-SUMMARY.correctConfigLink' | translate}}{{ 'CONFIG-SUMMARY.correctAccessoryConfigLink' | translate}}/{{configuration.globalId}}/{{item.accessoryFormName}}/{{item.accessory._kod}}">{{item.accessory._productName}}</a>
+                    routerLink="..{{ 'CONFIG-SUMMARY.correctConfigLink' | translate}}{{ 'CONFIG-SUMMARY.correctAccessoryConfigLink' | translate}}/{{configuration.globalId}}/{{item.accessoryFormName}}/{{item.accessory.kod}}">{{item.accessory.productName}}</a>
                 </li>
               </ul>
 
@@ -117,7 +117,7 @@
                   [ngClass]="{'no-display': configuration.products.flats === null}">
                 <li class="configuration-container__configurations-table__item__products__list__element"
                     *ngFor="let item of configuration.products.flats">
-                  <a routerLink="..{{ 'CONFIG-SUMMARY.correctConfigLink' | translate}}{{ 'CONFIG-SUMMARY.correctFlatConfigLink' | translate}}/{{configuration.globalId}}/{{item.flatFormName}}/{{item.flat._kod}}">{{item.flat._productName}}</a>
+                  <a routerLink="..{{ 'CONFIG-SUMMARY.correctConfigLink' | translate}}{{ 'CONFIG-SUMMARY.correctFlatConfigLink' | translate}}/{{configuration.globalId}}/{{item.flatFormName}}/{{item.flat.kod}}">{{item.flat.productName}}</a>
                 </li>
               </ul>
 
@@ -125,7 +125,7 @@
                   [ngClass]="{'no-display': configuration.products.verticals === null}">
                 <li class="configuration-container__configurations-table__item__products__list__element"
                     *ngFor="let item of configuration.products.verticals">
-                  <a routerLink="..{{ 'CONFIG-SUMMARY.correctConfigLink' | translate}}{{ 'CONFIG-SUMMARY.correctVerticalConfigLink' | translate}}/{{configuration.globalId}}/{{item.verticalFormName}}/{{item.vertical._kod}}">{{item.vertical._productName}}</a>
+                  <a routerLink="..{{ 'CONFIG-SUMMARY.correctConfigLink' | translate}}{{ 'CONFIG-SUMMARY.correctVerticalConfigLink' | translate}}/{{configuration.globalId}}/{{item.verticalFormName}}/{{item.vertical.kod}}">{{item.vertical.productName}}</a>
                 </li>
               </ul>
             </td>

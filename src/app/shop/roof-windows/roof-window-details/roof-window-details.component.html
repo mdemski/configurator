@@ -68,10 +68,10 @@
     <div class="line"></div>
     <div class="extra-product-container">
       <div class="extra-product-card" *ngFor="let extra of availableExtras">
-        <a routerLink="../{{extra.accessoryId}}">
-          <img src="{{extra.accessoryUrl}}" alt="{{extra.accessoryModel}}" class="extra-product-card__photo">
+        <a routerLink="../{{extra.kod}}">
+          <img src="{{extra.kod}}" alt="{{extra.model}}" class="extra-product-card__photo">
         </a>
-        <h3 class="extra-product-card__title">{{extra.accessoryModel}}</h3>
+        <h3 class="extra-product-card__title">{{extra.model}}</h3>
 
         <div class="extra-product-card__buttons-section">
           <!--TODO dodać linki do odpowiednich podstron-->
