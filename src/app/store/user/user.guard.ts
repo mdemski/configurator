@@ -17,8 +17,8 @@ export class UserGuard implements CanActivate {
   canActivate() {
     if (this.store.selectSnapshot(UserState.user).name === '') {
       this.user$.pipe(map(user => {
-        this.store.dispatch(new GetUserData(user.currentUser.email));
-      })).subscribe();
+        this.store.dispatch(new GetUserData(user.currentUser.email, user.currentUser.isLogged));
+      })).subscribe(console.log);
       return true;
     } else {
       return true;

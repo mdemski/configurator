@@ -68,64 +68,66 @@ export class UserState {
   }
 
   @Action(GetUserData)
-  getUser(ctx: StateContext<UserStateModel>, {email}: GetUserData) {
-    return this.crud.readUserByEmail(email).pipe(
-      filter(user => user !== null),
-      switchMap((user: User) => {
-        if ((user.mainAddressId === '' || user.mainAddressId === null)) {
-          return of([user, null]);
-        } else {
-          return this.crud.readAddressByMongoId(user.mainAddressId).pipe(map(address => [user, address]));
-        }
-      }),
-      switchMap((values: any[]) => {
-        if (values[0].companyNip === null || values[0].companyNip === '') {
-          return of([values[0], values[1], null]);
-        } else {
-          // TODO odkomentować ten fragment po przygotowaniu API z enova
-          return this.crud.readCompanyByNIP(values[0].companyNip).pipe(map(company => [values[0], values[1], company]));
-        }
-      }),
-      map((values: any[]) => {
-        const user: User = values[0];
-        const address: Address = values[1];
-        const company: Company = values[2];
-        const state = ctx.getState();
-        const updateState = cloneDeep(state);
-        updateState._id = user._id;
-        updateState.email = user.email;
-        updateState.name = user.name;
-        updateState.activated = user.activated;
-        updateState.basicDiscount = user.basicDiscount;
-        updateState.roofWindowsDiscount = user.roofWindowsDiscount;
-        updateState.flashingsDiscount = user.flashingsDiscount;
-        updateState.accessoriesDiscount = user.accessoriesDiscount;
-        updateState.skylightsDiscount = user.skylightsDiscount;
-        updateState.flatRoofWindowsDiscount = user.flatRoofWindowsDiscount;
-        updateState.verticalWindowsDiscount = user.verticalWindowsDiscount;
-        updateState.companyNip = user.companyNip;
-        updateState.address = address;
-        updateState.company = company;
-        updateState.preferredLanguage = user.preferredLanguage;
-        ctx.setState({
-          ...state,
-          _id: updateState._id,
-          email: updateState.email,
-          name: updateState.name,
-          activated: updateState.activated,
-          basicDiscount: updateState.basicDiscount,
-          roofWindowsDiscount: updateState.roofWindowsDiscount,
-          flashingsDiscount: updateState.flashingsDiscount,
-          accessoriesDiscount: updateState.accessoriesDiscount,
-          skylightsDiscount: updateState.skylightsDiscount,
-          flatRoofWindowsDiscount: updateState.flatRoofWindowsDiscount,
-          verticalWindowsDiscount: updateState.verticalWindowsDiscount,
-          companyNip: updateState.companyNip,
-          company: updateState.company,
-          address: updateState.address,
-          preferredLanguage: updateState.preferredLanguage
-        });
-      }));
+  getUser(ctx: StateContext<UserStateModel>, {email, isLogged}: GetUserData) {
+    if (isLogged) {
+      return this.crud.readUserByEmail(email).pipe(
+        filter(user => user !== null),
+        switchMap((user: User) => {
+          if ((user.mainAddressId === '' || user.mainAddressId === null)) {
+            return of([user, null]);
+          } else {
+            return this.crud.readAddressByMongoId(user.mainAddressId).pipe(map(address => [user, address]));
+          }
+        }),
+        switchMap((values: any[]) => {
+          if (values[0].companyNip === null || values[0].companyNip === '') {
+            return of([values[0], values[1], null]);
+          } else {
+            // TODO odkomentować ten fragment po przygotowaniu API z enova
+            return this.crud.readCompanyByNIP(values[0].companyNip).pipe(map(company => [values[0], values[1], company]));
+          }
+        }),
+        map((values: any[]) => {
+          const user: User = values[0];
+          const address: Address = values[1];
+          const company: Company = values[2];
+          const state = ctx.getState();
+          const updateState = cloneDeep(state);
+          updateState._id = user._id;
+          updateState.email = user.email;
+          updateState.name = user.name;
+          updateState.activated = user.activated;
+          updateState.basicDiscount = user.basicDiscount;
+          updateState.roofWindowsDiscount = user.roofWindowsDiscount;
+          updateState.flashingsDiscount = user.flashingsDiscount;
+          updateState.accessoriesDiscount = user.accessoriesDiscount;
+          updateState.skylightsDiscount = user.skylightsDiscount;
+          updateState.flatRoofWindowsDiscount = user.flatRoofWindowsDiscount;
+          updateState.verticalWindowsDiscount = user.verticalWindowsDiscount;
+          updateState.companyNip = user.companyNip;
+          updateState.address = address;
+          updateState.company = company;
+          updateState.preferredLanguage = user.preferredLanguage;
+          ctx.setState({
+            ...state,
+            _id: updateState._id,
+            email: updateState.email,
+            name: updateState.name,
+            activated: updateState.activated,
+            basicDiscount: updateState.basicDiscount,
+            roofWindowsDiscount: updateState.roofWindowsDiscount,
+            flashingsDiscount: updateState.flashingsDiscount,
+            accessoriesDiscount: updateState.accessoriesDiscount,
+            skylightsDiscount: updateState.skylightsDiscount,
+            flatRoofWindowsDiscount: updateState.flatRoofWindowsDiscount,
+            verticalWindowsDiscount: updateState.verticalWindowsDiscount,
+            companyNip: updateState.companyNip,
+            company: updateState.company,
+            address: updateState.address,
+            preferredLanguage: updateState.preferredLanguage
+          });
+        }));
+    }
   }
 
   @Action(UpdateUserData)

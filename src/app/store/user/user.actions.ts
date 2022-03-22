@@ -5,7 +5,7 @@ import {Company} from '../../models/company';
 export class GetUserData {
   static type = '[User] Get User Data';
 
-  constructor(public readonly email: string) {
+  constructor(public readonly email: string, public readonly isLogged: boolean) {
   }
 }
 
