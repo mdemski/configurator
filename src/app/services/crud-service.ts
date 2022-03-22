@@ -33,10 +33,10 @@ export class CrudService {
   // Object.defineProperty(data, key, withValue(value));
   // where data is your object, key is the variable to store the key name and value is the variable to store the value.
 
-  baseUri = 'http://localhost:4000/api';
-  usersBaseUri = 'http://localhost:4000/api/users';
-  addressesBaseUri = 'http://localhost:4000/api/addresses';
-  cartsBaseUri = 'http://localhost:4000/api/carts';
+  baseUri = 'http://localhost:4100/api';
+  usersBaseUri = 'http://localhost:4100/api/users';
+  addressesBaseUri = 'http://localhost:4100/api/addresses';
+  cartsBaseUri = 'http://localhost:4100/api/carts';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   temporaryConfigurations: Observable<any[]>;
 
