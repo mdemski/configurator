@@ -81,7 +81,7 @@ $imageName: 'menu_konfigurator_okna_dachowe.jpg', 'menu_konfigurator_kolnierze.j
     $i: index($imageName, $name);
 
     &:nth-child(#{$i}):before {
-      background-image: url(/src/assets/img/configurator/main_menu/#{$name});
+      background-image: url(../../assets/img/configurator/main_menu/#{$name});
     }
   }
 }
