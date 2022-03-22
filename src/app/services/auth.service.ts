@@ -59,7 +59,7 @@ export class AuthService {
   login(email: string, password: string) {
     const headers = new HttpHeaders({'Content-type': 'application/json'});
 
-    return this.http.post<AuthResponseData>('http://localhost:4000/api/users/login', {
+    return this.http.post<AuthResponseData>('http://localhost:4100/api/users/login', {
       email,
       password
     }, {headers})
