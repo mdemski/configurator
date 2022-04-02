@@ -29,7 +29,8 @@
         z-index: -1;
 
         &--img {
-          width: 100%;
+
+          height: 100%;
           background-position-x: center;
           background-position-y: top;
           background-repeat: no-repeat;
@@ -39,7 +40,7 @@
   }
 
   &__right-side {
-    width: 100%;
+    width: 50%;
     height: 100%;
     background-color: #252c41;
 
@@ -48,10 +49,10 @@
       height: 100%;
       opacity: 100%;
       z-index: -2;
-      background-image: url("../assets/img/configurator/window_configurator/IGOV N22/IGOV N22 uchyl w dachu (RAL7022).jpg");
+      background-image: url("../assets/img/configurator/window_configurator/dachówka do konfiguratora.png");
       background-position-x: center;
       background-position-y: top;
-      background-size: 100%;
+      background-repeat: no-repeat;
 
       &__product {
 
