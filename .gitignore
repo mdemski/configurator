@@ -65,3 +65,7 @@ Thumbs.db
 !/src/assets/csv/archiwum/roof-windowsBezKryptonu.csv
 
 !/src/assets/csv/archiwum/roof-windowsstare.csv
+
+/.angular
+/.angular/cache/13.3.0/babel-webpack/0bd95daccd3490ecfdc25764ebafccf2.json
+/backend/node_modules/
