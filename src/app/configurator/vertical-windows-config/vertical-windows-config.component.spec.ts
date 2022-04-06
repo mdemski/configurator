@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {VerticalWindowsConfigComponent} from './vertical-windows-config.component';
 
@@ -6,7 +6,7 @@ describe('VerticalWindowsConfigComponent', () => {
     let component: VerticalWindowsConfigComponent;
     let fixture: ComponentFixture<VerticalWindowsConfigComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [VerticalWindowsConfigComponent]
         })

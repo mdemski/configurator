@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {FlatRoofWidnowDetailsComponent} from './flat-roof-widnow-details.component';
 
@@ -6,7 +6,7 @@ describe('FlatRoofWidnowDetailsComponent', () => {
   let component: FlatRoofWidnowDetailsComponent;
   let fixture: ComponentFixture<FlatRoofWidnowDetailsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ FlatRoofWidnowDetailsComponent ]
     })
