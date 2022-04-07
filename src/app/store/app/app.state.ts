@@ -3,6 +3,7 @@ import {SetCurrentUser, SetPreferredLanguage} from './app.actions';
 import {AuthService} from '../../services/auth.service';
 import {tap} from 'rxjs/operators';
 import {CrudService} from '../../services/crud-service';
+import {Injectable} from '@angular/core';
 
 export interface AppStateModel {
   currentUser: {
@@ -24,6 +25,7 @@ export interface AppStateModel {
     preferredLanguage: ''
   }
 })
+@Injectable()
 export class AppState {
 
   constructor(private authService: AuthService,
