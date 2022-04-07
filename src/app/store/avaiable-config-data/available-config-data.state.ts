@@ -9,6 +9,7 @@ import {
 } from './available-config-data.actions';
 import {tap} from 'rxjs/operators';
 import {GlazingType} from '../../models/glazing-type';
+import {Injectable} from '@angular/core';
 
 export interface AvailableConfigDataStateModel {
   configRoofWindows: {};
@@ -62,6 +63,7 @@ export interface AvailableConfigDataStateModel {
     glazingOptionsLoaded: false
   }
 })
+@Injectable()
 export class AvailableConfigDataState {
   constructor(private configData: ConfigurationDataService) {
   }

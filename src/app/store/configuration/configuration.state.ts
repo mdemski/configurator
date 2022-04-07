@@ -42,6 +42,7 @@ import {FlatConfig} from '../../models/flat-config';
 import {VerticalConfig} from '../../models/vertical-config';
 import cloneDeep from 'lodash/cloneDeep';
 import {patch, updateItem} from '@ngxs/store/operators';
+import {Injectable} from '@angular/core';
 
 export interface ConfigurationStateModel {
   // w razie problemów z wydajnością zmienić wczytywanie tylko na konfiguracje user'a a pełną listę brać wyłącznie do nadawania numerów
@@ -67,6 +68,7 @@ export interface ConfigurationStateModel {
     // verticalWindowConfigurations: []
   }
 })
+@Injectable()
 export class ConfigurationState {
   constructor(private crud: CrudService) {
   }

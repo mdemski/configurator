@@ -6,6 +6,7 @@ import {CookieService} from '../../services/cookie.service';
 import {CrudService} from '../../services/crud-service';
 import {tap} from 'rxjs/operators';
 import cloneDeep from 'lodash/cloneDeep';
+import {Injectable} from '@angular/core';
 
 export interface CartStateModel {
   cart: Cart;
@@ -17,6 +18,7 @@ export interface CartStateModel {
     cart: null
   }
 })
+@Injectable()
 export class CartState {
   constructor(private shoppingCart: ShoppingCartService,
               private crud: CrudService,

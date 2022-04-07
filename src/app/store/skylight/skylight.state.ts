@@ -3,6 +3,7 @@ import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {DatabaseService} from '../../services/database.service';
 import {GetSkylights, SetChosenSkylight} from './skylight.actions';
 import {tap} from 'rxjs/operators';
+import {Injectable} from '@angular/core';
 
 export interface SkylightStateModel {
   skylights: RoofWindowSkylight[];
@@ -18,6 +19,7 @@ export interface SkylightStateModel {
     chosenSkylight: null
   }
 })
+@Injectable()
 export class SkylightState {
   constructor(private db: DatabaseService) {
   }

@@ -3,6 +3,7 @@ import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {DatabaseService} from '../../services/database.service';
 import {GetRoofWindows, SetChosenRoofWindow} from './roof-window.actions';
 import {tap} from 'rxjs/operators';
+import {Injectable} from '@angular/core';
 
 export interface RoofWindowStateModel {
   roofWindows: RoofWindowSkylight[];
@@ -18,6 +19,7 @@ export interface RoofWindowStateModel {
     chosenRoofWindow: null
   }
 })
+@Injectable()
 export class RoofWindowState {
   constructor(private db: DatabaseService) {
   }

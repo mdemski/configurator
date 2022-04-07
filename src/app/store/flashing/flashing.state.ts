@@ -3,6 +3,7 @@ import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {DatabaseService} from '../../services/database.service';
 import {tap} from 'rxjs/operators';
 import {GetFlashings, SetChosenFlashing} from './flashing.actions';
+import {Injectable} from '@angular/core';
 
 export interface FlashingStateModel {
   flashings: Flashing[];
@@ -18,6 +19,7 @@ export interface FlashingStateModel {
     chosenFlashing: null
   }
 })
+@Injectable()
 export class FlashingState {
   constructor(private db: DatabaseService) {
   }

@@ -3,6 +3,7 @@ import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {DatabaseService} from '../../services/database.service';
 import {GetAccessories, SetChosenAccessory} from './accessory.actions';
 import {tap} from 'rxjs/operators';
+import {Injectable} from '@angular/core';
 
 export interface AccessoryStateModel {
   accessories: Accessory[];
@@ -18,6 +19,7 @@ export interface AccessoryStateModel {
     chosenAccessory: null
   }
 })
+@Injectable()
 export class AccessoryState {
   constructor(private db: DatabaseService) {
   }

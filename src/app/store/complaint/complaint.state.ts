@@ -4,6 +4,7 @@ import {ComplaintService} from '../../services/complaint.service';
 import {tap} from 'rxjs/operators';
 import {Complaint} from '../../models/complaint';
 import {insertItem, patch, removeItem, updateItem} from '@ngxs/store/operators';
+import {Injectable} from '@angular/core';
 
 export interface ComplaintStateModel {
   complaints: Complaint[];
@@ -13,6 +14,7 @@ export interface ComplaintStateModel {
   name: 'complaint',
   defaults: []
 })
+@Injectable()
 export class ComplaintState {
 
   constructor(private complaintService: ComplaintService) {

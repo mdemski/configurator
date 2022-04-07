@@ -19,6 +19,7 @@ import {User} from '../../models/user';
 import cloneDeep from 'lodash/cloneDeep';
 import {of} from 'rxjs';
 import {patch} from '@ngxs/store/operators';
+import { Injectable } from '@angular/core';
 
 export interface UserStateModel {
   _id: string;
@@ -58,6 +59,7 @@ export interface UserStateModel {
     preferredLanguage: ''
   }
 })
+@Injectable()
 export class UserState {
   constructor(private crud: CrudService) {
   }

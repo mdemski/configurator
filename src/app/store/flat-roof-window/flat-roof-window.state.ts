@@ -3,6 +3,7 @@ import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {DatabaseService} from '../../services/database.service';
 import {GetFlatRoofWindows, SetChosenFlatRoofWindow} from './flat-roof-window.actions';
 import {tap} from 'rxjs/operators';
+import {Injectable} from '@angular/core';
 
 export interface FlatRoofWindowStateModel {
   flats: FlatRoofWindow[];
@@ -18,6 +19,7 @@ export interface FlatRoofWindowStateModel {
     chosenFlatRoofWindow: null
   }
 })
+@Injectable()
 export class FlatRoofWindowState {
   constructor(private db: DatabaseService) {
   }

@@ -1,6 +1,7 @@
 import {Params} from '@angular/router';
 import {Selector, State} from '@ngxs/store';
 import {RouterStateModel as RouterStateOuterModel} from '@ngxs/router-plugin/src/router.state';
+import {Injectable} from '@angular/core';
 
 export interface RouterStateModel {
   url: string;
@@ -18,7 +19,7 @@ export interface RouterStateModel {
     data: null
   }
 })
-
+@Injectable()
 export class RouterState {
 
   @Selector([RouterState])

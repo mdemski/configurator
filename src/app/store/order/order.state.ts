@@ -9,6 +9,7 @@ import {tap} from 'rxjs/operators';
 import {Order} from '../../models/order';
 import cloneDeep from 'lodash/cloneDeep';
 import {patch} from '@ngxs/store/operators';
+import {Injectable} from '@angular/core';
 
 export interface OrderStateModel {
   orderNumber: string;
@@ -36,6 +37,7 @@ export interface OrderStateModel {
     comments: '',
   }
 })
+@Injectable()
 export class OrderState {
   constructor(private shoppingCart: ShoppingCartService,
               private orderService: OrderService) {
