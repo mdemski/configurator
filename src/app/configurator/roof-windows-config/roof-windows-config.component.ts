@@ -8,7 +8,6 @@ import {RoofWindowValuesSetterService} from '../../services/roof-window-values-s
 import {filter, map, pairwise, startWith, takeUntil, tap} from 'rxjs/operators';
 import {LoadConfigurationService} from '../../services/load-configuration.service';
 import {HighestIdGetterService} from '../../services/highest-id-getter.service';
-import cryptoRandomString from 'crypto-random-string';
 import {WindowConfig} from '../../models/window-config';
 import {SingleConfiguration} from '../../models/single-configuration';
 import {Select, Store} from '@ngxs/store';
@@ -24,6 +23,7 @@ import {
 } from '../../store/configuration/configuration.actions';
 import {AppState} from '../../store/app/app.state';
 import {CartState} from '../../store/cart/cart.state';
+import {RandomStringGeneratorService} from '../../services/random-string-generator.service';
 
 @Component({
   selector: 'app-roof-windows-config',
@@ -46,6 +46,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
               private windowValuesSetter: RoofWindowValuesSetterService,
               private loadConfig: LoadConfigurationService,
               private hd: HighestIdGetterService,
+              private randomString: RandomStringGeneratorService,
               private router: Router,
               private fb: FormBuilder,
               public translate: TranslateService) {
@@ -233,7 +234,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
           this.windowId = 1;
           this.formChanges(); // TODO które usunąć to, czy poniżej - raczej poniżej wiersz, bo tam brak ustawiania formArray
           this.setConfiguredValues(this.form.value); // TODO ten i poprzedni wiersz mają odwołanie do tej samej metody setConfigureValues - czy można jedno usunąć?
-          this.formName = cryptoRandomString({length: 12, type: 'alphanumeric'});
+          this.formName = this.randomString.randomString(12);
           this.loading = false;
         });
     } else {

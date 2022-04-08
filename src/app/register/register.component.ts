@@ -9,7 +9,7 @@ import {Address} from '../models/address';
 import {CrudService} from '../services/crud-service';
 import {Observable, Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
-import cryptoRandomString from 'crypto-random-string';
+import {RandomStringGeneratorService} from '../services/random-string-generator.service';
 
 @Component({
   selector: 'app-register',
@@ -33,6 +33,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   // bez dodatkowego przeładowania strony
   constructor(public translate: TranslateService,
               private crud: CrudService,
+              private randomString: RandomStringGeneratorService,
               private router: Router) {
     translate.addLangs(['pl', 'en', 'fr', 'de']);
     translate.setDefaultLang('pl');
@@ -91,10 +92,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.registerUser.companyNip = this.registerForm.value.nip;
     this.registerUser.mainAddressId = '';
     this.registerUser.addressToSendId = '';
-    this.registerUser.activationLink = window.location.origin + '/#/confirmation/' + cryptoRandomString({
-      length: 6,
-      type: 'alphanumeric'
-    }) + '/' + this.registerUser.uuid;
+    this.registerUser.activationLink = window.location.origin + '/#/confirmation/' + this.randomString.randomString(6) + '/' + this.registerUser.uuid;
     if (this.individualClient || this.companyClientType) {
       this.registerAddress.firstName = this.registerForm.value.firstName;
       this.registerAddress.lastName = this.registerForm.value.lastName;

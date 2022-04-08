@@ -11,7 +11,6 @@ import {FlashingConfig} from '../../models/flashing-config';
 import {HighestIdGetterService} from '../../services/highest-id-getter.service';
 import {ModalService} from '../../modal/modal.service';
 import {FlashingValueSetterService} from '../../services/flashing-value-setter.service';
-import cryptoRandomString from 'crypto-random-string';
 import {Select, Store} from '@ngxs/store';
 import {FlashingState} from '../../store/flashing/flashing.state';
 import {RouterState} from '@ngxs/router-plugin';
@@ -27,6 +26,7 @@ import {
   UpdateFlashingFormByFormName
 } from '../../store/configuration/configuration.actions';
 import {CartState} from '../../store/cart/cart.state';
+import {RandomStringGeneratorService} from '../../services/random-string-generator.service';
 
 @Component({
   selector: 'app-flashings-config',
@@ -50,6 +50,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
               private changeDetector: ChangeDetectorRef,
               private loadData: LoadConfigurationService,
               private flashingSetter: FlashingValueSetterService,
+              private randomString: RandomStringGeneratorService,
               private hd: HighestIdGetterService,
               private modal: ModalService,
               public translate: TranslateService) {
@@ -274,7 +275,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
           lShaped: new FormControl(null),
           windchestLength: new FormControl(80)
         });
-        this.formName = cryptoRandomString({length: 12, type: 'alphanumeric'});
+        this.formName = this.randomString.randomString(12);
       });
       this.flashingId = 1;
       this.configuredFlashingIDsArray = [this.flashingId];

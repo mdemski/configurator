@@ -7,16 +7,17 @@ import {RoofWindowValuesSetterService} from './roof-window-values-setter.service
 import {Flashing} from '../models/flashing';
 import {SingleConfiguration} from '../models/single-configuration';
 import {HttpClient} from '@angular/common/http';
-import cryptoRandomString from 'crypto-random-string';
 import {FlashingValueSetterService} from './flashing-value-setter.service';
 import {Address} from '../models/address';
 import {Invoice} from '../models/invoice';
+import {RandomStringGeneratorService} from './random-string-generator.service';
 
 @Injectable()
 export class DatabaseService {
 
   constructor(private windowValuesSetter: RoofWindowValuesSetterService,
               private flashingValueSetter: FlashingValueSetterService,
+              private randomString: RandomStringGeneratorService,
               private http: HttpClient) {
     // this.accessories = this.getAllAccessoriesToShopList();
   }
@@ -32,6 +33,7 @@ export class DatabaseService {
   temporarySingleConfiguration: SingleConfiguration;
 
   // flashings
+  // tslint:disable-next-line:max-line-length
   temporaryFlashing = new Flashing('1K-1-U-UO------A7022P-055098-OKPK01', 'UN/O 055x098 Kołnierz uniwersalny /A7022P/UO/OKPK01', 'Kołnierz U 55x98 UO', 'I-KOLNIERZ', 'NPL-KOLNIERZ', 'Nowy', 'U', 55, 98, 'KołnierzUszczelniający',
     'KolnierzUszczelniający', 'Kołnierz:U', 'KołnierzUszczelniający:K-1', 'KołnierzUszczelniający', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'U', 0, 'UO', 5, 0, 0,
     270, ['78x118', '78x140'], ['assets/img/products/flashings.jpg'], 'PL', false, null);
@@ -191,35 +193,35 @@ export class DatabaseService {
         id: 1,
         quantity: 1,
         window: this.getAllRoofWindowsToShopList()[0],
-        windowFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
+        windowFormName: this.randomString.randomString(12),
         windowFormData: null
       },
         {
           id: 2,
           quantity: 1,
           window: this.getAllRoofWindowsToShopList()[1],
-          windowFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
+          windowFormName: this.randomString.randomString(12),
           windowFormData: null
         },
         {
           id: 3,
           quantity: 1,
           window: this.getAllRoofWindowsToShopList()[2],
-          windowFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
+          windowFormName: this.randomString.randomString(12),
           windowFormData: null
         }],
       flashings: [{
         id: 1,
         quantity: 1,
         flashing: this.temporaryFlashing,
-        flashingFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
+        flashingFormName: this.randomString.randomString(12),
         flashingFormData: null
       },
         {
           id: 2,
           quantity: 1,
           flashing: this.temporaryFlashing,
-          flashingFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
+          flashingFormName: this.randomString.randomString(12),
           flashingFormData: null
         }
       ],
@@ -227,14 +229,14 @@ export class DatabaseService {
         id: 1,
         quantity: 1,
         accessory: this.accessories[0],
-        accessoryFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
+        accessoryFormName: this.randomString.randomString(12),
         accessoryFormData: null
       },
         {
           id: 2,
           quantity: 2,
           accessory: this.accessories[2],
-          accessoryFormName: cryptoRandomString({length: 12, type: 'alphanumeric'}),
+          accessoryFormName: this.randomString.randomString(12),
           accessoryFormData: null
         }]
     };
