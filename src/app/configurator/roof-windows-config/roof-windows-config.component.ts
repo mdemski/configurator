@@ -58,35 +58,41 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.configurations$.pipe(takeUntil(this.isDestroyed$)).subscribe(configurations => this.configurations = configurations);
     this.params$.pipe(takeUntil(this.isDestroyed$)).subscribe(params => this.routerParams = params);
     this.roofWindows$.pipe(takeUntil(this.isDestroyed$)).subscribe(roofWindows => {
-      this.roofWindowsFormDataBase = roofWindows;
+      this.roofWindowsFromDataBase = roofWindows;
     });
   }
 
+  private configurations: SingleConfiguration[];
+  private globalConfiguration: SingleConfiguration = null;
+  private newWindowConfig: SingleConfiguration;
+  private configId: string;
+  private tempConfiguredWindow: RoofWindowSkylight;
+  configByName$: Observable<WindowConfig>;
+  configOptions;
+  configurationSummary: string;
   configuredWindow: RoofWindowSkylight;
-  form: FormGroup;
+  userConfigurations$: Observable<SingleConfiguration[]> = new Subject() as Observable<SingleConfiguration[]>;
+  chooseConfigNamePopup = false;
   configFormId: number;
+  form: FormGroup;
+  private formName: string;
+  formData$;
+  popupConfig = true;
   userConfigs = [];
+  copyLinkToConfigurationPopup = false;
   urlToSaveConfiguration: string;
+  windowsConfigurator: string;
   showWidthMessage = false;
   showHeightMessage = false;
-  popupConfig = true;
-  chooseConfigNamePopup = false;
-  copyLinkToConfigurationPopup = false;
+  private roofWindowsFromDataBase: RoofWindowSkylight[];
   private glazingName = 'Okno:EXX';
   private routerParams = null;
   private globalId = '';
   private highestUserId;
-  private configurations: SingleConfiguration[];
-  private globalConfiguration: SingleConfiguration = null;
-  private newWindowConfig: SingleConfiguration;
   private currentUser: string;
-  private formName: string;
-  private configId: string;
   private windowId: number;
   private windowCode: string;
   private dimensions;
-  private roofWindowsFormDataBase: RoofWindowSkylight[];
-  private tempConfiguredWindow: RoofWindowSkylight;
   private windowModelsToCalculatePrice = [];
   private standardWidths = [55, 66, 78, 94, 114, 134];
   private standardHeights = [78, 98, 118, 140, 160];
@@ -120,15 +126,9 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   handles = [];
   handleColors = [];
   shopRoofWindowLink: string;
-  configurationSummary: string;
-  windowsConfigurator: string;
-  formData$;
   subscription: Subscription;
   isDestroyed$ = new Subject();
   loading;
-  configOptions;
-  configByName$: Observable<WindowConfig>;
-  userConfigurations$: Observable<SingleConfiguration[]> = new Subject() as Observable<SingleConfiguration[]>;
 
   static setDimensions(dimensions) {
     return dimensions;
@@ -147,7 +147,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.configByName$ = this.store.select(ConfigurationState.configurationByWindowFormName).pipe(
       takeUntil(this.isDestroyed$),
       map(filterFn => filterFn(this.routerParams.state.params.formName)));
-    this.configOptionsLoaded$.subscribe(loaded => {
+    this.configOptionsLoaded$.pipe(takeUntil(this.isDestroyed$)).subscribe(loaded => {
       if (loaded) {
         this.coatsFromFile = this.objectMaker(this.configOptions.coats);
         this.extrasFromFile = this.objectMaker(this.configOptions.extras);
@@ -418,7 +418,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       }
     }
     const windowToCalculations = this.windowModelsToCalculatePrice[index];
-    for (const standardRoofWindow of this.roofWindowsFormDataBase) {
+    for (const standardRoofWindow of this.roofWindowsFromDataBase) {
       if (standardRoofWindow.kod === configuredWindow.kod) {
         windowPrice = standardRoofWindow.CenaDetaliczna;
         isStandard = true;
