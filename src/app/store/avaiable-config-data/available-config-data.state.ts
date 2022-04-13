@@ -1,7 +1,8 @@
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {ConfigurationDataService} from '../../services/configuration-data.service';
 import {
-  GetAvailableGlazingsData,
+  GetAccessoriesAvailableConfigData,
+  GetAvailableGlazingsData, GetExclusionsForAccessories,
   GetExclusionsForFlashings,
   GetExclusionsForRoofWindows,
   GetFlashingsAvailableConfigData,
@@ -228,6 +229,32 @@ export class AvailableConfigDataState {
           flashingExclusionsLoaded: true
         });
       }));
+  }
+
+  @Action(GetAccessoriesAvailableConfigData)
+  getAccessoriesConfigData(ctx: StateContext<AvailableConfigDataStateModel>) {
+    return this.configData.fetchAllAccessoriesData().pipe(
+        tap(result => {
+          const state = ctx.getState();
+          ctx.setState({
+            ...state,
+            configAccessories: result,
+            accessoryConfigLoaded: true
+          });
+        }));
+  }
+
+  @Action(GetExclusionsForAccessories)
+  getExclusionsAccessories(ctx: StateContext<AvailableConfigDataStateModel>) {
+    return this.configData.fetchAllAccessoryExclusions().pipe(
+        tap((result: any[]) => {
+          const state = ctx.getState();
+          ctx.setState({
+            ...state,
+            accessoriesExclusions: result,
+            accessoryExclusionsLoaded: true
+          });
+        }));
   }
 
   @Action(GetAvailableGlazingsData)

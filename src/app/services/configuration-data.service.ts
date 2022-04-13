@@ -9,9 +9,11 @@ import {GlazingType} from '../models/glazing-type';
 export class ConfigurationDataService {
   private _windowModelsFilePath = '../../../assets/csv/roof-windows.csv';
   private _flashingModelsFilePath = '../../../assets/csv/flashings.csv';
+  private _accessoryModelsFilePath = '../../../assets/csv/accessories.csv';
   private _glazingFilePath = '../../../assets/csv/translator-pakietow-szybowych.csv';
   private _roofWindowsExclusionsFilePath = '../../../assets/csv/roof-windows-exclusions.csv';
   private _flashingsExclusionsFilePath = '../../../assets/csv/flashings-exclusions.csv';
+  private _accessoriesExclusionsFilePath = '../../../assets/csv/accessories-exclusions.csv';
 
   constructor(private csv: CsvFileReaderService) {
   }
@@ -273,6 +275,95 @@ export class ConfigurationDataService {
 
   fetchAllFlashingExclusions() {
     return this.csv.getCSVData(this._flashingsExclusionsFilePath).pipe(
+      map(data => {
+        const lines = [];
+        const linesArray = data.split('\n');
+        linesArray.forEach((e: any) => {
+          // TODO jak usunąć puste linie???
+          const row = e.replace(/[\s]+[;]+|[;]+[\s]+/g, ';').trim();
+          lines.push(row);
+        });
+        lines.slice(lines.length - 1, 1);
+        const columns = lines[0].split(';');
+        const exArray = [];
+        for (let i = 1; i < columns.length; i++) {
+          const tempExObject = {};
+          for (let j = 0; j < lines.length - 1; j++) {
+            Object.assign(tempExObject, {selectedOption: lines[i].split(';')[0]});
+            tempExObject[lines[j].split(';')[0]] = lines[j].split(';')[i];
+          }
+          exArray.push(tempExObject);
+        }
+        return exArray;
+      }));
+  }
+
+  fetchAllAccessoriesData() {
+    return this.csv.getCSVData(this._accessoryModelsFilePath)
+      .pipe(map(data => {
+        const lines = [];
+        const linesArray = data.split('\n');
+        linesArray.forEach((e: any) => {
+          // TODO jak usunąć puste linie???
+          const row = e.replace(/[\s]+[;]+|[;]+[\s]+/g, ';').trim();
+          lines.push(row);
+        });
+        lines.slice(lines.length - 1, 1);
+        const columns = lines[0].split(';');
+        // Models
+        const models = [];
+        for (let i = 3; i < columns.length; i++) {
+          const model = {
+            accessoryModel: lines[0].split(';')[i]
+          };
+          for (let j = 1; j < lines.length - 1; j++) {
+            model[lines[j].split(';')[0]] = lines[j].split(';')[i];
+          }
+          models.push(model);
+        }
+        // Fill arrays with options
+        const accessoryTypes = [];
+        const accessoryKinds = [];
+        const materials = [];
+        const materialColors = [];
+        const equipmentColors = [];
+        const dimensions = [];
+        for (let i = 1; i < 2; i++) {
+          for (let j = 1; j < lines.length - 1; j++) {
+            if (lines[j].split(';')[1] === 'accessoryType') {
+              accessoryTypes.push(lines[j].split(';')[0]);
+            }
+            if (lines[j].split(';')[1] === 'accessoryKind') {
+              accessoryKinds.push(lines[j].split(';')[0]);
+            }
+            if (lines[j].split(';')[1] === 'material') {
+              materials.push(lines[j].split(';')[0]);
+            }
+            if (lines[j].split(';')[1] === 'materialColor') {
+              materialColors.push(lines[j].split(';')[0]);
+            }
+            if (lines[j].split(';')[1] === 'equipmentColor') {
+              equipmentColors.push(lines[j].split(';')[0]);
+            }
+            if (lines[j].split(';')[1] === 'dimensions') {
+              dimensions.push(dimensions[lines[j].split(';')[0]] = lines[j].split(';')[3]);
+            }
+          }
+        }
+        return {
+          models,
+          accessoryTypes,
+          accessoryKinds,
+          materials,
+          materialColors,
+          equipmentColors,
+          dimensions,
+        };
+      }));
+  }
+
+  fetchAllAccessoryExclusions() {
+    return this.csv.getCSVData(this._accessoriesExclusionsFilePath).pipe(
       map(data => {
         const lines = [];
         const linesArray = data.split('\n');
