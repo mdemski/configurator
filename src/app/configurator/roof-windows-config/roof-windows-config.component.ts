@@ -240,7 +240,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     } else {
       this.configByName$.pipe(takeUntil(this.isDestroyed$))
         .subscribe((windowConfiguration: WindowConfig) => {
-          console.log(windowConfiguration);
           this.form = this.fb.group({
             material: new FormControl(windowConfiguration.windowFormData.material, [], [this.validateMaterials.bind(this)]),
             openingType: new FormControl(windowConfiguration.windowFormData.openingType, [], [this.validateOpenings.bind(this)]),
@@ -407,7 +406,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   }
 
   priceCalculation(configuredWindow: RoofWindowSkylight) {
-    // ... spread operator pozwala niezagnieżdżać jendego elementu w drugi
+    // ... spread operator pozwala nie zagnieżdżać jendego elementu w drugi
     // tempArray.push({...data[book], id: book});
     let windowPrice = 0;
     let isStandard = false;
