@@ -327,6 +327,7 @@ export class ConfigurationDataService {
         const materials = [];
         const materialColors = [];
         const equipmentColors = [];
+        const options = [];
         const dimensions = [];
         for (let i = 1; i < 2; i++) {
           for (let j = 1; j < lines.length - 1; j++) {
@@ -345,6 +346,9 @@ export class ConfigurationDataService {
             if (lines[j].split(';')[1] === 'equipmentColor') {
               equipmentColors.push(lines[j].split(';')[0]);
             }
+            if (lines[j].split(';')[1] === 'option') {
+              options.push(lines[j].split(';')[0]);
+            }
             if (lines[j].split(';')[1] === 'dimensions') {
               dimensions.push(dimensions[lines[j].split(';')[0]] = lines[j].split(';')[3]);
             }
@@ -357,6 +361,7 @@ export class ConfigurationDataService {
           materials,
           materialColors,
           equipmentColors,
+          options,
           dimensions,
         };
       }));
