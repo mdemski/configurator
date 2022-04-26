@@ -40,9 +40,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.cart$.pipe(takeUntil(this.isDestroyed$), skip(1)).subscribe((data: { cart }) => {
       let quantityInCart = 0;
-      for (const item of data.cart.cartItems) {
-        // @ts-ignore
-        quantityInCart += item._quantity;
+      if (data.cart.cartItems !== null) {
+        for (const item of data.cart.cartItems) {
+          // @ts-ignore
+          quantityInCart += item._quantity;
+        }
       }
       this.quantityInCart$.next(quantityInCart);
     });
