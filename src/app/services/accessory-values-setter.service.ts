@@ -14,8 +14,8 @@ export class AccessoryValuesSetterService {
     let rawModel = '';
     let extraInfo1 = '';
     let extraInfo2 = '';
-    rawModel = kind.split(':')[1];
-    leftSide = kind.split(':')[0];
+    rawModel = kind === null ? '' : kind.split(':')[1];
+    leftSide = kind === null ? '' : kind.split(':')[0];
     switch (material) {
       case 'Zaciemniająca':
         extraInfo1 = 'Z';
@@ -104,7 +104,7 @@ export class AccessoryValuesSetterService {
 
   getAccessoryFamily(rodzaj: string) {
     let family = 'Akcesorium:';
-    const model = rodzaj.split(':')[1];
+    const model = rodzaj === null ? '' : rodzaj.split(':')[1];
     switch (model) {
       case 'D37' || 'D33' || 'D12' || 'P40' || 'P50' || 'RZE' || 'RZS':
         family += 'Roleta';
@@ -217,7 +217,7 @@ export class AccessoryValuesSetterService {
     let rawModel = '';
     let extraInfo1 = '';
     let extraInfo2 = '';
-    rawModel = kind.split(':')[1];
+    rawModel = kind === null ? '' : kind.split(':')[1];
     switch (material) {
       case 'Zaciemniająca':
         extraInfo1 = 'Z';
@@ -253,7 +253,7 @@ export class AccessoryValuesSetterService {
 
   getIndexAlgorithm(kind: string) {
     let indeksA = '';
-    const rawModel = kind.split(':')[1];
+    const rawModel = kind === null ? '' : kind.split(':')[1];
     switch (rawModel) {
       case 'D12' || 'D33' || 'D37':
         indeksA = 'I-ROLETAW';
@@ -279,7 +279,7 @@ export class AccessoryValuesSetterService {
   getNameAlgorithm(kind) {
     let nameA = '';
     let nameE = '';
-    const rawModel = kind.split(':')[1];
+    const rawModel = kind === null ? '' : kind.split(':')[1];
     switch (rawModel) {
       case 'D12' || 'D33' || 'D37' || 'P40' || 'P50':
         nameA = 'NPL-ROLETAW';
@@ -316,7 +316,7 @@ export class AccessoryValuesSetterService {
   generateAccessoryCode(type: string, kind: string, szerokosc: number, wysokosc: number, typTkaniny: string, kolorTkaniny: string, roletyKolorOsprzetu: string,
                         dopasowanieRoletySzerokosc: string, dopasowanieRoletyDlugosc: string) {
     let accessoryCode = '';
-    const modelCode = kind.split(':')[1]; // D37
+    const modelCode = kind === null ? '' : kind.split(':')[1]; // D37
 
     let equipCode = '';
     if (modelCode.startsWith('D') || modelCode.startsWith('P4')) {
@@ -359,7 +359,7 @@ export class AccessoryValuesSetterService {
         const colorRAL = colorCode.substring(colorCode.length - 4);
         colorCode = 'A' + colorRAL + 'P'; // A7022P
       } else {
-        colorCode = kolorTkaniny.split(':')[1];
+        colorCode = kolorTkaniny === null ? '' : kolorTkaniny.split(':')[1];
       }
     } else {
       colorCode = 'WSWS';
