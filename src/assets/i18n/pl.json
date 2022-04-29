@@ -517,6 +517,17 @@
     "D37:Srebrny": "Srebrny",
     "Roleta:Manualne": "Manulane"
   },
+  "ACCESSORIES-CONFIG": {
+    "kind": "Rodzaj akcesorium",
+    "material": "Materiał",
+    "materialColor": "Kolorystyka",
+    "equipmentColor": "Kolor dodatków",
+    "colorOnScreen": "Kolor na ekranie monitora może się różnić od rzeczywistych barw",
+    "dimensions": "Wymiary",
+    "width": "Szerokość",
+    "height": "Wysokość",
+    "standardDimensions": "Wymiar standardowy, sprawdź naszą ofertę w sklepie online: "
+  },
   "CONFIG-SUMMARY": {
     "LP": "Lp",
     "expend": "rozwiń",
