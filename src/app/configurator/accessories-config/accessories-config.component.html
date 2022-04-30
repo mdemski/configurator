@@ -66,7 +66,7 @@
             <div class="configure-form__group">
               <label for="type" (click)="onTypeHover(typeOptions)"
                      class="configure-form__group__label">
-                {{'FLASHINGS-CONFIG.flashingType' | translate}}</label>
+                {{'ACCESSORY-CONFIG.type' | translate}}</label>
               <div #typeOptions class="configure-form__group__options">
                 <div class="configure-form__group__options--option"
                      *ngFor="let accessoryType of accessoryTypes">
@@ -101,7 +101,7 @@
           <!--Kind-->
           <div class="configure-form__group">
             <label for="kind" (click)="onKindHover(kindOptions)"
-                   class="configure-form__group__label">{{ 'ACCESSORIES-CONFIG.kind' | translate}}</label>
+                   class="configure-form__group__label">{{ 'ACCESSORY-CONFIG.kind' | translate}}</label>
             <div class="configure-form__group__options" #kindOptions>
               <div class="configure-form__group__options--option" *ngFor="let accessoryKind of accessoryKinds">
                 <input type="radio"
@@ -120,7 +120,7 @@
                    class="btn btn--grey configure-form__navigation-buttons__next-prev">
                   {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
 
-                <a (click)="onKindHover(kindOptions);onColorHover(colorOptions)"
+                <a (click)="onKindHover(kindOptions);onMaterialHover(materialOptions)"
                    class="btn btn--blue configure-form__navigation-buttons__next-prev">
                   {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
               </div>
@@ -130,7 +130,7 @@
           <!--Material-->
           <div class="configure-form__group">
             <label for="material" (click)="onMaterialHover(materialOptions)"
-                   class="configure-form__group__label">{{ 'ACCESSORIES-CONFIG.material' | translate}}</label>
+                   class="configure-form__group__label">{{ 'ACCESSORY-CONFIG.material' | translate}}</label>
             <div class="configure-form__group__options" #materialOptions>
               <div class="configure-form__group__options--option" *ngFor="let accessoryMaterial of accessoryMaterials">
                 <input type="radio"
@@ -159,7 +159,7 @@
           <!--Color and equipment color-->
           <div class="configure-form__group">
             <label for="materialColor" (click)="onColorHover(colorOptions)"
-                   class="configure-form__group__label">{{ 'ACCESSORIES-CONFIG.materialColor' | translate}}</label>
+                   class="configure-form__group__label">{{ 'ACCESSORY-CONFIG.materialColor' | translate}}</label>
             <div class="configure-form__group__options" #colorOptions>
               <div class="configure-form__group__options--option" *ngFor="let materialColor of materialColors">
                 <input type="radio"
@@ -171,10 +171,10 @@
                 <label for="{{materialColor.option}}"
                        class="configure-form__group__options--option__label"
                        [ngClass]="{'label--disabled' : materialColor.disabled}"
-                       [ngStyle]="setBackgroundImage(materialColor.option)">{{builtNameForTranslation(materialColor.option) | translate}}</label>
+                       [ngStyle]="setBackgroundImage(materialColor.option)">{{builtNameForColor(materialColor.option) | translate}}</label>
               </div>
               <label for="equipmentColor"
-                     class="configure-form__group__label--inner">{{ 'ACCESSORIES-CONFIG.equipmentColor' | translate}}</label>
+                     class="configure-form__group__label--inner">{{ 'ACCESSORY-CONFIG.equipmentColor' | translate}}</label>
               <div class="configure-form__group__options--option" *ngFor="let equpimentColor of equipmentColors">
                 <input type="radio"
                        class="configure-form__group__options--option__input"
@@ -186,7 +186,7 @@
                        [ngClass]="{'label--disabled' : equpimentColor.disabled}"
                        class="configure-form__group__options--option__label">{{builtNameForTranslation(equpimentColor.option) | translate}}</label>
               </div>
-              <h2 class="configure-form__group--info-color">{{ 'ACCESSORIES-CONFIG.colorOnScreen' | translate}}</h2>
+              <h2 class="configure-form__group--info-color">{{ 'ACCESSORY-CONFIG.colorOnScreen' | translate}}</h2>
               <div class="configure-form__navigation-buttons">
                 <a (click)="onMaterialHover(materialOptions);onColorHover(colorOptions)"
                    class="btn btn--grey configure-form__navigation-buttons__next-prev">
@@ -202,10 +202,10 @@
           <!--Dimensions-->
           <div class="configure-form__group">
             <label for="dimensions" (click)="onDimensionsHover(dimensionOption)"
-                   class="configure-form__group__label">{{ 'ACCESSORIES-CONFIG.dimensions' | translate}}</label>
+                   class="configure-form__group__label">{{ 'ACCESSORY-CONFIG.dimensions' | translate}}</label>
             <div class="configure-form__group__options" #dimensionOption>
               <label for="width"
-                     class="configure-form__group__label--inner">{{ 'ACCESSORIES-CONFIG.width' | translate}}</label>
+                     class="configure-form__group__label--inner">{{ 'ACCESSORY-CONFIG.width' | translate}}</label>
               <div class="configure-form__group__options--option-wrap-range">
                 <input class="configure-form__group__options--option__input-range"
                        type="range"
@@ -219,7 +219,7 @@
                         class="configure-form__group__options--option__output-range">{{form.value.width}}</output>
               </div>
               <label for="height"
-                     class="configure-form__group__label--inner">{{ 'ACCESSORIES-CONFIG.height' | translate}}</label>
+                     class="configure-form__group__label--inner">{{ 'ACCESSORY-CONFIG.height' | translate}}</label>
               <div class="configure-form__group__options--option-wrap-range">
                 <input class="configure-form__group__options--option__input-range"
                        type="range"
@@ -233,7 +233,7 @@
               </div>
               <p *ngIf="showHeightMessage && showWidthMessage"
                  class="configure-form__validation-info--single-message"
-              >{{ 'ACCESSORIES-CONFIG.standardDimensions' | translate}}
+              >{{ 'ACCESSORY-CONFIG.standardDimensions' | translate}}
                 <a class="configure-form__validation-info--single-message--link"
                    (click)="navigateToShop()">{{ 'SHOP.accessories' | translate}}</a></p>
               <div class="configure-form__navigation-buttons">

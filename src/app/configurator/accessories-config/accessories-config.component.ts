@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AppState} from '../../store/app/app.state';
 import {Observable, Observer, Subject} from 'rxjs';
 import {Select, Store} from '@ngxs/store';
@@ -30,7 +30,7 @@ import {
   templateUrl: './accessories-config.component.html',
   styleUrls: ['./accessories-config.component.scss']
 })
-export class AccessoriesConfigComponent implements OnInit {
+export class AccessoriesConfigComponent implements OnInit, OnDestroy {
 
   @Select(AppState) user$: Observable<{ currentUser }>;
   @Select(ConfigurationState.configurations) configurations$: Observable<SingleConfiguration[]>;
@@ -159,6 +159,10 @@ export class AccessoriesConfigComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this.isDestroyed$.next(null);
+  }
+
   private objectMaker(availableOptionsArray: string[]): {}[] {
     const objectsArray = [];
     for (const option of availableOptionsArray) {
@@ -197,7 +201,8 @@ export class AccessoriesConfigComponent implements OnInit {
             height: new FormControl(this.configuredAccessory.wysokosc)
           });
           this.accessoryId = 1;
-          this.setConfiguredValues(this.form.value); // TODO ten i poprzedni wiersz mają odwołanie do tej samej metody setConfigureValues - czy można jedno usunąć?
+          this.formChanges();
+          // this.setConfiguredValues(this.form.value); // TODO ten i poprzedni wiersz mają odwołanie do tej samej metody setConfigureValues - czy można jedno usunąć?
           this.formName = this.randomString.randomString(12);
           this.loading = false;
         });
@@ -216,7 +221,7 @@ export class AccessoriesConfigComponent implements OnInit {
           });
           this.configuredAccessory = accessoryConfig.accessory;
           this.accessoryId = accessoryConfig.id;
-          this.setConfiguredValues(this.form.value); // TODO ten kolejny wiersz mają odwołanie do tej samej metody setConfigureValues - czy można jedno usunąć?
+          // this.setConfiguredValues(this.form.value); // TODO ten kolejny wiersz mają odwołanie do tej samej metody setConfigureValues - czy można jedno usunąć?
           this.formChanges(); // TODO które usunąć to, czy poprzednie - raczej poprzedni wiersz, bo tam brak ustawiania formArray
           this.loading = false;
         });
@@ -568,12 +573,11 @@ export class AccessoriesConfigComponent implements OnInit {
       const excludedOptions = [];
       // tslint:disable-next-line:forin
       for (const configurationOption in configuredAccessory) {
-        for (const exclusionObject in exclusions) {
-          // @ts-ignore
+        for (const exclusionObject of exclusions) {
           if (exclusionObject.selectedOption === configuredAccessory[configurationOption]) {
             for (const [key, value] of Object.entries(exclusionObject)) {
               if (value === 'TRUE') {
-                if (exclusionObject.indexOf(key) === -1) {
+                if (excludedOptions.indexOf(key) === -1) {
                   excludedOptions.push(key);
                 }
               }
@@ -657,8 +661,9 @@ export class AccessoriesConfigComponent implements OnInit {
   }
 
   onColorHover(colorOptions: HTMLDivElement) {
+    console.log(this.materialColors.length + this.equipmentColors.length);
     this.colorVisible = !this.colorVisible;
-    this.onHoverClick(colorOptions, this.materialColors.length + this.equipmentColors.length, this.materialVisible);
+    this.onHoverClick(colorOptions, this.materialColors.length + this.equipmentColors.length + 1, this.colorVisible);
   }
 
   onDimensionsHover(dimensionOption: HTMLDivElement) {
@@ -699,6 +704,10 @@ export class AccessoriesConfigComponent implements OnInit {
 
   builtNameForTranslation(option: string) {
     return String('ACCESSORY-DATA.' + option);
+  }
+
+  builtNameForColor(option: string) {
+    return option.split(':')[1];
   }
 
   navigateToShop() {
