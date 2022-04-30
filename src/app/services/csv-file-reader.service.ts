@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,15 @@ export class CsvFileReaderService {
   }
 
   getCSVData(filePath: string) {
-    return this.http.get<string>(filePath, {responseType: 'text' as 'json'});
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-type': 'text',
+        charset: 'utf-8'
+      }),
+      responseType: 'text' as 'json',
+      accept: 'charset'
+    };
+    return this.http.get<string>(filePath, httpOptions);
   }
 }
 
