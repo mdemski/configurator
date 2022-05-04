@@ -5,3 +5,22 @@
 @import 'src/sass/configuration-summary-navbar';
 @import 'src/sass/product-presentation';
 @import 'src/sass/components';
+
+
+.configure-form {
+
+  &__group {
+
+    &__options {
+
+      &--option {
+
+        &__input {
+          &:disabled + label {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
