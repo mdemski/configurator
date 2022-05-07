@@ -538,7 +538,18 @@
     "Srebrny": "Srebrny",
     "Biały": "Biały",
     "Beżowy": "Beżowy",
-    "Roleta:Manualne": "Manulane"
+    "Roleta:Manualne": "Manulane",
+    "PVC_Z_Wentylacją:IGOV": "okno PVC z wentylacją (BGOV, BGOM, IGC1V, IGC2V, IGC1M, IGC2M, IGHV, IGHM, IGOV, IGOM)",
+    "PVC_Bez_Wentylacji:IGOX": "okno/wyłaz PVC bez wentylacją (IGOX, IGW, IGW+, IGWX, IGWX+, XGO, XGK, ING, ING+)",
+    "PVC_Klapowe:IGKV": "okno klapowe PVC (IGK, IGKV, IGKM)",
+    "Drewno_Z_Wentylacją:ISOV": "okno drewniane z wentylacją (ISO, ISOV, ISOM)",
+    "Drewno_Bez_Wentylacji:ISOX": "okno drewniane bez wentylacji lub kolankowe (IKDN, IKDU, ISOX, ISW, ISW+, ISWX, ISWX+, XSO)",
+    "Dreweno_Klapowe:ISKV": "okno klapowe drewniane (ISK, ISKV, ISKM)",
+    "Drewno_OT:OT": "okno drewniane stary model (OT, OTV, OV)",
+    "Drewno_Enevi:VSO": "okno drewniane z grupy Enevi (VSC, VSH, VSO)",
+    "Drewno_Klapwe_Enevi:VSKV": "okno drewniane klapowe z grupy Enevi (VSK, VSKV, VSKM)",
+    "Drewno_Enevi_Bez_Wentylacji:WNS": "okno drewniane bez wentylacji z grupy Enevi (VSOX, VSW, VSW+, WNS, WNS+, WZS)",
+    "PVC_Wyłaz:WNG": "wyłaz PVC (OT PVC, WHG, WNG, WZG)"
   },
   "ACCESSORY-CONFIG": {
     "type": "Typ akcesorium",
@@ -546,6 +557,7 @@
     "material": "Materiał",
     "materialColor": "Kolorystyka",
     "equipmentColor": "Kolor dodatków",
+    "framesMatching": "Dopasowanie do okna",
     "colorOnScreen": "Kolor na ekranie monitora może się różnić od rzeczywistych barw",
     "dimensions": "Wymiary",
     "width": "Szerokość",

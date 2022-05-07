@@ -46,10 +46,20 @@ export class AccessoryValuesSetterService {
         extraInfo2 = '';
     }
     switch (rawModel) {
-      case 'D12' || 'D33' || 'D37' || 'P40' || 'P50':
+      case 'D12':
+      case 'D33':
+      case 'D37':
+      case 'P40':
+      case 'P50':
         leftSide = 'AkcesoriumRoletaW';
         break;
-      case 'ARZE' || 'ARZE1' || 'ARZS' || 'ARZS1' || 'RZE' || 'RZE1' || 'RZS1':
+      case 'ARZE':
+      case 'ARZE1':
+      case 'ARZS':
+      case 'ARZS1':
+      case 'RZE':
+      case 'RZE1':
+      case 'RZS1':
         leftSide = 'AkcesoriumRoletaZ';
         break;
       case 'ADK':
@@ -85,13 +95,23 @@ export class AccessoryValuesSetterService {
       case 'PGD':
         leftSide = 'AkcesoriumRamaDyst';
         break;
-      case 'AMW' || 'AMZ' || 'AMZ1':
+      case 'AMW':
+      case 'AMZ':
+      case 'AMZ1':
         leftSide = 'AkcesoriumMarkiza';
         break;
       case 'AMO':
         leftSide = 'AkcesoriumMoskitiera';
         break;
-      case 'AP4' || 'ARZE1' || 'APR-1' || 'APR-6' || 'R1' || 'R5' || 'R60' || 'RS1' || 'RS5':
+      case 'AP4':
+      case 'ARZE1':
+      case 'APR-1':
+      case 'APR-6':
+      case 'R1':
+      case 'R5':
+      case 'R60':
+      case 'RS1':
+      case 'RS5':
         leftSide = 'AkcesoriumPilot';
         break;
       default:
@@ -106,10 +126,17 @@ export class AccessoryValuesSetterService {
     let family = 'Akcesorium:';
     const model = rodzaj === null ? '' : rodzaj.split(':')[1];
     switch (model) {
-      case 'D37' || 'D33' || 'D12' || 'P40' || 'P50' || 'RZE' || 'RZS':
+      case 'D37':
+      case 'D33':
+      case 'D12':
+      case 'P40':
+      case 'P50':
+      case 'RZE':
+      case 'RZS':
         family += 'Roleta';
         break;
-      case 'AMZ' || 'AMW':
+      case 'AMZ':
+      case 'AMW':
         family += 'Markiza';
         break;
       case 'AMO':
@@ -139,7 +166,9 @@ export class AccessoryValuesSetterService {
       case 'Deszcz':
         family += 'Deszcz';
         break;
-      case 'AP' || 'R' || 'APR':
+      case 'AP':
+      case 'R':
+      case 'APR':
         family += 'Pilot';
         break;
       case 'BR':
@@ -162,48 +191,94 @@ export class AccessoryValuesSetterService {
       width: '0',
       height: '0'
     };
+    framesMatching = framesMatching === null ? '' : framesMatching.split(':')[1];
+    console.log(framesMatching);
     switch (framesMatching) {
-      case 'BGOV' || 'BGOM' || 'IGC1V' || 'IGC2V' || 'IGC1M' || 'IGC2M' || 'IGHV' || 'IGHM' || 'IGOV' || 'IGOM':
+      case 'BGOV':
+      case 'BGOM':
+      case 'IGC1V':
+      case 'IGC2V':
+      case 'IGC1M':
+      case 'IGC2M':
+      case 'IGHV':
+      case 'IGHM':
+      case 'IGOV':
+      case 'IGOM':
         matchingObject.width = 'E';
         matchingObject.height = 'K';
         break;
-      case 'IGK' || 'IGKV' || 'IGKM':
+      case 'IGK':
+      case 'IGKV':
+      case 'IGKM':
         matchingObject.width = 'D';
         matchingObject.height = 'E';
         break;
-      case 'IGOX' || 'IGW' || 'IGW+' || 'IGWX' || 'IGWX+' || 'XGO' || 'XGK' || 'ING' || 'ING+':
+      case 'IGOX':
+      case 'IGW':
+      case 'IGW+':
+      case 'IGWX':
+      case 'IGWX+':
+      case 'XGO':
+      case 'XGK':
+      case 'ING':
+      case 'ING+':
         matchingObject.width = 'E';
         matchingObject.height = 'L';
         break;
-      case 'IKDN' || 'IKDU' || 'ISOX' || 'ISW' || 'ISW+' || 'ISWX' || 'ISWX+' || 'XSO':
+      case 'IKDN':
+      case 'IKDU':
+      case 'ISOX':
+      case 'ISW':
+      case 'ISW+':
+      case 'ISWX':
+      case 'ISWX+':
+      case 'XSO':
         matchingObject.width = 'E';
         matchingObject.height = 'H';
         break;
-      case 'ISK' || 'ISKV' || 'ISKM':
+      case 'ISK':
+      case 'ISKV':
+      case 'ISKM':
         matchingObject.width = 'F';
         matchingObject.height = 'J';
         break;
-      case 'ISO' || 'ISOV' || 'ISOM':
+      case 'ISO':
+      case 'ISOV':
+      case 'ISOM':
         matchingObject.width = 'E';
         matchingObject.height = 'F';
         break;
-      case 'OT' || 'OTV' || 'OV':
+      case 'OT':
+      case 'OTV':
+      case 'OV':
         matchingObject.width = 'A';
         matchingObject.height = 'A';
         break;
-      case 'OT PVC' || 'WHG' || 'WNG' || 'WZG':
+      case 'OT PVC':
+      case 'WHG':
+      case 'WNG':
+      case 'WZG':
         matchingObject.width = 'B';
         matchingObject.height = 'B';
         break;
-      case 'VSC' || 'VSH' || 'VSO':
+      case 'VSC':
+      case 'VSH':
+      case 'VSO':
         matchingObject.width = 'C';
         matchingObject.height = 'D';
         break;
-      case 'VSK' || 'VSKV' || 'VSKM':
+      case 'VSK':
+      case 'VSKV':
+      case 'VSKM':
         matchingObject.width = 'B';
         matchingObject.height = 'I';
         break;
-      case 'VSOX' || 'VSW' || 'VSW+' || 'WNS' || 'WNS+' || 'WZS':
+      case 'VSOX':
+      case 'VSW':
+      case 'VSW+':
+      case 'WNS':
+      case 'WNS+':
+      case 'WZS':
         matchingObject.width = 'C';
         matchingObject.height = 'G';
         break;
@@ -255,19 +330,50 @@ export class AccessoryValuesSetterService {
     let indeksA = '';
     const rawModel = kind === null ? '' : kind.split(':')[1];
     switch (rawModel) {
-      case 'D12' || 'D33' || 'D37':
+      case 'D12':
+      case 'D33':
+      case 'D37':
         indeksA = 'I-ROLETAW';
         break;
-      case 'ARZE' || 'ARZE1' || 'ARZS' || 'ARZS1' || 'RZE' || 'RZE1' || 'RZS1':
+      case 'ARZE':
+      case 'ARZE1':
+      case 'ARZS':
+      case 'ARZS1':
+      case 'RZE':
+      case 'RZE1':
+      case 'RZS1':
         indeksA = 'I-ROLETAZ';
         break;
-      case 'P40' || 'P50':
+      case 'P40':
+      case 'P50':
         indeksA = 'I-PLISA';
         break;
       case 'PGD':
         indeksA = 'I-RAMAD';
         break;
-      case 'ADK' || 'ACR230' || 'AKP' || 'UTB' || 'ASE230' || 'AWN' || 'BR' || 'ADD' || 'ADO' || 'BL' || 'AP4' || 'ARZE1' || 'APR-1' || 'APR-6' || 'R1' || 'R5' || 'R60' || 'RS1' || 'RS5' || 'AMW' || 'AMZ' || 'AMZ1' || 'AMO':
+      case 'ADK':
+      case 'ACR230':
+      case 'AKP':
+      case 'UTB':
+      case 'ASE230':
+      case 'AWN':
+      case 'BR':
+      case 'ADD':
+      case 'ADO':
+      case 'BL':
+      case 'AP4':
+      case 'ARZE1':
+      case 'APR-1':
+      case 'APR-6':
+      case 'R1':
+      case 'R5':
+      case 'R60':
+      case 'RS1':
+      case 'RS5':
+      case 'AMW':
+      case 'AMZ':
+      case 'AMZ1':
+      case 'AMO':
         indeksA = 'I-AKCESORIUM';
         break;
       default:
@@ -281,11 +387,21 @@ export class AccessoryValuesSetterService {
     let nameE = '';
     const rawModel = kind === null ? '' : kind.split(':')[1];
     switch (rawModel) {
-      case 'D12' || 'D33' || 'D37' || 'P40' || 'P50':
+      case 'D12':
+      case 'D33':
+      case 'D37':
+      case 'P40':
+      case 'P50':
         nameA = 'NPL-ROLETAW';
         nameE = 'NEN-ROLETAW';
         break;
-      case 'ARZE' || 'ARZE1' || 'ARZS' || 'ARZS1' || 'RZE' || 'RZE1' || 'RZS1':
+      case 'ARZE':
+      case 'ARZE1':
+      case 'ARZS':
+      case 'ARZS1':
+      case 'RZE':
+      case 'RZE1':
+      case 'RZS1':
         nameA = 'NPL-ROLETAZ';
         nameE = 'NEN-ROLETAZ';
         break;
@@ -293,7 +409,29 @@ export class AccessoryValuesSetterService {
         nameA = 'NPL-RAMAD';
         nameE = 'NEN-RAMAD';
         break;
-      case 'ADK' || 'ACR230' || 'AKP' || 'UTB' || 'ASE230' || 'AWN' || 'BR' || 'ADD' || 'ADO' || 'BL' || 'AP4' || 'ARZE1' || 'APR-1' || 'APR-6' || 'R1' || 'R5' || 'R60' || 'RS1' || 'RS5' || 'AMW' || 'AMZ' || 'AMZ1' || 'AMO':
+      case 'ADK':
+      case 'ACR230':
+      case 'AKP':
+      case 'UTB':
+      case 'ASE230':
+      case 'AWN':
+      case 'BR':
+      case 'ADD':
+      case 'ADO':
+      case 'BL':
+      case 'AP4':
+      case 'ARZE1':
+      case 'APR-1':
+      case 'APR-6':
+      case 'R1':
+      case 'R5':
+      case 'R60':
+      case 'RS1':
+      case 'RS5':
+      case 'AMW':
+      case 'AMZ':
+      case 'AMZ1':
+      case 'AMO':
         nameA = 'NPL-AKCESORIUM';
         nameE = 'NEN-AKCESORIUM';
         break;

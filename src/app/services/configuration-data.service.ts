@@ -324,6 +324,7 @@ export class ConfigurationDataService {
         // Fill arrays with options
         const accessoryTypes = [];
         const accessoryKinds = [];
+        const framesMatchings = [];
         const materials = [];
         const materialColors = [];
         const equipmentColors = [];
@@ -335,6 +336,9 @@ export class ConfigurationDataService {
             }
             if (lines[j].split(';')[1] === 'accessoryKind') {
               accessoryKinds.push(lines[j].split(';')[0]);
+            }
+            if (lines[j].split(';')[1] === 'framesMatching') {
+              framesMatchings.push(lines[j].split(';')[0]);
             }
             if (lines[j].split(';')[1] === 'material') {
               materials.push(lines[j].split(';')[0]);
@@ -354,6 +358,7 @@ export class ConfigurationDataService {
           models,
           accessoryTypes,
           accessoryKinds,
+          framesMatchings,
           materials,
           materialColors,
           equipmentColors,

@@ -115,6 +115,19 @@
                        [ngClass]="{'label--disabled' : accessoryKind.disabled}"
                        [ngStyle]="setBackgroundImage(accessoryKind.option)">{{builtNameForTranslation(accessoryKind.option) | translate}}</label>
               </div>
+              <label for="framesMatching"
+                     class="configure-form__group__label--inner">{{ 'ACCESSORY-CONFIG.framesMatching' | translate}}</label>
+              <div class="configure-form__group__options--option" *ngFor="let framesMatching of framesMatchings">
+                <input type="radio"
+                       class="configure-form__group__options--option__input"
+                       id="{{framesMatching.option}}"
+                       value="{{framesMatching.option}}"
+                       formControlName="framesMatching"
+                       [attr.disabled]="showFramesMatching">
+                <label for="{{framesMatching.option}}"
+                       [ngClass]="{'label--disabled' : showFramesMatching}"
+                       class="configure-form__group__options--option__label">{{builtNameForTranslation(framesMatching.option) | translate}}</label>
+              </div>
               <div class="configure-form__navigation-buttons">
                 <a (click)="onTypeHover(typeOptions);onKindHover(kindOptions)"
                    class="btn btn--grey configure-form__navigation-buttons__next-prev">
@@ -308,12 +321,8 @@
           <div class="configure-form__validation-info">
             <p class="configure-form__validation-info--single-message"
                *ngIf="form.get('material').hasError('empty material') ||
-                  form.get('openingType').hasError('empty openingType') ||
-                  form.get('glazing').hasError('empty glazingType') ||
-                  form.get('innerColor').hasError('empty innerColor') ||
-                  form.get('outer').hasError('empty outerMaterial') ||
-                  form.get('ventilation').hasError('empty ventilation') ||
-                  form.get('closure').hasError('empty handle')">{{ 'ROOF-WINDOWS-CONFIG.validationInfo' | translate}}</p>
+                  form.get('materialColor').hasError('empty material color') ||
+                  form.get('equipmentColor').hasError('empty equipment color')">{{ 'ROOF-WINDOWS-CONFIG.validationInfo' | translate}}</p>
           </div>
           <a (click)="saveCopyLinkPopUp()"
              class="btn btn--grey configure-form__save-button">{{ 'ROOF-WINDOWS-CONFIG.saveCopyLinkPopUp' | translate}}</a>
