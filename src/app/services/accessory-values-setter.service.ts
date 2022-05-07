@@ -454,7 +454,31 @@ export class AccessoryValuesSetterService {
   generateAccessoryCode(type: string, kind: string, szerokosc: number, wysokosc: number, typTkaniny: string, kolorTkaniny: string, roletyKolorOsprzetu: string,
                         dopasowanieRoletySzerokosc: string, dopasowanieRoletyDlugosc: string) {
     let accessoryCode = '';
-    const modelCode = kind === null ? '' : kind.split(':')[1]; // D37
+    let modelCode = kind === null ? '' : kind.split(':')[1]; // D37
+    const onlyWidth = !!(modelCode === 'D33' || modelCode ===  'D12' || (modelCode ===  'AMZ' && wysokosc < 141) || (modelCode ===  'AMW'  && wysokosc < 141));
+    if (modelCode === 'ARZE') {
+      modelCode = 'ARZE-';
+    }
+
+    if (modelCode === 'ARZS') {
+      modelCode = 'ARZS-';
+    }
+
+    if (modelCode === 'RZE') {
+      modelCode = 'RZE-';
+    }
+
+    if (modelCode === 'RZS') {
+      modelCode = 'RZS-';
+    }
+
+    if (modelCode === 'AMW') {
+      modelCode = 'AMW--';
+    }
+
+    if (modelCode === 'AMZ') {
+      modelCode = 'AMZ-0';
+    }
 
     let equipCode = '';
     if (modelCode.startsWith('D') || modelCode.startsWith('P4')) {
@@ -476,16 +500,16 @@ export class AccessoryValuesSetterService {
     let materialCode = '';
     switch (typTkaniny) {
       case 'Transparentna':
-        materialCode = 'T-';
+        materialCode = '-T';
         break;
       case 'Zaciemniająca':
-        materialCode = 'Z-';
+        materialCode = '-Z';
         break;
       case 'Zaciemniająca komórkowa':
-        materialCode = 'ZK-';
+        materialCode = '-K';
         break;
       case 'Paroprzepuszczalna':
-        materialCode = '-';
+        materialCode = '';
         break;
       default:
         materialCode = '';
@@ -493,14 +517,14 @@ export class AccessoryValuesSetterService {
 
     let colorCode = '';
     if (!modelCode.startsWith('PGD')) {
-      if (type === 'Akcesorium:Zewnętrzne') {
-        const colorRAL = colorCode.substring(colorCode.length - 4);
-        colorCode = 'A' + colorRAL + 'P'; // A7022P
+      if (type === 'Akcesorium:Zewnętrzne' && !modelCode.startsWith('AM')) {
+        const colorRAL = kolorTkaniny === null ? '' : kolorTkaniny.substring(kolorTkaniny.length - 4);
+        colorCode = '-A' + colorRAL + 'P'; // A7022P
       } else {
-        colorCode = kolorTkaniny === null ? '' : kolorTkaniny.split(':')[1];
+        colorCode = kolorTkaniny === null ? '' : '-' + kolorTkaniny.split(':')[1];
       }
     } else {
-      colorCode = 'WSWS';
+      colorCode = '-WSWS';
     }
 
     let widthCode;
@@ -509,19 +533,22 @@ export class AccessoryValuesSetterService {
     } else {
       widthCode = szerokosc;
     }
-
     let heightCode;
-    if (wysokosc < 100) {
-      heightCode = '0' + wysokosc;
+    if (onlyWidth) {
+      heightCode = '---';
     } else {
-      heightCode = wysokosc;
+      if (wysokosc < 100) {
+        heightCode = '0' + wysokosc;
+      } else {
+        heightCode = wysokosc;
+      }
     }
 
     let matchingWidthCode = '';
     let matchingHeightCode = '';
     if (modelCode.startsWith('D')) {
       matchingWidthCode = dopasowanieRoletySzerokosc.split(':')[1];
-      matchingHeightCode = dopasowanieRoletyDlugosc.split(':')[1] + '-';
+      matchingHeightCode = onlyWidth ? '-' : dopasowanieRoletyDlugosc.split(':')[1] + '-';
     }
 
     let prefix = '1A-';
@@ -529,7 +556,7 @@ export class AccessoryValuesSetterService {
       prefix = '1P-';
     }
     // 1A-D37W-Z-S005-078140-FJ-OKPA01 - ok, 1A-ARZS--A7022P-134098-OKPA01 - ok, 1A-P50K-Z-N734-220120-OKPA01 - ok, 1P-PGD15-WSWS-220120-OKPP01 - ok
-    accessoryCode = prefix + modelCode + equipCode + '-' + materialCode + colorCode + '-' + widthCode + heightCode + '-' + matchingWidthCode + matchingHeightCode + 'OKPA01';
+    accessoryCode = prefix + modelCode + equipCode + materialCode + colorCode + '-' + widthCode + heightCode + '-' + matchingWidthCode + matchingHeightCode + 'OKPA01';
 
     return accessoryCode;
   }
