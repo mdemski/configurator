@@ -184,6 +184,7 @@
                        [attr.disabled]="equpimentColor.disabled">
                 <label for="{{equpimentColor.option}}"
                        [ngClass]="{'label--disabled' : equpimentColor.disabled}"
+                       [ngStyle]="setBackgroundImage(equpimentColor.option)"
                        class="configure-form__group__options--option__label">{{builtNameForTranslation(equpimentColor.option) | translate}}</label>
               </div>
               <h2 class="configure-form__group--info-color">{{ 'ACCESSORY-CONFIG.colorOnScreen' | translate}}</h2>

@@ -688,6 +688,7 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
   }
 
   setBackgroundImage(option: string) {
+    option = option.normalize('NFD').replace(/\p{Diacritic}/gu, '').replace(/\u0142/g, 'l');
     const twoParts = option.split(':');
     let fileName = '';
     if (twoParts[1] === undefined || twoParts[1] === 'TRUE') {
