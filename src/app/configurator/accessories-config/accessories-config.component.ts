@@ -274,7 +274,6 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
     this.configuredAccessory = JSON.parse(JSON.stringify(temporaryConfigObject));
     this.showWidthMessage = this.standardWidths.includes(form.width);
     this.showHeightMessage = this.standardHeights.includes(form.height);
-    console.log(temporaryConfigObject.kod);
     this.setDisabled(this.configuredAccessory);
   }
 

@@ -88,6 +88,12 @@
                              optionName="{{accessoryType.option}}"></app-modal>
                 </div>
 
+                <p *ngIf="form.value.type === 'Akcesorium:Automatyka'"
+                   class="configure-form__validation-info--single-message"
+                >{{ 'ACCESSORY-CONFIG.electronic' | translate}}
+                  <a class="configure-form__validation-info--single-message--link"
+                     (click)="navigateToShop()">{{ 'SHOP.accessories' | translate}}</a></p>
+
                 <div class="configure-form__navigation-buttons">
                   <div class="empty-div"></div>
                   <a (click)="onTypeHover(typeOptions);onKindHover(kindOptions)"
