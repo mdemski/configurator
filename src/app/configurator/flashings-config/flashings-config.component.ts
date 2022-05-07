@@ -688,7 +688,8 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
       divEle.style.maxHeight = length * 105 + 120 + 'px';
       divEle.style.transition = 'all .7s ease-in-out';
     }
-    window.scrollTo({top: divEle.getBoundingClientRect().top - window.scrollY, behavior: 'smooth'});
+    const scrollCorrection = window.scrollY === 0 ? 200 : window.scrollY;
+    window.scrollTo({top: divEle.getBoundingClientRect().top - scrollCorrection, behavior: 'smooth'});
   }
 
   onFlashingTypeHover(flashingType: HTMLDivElement) {
