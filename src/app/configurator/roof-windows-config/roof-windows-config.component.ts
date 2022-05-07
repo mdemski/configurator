@@ -866,7 +866,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       divEle.style.maxHeight = arrayLength * 105 + 120 + 'px';
       divEle.style.transition = 'all .7s ease-in-out';
     }
-    window.scrollTo({top: 0, behavior: 'smooth'});
+    window.scrollTo({top: divEle.getBoundingClientRect().top - window.scrollY, behavior: 'smooth'});
   }
 
   onMaterialHover(materialOptions: HTMLDivElement) {

@@ -85,6 +85,7 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
   formData$: Observable<any>;
   showWidthMessage = false;
   showHeightMessage = false;
+  showFramesMatching = true;
   configFormId: number;
   userConfigurations$: Observable<SingleConfiguration[]> = new Subject() as Observable<SingleConfiguration[]>;
   userConfigs = [];
@@ -97,6 +98,7 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
   private configOptions;
   accessoryTypes = [];
   accessoryKinds = [];
+  framesMatchings = [];
   accessoryMaterials = [];
   materialColors = [];
   equipmentColors = [];
@@ -123,7 +125,6 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadDimensionData();
-    this.excludeOptions$.subscribe(console.log);
     this.configByName$ = this.store.select(ConfigurationState.configurationByAccessoryFormName).pipe(
       takeUntil(this.isDestroyed$),
       map(filterFn => filterFn(this.routerParams.state.params.formName)));
@@ -132,6 +133,7 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
         this.accessoryModelsToCalculationPrice = this.configOptions.models;
         this.accessoryTypes = this.objectMaker(this.configOptions.accessoryTypes); // przy tym wyborze dodać opcję D37/D33/D12 oraz podział na roletę zewnętrzną elektryczną i solarną oraz UTB i AKP
         this.accessoryKinds = this.objectMaker(this.configOptions.accessoryKinds);
+        this.framesMatchings = this.objectMaker(this.configOptions.framesMatchings);
         this.accessoryMaterials = this.objectMaker(this.configOptions.materials);
         this.materialColors = this.objectMaker(this.configOptions.materialColors); // wybór tego w jednym kroku tak jak klamki w oknach
         this.equipmentColors = this.objectMaker(this.configOptions.equipmentColors); // wybór tego w jednym kroku tak jak klamki w oknach
@@ -238,6 +240,7 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
   }
 
   private setConfiguredValues(form) {
+    this.showFramesMatchingSetter(form);
     // @ts-ignore
     const temporaryConfigObject: Accessory = {};
     temporaryConfigObject.typ = form.type; // Wewnętrzne - 6, Zewnętrzne - 4, Montażowe - 2, Automatyka - 7, Pozostałe - 6 (pytanie, czy dodawać jeszcze dodatkowy krok - wybór rodziny?)
@@ -271,6 +274,7 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
     this.configuredAccessory = JSON.parse(JSON.stringify(temporaryConfigObject));
     this.showWidthMessage = this.standardWidths.includes(form.width);
     this.showHeightMessage = this.standardHeights.includes(form.height);
+    console.log(temporaryConfigObject.kod);
     this.setDisabled(this.configuredAccessory);
   }
 
@@ -630,7 +634,7 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
       divEle.style.maxHeight = arrayLength * 105 + 120 + 'px';
       divEle.style.transition = 'all .7s ease-in-out';
     }
-    window.scrollTo({top: 0, behavior: 'smooth'});
+    window.scrollTo({top: divEle.getBoundingClientRect().top - window.scrollY, behavior: 'smooth'});
   }
 
   closeAllHovers(htmlDivElements: HTMLDivElement[]) {
@@ -652,7 +656,7 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
 
   onKindHover(kindOptions: HTMLDivElement) {
     this.kindVisible = !this.kindVisible;
-    this.onHoverClick(kindOptions, this.accessoryKinds.length, this.kindVisible);
+    this.onHoverClick(kindOptions, this.accessoryKinds.length + this.framesMatchings.length + 1, this.kindVisible);
   }
 
   onMaterialHover(materialOptions: HTMLDivElement) {
@@ -661,7 +665,6 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
   }
 
   onColorHover(colorOptions: HTMLDivElement) {
-    console.log(this.materialColors.length + this.equipmentColors.length);
     this.colorVisible = !this.colorVisible;
     this.onHoverClick(colorOptions, this.materialColors.length + this.equipmentColors.length + 1, this.colorVisible);
   }
@@ -719,5 +722,16 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
       this.configuredAccessory.szerokosc,
       this.configuredAccessory.wysokosc]);
     this.router.navigate(['/' + this.shopAccessoryLink]);
+  }
+
+  showFramesMatchingSetter(form) {
+    if (form.kind === 'AkcesoriumRoletaW:D37' ||
+      form.kind === 'AkcesoriumRoletaW:D33' ||
+      form.kind === 'AkcesoriumRoletaW:D12' ||
+      form.kind === 'AkcesoriumRoletaW:P40') {
+      this.showFramesMatching = null;
+    } else {
+      this.showFramesMatching = true;
+    }
   }
 }

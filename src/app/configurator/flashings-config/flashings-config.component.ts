@@ -688,8 +688,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
       divEle.style.maxHeight = length * 105 + 120 + 'px';
       divEle.style.transition = 'all .7s ease-in-out';
     }
-    // TODO zmienić TOP na top konfiguraowanego w danym momencie elementu
-    window.scrollTo({top: 0, behavior: 'smooth'});
+    window.scrollTo({top: divEle.getBoundingClientRect().top - window.scrollY, behavior: 'smooth'});
   }
 
   onFlashingTypeHover(flashingType: HTMLDivElement) {
