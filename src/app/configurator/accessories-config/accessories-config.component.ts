@@ -204,7 +204,7 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
           });
           this.accessoryId = 1;
           this.formChanges();
-          // this.setConfiguredValues(this.form.value); // TODO ten i poprzedni wiersz mają odwołanie do tej samej metody setConfigureValues - czy można jedno usunąć?
+          this.setConfiguredValues(this.form.value); // Potrzebne do wywołania przy pierwszym wczytaniu, ustawia blokady
           this.formName = this.randomString.randomString(12);
           this.loading = false;
         });
@@ -223,8 +223,8 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
           });
           this.configuredAccessory = accessoryConfig.accessory;
           this.accessoryId = accessoryConfig.id;
-          // this.setConfiguredValues(this.form.value); // TODO ten kolejny wiersz mają odwołanie do tej samej metody setConfigureValues - czy można jedno usunąć?
-          this.formChanges(); // TODO które usunąć to, czy poprzednie - raczej poprzedni wiersz, bo tam brak ustawiania formArray
+          this.setConfiguredValues(this.form.value); // Potrzebne do wywołania przy pierwszym wczytaniu, ustawia blokady
+          this.formChanges();
           this.loading = false;
         });
     }
