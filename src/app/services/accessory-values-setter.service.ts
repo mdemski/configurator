@@ -445,9 +445,12 @@ export class AccessoryValuesSetterService {
   getAccessoryName(model: string, szerokosc: number, wysokosc: number, typTkaniny: string, kolorTkaniny: string, roletyKolorOsprzetu: string) {
     let accessoryName = ''; // D37TW Biały Transparentna A368 78 x 118
     const rawModel = model.split(':')[1];
-    const rawFabric = model.split(':')[1];
-    const rawColor = model.split(':')[1];
-    accessoryName = rawModel + ' ' + roletyKolorOsprzetu + ' ' + rawFabric + ' ' + rawColor + ' ' + szerokosc + ' x ' + wysokosc;
+    const rawFabric = typTkaniny.split(':')[1] + ' ';
+    const rawColor = kolorTkaniny.split(':')[1] + ' ';
+    const equipColor = roletyKolorOsprzetu === null ? '' : roletyKolorOsprzetu + ' ';
+    const width = szerokosc > 0 ? szerokosc : '';
+    const height = wysokosc > 0 ? ' x ' + wysokosc : '';
+    accessoryName = rawModel + ' ' + equipColor + rawFabric + rawColor + width + height;
     return accessoryName;
   }
 
