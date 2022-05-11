@@ -192,7 +192,6 @@ export class AccessoryValuesSetterService {
       height: '0'
     };
     framesMatching = framesMatching === null ? '' : framesMatching.split(':')[1];
-    console.log(framesMatching);
     switch (framesMatching) {
       case 'BGOV':
       case 'BGOM':
