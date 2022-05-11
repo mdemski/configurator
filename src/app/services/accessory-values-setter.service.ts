@@ -447,10 +447,10 @@ export class AccessoryValuesSetterService {
     const rawModel = model.split(':')[1];
     const rawFabric = typTkaniny.split(':')[1] + ' ';
     const rawColor = kolorTkaniny.split(':')[1] + ' ';
-    const equipColor = roletyKolorOsprzetu === null ? '' : roletyKolorOsprzetu + ' ';
+    const equipColor = roletyKolorOsprzetu === null ? '' : ' ' + roletyKolorOsprzetu + ' ';
     const width = szerokosc > 0 ? szerokosc : '';
     const height = wysokosc > 0 ? ' x ' + wysokosc : '';
-    accessoryName = rawModel + ' ' + equipColor + rawFabric + rawColor + width + height;
+    accessoryName = rawModel + equipColor + rawFabric + rawColor + width + height;
     return accessoryName;
   }
 
