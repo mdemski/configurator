@@ -51,7 +51,7 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(appRoutes, { scrollPositionRestoration: 'enabled', useHash: true, relativeLinkResolution: 'legacy' })],
+  imports: [RouterModule.forRoot(appRoutes, { scrollPositionRestoration: 'enabled', relativeLinkResolution: 'legacy' })],
   exports: [RouterModule],
   providers: [ConfigurationsGuard, RoofWindowsGuard, FlashingsGuard, AccessoriesGuard,
     SkylightsGuard, FlatRoofWindowsGuard, AvailableConfigDataGuard, UserGuard, ComplaintsGuard,
