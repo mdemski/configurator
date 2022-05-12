@@ -550,7 +550,8 @@
     "Drewno_Enevi:VSO": "okno drewniane z grupy Enevi (VSC, VSH, VSO)",
     "Drewno_Klapwe_Enevi:VSKV": "okno drewniane klapowe z grupy Enevi (VSK, VSKV, VSKM)",
     "Drewno_Enevi_Bez_Wentylacji:WNS": "okno drewniane bez wentylacji z grupy Enevi (VSOX, VSW, VSW+, WNS, WNS+, WZS)",
-    "PVC_Wyłaz:WNG": "wyłaz PVC (OT PVC, WHG, WNG, WZG)"
+    "PVC_Wyłaz:WNG": "wyłaz PVC (OT PVC, WHG, WNG, WZG)",
+    "Akcesorium:RAL7022": "Ciemnoszary"
   },
   "ACCESSORY-CONFIG": {
     "type": "Typ akcesorium",
