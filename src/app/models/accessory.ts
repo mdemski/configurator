@@ -18,6 +18,9 @@ export class Accessory {
   private _typTkaniny: string;
   private _kolorTkaniny: string;
   private _kolorTworzywWew: string;
+  private _oblachowanieMaterial: string;
+  private _oblachowanieKolor: string;
+  private _oblachowanieFinisz: string;
   private _roletyKolorOsprzetu: string; // kolor dodatków takich jak prowadnice
   private _accessoryHorizontalSpacing: number; // czy montowane dwa okna jedno pod drugim? Jeśli tak to y=25cm
   private _otwieranie: string;
@@ -28,7 +31,7 @@ export class Accessory {
   private _cennik: string;
 
   // tslint:disable-next-line:max-line-length
-  constructor(kod: string, nazwaPozycjiPL: string, productName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, rodzaj: string, rodzina: string, dopasowanieRoletyDlugosc: string, dopasowanieRoletySzerokosc: string, typTkaniny: string, kolorTkaniny: string, kolorTworzywWew: string, roletyKolorOsprzetu: string, accessoryHorizontalSpacing: number, otwieranie: string, tabliczka: string, CenaDetaliczna: number, linkiDoZdjec: string[], dostepneRozmiary: string[], cennik: string) {
+  constructor(kod: string, nazwaPozycjiPL: string, productName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, rodzaj: string, rodzina: string, dopasowanieRoletyDlugosc: string, dopasowanieRoletySzerokosc: string, typTkaniny: string, kolorTkaniny: string, kolorTworzywWew: string, oblachowanieMaterial: string, oblachowanieKolor: string, oblachowanieFinisz: string, roletyKolorOsprzetu: string, accessoryHorizontalSpacing: number, otwieranie: string, tabliczka: string, CenaDetaliczna: number, linkiDoZdjec: string[], dostepneRozmiary: string[], cennik: string) {
     this._kod = kod;
     this._nazwaPozycjiPL = nazwaPozycjiPL;
     this._productName = productName;
@@ -48,6 +51,9 @@ export class Accessory {
     this._typTkaniny = typTkaniny;
     this._kolorTkaniny = kolorTkaniny;
     this._kolorTworzywWew = kolorTworzywWew;
+    this._oblachowanieMaterial = oblachowanieMaterial;
+    this._oblachowanieKolor = oblachowanieKolor;
+    this._oblachowanieFinisz = oblachowanieFinisz;
     this._roletyKolorOsprzetu = roletyKolorOsprzetu;
     this._accessoryHorizontalSpacing = accessoryHorizontalSpacing;
     this._otwieranie = otwieranie;
@@ -200,6 +206,30 @@ export class Accessory {
 
   set kolorTkaniny(value: string) {
     this._kolorTkaniny = value;
+  }
+
+  get oblachowanieMaterial(): string {
+    return this._oblachowanieMaterial;
+  }
+
+  set oblachowanieMaterial(value: string) {
+    this._oblachowanieMaterial = value;
+  }
+
+  get oblachowanieKolor(): string {
+    return this._oblachowanieKolor;
+  }
+
+  set oblachowanieKolor(value: string) {
+    this._oblachowanieKolor = value;
+  }
+
+  get oblachowanieFinisz(): string {
+    return this._oblachowanieFinisz;
+  }
+
+  set oblachowanieFinisz(value: string) {
+    this._oblachowanieFinisz = value;
   }
 
   get kolorTworzywWew(): string {
