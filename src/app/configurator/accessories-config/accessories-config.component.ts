@@ -20,9 +20,8 @@ import {LoadConfigurationService} from '../../services/load-configuration.servic
 import {AccessoryValuesSetterService} from '../../services/accessory-values-setter.service';
 import {ModalService} from '../../modal/modal.service';
 import {
-  AddAccessoryConfiguration,
-  AddGlobalConfiguration, AddRoofWindowConfiguration,
-  UpdateAccessoryConfiguration, UpdateAccessoryFormByFormName, UpdateRoofWindowConfiguration,
+  AddAccessoryConfiguration, AddGlobalConfiguration,
+  UpdateAccessoryConfiguration, UpdateAccessoryFormByFormName
 } from '../../store/configuration/configuration.actions';
 
 @Component({
@@ -253,8 +252,19 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
     temporaryConfigObject.otwieranie = form.opening;
     temporaryConfigObject.dopasowanieRoletySzerokosc = 'Rolety:' + this.accessoryValueSetter.matchingSetter(form.framesMatching).width;
     temporaryConfigObject.dopasowanieRoletyDlugosc = 'Rolety:' + this.accessoryValueSetter.matchingSetter(form.framesMatching).height;
-    temporaryConfigObject.typTkaniny = form.material;
-    temporaryConfigObject.kolorTkaniny = form.materialColor;
+    if (form.type === 'Akcesorium:Zewnętrzne') {
+      temporaryConfigObject.typTkaniny = null;
+      temporaryConfigObject.kolorTkaniny = null;
+      temporaryConfigObject.oblachowanieMaterial = form.material;
+      temporaryConfigObject.oblachowanieKolor = form.materialColor;
+      temporaryConfigObject.oblachowanieFinisz = 'Akcesorium:Półmat';
+    } else {
+      temporaryConfigObject.oblachowanieMaterial = null;
+      temporaryConfigObject.oblachowanieKolor = null;
+      temporaryConfigObject.oblachowanieFinisz = null;
+      temporaryConfigObject.typTkaniny = form.material;
+      temporaryConfigObject.kolorTkaniny = form.materialColor;
+    }
     temporaryConfigObject.roletyKolorOsprzetu = form.equipmentColor;
     temporaryConfigObject.kolorTworzywWew = form.equipmentColor;
     temporaryConfigObject.model = this.accessoryValueSetter.getAccessoryModel(temporaryConfigObject.rodzaj, form.material, form.equipmentColor); // RoletaW:D37T

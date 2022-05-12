@@ -29,7 +29,7 @@ export class LoadConfigurationService {
 
   // TODO Sprawdzić jaka jest grupa asortymentowa dla rolet wewnętrznych
   newAccessory = new Accessory(null, null, null, 'I-ROLETAW', 'NPL-ROLETAW', '1. Nowy', null, 78, 118, 'Akcesorium',
-    null, null, null, null, null, null, null, null, null, null, 0,
+    null, null, null, null, null, null, null, null, null, null, null, null, null, 0,
     'manualne', null, 0, [], [], null);
 
   constructor(private crud: CrudService,
