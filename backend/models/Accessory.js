@@ -53,6 +53,15 @@ let Accessory = new Schema({
   typTkaniny: {
     type: String
   },
+  oblachowanieMaterial: {
+    type: String
+  },
+  oblachowanieKolor: {
+    type: String
+  },
+  oblachowanieFinisz: {
+    type: String
+  },
   kolorTkaniny: {
     type: String
   },
