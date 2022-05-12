@@ -11,12 +11,14 @@ import {FlashingValueSetterService} from './flashing-value-setter.service';
 import {Address} from '../models/address';
 import {Invoice} from '../models/invoice';
 import {RandomStringGeneratorService} from './random-string-generator.service';
+import {AccessoryValuesSetterService} from './accessory-values-setter.service';
 
 @Injectable()
 export class DatabaseService {
 
   constructor(private windowValuesSetter: RoofWindowValuesSetterService,
               private flashingValueSetter: FlashingValueSetterService,
+              private accessoryValueSetter: AccessoryValuesSetterService,
               private randomString: RandomStringGeneratorService,
               private http: HttpClient) {
     // this.accessories = this.getAllAccessoriesToShopList();
@@ -102,6 +104,10 @@ export class DatabaseService {
 
   fetchAccessories(): Observable<any> {
     const accessories = this.getAllAccessoriesToShopList();
+    for (const accessory of accessories) {
+      accessory.productName = this.accessoryValueSetter.getAccessoryName(accessory.model, accessory.szerokosc, accessory.wysokosc,
+        accessory.typTkaniny, accessory.kolorTkaniny, accessory.roletyKolorOsprzetu);
+    }
     return of(accessories);
   }
 

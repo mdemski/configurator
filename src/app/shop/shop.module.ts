@@ -22,6 +22,7 @@ import {SkylightState} from '../store/skylight/skylight.state';
 import {AccessoryState} from '../store/accessory/accessory.state';
 import {FlatRoofWindowState} from '../store/flat-roof-window/flat-roof-window.state';
 import {NgxPaginationModule} from 'ngx-pagination';
+import { AccessoryFiltrationComponent } from './accessories/accessory-filtration/accessory-filtration.component';
 
 @NgModule({
     imports: [
@@ -45,6 +46,7 @@ import {NgxPaginationModule} from 'ngx-pagination';
     FlashingDetailsComponent,
     FlatRoofWindowsComponent,
     FlatRoofWidnowDetailsComponent,
+    AccessoryFiltrationComponent,
   ]
 })
 export class ShopModule { }
