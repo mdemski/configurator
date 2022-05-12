@@ -5,7 +5,7 @@ import {Observable, Subject} from 'rxjs';
 import {Select} from '@ngxs/store';
 import {AccessoryState} from '../../../store/accessory/accessory.state';
 import {Accessory} from '../../../models/accessory';
-import {map} from 'rxjs/operators';
+import {map, takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-accessory-filtration',
@@ -103,7 +103,36 @@ export class AccessoryFiltrationComponent implements OnInit, OnDestroy {
     this.accessoryFiltersEmitter.emit(filterObject);
   }
 
-  private loadDataToFiltration1234() {
-    // TODO tutaj wczytać tkaniny i oblachowanie
+  private loadDataToFiltration() {
+    this.accessories$.pipe(takeUntil(this.isDestroyed$)).subscribe(accessories => {
+      const typesTemp = [];
+      const kindsTemp = [];
+      const materialTypesTemp = [];
+      const materialColorsTemp = [];
+      for (const accessory of accessories) {
+        typesTemp.push(accessory.typ);
+        kindsTemp.push(accessory.rodzaj);
+        materialTypesTemp.push(accessory.typTkaniny);
+        materialTypesTemp.push(accessory.oblachowanieMaterial);
+        materialColorsTemp.push(accessory.kolorTkaniny);
+        materialColorsTemp.push(accessory.oblachowanieKolor);
+        if (accessory.wysokosc > this.biggestHeight) {
+          this.biggestHeight = accessory.wysokosc;
+        }
+        if (accessory.szerokosc > this.biggestWidth) {
+          this.biggestWidth = accessory.szerokosc;
+        }
+        if (accessory.wysokosc < this.smallestHeight) {
+          this.smallestHeight = accessory.wysokosc;
+        }
+        if (accessory.szerokosc < this.smallestWidth) {
+          this.smallestWidth = accessory.szerokosc;
+        }
+      }
+      this.typesToChoice = typesTemp.filter((value, index, self) => self.indexOf(value) === index);
+      this.kindsToChoice = kindsTemp.filter((value, index, self) => self.indexOf(value) === index);
+      this.materialTypesToChoice = materialTypesTemp.filter((value, index, self) => self.indexOf(value) === index);
+      this.materialColorsToChoice = materialColorsTemp.filter((value, index, self) => self.indexOf(value) === index);
+    });
   }
 }
