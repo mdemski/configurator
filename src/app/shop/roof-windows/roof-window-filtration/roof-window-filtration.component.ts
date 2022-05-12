@@ -81,7 +81,7 @@ export class RoofWindowFiltrationComponent implements OnInit, OnDestroy {
     this.isDestroyed$.next(null);
   }
 
-  search(filtersObject: any): void {
+  private search(filtersObject: any): void {
     Object.keys(filtersObject).forEach(key => filtersObject[key] === null ? delete filtersObject[key] : key);
     this.filtersEmitter.emit(filtersObject);
   }
