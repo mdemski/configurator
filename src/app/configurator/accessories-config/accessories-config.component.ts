@@ -721,6 +721,9 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
   }
 
   builtNameForColor(option: string) {
+    if (option === 'Aluminium:RAL7022') {
+      return this.builtNameForTranslation(option);
+    }
     return option.split(':')[1];
   }
 
