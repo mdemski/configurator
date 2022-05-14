@@ -1,0 +1,161 @@
+@import 'src/sass/base/variables';
+
+.full-width-container {
+  margin: 5rem 0;
+}
+
+.searching-form-inline {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-flow: row wrap;
+  flex-flow: row wrap;
+  -ms-flex-align: center;
+  align-items: flex-start;
+}
+
+.searching-box {
+  padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-self: flex-start;
+  justify-content: flex-start;
+  position: relative;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+
+  &--label {
+    font-weight: bold;
+    appearance: none
+  }
+
+  &__checkbox {
+    margin-right: 1rem;
+  }
+
+  &__input {
+    position: relative;
+    width: 20rem;
+    padding: 0 1rem;
+    border: 1px transparent;
+    border-bottom: 1px $color-light-grey solid;
+
+    &::placeholder {
+      font-size: 1.6rem;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &:focus ~ .searching-box__input--border {
+      width: 20rem;
+    }
+
+    &--border {
+      position: absolute;
+      background-color: $color-red;
+      bottom: 0;
+      left: 1rem;
+      width: 0;
+      height: 1px;
+      transition: all .5s;
+    }
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type=number] {
+    position: relative;
+    width: 5rem;
+    -moz-appearance: textfield;
+
+    &:focus ~ .searching-box__input--border {
+      width: 10rem;
+    }
+  }
+
+  input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+    margin: 0;
+    &:focus {
+      outline: 0;
+    }
+  }
+}
+
+//CHECKBOXES
+.label-cbx {
+  display: flex;
+  align-items: center;
+  user-select: none;
+  cursor: pointer;
+  margin-bottom: 0;
+}
+.label-cbx input:checked + .checkbox {
+  border-color: $color-red;
+}
+.label-cbx input:checked + .checkbox svg path {
+  fill: $color-red;
+}
+.label-cbx input:checked + .checkbox svg polyline {
+  stroke-dashoffset: 0;
+}
+.label-cbx:hover .checkbox svg path {
+  stroke-dashoffset: 0;
+}
+.label-cbx .checkbox {
+  position: relative;
+  top: 2px;
+  float: left;
+  margin-right: 8px;
+  width: 20px;
+  height: 20px;
+  border: 2px solid $color-light-red;
+  border-radius: 3px;
+}
+.label-cbx .checkbox svg {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+}
+.label-cbx .checkbox svg path {
+  fill: none;
+  stroke: $color-red;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 71px;
+  stroke-dashoffset: 71px;
+  transition: all 0.6s ease;
+}
+.label-cbx .checkbox svg polyline {
+  fill: none;
+  stroke: $color-light-red;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 18px;
+  stroke-dashoffset: 18px;
+  transition: all 0.3s ease;
+}
+.label-cbx > span {
+  pointer-events: none;
+  vertical-align: middle;
+}
+
+.invisible {
+  position: absolute;
+  z-index: -1;
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
