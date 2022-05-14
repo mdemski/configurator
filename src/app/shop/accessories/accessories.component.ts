@@ -105,13 +105,17 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
       filteredByMaterialType = filteredByKind;
     } else {
       filteredByMaterialType = filteredByKind
-        .filter(accessory => this.filters.accessoryMaterialType.includes(accessory.typTkaniny));
+        .filter(accessory => this.filters.accessoryMaterialType.includes(accessory.typTkaniny))
+        .filter(accessory => this.filters.accessoryMaterialType.includes(accessory.oblachowanieMaterial))
+        .filter(accessory => accessory.typTkaniny !== null || accessory.oblachowanieMaterial !== null);
     }
     if (numberOfMaterialColorNull === this.filters.accessoryMaterialColor.length) {
       filteredByMaterialColor = filteredByMaterialType;
     } else {
       filteredByMaterialColor = filteredByMaterialType
-        .filter(accessory => this.filters.accessoryMaterialColor.includes(accessory.kolorTkaniny));
+        .filter(accessory => this.filters.accessoryMaterialColor.includes(accessory.kolorTkaniny))
+        .filter(accessory => this.filters.accessoryMaterialColor.includes(accessory.oblachowanieKolor))
+        .filter(accessory => accessory.kolorTkaniny !== null || accessory.oblachowanieKolor !== null);
     }
     this.filteredAccessoriesList = filteredByMaterialColor.filter(accessory => {
       let nameFound = true;
