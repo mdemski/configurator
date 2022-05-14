@@ -42,6 +42,7 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.pageSize = this.getNumberInRow();
     this.isFiltering = true;
+    this.accessories$.pipe(takeUntil(this.isDestroyed$)).subscribe(accessories => this.accessoriesList = accessories);
     this.filteredAccessoriesList = this.accessoriesList;
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe(() => console.log);
     this.isFiltering = false;
