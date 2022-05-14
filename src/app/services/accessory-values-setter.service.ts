@@ -443,13 +443,15 @@ export class AccessoryValuesSetterService {
 
   getAccessoryName(model: string, szerokosc: number, wysokosc: number, typTkaniny: string, kolorTkaniny: string, roletyKolorOsprzetu: string) {
     let accessoryName = ''; // D37TW Biały Transparentna A368 78 x 118
-    const rawModel = model.split(':')[1];
-    const rawFabric = typTkaniny === null ? '' : typTkaniny.split(':')[1] + ' ';
+    const rawModel = model.split(':')[1] + ' ';
+    // const rawFabric = typTkaniny === null ? '' : typTkaniny.split(':')[1] + ' ';
     const rawColor = kolorTkaniny === null ? '' : kolorTkaniny.split(':')[1] + ' ';
-    const equipColor = roletyKolorOsprzetu === null ? '' : ' ' + roletyKolorOsprzetu + ' ';
+    // const equipColor = roletyKolorOsprzetu === null ? '' : ' ' + roletyKolorOsprzetu.split(':')[1] + ' ';
     const width = szerokosc > 0 ? szerokosc : '';
     const height = wysokosc > 0 ? ' x ' + wysokosc : '';
-    accessoryName = rawModel + equipColor + rawFabric + rawColor + width + height;
+    // accessoryName = rawModel + equipColor + rawFabric + rawColor + width + height;
+    // accessoryName = rawModel + rawFabric + rawColor + width + height;
+    accessoryName = rawModel + rawColor + width + height;
     return accessoryName;
   }
 
