@@ -47,7 +47,7 @@ export class RoofWindowDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.window$.subscribe(window => {
+    this.window$.pipe(takeUntil(this.isDestroyed$)).subscribe(window => {
       this.windowToShow = window;
       this.windowMaterial = window.stolarkaMaterial;
       this.windowVent = window.wentylacja;
