@@ -8,7 +8,7 @@ import {FlashingDetailsComponent} from './flashings/flashing-details/flashing-de
 import {SkylightsComponent} from './skylights/skylights.component';
 import {SkylightDetailsComponent} from './skylights/skylight-details/skylight-details.component';
 import {AccessoriesComponent} from './accessories/accessories.component';
-import {AccessorieDetailsComponent} from './accessories/accessorie-details/accessorie-details.component';
+import {AccessoriesDetailsComponent} from './accessories/accessorie-details/accessories-details.component';
 import {RoofWindowsGuard} from '../store/roof-window/roof-windows.guard';
 import {FlashingsGuard} from '../store/flashing/flashings.guard';
 import {AccessoriesGuard} from '../store/accessory/accessories.guard';
@@ -26,7 +26,7 @@ const routes: Routes = [
   {path: 'wylazy-dachowe', component: SkylightsComponent, canActivate: [SkylightsGuard]},
   {path: 'wylazy-dachowe/:skylightId', component: SkylightDetailsComponent, canActivate: [SkylightsGuard]},
   {path: 'akcesoria', component: AccessoriesComponent, canActivate: [AccessoriesGuard]},
-  {path: 'akcesoria/:accessoryId', component: AccessorieDetailsComponent, canActivate: [AccessoriesGuard]},
+  {path: 'akcesoria/:accessoryId', component: AccessoriesDetailsComponent, canActivate: [AccessoriesGuard]},
   {path: 'plaski-dach', component: FlatRoofWindowsComponent, canActivate: [FlatRoofWindowsGuard]},
   {path: 'plaski-dach/:flatId', component: FlatRoofWidnowDetailsComponent, canActivate: [FlatRoofWindowsGuard]},
 ];

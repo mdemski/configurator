@@ -8,7 +8,7 @@ import {RoofWindowsComponent} from './roof-windows/roof-windows.component';
 import {SkylightsComponent} from './skylights/skylights.component';
 import {VerticalWindowDetailsComponent} from './vertical-windows/vertical-window-details/vertical-window-details.component';
 import {SkylightDetailsComponent} from './skylights/skylight-details/skylight-details.component';
-import {AccessorieDetailsComponent} from './accessories/accessorie-details/accessorie-details.component';
+import {AccessoriesDetailsComponent} from './accessories/accessorie-details/accessories-details.component';
 import {RoofWindowFiltrationComponent} from './roof-windows/roof-window-filtration/roof-window-filtration.component';
 import {NgxsModule} from '@ngxs/store';
 import {RoofWindowState} from '../store/roof-window/roof-window.state';
@@ -41,7 +41,7 @@ import { AccessoryFiltrationComponent } from './accessories/accessory-filtration
     SkylightsComponent,
     VerticalWindowDetailsComponent,
     SkylightDetailsComponent,
-    AccessorieDetailsComponent,
+    AccessoriesDetailsComponent,
     FlashingsComponent,
     FlashingDetailsComponent,
     FlatRoofWindowsComponent,
