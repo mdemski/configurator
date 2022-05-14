@@ -68,7 +68,7 @@
         (pageChange)="page = $event"
         previousLabel="{{'SHOP.previousPageLabel' | translate}}"
         nextLabel="{{'SHOP.nextPageLabel' | translate}}">
-<!--        autoHide-->
+        <!--        autoHide-->
       </pagination-controls>
       <!--Number on page selection-->
       <div class="select-box paginating">
@@ -107,7 +107,9 @@
     <div class="product-card"
          *ngFor="let window of filteredRoofWindowsList | paginate: {itemsPerPage: pageSize, currentPage: page}">
       <a routerLink="./{{window.kod}}">
-        <img src="{{window.linkiDoZdjec[0]}}" alt="{{window.grupaAsortymentowa}}" class="product-card__photo">
+        <div class="product-card__photo-container">
+          <img src="{{window.linkiDoZdjec[0]}}" alt="{{window.grupaAsortymentowa}}" class="product-card__photo-container__photo">
+        </div>
       </a>
       <h3 class="product-card__title">{{window.productName}}</h3>
 
@@ -119,7 +121,8 @@
         <li class="product-card__details--info">{{'SINGLE-PRODUCT.innerColor' | translate}}:
           {{'ROOF-WINDOWS-DATA.' + window.stolarkaKolor | translate}} </li>
         <li class="product-card__details--info">{{'SINGLE-PRODUCT.handleType' | translate}}:
-          {{'ROOF-WINDOWS-DATA.' + window.zamkniecieTyp | translate}} - {{'ROOF-WINDOWS-DATA.' + window.zamkniecieKolor | translate}} </li>
+          {{'ROOF-WINDOWS-DATA.' + window.zamkniecieTyp | translate}}
+          - {{'ROOF-WINDOWS-DATA.' + window.zamkniecieKolor | translate}} </li>
         <li class="product-card__details--info">{{'SINGLE-PRODUCT.outerColor' | translate}}:
           {{'ROOF-WINDOWS-DATA.' + window.oblachowanieKolor | translate}} </li>
         <li class="product-card__details--info">{{'SINGLE-PRODUCT.ventilation' | translate}}:
@@ -134,12 +137,14 @@
         </div>
         <div class="product-card__icons-section--info">
           <h4 class="product-card__icons-section--info--title">{{ 'SINGLE-PRODUCT.material' | translate}}</h4>
-          <p class="product-card__icons-section--info--detail">{{'ROOF-WINDOWS-DATA.' + window.stolarkaMaterial | translate}}</p>
+          <p
+            class="product-card__icons-section--info--detail">{{'ROOF-WINDOWS-DATA.' + window.stolarkaMaterial | translate}}</p>
           <!--        <img src="assets/icons/material.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{ 'SINGLE-PRODUCT.material' | translate}}">-->
         </div>
         <div class="product-card__icons-section--info">
           <h4 class="product-card__icons-section--info--title">{{ 'SINGLE-PRODUCT.price' | translate}}</h4>
-          <p class="product-card__icons-section--info--detail">{{(window.CenaDetaliczna / (cart$ | async).cart.exchange) + ((window.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}}</p>
+          <p
+            class="product-card__icons-section--info--detail">{{(window.CenaDetaliczna / (cart$ | async).cart.exchange) + ((window.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}}</p>
           <!--        <img src="assets/icons/price.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{ 'SINGLE-PRODUCT.price' | translate}}">-->
         </div>
       </div>

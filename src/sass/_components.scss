@@ -14,10 +14,20 @@
   //  margin: 12rem 2rem 11rem 2rem;
   //}
 
-  &__photo {
-    width: 24rem;
-    margin-top: -6rem;
-    border-bottom: $color-light-grey solid 1px;
+  &__photo-container {
+    position: relative;
+
+    &__photo {
+      width: 24rem;
+      margin-top: -6rem;
+      border-bottom: $color-light-grey solid 1px;
+    }
+
+    &__colorPhoto {
+      position: absolute;
+      width: 4rem;
+      margin-right: 4rem;
+    }
   }
 
   &__title {
