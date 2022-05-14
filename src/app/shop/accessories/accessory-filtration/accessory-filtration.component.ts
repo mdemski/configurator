@@ -129,10 +129,34 @@ export class AccessoryFiltrationComponent implements OnInit, OnDestroy {
           this.smallestWidth = accessory.szerokosc;
         }
       }
-      this.typesToChoice = typesTemp.filter((value, index, self) => self.indexOf(value) === index);
-      this.kindsToChoice = kindsTemp.filter((value, index, self) => self.indexOf(value) === index);
-      this.materialTypesToChoice = materialTypesTemp.filter((value, index, self) => self.indexOf(value) === index);
-      this.materialColorsToChoice = materialColorsTemp.filter((value, index, self) => self.indexOf(value) === index);
+      this.typesToChoice = typesTemp.filter((value, index, self) => self.indexOf(value) === index).filter(value => value !== null);
+      this.kindsToChoice = kindsTemp.filter((value, index, self) => self.indexOf(value) === index).filter(value => value !== null);
+      this.materialTypesToChoice = materialTypesTemp.filter((value, index, self) => self.indexOf(value) === index).filter(value => value !== null);
+      this.materialColorsToChoice = materialColorsTemp.filter((value, index, self) => self.indexOf(value) === index).filter(value => value !== null);
     });
+  }
+
+  builtColorName(color: string) {
+    if (color) {
+      if (color === 'Aluminium:RAL7022') {
+        return this.builtNameForTranslation(color);
+      }
+      return color.split(':')[1];
+    } else {
+      return 'Nima';
+    }
+  }
+
+  builtNameForTranslation(option: string) {
+    return String('ACCESSORY-DATA.' + option);
+  }
+
+  setBackgroundImage(color: string) {
+    const fileName = color === '' || color === null ? '' : color.split(':')[1];
+    return {
+      ['background-image']: 'url("assets/img/configurator/accessory_configurator/central_options_pictures/' + fileName + '.png")',
+      ['background-size']: 'contain',
+      ['background-repeat']: 'no-repeat'
+    };
   }
 }
