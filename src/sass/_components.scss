@@ -896,3 +896,36 @@ button:disabled {
   text-align: left;
   font-size: $default-font-size;
 }
+
+//PAGINATOR
+.pagination-container {
+  z-index: 90;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 3rem;
+}
+
+.paginator {
+  display: flex;
+  align-items: center;
+  height: 55.594px;
+  margin: 0 1rem;
+}
+
+.paginator {
+  ::ng-deep {
+    ul {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.paginator {
+  ::ng-deep {
+    li.current {
+      background: red;
+    }
+  }
+}
