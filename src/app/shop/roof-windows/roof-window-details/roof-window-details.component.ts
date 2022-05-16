@@ -64,9 +64,10 @@ export class RoofWindowDetailsComponent implements OnInit, OnDestroy {
     // TODO napisać obsługę tej metody z wykorzystaniem store'a
     // this.availableExtras.push(this.db.getAccessoryById(1), this.db.getAccessoryById(2));
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe(() => console.log);
+    // TODO wczytywać to z produktu po uzupełnieniu w eNova
     this.availableExtras.push(new Accessory('1234', 'Roletka', 'Roletka', 'NPL-ROLETAW', 'NEN-ROLETAW', '3. Dopuszczony',
-      'D37', 78, 118, 'Akcesorium', 'RoletaWewnetrzna', 'D', 'D37', 'Wewnetrzne', 'A', 'B','Zaciemniajaca',
-      'A347', 'Srebeny', null, null, null, 'Srebrny', 0, 'manulane', '1234',
+      'D37', 78, 118, 'Akcesorium', 'RoletaWewnetrzna', 'D', 'D37', 'Wewnetrzne', 'A', 'B','Zaciemniająca',
+      'A347', 'Srebeny', null, null, null, 'Srebrny', 0, 'manualne', '1234',
       123, ['a'], ['78x118'], 'PL'));
   }
 
@@ -99,7 +100,6 @@ export class RoofWindowDetailsComponent implements OnInit, OnDestroy {
   }
 
   addToCart(product, quantity: number) {
-    // TODO napisać obsługę tej metody z wykorzystaniem store'a
     this.store.dispatch(new AddProductToCart(product, quantity));
   }
 

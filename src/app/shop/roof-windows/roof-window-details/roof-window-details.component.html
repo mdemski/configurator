@@ -9,18 +9,18 @@
   <div class="md-container--left-side">
     <!--Icons with specification of product-->
     <div class="specification-icons">
-      <div *ngIf="windowMaterial == 'drewno'" class="specification-icons__element active-icon"><img
+      <div *ngIf="windowMaterial === 'drewno'" class="specification-icons__element active-icon"><img
         src="assets/icons/single_product_page/wood.png" alt="wooden window"></div>
-      <div *ngIf="windowMaterial == 'PVC'" class="specification-icons__element active-icon"><img
+      <div *ngIf="windowMaterial === 'PVC'" class="specification-icons__element active-icon"><img
         src="assets/icons/single_product_page/pvc.png" alt="wooden window"></div>
       <div class="specification-icons__element active-icon">{{'ROOF-WINDOWS-DATA.' + windowToShow.stolarkaKolor | translate}}</div>
-      <div *ngIf="windowVent == 'NEO-AIR' else windowNoVent" class="specification-icons__element active-icon"><img
+      <div *ngIf="windowVent === 'NEO-AIR' else windowNoVent" class="specification-icons__element active-icon"><img
         src="assets/icons/single_product_page/neo-vent.png" alt="wooden window"></div>
       <ng-template #windowNoVent>
         <div class="specification-icons__element inactive-icon"><img src="assets/icons/single_product_page/neo-vent.png"
                                                                      alt="wooden window"></div>
       </ng-template>
-      <div *ngIf="windowHandle == 'Extra Secure' else simpleHandle" class="specification-icons__element active-icon">
+      <div *ngIf="windowHandle === 'Extra Secure' else simpleHandle" class="specification-icons__element active-icon">
         <img src="assets/icons/single_product_page/extra-secure.png" alt="wooden window"></div>
       <ng-template #simpleHandle>
         <div class="specification-icons__element inactive-icon"><img src="assets/icons/single_product_page/extra-secure.png"
@@ -204,7 +204,7 @@
 <!--Extra information about product-->
 <section>
   <div class="background-container">
-    <div class="main-info" *ngIf="windowMaterial == 'DrewnoSosna' else PVCmaterial">
+    <div class="main-info" *ngIf="windowMaterial === 'DrewnoSosna' else PVCmaterial">
       <p class="main-info__desc">{{ 'SINGLE-PRODUCT.materialDescWood' | translate}}</p>
       <img class="main-info__photo"
            src="assets/img/shop/single_product_page/materialWood.png"
@@ -237,7 +237,7 @@
 
   <div class="pictures-container">
     <img class="pictures-container__photo"
-         *ngIf="windowVent == 'NawiewnikNeoVent' else windowNoVent"
+         *ngIf="windowVent === 'NawiewnikNeoVent' else windowNoVent"
          src="assets/img/shop/single_product_page/neo-vent.png"
          alt="{{ 'SINGLE-PRODUCT.windowVentilation' | translate}}">
     <ng-template #windowNoVent>
