@@ -1,3 +1,152 @@
 <div class="navbar-background">
   <img src="assets/img/navbar_backgrounds/dan-cristian-padure-SMSLyc9FHl0-unsplash.jpg" alt="roof window">
 </div>
+
+<div class="md-container"  *ngIf="accessory$ | async as accessory">
+
+  <div class="md-container--left-side">
+    <!--Icons with specification of product-->
+    <div class="specification-icons">
+      <div class="specification-icons__element active-icon"><img
+        src="assets/icons/single_product_page/fa.jpg" alt="{{accessory.typTkaniny}}"></div>
+      <div *ngIf="accessory.typTkaniny" class="specification-icons__element active-icon">{{'ACCESSORY-DATA.' + accessory.typTkaniny | translate}}</div>
+      <div *ngIf="accessory.oblachowanieMaterial" class="specification-icons__element active-icon">{{'ACCESSORY-DATA.' + accessory.oblachowanieKolor | translate}}</div>
+      <div *ngIf="accessory.kolorTkaniny" class="specification-icons__element active-icon">{{accessory.kolorTkaniny.split(':')[1]}}</div>
+      <div *ngIf="accessory.oblachowanieKolor" class="specification-icons__element active-icon">{{accessory.oblachowanieKolor.split(':')[1]}}</div>
+      <div class="specification-icons__element active-icon"><img
+        src="assets/icons/single_product_page/grammar.jpg" alt="{{accessory.typTkaniny}}"></div>
+      <div class="specification-icons__element active-icon"><img
+        src="assets/icons/single_product_page/millimeters.jpg" alt="{{accessory.typTkaniny}}"></div>
+      <div class="specification-icons__element active-icon"><img
+        src="assets/icons/single_product_page/r.jpg" alt="{{accessory.typTkaniny}}"></div>
+      <div class="specification-icons__element active-icon"><img
+        src="assets/icons/single_product_page/t.jpg" alt="{{accessory.typTkaniny}}"></div>
+    </div>
+    <!--Icons with specification of product-->
+
+    <!--Main pictures of product-->
+    <div class="main-picture">
+      <img *ngFor="let url of picturesOfAccessory" src="{{url}}" alt="{{accessory.productName}}">
+    </div>
+    <!--Main pictures of product-->
+  </div>
+
+  <div class="md-container--right-side">
+    <p class="product-name">{{accessory.productName}}</p>
+    <p
+      class="price">{{ 'SINGLE-PRODUCT.price' | translate}} {{(accessory.CenaDetaliczna / (cart$ | async).cart.exchange) | currency: ' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
+    <p *ngIf="logInUser.isLogged"
+       class="price--after-discount">{{ 'SINGLE-PRODUCT.priceAfterDisc' | translate}} {{(accessory.CenaDetaliczna / (1 + (user$ | async).currentUser.basicDiscount + (user$ | async).currentUser.accessoriesDiscount) / (cart$ | async).cart.exchange) | currency :' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
+    <div class="line"></div>
+    <div class="all-sizes-container">
+      <p>{{ 'SINGLE-PRODUCT.availableSizes' | translate}}</p>
+      <!--TODO przekierować na odpowiednią stronę z wymiarem okna-->
+      <a routerLink="" class="icon-btn-light icon-btn-light--light-grey-red btn-big"
+         *ngFor="let size of availableSizes">{{size}}</a>
+    </div>
+    <div class="line"></div>
+    <div class="quantity-container">
+      <p class="quantity-desc">{{ 'SINGLE-PRODUCT.quantity' | translate}}</p>
+      <i (click)="decreaseQuantity()">-</i>
+      <input type="number" class="quantity" [(ngModel)]="quantity">
+      <i (click)="increaseQuantity()">+</i>
+    </div>
+    <div class="line"></div>
+    <a class="btn btn--grey add-to-cart"
+       (click)="addToCart(accessory, quantity)">{{ 'SINGLE-PRODUCT.addToCart' | translate}}</a>
+    <a class="btn btn--red add-to-cart"
+       (click)="order(accessory, quantity)">{{ 'SINGLE-PRODUCT.orderNow' | translate}}</a>
+    <div class="line"></div>
+    <p class="product-information--title">{{ 'SINGLE-PRODUCT.productInformation' | translate}}</p>
+    <table class="table table-striped table-hover">
+      <thead>
+      <tr>
+        <th scope="col">{{ 'SINGLE-PRODUCT.LP' | translate}}</th>
+        <th scope="col">{{ 'SINGLE-PRODUCT.specName' | translate}}</th>
+        <th scope="col">{{ 'SINGLE-PRODUCT.specValue' | translate}}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>{{ 'SINGLE-PRODUCT.accessoryModel' | translate}}</td>
+        <td>{{'ACCESSORY-DATA.' + accessory.model | translate}}</td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>{{ 'SINGLE-PRODUCT.materialTyp' | translate}}</td>
+        <td *ngIf="accessory.typTkaniny">{{'ACCESSORY-DATA.' + accessory.typTkaniny | translate}}</td>
+        <td *ngIf="accessory.oblachowanieMaterial">{{'ACCESSORY-DATA.' + accessory.oblachowanieMaterial  | translate}}</td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td>{{ 'SINGLE-PRODUCT.accessoryMaterialColor' | translate}}</td>
+        <td *ngIf="accessory.kolorTkaniny">{{accessory.kolorTkaniny.split(':')[1]}}</td>
+        <td *ngIf="accessory.oblachowanieKolor">{{accessory.oblachowanieKolor.split(':')[1]}}</td>
+      </tr>
+      <tr>
+        <th scope="row">4</th>
+        <td>{{ 'SINGLE-PRODUCT.accessoryEquipmentColor' | translate}}</td>
+        <td *ngIf="accessory.typTkaniny">{{'ACCESSORY-DATA.' + accessory.roletyKolorOsprzetu | translate}}</td>
+        <td *ngIf="accessory.oblachowanieMaterial">{{'ACCESSORY-DATA.n/a'  | translate}}</td>
+      </tr>
+      <tr>
+        <th scope="row">5</th>
+        <td>{{ 'SINGLE-PRODUCT.opening' | translate}}</td>
+        <td>{{'ACCESSORY-DATA.' + accessory.otwieranie | translate}}</td>
+      </tr>
+      <tr>
+        <th scope="row">6</th>
+        <td>{{ 'SINGLE-PRODUCT.accessoryDimensions' | translate}}</td>
+        <td>{{accessory.szerokosc}} x {{accessory.wysokosc}}</td>
+      </tr>
+      <tr>
+        <th scope="row">7</th>
+        <td>{{ 'SINGLE-PRODUCT.accessoryGeometry' | translate}}</td>
+        <td>{{'ACCESSORY-DATA.' + accessory.geometria | translate}}</td>
+      </tr>
+      <tr>
+        <th scope="row">8</th>
+        <td>{{ 'SINGLE-PRODUCT.accessoryCategory' | translate}}</td>
+        <td>{{'ACCESSORY-DATA.' + accessory.grupaAsortymentowa | translate}}</td>
+      </tr>
+      <tr>
+        <th scope="row">9</th>
+        <td>{{ 'SINGLE-PRODUCT.accessorySubCategory' | translate}}</td>
+        <td>{{'ACCESSORY-DATA.' + accessory.rodzina | translate}}</td>
+      </tr>
+      <tr>
+        <th scope="row">10</th>
+        <td>{{ 'SINGLE-PRODUCT.accessoryType' | translate}}</td>
+        <td>{{'ACCESSORY-DATA.' + accessory.typ | translate}}</td>
+      </tr>
+      <tr>
+        <th scope="row">11</th>
+        <td>{{ 'SINGLE-PRODUCT.accessoryMatchingType' | translate}}</td>
+        <td>{{accessory.dopasowanieRoletySzerokosc.split(':')[1]}}/{{accessory.dopasowanieRoletyDlugosc.split(':')[1]}}</td>
+      </tr>
+      <tr>
+        <th scope="row">12</th>
+        <td>{{ 'SINGLE-PRODUCT.detalPrice' | translate}}</td>
+        <td>{{accessory.CenaDetaliczna | currency: ' '}}</td>
+      </tr>
+      <tr>
+        <th scope="row">13</th>
+        <td>{{ 'SINGLE-PRODUCT.detalGrossPrice' | translate}}</td>
+        <td>{{(accessory.CenaDetaliczna) + (accessory.CenaDetaliczna * (cart$ | async).cart.vatRate) | currency: ' '}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!--Extra information about product-->
+<section>
+  <div class="background-container" *ngIf="accessory$ | async as accessory">
+    <div class="main-info" *ngIf="accessory.rodzina">
+      <p class="main-info__desc">{{ 'SINGLE-PRODUCT.' + accessory.rodzina.split(':')[1] + accessory.typ.split(':')[1] + 'Desc' | translate}}</p>
+      <img class="main-info__photo"
+           src="assets/img/shop/single_product_page/{{accessory.rodzina.split(':')[1] + accessory.typ.split(':')[1]}}.png"
+           alt="{{ 'SINGLE-PRODUCT.accessoryType' | translate}}">
+    </div>
+  </div>
+</section>
