@@ -115,4 +115,29 @@ export class RoofWindowDetailsComponent implements OnInit, OnDestroy {
       return 'zł';
     }
   }
+
+  getLinkCode(kod: string, size: string) {
+    const firstPart = kod.substring(0, kod.length - 13);
+    const secondPart = kod.substring(kod.length - 13);
+    const specNumber = secondPart.split('-')[1];
+    const szerokosc = Number(size.split('x')[0]);
+    const wysokosc = Number(size.split('x')[1]);
+    let widthCode;
+    if (szerokosc < 100) {
+      widthCode = '0' + szerokosc;
+    } else {
+      widthCode = szerokosc;
+    }
+    let heightCode;
+    if (wysokosc === null || wysokosc === 0) {
+      heightCode = '---';
+    } else {
+      if (wysokosc < 100) {
+        heightCode = '0' + wysokosc;
+      } else {
+        heightCode = wysokosc;
+      }
+    }
+    return firstPart + widthCode + heightCode + '-' + specNumber;
+  }
 }
