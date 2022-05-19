@@ -373,7 +373,6 @@ export class FlashingValueSetterService implements OnDestroy {
     }
     return flashingCombinationCode;
   }
-
   // setNumberOfConnections(flashing: Flashing) {
   //   const flashingType = flashing.rodzaj.split(':')[1];
   //   switch (flashingType) {
