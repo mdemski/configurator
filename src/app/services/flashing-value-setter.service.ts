@@ -89,7 +89,7 @@ export class FlashingValueSetterService implements OnDestroy {
         flashing.flashingTileHeight = 0;
         break;
       default:
-        flashing.flashingTileHeight = 5;
+        flashing.flashingTileHeight = 9;
         break;
     }
   }
