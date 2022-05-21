@@ -366,7 +366,7 @@ export class ComplaintFormComponent implements OnInit, OnDestroy {
           product = new Flashing('', '', productName, '', '', '1. Nowy',
             this.products.controls[i].get('model').value, width, height, 'KołnierzUszczelniający', '', '', '', '',
             '', '', '', '', 0, '', 0, 0, 0,
-            0, [], [], '', false, null);
+            0, [], [], '', false, null, []);
           break;
         }
         case 'accessory': {
