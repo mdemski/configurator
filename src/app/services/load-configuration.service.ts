@@ -25,7 +25,7 @@ export class LoadConfigurationService {
   newFlashing = new Flashing(null, null, null, 'I-KOŁNIERZ', 'NPL-KOŁNIERZ', '1.Nowy', null,
       78, 118, 'KołnierzUszczelniający', null, null, null, null, null, null, null,
       null, 0, null, 0, 0, 0, 0,
-      [], [], null, false, null);
+      [], [], null, false, null, []);
 
   // TODO Sprawdzić jaka jest grupa asortymentowa dla rolet wewnętrznych
   newAccessory = new Accessory(null, null, null, 'I-ROLETAW', 'NPL-ROLETAW', '1. Nowy', null, 78, 118, 'Akcesorium',
