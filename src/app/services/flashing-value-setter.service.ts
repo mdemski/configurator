@@ -374,6 +374,47 @@ export class FlashingValueSetterService implements OnDestroy {
     return flashingCombinationCode;
   }
 
+  setRoofing(geometria: string, flashingTileHeight: number) {
+    const roofing: string[] = [];
+    switch (geometria) {
+      case 'U':
+        if (flashingTileHeight <= 5) {
+          roofing.push('dachówka z falą do 5cm włącznie');
+          roofing.push('blacha profilowana z falą do 5cm włącznie');
+        }
+        if (flashingTileHeight > 5 && flashingTileHeight <= 9) {
+          roofing.push('dachówka z falą do 9cm włącznie');
+          roofing.push('blacha profilowana z falą do 9cm włącznie');
+        }
+        if (flashingTileHeight > 9) {
+          roofing.push('dachówka z falą do 12cm włącznie');
+          roofing.push('blacha profilowana z falą do 12cm włącznie');
+        }
+        break;
+      case 'P':
+        roofing.push('papa');
+        roofing.push('gont bitumiczny');
+        roofing.push('blacha płaska');
+        break;
+      case 'L':
+        roofing.push('łupek');
+        break;
+      case 'LH':
+        roofing.push('dachówka karpiówka');
+        break;
+      case 'R':
+        roofing.push('blacha płaska');
+        break;
+      case 'BP':
+        roofing.push('blacha panelowa');
+        break;
+      case 'D':
+        roofing.push('dachówka płaska');
+        break;
+    }
+    return roofing;
+  }
+
   // setNumberOfConnections(flashing: Flashing) {
   //   const flashingType = flashing.rodzaj.split(':')[1];
   //   switch (flashingType) {
