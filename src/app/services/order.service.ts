@@ -26,7 +26,7 @@ export class OrderService {
     'Okno:RAL7048', null, 4, [], ['zewnetrznaHartowana'], ['assets/img/products/ISO-I22.png'], [], 997, 1.2, 1.0, 2000, 'Okno:RAL7048', 'Okno:RAL7048', null, 0, 'PL');
   temporaryFlashing = new Flashing('1K-1-U-UO------A7022P-055098-OKPK01', 'UN/O 055x098 Kołnierz uniwersalny /A7022P/UO/OKPK01', 'Kołnierz U 55x98 UO', 'I-KOLNIERZ', 'NPL-KOLNIERZ', 'Nowy', 'U', 55, 98, 'KołnierzUszczelniający',
     'KolnierzUszczelniający', 'Kołnierz:U', 'KołnierzUszczelniający:K-1', 'KołnierzUszczelniający', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'U', 0, 'UO', 5, 0, 0,
-    270, ['78x118', '78x140'], ['assets/img/products/flashings.jpg'], 'PL', false, null);
+    270, ['78x118', '78x140'], ['assets/img/products/flashings.jpg'], 'PL', false, null, []);
   testCart = new Cart('234fgsdf',
     [new Item('34234fg', this.windowToTests, 2, 0, new Date(), true),
       new Item('vcxzv3423', this.temporaryFlashing, 1, 0, new Date(), true)],
