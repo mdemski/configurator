@@ -10,5 +10,160 @@
     <app-okpol-loader></app-okpol-loader>
   </div>
   <ng-template #elseBlock>
+    <div class="pagination-container">
+      <!--Sorting way selection-->
+      <div class="select-box sorting">
+        <div class="select-box__current" tabindex="1" (change)="sortArray()">
+          <div class="select-box__value">
+            <input class="select-box__input" type="radio" id="popularity" [(ngModel)]="sortBy" value="popularity"
+                   name="sort"
+                   checked>
+            <p class="select-box__input-text">{{'SHOP.popularity' | translate}}</p>
+          </div>
+
+          <div class="select-box__value">
+            <input class="select-box__input" type="radio" id="priceAsc" [(ngModel)]="sortBy" value="priceAsc"
+                   name="sort">
+            <p class="select-box__input-text">{{'SHOP.priceAsc' | translate}}</p>
+          </div>
+
+          <div class="select-box__value">
+            <input class="select-box__input" type="radio" id="priceDesc" [(ngModel)]="sortBy" value="priceDesc"
+                   name="sort">
+            <p class="select-box__input-text">{{'SHOP.priceDesc' | translate}}</p>
+          </div>
+
+          <div class="select-box__value">
+            <input class="select-box__input" type="radio" id="nameDesc" [(ngModel)]="sortBy" value="nameDesc"
+                   name="sort">
+            <p class="select-box__input-text">{{'SHOP.nameDesc' | translate}}</p>
+          </div>
+
+          <div class="select-box__value">
+            <input class="select-box__input" type="radio" id="nameAsc" [(ngModel)]="sortBy" value="nameAsc"
+                   name="sort">
+            <p class="select-box__input-text">{{'SHOP.nameAsc' | translate}}</p>
+          </div>
+
+          <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon"
+               aria-hidden="true">
+        </div>
+        <ul class="select-box__list">
+          <li><label class="select-box__option" for="popularity"
+                     aria-hidden="aria-hidden">{{'SHOP.popularity' | translate}}</label></li>
+          <li><label class="select-box__option" for="priceAsc"
+                     aria-hidden="aria-hidden">{{'SHOP.priceAsc' | translate}}</label></li>
+          <li><label class="select-box__option" for="priceDesc"
+                     aria-hidden="aria-hidden">{{'SHOP.priceDesc' | translate}}</label></li>
+          <li><label class="select-box__option" for="nameDesc"
+                     aria-hidden="aria-hidden">{{'SHOP.nameDesc' | translate}}</label></li>
+          <li><label class="select-box__option" for="nameAsc"
+                     aria-hidden="aria-hidden">{{'SHOP.nameAsc' | translate}}</label></li>
+        </ul>
+      </div>
+
+
+      <pagination-controls
+        class="paginator"
+        (pageChange)="page = $event"
+        previousLabel="{{'SHOP.previousPageLabel' | translate}}"
+        nextLabel="{{'SHOP.nextPageLabel' | translate}}">
+        <!--        autoHide-->
+      </pagination-controls>
+      <!--Number on page selection-->
+      <div class="select-box paginating">
+        <div class="select-box__current" tabindex="1">
+          <div class="select-box__value">
+            <input class="select-box__input" type="radio" id="0" [(ngModel)]="pageSize" [value]="getNumberInRow()"
+                   name="pageSize"
+                   [checked]="true">
+            <p class="select-box__input-text">{{getNumberInRow()}}</p>
+          </div>
+
+          <div class="select-box__value">
+            <input class="select-box__input" type="radio" id="1" [(ngModel)]="pageSize" [value]="getNumberInRow()*5"
+                   name="pageSize"
+                   checked="checked">
+            <p class="select-box__input-text">{{getNumberInRow() * 5}}</p>
+          </div>
+
+          <div class="select-box__value">
+            <input class="select-box__input" type="radio" id="2" [(ngModel)]="pageSize" [value]="getNumberInRow()*12"
+                   name="pageSize"
+                   checked="checked">
+            <p class="select-box__input-text">{{getNumberInRow() * 12}}</p>
+          </div>
+
+          <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon"
+               aria-hidden="true">
+        </div>
+        <ul class="select-box__list">
+          <li><label class="select-box__option" for="0" aria-hidden="aria-hidden">{{getNumberInRow()}}</label></li>
+          <li><label class="select-box__option" for="1" aria-hidden="aria-hidden">{{getNumberInRow() * 5}}</label></li>
+          <li><label class="select-box__option" for="2" aria-hidden="aria-hidden">{{getNumberInRow() * 12}}</label></li>
+        </ul>
+      </div>
+    </div>
+    <div class="product-card"
+         *ngFor="let flashing of filteredFlashingsList | paginate: {itemsPerPage: pageSize, currentPage: page}">
+      <a routerLink="./{{flashing.kod}}">
+        <div class="product-card__photo-container">
+          <img src="{{flashing.linkiDoZdjec[0]}}" alt="{{flashing.grupaAsortymentowa}}" class="product-card__photo-container__photo">
+        </div>
+      </a>
+      <h3 class="product-card__title">{{flashing.productName}}</h3>
+
+      <ul class="product-card__details">
+        <li class="product-card__details--info">{{'SINGLE-PRODUCT.category' | translate}}:
+          {{'FLASHING-DATA.' + flashing.rodzina | translate}} </li>
+        <li *ngIf="flashing.oblachowanieMaterial !== null"
+            class="product-card__details--info">{{'SINGLE-PRODUCT.materialType' | translate}}:
+          {{'FLASHING-DATA.' + flashing.oblachowanieMaterial | translate}} </li>
+        <li *ngIf="flashing.oblachowanieKolor !== null"
+            class="product-card__details--info">{{'SINGLE-PRODUCT.materialColor' | translate}}:
+          {{'FLASHING-DATA.' + flashing.oblachowanieKolor | translate}} </li>
+        <li *ngIf="flashing.typFartucha !== null"
+            class="product-card__details--info">{{'SINGLE-PRODUCT.flashingApron' | translate}}:
+          {{'FLASHING-DATA.' + flashing.typFartucha | translate}} </li>
+        <li *ngIf="flashing.wysokosc > 0"
+            class="product-card__details--info">{{'SINGLE-PRODUCT.flashingDimensions' | translate}}:
+          {{flashing.szerokosc}} x {{flashing.wysokosc}}</li>
+        <li *ngIf="flashing.oblachowanieFinisz === null"
+            class="product-card__details--info">{{'SINGLE-PRODUCT.colorFinish' | translate}}:
+          {{'FLASHING-DATA.' + flashing.oblachowanieFinisz | translate}}</li>
+      </ul>
+
+      <div class="product-card__icons-section">
+        <div class="product-card__icons-section--info">
+          <h4 class="product-card__icons-section--info--title">{{ 'FLASHING-DATA.model' | translate}}</h4>
+          <p class="product-card__icons-section--info--detail">{{flashing.model.split(':')[1]}}</p>
+          <!--        <img src="assets/icons/glazing.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{window.windowGlazing}}">-->
+        </div>
+        <div class="product-card__icons-section--info">
+          <h4 class="product-card__icons-section--info--title">{{ 'FLASHING-DATA.type' | translate}}</h4>
+          <p class="product-card__icons-section--info--detail">{{'FLASHING-DATA.' + flashing.typ | translate}}</p>
+          <!--        <img src="assets/icons/material.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{ 'SINGLE-PRODUCT.material' | translate}}">-->
+        </div>
+        <div class="product-card__icons-section--info">
+          <h4 class="product-card__icons-section--info--title">{{ 'SINGLE-PRODUCT.price' | translate}}</h4>
+          <p
+            class="product-card__icons-section--info--detail">{{(flashing.CenaDetaliczna / (cart$ | async).cart.exchange) + ((flashing.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}}</p>
+          <!--        <img src="assets/icons/price.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{ 'SINGLE-PRODUCT.price' | translate}}">-->
+        </div>
+      </div>
+      <div class="product-card__buttons-section">
+        <!--      TODO dodać linki do odpowiednich podstron-->
+        <a class="product-card__buttons-section--link icon-btn icon-btn--red" (click)="addToCart(flashing)">
+          <i class="fas fa-cart-plus product-card__buttons-section--icon"></i>
+        </a>
+        <a routerLink="./{{flashing.kod}}" class="product-card__buttons-section--link icon-btn icon-btn--blue">
+          <i class="fas fa-info-circle product-card__buttons-section--icon"></i>
+        </a>
+        <a routerLink="/{{ 'LINK.configuratorFlashing' | translate}}/-1/no-name/{{flashing.kod}}"
+           class="product-card__buttons-section--link icon-btn icon-btn--grey">
+          <i class="fas fa-cogs product-card__buttons-section--icon"></i>
+        </a>
+      </div>
+    </div>
   </ng-template>
 </div>
