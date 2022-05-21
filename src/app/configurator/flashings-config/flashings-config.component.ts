@@ -177,7 +177,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
     this.configuredFlashingArray = [];
     this.tempConfigFlashing = new Flashing('1K-1-U-UO------A7022P-055098-OKPK01', 'UN/O 055x098 Kołnierz uniwersalny /A7022P/UO/OKPK01', 'Kołnierz U 55x98 UO', 'I-KOLNIERZ', 'NPL-KOLNIERZ', 'Nowy', 'U', 55, 98, 'KołnierzUszczelniający',
       'KolnierzUszczelniający', 'Kołnierz:U', 'KołnierzUszczelniający:K-1', 'KołnierzUszczelniający', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'U', 0, 'UO', 5, 0, 0,
-      270, ['78x118', '78x140'], ['assets/img/products/flashings.jpg'], 'PL', false, null);
+      270, ['78x118', '78x140'], ['assets/img/products/flashings.jpg'], 'PL', false, null, []);
     this.configByName$ = this.store.select(ConfigurationState.configurationByFlashingFormName).pipe(
       takeUntil(this.isDestroyed$),
       map(filterFn => filterFn(this.routerParams.state.params.formName)));
@@ -379,7 +379,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
           this.configuredFlashing = new Flashing(null, null, null, 'I-KOŁNIERZ', 'NPL-KOŁNIERZ', '1.Nowy', null,
             0, 0, 'KołnierzUszczelniający', null, null, null, null, null, null, null,
             null, 0, null, 0, 0, 0, 0,
-            [], [], null, false, null);
+            [], [], null, false, null, []);
           this.configuredFlashing.indeksAlgorytm = 'I-KOŁNIERZ';
           this.configuredFlashing.nazwaPLAlgorytm = 'NPL-KOŁNIERZ';
           this.configuredFlashing.status = '1. Nowy';
@@ -424,7 +424,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
       this.configuredFlashing = new Flashing(null, null, null, 'I-KOŁNIERZ', 'NPL-KOŁNIERZ', '1.Nowy', null,
         0, 0, 'KołnierzUszczelniający', null, null, null, null, null, null, null,
         null, 0, null, 0, 0, 0, 0,
-        [], [], null, false, null);
+        [], [], null, false, null, []);
       this.configuredFlashing.model = this.flashingSetter.singleFlashingModelCreator(form.flashingType, form.apronType);
       // tslint:disable-next-line:max-line-length
       this.configuredFlashing.productName = this.flashingSetter.buildFlashingName(form.flashingType, form.dimensions.widths[0], form.dimensions.heights[0]);
