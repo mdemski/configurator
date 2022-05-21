@@ -11,7 +11,7 @@ import {AddProductToCart} from '../../store/cart/cart.actions';
 @Component({
   selector: 'app-flashings',
   templateUrl: './flashings.component.html',
-  styleUrls: ['./flashings.component.css']
+  styleUrls: ['./flashings.component.scss']
 })
 export class FlashingsComponent implements OnInit, OnDestroy {
   @Select(FlashingState.flashings) flashings$: Observable<Flashing[]>;
