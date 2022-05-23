@@ -115,33 +115,33 @@
 
       <ul class="product-card__details">
         <li class="product-card__details--info">{{'SINGLE-PRODUCT.category' | translate}}:
-          {{'FLASHING-DATA.' + flashing.rodzina | translate}} </li>
+          {{'FLASHINGS-DATA.' + flashing.rodzina | translate}} </li>
         <li *ngIf="flashing.oblachowanieMaterial !== null"
             class="product-card__details--info">{{'SINGLE-PRODUCT.materialType' | translate}}:
-          {{'FLASHING-DATA.' + flashing.oblachowanieMaterial | translate}} </li>
+          {{'FLASHINGS-DATA.' + flashing.oblachowanieMaterial | translate}} </li>
         <li *ngIf="flashing.oblachowanieKolor !== null"
             class="product-card__details--info">{{'SINGLE-PRODUCT.materialColor' | translate}}:
-          {{'FLASHING-DATA.' + flashing.oblachowanieKolor | translate}} </li>
+          {{'FLASHINGS-DATA.' + flashing.oblachowanieKolor | translate}} </li>
         <li *ngIf="flashing.typFartucha !== null"
             class="product-card__details--info">{{'SINGLE-PRODUCT.flashingApron' | translate}}:
-          {{'FLASHING-DATA.' + flashing.typFartucha | translate}} </li>
+          {{'FLASHINGS-DATA.' + flashing.typFartucha | translate}} </li>
         <li *ngIf="flashing.wysokosc > 0"
             class="product-card__details--info">{{'SINGLE-PRODUCT.flashingDimensions' | translate}}:
           {{flashing.szerokosc}} x {{flashing.wysokosc}}</li>
         <li *ngIf="flashing.oblachowanieFinisz === null"
             class="product-card__details--info">{{'SINGLE-PRODUCT.colorFinish' | translate}}:
-          {{'FLASHING-DATA.' + flashing.oblachowanieFinisz | translate}}</li>
+          {{'FLASHINGS-DATA.' + flashing.oblachowanieFinisz | translate}}</li>
       </ul>
 
       <div class="product-card__icons-section">
         <div class="product-card__icons-section--info">
-          <h4 class="product-card__icons-section--info--title">{{ 'FLASHING-DATA.model' | translate}}</h4>
+          <h4 class="product-card__icons-section--info--title">{{ 'SHOP.flashingModel' | translate}}</h4>
           <p class="product-card__icons-section--info--detail">{{flashing.model.split(':')[1]}}</p>
           <!--        <img src="assets/icons/glazing.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{window.windowGlazing}}">-->
         </div>
         <div class="product-card__icons-section--info">
-          <h4 class="product-card__icons-section--info--title">{{ 'FLASHING-DATA.type' | translate}}</h4>
-          <p class="product-card__icons-section--info--detail">{{'FLASHING-DATA.' + flashing.typ | translate}}</p>
+          <h4 class="product-card__icons-section--info--title">{{ 'SHOP.flashingApronType' | translate}}</h4>
+          <p class="product-card__icons-section--info--detail">{{flashing.typFartucha}}</p>
           <!--        <img src="assets/icons/material.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{ 'SINGLE-PRODUCT.material' | translate}}">-->
         </div>
         <div class="product-card__icons-section--info">

@@ -94,7 +94,7 @@ export class FlashingsComponent implements OnInit, OnDestroy {
       filteredByType = this.flashingsList;
     } else {
       filteredByType = this.flashingsList
-        .filter(flashing => this.filters.flashingType.includes(flashing.typ));
+        .filter(flashing => this.filters.flashingType.includes(flashing.geometria));
     }
     if (numberOfRoofingNull === this.filters.flashingRoofing.length) {
       filteredByRoofing = filteredByType;
