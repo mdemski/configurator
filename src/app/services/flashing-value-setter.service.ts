@@ -377,7 +377,7 @@ export class FlashingValueSetterService implements OnDestroy {
   setRoofing(geometria: string, flashingTileHeight: number) {
     const roofing: string[] = [];
     switch (geometria) {
-      case 'U':
+      case 'Kołnierz:U':
         if (flashingTileHeight <= 5) {
           roofing.push('dachówka z falą do 5cm włącznie');
           roofing.push('blacha profilowana z falą do 5cm włącznie');
@@ -391,24 +391,24 @@ export class FlashingValueSetterService implements OnDestroy {
           roofing.push('blacha profilowana z falą do 12cm włącznie');
         }
         break;
-      case 'P':
+      case 'Kołnierz:P':
         roofing.push('papa');
         roofing.push('gont bitumiczny');
         roofing.push('blacha płaska');
         break;
-      case 'L':
+      case 'Kołnierz:L':
         roofing.push('łupek');
         break;
-      case 'LH':
+      case 'Kołnierz:LH':
         roofing.push('dachówka karpiówka');
         break;
-      case 'R':
+      case 'Kołnierz:R':
         roofing.push('blacha płaska');
         break;
-      case 'BP':
+      case 'Kołnierz:BP':
         roofing.push('blacha panelowa');
         break;
-      case 'D':
+      case 'Kołnierz:D':
         roofing.push('dachówka płaska');
         break;
     }

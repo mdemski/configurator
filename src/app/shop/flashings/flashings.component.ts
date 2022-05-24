@@ -100,11 +100,7 @@ export class FlashingsComponent implements OnInit, OnDestroy {
       filteredByRoofing = filteredByType;
     } else {
       filteredByRoofing = filteredByType
-        .filter(flashing => {
-          for (const roofingTyp of flashing.roofing) {
-            this.filters.flashingRoofing.includes(roofingTyp);
-          }
-        });
+        .filter(flashing => flashing.roofing.filter(roofing => this.filters.flashingRoofing.includes(roofing)));
     }
     if (numberOfCombinationNull === this.filters.flashingCombination.length) {
       filteredByCombination = filteredByRoofing;
