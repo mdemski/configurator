@@ -29,9 +29,10 @@ export class Accessory {
   private _linkiDoZdjec: string[];
   private _dostepneRozmiary: string[];
   private _cennik: string;
+  private _frameMarching: string; // Nie przesyłać do eNova
 
   // tslint:disable-next-line:max-line-length
-  constructor(kod: string, nazwaPozycjiPL: string, productName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, rodzaj: string, rodzina: string, dopasowanieRoletyDlugosc: string, dopasowanieRoletySzerokosc: string, typTkaniny: string, kolorTkaniny: string, kolorTworzywWew: string, oblachowanieMaterial: string, oblachowanieKolor: string, oblachowanieFinisz: string, roletyKolorOsprzetu: string, accessoryHorizontalSpacing: number, otwieranie: string, tabliczka: string, CenaDetaliczna: number, linkiDoZdjec: string[], dostepneRozmiary: string[], cennik: string) {
+  constructor(kod: string, nazwaPozycjiPL: string, productName: string, indeksAlgorytm: string, nazwaPLAlgorytm: string, status: string, model: string, szerokosc: number, wysokosc: number, grupaAsortymentowa: string, typ: string, geometria: string, rodzaj: string, rodzina: string, dopasowanieRoletyDlugosc: string, dopasowanieRoletySzerokosc: string, typTkaniny: string, kolorTkaniny: string, kolorTworzywWew: string, oblachowanieMaterial: string, oblachowanieKolor: string, oblachowanieFinisz: string, roletyKolorOsprzetu: string, accessoryHorizontalSpacing: number, otwieranie: string, tabliczka: string, CenaDetaliczna: number, linkiDoZdjec: string[], dostepneRozmiary: string[], cennik: string, frameMarching: string) {
     this._kod = kod;
     this._nazwaPozycjiPL = nazwaPozycjiPL;
     this._productName = productName;
@@ -62,6 +63,7 @@ export class Accessory {
     this._linkiDoZdjec = linkiDoZdjec;
     this._dostepneRozmiary = dostepneRozmiary;
     this._cennik = cennik;
+    this._frameMarching = frameMarching;
   }
 
   get kod(): string {
@@ -302,5 +304,13 @@ export class Accessory {
 
   set cennik(value: string) {
     this._cennik = value;
+  }
+
+  get frameMarching(): string {
+    return this._frameMarching;
+  }
+
+  set frameMarching(value: string) {
+    this._frameMarching = value;
   }
 }
