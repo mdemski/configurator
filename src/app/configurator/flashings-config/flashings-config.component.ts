@@ -889,7 +889,8 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
           return data.filter(x => x !== null);
         })).subscribe(userConfigurations => {
         this.userConfigs = userConfigurations;
-        this.configFormId = this.userConfigs[0].userId;
+        // this.configFormId = this.userConfigs[0].userId;
+        this.configFormId = 1;
         this.highestUserId = this.hd.getHighestIdForUser(userConfigurations);
         this.newFlashingConfig.userId = this.highestUserId;
         // wersja 1 lub 2

@@ -47,7 +47,7 @@
 
     </div>
     <div class="configure-form">
-      <form [formGroup]="form">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <!--Flashing type-->
         <div class="modal-window-relative-parent">
           <div class="configure-form__group">
@@ -479,8 +479,7 @@
 
         <!-- TODO dokleić do przycisku i usunąć tempFlashing [disabled]="!form.valid"-->
         <button class="btn btn--red configure-form__submit"
-                type="submit"
-                (click)="onSubmit()">{{ 'FLASHINGS-CONFIG.submit' | translate}}
+                type="submit">{{ 'FLASHINGS-CONFIG.submit' | translate}}
         </button>
         <div class="configure-form__validation-info">
           <p class="configure-form__validation-info--single-message"
