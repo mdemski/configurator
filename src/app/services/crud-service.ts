@@ -481,7 +481,11 @@ export class CrudService {
       windowFormData: formData,
       configLink
     };
-    globalConfiguration.products.windows.push(windowConfig);
+    if (globalConfiguration.products.windows === null) {
+      globalConfiguration.products.windows = [windowConfig];
+    } else {
+      globalConfiguration.products.windows.push(windowConfig);
+    }
     globalConfiguration.lastUpdate = new Date();
     return this.http.put(url, globalConfiguration, {headers: this.headers}).pipe(catchError(err => err));
   }
@@ -499,8 +503,12 @@ export class CrudService {
       flashingFormData: formData,
       configLink
     };
+    if (globalConfiguration.products.flashings === null) {
+      globalConfiguration.products.flashings = [flashingConfig];
+    } else {
+      globalConfiguration.products.flashings.push(flashingConfig);
+    }
     globalConfiguration.lastUpdate = new Date();
-    globalConfiguration.products.flashings.push(flashingConfig);
     return this.http.put(url, globalConfiguration, {headers: this.headers}).pipe(catchError(err => err));
   }
 
@@ -510,7 +518,11 @@ export class CrudService {
     const url = this.urlToUpdateSetter(globalConfiguration);
     for (const flashingConfig of flashingsConfigurationArray) {
       flashingConfig.id = this.hd.getHighestIdForProduct(globalConfiguration).flashingId;
-      globalConfiguration.products.flashings.push(flashingConfig);
+      if (globalConfiguration.products.flashings === null) {
+        globalConfiguration.products.flashings = [flashingConfig];
+      } else {
+        globalConfiguration.products.flashings.push(flashingConfig);
+      }
     }
     globalConfiguration.lastUpdate = new Date();
     return this.http.put(url, globalConfiguration, {headers: this.headers}).pipe(catchError(err => err));
@@ -529,8 +541,12 @@ export class CrudService {
       accessoryFormData: formData,
       configLink
     };
+    if (globalConfiguration.products.accessories === null) {
+      globalConfiguration.products.accessories = [accessoryConfig];
+    } else {
+      globalConfiguration.products.accessories.push(accessoryConfig);
+    }
     globalConfiguration.lastUpdate = new Date();
-    globalConfiguration.products.accessories.push(accessoryConfig);
     return this.http.put(url, globalConfiguration, {headers: this.headers}).pipe(catchError(err => err));
   }
 
@@ -546,8 +562,12 @@ export class CrudService {
       verticalFormData: formData,
       configLink
     };
+    if (globalConfiguration.products.verticals === null) {
+      globalConfiguration.products.verticals = [verticalConfig];
+    } else {
+      globalConfiguration.products.verticals.push(verticalConfig);
+    }
     globalConfiguration.lastUpdate = new Date();
-    globalConfiguration.products.verticals.push(verticalConfig);
     return this.http.put(url, globalConfiguration, {headers: this.headers}).pipe(catchError(err => err));
   }
 
@@ -563,8 +583,13 @@ export class CrudService {
       flatFormData: formData,
       configLink
     };
+
+    if (globalConfiguration.products.flats === null) {
+      globalConfiguration.products.flats = [flatConfig];
+    } else {
+      globalConfiguration.products.flats.push(flatConfig);
+    }
     globalConfiguration.lastUpdate = new Date();
-    globalConfiguration.products.flats.push(flatConfig);
     return this.http.put(url, globalConfiguration, {headers: this.headers}).pipe(catchError(err => err));
   }
 
