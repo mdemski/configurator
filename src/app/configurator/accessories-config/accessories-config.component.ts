@@ -139,6 +139,7 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
         this.dimensions = AccessoriesConfigComponent.setDimensions(this.configOptions.dimensions);
         this.formName = this.routerParams.state.params.formName;
         this.accessoryCode = this.routerParams.state.params.productCode;
+        this.setterMachingsOption('a', 'b');
         this.configId = this.routerParams.state.params.configId === undefined ? '-1' : this.routerParams.state.params.configId;
         if (this.routerParams.state.params.configId === undefined) {
           this.globalId = this.hd.getHighestGlobalIdFormMongoDB(this.configurations);
@@ -192,17 +193,35 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
       this.loadConfig.getAccessoryToReconfiguration(this.currentUser, this.formName, this.routerParams.state.params.productCode).pipe(takeUntil(this.isDestroyed$))
         .subscribe(accessoryToReconfiguration => {
           this.configuredAccessory = accessoryToReconfiguration;
-          this.form = this.fb.group({
-            // Wewnętrzne, Zewnętrzne, Montażowe, Automatyka, Pozostałe
-            type: new FormControl(this.configuredAccessory.typ, [Validators.required], []),
-            kind: new FormControl(this.configuredAccessory.rodzaj, [Validators.required], []),
-            framesMatching: new FormControl(null),
-            material: new FormControl(this.configuredAccessory.typTkaniny, [], [this.validateMaterial.bind(this)]),
-            materialColor: new FormControl(this.configuredAccessory.kolorTkaniny, [], [this.validateMaterialColor.bind(this)]),
-            equipmentColor: new FormControl(this.configuredAccessory.roletyKolorOsprzetu, [], [this.validateEquipmentColor.bind(this)]),
-            width: new FormControl(this.configuredAccessory.szerokosc),
-            height: new FormControl(this.configuredAccessory.wysokosc)
-          });
+          let type = '';
+          if (this.configuredAccessory.typ !== null) {
+            type = this.configuredAccessory.typ.split(':')[1];
+          }
+          if (type === 'Wewnętrzne') {
+            this.form = this.fb.group({
+              // Wewnętrzne, Zewnętrzne, Montażowe, Automatyka, Pozostałe
+              type: new FormControl(this.configuredAccessory.typ, [Validators.required], []),
+              kind: new FormControl(this.configuredAccessory.rodzaj, [Validators.required], []),
+              framesMatching: new FormControl(this.setterMachingsOption(this.configuredAccessory.dopasowanieRoletySzerokosc, this.configuredAccessory.dopasowanieRoletyDlugosc), [], []),
+              material: new FormControl(this.configuredAccessory.typTkaniny, [], [this.validateMaterial.bind(this)]),
+              materialColor: new FormControl(this.configuredAccessory.kolorTkaniny, [], [this.validateMaterialColor.bind(this)]),
+              equipmentColor: new FormControl(this.configuredAccessory.roletyKolorOsprzetu, [], [this.validateEquipmentColor.bind(this)]),
+              width: new FormControl(this.configuredAccessory.szerokosc),
+              height: new FormControl(this.configuredAccessory.wysokosc)
+            });
+          } else {
+            this.form = this.fb.group({
+              // Wewnętrzne, Zewnętrzne, Montażowe, Automatyka, Pozostałe
+              type: new FormControl(this.configuredAccessory.typ, [Validators.required], []),
+              kind: new FormControl(this.configuredAccessory.rodzaj, [Validators.required], []),
+              framesMatching: new FormControl(null),
+              material: new FormControl(this.configuredAccessory.oblachowanieMaterial, [], [this.validateMaterial.bind(this)]),
+              materialColor: new FormControl(this.configuredAccessory.oblachowanieKolor, [], [this.validateMaterialColor.bind(this)]),
+              equipmentColor: new FormControl(this.configuredAccessory.roletyKolorOsprzetu, [], [this.validateEquipmentColor.bind(this)]),
+              width: new FormControl(this.configuredAccessory.szerokosc),
+              height: new FormControl(this.configuredAccessory.wysokosc)
+            });
+          }
           this.accessoryId = 1;
           this.formChanges();
           this.setConfiguredValues(this.form.value); // Potrzebne do wywołania przy pierwszym wczytaniu, ustawia blokady
@@ -748,6 +767,17 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
       this.showFramesMatching = null;
     } else {
       this.showFramesMatching = true;
+    }
+  }
+
+  private setterMachingsOption(dopasowanieRoletySzerokosc: string, dopasowanieRoletyDlugosc: string) {
+    if (dopasowanieRoletySzerokosc !== '') {
+      return this.accessoryValueSetter.matchingsOption(
+        dopasowanieRoletySzerokosc.split(':')[1],
+        dopasowanieRoletyDlugosc.split(':')[1]
+      );
+    } else {
+      return '';
     }
   }
 }

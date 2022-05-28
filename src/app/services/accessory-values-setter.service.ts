@@ -459,7 +459,7 @@ export class AccessoryValuesSetterService {
                         dopasowanieRoletySzerokosc: string, dopasowanieRoletyDlugosc: string) {
     let accessoryCode = '';
     let modelCode = kind === null ? '' : kind.split(':')[1]; // D37
-    const onlyWidth = !!(modelCode === 'D33' || modelCode ===  'D12' || (modelCode ===  'AMZ' && wysokosc < 141) || (modelCode ===  'AMW'  && wysokosc < 141));
+    const onlyWidth = !!(modelCode === 'D33' || modelCode === 'D12' || (modelCode === 'AMZ' && wysokosc < 141) || (modelCode === 'AMW' && wysokosc < 141));
     if (modelCode === 'ARZE') {
       modelCode = 'ARZE-';
     }
@@ -563,5 +563,41 @@ export class AccessoryValuesSetterService {
     accessoryCode = prefix + modelCode + equipCode + materialCode + colorCode + '-' + widthCode + heightCode + '-' + matchingWidthCode + matchingHeightCode + 'OKPA01';
 
     return accessoryCode;
+  }
+
+  matchingsOption(szerokosc: string, wysokosc: string) {
+    if ((szerokosc === 'E' && wysokosc === 'K') || (szerokosc === 'E' && wysokosc === '')) {
+      return 'PVC_Z_Wentylacją:IGOV';
+    }
+    if ((szerokosc === 'E' && wysokosc === 'L')) {
+      return 'PVC_Bez_Wentylacji:IGOX';
+    }
+    if ((szerokosc === 'D' && wysokosc === 'E') || (szerokosc === 'D' && wysokosc === '')) {
+      return 'PVC_Klapowe:IGKV';
+    }
+    if ((szerokosc === 'E' && wysokosc === 'H')) {
+      return 'Drewno_Bez_Wentylacji:ISOX';
+    }
+    if ((szerokosc === 'F' && wysokosc === 'J') || (szerokosc === 'F' && wysokosc === '')) {
+      return 'Dreweno_Klapowe:ISKV';
+    }
+    if ((szerokosc === 'E' && wysokosc === 'F')) {
+      return 'Drewno_Z_Wentylacją:ISOV';
+    }
+    if ((szerokosc === 'A' && wysokosc === 'A') || (szerokosc === 'A' && wysokosc === '')) {
+      return 'Drewno_OT:OT';
+    }
+    if ((szerokosc === 'B' && wysokosc === 'B') || (szerokosc === 'B' && wysokosc === '')) {
+      return 'PVC_Wyłaz:WNG';
+    }
+    if ((szerokosc === 'C' && wysokosc === 'D') || (szerokosc === 'C' && wysokosc === '')) {
+      return 'Drewno_Enevi:VSO';
+    }
+    if ((szerokosc === 'B' && wysokosc === 'I')) {
+      return 'Drewno_Klapwe_Enevi:VSKV';
+    }
+    if ((szerokosc === 'C' && wysokosc === 'G')) {
+      return 'Drewno_Enevi_Bez_Wentylacji:WNS';
+    }
   }
 }
