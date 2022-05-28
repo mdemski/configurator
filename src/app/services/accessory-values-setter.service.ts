@@ -565,7 +565,13 @@ export class AccessoryValuesSetterService {
     return accessoryCode;
   }
 
-  matchingsOption(szerokosc: string, wysokosc: string) {
+  matchingsOption(dopasowanieRoletySzerokosc: string, dopasowanieRoletyDlugosc: string) {
+    let szerokosc = '';
+    let wysokosc = '';
+    if (dopasowanieRoletySzerokosc !== '') {
+      szerokosc = dopasowanieRoletySzerokosc.split(':')[1];
+      wysokosc = dopasowanieRoletyDlugosc.split(':')[1];
+    }
     if ((szerokosc === 'E' && wysokosc === 'K') || (szerokosc === 'E' && wysokosc === '')) {
       return 'PVC_Z_Wentylacją:IGOV';
     }

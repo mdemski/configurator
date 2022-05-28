@@ -139,7 +139,6 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
         this.dimensions = AccessoriesConfigComponent.setDimensions(this.configOptions.dimensions);
         this.formName = this.routerParams.state.params.formName;
         this.accessoryCode = this.routerParams.state.params.productCode;
-        this.setterMachingsOption('a', 'b');
         this.configId = this.routerParams.state.params.configId === undefined ? '-1' : this.routerParams.state.params.configId;
         if (this.routerParams.state.params.configId === undefined) {
           this.globalId = this.hd.getHighestGlobalIdFormMongoDB(this.configurations);
@@ -202,7 +201,7 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
               // Wewnętrzne, Zewnętrzne, Montażowe, Automatyka, Pozostałe
               type: new FormControl(this.configuredAccessory.typ, [Validators.required], []),
               kind: new FormControl(this.configuredAccessory.rodzaj, [Validators.required], []),
-              framesMatching: new FormControl(this.setterMachingsOption(this.configuredAccessory.dopasowanieRoletySzerokosc, this.configuredAccessory.dopasowanieRoletyDlugosc), [], []),
+              framesMatching: new FormControl(this.configuredAccessory.frameMarching, [], []),
               material: new FormControl(this.configuredAccessory.typTkaniny, [], [this.validateMaterial.bind(this)]),
               materialColor: new FormControl(this.configuredAccessory.kolorTkaniny, [], [this.validateMaterialColor.bind(this)]),
               equipmentColor: new FormControl(this.configuredAccessory.roletyKolorOsprzetu, [], [this.validateEquipmentColor.bind(this)]),
@@ -271,6 +270,7 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
     temporaryConfigObject.szerokosc = form.width;
     temporaryConfigObject.wysokosc = form.height;
     temporaryConfigObject.otwieranie = form.opening;
+    temporaryConfigObject.frameMarching = form.framesMatching;
     temporaryConfigObject.dopasowanieRoletySzerokosc = 'Rolety:' + this.accessoryValueSetter.matchingSetter(form.framesMatching).width;
     temporaryConfigObject.dopasowanieRoletyDlugosc = 'Rolety:' + this.accessoryValueSetter.matchingSetter(form.framesMatching).height;
     if (form.type === 'Akcesorium:Zewnętrzne') {
@@ -767,17 +767,6 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
       this.showFramesMatching = null;
     } else {
       this.showFramesMatching = true;
-    }
-  }
-
-  private setterMachingsOption(dopasowanieRoletySzerokosc: string, dopasowanieRoletyDlugosc: string) {
-    if (dopasowanieRoletySzerokosc !== '') {
-      return this.accessoryValueSetter.matchingsOption(
-        dopasowanieRoletySzerokosc.split(':')[1],
-        dopasowanieRoletyDlugosc.split(':')[1]
-      );
-    } else {
-      return '';
     }
   }
 }

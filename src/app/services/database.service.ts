@@ -80,14 +80,14 @@ export class DatabaseService {
   getAllAccessoriesToShopList(): Accessory[] {
     return this.accessories = [
       new Accessory('1A-D37--T-A372-078118-AA-OKPA01', 'D37T 078x118 A372 [AA] Roleta Multistop, tkanina transparentna, srebrne prowadnice', 'Multistop D37 78x118', 'I-Akcesorium', 'NPL-Akcesorium', 'Nowy', 'Roleta:D37', 78, 118, 'Akcesorium', 'Akcesorium:Wewnętrzne',
-        'Roleta:D37', 'AkcesoriumRoletaW:D37', 'Akcesorium:Roleta', 'Rolety:A', 'Rolety:A', 'Transparentna', 'RoletaD_T:A372', 'Roleta:Ral7048', null, null, null, 'D37:Srebrny', 0, 'Roleta:Manualne', '', 358, ['assets/img/products/D37.png'], [], 'PL'),
+        'Roleta:D37', 'AkcesoriumRoletaW:D37', 'Akcesorium:Roleta', 'Rolety:A', 'Rolety:A', 'Transparentna', 'RoletaD_T:A372', 'Roleta:Ral7048', null, null, null, 'D37:Srebrny', 0, 'Roleta:Manualne', '', 358, ['assets/img/products/D37.png'], [], 'PL', ''),
       new Accessory('1A-D37W--T-A372-078118-AA-OKPA01', 'D37WT 078x118 A372 [AA] Roleta Multistop, tkanina transparentna, białe prowadnice', 'Multistop D37W 78x118', 'I-Akcesorium', 'NPL-Akcesorium', 'Nowy', 'Roleta:D37W', 78, 118, 'Akcesorium', 'Akcesorium:Wewnętrzne',
-        'Roleta:D37W', 'AkcesoriumRoletaW:D37W', 'Akcesorium:Roleta', 'Rolety:A', 'Rolety:A', 'Transparentna', 'RoletaD_T:A372', 'Roleta:Ral9016', null, null, null, 'D37:Biały', 0, 'Roleta:Manualne', '', 358, ['assets/img/products/D37.png'], [], 'PL'),
+        'Roleta:D37W', 'AkcesoriumRoletaW:D37W', 'Akcesorium:Roleta', 'Rolety:A', 'Rolety:A', 'Transparentna', 'RoletaD_T:A372', 'Roleta:Ral9016', null, null, null, 'D37:Biały', 0, 'Roleta:Manualne', '', 358, ['assets/img/products/D37.png'], [], 'PL', ''),
       new Accessory('1A-D37--Z-S003-078118-AA-OKPA01', 'D37T 078x118 A372 [AA] Roleta Multistop, tkanina zaciemniająca, srebrne prowadnice', 'Multistop D37 78x118', 'I-Akcesorium', 'NPL-Akcesorium', 'Nowy', 'Roleta:D37', 78, 118, 'Akcesorium', 'Akcesorium:Wewnętrzne',
-        'Roleta:D37', 'AkcesoriumRoletaW:D37', 'Akcesorium:Roleta', 'Rolety:A', 'Rolety:A', 'Zaciemniająca', 'RoletaD_Z:S003', 'Roleta:Ral7048', null, null, null, 'D37:Srebrny', 0, 'Roleta:Manualne', '', 358, ['assets/img/products/D37.png'], [], 'PL'),
+        'Roleta:D37', 'AkcesoriumRoletaW:D37', 'Akcesorium:Roleta', 'Rolety:A', 'Rolety:A', 'Zaciemniająca', 'RoletaD_Z:S003', 'Roleta:Ral7048', null, null, null, 'D37:Srebrny', 0, 'Roleta:Manualne', '', 358, ['assets/img/products/D37.png'], [], 'PL', ''),
       new Accessory('1A-D37W--Z-S003-078118-AA-OKPA01', 'D37WT 078x118 A372 [AA] Roleta Multistop, tkanina zaciemniająca, białe prowadnice', 'Multistop D37W 78x118', 'I-Akcesorium', 'NPL-Akcesorium', 'Nowy', 'Roleta:D37W', 78, 118, 'Akcesorium', 'Akcesorium:Wewnętrzne',
-        'Roleta:D37W', 'AkcesoriumRoletaW:D37W', 'Akcesorium:Roleta', 'Rolety:A', 'Rolety:A', 'Zaciemniająca', 'RoletaD_Z:S003', 'Roleta:Ral9016', null, null, null, 'D37:Biały', 0, 'Roleta:Manualne', '', 358, ['assets/img/products/D37.png'], [], 'PL'),
-      new Accessory('1A-ARZE1-A7022P-078118-OKPA01', 'ARZE1 78x118 Roleta zewnętrzna elektryczna sterowana pilotem, RAL7022 półmat', 'Roleta ARZE1 78 x 118', 'I-ROLETAZ', 'NPL-ROLETAZ', '1. Nowy', 'AkcesoriumRoletaZ:ARZE1', 78, 118, 'Akcesorium', 'Akcesorium:Zewnętrzne', 'ARZE', 'AkcesoriumRoletaZ:ARZE1', 'AkcesoriumRoletaZ:Roleta', null, null, null, null, null, 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', null, null, 'ElektrycznePilot', null, 9999, ['https://www.okpol.pl/wp-content/uploads/2014/11/ARZM_ARZE_.jpg'], [], 'PL')
+        'Roleta:D37W', 'AkcesoriumRoletaW:D37W', 'Akcesorium:Roleta', 'Rolety:A', 'Rolety:A', 'Zaciemniająca', 'RoletaD_Z:S003', 'Roleta:Ral9016', null, null, null, 'D37:Biały', 0, 'Roleta:Manualne', '', 358, ['assets/img/products/D37.png'], [], 'PL', ''),
+      new Accessory('1A-ARZE1-A7022P-078118-OKPA01', 'ARZE1 78x118 Roleta zewnętrzna elektryczna sterowana pilotem, RAL7022 półmat', 'Roleta ARZE1 78 x 118', 'I-ROLETAZ', 'NPL-ROLETAZ', '1. Nowy', 'AkcesoriumRoletaZ:ARZE1', 78, 118, 'Akcesorium', 'Akcesorium:Zewnętrzne', 'ARZE', 'AkcesoriumRoletaZ:ARZE1', 'AkcesoriumRoletaZ:Roleta', null, null, null, null, null, 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', null, null, 'ElektrycznePilot', null, 9999, ['https://www.okpol.pl/wp-content/uploads/2014/11/ARZM_ARZE_.jpg'], [], 'PL', '')
     ];
   }
 
@@ -108,6 +108,7 @@ export class DatabaseService {
     for (const accessory of accessories) {
       accessory.productName = this.accessoryValueSetter.getAccessoryName(accessory.model, accessory.szerokosc, accessory.wysokosc,
         accessory.typTkaniny, accessory.kolorTkaniny, accessory.roletyKolorOsprzetu);
+      accessory.frameMarching = this.accessoryValueSetter.matchingsOption(accessory.dopasowanieRoletySzerokosc, accessory.dopasowanieRoletyDlugosc);
     }
     return of(accessories);
   }
