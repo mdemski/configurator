@@ -12,7 +12,7 @@ import {RandomStringGeneratorService} from '../../services/random-string-generat
 import {Router} from '@angular/router';
 import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
-import {filter, map, takeUntil} from 'rxjs/operators';
+import {filter, map, takeUntil, tap} from 'rxjs/operators';
 import {AccessoryState} from '../../store/accessory/accessory.state';
 import {Accessory} from '../../models/accessory';
 import {AccessoryConfig} from '../../models/accessory-config';
@@ -323,8 +323,8 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.newAccessoryConfig = {
       products: {
-        windows: [],
-        flashings: [],
+        windows: null,
+        flashings: null,
         accessories: [{
           id: this.accessoryId,
           quantity: 1,
@@ -337,8 +337,8 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
             + '/' + this.formName
             + '/' + this.configuredAccessory.kod)
         }],
-        verticals: [],
-        flats: []
+        verticals: null,
+        flats: null
       },
       globalId: this.globalId,
       created: new Date(),
@@ -434,8 +434,8 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
     this.copyLinkToConfigurationPopup = true;
     this.newAccessoryConfig = {
       products: {
-        windows: [],
-        flashings: [],
+        windows: null,
+        flashings: null,
         accessories: [{
           id: this.accessoryId,
           quantity: 1,
@@ -447,8 +447,8 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
             + '/' + this.formName
             + '/' + this.configuredAccessory.kod)
         }],
-        verticals: [],
-        flats: []
+        verticals: null,
+        flats: null
       },
       globalId: this.globalId,
       created: new Date(),
