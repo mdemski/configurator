@@ -148,6 +148,8 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
         }
         this.loadForm();
       }
+      this.userConfigurations$ = this.store.select(ConfigurationState.userConfigurations)
+        .pipe(map(filterFn => filterFn(this.currentUser)));
       this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
         this.configurationSummary = text.configurationSummary;
       });
@@ -351,7 +353,6 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
       this.userConfigurations$.pipe(
         takeUntil(this.isDestroyed$),
         map((data: Array<any>) => {
-          console.log('tutaj docieram?');
           return data.filter(x => x !== null);
         })).subscribe(userConfigurations => {
         this.userConfigs = userConfigurations;
