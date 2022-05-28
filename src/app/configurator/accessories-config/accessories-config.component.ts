@@ -323,8 +323,8 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.newAccessoryConfig = {
       products: {
-        windows: null,
-        flashings: null,
+        windows: [],
+        flashings: [],
         accessories: [{
           id: this.accessoryId,
           quantity: 1,
@@ -337,8 +337,8 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
             + '/' + this.formName
             + '/' + this.configuredAccessory.kod)
         }],
-        verticals: null,
-        flats: null
+        verticals: [],
+        flats: []
       },
       globalId: this.globalId,
       created: new Date(),
@@ -434,8 +434,8 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
     this.copyLinkToConfigurationPopup = true;
     this.newAccessoryConfig = {
       products: {
-        windows: null,
-        flashings: null,
+        windows: [],
+        flashings: [],
         accessories: [{
           id: this.accessoryId,
           quantity: 1,
@@ -447,8 +447,8 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
             + '/' + this.formName
             + '/' + this.configuredAccessory.kod)
         }],
-        verticals: null,
-        flats: null
+        verticals: [],
+        flats: []
       },
       globalId: this.globalId,
       created: new Date(),

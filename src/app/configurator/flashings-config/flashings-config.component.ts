@@ -819,7 +819,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
     if (this.configuredFlashingArray.length === 0) {
       this.newFlashingConfig = {
         products: {
-          windows: null,
+          windows: [],
           flashings: [{
             id: this.flashingId,
             quantity: 1,
@@ -831,9 +831,9 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
               + '/' + this.formName
               + '/' + this.configuredFlashing.kod)
           }],
-          accessories: null,
-          verticals: null,
-          flats: null
+          accessories: [],
+          verticals: [],
+          flats: []
         },
         globalId: this.globalId,
         created: new Date(),
@@ -866,11 +866,11 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
       }
       this.newFlashingConfig = {
         products: {
-          windows: null,
+          windows: [],
           flashings: temporaryFlashingConfigsArray,
-          accessories: null,
-          verticals: null,
-          flats: null
+          accessories: [],
+          verticals: [],
+          flats: []
         },
         globalId: this.globalId,
         created: new Date(),
@@ -984,7 +984,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
     if (this.configuredFlashingArray.length === 0) {
       this.newFlashingConfig = {
         products: {
-          windows: null,
+          windows: [],
           flashings: [{
             id: this.flashingId,
             quantity: 1,
@@ -996,9 +996,9 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
               + '/' + this.formName
               + '/' + this.configuredFlashing.kod)
           }],
-          accessories: null,
-          verticals: null,
-          flats: null
+          accessories: [],
+          verticals: [],
+          flats: []
         },
         globalId: this.globalId,
         created: new Date(),
@@ -1063,11 +1063,11 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
       }
       this.newFlashingConfig = {
         products: {
-          windows: null,
+          windows: [],
           flashings: temporaryFlashingConfigsArray,
-          accessories: null,
-          verticals: null,
-          flats: null
+          accessories: [],
+          verticals: [],
+          flats: []
         },
         globalId: this.globalId,
         created: new Date(),

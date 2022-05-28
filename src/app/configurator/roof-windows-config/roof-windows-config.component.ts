@@ -642,10 +642,10 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
             + '/' + this.formName
             + '/' + this.configuredWindow.kod)
         }],
-        flashings: null,
-        accessories: null,
-        verticals: null,
-        flats: null
+        flashings: [],
+        accessories: [],
+        verticals: [],
+        flats: []
       },
       globalId: this.globalId,
       created: new Date(),
@@ -756,10 +756,10 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
             + '/' + this.formName
             + '/' + this.configuredWindow.kod)
         }],
-        flashings: null,
-        accessories: null,
-        verticals: null,
-        flats: null
+        flashings: [],
+        accessories: [],
+        verticals: [],
+        flats: []
       },
       globalId: this.globalId,
       created: new Date(),
