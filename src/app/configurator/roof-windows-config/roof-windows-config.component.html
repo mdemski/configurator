@@ -101,7 +101,7 @@
         </div>
       </div>
       <div [ngClass]="popupConfig===false ? 'md-popup' : 'configure-form'">
-        <form [formGroup]="form">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
           <!--popupConfig===null ? 'md-popup__content' : 'form-content'-->
           <div [ngClass]="popupConfig===false ? 'md-popup__content' : ''">
             <!--Material-->
@@ -572,8 +572,7 @@
           <button class="btn btn--red configure-form__submit"
 
                   [ngClass]="{'md-not-popup' : popupConfig===false}"
-                  type="submit"
-                  (click)="onSubmit()">{{ 'ROOF-WINDOWS-CONFIG.submit' | translate}}
+                  type="submit">{{ 'ROOF-WINDOWS-CONFIG.submit' | translate}}
           </button>
           <div class="configure-form__validation-info">
             <p class="configure-form__validation-info--single-message"

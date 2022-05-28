@@ -351,10 +351,12 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
       this.userConfigurations$.pipe(
         takeUntil(this.isDestroyed$),
         map((data: Array<any>) => {
+          console.log('tutaj docieram?');
           return data.filter(x => x !== null);
         })).subscribe(userConfigurations => {
         this.userConfigs = userConfigurations;
-        this.configFormId = this.userConfigs[0].userId;
+        // this.configFormId = this.userConfigs[0].userId;
+        this.configFormId = 1;
         this.highestUserId = this.hd.getHighestIdForUser(userConfigurations);
         this.newAccessoryConfig.userId = this.highestUserId;
         // wersja 2 lub 1
