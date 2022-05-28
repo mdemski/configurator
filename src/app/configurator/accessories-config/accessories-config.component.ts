@@ -418,14 +418,14 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
         + '/' + this.formName
         + '/' + this.configuredAccessory.kod);
       this.configId = String('configuration-' + this.configFormId);
-      this.globalConfiguration = this.configurations.find(config => config.globalId === this.configId);
+      this.globalConfiguration = this.configurations.find(config => config.userId === this.configFormId && config.user === this.currentUser);
       // TODO zamienić na configuredAccessory
       this.store.dispatch(new AddAccessoryConfiguration(this.globalConfiguration,
         this.tempConfiguredAccessory, this.formName, this.form.value, temporaryLink))
         .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
     }
     this.chooseConfigNamePopup = false;
-    this.router.navigate(['/' + this.configurationSummary]);
+    // this.router.navigate(['/' + this.configurationSummary]);
   }
 
   saveCopyLinkPopUp() {

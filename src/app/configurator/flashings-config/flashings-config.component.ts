@@ -958,7 +958,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
         + '/' + this.formName
         + '/' + this.configuredFlashing.kod);
       this.configId = String('configuration-' + this.configFormId);
-      this.globalConfiguration = this.configurations.find(config => config.globalId === this.configId);
+      this.globalConfiguration = this.configurations.find(config => config.userId === this.configFormId && config.user === this.currentUser);
       if (this.configuredFlashingArray.length === 0) {
         // tslint:disable-next-line:max-line-length
         this.store.dispatch(new AddFlashingConfiguration(this.globalConfiguration, this.configuredFlashing,

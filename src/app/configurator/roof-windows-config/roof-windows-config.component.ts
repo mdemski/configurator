@@ -729,7 +729,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         + '/' + this.formName
         + '/' + this.configuredWindow.kod);
       this.configId = String('configuration-' + this.configFormId);
-      this.globalConfiguration = this.configurations.find(config => config.globalId === this.configId);
+      this.globalConfiguration = this.configurations.find(config => config.userId === this.configFormId && config.user === this.currentUser);
       // TODO zamienić na configuredWindow
       this.store.dispatch(new AddRoofWindowConfiguration(this.globalConfiguration,
         this.tempConfiguredWindow, this.formName, this.form.value, temporaryLink))
