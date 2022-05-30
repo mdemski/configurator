@@ -26,6 +26,7 @@ export class AccessoryFiltrationComponent implements OnInit, OnDestroy {
   typesToChoice: string[] = [];
   kindsToChoice: string[] = [];
   materialTypesToChoice: string[] = [];
+  materialFrameMarchingToChoice: string[] = [];
   materialColorsToChoice: string[] = [];
   biggestHeight = 0;
   biggestWidth = 0;
@@ -38,6 +39,7 @@ export class AccessoryFiltrationComponent implements OnInit, OnDestroy {
     accessoryType: [],
     accessoryKind: [],
     accessoryMaterialType: [],
+    accessoryFrameMatching: [],
     accessoryMaterialColor: [],
     accessoryWidthFrom: 47,
     accessoryWidthTo: 999,
@@ -52,6 +54,7 @@ export class AccessoryFiltrationComponent implements OnInit, OnDestroy {
       accessoryType: this.fb.array(this.builtFormArray(this.typesToChoice)),
       accessoryKind: this.fb.array(this.builtFormArray(this.kindsToChoice)),
       accessoryMaterialType: this.fb.array(this.builtFormArray(this.materialTypesToChoice)),
+      accessoryFrameMatching: this.fb.array(this.builtFormArray(this.materialFrameMarchingToChoice)),
       accessoryMaterialColor: this.fb.array(this.builtFormArray(this.materialColorsToChoice)),
       accessoryWidthFrom: new FormControl(),
       accessoryWidthTo: new FormControl(),
@@ -69,6 +72,9 @@ export class AccessoryFiltrationComponent implements OnInit, OnDestroy {
         });
         formData.accessoryMaterialType.map((value, i) => {
           this.filterObject.accessoryMaterialType[i] = value ? this.materialTypesToChoice[i] : null;
+        });
+        formData.accessoryFrameMatching.map((value, i) => {
+          this.filterObject.accessoryFrameMatching[i] = value ? this.materialFrameMarchingToChoice[i] : null;
         });
         formData.accessoryMaterialColor.map((value, i) => {
           this.filterObject.accessoryMaterialColor[i] = value ? this.materialColorsToChoice[i] : null;
@@ -108,6 +114,7 @@ export class AccessoryFiltrationComponent implements OnInit, OnDestroy {
       const typesTemp = [];
       const kindsTemp = [];
       const materialTypesTemp = [];
+      const materialMatchingTemp = [];
       const materialColorsTemp = [];
       for (const accessory of accessories) {
         typesTemp.push(accessory.typ);
@@ -116,6 +123,7 @@ export class AccessoryFiltrationComponent implements OnInit, OnDestroy {
         materialTypesTemp.push(accessory.oblachowanieMaterial);
         materialColorsTemp.push(accessory.kolorTkaniny);
         materialColorsTemp.push(accessory.oblachowanieKolor);
+        materialMatchingTemp.push(accessory.frameMarching);
         if (accessory.wysokosc > this.biggestHeight) {
           this.biggestHeight = accessory.wysokosc;
         }
@@ -132,6 +140,7 @@ export class AccessoryFiltrationComponent implements OnInit, OnDestroy {
       this.typesToChoice = typesTemp.filter((value, index, self) => self.indexOf(value) === index).filter(value => value !== null);
       this.kindsToChoice = kindsTemp.filter((value, index, self) => self.indexOf(value) === index).filter(value => value !== null);
       this.materialTypesToChoice = materialTypesTemp.filter((value, index, self) => self.indexOf(value) === index).filter(value => value !== null);
+      this.materialFrameMarchingToChoice = materialMatchingTemp.filter((value, index, self) => self.indexOf(value) === index).filter(value => value !== null || value !== undefined);
       this.materialColorsToChoice = materialColorsTemp.filter((value, index, self) => self.indexOf(value) === index).filter(value => value !== null);
     });
   }

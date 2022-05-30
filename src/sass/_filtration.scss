@@ -92,7 +92,7 @@
   }
 }
 
-.color-filtration-container {
+.full-width-filtration-container {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
@@ -198,6 +198,45 @@
   width: 100px;
   height: 50px;
   margin: 2px;
+  opacity: 0;
+  cursor: pointer;
+
+  &:checked + label {
+    border: .2rem solid rgba($color-red, 1);
+  }
+}
+
+//CHECKBOXES WITHOUT BACKGROUND PICTURES (MATCHING)
+.searching-box--label-option {
+  font-weight: bold;
+  appearance: none;
+  width: 100%;
+}
+
+.label-cbx-option {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  flex-wrap: wrap;
+  user-select: none;
+  cursor: pointer;
+  padding: 5px;
+  height: 40px;
+  margin: 2px;
+  border: .2rem solid rgba($color-black, 1);
+}
+
+.label-cbx-option > span {
+  margin-right: 5px;
+  pointer-events: none;
+  align-items: center;
+}
+
+.option-invisible {
+  position: absolute;
+  z-index: 0;
+  height: 100%;
+  width: 100%;
   opacity: 0;
   cursor: pointer;
 

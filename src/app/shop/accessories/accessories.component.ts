@@ -22,6 +22,7 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
     accessoryType: string[],
     accessoryKind: string[],
     accessoryMaterialType: string[],
+    accessoryFrameMatching: string[],
     accessoryMaterialColor: string[],
     accessoryWidthFrom: number,
     accessoryWidthTo: number,
@@ -67,6 +68,8 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
     let filteredByKind: Accessory[];
     let numberOfMaterialTypeNull = 0;
     let filteredByMaterialType: Accessory[];
+    let numberOfMaterialMatchingNull = 0;
+    let filteredByFrameMatching: Accessory[];
     let numberOfMaterialColorNull = 0;
     let filteredByMaterialColor: Accessory[];
     this.filters.accessoryType.forEach(type => {
@@ -82,6 +85,11 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
     this.filters.accessoryMaterialType.forEach(materialType => {
       if (materialType === null) {
         numberOfMaterialTypeNull++;
+      }
+    });
+    this.filters.accessoryFrameMatching.forEach(materialMatching => {
+      if (materialMatching === null) {
+        numberOfMaterialMatchingNull++;
       }
     });
     this.filters.accessoryMaterialColor.forEach(materialColor => {
@@ -109,10 +117,16 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
         .filter(accessory => this.filters.accessoryMaterialType.includes(accessory.oblachowanieMaterial))
         .filter(accessory => accessory.typTkaniny !== null || accessory.oblachowanieMaterial !== null);
     }
-    if (numberOfMaterialColorNull === this.filters.accessoryMaterialColor.length) {
-      filteredByMaterialColor = filteredByMaterialType;
+    if (numberOfMaterialMatchingNull === this.filters.accessoryFrameMatching.length) {
+      filteredByFrameMatching = filteredByMaterialType;
     } else {
-      filteredByMaterialColor = filteredByMaterialType
+      filteredByFrameMatching = filteredByMaterialType
+        .filter(accessory => this.filters.accessoryFrameMatching.includes(accessory.frameMarching));
+    }
+    if (numberOfMaterialColorNull === this.filters.accessoryMaterialColor.length) {
+      filteredByMaterialColor = filteredByFrameMatching;
+    } else {
+      filteredByMaterialColor = filteredByFrameMatching
         .filter(accessory => this.filters.accessoryMaterialColor.includes(accessory.kolorTkaniny))
         .filter(accessory => this.filters.accessoryMaterialColor.includes(accessory.oblachowanieKolor))
         .filter(accessory => accessory.kolorTkaniny !== null || accessory.oblachowanieKolor !== null);

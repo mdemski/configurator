@@ -123,10 +123,25 @@
       </div>
       <!--  END Searching by height input box-->
 
-      <div class="color-filtration-container">
-        <!-- START Searching by material color box-->
+      <!-- START Searching by frame matching box-->
+      <div class="full-width-filtration-container">
+        <label class="searching-box--label-option"
+               for="accessoryFrameMatching">{{ 'SHOP.matchingForFilter' | translate}}</label>
+        <div class="check-box"
+             *ngFor="let matching of materialFrameMarchingToChoice; let i = index"
+             formArrayName="accessoryFrameMatching">
+          <input class="option-invisible" type="checkbox" placeholder="{{builtNameForTranslation(matching) | translate}}" formControlName="{{i}}">
+          <label class="label-cbx-option">
+            <span>{{builtNameForTranslation(matching) | translate}}</span>
+          </label>
+        </div>
+      </div>
+      <!-- END Searching by frame matching box-->
 
-        <label class="searching-box--label-color" for="accessoryMaterialColor">{{ 'SHOP.colorForFilter' | translate}}</label>
+      <!-- START Searching by material color box-->
+      <div class="full-width-filtration-container">
+        <label class="searching-box--label-color"
+               for="accessoryMaterialColor">{{ 'SHOP.colorForFilter' | translate}}</label>
         <div class="check-box"
              *ngFor="let color of materialColorsToChoice; let i = index"
              formArrayName="accessoryMaterialColor">
@@ -135,8 +150,8 @@
             <span>{{builtColorName(color) | translate}}</span>
           </label>
         </div>
-        <!-- END Searching by material color box-->
       </div>
+      <!-- END Searching by material color box-->
 
     </form>
   </div>
