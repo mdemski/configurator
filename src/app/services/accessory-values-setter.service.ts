@@ -568,7 +568,7 @@ export class AccessoryValuesSetterService {
   matchingsOption(dopasowanieRoletySzerokosc: string, dopasowanieRoletyDlugosc: string) {
     let szerokosc = '';
     let wysokosc = '';
-    if (dopasowanieRoletySzerokosc !== '') {
+    if (dopasowanieRoletySzerokosc && dopasowanieRoletySzerokosc !== '') {
       szerokosc = dopasowanieRoletySzerokosc.split(':')[1];
       wysokosc = dopasowanieRoletyDlugosc.split(':')[1];
     }
