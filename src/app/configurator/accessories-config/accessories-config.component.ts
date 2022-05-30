@@ -193,7 +193,7 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
         .subscribe(accessoryToReconfiguration => {
           this.configuredAccessory = accessoryToReconfiguration;
           let type = '';
-          if (this.configuredAccessory.typ !== null) {
+          if (this.configuredAccessory && this.configuredAccessory.typ !== null) {
             type = this.configuredAccessory.typ.split(':')[1];
           }
           if (type === 'Wewnętrzne') {
