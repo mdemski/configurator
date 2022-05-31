@@ -82,9 +82,9 @@ export class FlashingDetailsComponent implements OnInit, OnDestroy {
   }
 
   getLinkCode(kod: string, size: string) {
-    const firstPart = kod.substring(0, kod.length - 16);
+    const firstPart = kod.substring(0, kod.length - 13);
     const secondPart = kod.substring(kod.length - 16);
-    const matching = secondPart.split('-')[1];
+    // const matching = secondPart.split('-')[1];
     const specNumber = secondPart.split('-')[2];
     const szerokosc = Number(size.split('x')[0]);
     const wysokosc = Number(size.split('x')[1]);
@@ -104,7 +104,7 @@ export class FlashingDetailsComponent implements OnInit, OnDestroy {
         heightCode = wysokosc;
       }
     }
-    return firstPart + widthCode + heightCode + '-' + matching + '-' + specNumber;
+    return firstPart + widthCode + heightCode + '-' + specNumber;
   }
 
 }
