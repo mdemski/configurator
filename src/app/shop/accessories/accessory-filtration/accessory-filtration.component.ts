@@ -140,7 +140,7 @@ export class AccessoryFiltrationComponent implements OnInit, OnDestroy {
       this.typesToChoice = typesTemp.filter((value, index, self) => self.indexOf(value) === index).filter(value => value !== null);
       this.kindsToChoice = kindsTemp.filter((value, index, self) => self.indexOf(value) === index).filter(value => value !== null);
       this.materialTypesToChoice = materialTypesTemp.filter((value, index, self) => self.indexOf(value) === index).filter(value => value !== null);
-      this.materialFrameMarchingToChoice = materialMatchingTemp.filter((value, index, self) => self.indexOf(value) === index).filter(value => value !== null || value !== undefined);
+      this.materialFrameMarchingToChoice = materialMatchingTemp.filter((value, index, self) => self.indexOf(value) === index).filter(value => value !== null);
       this.materialColorsToChoice = materialColorsTemp.filter((value, index, self) => self.indexOf(value) === index).filter(value => value !== null);
     });
   }

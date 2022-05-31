@@ -572,6 +572,9 @@ export class AccessoryValuesSetterService {
       szerokosc = dopasowanieRoletySzerokosc.split(':')[1];
       wysokosc = dopasowanieRoletyDlugosc.split(':')[1];
     }
+    if (dopasowanieRoletySzerokosc === null) {
+      return 'nie dotyczy';
+    }
     if ((szerokosc === 'E' && wysokosc === 'K') || (szerokosc === 'E' && wysokosc === '')) {
       return 'PVC_Z_Wentylacją:IGOV';
     }
