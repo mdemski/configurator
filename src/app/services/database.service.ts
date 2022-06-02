@@ -12,6 +12,8 @@ import {Address} from '../models/address';
 import {Invoice} from '../models/invoice';
 import {RandomStringGeneratorService} from './random-string-generator.service';
 import {AccessoryValuesSetterService} from './accessory-values-setter.service';
+import {FlatRoofWindow} from '../models/flat-roof-window';
+import {FlatValueSetterService} from './flat-value-setter.service';
 
 @Injectable()
 export class DatabaseService {
@@ -19,6 +21,7 @@ export class DatabaseService {
   constructor(private windowValuesSetter: RoofWindowValuesSetterService,
               private flashingValueSetter: FlashingValueSetterService,
               private accessoryValueSetter: AccessoryValuesSetterService,
+              private flatValueSetter: FlatValueSetterService,
               private randomString: RandomStringGeneratorService,
               private http: HttpClient) {
     // this.accessories = this.getAllAccessoriesToShopList();
@@ -28,6 +31,7 @@ export class DatabaseService {
   windows: RoofWindowSkylight[] = [];
   flashings: Flashing[] = [];
   accessories: Accessory[] = [];
+  flats: FlatRoofWindow[] = [];
   mostRecentProducts: any = [];
   availableSellers: any = [];
   setGroupFilter$ = new Subject<any>();
@@ -79,15 +83,28 @@ export class DatabaseService {
   // TODO do oprogramowania pobieranie danych z eNova/pliku + filtrowanie danych według grupaAsortymentowa
   getAllAccessoriesToShopList(): Accessory[] {
     return this.accessories = [
-      new Accessory('1A-D37--T-A372-078118-AA-OKPA01', 'D37T 078x118 A372 [AA] Roleta Multistop, tkanina transparentna, srebrne prowadnice', 'Multistop D37 78x118', 'I-Akcesorium', 'NPL-Akcesorium', 'Nowy', 'Roleta:D37', 78, 118, 'Akcesorium', 'Akcesorium:Wewnętrzne',
-        'Roleta:D37', 'AkcesoriumRoletaW:D37', 'Akcesorium:Roleta', 'Rolety:A', 'Rolety:A', 'Transparentna', 'RoletaD_T:A372', 'Roleta:Ral7048', null, null, null, 'Srebrny', 0, 'Roleta:Manualne', '', 358, ['assets/img/products/D37.png'], [], 'PL', ''),
-      new Accessory('1A-D37W--T-A372-078118-AA-OKPA01', 'D37WT 078x118 A372 [AA] Roleta Multistop, tkanina transparentna, białe prowadnice', 'Multistop D37W 78x118', 'I-Akcesorium', 'NPL-Akcesorium', 'Nowy', 'Roleta:D37W', 78, 118, 'Akcesorium', 'Akcesorium:Wewnętrzne',
-        'Roleta:D37W', 'AkcesoriumRoletaW:D37W', 'Akcesorium:Roleta', 'Rolety:A', 'Rolety:A', 'Transparentna', 'RoletaD_T:A372', 'Roleta:Ral9016', null, null, null, 'Biały', 0, 'Roleta:Manualne', '', 358, ['assets/img/products/D37.png'], [], 'PL', ''),
-      new Accessory('1A-D37--Z-S003-078118-AA-OKPA01', 'D37T 078x118 A372 [AA] Roleta Multistop, tkanina zaciemniająca, srebrne prowadnice', 'Multistop D37 78x118', 'I-Akcesorium', 'NPL-Akcesorium', 'Nowy', 'Roleta:D37', 78, 118, 'Akcesorium', 'Akcesorium:Wewnętrzne',
-        'Roleta:D37', 'AkcesoriumRoletaW:D37', 'Akcesorium:Roleta', 'Rolety:A', 'Rolety:A', 'Zaciemniająca', 'RoletaD_Z:S003', 'Roleta:Ral7048', null, null, null, 'Srebrny', 0, 'Roleta:Manualne', '', 358, ['assets/img/products/D37.png'], [], 'PL', ''),
-      new Accessory('1A-D37W--Z-S003-078118-AA-OKPA01', 'D37WT 078x118 A372 [AA] Roleta Multistop, tkanina zaciemniająca, białe prowadnice', 'Multistop D37W 78x118', 'I-Akcesorium', 'NPL-Akcesorium', 'Nowy', 'Roleta:D37W', 78, 118, 'Akcesorium', 'Akcesorium:Wewnętrzne',
-        'Roleta:D37W', 'AkcesoriumRoletaW:D37W', 'Akcesorium:Roleta', 'Rolety:A', 'Rolety:A', 'Zaciemniająca', 'RoletaD_Z:S003', 'Roleta:Ral9016', null, null, null, 'Biały', 0, 'Roleta:Manualne', '', 358, ['assets/img/products/D37.png'], [], 'PL', ''),
+      new Accessory('1A-D37--T-A372-078118-AA-OKPA01', 'D37T 078x118 A372 [AA] Roleta Multistop, tkanina transparentna, srebrne prowadnice', 'Multistop D37 78x118', 'I-Akcesorium', 'NPL-Akcesorium', 'Nowy', 'Roleta:D37', 78, 118, 'Akcesorium', 'Akcesorium:Wewnętrzne', 'Roleta:D37', 'AkcesoriumRoletaW:D37', 'Akcesorium:Roleta',
+        'Rolety:A', 'Rolety:A', 'Transparentna', 'RoletaD_T:A372', 'Roleta:Ral7048', null, null, null, 'Srebrny', 0, 'Roleta:Manualne', '', 358, ['assets/img/products/D37.png'], [], 'PL', ''),
+      new Accessory('1A-D37W--T-A372-078118-AA-OKPA01', 'D37WT 078x118 A372 [AA] Roleta Multistop, tkanina transparentna, białe prowadnice', 'Multistop D37W 78x118', 'I-Akcesorium', 'NPL-Akcesorium', 'Nowy', 'Roleta:D37W', 78, 118, 'Akcesorium', 'Akcesorium:Wewnętrzne', 'Roleta:D37W', 'AkcesoriumRoletaW:D37W', 'Akcesorium:Roleta',
+        'Rolety:A', 'Rolety:A', 'Transparentna', 'RoletaD_T:A372', 'Roleta:Ral9016', null, null, null, 'Biały', 0, 'Roleta:Manualne', '', 358, ['assets/img/products/D37.png'], [], 'PL', ''),
+      new Accessory('1A-D37--Z-S003-078118-AA-OKPA01', 'D37T 078x118 A372 [AA] Roleta Multistop, tkanina zaciemniająca, srebrne prowadnice', 'Multistop D37 78x118', 'I-Akcesorium', 'NPL-Akcesorium', 'Nowy', 'Roleta:D37', 78, 118, 'Akcesorium', 'Akcesorium:Wewnętrzne', 'Roleta:D37', 'AkcesoriumRoletaW:D37', 'Akcesorium:Roleta',
+        'Rolety:A', 'Rolety:A', 'Zaciemniająca', 'RoletaD_Z:S003', 'Roleta:Ral7048', null, null, null, 'Srebrny', 0, 'Roleta:Manualne', '', 358, ['assets/img/products/D37.png'], [], 'PL', ''),
+      new Accessory('1A-D37W--Z-S003-078118-AA-OKPA01', 'D37WT 078x118 A372 [AA] Roleta Multistop, tkanina zaciemniająca, białe prowadnice', 'Multistop D37W 78x118', 'I-Akcesorium', 'NPL-Akcesorium', 'Nowy', 'Roleta:D37W', 78, 118, 'Akcesorium', 'Akcesorium:Wewnętrzne', 'Roleta:D37W', 'AkcesoriumRoletaW:D37W', 'Akcesorium:Roleta',
+        'Rolety:A', 'Rolety:A', 'Zaciemniająca', 'RoletaD_Z:S003', 'Roleta:Ral9016', null, null, null, 'Biały', 0, 'Roleta:Manualne', '', 358, ['assets/img/products/D37.png'], [], 'PL', ''),
       new Accessory('1A-ARZE1-A7022P-078118-OKPA01', 'ARZE1 78x118 Roleta zewnętrzna elektryczna sterowana pilotem, RAL7022 półmat', 'Roleta ARZE1 78 x 118', 'I-ROLETAZ', 'NPL-ROLETAZ', '1. Nowy', 'AkcesoriumRoletaZ:ARZE1', 78, 118, 'Akcesorium', 'Akcesorium:Zewnętrzne', 'ARZE', 'AkcesoriumRoletaZ:ARZE1', 'AkcesoriumRoletaZ:Roleta', null, null, null, null, null, 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', null, null, 'ElektrycznePilot', null, 9999, ['https://www.okpol.pl/wp-content/uploads/2014/11/ARZM_ARZE_.jpg'], [], 'PL', '')
+    ];
+  }
+
+  getFlatRoofWindowsToShopList(): FlatRoofWindow[] {
+    return this.flats = [
+      new FlatRoofWindow('1P-PGX---A01-WSWS-A7022P-100100-OKPP01', 'PGX A1 100x100 Okno do dachu płaskiego nieotwierane /PVCbiały/aluRAL7022półmat/OKPP01', '', 'I-PŁASKI', 'NPL-OKNO', '1. Nowy', 'DachPłaski:PGX', 'DachPłaski:A01', 'A01', 100, 100, 'DachPłaski', 'DachPłaski:Okno', 'PG', 'DachPłaski:PGX', 'NieotwieraneFIX', 'PVC',
+        'PVC:Biały9016', 'DachPłaski:PG', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', '', '', 0, [], [], [], [], 3401, null, null, 5, '', '', null, 'PL'),
+      new FlatRoofWindow('1P-PGX-L-A01-WSWS-A7022P-120120-OKPP01', 'PGX LED A1 120x120 Okno do dachu płaskiego nieotwierane z oświetleniem RGB LED /PVCbiały/aluRAL7022półmat/OKPP01', '', 'I-PŁASKI', 'NPL-OKNO', '1. Nowy', 'DachPłaski:PGX LED', 'DachPłaski:A01', 'A01', 120, 120, 'DachPłaski', 'DachPłaski:Okno', 'PG', 'DachPłaski:PGX', 'NieotwieraneFIX', 'PVC',
+        'PVC:Biały9016', 'DachPłaski:PG', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', '', '', 0, [], [], [], [], 3901, null, null, 2, '', '', null, 'PL'),
+      new FlatRoofWindow('1P-PGC---A01-WSWS-A7022P-120090-OKPP01', 'PGC A1 120x90 Okno do dachu płaskiego sterowane elektrycznie /PVCbiały/aluRAL7022półmat/OKPP01', '', 'I-PŁASKI', 'NPL-OKNO', '1. Nowy', 'DachPłaski:PGC', 'DachPłaski:A01', 'A01', 120, 90, 'DachPłaski', 'DachPłaski:Okno', 'PG', 'DachPłaski:PGC', 'ElektryczneUchył', 'PVC',
+        'PVC:Biały9016', 'DachPłaski:PG', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'Siłownik', '', 0, [], [], [], [], 4401, null, null, 4, '', '', null, 'PL'),
+      new FlatRoofWindow('1P-PGM---A07-WSWS-A7022P-060060-OKPP01', 'PGM A7 60x60 Okno do dachu płaskiego otwierane manualnie /PVCbiały/aluRAL7022półmat/OKPP01', '', 'I-PŁASKI', 'NPL-OKNO', '1. Nowy', 'DachPłaski:PGM', 'DachPłaski:A07', 'A07', 60, 60, 'DachPłaski', 'DachPłaski:Okno', 'PG', 'DachPłaski:PGM', 'Manualne', 'PVC',
+        'PVC:Biały9016', 'DachPłaski:PG', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'Drążek', 'Czerwony', 0, [], [], [], [], 5401, null, null, 1, '', '', null, 'PL')
     ];
   }
 
@@ -103,25 +120,6 @@ export class DatabaseService {
     return of(windows);
   }
 
-  fetchAccessories(): Observable<any> {
-    const accessories = this.getAllAccessoriesToShopList();
-    for (const accessory of accessories) {
-      accessory.productName = this.accessoryValueSetter.getAccessoryName(accessory.model, accessory.szerokosc, accessory.wysokosc,
-        accessory.typTkaniny, accessory.kolorTkaniny, accessory.roletyKolorOsprzetu);
-      accessory.frameMarching = this.accessoryValueSetter.matchingsOption(accessory.dopasowanieRoletySzerokosc, accessory.dopasowanieRoletyDlugosc);
-    }
-    return of(accessories);
-  }
-
-  fetchFlashings() {
-    const flashings = this.getAllFlashingsToShopList();
-    for (const flashing of flashings) {
-      this.flashingValueSetter.setTileHeight(flashing);
-      flashing.roofing = this.flashingValueSetter.setRoofing(flashing.geometria, flashing.flashingTileHeight);
-    }
-    return of(flashings);
-  }
-
   getWindowByCode(kod: string) {
     let tempWindow: RoofWindowSkylight;
     tempWindow = this.getAllRoofWindowsToShopList().filter(window => window.kod === kod)[0];
@@ -133,16 +131,41 @@ export class DatabaseService {
     return of(tempWindow);
   }
 
+  fetchFlashings() {
+    const flashings = this.getAllFlashingsToShopList();
+    for (const flashing of flashings) {
+      this.flashingValueSetter.setTileHeight(flashing);
+      flashing.roofing = this.flashingValueSetter.setRoofing(flashing.geometria, flashing.flashingTileHeight);
+    }
+    return of(flashings);
+  }
+
   getFlashingByCode(flashingCode: string) {
     let flashing: Flashing;
     flashing = this.getAllFlashingsToShopList().filter(flashingPro => flashingPro.kod === flashingCode)[0];
     this.flashingValueSetter.setModelNameFromErpData(flashing);
     this.flashingValueSetter.setTileHeight(flashing);
+    flashing.roofing = this.flashingValueSetter.setRoofing(flashing.geometria, flashing.flashingTileHeight);
     return of(flashing);
   }
 
-  getAccessoryById(id: number) {
-    return this.getAllAccessoriesToShopList()[--id];
+  fetchAccessories(): Observable<any> {
+    const accessories = this.getAllAccessoriesToShopList();
+    for (const accessory of accessories) {
+      accessory.productName = this.accessoryValueSetter.getAccessoryName(accessory.model, accessory.szerokosc, accessory.wysokosc,
+        accessory.typTkaniny, accessory.kolorTkaniny, accessory.roletyKolorOsprzetu);
+      accessory.frameMarching = this.accessoryValueSetter.matchingsOption(accessory.dopasowanieRoletySzerokosc, accessory.dopasowanieRoletyDlugosc);
+    }
+    return of(accessories);
+  }
+
+  getAccessoryById(code: string) {
+    let accessory: Accessory;
+    accessory = this.getAllAccessoriesToShopList().filter(accessoryProduct => accessoryProduct.kod === code)[0];
+    accessory.productName = this.accessoryValueSetter.getAccessoryName(accessory.model, accessory.szerokosc, accessory.wysokosc,
+      accessory.typTkaniny, accessory.kolorTkaniny, accessory.roletyKolorOsprzetu);
+    accessory.frameMarching = this.accessoryValueSetter.matchingsOption(accessory.dopasowanieRoletySzerokosc, accessory.dopasowanieRoletyDlugosc);
+    return of(accessory);
   }
 
   fetchSkylights() {
@@ -155,17 +178,30 @@ export class DatabaseService {
     return null;
   }
 
-  fetchFlatRoofWindows() {
-    // TODO uzupełnić w późniejszym czasie
-    return of([]);
+  fetchFlatRoofWindows(): Observable<any> {
+    const windows = this.getFlatRoofWindowsToShopList();
+    for (const flat of windows) {
+      flat.productName = this.flatValueSetter.getModelName(flat);
+      flat.windowUG = this.flatValueSetter.getUwAndUgValues(flat).windowUG;
+      flat.windowUW = this.flatValueSetter.getUwAndUgValues(flat).windowUW;
+      flat.numberOfGlasses = this.flatValueSetter.getNumberOfGlasses(flat);
+      flat.uszczelki = flat.uszczelki + 1;
+    }
+    return of(windows);
   }
 
-  getFlatRoofWindowById(id: number) {
-    // TODO uzupełnić w późniejszym czasie
-    return null;
+  getFlatRoofWindowById(code: string) {
+    let flat: FlatRoofWindow;
+    flat = this.getFlatRoofWindowsToShopList().filter(flatProduct => flatProduct.kod === code)[0];
+    flat.productName = this.flatValueSetter.getModelName(flat);
+    flat.windowUG = this.flatValueSetter.getUwAndUgValues(flat).windowUG;
+    flat.windowUW = this.flatValueSetter.getUwAndUgValues(flat).windowUW;
+    flat.numberOfGlasses = this.flatValueSetter.getNumberOfGlasses(flat);
+    flat.uszczelki = flat.uszczelki + 1;
+    return of(flat);
   }
 
-  // Musi zwracać listę 3 produktów z których 1 jest oknem, 2 to kołnierz, 3 akcesorium
+  // Musi zwracać listę 3 produktów, z których 1 jest oknem, 2 to kołnierz, 3 akcesorium
   getMostRecentProductsHomePage() {
     this.mostRecentProducts = [];
     this.mostRecentProducts.push(this.windows[0]);
@@ -174,7 +210,7 @@ export class DatabaseService {
     return this.mostRecentProducts;
   }
 
-  // Zwraca TYLKO listę wszystkich firm które są w programi.
+  // Zwraca TYLKO listę wszystkich firm, które są w programie.
   getAllSellers() {
     this.availableSellers.push(new Company('', 'Felek', 'm.demski@okpol.pl', '11122233344', 0.02, 0.38, 0.38, 0.38, 0.38, 0.38, 0.63,
       50000, new Address('Lolek', 'Bolek', '123456789', 'Felkowa', '3/1', '10-150', 'Lewin', 'Polzka'),
