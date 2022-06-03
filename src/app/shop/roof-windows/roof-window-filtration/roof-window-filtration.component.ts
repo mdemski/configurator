@@ -56,6 +56,7 @@ export class RoofWindowFiltrationComponent implements OnInit, OnDestroy {
       windowHeightTo: new FormControl()
     });
     this.filtrationForm.valueChanges.pipe(
+      takeUntil(this.isDestroyed$),
       map(data => {
         this.filtersObject.windowName = data.windowName;
         data.windowGlazings.map((value, i) => {
