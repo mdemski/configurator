@@ -62,6 +62,7 @@ export class FlashingFiltrationComponent implements OnInit, OnDestroy {
       flashingHeightTo: new FormControl()
     });
     this.filtrationForm.valueChanges.pipe(
+      takeUntil(this.isDestroyed$),
       map(formData => {
         this.filterObject.flashingName = formData.flashingName;
         formData.flashingType.map((value, i) => {

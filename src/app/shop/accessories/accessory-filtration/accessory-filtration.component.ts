@@ -62,6 +62,7 @@ export class AccessoryFiltrationComponent implements OnInit, OnDestroy {
       accessoryHeightTo: new FormControl()
     });
     this.filtrationForm.valueChanges.pipe(
+      takeUntil(this.isDestroyed$),
       map(formData => {
         this.filterObject.accessoryName = formData.accessoryName;
         formData.accessoryType.map((value, i) => {

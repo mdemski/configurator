@@ -117,9 +117,9 @@ export class RoofWindowFiltrationComponent implements OnInit, OnDestroy {
           this.smallestWidth = window.szerokosc;
         }
       }
-      this.glassesToChoice = glassesTemp.filter((value, index, self) => self.indexOf(value) === index);
-      this.openingTypesToChoice = openingTemp.filter((value, index, self) => self.indexOf(value) === index);
-      this.materialsToChoice = materialTemp.filter((value, index, self) => self.indexOf(value) === index);
+      this.glassesToChoice = glassesTemp.filter((value, index, self) => self.indexOf(value) === index).filter(value => value !== null);
+      this.openingTypesToChoice = openingTemp.filter((value, index, self) => self.indexOf(value) === index).filter(value => value !== null);
+      this.materialsToChoice = materialTemp.filter((value, index, self) => self.indexOf(value) === index).filter(value => value !== null);
     });
   }
 
