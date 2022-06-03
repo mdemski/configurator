@@ -93,7 +93,7 @@ export class RoofWindowFiltrationComponent implements OnInit, OnDestroy {
       const openingTemp = [];
       const materialTemp = [];
       for (const window of windows) {
-        if (window.pakietSzybowy.toLowerCase().startsWith('e')) {
+        if (window.pakietSzybowy.split(':')[1].toLowerCase().startsWith('e')) {
           this.translate.get('SHOP').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
             glassesTemp.push(text['doubleGlazing']);
           });
