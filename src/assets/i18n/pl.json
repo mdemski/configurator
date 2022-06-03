@@ -280,6 +280,7 @@
     "colorFinish": "Kolor - wykończenie",
     "handleType": "Typ klamki",
     "ventilation": "Nawiewnik",
+    "glazing": "Pakiet szybowy",
     "numberOfGlass": "Ilość szyb",
     "LP": "Lp",
     "specName": "Nazwa",
@@ -464,7 +465,17 @@
     "akp:TRUE": "kołnierz paroprzepuszczalny AKP",
     "utb:TRUE": "pianka ocieplająca UTB",
     "Okno:E02": "E02",
-    "Okno:I22": "I22"
+    "Okno:I22": "I22",
+    "DachPłaski:PG": "Płaski dach",
+    "NieotwieraneFIX": "Nieotwierane",
+    "Manualne": "Manualne do 80°",
+    "ElektryczneUchył": "Elektryczne - Uchył",
+    "Drążek": "Drążek",
+    "Siłownik": "Siłownik",
+    "": "nd",
+    "DachPłaski:A07": "Dwuszybowy A7",
+    "DachPłaski:A01": "Dwuszybowy A1",
+    "DachPłaski:A05": "A5 - Walk On"
   },
   "FLASHINGS-CONFIG": {
     "summaryPrice": "Łączna kwota",
