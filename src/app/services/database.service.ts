@@ -98,15 +98,15 @@ export class DatabaseService {
   getFlatRoofWindowsToShopList(): FlatRoofWindow[] {
     return this.flats = [
       new FlatRoofWindow('1P-PGX---A01-WSWS-A7022P-100100-OKPP01', 'PGX A1 100x100 Okno do dachu płaskiego nieotwierane /PVCbiały/aluRAL7022półmat/OKPP01', '', 'I-PŁASKI', 'NPL-OKNO', '1. Nowy', 'DachPłaski:PGX', 'DachPłaski:A01', 'A01', 100, 100, 'DachPłaski', 'DachPłaski:Okno', 'PG', 'DachPłaski:PGX', 'NieotwieraneFIX', 'PVC',
-        'PVC:Biały9016', 'DachPłaski:PG', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', '', '', 0, [], [], [], [], 3401, null, null, 5, '', '', null, 'PL'),
+        'PVC:Biały9016', 'DachPłaski:PG', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', '', '', 0, [], [], ['assets/img/products/PGX.png'], [], 3401, null, null, 5, '', '', null, 'PL'),
       new FlatRoofWindow('1P-PGX---A05-WSWS-A7022P-100100-OKPP01', 'PGX A5 Walk-On 100x100 Okno do dachu płaskiego nieotwierane /PVCbiały/aluRAL7022półmat/OKPP01', '', 'I-PŁASKI', 'NPL-OKNO', '1. Nowy', 'DachPłaski:PGX', 'DachPłaski:A05', 'A05', 100, 100, 'DachPłaski', 'DachPłaski:Okno', 'PG', 'DachPłaski:PGX', 'NieotwieraneFIX', 'PVC',
-        'PVC:Biały9016', 'DachPłaski:PG', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', '', '', 0, [], [], [], [], 3401, null, null, 5, '', '', null, 'PL'),
+        'PVC:Biały9016', 'DachPłaski:PG', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', '', '', 0, [], [], ['assets/img/products/PGX_A5.png'], [], 3401, null, null, 5, '', '', null, 'PL'),
       new FlatRoofWindow('1P-PGX-L-A01-WSWS-A7022P-120120-OKPP01', 'PGX LED A1 120x120 Okno do dachu płaskiego nieotwierane z oświetleniem RGB LED /PVCbiały/aluRAL7022półmat/OKPP01', '', 'I-PŁASKI', 'NPL-OKNO', '1. Nowy', 'DachPłaski:PGX LED', 'DachPłaski:A01', 'A01', 120, 120, 'DachPłaski', 'DachPłaski:Okno', 'PG', 'DachPłaski:PGX', 'NieotwieraneFIX', 'PVC',
-        'PVC:Biały9016', 'DachPłaski:PG', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', '', '', 0, [], [], [], [], 3901, null, null, 2, '', '', null, 'PL'),
+        'PVC:Biały9016', 'DachPłaski:PG', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', '', '', 0, [], [], ['assets/img/products/PGX_LED.png'], [], 3901, null, null, 2, '', '', null, 'PL'),
       new FlatRoofWindow('1P-PGC---A01-WSWS-A7022P-120090-OKPP01', 'PGC A1 120x90 Okno do dachu płaskiego sterowane elektrycznie /PVCbiały/aluRAL7022półmat/OKPP01', '', 'I-PŁASKI', 'NPL-OKNO', '1. Nowy', 'DachPłaski:PGC', 'DachPłaski:A01', 'A01', 120, 90, 'DachPłaski', 'DachPłaski:Okno', 'PG', 'DachPłaski:PGC', 'ElektryczneUchył', 'PVC',
-        'PVC:Biały9016', 'DachPłaski:PG', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'Siłownik', '', 0, [], [], [], [], 4401, null, null, 4, '', '', null, 'PL'),
+        'PVC:Biały9016', 'DachPłaski:PG', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'Siłownik', '', 0, [], [], ['assets/img/products/PGC.png'], [], 4401, null, null, 4, '', '', null, 'PL'),
       new FlatRoofWindow('1P-PGM---A07-WSWS-A7022P-060060-OKPP01', 'PGM A7 60x60 Okno do dachu płaskiego otwierane manualnie /PVCbiały/aluRAL7022półmat/OKPP01', '', 'I-PŁASKI', 'NPL-OKNO', '1. Nowy', 'DachPłaski:PGM', 'DachPłaski:A07', 'A07', 60, 60, 'DachPłaski', 'DachPłaski:Okno', 'PG', 'DachPłaski:PGM', 'Manualne', 'PVC',
-        'PVC:Biały9016', 'DachPłaski:PG', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'Drążek', 'Czerwony', 0, [], [], [], [], 5401, null, null, 1, '', '', null, 'PL')
+        'PVC:Biały9016', 'DachPłaski:PG', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'Drążek', 'Czerwony', 0, [], [], ['assets/img/products/PGM.png'], [], 5401, null, null, 1, '', '', null, 'PL')
     ];
   }
 

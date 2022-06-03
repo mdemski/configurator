@@ -1,1 +1,165 @@
-<p>flat-roof-windows works!</p>
+<div class="navbar-background">
+  <img src="assets/img/navbar_backgrounds/pawel-czerwinski-kj8_P9d5tpo-unsplash.jpg" alt="roof windows">
+</div>
+<div class="full-width-container" style="height: 100px; border: grey solid 2px; text-align: center">Baner</div>
+<app-flat-roof-window-filtration (filtersEmitter)="filtersInput($event)"></app-flat-roof-window-filtration>
+<!--TODO Menu boczne do filtrowania okien do zakupu-->
+
+<div class="md-container">
+  <div class="loader-container" *ngIf="isFiltering; else elseBlock">
+    <app-okpol-loader></app-okpol-loader>
+  </div>
+  <ng-template #elseBlock>
+    <div class="pagination-container">
+      <!--Sorting way selection-->
+      <div class="select-box sorting">
+        <div class="select-box__current" tabindex="1" (change)="sortArray()">
+          <div class="select-box__value">
+            <input class="select-box__input" type="radio" id="popularity" [(ngModel)]="sortBy" value="popularity"
+                   name="sort"
+                   checked>
+            <p class="select-box__input-text">{{'SHOP.popularity' | translate}}</p>
+          </div>
+
+          <div class="select-box__value">
+            <input class="select-box__input" type="radio" id="priceAsc" [(ngModel)]="sortBy" value="priceAsc"
+                   name="sort">
+            <p class="select-box__input-text">{{'SHOP.priceAsc' | translate}}</p>
+          </div>
+
+          <div class="select-box__value">
+            <input class="select-box__input" type="radio" id="priceDesc" [(ngModel)]="sortBy" value="priceDesc"
+                   name="sort">
+            <p class="select-box__input-text">{{'SHOP.priceDesc' | translate}}</p>
+          </div>
+
+          <div class="select-box__value">
+            <input class="select-box__input" type="radio" id="nameDesc" [(ngModel)]="sortBy" value="nameDesc"
+                   name="sort">
+            <p class="select-box__input-text">{{'SHOP.nameDesc' | translate}}</p>
+          </div>
+
+          <div class="select-box__value">
+            <input class="select-box__input" type="radio" id="nameAsc" [(ngModel)]="sortBy" value="nameAsc"
+                   name="sort">
+            <p class="select-box__input-text">{{'SHOP.nameAsc' | translate}}</p>
+          </div>
+
+          <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon"
+               aria-hidden="true">
+        </div>
+        <ul class="select-box__list">
+          <li><label class="select-box__option" for="popularity"
+                     aria-hidden="aria-hidden">{{'SHOP.popularity' | translate}}</label></li>
+          <li><label class="select-box__option" for="priceAsc"
+                     aria-hidden="aria-hidden">{{'SHOP.priceAsc' | translate}}</label></li>
+          <li><label class="select-box__option" for="priceDesc"
+                     aria-hidden="aria-hidden">{{'SHOP.priceDesc' | translate}}</label></li>
+          <li><label class="select-box__option" for="nameDesc"
+                     aria-hidden="aria-hidden">{{'SHOP.nameDesc' | translate}}</label></li>
+          <li><label class="select-box__option" for="nameAsc"
+                     aria-hidden="aria-hidden">{{'SHOP.nameAsc' | translate}}</label></li>
+        </ul>
+      </div>
+
+
+      <pagination-controls
+        class="paginator"
+        (pageChange)="page = $event"
+        previousLabel="{{'SHOP.previousPageLabel' | translate}}"
+        nextLabel="{{'SHOP.nextPageLabel' | translate}}">
+        <!--        autoHide-->
+      </pagination-controls>
+      <!--Number on page selection-->
+      <div class="select-box paginating">
+        <div class="select-box__current" tabindex="1">
+          <div class="select-box__value">
+            <input class="select-box__input" type="radio" id="0" [(ngModel)]="pageSize" [value]="getNumberInRow()"
+                   name="pageSize"
+                   [checked]="true">
+            <p class="select-box__input-text">{{getNumberInRow()}}</p>
+          </div>
+
+          <div class="select-box__value">
+            <input class="select-box__input" type="radio" id="1" [(ngModel)]="pageSize" [value]="getNumberInRow()*5"
+                   name="pageSize"
+                   checked="checked">
+            <p class="select-box__input-text">{{getNumberInRow() * 5}}</p>
+          </div>
+
+          <div class="select-box__value">
+            <input class="select-box__input" type="radio" id="2" [(ngModel)]="pageSize" [value]="getNumberInRow()*12"
+                   name="pageSize"
+                   checked="checked">
+            <p class="select-box__input-text">{{getNumberInRow() * 12}}</p>
+          </div>
+
+          <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon"
+               aria-hidden="true">
+        </div>
+        <ul class="select-box__list">
+          <li><label class="select-box__option" for="0" aria-hidden="aria-hidden">{{getNumberInRow()}}</label></li>
+          <li><label class="select-box__option" for="1" aria-hidden="aria-hidden">{{getNumberInRow() * 5}}</label></li>
+          <li><label class="select-box__option" for="2" aria-hidden="aria-hidden">{{getNumberInRow() * 12}}</label></li>
+        </ul>
+      </div>
+    </div>
+    <div class="product-card"
+         *ngFor="let flat of filteredFlatRoofWindowList | paginate: {itemsPerPage: pageSize, currentPage: page}">
+      <a routerLink="./{{flat.kod}}">
+        <div class="product-card__photo-container">
+          <img src="{{flat.linkiDoZdjec[0]}}" alt="{{flat.grupaAsortymentowa}}" class="product-card__photo-container__photo">
+        </div>
+      </a>
+      <h3 class="product-card__title">{{flat.productName}}</h3>
+
+      <ul class="product-card__details">
+        <li class="product-card__details--info">{{'SINGLE-PRODUCT.category' | translate}}:
+          {{'ROOF-WINDOWS-DATA.' + flat.rodzina | translate}} </li>
+        <li class="product-card__details--info">{{'SINGLE-PRODUCT.opening' | translate}}:
+          {{'ROOF-WINDOWS-DATA.' + flat.otwieranie | translate}} </li>
+        <li class="product-card__details--info">{{'SINGLE-PRODUCT.innerColor' | translate}}:
+          {{'ROOF-WINDOWS-DATA.' + flat.stolarkaKolor | translate}} </li>
+        <li class="product-card__details--info">{{'SINGLE-PRODUCT.windowDimensions' | translate}}:
+          {{flat.szerokosc}} x {{flat.wysokosc}} </li>
+        <li class="product-card__details--info">{{'SINGLE-PRODUCT.outerColor' | translate}}:
+          {{'ROOF-WINDOWS-DATA.' + flat.oblachowanieKolor | translate}} </li>
+        <li class="product-card__details--info">{{'SINGLE-PRODUCT.glazing' | translate}}:
+          {{'ROOF-WINDOWS-DATA.' + flat.pakietSzybowy | translate}}</li>
+      </ul>
+
+      <div class="product-card__icons-section">
+        <div class="product-card__icons-section--info">
+          <h4 class="product-card__icons-section--info--title">{{ 'SINGLE-PRODUCT.numberOfGlass' | translate}}</h4>
+          <p class="product-card__icons-section--info--detail">{{flat.numberOfGlasses}}</p>
+          <!--        <img src="assets/icons/glazing.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{window.windowGlazing}}">-->
+        </div>
+        <div class="product-card__icons-section--info">
+          <h4 class="product-card__icons-section--info--title">{{ 'SINGLE-PRODUCT.material' | translate}}</h4>
+          <p
+            class="product-card__icons-section--info--detail">{{'ROOF-WINDOWS-DATA.' + flat.stolarkaMaterial | translate}}</p>
+          <!--        <img src="assets/icons/material.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{ 'SINGLE-PRODUCT.material' | translate}}">-->
+        </div>
+        <div class="product-card__icons-section--info">
+          <h4 class="product-card__icons-section--info--title">{{ 'SINGLE-PRODUCT.price' | translate}}</h4>
+          <p
+            class="product-card__icons-section--info--detail">{{(flat.CenaDetaliczna / (cart$ | async).cart.exchange) + ((flat.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}}</p>
+          <!--        <img src="assets/icons/price.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{ 'SINGLE-PRODUCT.price' | translate}}">-->
+        </div>
+      </div>
+      <div class="product-card__buttons-section">
+        <!--      TODO dodać linki do odpowiednich podstron-->
+        <a class="product-card__buttons-section--link icon-btn icon-btn--red" (click)="addToCart(flat)">
+          <i class="fas fa-cart-plus product-card__buttons-section--icon"></i>
+        </a>
+        <a routerLink="./{{flat.kod}}" class="product-card__buttons-section--link icon-btn icon-btn--blue">
+          <i class="fas fa-info-circle product-card__buttons-section--icon"></i>
+        </a>
+        <a routerLink="/{{ 'LINK.configuratorRoofWindow' | translate}}/-1/no-name/{{flat.kod}}"
+           class="product-card__buttons-section--link icon-btn icon-btn--grey">
+          <i class="fas fa-cogs product-card__buttons-section--icon"></i>
+        </a>
+      </div>
+    </div>
+  </ng-template>
+</div>
