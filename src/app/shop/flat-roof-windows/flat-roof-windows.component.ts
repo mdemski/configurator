@@ -70,13 +70,13 @@ export class FlatRoofWindowsComponent implements OnInit, OnDestroy {
       filteredByGlazing = this.flatRoofWindowList;
     } else {
       filteredByGlazing = this.flatRoofWindowList
-        .filter(window => this.filters.flatGlazings.includes(window.glazingToCalculation));
+        .filter(flatRoofWindow => this.filters.flatGlazings.includes(flatRoofWindow.glazingToCalculation));
     }
     if (numberOfOpeningNull === this.filters.flatOpeningTypes.length) {
       filteredByOpening = filteredByGlazing;
     } else {
       filteredByOpening = filteredByGlazing
-        .filter(window => this.filters.flatOpeningTypes.includes(window.otwieranie));
+        .filter(flatRoofWindow => this.filters.flatOpeningTypes.includes(flatRoofWindow.otwieranie));
     }
     this.filteredFlatRoofWindowList = filteredByOpening.filter(flatRoofWindow => {
       let nameFound = true;
