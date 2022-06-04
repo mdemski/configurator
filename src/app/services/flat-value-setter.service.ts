@@ -48,4 +48,116 @@ export class FlatValueSetterService {
     }
     return {windowUG, windowUW};
   }
+
+  getWindowModel(openingType: string, option: string) {
+    let flatRoofWindowModel = '';
+    switch (openingType) {
+      case 'NieotwieraneFIX':
+        if (option === 'LED') {
+          flatRoofWindowModel = 'DachPłaski:PGX LED';
+        } else {
+          flatRoofWindowModel = 'DachPłaski:PGX';
+        }
+        break;
+      case 'Manualne':
+        flatRoofWindowModel = 'DachPłaski:PGM';
+        break;
+      case 'ElektryczneUchył':
+        flatRoofWindowModel = 'DachPłaski:PGC';
+        break;
+    }
+    return flatRoofWindowModel;
+  }
+
+  getWindowGroup(openingType: string) {
+    let flatRoofWindowGroup = '';
+    switch (openingType) {
+      case 'NieotwieraneFIX':
+        flatRoofWindowGroup = 'DachPłaski:PGX';
+        break;
+      case 'Manualne':
+        flatRoofWindowGroup = 'DachPłaski:PGM';
+        break;
+      case 'ElektryczneUchył':
+        flatRoofWindowGroup = 'DachPłaski:PGC';
+        break;
+    }
+    return flatRoofWindowGroup;
+  }
+
+  generateWindowCode(otwieranie: string, option: string, pakietSzybowy: string, stolarkaKolor: string,
+                     oblachowanieMaterial: string, oblachowanieKolor: string, oblachowanieFinisz: string, szerokosc: number, wysokosc: number) {
+    let model = String(this.getWindowModel(otwieranie, option).split(':')[1] + '--');
+    if (model === 'PGX LED') {
+      model = 'PGX-L';
+    }
+
+    const glazingCode = pakietSzybowy.split(':')[1];
+
+    let materialCode = '';
+    if (stolarkaKolor === 'PVC:Biały9016') {
+      materialCode = 'WSWS';
+    } else {
+      materialCode = 'WSWS';
+    }
+
+    let outerMaterialCode = '';
+    switch (oblachowanieMaterial) {
+      case 'Aluminium':
+        outerMaterialCode = 'A';
+        break;
+      case 'Miedż':
+        outerMaterialCode = 'C';
+        break;
+      case 'TytanCynk':
+        outerMaterialCode = 'T';
+        break;
+    }
+
+    let outerColorCode = '';
+    if (oblachowanieKolor.split(':')[0] === 'Aluminium') {
+      outerColorCode = oblachowanieKolor.substring(oblachowanieKolor.length - 4);
+    }
+    if (oblachowanieKolor === 'Miedź:Natur') {
+      outerColorCode = '0000';
+    }
+    if (oblachowanieKolor === 'TytanCynk:Natur') {
+      outerColorCode = '0000';
+    }
+
+    let outerFinishCode = '';
+    switch (oblachowanieFinisz) {
+      case 'Aluminium:Półmat':
+        outerFinishCode = 'P';
+        break;
+      case 'Aluminium:Mat':
+        outerFinishCode = 'M';
+        break;
+      case 'Aluminium:Połysk':
+        outerFinishCode = 'B';
+        break;
+      case 'Aluminium:Natur':
+        outerFinishCode = '0';
+        break;
+    }
+
+    let widthCode;
+    if (szerokosc < 100) {
+      widthCode = '0' + szerokosc;
+    } else {
+      widthCode = szerokosc;
+    }
+
+    let heightCode;
+    if (wysokosc < 100) {
+      heightCode = '0' + wysokosc;
+    } else {
+      heightCode = wysokosc;
+    }
+
+    // '1P-PGX---A01-WSWS-A7022P-100100-OKPP01';
+    return '1P-' + model + '-' + glazingCode + '-' + materialCode +
+      '-' + outerMaterialCode + outerColorCode + outerFinishCode +
+      '-' + widthCode + heightCode + '-OKPP01';
+  }
 }
