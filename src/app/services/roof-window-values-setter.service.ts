@@ -336,19 +336,14 @@ export class RoofWindowValuesSetterService {
     }
 
     let outerColorCode = '';
-    switch (outerColor) {
-      case 'Aluminium:RAL7022':
-        outerColorCode = '7022';
-        break;
-      case 'Aluminium:RAL7016':
-        outerColorCode = '7016';
-        break;
-      case 'Miedź:Natur':
-        outerColorCode = '0000';
-        break;
-      case 'TytanCynk:Natur':
-        outerColorCode = '0000';
-        break;
+    if (outerColor.split(':')[0] === 'Aluminium') {
+      outerColorCode = outerColor.substring(outerColor.length - 4);
+    }
+    if (outerColor === 'Miedź:Natur') {
+      outerColorCode = '0000';
+    }
+    if (outerColor === 'TytanCynk:Natur') {
+      outerColorCode = '0000';
     }
 
     let outerFinishCode = '';
