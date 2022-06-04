@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {FlatRoofWidnowDetailsComponent} from './flat-roof-widnow-details.component';
+import {FlatRoofWindowDetailsComponent} from './flat-roof-window-details.component';
 
 describe('FlatRoofWidnowDetailsComponent', () => {
-  let component: FlatRoofWidnowDetailsComponent;
-  let fixture: ComponentFixture<FlatRoofWidnowDetailsComponent>;
+  let component: FlatRoofWindowDetailsComponent;
+  let fixture: ComponentFixture<FlatRoofWindowDetailsComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ FlatRoofWidnowDetailsComponent ]
+      declarations: [ FlatRoofWindowDetailsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FlatRoofWidnowDetailsComponent);
+    fixture = TestBed.createComponent(FlatRoofWindowDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,206 @@
+<div class="navbar-background">
+  <img src="assets/img/navbar_backgrounds/pawel-czerwinski-HvJbn9HIf6U-unsplash.jpg" alt="roof window">
+</div>
+
+<div class="md-container" *ngIf="flatRoofWindow$ | async as flatWindow">
+
+  <div class="md-container--left-side">
+    <!--Icons with specification of product-->
+    <div class="specification-icons">
+      <div class="specification-icons__element active-icon"><img
+        src="assets/icons/single_product_page/pvc.png" alt="wooden window"></div>
+      <div
+        class="specification-icons__element active-icon">{{'ROOF-WINDOWS-DATA.' + flatWindow.stolarkaKolor | translate}}</div>
+      <div *ngIf="flatWindow.pakietSzybowy.split(':')[1] === 'A05' else standardGlazing"
+           class="specification-icons__element active-icon"><img
+        src="assets/icons/single_product_page/neo-vent.png" alt="walk-on window"></div>
+      <ng-template #standardGlazing>
+        <div class="specification-icons__element inactive-icon"><img src="assets/icons/single_product_page/neo-vent.png"
+                                                                     alt="standard window"></div>
+      </ng-template>
+
+      <div *ngIf="flatWindow.zamkniecieTyp === 'Drążek'" class="specification-icons__element active-icon">
+        <img src="assets/icons/single_product_page/extra-secure.png" alt="wooden window"></div>
+      <div *ngIf="flatWindow.zamkniecieTyp === 'Siłownik'" class="specification-icons__element active-icon">
+        <img src="assets/icons/single_product_page/extra-secure.png" alt="wooden window"></div>
+      <div *ngIf="flatWindow.zamkniecieTyp === '' || !flatWindow.zamkniecieTyp"
+           class="specification-icons__element active-icon">
+        <img src="assets/icons/single_product_page/extra-secure.png" alt="wooden window"></div>
+
+      <div class="specification-icons__element active-icon">Uw {{flatWindow.windowUW}}</div>
+      <div class="specification-icons__element active-icon">Ug {{flatWindow.windowUG}} </div>
+      <div
+        class="specification-icons__element active-icon">{{'ROOF-WINDOWS-DATA.' + flatWindow.oblachowanieKolor | translate}}</div>
+      <div class="specification-icons__element active-icon"><img
+        src="assets/icons/single_product_page/guarantee-window.png"
+        alt="guarantee for window"></div>
+    </div>
+    <!--Icons with specification of product-->
+
+    <!--Main pictures of product-->
+    <div class="main-picture">
+      <img *ngFor="let url of picturesOfWindow" src="{{url}}" alt="{{flatWindow.productName}}">
+    </div>
+    <!--Main pictures of product-->
+  </div>
+
+  <div class="md-container--right-side">
+    <p class="product-name">{{flatWindow.productName}}</p>
+    <p
+      class="price">{{ 'SINGLE-PRODUCT.price' | translate}} {{(flatWindow.CenaDetaliczna / (cart$ | async).cart.exchange) | currency: ' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
+    <p *ngIf="logInUser.isLogged"
+       class="price--after-discount">{{ 'SINGLE-PRODUCT.priceAfterDisc' | translate}} {{((priceAfterDisc$ | async) / (cart$ | async).cart.exchange) | currency :' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
+    <div class="line"></div>
+    <div class="all-sizes-container">
+      <p>{{ 'SINGLE-PRODUCT.availableSizes' | translate}}</p>
+      <!--TODO przekierować na odpowiednią stronę z wymiarem okna-->
+      <a routerLink="../{{getLinkCode(flatWindow.kod, size)}}"
+         class="icon-btn-light icon-btn-light--light-grey-red btn-big" [routerLinkActive]="['active-button']"
+         *ngFor="let size of availableSizes">{{size}}</a>
+    </div>
+    <div class="line"></div>
+    <div class="quantity-container">
+      <p class="quantity-desc">{{ 'SINGLE-PRODUCT.quantity' | translate}}</p>
+      <i (click)="decreaseQuantity()">-</i>
+      <input type="number" class="quantity" [(ngModel)]="quantity">
+      <i (click)="increaseQuantity()">+</i>
+    </div>
+    <div class="line"></div>
+    <a class="btn btn--grey add-to-cart"
+       (click)="addToCart(flatWindow, quantity)">{{ 'SINGLE-PRODUCT.addToCart' | translate}}</a>
+    <a class="btn btn--red add-to-cart"
+       (click)="order(quantity)">{{ 'SINGLE-PRODUCT.orderNow' | translate}}</a>
+    <div class="line"></div>
+    <p class="product-information--title">{{ 'SINGLE-PRODUCT.productInformation' | translate}}</p>
+    <table class="table table-striped table-hover">
+      <thead>
+      <tr>
+        <th scope="col">{{ 'SINGLE-PRODUCT.LP' | translate}}</th>
+        <th scope="col">{{ 'SINGLE-PRODUCT.specName' | translate}}</th>
+        <th scope="col">{{ 'SINGLE-PRODUCT.specValue' | translate}}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>{{ 'SINGLE-PRODUCT.windowName' | translate}}</td>
+        <td>{{flatWindow.productName}}</td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>{{ 'SINGLE-PRODUCT.windowUW' | translate}}</td>
+        <td>{{flatWindow.windowUW}}</td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td>{{ 'SINGLE-PRODUCT.windowUG' | translate}}</td>
+        <td>{{flatWindow.windowUG}}</td>
+      </tr>
+      <tr>
+        <th scope="row">4</th>
+        <td>{{ 'SINGLE-PRODUCT.windowModel' | translate}}</td>
+        <td>{{'ROOF-WINDOWS-DATA.' + flatWindow.model | translate}}</td>
+      </tr>
+      <tr>
+        <th scope="row">5</th>
+        <td>{{ 'SINGLE-PRODUCT.windowGlazing' | translate}}</td>
+        <td>{{'ROOF-WINDOWS-DATA.' + flatWindow.pakietSzybowy | translate}}</td>
+      </tr>
+      <tr>
+        <th scope="row">6</th>
+        <td>{{ 'SINGLE-PRODUCT.windowDimensions' | translate}}</td>
+        <td>{{flatWindow.szerokosc}} x {{flatWindow.wysokosc}}</td>
+      </tr>
+      <tr>
+        <th scope="row">7</th>
+        <td>{{ 'SINGLE-PRODUCT.windowGeometry' | translate}}</td>
+        <td>{{'ROOF-WINDOWS-DATA.' + flatWindow.geometria | translate}}</td>
+      </tr>
+      <tr>
+        <th scope="row">8</th>
+        <td>{{ 'SINGLE-PRODUCT.windowOpeningType' | translate}}</td>
+        <td>{{'ROOF-WINDOWS-DATA.' + flatWindow.otwieranie | translate}}</td>
+      </tr>
+      <tr>
+        <th scope="row">9</th>
+        <td>{{ 'SINGLE-PRODUCT.windowMaterial' | translate}}</td>
+        <td>{{'ROOF-WINDOWS-DATA.' + flatWindow.stolarkaMaterial | translate}}</td>
+      </tr>
+      <tr>
+        <th scope="row">10</th>
+        <td>{{ 'SINGLE-PRODUCT.windowMaterialColor' | translate}}</td>
+        <td>{{'ROOF-WINDOWS-DATA.' + flatWindow.stolarkaKolor | translate}}</td>
+      </tr>
+      <tr>
+        <th scope="row">11</th>
+        <td>{{ 'SINGLE-PRODUCT.windowMaterialFinish' | translate}}</td>
+        <td>{{'ROOF-WINDOWS-DATA.' + flatWindow.rodzina | translate}}</td>
+      </tr>
+      <tr>
+        <th scope="row">12</th>
+        <td>{{ 'SINGLE-PRODUCT.windowOuterMaterial' | translate}}</td>
+        <td>{{'ROOF-WINDOWS-DATA.' + flatWindow.oblachowanieMaterial | translate}}</td>
+      </tr>
+      <tr>
+        <th scope="row">13</th>
+        <td>{{ 'SINGLE-PRODUCT.windowOuterColor' | translate}}</td>
+        <td>{{'ROOF-WINDOWS-DATA.' + flatWindow.oblachowanieKolor | translate}}</td>
+      </tr>
+      <tr>
+        <th scope="row">14</th>
+        <td>{{ 'SINGLE-PRODUCT.windowOuterFinish' | translate}}</td>
+        <td>{{'ROOF-WINDOWS-DATA.' + flatWindow.oblachowanieFinisz | translate}}</td>
+      </tr>
+      <tr>
+        <th scope="row">15</th>
+        <td>{{ 'SINGLE-PRODUCT.windowHandleType' | translate}}</td>
+        <td>{{'ROOF-WINDOWS-DATA.' + flatWindow.zamkniecieTyp | translate}}</td>
+      </tr>
+      <tr>
+        <th scope="row">16</th>
+        <td>{{ 'SINGLE-PRODUCT.windowHandleColor' | translate}}</td>
+        <td>{{'ROOF-WINDOWS-DATA.' + flatWindow.zamkniecieKolor | translate}}</td>
+      </tr>
+      <tr>
+        <th scope="row">17</th>
+        <td>{{ 'SINGLE-PRODUCT.foamsNumber' | translate}}</td>
+        <td>{{flatWindow.uszczelki}}</td>
+      </tr>
+      <tr>
+        <th scope="row">18</th>
+        <td>{{ 'SINGLE-PRODUCT.detalPrice' | translate}}</td>
+        <td>{{flatWindow.CenaDetaliczna | currency: ' '}}</td>
+      </tr>
+      <tr>
+        <th scope="row">19</th>
+        <td>{{ 'SINGLE-PRODUCT.detalGrossPrice' | translate}}</td>
+        <td>{{(flatWindow.CenaDetaliczna) + (flatWindow.CenaDetaliczna * (cart$ | async).cart.vatRate) | currency: ' '}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!--Extra information about product-->
+<section>
+  <!--  Window model-->
+  <div class="background-container" *ngIf="flatRoofWindow$ | async as flatRoofWindow">
+    <div class="main-info" *ngIf="flatRoofWindow.model">
+      <p
+        class="main-info__desc">{{ 'SINGLE-PRODUCT.' + flatRoofWindow.model + '-' + flatRoofWindow.pakietSzybowy.split(':')[1] + 'Desc' | translate}}</p>
+      <img class="main-info__photo"
+           src="assets/img/shop/single_product_page/{{flatRoofWindow.model.split(':')[1] + '-' + flatRoofWindow.pakietSzybowy.split(':')[1]}}.png"
+           alt="{{ 'SINGLE-PRODUCT.windowUW' | translate}}">
+    </div>
+  </div>
+
+  <!--  Material PVC-->
+  <div class="background-container-without-back-color" *ngIf="flatRoofWindow$ | async as flatRoofWindow">
+    <div class="main-info" *ngIf="flatRoofWindow.model">
+      <img class="main-info__photo"
+           src="assets/img/shop/single_product_page/PD-PVC.png"
+           alt="{{ 'SINGLE-PRODUCT.windowUG' | translate}}">
+      <p class="main-info__desc">{{ 'SINGLE-PRODUCT.FlatRoofPVCDESC'| translate}}</p>
+    </div>
+  </div>
+</section>
+

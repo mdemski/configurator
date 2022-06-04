@@ -17,7 +17,7 @@ import {FlashingDetailsComponent} from './flashings/flashing-details/flashing-de
 import {SharedModule} from '../shared/shared.module';
 import {FlashingState} from '../store/flashing/flashing.state';
 import {FlatRoofWindowsComponent} from './flat-roof-windows/flat-roof-windows.component';
-import {FlatRoofWidnowDetailsComponent} from './flat-roof-windows/flat-roof-widnow-details/flat-roof-widnow-details.component';
+import {FlatRoofWindowDetailsComponent} from './flat-roof-windows/flat-roof-window-details/flat-roof-window-details.component';
 import {SkylightState} from '../store/skylight/skylight.state';
 import {AccessoryState} from '../store/accessory/accessory.state';
 import {FlatRoofWindowState} from '../store/flat-roof-window/flat-roof-window.state';
@@ -47,7 +47,7 @@ import { FlatRoofWindowFiltrationComponent } from './flat-roof-windows/flat-roof
     FlashingsComponent,
     FlashingDetailsComponent,
     FlatRoofWindowsComponent,
-    FlatRoofWidnowDetailsComponent,
+    FlatRoofWindowDetailsComponent,
     AccessoryFiltrationComponent,
     FlashingFiltrationComponent,
     FlatRoofWindowFiltrationComponent,
