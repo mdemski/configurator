@@ -23,7 +23,6 @@ export class AccessoriesDetailsComponent implements OnInit, OnDestroy {
     userName: string,
     isLogged: boolean
   };
-  routerData;
   isDestroyed$ = new Subject();
   picturesOfAccessory = [];
   priceAfterDisc$ = new Subject<number>();

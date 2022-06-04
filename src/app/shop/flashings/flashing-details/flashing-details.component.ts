@@ -24,7 +24,6 @@ export class FlashingDetailsComponent implements OnInit, OnDestroy {
     userName: string,
     isLogged: boolean
   };
-  routerData;
   picturesOfFlashing = [];
   priceAfterDisc$ = new Subject<number>();
   availableSizes = ['55x78', '55x98', '66x98', '66x118', '66x140', '78x98', '78x118', '78x140', '78x160', '94x118', '94x140', '94x160', '114x118', '114x140', '134x98'];

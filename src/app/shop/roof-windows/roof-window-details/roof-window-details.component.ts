@@ -25,7 +25,6 @@ export class RoofWindowDetailsComponent implements OnInit, OnDestroy {
     userName: string;
     isLogged: boolean
   };
-  routerData;
   windowToShow: RoofWindowSkylight;
   isDestroyed$ = new Subject();
   picturesOfWindow = [];
