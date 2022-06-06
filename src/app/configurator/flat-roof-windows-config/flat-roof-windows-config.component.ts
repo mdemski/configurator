@@ -9,7 +9,6 @@ import {SingleConfiguration} from '../../models/single-configuration';
 import {FlatRoofWindowState} from '../../store/flat-roof-window/flat-roof-window.state';
 import {FlatRoofWindow} from '../../models/flat-roof-window';
 import {AvailableConfigDataState} from '../../store/avaiable-config-data/available-config-data.state';
-import {RoofWindowValuesSetterService} from '../../services/roof-window-values-setter.service';
 import {LoadConfigurationService} from '../../services/load-configuration.service';
 import {HighestIdGetterService} from '../../services/highest-id-getter.service';
 import {RandomStringGeneratorService} from '../../services/random-string-generator.service';
@@ -19,6 +18,12 @@ import {TranslateService} from '@ngx-translate/core';
 import {filter, map, pairwise, startWith, takeUntil, tap} from 'rxjs/operators';
 import {FlatConfig} from '../../models/flat-config';
 import {FlatValueSetterService} from '../../services/flat-value-setter.service';
+import {
+  AddFlatRoofConfiguration,
+  AddGlobalConfiguration,
+  AddRoofWindowConfiguration, UpdateFlatRoofConfiguration, UpdateFlatRoofFormByFormName,
+  UpdateRoofWindowConfiguration, UpdateRoofWindowFormByFormName
+} from '../../store/configuration/configuration.actions';
 
 @Component({
   selector: 'app-flat-roof-windows-config',
@@ -73,7 +78,7 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
   userConfigs = [];
   copyLinkToConfigurationPopup = false;
   urlToSaveConfiguration: string;
-  windowsConfigurator: string;
+  flatRoofWindowsConfigurator: string;
   showWidthMessage = false;
   showHeightMessage = false;
   private flatRoofWindowsFromDataBase: FlatRoofWindow[];
@@ -155,7 +160,7 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
       this.configurationSummary = text.configurationSummary;
     });
     this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
-      this.windowsConfigurator = text.configuratorFlatRoofWindow;
+      this.flatRoofWindowsConfigurator = text.configuratorFlatRoofWindow;
     });
   }
 
@@ -325,6 +330,76 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.setDisabled(this.configuredFlatRoofWindow);
   }
 
+  priceCalculation(configuredFlatRoofWindow: FlatRoofWindow) {
+    // ... spread operator pozwala nie zagnieżdżać jendego elementu w drugi
+    // tempArray.push({...data[book], id: book});
+    let windowPrice = 0;
+    let isStandard = false;
+    let index = -1;
+    for (let i = 0; i < this.flatRoofWindowModelsToCalculatePrice.length; i++) {
+      if (this.flatRoofWindowModelsToCalculatePrice[i].windowModel === configuredFlatRoofWindow.model) {
+        index = i;
+      }
+    }
+    const windowToCalculations = this.flatRoofWindowModelsToCalculatePrice[index];
+    for (const standardRoofWindow of this.flatRoofWindowsFromDataBase) {
+      if (standardRoofWindow.kod === configuredFlatRoofWindow.kod) {
+        windowPrice = standardRoofWindow.CenaDetaliczna;
+        isStandard = true;
+        for (const extra of configuredFlatRoofWindow.listaDodatkow) {
+          if (extra !== false) {
+            windowPrice += +windowToCalculations[extra];
+          }
+        }
+      }
+    }
+    if (index > -1 && !isStandard) {
+      if (configuredFlatRoofWindow.pakietSzybowy) {
+        windowPrice += this.getWindowCircuit(configuredFlatRoofWindow) * windowToCalculations[configuredFlatRoofWindow.glazingToCalculation];
+      }
+      if (configuredFlatRoofWindow.oblachowanieMaterial) {
+        windowPrice += this.getWindowCircuit(configuredFlatRoofWindow) * windowToCalculations[configuredFlatRoofWindow.oblachowanieMaterial];
+      }
+      if (configuredFlatRoofWindow.oblachowanieKolor) {
+        windowPrice += this.getWindowCircuit(configuredFlatRoofWindow) * windowToCalculations[configuredFlatRoofWindow.oblachowanieKolor];
+      }
+      if (configuredFlatRoofWindow.oblachowanieFinisz) {
+        windowPrice += this.getWindowCircuit(configuredFlatRoofWindow) * windowToCalculations[configuredFlatRoofWindow.oblachowanieFinisz];
+      }
+      for (const extra of configuredFlatRoofWindow.listaDodatkow) {
+        if (extra !== false) {
+          windowPrice += +windowToCalculations[extra];
+        }
+      }
+      if (configuredFlatRoofWindow.zamkniecieTyp) {
+        windowPrice += +windowToCalculations[configuredFlatRoofWindow.zamkniecieTyp];
+      }
+      if (windowToCalculations) {
+        this.minWidth = windowToCalculations.minSzerokosc;
+        this.maxWidth = windowToCalculations.maxSzerokosc;
+        this.minHeight = windowToCalculations.minWysokosc;
+        this.maxHeight = windowToCalculations.maxWysokosc;
+      }
+    }
+    return windowPrice;
+  }
+
+  builtNameForTranslation(option: string) {
+    return String('ROOF-WINDOWS-DATA.' + option);
+  }
+
+  returnCurrencyName(currency: string) {
+    if (currency === 'EUR') {
+      return '€';
+    } else {
+      return 'zł';
+    }
+  }
+
+  resetConfigForm() {
+    this.router.navigate(['/' + this.flatRoofWindowsConfigurator]);
+  }
+
   // VALIDATORS
   validateOpenings<AsyncValidatorFn>(control: FormControl) {
     return new Observable((observer: Observer<ValidationErrors | null>) => {
@@ -414,4 +489,403 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
     });
   }
 
+  // CALCULATIONS
+  getWindowCircuit(configuredWindow) {
+    return 2 * configuredWindow.szerokosc + 2 * configuredWindow.wysokosc;
+  }
+
+  onSubmit() {
+    this.newWindowConfig = {
+      products: {
+        windows: null,
+        flashings: null,
+        accessories: null,
+        verticals: null,
+        flats: [{
+          id: this.flatId,
+          quantity: 1,
+          // TODO zamienić na configuredWindow po odkomentowaniu blokad formularza
+          flat: this.tempConfiguredWindow,
+          flatFormName: this.formName,
+          flatFormData: this.form.value,
+          configLink: String(this.router['location']._platformLocation.location.origin
+            + '/' + this.globalId
+            + '/' + this.formName
+            + '/' + this.configuredFlatRoofWindow.kod)
+        }]
+      },
+      globalId: this.globalId,
+      created: new Date(),
+      lastUpdate: new Date(),
+      user: this.currentUser,
+      userId: 1,
+      name: '<New configuration>',
+      active: true
+    };
+    this.loading = true;
+    if (this.configId === '-1' || this.configId === '') {
+      this.userConfigurations$.pipe(
+        takeUntil(this.isDestroyed$),
+        map((data: Array<any>) => {
+          return data.filter(x => x !== null);
+        })).subscribe(userConfigurations => {
+        this.userConfigs = userConfigurations;
+        // this.configFormId = this.userConfigs[0].userId;
+        this.configFormId = 1;
+        this.highestUserId = this.hd.getHighestIdForUser(userConfigurations);
+        this.newWindowConfig.userId = this.highestUserId;
+        // wersja 2 lub 1
+        if (this.userConfigs.length !== 0) {
+          this.userConfigs.push(this.newWindowConfig);
+          this.loading = false;
+          this.chooseConfigNamePopup = true;
+          // wersja 1
+        } else {
+          this.newWindowConfig.products.flats.forEach(element => element.configLink = String(
+            this.router['location']._platformLocation.location.origin + this.router.url
+            + '/' + this.globalId
+            + '/' + this.formName
+            + '/' + this.configuredFlatRoofWindow.kod));
+          this.store.dispatch(new AddGlobalConfiguration(this.currentUser, this.newWindowConfig)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+          this.router.navigate(['/' + this.configurationSummary]);
+          this.loading = false;
+        }
+      });
+    } else {
+      // wersja 2
+      if (this.flatId === 1) {
+        const temporaryLink = String(
+          this.router['location']._platformLocation.location.origin + this.router.url
+          + '/' + this.globalId
+          + '/' + this.formName
+          + '/' + this.configuredFlatRoofWindow.kod);
+        this.store.dispatch(new AddFlatRoofConfiguration(this.globalConfiguration, this.configuredFlatRoofWindow,
+          this.formName, this.form.value, temporaryLink))
+          .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+        // wersja 3
+      } else {
+        this.store.dispatch(new UpdateFlatRoofConfiguration(this.globalConfiguration, this.flatId, this.configuredFlatRoofWindow))
+          .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+        this.store.dispatch(new UpdateFlatRoofFormByFormName(this.globalConfiguration, this.formName, this.form.value))
+          .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+      }
+      this.router.navigate(['/' + this.configurationSummary]);
+      this.loading = false;
+    }
+  }
+
+  hidePopup() {
+    this.chooseConfigNamePopup = false;
+  }
+
+  chooseConfigId() {
+    // wersja 1
+    if (this.configFormId === undefined) {
+      this.newWindowConfig.products.flats.forEach(element => element.configLink = String(
+        this.router['location']._platformLocation.location.origin + this.router.url
+        + '/' + this.globalId
+        + '/' + this.formName
+        + '/' + this.configuredFlatRoofWindow.kod));
+      this.store.dispatch(new AddGlobalConfiguration(this.currentUser, this.newWindowConfig))
+        .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+      // wersja 2
+    } else {
+      const temporaryLink = String(
+        this.router['location']._platformLocation.location.origin
+        + '/' + this.globalId
+        + '/' + this.formName
+        + '/' + this.configuredFlatRoofWindow.kod);
+      this.configId = String('configuration-' + this.configFormId);
+      this.globalConfiguration = this.configurations.find(config => config.userId === this.configFormId && config.user === this.currentUser);
+      // TODO zamienić na configuredWindow
+      this.store.dispatch(new AddFlatRoofConfiguration(this.globalConfiguration,
+        this.tempConfiguredWindow, this.formName, this.form.value, temporaryLink))
+        .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+    }
+    this.chooseConfigNamePopup = false;
+    this.router.navigate(['/' + this.configurationSummary]);
+  }
+
+  saveCopyLinkPopUp() {
+    let temporaryUrl = '';
+    this.loading = true;
+    this.copyLinkToConfigurationPopup = true;
+    this.newWindowConfig = {
+      products: {
+        windows: null,
+        flashings: null,
+        accessories: null,
+        verticals: null,
+        flats: [{
+          id: this.flatId,
+          quantity: 1,
+          flat: this.configuredFlatRoofWindow,
+          flatFormName: this.formName,
+          flatFormData: this.form.value,
+          configLink: String(this.router['location']._platformLocation.location.origin
+            + '/' + this.globalId
+            + '/' + this.formName
+            + '/' + this.configuredFlatRoofWindow.kod)
+        }]
+      },
+      globalId: this.globalId,
+      created: new Date(),
+      lastUpdate: new Date(),
+      user: 'anonym',
+      userId: 0,
+      name: 'temporary',
+      active: true
+    };
+    // wersja 2 lub 3
+    if (this.configId === this.globalId) {
+      temporaryUrl = this.router['location']._platformLocation.location.origin
+        + '/' + this.globalId
+        + '/' + this.formName
+        + '/' + this.configuredFlatRoofWindow.kod;
+      // wersja 2
+      if (this.flatId === 1) {
+        this.store.dispatch(new AddFlatRoofConfiguration(this.globalConfiguration, this.configuredFlatRoofWindow,
+          this.formName, this.form.value, temporaryUrl))
+          .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+        // wersja 3
+      } else {
+        this.store.dispatch(new UpdateFlatRoofConfiguration(this.globalConfiguration, this.flatId, this.configuredFlatRoofWindow))
+          .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+      }
+      // wersja 1
+    } else {
+      this.newWindowConfig.products.flats.forEach(element => element.configLink = String(
+        this.router['location']._platformLocation.location.origin + this.router.url
+        + '/' + this.globalId
+        + '/' + this.formName
+        + '/' + this.configuredFlatRoofWindow.kod));
+      this.store.dispatch(new AddGlobalConfiguration('anonym', this.newWindowConfig))
+        .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+      temporaryUrl = this.router['location']._platformLocation.location.origin + this.router.url
+        + '/' + this.newWindowConfig.globalId
+        + '/' + this.newWindowConfig.products.flats[0].flatFormName
+        + '/' + this.newWindowConfig.products.flats[0].flat.kod;
+    }
+    this.urlToSaveConfiguration = temporaryUrl;
+    this.loading = false;
+  }
+
+  // CSS STYLING
+  setBackgroundImage(value: string) {
+    const twoParts = value.split(':');
+    let fileName = '';
+    if (twoParts[1] === undefined || twoParts[1] === 'TRUE') {
+      fileName = twoParts[0];
+    } else {
+      if (twoParts[0] === 'KolankoPVC' && twoParts[1] === 'Uchylne') {
+        fileName = 'UchylnePVC';
+      } else if (twoParts[0] === 'KolankoDrewno' && twoParts[1] === 'NieotwieraneFIP') {
+        fileName = 'NieotwieraneFIPKolanko';
+      } else {
+        fileName = twoParts[1];
+      }
+    }
+    return {
+      ['background-image']: 'url("assets/img/configurator/window_configurator/central_options_pictures/' + fileName + '.png")',
+      ['background-size']: 'contain',
+      ['background-repeat']: 'no-repeat'
+    };
+  }
+
+  // Options toggle
+  onHoverClick(divEle: HTMLDivElement, arrayLength: number, visibility: boolean) {
+    if (!visibility) {
+      divEle.style.maxHeight = '0';
+      divEle.style.transition = 'all .7s ease-in-out';
+    } else {
+      divEle.style.maxHeight = arrayLength * 105 + 120 + 'px';
+      divEle.style.transition = 'all .7s ease-in-out';
+    }
+    const scrollCorrection = window.scrollY === 0 ? 200 : window.scrollY;
+    window.scrollTo({top: divEle.getBoundingClientRect().top - scrollCorrection, behavior: 'smooth'});
+  }
+
+  onOpeningHover(openingOptions: HTMLDivElement) {
+    this.openingVisible = !this.openingVisible;
+    this.onHoverClick(openingOptions, this.openingTypes.length + 3, this.openingVisible);
+  }
+
+  onGlazingHover(glazingOptions: HTMLDivElement) {
+    this.glazingVisible = !this.glazingVisible;
+    this.onHoverClick(glazingOptions, this.glazingTypes.length, this.glazingVisible);
+  }
+
+  onDimensionsHover(dimensionOption: HTMLDivElement) {
+    this.dimensionsVisible = !this.dimensionsVisible;
+    this.onHoverClick(dimensionOption, 3, this.dimensionsVisible);
+  }
+
+  onOuterMaterialHover(outerMaterial: HTMLDivElement) {
+    this.outerMaterialVisible = !this.outerMaterialVisible;
+    const length = this.outerColors.length + this.outerMaterials.length + this.outerColorFinishes.length + 1;
+    this.onHoverClick(outerMaterial, length, this.outerMaterialVisible);
+  }
+
+  onHandleHover(handleOptions: HTMLDivElement) {
+    this.handleVisible = !this.handleVisible;
+    const length = this.handles.length + 1;
+    this.onHoverClick(handleOptions, length, this.handleVisible);
+  }
+
+  onExtrasHover(extrasOptions: HTMLDivElement) {
+    this.extrasVisible = !this.extrasVisible;
+    this.onHoverClick(extrasOptions, this.extrasFromFile.length + 5, this.extrasVisible);
+  }
+
+  moveWidthOutput(outputWidth: HTMLOutputElement) {
+    const width = this.form.value.width;
+    const newWidth = Number((width - this.minWidth) * 100 / (this.maxWidth - this.minWidth));
+    outputWidth.style.left = ((newWidth * 0.35) + (3.5 - newWidth * 0.07)) + 'rem';
+  }
+
+  moveHeightOutput(outputHeight: HTMLOutputElement) {
+    const height = this.form.value.height;
+    const newHeight = Number((height - this.minHeight) * 100 / (this.maxHeight - this.minHeight));
+    outputHeight.style.left = ((newHeight * 0.35) + (3.5 - newHeight * 0.07)) + 'rem';
+  }
+
+  closeAllHovers(htmlDivElements: HTMLDivElement[]) {
+    this.materialVisible = false;
+    this.openingVisible = false;
+    this.dimensionsVisible = false;
+    this.glazingVisible = false;
+    this.outerMaterialVisible = false;
+    this.handleVisible = false;
+    this.extrasVisible = false;
+    for (const element of htmlDivElements) {
+      element.style.maxHeight = '0';
+      element.style.transition = 'all .7s ease-in-out';
+    }
+  }
+
+  changeCheckBoxState() {
+    this.setDisabled(this.configuredFlatRoofWindow);
+  }
+
+  closeCopyLinkPopUp() {
+    this.chooseConfigNamePopup = false;
+    this.copyLinkToConfigurationPopup = false;
+  }
+
+  // DISABLE INPUT SETTER LOGIC
+  resetAllArrays(openingTypes: { option: string; disabled: boolean }[], outerMaterials: { option: string; disabled: boolean }[],
+                 outerColors: { option: string; disabled: boolean }[], outerColorFinishes: { option: string; disabled: boolean }[],
+                 glazingTypes: { option: string; disabled: boolean }[], extras: { option: string; disabled: boolean }[],
+                 handles: { option: string; disabled: boolean }[]) {
+    for (const openingType of openingTypes) {
+      openingType.disabled = null;
+    }
+    for (const outerMaterial of outerMaterials) {
+      outerMaterial.disabled = null;
+    }
+    for (const outerColor of outerColors) {
+      outerColor.disabled = null;
+    }
+    for (const outerColorFinish of outerColorFinishes) {
+      outerColorFinish.disabled = null;
+    }
+    for (const glazingType of glazingTypes) {
+      glazingType.disabled = null;
+    }
+    for (const chosenExtra of extras) {
+      chosenExtra.disabled = null;
+    }
+    for (const handle of handles) {
+      handle.disabled = null;
+    }
+  }
+
+  setDisabled(configuredFlatRoofWindow: FlatRoofWindow) {
+    this.resetAllArrays(this.openingTypes, this.outerMaterials, this.outerColors, this.outerColorFinishes,
+      this.glazingTypes, this.extrasFromFile, this.handles);
+    this.excludeOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(exclusions => {
+      const excludedOptions = [];
+      for (const configurationOption in configuredFlatRoofWindow) {
+        if (configurationOption === '_kolorTworzywZew') {
+          continue;
+        }
+        if (configurationOption === '_kolorTworzywWew') {
+          continue;
+        }
+        if (configurationOption === '_listaDodatkow') {
+          for (const chosenExtra of configuredFlatRoofWindow['_listaDodatkow']) {
+            for (const exclusionObject of exclusions) {
+              if (exclusionObject.selectedOption === chosenExtra) {
+                for (const [key, value] of Object.entries(exclusionObject)) {
+                  if (value === 'TRUE') {
+                    if (excludedOptions.indexOf(key) === -1) {
+                      excludedOptions.push(key);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        } else {
+          for (const exclusionObject of exclusions) {
+            if (exclusionObject.selectedOption === configuredFlatRoofWindow[configurationOption]) {
+              for (const [key, value] of Object.entries(exclusionObject)) {
+                if (value === 'TRUE') {
+                  if (excludedOptions.indexOf(key) === -1) {
+                    excludedOptions.push(key);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      this.setDisabledOptions(excludedOptions, this.openingTypes,
+        this.outerMaterials, this.outerColors, this.outerColorFinishes,
+        this.glazingTypes, this.extrasFromFile, this.handles);
+    });
+  }
+
+  setDisabledOptions(excludedOptions: string[], openingTypes: { option: string; disabled: boolean }[], outerMaterials: { option: string; disabled: boolean }[],
+                     outerColors: { option: string; disabled: boolean }[], outerColorFinishes: { option: string; disabled: boolean }[],
+                     glazingTypes: { option: string; disabled: boolean }[], extras: { option: string; disabled: boolean }[],
+                     handles: { option: string; disabled: boolean }[]) {
+    for (const excludedOption of excludedOptions) {
+      for (const openingType of openingTypes) {
+        if (openingType.option === excludedOption) {
+          openingType.disabled = true;
+        }
+      }
+      for (const outerMaterial of outerMaterials) {
+        if (outerMaterial.option === excludedOption) {
+          outerMaterial.disabled = true;
+        }
+      }
+      for (const outerColor of outerColors) {
+        if (outerColor.option.startsWith(excludedOption)) {
+          outerColor.disabled = true;
+        }
+      }
+      for (const outerColorFinish of outerColorFinishes) {
+        if (outerColorFinish.option === excludedOption) {
+          outerColorFinish.disabled = true;
+        }
+      }
+      for (const glazingType of glazingTypes) {
+        if (glazingType.option === excludedOption) {
+          glazingType.disabled = true;
+        }
+      }
+      for (const extra of extras) {
+        if (extra.option === excludedOption) {
+          extra.disabled = true;
+        }
+      }
+      for (const handle of handles) {
+        if (handle.option === excludedOption) {
+          handle.disabled = true;
+        }
+      }
+    }
+  }
 }
