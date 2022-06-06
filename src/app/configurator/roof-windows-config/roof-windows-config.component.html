@@ -89,7 +89,7 @@
              (click)="closeAllHovers([materialOptions, openingOptions, glazingOptions,
          coatOptions, dimensionOption, innerColorOptions, outerMaterialOptions,
          ventilationOptions, handleOptions, extrasOptions]); onExtrasHover(extrasOptions)"
-             [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.dostepneRozmiary!==null}"></a>
+             [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredWindow.listaDodatkow!==null}"></a>
         </div>
         <div class="configuration-summary__scores">
           <p>{{(this.configuredWindow.CenaDetaliczna / (cart$ | async).cart.exchange) + ((this.configuredWindow.CenaDetaliczna / (cart$ | async).cart.exchange) * ((cart$ | async).cart.vatRate))
