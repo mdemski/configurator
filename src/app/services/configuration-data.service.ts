@@ -10,10 +10,12 @@ export class ConfigurationDataService {
   private _windowModelsFilePath = '../../../assets/csv/roof-windows.csv';
   private _flashingModelsFilePath = '../../../assets/csv/flashings.csv';
   private _accessoryModelsFilePath = '../../../assets/csv/accessories.csv';
+  private _flatRoofWindowModelsFilePath = '../../../assets/csv/flat-windows.csv';
   private _glazingFilePath = '../../../assets/csv/translator-pakietow-szybowych.csv';
   private _roofWindowsExclusionsFilePath = '../../../assets/csv/roof-windows-exclusions.csv';
   private _flashingsExclusionsFilePath = '../../../assets/csv/flashings-exclusions.csv';
   private _accessoriesExclusionsFilePath = '../../../assets/csv/accessories-exclusions.csv';
+  private _flatRoofWindowsExclusionsFilePath = '../../../assets/csv/flat-windows-exclusions.csv';
 
   constructor(private csv: CsvFileReaderService) {
   }
@@ -50,6 +52,7 @@ export class ConfigurationDataService {
         const glazingTypes = [];
         const outerMaterials = [];
         const outerColorFinishes = [];
+        const outerColors = [];
         const coats = [];
         const dimensions = [];
         const extras = [];
@@ -70,6 +73,9 @@ export class ConfigurationDataService {
               innerColors.push(lines[j].split(';')[0]);
             }
             if (lines[j].split(';')[1] === 'outerColorFinish') {
+              outerColorFinishes.push(lines[j].split(';')[0]);
+            }
+            if (lines[j].split(';')[1] === 'outerColor') {
               outerColorFinishes.push(lines[j].split(';')[0]);
             }
             if (lines[j].split(';')[1] === 'outerMaterial') {
@@ -115,9 +121,7 @@ export class ConfigurationDataService {
           handleColors,
           ventilations,
           technicalInformation,
-          // TODO uzupełnić listę o dostępne kolory
-          // this.outerColor = require('../../assets/json/RalCodes.json') as [];
-          outerColor: ['Aluminium:RAL7022'],
+          outerColors,
           outerColorFinishes,
           outerMaterials
         };
@@ -369,6 +373,114 @@ export class ConfigurationDataService {
 
   fetchAllAccessoryExclusions() {
     return this.csv.getCSVData(this._accessoriesExclusionsFilePath).pipe(
+      map(data => {
+        const lines = [];
+        const linesArray = data.split('\n');
+        linesArray.forEach((e: any) => {
+          // TODO jak usunąć puste linie???
+          const row = e.replace(/[\s]+[;]+|[;]+[\s]+/g, ';').trim();
+          lines.push(row);
+        });
+        lines.slice(lines.length - 1, 1);
+        const columns = lines[0].split(';');
+        const exArray = [];
+        for (let i = 1; i < columns.length; i++) {
+          const tempExObject = {};
+          for (let j = 0; j < lines.length - 1; j++) {
+            Object.assign(tempExObject, {selectedOption: lines[i].split(';')[0]});
+            tempExObject[lines[j].split(';')[0]] = lines[j].split(';')[i];
+          }
+          exArray.push(tempExObject);
+        }
+        return exArray;
+      }));
+  }
+
+  fetchAllFlatRoofWindowsData() {
+    return this.csv.getCSVData(this._flatRoofWindowModelsFilePath)
+      .pipe(map(data => {
+        const lines = [];
+        const linesArray = data.split('\n');
+        linesArray.forEach((e: any) => {
+          // TODO jak usunąć puste linie???
+          const row = e.replace(/[\s]+[;]+|[;]+[\s]+/g, ';').trim();
+          lines.push(row);
+        });
+        lines.slice(lines.length - 1, 1);
+        const columns = lines[0].split(';');
+        // Models
+        const models = [];
+        for (let i = 3; i < columns.length; i++) {
+          const model = {
+            windowModel: lines[0].split(';')[i]
+          };
+          for (let j = 1; j < lines.length - 1; j++) {
+            model[lines[j].split(';')[0]] = lines[j].split(';')[i];
+          }
+          models.push(model);
+        }
+        // this.models = models;
+        // Fill arrays with options
+        const availableOptions = [];
+        const openingTypes = [];
+        const glazingTypes = [];
+        const outerMaterials = [];
+        const outerColors = [];
+        const outerColorFinishes = [];
+        const dimensions = [];
+        const extras = [];
+        const handles = [];
+        const technicalInformation = [];
+        for (let i = 1; i < 2; i++) {
+          for (let j = 1; j < lines.length - 1; j++) {
+            availableOptions.push(lines[j].split(';')[0]);
+            if (lines[j].split(';')[1] === 'openingType') {
+              openingTypes.push(lines[j].split(';')[0]);
+            }
+            if (lines[j].split(';')[1] === 'outerColorFinish') {
+              outerColorFinishes.push(lines[j].split(';')[0]);
+            }
+            if (lines[j].split(';')[1] === 'outerMaterial') {
+              outerMaterials.push(lines[j].split(';')[0]);
+            }
+            if (lines[j].split(';')[1] === 'outerColor') {
+              outerColors.push(lines[j].split(';')[0]);
+            }
+            if (lines[j].split(';')[1] === 'glazing') {
+              glazingTypes.push(lines[j].split(';')[0]);
+            }
+            if (lines[j].split(';')[1] === 'dimensions') {
+              dimensions.push(lines[j].split(';')[0]);
+            }
+            if (lines[j].split(';')[1] === 'extras') {
+              extras.push(lines[j].split(';')[0]);
+            }
+            if (lines[j].split(';')[1] === 'handle') {
+              handles.push(lines[j].split(';')[0]);
+            }
+            if (lines[j].split(';')[1] === 'technical') {
+              technicalInformation.push(lines[j].split(';')[0]);
+            }
+          }
+        }
+        return {
+          models,
+          availableOptions,
+          openingTypes,
+          glazingTypes,
+          dimensions,
+          extras,
+          handles,
+          technicalInformation,
+          outerColors,
+          outerColorFinishes,
+          outerMaterials
+        };
+      }));
+  }
+
+  fetchAllFlatRoofWindowExclusions() {
+    return this.csv.getCSVData(this._flatRoofWindowsExclusionsFilePath).pipe(
       map(data => {
         const lines = [];
         const linesArray = data.split('\n');

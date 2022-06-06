@@ -3,9 +3,9 @@ import {ConfigurationDataService} from '../../services/configuration-data.servic
 import {
   GetAccessoriesAvailableConfigData,
   GetAvailableGlazingsData, GetExclusionsForAccessories,
-  GetExclusionsForFlashings,
+  GetExclusionsForFlashings, GetExclusionsForFlatRoofWindows,
   GetExclusionsForRoofWindows,
-  GetFlashingsAvailableConfigData,
+  GetFlashingsAvailableConfigData, GetFlatRoofWindowsAvailableConfigData,
   GetRoofWindowsAvailableConfigData
 } from './available-config-data.actions';
 import {tap} from 'rxjs/operators';
@@ -255,6 +255,32 @@ export class AvailableConfigDataState {
             accessoryExclusionsLoaded: true
           });
         }));
+  }
+
+  @Action(GetFlatRoofWindowsAvailableConfigData)
+  getFlatRoofWindowsConfigData(ctx: StateContext<AvailableConfigDataStateModel>) {
+    return this.configData.fetchAllFlatRoofWindowsData().pipe(
+      tap(result => {
+        const state = ctx.getState();
+        ctx.setState({
+          ...state,
+          configFlatRoofWindows: result,
+          flatWindowConfigLoaded: true
+        });
+      }));
+  }
+
+  @Action(GetExclusionsForFlatRoofWindows)
+  getExclusionsFlatRoofWindows(ctx: StateContext<AvailableConfigDataStateModel>) {
+    return this.configData.fetchAllFlatRoofWindowExclusions().pipe(
+      tap((result: any[]) => {
+        const state = ctx.getState();
+        ctx.setState({
+          ...state,
+          flatRoofWindowsExclusions: result,
+         flatWindowExclusionsLoaded: true
+        });
+      }));
   }
 
   @Action(GetAvailableGlazingsData)
