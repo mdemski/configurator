@@ -19,10 +19,8 @@ import {filter, map, pairwise, startWith, takeUntil, tap} from 'rxjs/operators';
 import {FlatConfig} from '../../models/flat-config';
 import {FlatValueSetterService} from '../../services/flat-value-setter.service';
 import {
-  AddFlatRoofConfiguration,
-  AddGlobalConfiguration,
-  AddRoofWindowConfiguration, UpdateFlatRoofConfiguration, UpdateFlatRoofFormByFormName,
-  UpdateRoofWindowConfiguration, UpdateRoofWindowFormByFormName
+  AddFlatRoofConfiguration, AddGlobalConfiguration,
+  UpdateFlatRoofConfiguration, UpdateFlatRoofFormByFormName,
 } from '../../store/configuration/configuration.actions';
 
 @Component({
@@ -133,7 +131,7 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
         this.glazingTypes = this.objectMaker(this.configOptions.glazingTypes);
         this.openingTypes = this.objectMaker(this.configOptions.openingTypes);
         this.outerMaterials = this.objectMaker(this.configOptions.outerMaterials);
-        this.outerColors = this.objectMaker(this.configOptions.outerColor);
+        this.outerColors = this.objectMaker(this.configOptions.outerColors);
         this.outerColorFinishes = this.objectMaker(this.configOptions.outerColorFinishes);
         this.dimensions = FlatRoofWindowsConfigComponent.setDimensions(this.configOptions.dimensions);
         this.handles = this.objectMaker(this.configOptions.handles);
@@ -187,8 +185,8 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
           this.configuredFlatRoofWindow = flatRoofWindowToReconfiguration;
           this.form = this.fb.group({
             openingType: new FormControl(this.configuredFlatRoofWindow.otwieranie, [], [this.validateOpenings.bind(this)]),
-            option: new FormControl('LED'), // LED option
-            glazing: new FormControl(this.configuredFlatRoofWindow.glazingToCalculation, [], [this.validateGlazing.bind(this)]),
+            option: new FormControl(null), // LED option
+            glazing: new FormControl(this.configuredFlatRoofWindow.pakietSzybowy, [], [this.validateGlazing.bind(this)]),
             width: new FormControl(this.configuredFlatRoofWindow.szerokosc),
             height: new FormControl(this.configuredFlatRoofWindow.wysokosc),
             outer: new FormGroup({
@@ -268,7 +266,7 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
       takeUntil(this.isDestroyed$),
       startWith([]),
       pairwise(),
-      filter(([prevForm, form]: [any, any]) => form.material !== null),
+      filter(([prevForm, form]: [any, any]) => form.openingType !== null),
       tap(() => {
         const checkboxExtraControl = this.extras as FormArray;
         this.subscription = checkboxExtraControl.valueChanges.subscribe(() => {
@@ -277,7 +275,7 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
         });
       }),
       map(([prevForm, form]: [any, any]) => {
-        this.setConfiguredValues(form[1]);
+        this.setConfiguredValues(form);
       })).subscribe();
   }
 
@@ -328,6 +326,7 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.showWidthMessage = this.standardWidths.includes(form.width);
     this.showHeightMessage = this.standardHeights.includes(form.height);
     this.setDisabled(this.configuredFlatRoofWindow);
+    console.log(this.configuredFlatRoofWindow.kod);
   }
 
   priceCalculation(configuredFlatRoofWindow: FlatRoofWindow) {
@@ -887,5 +886,16 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
         }
       }
     }
+  }
+
+  navigateToShop() {
+    const windowInfo = new Subject();
+    const windowInfoChange$ = windowInfo.asObservable();
+    windowInfo.next([
+      this.configuredFlatRoofWindow.model,
+      this.configuredFlatRoofWindow.pakietSzybowy,
+      this.configuredFlatRoofWindow.szerokosc,
+      this.configuredFlatRoofWindow.wysokosc]);
+    this.router.navigate(['/' + this.shopFlatRoofWindowLink]);
   }
 }

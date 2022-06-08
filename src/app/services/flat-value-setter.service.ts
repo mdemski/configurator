@@ -11,7 +11,7 @@ export class FlatValueSetterService {
 
   buildWindowModel(model: string, pakietSzybowy: string, szerokosc: number, wysokosc: number) {
     const modelName = model.split(':')[1];
-    const glazingName = pakietSzybowy.split(':')[1];
+    const glazingName = pakietSzybowy === null ? '' : pakietSzybowy.split(':')[1];
     return String(modelName + ' ' + glazingName + ' ' + szerokosc + 'x' + wysokosc);
   }
 
@@ -20,17 +20,21 @@ export class FlatValueSetterService {
   }
 
   getNumberOfGlasses(window: FlatRoofWindow) {
-    if (window.pakietSzybowy.split(':')[1].toLowerCase().startsWith('a')) {
+    if (!window.pakietSzybowy) {
       return 2;
     } else {
-      return 3;
+      if (window.pakietSzybowy.split(':')[1].toLowerCase().startsWith('a')) {
+        return 2;
+      } else {
+        return 3;
+      }
     }
   }
 
   getUwAndUgValues(window: FlatRoofWindow) {
     let windowUG = 1.0;
     let windowUW = 0.99;
-    const pakietTemp = window.pakietSzybowy.toLowerCase().split(':')[1];
+    const pakietTemp = window.pakietSzybowy === null ? '' : window.pakietSzybowy.split(':')[1];
     if (pakietTemp.startsWith('a')) {
       windowUG = 1.0;
       if (window.model.split(':')[1] === 'PGX' || window.model.split(':')[1] === 'PGX LED') {
@@ -53,7 +57,7 @@ export class FlatValueSetterService {
     let flatRoofWindowModel = '';
     switch (openingType) {
       case 'NieotwieraneFIX':
-        if (option === 'LED') {
+        if (option) {
           flatRoofWindowModel = 'DachPłaski:PGX LED';
         } else {
           flatRoofWindowModel = 'DachPłaski:PGX';
@@ -88,11 +92,11 @@ export class FlatValueSetterService {
   generateWindowCode(otwieranie: string, option: string, pakietSzybowy: string, stolarkaKolor: string,
                      oblachowanieMaterial: string, oblachowanieKolor: string, oblachowanieFinisz: string, szerokosc: number, wysokosc: number) {
     let model = String(this.getWindowModel(otwieranie, option).split(':')[1] + '--');
-    if (model === 'PGX LED') {
+    if (model === 'PGX LED--') {
       model = 'PGX-L';
     }
 
-    const glazingCode = pakietSzybowy.split(':')[1];
+    const glazingCode = pakietSzybowy === null ? '' : pakietSzybowy.split(':')[1];
 
     let materialCode = '';
     if (stolarkaKolor === 'PVC:Biały9016') {
@@ -115,15 +119,14 @@ export class FlatValueSetterService {
     }
 
     let outerColorCode = '';
-    if (oblachowanieKolor.split(':')[0] === 'Aluminium') {
-      outerColorCode = oblachowanieKolor.substring(oblachowanieKolor.length - 4);
-    }
-    if (oblachowanieKolor === 'Miedź:Natur') {
+    if (oblachowanieKolor === 'Miedź:Natur' || oblachowanieKolor === 'TytanCynk:Natur') {
       outerColorCode = '0000';
+    } else {
+      if (oblachowanieKolor !== null) {
+        outerColorCode = oblachowanieKolor.substring(oblachowanieKolor.length - 4);
+      }
     }
-    if (oblachowanieKolor === 'TytanCynk:Natur') {
-      outerColorCode = '0000';
-    }
+
 
     let outerFinishCode = '';
     switch (oblachowanieFinisz) {
