@@ -158,7 +158,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         this.openingTypes = this.objectMaker(this.configOptions.openingTypes);
         this.innerColors = this.objectMaker(this.configOptions.innerColors);
         this.outerMaterials = this.objectMaker(this.configOptions.outerMaterials);
-        this.outerColors = this.objectMaker(this.configOptions.outerColor);
+        this.outerColors = this.objectMaker(this.configOptions.outerColors);
         this.outerColorFinishes = this.objectMaker(this.configOptions.outerColorFinishes);
         this.dimensions = RoofWindowsConfigComponent.setDimensions(this.configOptions.dimensions);
         this.ventilations = this.objectMaker(this.configOptions.ventilations);

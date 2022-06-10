@@ -76,7 +76,7 @@ export class ConfigurationDataService {
               outerColorFinishes.push(lines[j].split(';')[0]);
             }
             if (lines[j].split(';')[1] === 'outerColor') {
-              outerColorFinishes.push(lines[j].split(';')[0]);
+              outerColors.push(lines[j].split(';')[0]);
             }
             if (lines[j].split(';')[1] === 'outerMaterial') {
               outerMaterials.push(lines[j].split(';')[0]);
