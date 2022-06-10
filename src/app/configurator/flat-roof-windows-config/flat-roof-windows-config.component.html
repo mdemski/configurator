@@ -221,6 +221,7 @@
                        [attr.disabled]="outerColor.disabled">
                 <label for="{{outerColor.option}}"
                        [ngClass]="{'label--disabled' : outerColor.disabled}"
+                       [ngStyle]="setBackgroundImage(outerColor.option)"
                        class="configure-form__group__options--option__label">{{builtNameForTranslation(outerColor.option) | translate}}</label>
               </div>
               <label for="outerColorFinish"
@@ -358,7 +359,7 @@
               </div>
             </div>
           </div>
-          <!-- TODO dokleić do przycisku i usunąć tempConfigWindow [disabled]="!windowConfigurationForm.valid"-->
+          <!-- TODO dokleić do przycisku i usunąć tempConfigWindow [disabled]="!form.valid"-->
           <button class="btn btn--red configure-form__submit"
 
                   type="submit">{{ 'ROOF-WINDOWS-CONFIG.submit' | translate}}

@@ -383,6 +383,7 @@
                        [attr.disabled]="outerColor.disabled">
                 <label for="{{outerColor.option}}"
                        [ngClass]="{'label--disabled' : outerColor.disabled}"
+                       [ngStyle]="setBackgroundImage(outerColor.option)"
                        class="configure-form__group__options--option__label">{{builtNameForTranslation(outerColor.option) | translate}}</label>
               </div>
               <label for="outerColorFinish"
