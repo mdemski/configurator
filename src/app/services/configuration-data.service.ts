@@ -222,6 +222,7 @@ export class ConfigurationDataService {
         const verticalSpacings = [];
         const horizontalSpacings = [];
         const outerMaterials = [];
+        const outerColors = [];
         const outerColorFinishes = [];
         const dimensions = [];
         const apronTypes = [];
@@ -247,6 +248,9 @@ export class ConfigurationDataService {
             if (lines[j].split(';')[1] === 'outerMaterial') {
               outerMaterials.push(lines[j].split(';')[0]);
             }
+            if (lines[j].split(';')[1] === 'outerColor') {
+              outerColors.push(lines[j].split(';')[0]);
+            }
             if (lines[j].split(';')[1] === 'apronType') {
               apronTypes.push(lines[j].split(';')[0]);
             }
@@ -268,9 +272,7 @@ export class ConfigurationDataService {
           dimensions,
           apronTypes,
           technicalInformation,
-          // TODO uzupełnić listę o dostępne kolory
-          // this.outerColor = require('../../assets/json/RalCodes.json') as [];
-          outerColor: ['Aluminium:RAL7022'],
+          outerColors,
           outerColorFinishes,
           outerMaterials
         };

@@ -192,7 +192,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
         this.dimensionsFromFile = FlashingsConfigComponent.setDimensions(this.configOptions.dimensions);
         this.apronTypes = FlashingsConfigComponent.objectsMaker(this.configOptions.apronTypes);
         this.outerMaterials = FlashingsConfigComponent.objectsMaker(this.configOptions.outerMaterials);
-        this.outerColors = FlashingsConfigComponent.objectsMaker(this.configOptions.outerColor);
+        this.outerColors = FlashingsConfigComponent.objectsMaker(this.configOptions.outerColors);
         this.outerColorFinishes = FlashingsConfigComponent.objectsMaker(this.configOptions.outerColorFinishes);
         this.formName = this.routerParams.state.params.formName;
         this.flashingCode = this.routerParams.state.params.productCode;
