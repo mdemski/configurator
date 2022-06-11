@@ -35,7 +35,7 @@ export class OrderService {
     50000, new Address('Lolek', 'Bolek', '123456789', 'Felkowa', '3/1', '10-150', 'Lewin', 'Polzka'),
     'DTHXX', 10000000, 11000000, 10, 20, 30, 40, 50, 0, [], [], null);
   userToTest = new User('34t435345235', 'test@test.pl', '1234', '1234', 'User Test', 'user', true, 'asgasgagd-agwegah-wtwet2352af',
-    0, 0, 0, 0, 0, 0, 0, '11122233344', '132353634lj3453', null, 'www', 'pl', new Date(), new Date());
+    0, 0, 0, 0, 0, 0, 0, '11122233344', '132353634lj3453', null, 'www', 'pl', new Date(), new Date(), []);
 
   constructor(private http: HttpClient) {
   }
