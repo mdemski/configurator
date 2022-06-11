@@ -137,7 +137,8 @@ userRoute.post('/register', function (req, res, next) {
     activationLink: req.body._activationLink,
     preferredLanguage: req.body._preferredLanguage,
     created: req.body._created,
-    lastUpdate: req.body._lastUpdate
+    lastUpdate: req.body._lastUpdate,
+    favoriteProducts: req.body._favoriteProducts
   });
 
   try {
@@ -177,7 +178,8 @@ userRoute.route('/update/:userId').put(((req, res, next) => {
       companyNip: req.body.companyNip,
       mainAddressId: req.body.address._id,
       preferredLanguage: req.body.preferredLanguage,
-      lastUpdate: req.body.lastUpdate
+      lastUpdate: req.body.lastUpdate,
+      favoriteProducts: req.body.favoriteProducts
     }
   }, {new: true}, (error, data) => {
     if (error) {

@@ -66,6 +66,10 @@ let User = new Schema({
   lastUpdate: {
     type: Date
   },
+  favoriteProducts: {
+    type: mongoose.Schema.Types.Array,
+    ref: "Accessory" || "Flashing" || "Flat" || "RoofWindowSkylight" || "Vertical"
+  }
 }, {
   collection: 'users'
 })
