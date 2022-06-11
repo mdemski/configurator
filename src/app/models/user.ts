@@ -1,3 +1,9 @@
+import {FlatRoofWindow} from './flat-roof-window';
+import {Accessory} from './accessory';
+import {RoofWindowSkylight} from './roof-window-skylight';
+import {Flashing} from './flashing';
+import {VerticalWindow} from './vertical-window';
+
 export class User {
   public _id?: string;
   private _email: string;
@@ -21,9 +27,10 @@ export class User {
   private _preferredLanguage: string;
   private _created: Date;
   private _lastUpdate: Date;
+  private _favoriteProducts: (RoofWindowSkylight | Flashing | FlatRoofWindow | Accessory | VerticalWindow)[];
 
   // tslint:disable-next-line:max-line-length
-  constructor(id: string, email: string, password: string, rePassword: string, name: string, role: string, activated: boolean, uuid: string, basicDiscount: number, roofWindowsDiscount: number, skylightsDiscount: number, flashingsDiscount: number, accessoriesDiscount: number, flatRoofWindowsDiscount: number, verticalWindowsDiscount: number, companyNip: string, mainAddressId: string, addressToSendId: string, activationLink: string, preferredLanguage: string, created: Date, lastUpdate: Date) {
+  constructor(id: string, email: string, password: string, rePassword: string, name: string, role: string, activated: boolean, uuid: string, basicDiscount: number, roofWindowsDiscount: number, skylightsDiscount: number, flashingsDiscount: number, accessoriesDiscount: number, flatRoofWindowsDiscount: number, verticalWindowsDiscount: number, companyNip: string, mainAddressId: string, addressToSendId: string, activationLink: string, preferredLanguage: string, created: Date, lastUpdate: Date, favoriteProducts: (RoofWindowSkylight | Flashing | FlatRoofWindow | Accessory | VerticalWindow)[]) {
     this._id = id;
     this._email = email;
     this._password = password;
@@ -46,6 +53,7 @@ export class User {
     this._preferredLanguage = preferredLanguage;
     this._created = created;
     this._lastUpdate = lastUpdate;
+    this._favoriteProducts = favoriteProducts;
   }
 
   get id(): string {
@@ -222,5 +230,13 @@ export class User {
 
   set lastUpdate(value: Date) {
     this._lastUpdate = value;
+  }
+
+  get favoriteProducts(): (RoofWindowSkylight | Flashing | FlatRoofWindow | Accessory | VerticalWindow)[] {
+    return this._favoriteProducts;
+  }
+
+  set favoriteProducts(value: (RoofWindowSkylight | Flashing | FlatRoofWindow | Accessory | VerticalWindow)[]) {
+    this._favoriteProducts = value;
   }
 }

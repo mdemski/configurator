@@ -3,8 +3,9 @@ import {Company} from '../../models/company';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {CrudService} from '../../services/crud-service';
 import {
+  AddFavoriteProductsForUser,
   DeleteUser,
-  GetUserData,
+  GetUserData, RemoveFavoriteProductsForUser,
   SetCompanyUserForUser,
   SetUserMainAddress,
   SetUserMainAndToSendSameAddress,
@@ -20,6 +21,11 @@ import cloneDeep from 'lodash/cloneDeep';
 import {of} from 'rxjs';
 import {patch} from '@ngxs/store/operators';
 import { Injectable } from '@angular/core';
+import {RoofWindowSkylight} from '../../models/roof-window-skylight';
+import {Flashing} from '../../models/flashing';
+import {FlatRoofWindow} from '../../models/flat-roof-window';
+import {Accessory} from '../../models/accessory';
+import {VerticalWindow} from '../../models/vertical-window';
 
 export interface UserStateModel {
   _id: string;
@@ -37,6 +43,7 @@ export interface UserStateModel {
   company: Company;
   address: Address;
   preferredLanguage: string;
+  favoriteProducts: (RoofWindowSkylight | Flashing | FlatRoofWindow | Accessory | VerticalWindow)[];
 }
 
 @State<UserStateModel>({
@@ -56,7 +63,8 @@ export interface UserStateModel {
     companyNip: '',
     company: null,
     address: null,
-    preferredLanguage: ''
+    preferredLanguage: '',
+    favoriteProducts: []
   }
 })
 @Injectable()
@@ -110,6 +118,7 @@ export class UserState {
           updateState.address = address;
           updateState.company = company;
           updateState.preferredLanguage = user.preferredLanguage;
+          updateState.favoriteProducts = user.favoriteProducts;
           ctx.setState({
             ...state,
             _id: updateState._id,
@@ -126,7 +135,8 @@ export class UserState {
             companyNip: updateState.companyNip,
             company: updateState.company,
             address: updateState.address,
-            preferredLanguage: updateState.preferredLanguage
+            preferredLanguage: updateState.preferredLanguage,
+            favoriteProducts: updateState.favoriteProducts
           });
         }));
     }
@@ -149,7 +159,8 @@ export class UserState {
           flatRoofWindowsDiscount: updatedUser.flatRoofWindowsDiscount,
           verticalWindowsDiscount: updatedUser.verticalWindowsDiscount,
           companyNip: updatedUser.companyNip,
-          preferredLanguage: updatedUser.preferredLanguage
+          preferredLanguage: updatedUser.preferredLanguage,
+          favoriteProducts: updatedUser.favoriteProducts
         }));
     }));
   }
@@ -160,6 +171,26 @@ export class UserState {
       ctx.setState(
         patch({
           basicDiscount: result.basicDiscount
+        }));
+    }));
+  }
+
+  @Action(AddFavoriteProductsForUser)
+  addFavoriteProductsForUser(ctx: StateContext<UserStateModel>, {user, favoriteProducts}: AddFavoriteProductsForUser) {
+    return this.crud.addFavoriteProductsForUser(user, favoriteProducts).pipe(tap((result: User) => {
+      ctx.setState(
+        patch({
+          favoriteProducts: result.favoriteProducts
+        }));
+    }));
+  }
+
+  @Action(RemoveFavoriteProductsForUser)
+  removeFavoriteProductsForUser(ctx: StateContext<UserStateModel>, {user, favoriteProduct}: RemoveFavoriteProductsForUser) {
+    return this.crud.removeFavoriteProductForUser(user, favoriteProduct).pipe(tap((result: User) => {
+      ctx.setState(
+        patch({
+          favoriteProducts: result.favoriteProducts
         }));
     }));
   }
@@ -238,7 +269,8 @@ export class UserState {
           companyNip: '',
           company: null,
           address: null,
-          preferredLanguage: ''
+          preferredLanguage: '',
+          favoriteProducts: []
         });
     }));
   }

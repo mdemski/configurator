@@ -65,6 +65,20 @@ export class SetCompanyUserForUser {
   }
 }
 
+export class AddFavoriteProductsForUser {
+  static type = '[User] Add Favorite Products For User';
+
+  constructor(public user: User, public favoriteProducts: any[]) {
+  }
+}
+
+export class RemoveFavoriteProductsForUser {
+  static type = '[User] Remove Favorite Product For User';
+
+  constructor(public user: User, public favoriteProduct: any) {
+  }
+}
+
 export class DeleteUser {
   static type = '[User] Delete User From Database';
 

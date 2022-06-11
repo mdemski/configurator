@@ -122,7 +122,7 @@ export class CrudService {
     const url = `${this.usersBaseUri}/register`;
     const userToCreate: User = new User('', user.email, user.password, user.rePassword, user.name, user.role, false, user.uuid,
       user.basicDiscount, user.roofWindowsDiscount, user.skylightsDiscount, user.flashingsDiscount, user.accessoriesDiscount, user.flatRoofWindowsDiscount,
-      user.verticalWindowsDiscount, user.companyNip, user.mainAddressId, user.addressToSendId, user.activationLink, user.preferredLanguage, new Date(), new Date());
+      user.verticalWindowsDiscount, user.companyNip, user.mainAddressId, user.addressToSendId, user.activationLink, user.preferredLanguage, new Date(), new Date(), []);
     return this.http.post(url, userToCreate).pipe(catchError(err => err));
   }
 
@@ -163,6 +163,33 @@ export class CrudService {
         user.basicDiscount = discount;
       }
     });
+    user.lastUpdate = new Date();
+    return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
+  }
+
+  addFavoriteProductsForUser(user: User, products: any[]) {
+    const url = `${this.usersBaseUri}/update/${user._id}`;
+    for (const product of products) {
+      user.favoriteProducts.push(product);
+    }
+    user.favoriteProducts.filter((value, index, self) => self.indexOf(value) === index).filter(value => value !== null);
+    user.lastUpdate = new Date();
+    return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
+  }
+
+  removeFavoriteProductForUser(user: User, product: any) {
+    const url = `${this.usersBaseUri}/update/${user._id}`;
+    for (let favoriteProduct of user.favoriteProducts) {
+      // @ts-ignore
+      if (favoriteProduct._product._kod === product._kod) {
+        const index = user.favoriteProducts.indexOf(favoriteProduct);
+        if (index > -1) {
+          user.favoriteProducts.splice(index, 1);
+        }
+        favoriteProduct = null;
+      }
+    }
+    user.favoriteProducts.filter((value, index, self) => self.indexOf(value) === index).filter(value => value !== null);
     user.lastUpdate = new Date();
     return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
   }
