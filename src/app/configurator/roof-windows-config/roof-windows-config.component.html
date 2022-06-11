@@ -473,6 +473,7 @@
                 <label for="{{handleColor.option}}"
                        [ngClass]="{'label--disabled' : handleColor.disabled}"
                        class="configure-form__group__options--option__label"
+                       [ngStyle]="setBackgroundImage(handleColor.option)"
                 >{{builtNameForTranslation(handleColor.option) | translate}}</label>
               </div>
               <div class="configure-form__navigation-buttons">

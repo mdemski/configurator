@@ -766,6 +766,12 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
     } else {
       fileName = twoParts[1];
     }
+    if (option === 'Miedź:Natur') {
+      fileName = 'Miedź-Kolor';
+    }
+    if (option === 'TytanCynk:Natur') {
+      fileName = 'TytanCynk-Kolor';
+    }
     return {
       ['background-image']: 'url("assets/img/configurator/flashing_configurator/central_options_pictures/' + fileName + '.png")',
       ['background-size']: 'contain',

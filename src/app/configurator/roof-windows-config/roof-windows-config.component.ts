@@ -839,6 +839,12 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         fileName = twoParts[1];
       }
     }
+    if (value === 'Miedź:Natur') {
+      fileName = 'Miedź-Kolor';
+    }
+    if (value === 'TytanCynk:Natur') {
+      fileName = 'TytanCynk-Kolor';
+    }
     return {
       ['background-image']: 'url("assets/img/configurator/window_configurator/central_options_pictures/' + fileName + '.png")',
       ['background-size']: 'contain',
