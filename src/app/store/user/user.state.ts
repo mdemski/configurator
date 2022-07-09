@@ -19,7 +19,7 @@ import {filter, map, switchMap, tap} from 'rxjs/operators';
 import {User} from '../../models/user';
 import cloneDeep from 'lodash/cloneDeep';
 import {of} from 'rxjs';
-import {patch} from '@ngxs/store/operators';
+import {append, patch, removeItem} from '@ngxs/store/operators';
 import { Injectable } from '@angular/core';
 import {RoofWindowSkylight} from '../../models/roof-window-skylight';
 import {Flashing} from '../../models/flashing';
@@ -178,6 +178,7 @@ export class UserState {
   @Action(AddFavoriteProductsForUser)
   addFavoriteProductsForUser(ctx: StateContext<UserStateModel>, {user, favoriteProducts}: AddFavoriteProductsForUser) {
     return this.crud.addFavoriteProductsForUser(user, favoriteProducts).pipe(tap((result: User) => {
+      console.log(result);
       ctx.setState(
         patch({
           favoriteProducts: result.favoriteProducts
@@ -190,7 +191,7 @@ export class UserState {
     return this.crud.removeFavoriteProductForUser(user, favoriteProduct).pipe(tap((result: User) => {
       ctx.setState(
         patch({
-          favoriteProducts: result.favoriteProducts
+          favoriteProducts: removeItem(favoriteProduct)
         }));
     }));
   }

@@ -761,6 +761,8 @@
     "actualCurrency": "Aktualna waluta",
     "actualVATRate": "Aktualna stawka VAT",
     "changeCurrency": "Wybierz inną walutę",
+    "favoriteProducts": "Ulubione produkty",
+    "addToCart": "Dodaj do koszyka",
     "logout": "Wyloguj"
   },
   "MY-ACCOUNT": {

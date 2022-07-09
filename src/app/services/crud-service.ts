@@ -169,28 +169,29 @@ export class CrudService {
 
   addFavoriteProductsForUser(user: User, products: any[]) {
     const url = `${this.usersBaseUri}/update/${user._id}`;
+    // user.favoriteProducts.filter((value, index, self) => self.indexOf(value) === index).filter(value => value !== null);
     for (const product of products) {
-      user.favoriteProducts.push(product);
+      user.favoriteProducts = [...user.favoriteProducts, product];
     }
-    user.favoriteProducts.filter((value, index, self) => self.indexOf(value) === index).filter(value => value !== null);
-    user.lastUpdate = new Date();
+    // user.lastUpdate = new Date();
     return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
   }
 
   removeFavoriteProductForUser(user: User, product: any) {
     const url = `${this.usersBaseUri}/update/${user._id}`;
-    for (let favoriteProduct of user.favoriteProducts) {
-      // @ts-ignore
-      if (favoriteProduct._product._kod === product._kod) {
-        const index = user.favoriteProducts.indexOf(favoriteProduct);
-        if (index > -1) {
-          user.favoriteProducts.splice(index, 1);
-        }
-        favoriteProduct = null;
-      }
-    }
-    user.favoriteProducts.filter((value, index, self) => self.indexOf(value) === index).filter(value => value !== null);
-    user.lastUpdate = new Date();
+    // for (let favoriteProduct of user.favoriteProducts) {
+    //   console.log(favoriteProduct);
+    //   @ts-ignore
+    //   if (favoriteProduct._kod === product.kod) {
+    //     const index = user.favoriteProducts.indexOf(favoriteProduct);
+    //     if (index > -1) {
+    //       user.favoriteProducts.splice(index, 1);
+    //     }
+    //     favoriteProduct = null;
+    //   }
+    // }
+    // user.favoriteProducts.filter((value, index, self) => self.indexOf(value) === index).filter(value => value !== null);
+    // user.lastUpdate = new Date();
     return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
   }
 
