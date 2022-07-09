@@ -33,6 +33,7 @@ import {CartState} from './store/cart/cart.state';
 import {CartGuard} from './store/cart/cart.guard';
 import {AuthService} from './services/auth.service';
 import {MyAccountModule} from './my-account/my-account.module';
+import {SwiperModule} from 'swiper/angular';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -76,6 +77,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot(),
     NgxsRouterPluginModule.forRoot(),
+    SwiperModule,
     AppRoutingModule,
     MyAccountModule
   ],
