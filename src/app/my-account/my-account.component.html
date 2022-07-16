@@ -142,15 +142,13 @@
                                     product._grupaAsortymentowa === 'OknoKolankowe' || product._grupaAsortymentowa === 'OknoZintegrowane'"
                            routerLink="../{{ 'LINK.shopRoofWindows' | translate}}/{{product._kod}}"
                            class="product-title">
-                          {{product._model.split(':')[1]}} {{product._pakietSzybowy.split(':')[1]}} {{product._szerokosc}}
-                          x{{product._wysokosc}}
+                          {{product._model.split(':')[1]}} {{product._pakietSzybowy.split(':')[1]}} {{product._szerokosc}}x{{product._wysokosc}}
                         </a>
 
                         <a *ngIf="product._grupaAsortymentowa === 'DachPłaski'"
                            routerLink="../{{ 'LINK.shopFlatRoofWindows' | translate}}/{{product._kod}}"
                            class="product-title">
-                          {{product._model.split(':')[1]}} {{product._pakietSzybowy.split(':')[1]}} {{product._szerokosc}}
-                          x{{product._wysokosc}}
+                          {{product._model.split(':')[1]}} {{product._pakietSzybowy.split(':')[1]}} {{product._szerokosc}}x{{product._wysokosc}}
                         </a>
 
                         <a *ngIf="product._grupaAsortymentowa === 'WyłazDachowy'"
