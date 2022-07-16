@@ -4,6 +4,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {CrudService} from '../../services/crud-service';
 import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
+import {Store} from '@ngxs/store';
+import {ActivateUser} from '../../store/user/user.actions';
 
 @Component({
   selector: 'app-register-confirmation-page',
@@ -21,6 +23,7 @@ export class RegisterConfirmationPageComponent implements OnInit, OnDestroy {
 
   constructor(public translate: TranslateService,
               private crud: CrudService,
+              private store: Store,
               private router: Router,
               private route: ActivatedRoute) {
     translate.addLangs(['pl', 'en', 'fr', 'de']);
@@ -42,9 +45,7 @@ export class RegisterConfirmationPageComponent implements OnInit, OnDestroy {
         } else {
           if (this.uuid === user.uuid) {
             this.verifySuccess = true;
-            user.activated = true;
-            user.lastUpdate = new Date();
-            this.crud.updateUserByMongoId(user).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+            this.store.dispatch(new ActivateUser(user)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
             setTimeout(() => {
               this.router.navigate([this.loginPage]);
             }, 5000);

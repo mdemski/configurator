@@ -126,12 +126,8 @@ export class CrudService {
     return this.http.post(url, userToCreate).pipe(catchError(err => err));
   }
 
-  activateUser(user: User, link: string) {
+  activateUser(user: User) {
     const url = `${this.usersBaseUri}/update/${user._id}`;
-    if (user.activationLink === link) {
-      user.activated = true;
-      user.lastUpdate = new Date();
-    }
     return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
   }
 
@@ -147,10 +143,10 @@ export class CrudService {
 
   updateUserByMongoId(user: User) {
     const url = `${this.usersBaseUri}/update/${user._id}`;
-    user.lastUpdate = new Date();
     return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
   }
 
+  // TODO czy to zadziała?
   setDiscountForIndividualUser(user: User, discount: number, adminPassword: string | null, code: string | null) {
     const url = `${this.usersBaseUri}/update/${user._id}`;
     if (adminPassword) {
@@ -163,35 +159,16 @@ export class CrudService {
         user.basicDiscount = discount;
       }
     });
-    user.lastUpdate = new Date();
     return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
   }
 
   addFavoriteProductsForUser(user: User, products: any[]) {
     const url = `${this.usersBaseUri}/update/${user._id}`;
-    // user.favoriteProducts.filter((value, index, self) => self.indexOf(value) === index).filter(value => value !== null);
-    for (const product of products) {
-      user.favoriteProducts = [...user.favoriteProducts, product];
-    }
-    // user.lastUpdate = new Date();
     return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
   }
 
   removeFavoriteProductForUser(user: User, product: any) {
     const url = `${this.usersBaseUri}/update/${user._id}`;
-    // for (let favoriteProduct of user.favoriteProducts) {
-    //   console.log(favoriteProduct);
-    //   @ts-ignore
-    //   if (favoriteProduct._kod === product.kod) {
-    //     const index = user.favoriteProducts.indexOf(favoriteProduct);
-    //     if (index > -1) {
-    //       user.favoriteProducts.splice(index, 1);
-    //     }
-    //     favoriteProduct = null;
-    //   }
-    // }
-    // user.favoriteProducts.filter((value, index, self) => self.indexOf(value) === index).filter(value => value !== null);
-    // user.lastUpdate = new Date();
     return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
   }
 
