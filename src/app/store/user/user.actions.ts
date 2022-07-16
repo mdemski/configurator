@@ -16,6 +16,13 @@ export class UpdateUserData {
   }
 }
 
+export class ActivateUser {
+  static type = '[User] Set User Active';
+
+  constructor(public user: User) {
+  }
+}
+
 export class UpdateDiscountForUser {
   static type = '[User] Update User Discount';
 

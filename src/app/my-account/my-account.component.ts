@@ -34,6 +34,7 @@ import SwiperCore, {
   Controller
 } from 'swiper';
 import {SwiperComponent} from 'swiper/angular';
+import {AddFavoriteProductsForUser, RemoveFavoriteProductsForUser} from '../store/user/user.actions';
 // install Swiper components
 SwiperCore.use([ Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay, Controller, Thumbs]);
 
@@ -96,7 +97,6 @@ export class MyAccountComponent implements OnInit, OnDestroy, AfterContentChecke
   activeComplaints = false;
   currentUser: {email: string, userName: string, isLogged: boolean};
   showDiscount = false;
-  virtualSlides = Array.from({ length: 30 }).map((el, index) => `Slide ${index + 1}`);
 
   constructor(private authService: AuthService,
               private store: Store,
@@ -106,22 +106,19 @@ export class MyAccountComponent implements OnInit, OnDestroy, AfterContentChecke
               private crud: CrudService) {
     this.currencies = Object.keys(exchange);
     this.rates = Object.values(vatRates);
-    this.user$.pipe(takeUntil(this.isDestroyed$)).pipe(take(2)).subscribe(user => {
-      // console.log(user);
-      // this.store.dispatch(new AddFavoriteProductsForUser(user, this.db.getAllRoofWindowsToShopList())).subscribe(() => console.log('bezbłędnie'), err => console.log(err));
-    });
     this.currentUser$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.currentUser = user.currentUser);
     this.userOrders$ = this.orderService.getUserOrders().pipe(takeUntil(this.isDestroyed$));
     this.userTask$ = this.taskService.getUserTasks().pipe(takeUntil(this.isDestroyed$), map((tasks: Task[]) => tasks.filter(task => task.status  === 'Aktywne')));
   }
 
   ngOnInit(): void {
-    console.log(this.virtualSlides);
-    // this.store.dispatch()
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe((data) => {
       this.currency$.next(data.cart.currency);
       this.vatRate$.next(data.cart.vatRate);
       this.loading = false;
+    });
+    this.user$.pipe(takeUntil(this.isDestroyed$)).pipe(take(2)).subscribe(user => {
+      this.store.dispatch(new RemoveFavoriteProductsForUser(user, this.db.getAllRoofWindowsToShopList()[1]));
     });
   }
   // tslint:disable-next-line:component-selector

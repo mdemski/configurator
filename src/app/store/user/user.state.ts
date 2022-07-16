@@ -3,6 +3,7 @@ import {Company} from '../../models/company';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {CrudService} from '../../services/crud-service';
 import {
+  ActivateUser,
   AddFavoriteProductsForUser,
   DeleteUser,
   GetUserData, RemoveFavoriteProductsForUser,
@@ -20,7 +21,7 @@ import {User} from '../../models/user';
 import cloneDeep from 'lodash/cloneDeep';
 import {of} from 'rxjs';
 import {append, patch, removeItem} from '@ngxs/store/operators';
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {RoofWindowSkylight} from '../../models/roof-window-skylight';
 import {Flashing} from '../../models/flashing';
 import {FlatRoofWindow} from '../../models/flat-roof-window';
@@ -44,6 +45,7 @@ export interface UserStateModel {
   address: Address;
   preferredLanguage: string;
   favoriteProducts: (RoofWindowSkylight | Flashing | FlatRoofWindow | Accessory | VerticalWindow)[];
+  lastUpdate: Date;
 }
 
 @State<UserStateModel>({
@@ -64,7 +66,8 @@ export interface UserStateModel {
     company: null,
     address: null,
     preferredLanguage: '',
-    favoriteProducts: []
+    favoriteProducts: [],
+    lastUpdate: null
   }
 })
 @Injectable()
@@ -119,6 +122,7 @@ export class UserState {
           updateState.company = company;
           updateState.preferredLanguage = user.preferredLanguage;
           updateState.favoriteProducts = user.favoriteProducts;
+          updateState.lastUpdate = user.lastUpdate;
           ctx.setState({
             ...state,
             _id: updateState._id,
@@ -136,7 +140,8 @@ export class UserState {
             company: updateState.company,
             address: updateState.address,
             preferredLanguage: updateState.preferredLanguage,
-            favoriteProducts: updateState.favoriteProducts
+            favoriteProducts: updateState.favoriteProducts,
+            lastUpdate: updateState.lastUpdate
           });
         }));
     }
@@ -160,7 +165,19 @@ export class UserState {
           verticalWindowsDiscount: updatedUser.verticalWindowsDiscount,
           companyNip: updatedUser.companyNip,
           preferredLanguage: updatedUser.preferredLanguage,
-          favoriteProducts: updatedUser.favoriteProducts
+          favoriteProducts: updatedUser.favoriteProducts,
+          lastUpdate: new Date()
+        }));
+    }));
+  }
+
+  @Action(ActivateUser)
+  activateUser(ctx: StateContext<UserStateModel>, {user}: ActivateUser) {
+    return this.crud.activateUser(user).pipe(tap((result: User) => {
+      ctx.setState(
+        patch({
+          activated: true,
+          lastUpdate: new Date()
         }));
     }));
   }
@@ -170,7 +187,8 @@ export class UserState {
     return this.crud.setDiscountForIndividualUser(user, discount, null, code).pipe(tap((result: User) => {
       ctx.setState(
         patch({
-          basicDiscount: result.basicDiscount
+          basicDiscount: result.basicDiscount,
+          lastUpdate: new Date()
         }));
     }));
   }
@@ -178,21 +196,44 @@ export class UserState {
   @Action(AddFavoriteProductsForUser)
   addFavoriteProductsForUser(ctx: StateContext<UserStateModel>, {user, favoriteProducts}: AddFavoriteProductsForUser) {
     return this.crud.addFavoriteProductsForUser(user, favoriteProducts).pipe(tap((result: User) => {
-      console.log(result);
-      ctx.setState(
-        patch({
-          favoriteProducts: result.favoriteProducts
-        }));
+      for (const product of favoriteProducts) {
+        let exist = false;
+        for (const favoriteProduct of user.favoriteProducts) {
+          // @ts-ignore
+          if (product.kod === favoriteProduct._kod) {
+            exist = true;
+          }
+        }
+        if (!exist) {
+          ctx.setState(
+            patch({
+              favoriteProducts: append(product),
+              lastUpdate: new Date()
+            }));
+        }
+      }
     }));
   }
 
   @Action(RemoveFavoriteProductsForUser)
-  removeFavoriteProductsForUser(ctx: StateContext<UserStateModel>, {user, favoriteProduct}: RemoveFavoriteProductsForUser) {
+  removeFavoriteProductsForUser(ctx: StateContext<UserStateModel>, {
+    user,
+    favoriteProduct
+  }: RemoveFavoriteProductsForUser) {
     return this.crud.removeFavoriteProductForUser(user, favoriteProduct).pipe(tap((result: User) => {
       ctx.setState(
         patch({
-          favoriteProducts: removeItem(favoriteProduct)
+          // @ts-ignore
+          favoriteProducts: removeItem<RoofWindowSkylight | Flashing | Accessory | FlatRoofWindow | VerticalWindow>((product) => product._kod === favoriteProduct.kod),
+          lastUpdate: new Date()
         }));
+      // const state = ctx.getState();
+      // ctx.patchState({
+      //   ...state,
+      //   // @ts-ignore
+      //   favoriteProducts: state.favoriteProducts.filter(product => product._kod !== favoriteProduct.kod),
+      //   lastUpdate: new Date()
+      // });
     }));
   }
 
@@ -202,7 +243,8 @@ export class UserState {
       this.crud.readAddressByMongoId(result.mainAddressId).subscribe(addressAfter => {
         ctx.setState(
           patch({
-            address: addressAfter
+            address: addressAfter,
+            lastUpdate: new Date()
           }));
       });
     }));
@@ -219,7 +261,8 @@ export class UserState {
       this.crud.readAddressByMongoId(result.mainAddressId).subscribe(addressAfter => {
         ctx.setState(
           patch({
-            address: addressAfter
+            address: addressAfter,
+            lastUpdate: new Date()
           }));
       });
     }));
@@ -230,7 +273,8 @@ export class UserState {
     return this.crud.updateMainAddressByMongoId(user, address).pipe(tap(result => {
       ctx.setState(
         patch({
-          address: result
+          address: result,
+          lastUpdate: new Date()
         })
       );
     }));
@@ -246,7 +290,8 @@ export class UserState {
     return this.crud.readCompanyByNIP(company.nip).pipe(tap(gotCompany => {
       ctx.setState(
         patch({
-          company: gotCompany
+          company: gotCompany,
+          lastUpdate: new Date()
         }));
     }));
   }
@@ -271,7 +316,8 @@ export class UserState {
           company: null,
           address: null,
           preferredLanguage: '',
-          favoriteProducts: []
+          favoriteProducts: [],
+          lastUpdate: new Date()
         });
     }));
   }

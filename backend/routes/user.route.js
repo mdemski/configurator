@@ -163,7 +163,7 @@ userRoute.post('/register', function (req, res, next) {
 
 //Update user
 userRoute.route('/update/:userId').put(((req, res, next) => {
-  User.findByIdAndUpdate(req.params.userId, {
+  User.findOneAndUpdate(req.params.userId, {
     $set: {
       email: req.body.email,
       name: req.body.name,
