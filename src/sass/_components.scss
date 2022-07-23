@@ -949,6 +949,21 @@ button:disabled {
 }
 
 //PRODUCT CARD IN SLIDER (FAVORITE PRODUCTS) SWIPER
+.swiper-button-next-unique,
+.swiper-button-prev-unique{
+  align-items: center;
+  height: 100%;
+}
+
+.swiper-button-next-unique:hover,
+.swiper-button-prev-unique:hover{
+  background-color: $color-light-grey;
+}
+
+.angle--icon {
+  font-size: 6rem;
+}
+
 .my-swiper {
   width: 100%;
 }
@@ -976,6 +991,7 @@ button:disabled {
 
 .product-img-front {
   width: 100%;
+  aspect-ratio: 1/1;
   object-fit: contain;
   object-position: center;
 }

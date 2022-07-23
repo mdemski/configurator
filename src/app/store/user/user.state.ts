@@ -20,7 +20,7 @@ import {filter, map, switchMap, tap} from 'rxjs/operators';
 import {User} from '../../models/user';
 import cloneDeep from 'lodash/cloneDeep';
 import {of} from 'rxjs';
-import {append, patch, removeItem} from '@ngxs/store/operators';
+import {append, insertItem, patch, removeItem} from '@ngxs/store/operators';
 import {Injectable} from '@angular/core';
 import {RoofWindowSkylight} from '../../models/roof-window-skylight';
 import {Flashing} from '../../models/flashing';
@@ -185,17 +185,32 @@ export class UserState {
   @Action(UpdateDiscountForUser)
   updateDiscountForUser(ctx: StateContext<UserStateModel>, {user, discount, code}: UpdateDiscountForUser) {
     return this.crud.setDiscountForIndividualUser(user, discount, null, code).pipe(tap((result: User) => {
-      ctx.setState(
-        patch({
-          basicDiscount: result.basicDiscount,
-          lastUpdate: new Date()
-        }));
+      if (code) {
+        ctx.setState(
+          patch({
+            basicDiscount: discount,
+            lastUpdate: new Date()
+          }));
+      }
+      // TODO dorobić obsługę listy kodów rabatowych
+      // @ts-ignore
+      this.discountList.forEach((discountObject: { code: string, value: number }) => {
+        if (discountObject.code === code) {
+          ctx.setState(
+            patch({
+              basicDiscount: discount,
+              lastUpdate: new Date()
+            }));
+        }
+      });
     }));
   }
 
   @Action(AddFavoriteProductsForUser)
   addFavoriteProductsForUser(ctx: StateContext<UserStateModel>, {user, favoriteProducts}: AddFavoriteProductsForUser) {
     return this.crud.addFavoriteProductsForUser(user, favoriteProducts).pipe(tap((result: User) => {
+      const productsArray = [];
+      const state = ctx.getState();
       for (const product of favoriteProducts) {
         let exist = false;
         for (const favoriteProduct of user.favoriteProducts) {
@@ -207,7 +222,15 @@ export class UserState {
         if (!exist) {
           ctx.setState(
             patch({
-              favoriteProducts: append(product),
+              favoriteProducts: insertItem(product, 0),
+              lastUpdate: new Date()
+            }));
+        }
+        const currentProducts = [...state.favoriteProducts];
+        if (currentProducts.length >= 30) {
+          ctx.setState(
+            patch({
+              favoriteProducts: removeItem(currentProducts.length - 1),
               lastUpdate: new Date()
             }));
         }

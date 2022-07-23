@@ -69,12 +69,13 @@
       </div>
     </div>
 
-    <div class="main">
-      <div class="main__favorite-products">
+    <div class="main" *ngIf="(((user$ | async).favoriteProducts).length) as arrayLength">
+      <div *ngIf="arrayLength > 0" class="main__favorite-products">
         <div class="main__favorite-products__slider">
           <h4 class="main__favorite-products__slider--heading">{{ 'GENERAL.favoriteProducts' | translate}}:</h4>
 
-          <div class="main__favorite-products__slider__container">
+          <div #swiperContainer class="main__favorite-products__slider__container" [ngStyle]="setWidth(swiperContainer, arrayLength)">
+            <div class="swiper-button-prev-unique"><i class="fas fa-angle-left angle--icon"></i></div>
             <div class="swiper">
               <div class="swiper-wrapper">
 
@@ -82,7 +83,7 @@
                 <swiper class="my-swiper" #swiper [config]="config">
 
                   <!--box----------------------->
-                  <ng-template swiperSlide class="product-box" *ngFor="let product of (user$ | async).favoriteProducts">
+                  <ng-template swiperSlide class="product-box" *ngFor="let product of ((user$ | async).favoriteProducts)">
                     <div class="product-box">
                       <!--==offer==-->
                       <span class="product-box-offer" *ngIf="showDiscount"></span>
@@ -158,7 +159,7 @@
 
                         <a *ngIf="product._grupaAsortymentowa === 'KołnierzUszczelniający'"
                            routerLink="../{{ 'LINK.shopFlashings' | translate}}/{{product._kod}}" class="product-title">
-                          {{product._model.split(':')[1]}} {{product._szerokosc}}x{{product._wysokosc}}
+                          {{product._model}} {{product._szerokosc}}x{{product._wysokosc}}
                         </a>
 
                         <a
@@ -210,9 +211,8 @@
 
               </div>
             </div>
+            <div class="swiper-button-next-unique"><i class="fas fa-angle-right angle--icon"></i></div>
           </div>
-
-
         </div>
       </div>
       <div class="main__tabs" (change)="selectTab()">

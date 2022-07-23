@@ -149,16 +149,6 @@ export class CrudService {
   // TODO czy to zadziała?
   setDiscountForIndividualUser(user: User, discount: number, adminPassword: string | null, code: string | null) {
     const url = `${this.usersBaseUri}/update/${user._id}`;
-    if (adminPassword) {
-      user.basicDiscount = discount;
-    }
-    // TODO dorobić obsługę listy kodów rabatowych
-    // @ts-ignore
-    this.discountList.forEach((discountObject: { code: string, value: number }) => {
-      if (discountObject.code === code) {
-        user.basicDiscount = discount;
-      }
-    });
     return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
   }
 
@@ -174,8 +164,6 @@ export class CrudService {
 
   deleteUser(user: User) {
     const url = `${this.usersBaseUri}/delete/${user._id}`;
-    user.activated = false;
-    user.lastUpdate = new Date();
     return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
   }
 

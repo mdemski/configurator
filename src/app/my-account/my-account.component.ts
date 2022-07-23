@@ -1,9 +1,16 @@
-import {AfterContentChecked, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import {AuthService} from '../services/auth.service';
 import {Select, Store} from '@ngxs/store';
 import {CartState} from '../store/cart/cart.state';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
-import {filter, map, take, takeUntil} from 'rxjs/operators';
+import {filter, map, takeUntil} from 'rxjs/operators';
 import exchange from '../../assets/json/echange.json';
 import vatRates from '../../assets/json/vatRates.json';
 import {AddProductToCart, UpdateCartCurrency, UpdateCartVatRate} from '../store/cart/cart.actions';
@@ -36,7 +43,7 @@ import SwiperCore, {
 import {SwiperComponent} from 'swiper/angular';
 import {AddFavoriteProductsForUser, RemoveFavoriteProductsForUser} from '../store/user/user.actions';
 // install Swiper components
-SwiperCore.use([ Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay, Controller, Thumbs]);
+SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay, Controller, Thumbs]);
 
 @Component({
   selector: 'app-my-account',
@@ -44,33 +51,31 @@ SwiperCore.use([ Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autopla
   styleUrls: ['./my-account.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class MyAccountComponent implements OnInit, OnDestroy, AfterContentChecked {
+export class MyAccountComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  @ViewChild('swiper', { static: false }) swiper?: SwiperComponent;
+  @ViewChild('swiper', {static: false}) swiper?: SwiperComponent;
   config: SwiperOptions = {
-    slidesPerView: 8,
-    spaceBetween: 30,
-    loopedSlides: 7,
+    loop: true,
+    spaceBetween: 25,
     breakpoints: {
       1400: {
-        slidesPerView: 6,
-        spaceBetween: 30,
+        spaceBetween: 25,
       },
       1028: {
-        slidesPerView: 5,
-        spaceBetween: 30,
+        spaceBetween: 20,
       },
       720: {
-        slidesPerView: 3,
-        spaceBetween: 30,
+        spaceBetween: 15,
       },
       480: {
-        slidesPerView: 1,
         spaceBetween: 10,
       }
     },
-    pagination: { type: 'fraction' },
-    navigation: true
+    pagination: {type: 'fraction'},
+    navigation: {
+      nextEl: '.swiper-button-next-unique',
+      prevEl: '.swiper-button-prev-unique'
+    }
   };
 
   @Select(CartState) cart$: Observable<any>;
@@ -95,7 +100,7 @@ export class MyAccountComponent implements OnInit, OnDestroy, AfterContentChecke
   activeTasks = false;
   activeNews = false;
   activeComplaints = false;
-  currentUser: {email: string, userName: string, isLogged: boolean};
+  currentUser: { email: string, userName: string, isLogged: boolean };
   showDiscount = false;
 
   constructor(private authService: AuthService,
@@ -108,7 +113,7 @@ export class MyAccountComponent implements OnInit, OnDestroy, AfterContentChecke
     this.rates = Object.values(vatRates);
     this.currentUser$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.currentUser = user.currentUser);
     this.userOrders$ = this.orderService.getUserOrders().pipe(takeUntil(this.isDestroyed$));
-    this.userTask$ = this.taskService.getUserTasks().pipe(takeUntil(this.isDestroyed$), map((tasks: Task[]) => tasks.filter(task => task.status  === 'Aktywne')));
+    this.userTask$ = this.taskService.getUserTasks().pipe(takeUntil(this.isDestroyed$), map((tasks: Task[]) => tasks.filter(task => task.status === 'Aktywne')));
   }
 
   ngOnInit(): void {
@@ -117,21 +122,13 @@ export class MyAccountComponent implements OnInit, OnDestroy, AfterContentChecke
       this.vatRate$.next(data.cart.vatRate);
       this.loading = false;
     });
-    this.user$.pipe(takeUntil(this.isDestroyed$)).pipe(take(2)).subscribe(user => {
-      this.store.dispatch(new RemoveFavoriteProductsForUser(user, this.db.getAllRoofWindowsToShopList()[1]));
-    });
   }
+
   // tslint:disable-next-line:component-selector
   // /* tslint:disable:template-use-track-by-function */
   /* tslint:disable: template-no-call-expression */
   ngOnDestroy(): void {
     this.isDestroyed$.next(null);
-  }
-
-  ngAfterContentChecked(): void {
-    // if (this.swiper) {
-    //   this.swiper.updateSwiper({});
-    // }
   }
 
   logout() {
@@ -194,5 +191,23 @@ export class MyAccountComponent implements OnInit, OnDestroy, AfterContentChecke
     } else {
       return 'zł';
     }
+  }
+
+  setWidth(swiperContainer: HTMLDivElement, length) {
+    if (length < 7) {
+      return {['width']: length * 200 + 'px'};
+    } else {
+      return {['width']: '100%'};
+    }
+  }
+
+  ngAfterViewInit(): void {
+    this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => {
+      if (user.favoriteProducts.length < 7) {
+        this.config.slidesPerView = user.favoriteProducts.length;
+      } else {
+        this.config.slidesPerView = 6;
+      }
+    });
   }
 }
