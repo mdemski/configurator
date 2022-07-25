@@ -78,7 +78,7 @@
           <tr class="configuration-container__configurations-table__item"
               *ngFor="let configuration of filteredConfigurations">
             <td class="configuration-container__configurations-table__item--info">
-              <a routerLink="../{{ 'CONFIG-SUMMARY.summaryWindowsLink' | translate}}/{{configuration.globalId}}">{{configuration.globalId}}</a>
+              <a routerLink="../{{ 'LINK.summaryLink' | translate}}/{{configuration.globalId}}">{{configuration.globalId}}</a>
             </td>
             <td
               class="configuration-container__configurations-table__item--info">{{configuration.name}}</td>
