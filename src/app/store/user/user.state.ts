@@ -229,7 +229,6 @@ export class UserState {
     if (!isEqual(user.favoriteProducts, productsArray)) {
       newUser.favoriteProducts = productsArray;
       return this.crud.updateUserByMongoId(newUser).pipe(tap((returnData: User) => {
-        console.log(returnData.favoriteProducts);
         ctx.setState(
           patch({
             favoriteProducts: returnData.favoriteProducts
