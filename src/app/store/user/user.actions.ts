@@ -1,6 +1,11 @@
 import {User} from '../../models/user';
 import {Address} from '../../models/address';
 import {Company} from '../../models/company';
+import {RoofWindowSkylight} from '../../models/roof-window-skylight';
+import {Flashing} from '../../models/flashing';
+import {FlatRoofWindow} from '../../models/flat-roof-window';
+import {Accessory} from '../../models/accessory';
+import {VerticalWindow} from '../../models/vertical-window';
 
 export class GetUserData {
   static type = '[User] Get User Data';
@@ -75,14 +80,14 @@ export class SetCompanyUserForUser {
 export class AddFavoriteProductsForUser {
   static type = '[User] Add Favorite Products For User';
 
-  constructor(public user: User, public favoriteProducts: any[]) {
+  constructor(public user: User, public favoriteProducts: (RoofWindowSkylight | Flashing | FlatRoofWindow | Accessory | VerticalWindow)[]) {
   }
 }
 
 export class RemoveFavoriteProductsForUser {
   static type = '[User] Remove Favorite Product For User';
 
-  constructor(public user: User, public favoriteProduct: any) {
+  constructor(public user: User, public favoriteProduct: RoofWindowSkylight | Flashing | FlatRoofWindow | Accessory | VerticalWindow) {
   }
 }
 

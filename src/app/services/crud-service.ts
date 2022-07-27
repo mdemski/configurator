@@ -152,16 +152,6 @@ export class CrudService {
     return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
   }
 
-  addFavoriteProductsForUser(user: User, products: any[]) {
-    const url = `${this.usersBaseUri}/update/${user._id}`;
-    return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
-  }
-
-  removeFavoriteProductForUser(user: User, product: any) {
-    const url = `${this.usersBaseUri}/update/${user._id}`;
-    return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
-  }
-
   deleteUser(user: User) {
     const url = `${this.usersBaseUri}/delete/${user._id}`;
     return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));

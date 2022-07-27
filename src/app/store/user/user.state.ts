@@ -16,9 +16,10 @@ import {
   UpdateUserMainAddress,
   UpdateUserToSendAddress
 } from './user.actions';
-import {filter, map, switchMap, tap} from 'rxjs/operators';
+import {filter, map, switchMap, take, tap} from 'rxjs/operators';
 import {User} from '../../models/user';
 import cloneDeep from 'lodash/cloneDeep';
+import isEqual from 'lodash/isEqual';
 import {of} from 'rxjs';
 import {append, insertItem, patch, removeItem} from '@ngxs/store/operators';
 import {Injectable} from '@angular/core';
@@ -184,7 +185,7 @@ export class UserState {
 
   @Action(UpdateDiscountForUser)
   updateDiscountForUser(ctx: StateContext<UserStateModel>, {user, discount, code}: UpdateDiscountForUser) {
-    return this.crud.setDiscountForIndividualUser(user, discount, null, code).pipe(tap((result: User) => {
+    return this.crud.setDiscountForIndividualUser(user, discount, null, code).pipe(tap((returnData: User) => {
       if (code) {
         ctx.setState(
           patch({
@@ -208,34 +209,33 @@ export class UserState {
 
   @Action(AddFavoriteProductsForUser)
   addFavoriteProductsForUser(ctx: StateContext<UserStateModel>, {user, favoriteProducts}: AddFavoriteProductsForUser) {
-    return this.crud.addFavoriteProductsForUser(user, favoriteProducts).pipe(tap((result: User) => {
-      const productsArray = [];
-      const state = ctx.getState();
-      for (const product of favoriteProducts) {
-        let exist = false;
-        for (const favoriteProduct of user.favoriteProducts) {
-          // @ts-ignore
-          if (product.kod === favoriteProduct._kod) {
-            exist = true;
-          }
-        }
-        if (!exist) {
-          ctx.setState(
-            patch({
-              favoriteProducts: insertItem(product, 0),
-              lastUpdate: new Date()
-            }));
-        }
-        const currentProducts = [...state.favoriteProducts];
-        if (currentProducts.length >= 30) {
-          ctx.setState(
-            patch({
-              favoriteProducts: removeItem(currentProducts.length - 1),
-              lastUpdate: new Date()
-            }));
+    const newUser = cloneDeep(user);
+    const productsArray = Object.assign([], user.favoriteProducts);
+    for (const product of favoriteProducts) {
+      let exist = false;
+      for (const favoriteProduct of user.favoriteProducts) {
+        // @ts-ignore
+        if (product.kod === favoriteProduct._kod) {
+          exist = true;
         }
       }
-    }));
+      if (!exist) {
+        productsArray.unshift(product);
+      }
+      if (productsArray.length > 30) {
+        productsArray.pop();
+      }
+    }
+    if (!isEqual(user.favoriteProducts, productsArray)) {
+      newUser.favoriteProducts = productsArray;
+      return this.crud.updateUserByMongoId(newUser).pipe(tap((returnData: User) => {
+        console.log(returnData.favoriteProducts);
+        ctx.setState(
+          patch({
+            favoriteProducts: returnData.favoriteProducts
+          }));
+      }));
+    }
   }
 
   @Action(RemoveFavoriteProductsForUser)
@@ -243,21 +243,17 @@ export class UserState {
     user,
     favoriteProduct
   }: RemoveFavoriteProductsForUser) {
-    return this.crud.removeFavoriteProductForUser(user, favoriteProduct).pipe(tap((result: User) => {
-      ctx.setState(
-        patch({
-          // @ts-ignore
-          favoriteProducts: removeItem<RoofWindowSkylight | Flashing | Accessory | FlatRoofWindow | VerticalWindow>((product) => product._kod === favoriteProduct.kod),
-          lastUpdate: new Date()
-        }));
-      // const state = ctx.getState();
-      // ctx.patchState({
-      //   ...state,
-      //   // @ts-ignore
-      //   favoriteProducts: state.favoriteProducts.filter(product => product._kod !== favoriteProduct.kod),
-      //   lastUpdate: new Date()
-      // });
-    }));
+    const newUser = cloneDeep(user);
+    // @ts-ignore
+    newUser.favoriteProducts = user.favoriteProducts.filter(product => product._kod !== favoriteProduct._kod);
+    if (!isEqual(user.favoriteProducts, newUser.favoriteProducts)) {
+      return this.crud.updateUserByMongoId(newUser).pipe(tap((returnData: User) => {
+        ctx.setState(
+          patch({
+            favoriteProducts: returnData.favoriteProducts
+          }));
+      }));
+    }
   }
 
   @Action(SetUserMainAddress)

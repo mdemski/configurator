@@ -1,16 +1,9 @@
-import {
-  AfterViewInit,
-  Component,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-  ViewEncapsulation
-} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {AuthService} from '../services/auth.service';
 import {Select, Store} from '@ngxs/store';
 import {CartState} from '../store/cart/cart.state';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
-import {filter, map, takeUntil} from 'rxjs/operators';
+import {filter, map, take, takeUntil} from 'rxjs/operators';
 import exchange from '../../assets/json/echange.json';
 import vatRates from '../../assets/json/vatRates.json';
 import {AddProductToCart, UpdateCartCurrency, UpdateCartVatRate} from '../store/cart/cart.actions';
@@ -31,14 +24,14 @@ import {CrudService} from '../services/crud-service';
 import SwiperCore, {
   A11y,
   Autoplay,
+  Controller,
   Navigation,
   Pagination,
   Scrollbar,
   SwiperOptions,
   Thumbs,
   Virtual,
-  Zoom,
-  Controller
+  Zoom
 } from 'swiper';
 import {SwiperComponent} from 'swiper/angular';
 import {AddFavoriteProductsForUser, RemoveFavoriteProductsForUser} from '../store/user/user.actions';
@@ -88,7 +81,6 @@ export class MyAccountComponent implements OnInit, OnDestroy, AfterViewInit {
   vatRate$ = new BehaviorSubject(0.23);
   userOrders$: Observable<Order[]>;
   userTask$: Observable<Task[]>;
-  user: User;
   currencies: string[] = [];
   rates: number[] = [];
   isDestroyed$ = new Subject();
@@ -202,7 +194,7 @@ export class MyAccountComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => {
+    this.user$.pipe(filter(user => user._id !== ''), takeUntil(this.isDestroyed$)).subscribe(user => {
       if (user.favoriteProducts.length < 7) {
         this.config.slidesPerView = user.favoriteProducts.length;
       } else {
