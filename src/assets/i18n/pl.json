@@ -761,7 +761,6 @@
     "actualCurrency": "Aktualna waluta",
     "actualVATRate": "Aktualna stawka VAT",
     "changeCurrency": "Wybierz inną walutę",
-    "favoriteProducts": "Ulubione produkty",
     "addToCart": "Dodaj do koszyka",
     "logout": "Wyloguj"
   },
@@ -770,7 +769,9 @@
     "configurations": "Konfiguracje",
     "tasks": "Otwarte zadania",
     "news": "Aktualności",
-    "complaints": "Reklamacje"
+    "complaints": "Reklamacje",
+    "favoriteProducts": "Ulubione produkty",
+    "documents": "Twoje dokumenty"
   },
   "MY-PROFILE": {
     "cooperationSummaryTitle": "Podsumowanie współpracy",

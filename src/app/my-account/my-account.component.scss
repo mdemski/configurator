@@ -121,6 +121,14 @@
 
   &__tabs {
 
+    &--heading {
+      text-align: center;
+      font-size: 28px;
+      text-transform: uppercase;
+      color: $color-dark-grey;
+      margin: 5rem 0 1rem 0;
+    }
+
     &--input {
 
     }

@@ -72,7 +72,7 @@
     <div class="main" *ngIf="(((user$ | async).favoriteProducts).length) as arrayLength">
       <div *ngIf="arrayLength > 0" class="main__favorite-products">
         <div class="main__favorite-products__slider">
-          <h4 class="main__favorite-products__slider--heading">{{ 'GENERAL.favoriteProducts' | translate}}:</h4>
+          <h4 class="main__favorite-products__slider--heading">{{ 'MY-ACCOUNT.favoriteProducts' | translate}}</h4>
 
           <div #swiperContainer class="main__favorite-products__slider__container" [ngStyle]="setWidth(swiperContainer, arrayLength)">
             <div class="swiper-button-prev-unique"><i class="fas fa-angle-left angle--icon"></i></div>
@@ -216,6 +216,7 @@
         </div>
       </div>
       <div class="main__tabs" (change)="selectTab()">
+        <h4 class="main__tabs--heading">{{ 'MY-ACCOUNT.documents' | translate}}</h4>
         <input class="main__tabs--input" type="radio" name="tabset" id="orders" aria-controls="orders" checked autofocus
                [(ngModel)]="activeTab" [ngModelOptions]="{standalone: true}" value="activeOrders">
         <label class="main__tabs--label" for="orders">
