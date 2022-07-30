@@ -21,8 +21,6 @@
     </div>
   </div>
 
-
-  <!--TODO jeśli dany krok jest niewypełniony lub w przypadku wymiarów nietknięty to wyświetla się w innym kolorze, wypełnione to zielone-->
   <div class="md-container">
     <div class="loader-container" *ngIf="loading; else elseBlock">
       <app-okpol-loader></app-okpol-loader>
@@ -570,9 +568,9 @@
               </div>
             </div>
           </div>
-          <!-- TODO dokleić do przycisku i usunąć tempConfigWindow [disabled]="!windowConfigurationForm.valid"-->
-          <button class="btn btn--red configure-form__submit"
 
+          <button class="btn btn--red configure-form__submit"
+                  [disabled]="!form.valid"
                   [ngClass]="{'md-not-popup' : popupConfig===false}"
                   type="submit">{{ 'ROOF-WINDOWS-CONFIG.submit' | translate}}
           </button>

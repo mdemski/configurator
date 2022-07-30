@@ -66,7 +66,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   private globalConfiguration: SingleConfiguration = null;
   private newWindowConfig: SingleConfiguration;
   private configId: string;
-  private tempConfiguredWindow: RoofWindowSkylight;
   configByName$: Observable<WindowConfig>;
   configOptions;
   configurationSummary: string;
@@ -77,7 +76,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   form: FormGroup;
   private formName: string;
   formData$;
-  popupConfig = true;
+  popupConfig = false;
   userConfigs = [];
   copyLinkToConfigurationPopup = false;
   urlToSaveConfiguration: string;
@@ -181,12 +180,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         map(filterFn => filterFn(this.currentUser)));
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe(() => console.log);
     this.highestUserId = 1;
-    this.tempConfiguredWindow = new RoofWindowSkylight(
-      '1O-ISO-V-E02-KL00-A7022P-079119-OKPO01', 'Okno dachowe tymczasowe', 'ISOV E2 79x119', 'I-Okno', 'NPL-Okno', 'Nowy', 'Okno:ISOV', 'Okno:E02', 'dwuszybowy', 79,
-      119, 'OknoDachowe', 'obrotowe', 'Okno:IS', 'OknoDachowe:ISO', 'Okno:Obrotowe', 'NawiewnikNeoVent', 'DrewnoSosna', 'Drewno:Bezbarwne', 'OknoDachowe:IS', 'Aluminium',
-      // tslint:disable-next-line:max-line-length
-      'RAL9999', 'Aluminium:Półmat', 'Okno:ExtraSecure', 'Okno:RAL7048', false, 2, ['78x118'], ['zewnetrznaHartowana', false, false, false, false, false, false, false, false],
-      ['https://www.okpol.pl/wp-content/uploads/2017/02/1_ISO.jpg'], ['Okno:Zasuwka', false, false], 1332.80, 1, 1.2, 5, 'Okno:RAL7048', 'Okno:RAL7048', null, 2, 'PL');
     this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
       this.shopRoofWindowLink = text.shopRoofWindows;
     });
@@ -197,9 +190,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       this.windowsConfigurator = text.configuratorRoofWindow;
     });
   }
-
-  // TODO przygotować wczytywanie konfiguracji jeśli Klient wraca do poprawy danej konfiguracji lub chce przekonfigurować produkt ze sklepu
-  // TODO Wyświetlanie ceny podstawowej z eNovy podczas natrafienia na kod będący w eNova i zaproponowanie prześcia do sklepu
 
   ngOnDestroy() {
     this.isDestroyed$.next(null);
@@ -232,8 +222,8 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
             extras: new FormArray(this.builtExtrasArray(this.extrasFromFile))
           });
           this.windowId = 1;
-          this.formChanges(); // TODO które usunąć to, czy poniżej - raczej poniżej wiersz, bo tam brak ustawiania formArray
-          this.setConfiguredValues(this.form.value); // TODO ten i poprzedni wiersz mają odwołanie do tej samej metody setConfigureValues - czy można jedno usunąć?
+          this.formChanges();
+          this.setConfiguredValues(this.form.value);
           this.formName = this.randomString.randomString(12);
           this.loading = false;
         });
@@ -268,8 +258,8 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
           });
           this.configuredWindow = windowConfiguration.window;
           this.windowId = windowConfiguration.id;
-          this.setConfiguredValues(this.form.value); // TODO ten kolejny wiersz mają odwołanie do tej samej metody setConfigureValues - czy można jedno usunąć?
-          this.formChanges(); // TODO które usunąć to, czy poprzednie - raczej poprzedni wiersz, bo tam brak ustawiania formArray
+          this.setConfiguredValues(this.form.value);
+          this.formChanges();
           this.loading = false;
         });
     }
@@ -633,8 +623,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         windows: [{
           id: this.windowId,
           quantity: 1,
-          // TODO zamienić na configuredWindow po odkomentowaniu blokad formularza
-          window: this.tempConfiguredWindow,
+          window: this.configuredWindow,
           windowFormName: this.formName,
           windowFormData: this.form.value,
           configLink: String(this.router['location']._platformLocation.location.origin
@@ -730,9 +719,8 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         + '/' + this.configuredWindow.kod);
       this.configId = String('configuration-' + this.configFormId);
       this.globalConfiguration = this.configurations.find(config => config.userId === this.configFormId && config.user === this.currentUser);
-      // TODO zamienić na configuredWindow
       this.store.dispatch(new AddRoofWindowConfiguration(this.globalConfiguration,
-        this.tempConfiguredWindow, this.formName, this.form.value, temporaryLink))
+        this.configuredWindow, this.formName, this.form.value, temporaryLink))
         .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
     }
     this.chooseConfigNamePopup = false;
