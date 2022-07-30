@@ -78,7 +78,6 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
   private globalConfiguration: SingleConfiguration = null;
   private newAccessoryConfig: SingleConfiguration;
   configuredAccessory: Accessory;
-  tempConfiguredAccessory: Accessory;
   accessoryId: number;
   form: FormGroup;
   formData$: Observable<any>;
@@ -347,8 +346,7 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
         accessories: [{
           id: this.accessoryId,
           quantity: 1,
-          // TODO zamienić na configuredAccessory po odkomentowaniu blokad formularza
-          accessory: this.tempConfiguredAccessory,
+          accessory: this.configuredAccessory,
           accessoryFormName: this.formName,
           accessoryFormData: this.form.value,
           configLink: String(this.router['location']._platformLocation.location.origin
@@ -438,9 +436,8 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
         + '/' + this.configuredAccessory.kod);
       this.configId = String('configuration-' + this.configFormId);
       this.globalConfiguration = this.configurations.find(config => config.userId === this.configFormId && config.user === this.currentUser);
-      // TODO zamienić na configuredAccessory
       this.store.dispatch(new AddAccessoryConfiguration(this.globalConfiguration,
-        this.tempConfiguredAccessory, this.formName, this.form.value, temporaryLink))
+        this.configuredAccessory, this.formName, this.form.value, temporaryLink))
         .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
     }
     this.chooseConfigNamePopup = false;
