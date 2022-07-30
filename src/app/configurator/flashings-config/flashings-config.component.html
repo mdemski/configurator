@@ -478,8 +478,7 @@
           </div>
         </div>
 
-        <!-- TODO dokleić do przycisku i usunąć tempFlashing [disabled]="!form.valid"-->
-        <button class="btn btn--red configure-form__submit"
+        <button class="btn btn--red configure-form__submit" [disabled]="!form.valid"
                 type="submit">{{ 'FLASHINGS-CONFIG.submit' | translate}}
         </button>
         <div class="configure-form__validation-info">

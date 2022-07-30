@@ -260,7 +260,6 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
             outerColorFinish: new FormControl(this.configuredFlashing.oblachowanieFinisz)
           }, [], [this.validateOuterMaterial.bind(this)]),
           composition: new FormGroup({
-            // TODO przestawić wyjściowo na 1 i 1
             verticalNumber: new FormControl(1),
             horizontalNumber: new FormControl(1),
           }),
