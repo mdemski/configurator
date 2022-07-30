@@ -41,7 +41,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   @Select(RouterState) params$: Observable<any>;
   @Select(CartState) cart$: Observable<any>;
 
-  // TODO przygotować strumień i service do publikowania tej danej po aplikacji
   constructor(private store: Store,
               private windowValuesSetter: RoofWindowValuesSetterService,
               private loadConfig: LoadConfigurationService,
