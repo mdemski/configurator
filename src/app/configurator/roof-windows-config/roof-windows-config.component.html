@@ -227,7 +227,7 @@
                        [ngClass]="{'label--disabled' : glazing.disabled}"
                        [ngStyle]="setBackgroundImage(glazing.option)">{{builtNameForTranslation(glazing.option) | translate}}</label>
               </div>
-              <div class="configure-form__navigation-buttons">
+              <div class="configure-form__navigation-buttons" [ngClass]="{'md-not-popup' : popupConfig===false}">
                 <a (click)="onOpeningHover(openingOptions);onGlazingHover(glazingOptions)"
                    class="btn btn--grey configure-form__navigation-buttons__next-prev">
                   {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
@@ -260,7 +260,7 @@
                        [ngClass]="{'label--disabled' : coat.disabled}"
                        [ngStyle]="setBackgroundImage(coat.option)">{{coat.option}}</label>
               </div>
-              <div class="configure-form__navigation-buttons">
+              <div class="configure-form__navigation-buttons" [ngClass]="{'md-not-popup' : popupConfig===false}">
                 <a (click)="onGlazingHover(glazingOptions);onCoatsHover(coatOptions)"
                    class="btn btn--grey configure-form__navigation-buttons__next-prev">
                   {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
@@ -310,7 +310,7 @@
               >{{ 'ROOF-WINDOWS-CONFIG.standardDimensions' | translate}}
                 <a class="configure-form__validation-info--single-message--link"
                    (click)="navigateToShop()">{{ 'SHOP.roofWindows' | translate}}</a></p>
-              <div class="configure-form__navigation-buttons">
+              <div class="configure-form__navigation-buttons" [ngClass]="{'md-not-popup' : popupConfig===false}">
                 <a (click)="onCoatsHover(coatOptions);onDimensionsHover(dimensionOption)"
                    class="btn btn--grey configure-form__navigation-buttons__next-prev">
                   {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
@@ -340,7 +340,7 @@
                        [ngClass]="{'label--disabled' : innerColor.disabled}"
                        [ngStyle]="setBackgroundImage(innerColor.option)">{{builtNameForTranslation(innerColor.option) | translate}}</label>
               </div>
-              <div class="configure-form__navigation-buttons">
+              <div class="configure-form__navigation-buttons" [ngClass]="{'md-not-popup' : popupConfig===false}">
                 <a (click)="onDimensionsHover(dimensionOption);onInnerColorHover(innerColorOptions)"
                    class="btn btn--grey configure-form__navigation-buttons__next-prev">
                   {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
@@ -399,7 +399,7 @@
                        [ngStyle]="setBackgroundImage(outerColorFinish.option)">{{builtNameForTranslation(outerColorFinish.option) | translate}}</label>
               </div>
               <h2 class="configure-form__group--info-color">{{ 'ROOF-WINDOWS-CONFIG.RALVsRGB' | translate}}</h2>
-              <div class="configure-form__navigation-buttons">
+              <div class="configure-form__navigation-buttons" [ngClass]="{'md-not-popup' : popupConfig===false}">
                 <a (click)="onInnerColorHover(innerColorOptions);onOuterMaterialHover(outerMaterialOptions)"
                    class="btn btn--grey configure-form__navigation-buttons__next-prev">
                   {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
@@ -429,7 +429,7 @@
                        class="configure-form__group__options--option__label"
                        [ngStyle]="setBackgroundImage(ventilation.option)">{{builtNameForTranslation(ventilation.option) | translate}}</label>
               </div>
-              <div class="configure-form__navigation-buttons">
+              <div class="configure-form__navigation-buttons" [ngClass]="{'md-not-popup' : popupConfig===false}">
                 <a (click)="onOuterMaterialHover(outerMaterialOptions);onVentilationHover(ventilationOptions)"
                    class="btn btn--grey configure-form__navigation-buttons__next-prev">
                   {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
@@ -474,7 +474,7 @@
                        [ngStyle]="setBackgroundImage(handleColor.option)"
                 >{{builtNameForTranslation(handleColor.option) | translate}}</label>
               </div>
-              <div class="configure-form__navigation-buttons">
+              <div class="configure-form__navigation-buttons" [ngClass]="{'md-not-popup' : popupConfig===false}">
                 <a (click)="onVentilationHover(ventilationOptions);onHandleHover(handleOptions)"
                    class="btn btn--grey configure-form__navigation-buttons__next-prev">
                   {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
@@ -505,7 +505,7 @@
                        class="configure-form__group__options--option__label"
                        [ngStyle]="setBackgroundImage(extra.option)">{{builtNameForTranslation(extra.option) | translate}}</label>
               </div>
-              <div class="configure-form__navigation-buttons">
+              <div class="configure-form__navigation-buttons" [ngClass]="{'md-not-popup' : popupConfig===false}">
                 <a (click)="onHandleHover(handleOptions);onExtrasHover(extrasOptions)"
                    class="btn btn--grey configure-form__navigation-buttons__next-prev">
                   {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
@@ -574,7 +574,7 @@
                   [ngClass]="{'md-not-popup' : popupConfig===false}"
                   type="submit">{{ 'ROOF-WINDOWS-CONFIG.submit' | translate}}
           </button>
-          <div class="configure-form__validation-info">
+          <div class="configure-form__validation-info" *ngIf="popupConfig">
             <p class="configure-form__validation-info--single-message"
                *ngIf="form.get('material').hasError('empty material') ||
                   form.get('openingType').hasError('empty openingType') ||
@@ -584,9 +584,9 @@
                   form.get('ventilation').hasError('empty ventilation') ||
                   form.get('closure').hasError('empty handle')">{{ 'ROOF-WINDOWS-CONFIG.validationInfo' | translate}}</p>
           </div>
-          <a (click)="saveCopyLinkPopUp()"
+          <a (click)="saveCopyLinkPopUp()" *ngIf="popupConfig"
              class="btn btn--grey configure-form__save-button">{{ 'ROOF-WINDOWS-CONFIG.saveCopyLinkPopUp' | translate}}</a>
-          <a (click)="resetConfigForm()"
+          <a (click)="resetConfigForm()" *ngIf="popupConfig"
              class="btn btn--light-blue configure-form__reset-button">{{ 'ROOF-WINDOWS-CONFIG.resetConfigForm' | translate}}</a>
         </form>
       </div>

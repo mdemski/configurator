@@ -6,12 +6,6 @@
 @import 'src/sass/product-presentation';
 @import 'src/sass/components';
 
-.label--disabled {
-  &:hover {
-    border: .12rem solid transparent;
-  }
-}
-
 .materials {
   max-height: 330px;
 }

@@ -235,6 +235,13 @@ form {
   }
 }
 
+.label--disabled {
+  opacity: 40%;
+  &:hover {
+    border: .12rem solid transparent;
+  }
+}
+
 @keyframes HideList {
   from {
     transform: scaleY(1);

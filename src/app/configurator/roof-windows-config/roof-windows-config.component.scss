@@ -6,12 +6,6 @@
 @import 'src/sass/product-presentation';
 @import 'src/sass/components';
 
-.label--disabled {
-  &:hover {
-    border: .12rem solid transparent;
-  }
-}
-
 .materials {
   max-height: 330px;
 }
@@ -90,7 +84,7 @@
 
       &__label {
         padding-top: 7rem;
-        color: $color-light-grey;
+        color: $color-darkest-grey;
         text-align: center;
         width: 100%;
       }
@@ -107,5 +101,5 @@
 }
 
 .md-not-popup {
-  visibility: hidden;
+  display: none;
 }
