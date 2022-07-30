@@ -63,7 +63,6 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
   private globalConfiguration: SingleConfiguration = null;
   private newWindowConfig: SingleConfiguration;
   private configId: string;
-  private tempConfiguredWindow: FlatRoofWindow;
   configByName$: Observable<FlatConfig>;
   configOptions;
   configurationSummary: string;
@@ -503,8 +502,7 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
         flats: [{
           id: this.flatId,
           quantity: 1,
-          // TODO zamienić na configuredWindow po odkomentowaniu blokad formularza
-          flat: this.tempConfiguredWindow,
+          flat: this.configuredFlatRoofWindow,
           flatFormName: this.formName,
           flatFormData: this.form.value,
           configLink: String(this.router['location']._platformLocation.location.origin
@@ -596,9 +594,8 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
         + '/' + this.configuredFlatRoofWindow.kod);
       this.configId = String('configuration-' + this.configFormId);
       this.globalConfiguration = this.configurations.find(config => config.userId === this.configFormId && config.user === this.currentUser);
-      // TODO zamienić na configuredWindow
       this.store.dispatch(new AddFlatRoofConfiguration(this.globalConfiguration,
-        this.tempConfiguredWindow, this.formName, this.form.value, temporaryLink))
+        this.configuredFlatRoofWindow, this.formName, this.form.value, temporaryLink))
         .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
     }
     this.chooseConfigNamePopup = false;
