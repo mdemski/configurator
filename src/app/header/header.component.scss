@@ -180,7 +180,7 @@
     }
 
     &--link {
-      padding: 1rem 2.5rem;
+      padding: 1.7rem 2.5rem;
       color: $color-white;
       font-weight: 700;
       border-radius: 1rem;
@@ -189,8 +189,6 @@
       transition: all .5s;
 
       &:hover {
-        border-radius: 1rem;
-        padding: 1.7rem 2.5rem;
         background-color: $color-darkest-blue;
       }
     }
