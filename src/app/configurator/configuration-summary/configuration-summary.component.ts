@@ -9,7 +9,7 @@ import {FlashingConfig} from '../../models/flashing-config';
 import {Select, Store} from '@ngxs/store';
 import {
   DeleteAccessoryConfigurationByConfigAndAccessoryId,
-  DeleteFlashingConfigurationByConfigAndFlashingId,
+  DeleteFlashingConfigurationByConfigAndFlashingId, DeleteFlatRoofConfigurationByConfigAndFlatId,
   DeleteGlobalConfiguration,
   DeleteRoofWindowConfigurationByConfigAndWindowId,
   UpdateAccessoryQuantityByConfigAndAccessoryId,
@@ -168,6 +168,9 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
   }
 
   removeProductConfiguration(globalConfiguration: SingleConfiguration, productId: number, product) {
+    if (product.flat !== undefined) {
+      this.store.dispatch(new DeleteFlatRoofConfigurationByConfigAndFlatId(globalConfiguration, productId)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+    }
     if (product.window !== undefined) {
       this.store.dispatch(new DeleteRoofWindowConfigurationByConfigAndWindowId(globalConfiguration, productId)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
     }
