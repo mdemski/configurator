@@ -417,6 +417,8 @@
     "extraOption": "Dodatkowa opcja"
   },
   "ROOF-WINDOWS-DATA": {
+    "undefined": "nie określony",
+    "null": "nie dotyczy",
     "Okno:IS1": "IS",
     "Okno:IS": "IS",
     "Okno:IG2": "IG",
@@ -541,6 +543,7 @@
     "horizontalSpacing": "Odstęp y",
     "loadDimensions": "Wczytaj wymiary",
     "validationInfo": "Skonfiguruj wszystkie opcje zanim przejdziesz do podsumowania",
+    "disabledConfigName": "Wybierz konfigurację",
     "submit": "Podsumowanie"
   },
   "FLASHINGS-DATA": {
@@ -634,6 +637,8 @@
     "n/a": "nie dotyczy",
     "Roleta:D37": "D37",
     "ARZE": "ARZE",
+    "AkcesoriumRoletaW:D37Z": "D37",
+    "D37Z": "D37 zaciemniająca",
     "D37:Srebrny": "Srebrne",
     "D37:Biały": "Białe",
     "Akcesorium": "Akcesorium",
@@ -687,7 +692,9 @@
     "PVC_Wyłaz:WNG": "wyłaz PVC (OT PVC, WHG, WNG, WZG)",
     "Aluminium:RAL7022": "Ciemnoszary",
     "ElektrycznePilot": "Sterowanie pilotem",
-    "Aluminium:Półmat": "Półmat"
+    "Aluminium:Półmat": "Półmat",
+    "RoletaD_Z:S005": "Zaciemniający S005",
+    "undefined": "Nie dotyczy"
   },
   "ACCESSORY-CONFIG": {
     "type": "Typ akcesorium",
@@ -714,9 +721,11 @@
     "configurationName": "o nazwie",
     "configName": "Nazwa",
     "window": "Okno dachowe",
+    "windowNr": "Okno dachowe nr",
     "feature": "Cecha",
     "value": "Wartość cechy",
     "correct": "Popraw",
+    "addNewFlatRoofWindow": "Dodaj okno na dach płaski",
     "addFlashing": "Dobierz kołnierz",
     "addAccessory": "Dobierz akcesorium",
     "flashing": "Kołnierz",
@@ -726,8 +735,10 @@
     "sendQuestion": "Wyślij zapytanie",
     "makeAnother": "Utwórz kolejną konfigurację",
     "addConfigurationsToCart": "Dodaj konfiguracje do koszyka",
+    "flatRoofWindows": "Okna na dach płaski",
     "roofWindows": "Okna dachowe",
     "flashings": "Kołnierze",
+    "flats": "Okna na płaski dach",
     "correctConfig": "Zmień",
     "removeConfiguration": "Usuń",
     "noConfigurations": "Nie posiadasz jeszcze żadnej konfiguracji. Stwórz nową.",

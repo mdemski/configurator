@@ -56,6 +56,13 @@ th, td {
         margin-right: 3rem;
       }
 
+      &--window-picture {
+        height: 20%;
+        width: 20%;
+        background-color: $color-light-grey;
+        margin-right: 3rem;
+      }
+
       &--detail {
         width: 80%;
       }
@@ -74,6 +81,13 @@ th, td {
       &--flashing-picture {
         height: 20%;
         width: 20%;
+        margin-right: 3rem;
+      }
+
+      &--flashing-grey {
+        height: 20%;
+        width: 20%;
+        background-color: $color-light-grey;
         margin-right: 3rem;
       }
 
@@ -100,6 +114,13 @@ th, td {
       &--accessory-picture {
         height: 20%;
         width: 20%;
+        margin-right: 3rem;
+      }
+
+      &--accessory-grey {
+        height: 20%;
+        width: 20%;
+        background-color: $color-light-grey;
         margin-right: 3rem;
       }
 

@@ -20,6 +20,124 @@
                                                 class="configuration-summary-container__single--configuration-name">
             </h1>
           </div>
+          <!--Flat roof window from single configuration-->
+          <h1
+            class="configuration-summary-container__single--product-title first-child"
+            *ngIf="configuration.products.flats">{{'CONFIG-SUMMARY.flats' | translate}}</h1>
+          <div class="configuration-summary-container__single--roof-windows"
+               *ngFor="let singleWindow of configuration.products.flats let last = last"
+               [ngClass]="{'last-child': last}">
+            <img *ngIf="singleWindow.flat.linkiDoZdjec; else greyBlock" src="{{singleWindow.flat.linkiDoZdjec[0]}}"
+                 class="configuration-summary-container__single--roof-windows--window-picture">
+            <ng-template #greyBlock><div class="configuration-summary-container__single--roof-windows--window-grey"></div></ng-template>
+            <div class="configuration-summary-container__single--roof-windows--detail">
+              <div class="configuration-summary-container__single--roof-windows--table">
+                <table class="table table-striped table-hover">
+                  <thead>
+                  <tr>
+                    <th scope="col">{{ 'SINGLE-PRODUCT.LP' | translate}}</th>
+                    <th scope="col">{{ 'CONFIG-SUMMARY.feature' | translate}}</th>
+                    <th scope="col">{{ 'CONFIG-SUMMARY.value' | translate}}</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowName' | translate}}</td>
+                    <td>{{singleWindow.flat.productName}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowUW' | translate}}</td>
+                    <td>{{singleWindow.flat.windowUW}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">3</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowUG' | translate}}</td>
+                    <td>{{singleWindow.flat.windowUG}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">4</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowModel' | translate}}</td>
+                    <td>{{'ROOF-WINDOWS-DATA.' + singleWindow.flat.model | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">5</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowGlazing' | translate}}</td>
+                    <td>{{'ROOF-WINDOWS-DATA.' + singleWindow.flat.pakietSzybowy | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">6</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowDimensions' | translate}}</td>
+                    <td>{{singleWindow.flat.szerokosc}} x {{singleWindow.flat.wysokosc}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">7</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowGeometry' | translate}}</td>
+                    <td>{{'ROOF-WINDOWS-DATA.' + singleWindow.flat.geometria | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">8</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowOpeningType' | translate}}</td>
+                    <td>{{'ROOF-WINDOWS-DATA.' + singleWindow.flat.otwieranie | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">9</th>
+                    <td>{{ 'SINGLE-PRODUCT.foamsNumber' | translate}}</td>
+                    <td>{{singleWindow.flat.uszczelki}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">10</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowMaterial' | translate}}</td>
+                    <td>{{'ROOF-WINDOWS-DATA.' + singleWindow.flat.stolarkaMaterial | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">11</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowMaterialColor' | translate}}</td>
+                    <td>{{'ROOF-WINDOWS-DATA.' + singleWindow.flat.stolarkaKolor | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">12</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowMaterialFinish' | translate}}</td>
+                    <td>{{'ROOF-WINDOWS-DATA.' + singleWindow.flat.rodzina | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">13</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowOuterMaterial' | translate}}</td>
+                    <td>{{'ROOF-WINDOWS-DATA.' + singleWindow.flat.oblachowanieMaterial | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">14</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowOuterColor' | translate}}</td>
+                    <td>{{singleWindow.flat.oblachowanieKolor}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">15</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowOuterFinish' | translate}}</td>
+                    <td>{{'ROOF-WINDOWS-DATA.' + singleWindow.flat.oblachowanieFinisz | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">16</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowHandleType' | translate}}</td>
+                    <td>{{'ROOF-WINDOWS-DATA.' + singleWindow.flat.zamkniecieTyp | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">17</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowHandleColor' | translate}}</td>
+                    <td>{{'ROOF-WINDOWS-DATA.' + singleWindow.flat.zamkniecieKolor | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">20</th>
+                    <td>{{ 'SINGLE-PRODUCT.detalPrice' | translate}}</td>
+                    <td>{{(singleWindow.flat.CenaDetaliczna / (cart$ | async).cart.exchange) | currency: ' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+
           <!--Roof window from single configuration-->
           <h1
             class="configuration-summary-container__single--product-title first-child"
@@ -27,8 +145,9 @@
           <div class="configuration-summary-container__single--roof-windows"
                *ngFor="let singleWindow of configuration.products.windows let last = last"
                [ngClass]="{'last-child': last}">
-            <img src="{{singleWindow.window.linkiDoZdjec[0]}}"
+            <img *ngIf="singleWindow.window.linkiDoZdjec; else greyBlock" src="{{singleWindow.window.linkiDoZdjec[0]}}"
                  class="configuration-summary-container__single--roof-windows--window-picture">
+            <ng-template #greyBlock><div class="configuration-summary-container__single--roof-windows--window-grey"></div></ng-template>
             <div class="configuration-summary-container__single--roof-windows--detail">
               <div class="configuration-summary-container__single--roof-windows--table">
                 <table class="table table-striped table-hover">
@@ -152,8 +271,9 @@
           <div class="configuration-summary-container__single--flashings"
                *ngFor="let singleFlashing of configuration.products.flashings let last = last"
                [ngClass]="{'last-child': last}">
-            <img src="{{singleFlashing.flashing.linkiDoZdjec[0]}}"
+            <img *ngIf="singleFlashing.flashing.linkiDoZdjec; else greyBlock" src="{{singleFlashing.flashing.linkiDoZdjec[0]}}"
                  class="configuration-summary-container__single--flashings--flashing-picture">
+            <ng-template #greyBlock><div class="configuration-summary-container__single--flashings--flashing-grey"></div></ng-template>
             <div class="configuration-summary-container__single--flashings--detail">
               <div class="configuration-summary-container__single--flashings--table">
                 <table class="table table-striped table-hover">
@@ -246,11 +366,11 @@
             </div>
           </div>
           <div
-            *ngIf="configuration.products.windows === undefined ||
-            configuration.products.windows === null ||
+            *ngIf="configuration.products.flats === undefined ||
+            configuration.products.flats === null ||
             configuration.products.flashings === undefined ||
             configuration.products.flashings === null
-          || configuration.products.windows.length !== configuration.products.flashings.length"
+          || configuration.products.flats.length !== configuration.products.flashings.length"
             class="configuration-summary-container__single--flashings--warning">{{'CONFIG-SUMMARY.differentLength' | translate}}</div>
 
           <!--Accessory from single configuration-->
@@ -260,8 +380,9 @@
           <div class="configuration-summary-container__single--accessories"
                *ngFor="let singleAccessory of configuration.products.accessories let last = last"
                [ngClass]="{'last-child': last}">
-            <img src="{{singleAccessory.accessory.linkiDoZdjec[0]}}"
+            <img *ngIf="singleAccessory.accessory.linkiDoZdjec; else greyBlock" src="{{singleAccessory.accessory.linkiDoZdjec[0]}}"
                  class="configuration-summary-container__single--accessories--accessory-picture">
+            <ng-template #greyBlock><div class="configuration-summary-container__single--accessories--accessory-grey"></div></ng-template>
             <div class="configuration-summary-container__single--accessories--detail">
               <div class="configuration-summary-container__single--accessories--table">
                 <table class="table table-striped table-hover">

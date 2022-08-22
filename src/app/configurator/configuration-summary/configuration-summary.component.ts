@@ -23,6 +23,7 @@ import {SetChosenFlashing} from '../../store/flashing/flashing.actions';
 import {SetChosenRoofWindow} from '../../store/roof-window/roof-window.actions';
 import {AddProductToCart} from '../../store/cart/cart.actions';
 import {CartState} from '../../store/cart/cart.state';
+import {SetChosenFlatRoofWindow} from '../../store/flat-roof-window/flat-roof-window.actions';
 
 @Component({
   selector: 'app-configuration-summary',
@@ -48,6 +49,7 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
   flashingConfigs: FlashingConfig[];
   chosenConfig: SingleConfiguration;
   emptyWindowConfiguration: string;
+  emptyFlatWindowConfiguration: string;
   emptyFlashingConfiguration: string;
   emptyAccessoryConfiguration: string;
   addingProduct: string;
@@ -110,6 +112,9 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
     });
     this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
       this.emptyWindowConfiguration = text.configuratorRoofWindow;
+    });
+    this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
+      this.emptyFlatWindowConfiguration = text.configuratorFlatRoofWindow;
     });
   }
 
@@ -344,5 +349,12 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
     } else {
       return 'zł';
     }
+  }
+
+  addNewFlatWindow(configuration: any) {
+    this.chosenConfig = configuration;
+    // 'konfigurator/kolnierze/:configId/:formName/:productCode'
+    this.router.navigate(['/' + this.emptyFlatWindowConfiguration +
+    '/' + configuration.globalId + '/' + 'no-name' + '/' + '-1']);
   }
 }

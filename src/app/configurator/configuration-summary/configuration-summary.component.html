@@ -22,14 +22,16 @@
             <a (click)="configurationNameSave(configuration._id, newConfigurationName)" *ngIf="!uneditable"
                class="btn-invert btn--green edit-button">{{'CONFIG-SUMMARY.saveConfigName' | translate}}</a>
           </div>
-          <!--Roof window from single configuration-->
+
+          <!--Flat roof window from single configuration-->
           <h1
             class="configuration-summary-container__single--product-title first-child"
-            *ngIf="configuration.products.windows">{{'CONFIG-SUMMARY.roofWindows' | translate}}</h1>
+            *ngIf="configuration.products.flats">{{'CONFIG-SUMMARY.flatRoofWindows' | translate}}</h1>
           <div class="configuration-summary-container__single--roof-windows"
-               *ngFor="let singleWindow of configuration.products.windows let last = last" [ngClass]="{'last-child': last}">
-            <img src="{{singleWindow.window._linkiDoZdjec[0]}}"
+               *ngFor="let singleWindow of configuration.products.flats let last = last" [ngClass]="{'last-child': last}">
+            <img *ngIf="singleWindow.flat.linkiDoZdjec; else greyBlock" src="{{singleWindow.flat.linkiDoZdjec[0]}}"
                  class="configuration-summary-container__single--roof-windows--window-picture">
+            <ng-template #greyBlock><div class="configuration-summary-container__single--roof-windows--window-grey"></div></ng-template>
             <div class="configuration-summary-container__single--roof-windows--detail">
               <div class="configuration-summary-container__single--roof-windows--table">
                 <table class="table table-striped table-hover">
@@ -45,109 +47,249 @@
                   <tr>
                     <th scope="row">1</th>
                     <td>{{ 'SINGLE-PRODUCT.windowName' | translate}}</td>
-                    <td>{{singleWindow.window._productName}}</td>
+                    <td>{{singleWindow.flat.productName}}</td>
                   </tr>
                   <tr>
                     <th scope="row">2</th>
                     <td>{{ 'SINGLE-PRODUCT.windowUW' | translate}}</td>
-                    <td>{{singleWindow.window._windowUW}}</td>
+                    <td>{{singleWindow.flat.windowUW}}</td>
                   </tr>
                   <tr>
                     <th scope="row">3</th>
                     <td>{{ 'SINGLE-PRODUCT.windowUG' | translate}}</td>
-                    <td>{{singleWindow.window._windowUG}}</td>
+                    <td>{{singleWindow.flat.windowUG}}</td>
                   </tr>
                   <tr>
                     <th scope="row">4</th>
                     <td>{{ 'SINGLE-PRODUCT.windowModel' | translate}}</td>
-                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.window._model | translate}}</td>
+                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.flat.model | translate}}</td>
                   </tr>
                   <tr>
                     <th scope="row">5</th>
                     <td>{{ 'SINGLE-PRODUCT.windowGlazing' | translate}}</td>
-                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.window._pakietSzybowy | translate}}</td>
+                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.flat.pakietSzybowy | translate}}</td>
                   </tr>
                   <tr>
                     <th scope="row">6</th>
                     <td>{{ 'SINGLE-PRODUCT.windowDimensions' | translate}}</td>
-                    <td>{{singleWindow.window._szerokosc}} x {{singleWindow.window._wysokosc}}</td>
+                    <td>{{singleWindow.flat.szerokosc}} x {{singleWindow.flat.wysokosc}}</td>
                   </tr>
                   <tr>
                     <th scope="row">7</th>
                     <td>{{ 'SINGLE-PRODUCT.windowGeometry' | translate}}</td>
-                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.window._geometria | translate}}</td>
+                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.flat.geometria | translate}}</td>
                   </tr>
                   <tr>
                     <th scope="row">8</th>
                     <td>{{ 'SINGLE-PRODUCT.windowOpeningType' | translate}}</td>
-                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.window._otwieranie | translate}}</td>
+                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.flat.otwieranie | translate}}</td>
                   </tr>
                   <tr>
                     <th scope="row">9</th>
-                    <td>{{ 'SINGLE-PRODUCT.windowVentilation' | translate}}</td>
-                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.window._wentylacja | translate}}</td>
+                    <td>{{ 'SINGLE-PRODUCT.foamsNumber' | translate}}</td>
+                    <td>{{singleWindow.flat.uszczelki}}</td>
                   </tr>
                   <tr>
                     <th scope="row">10</th>
                     <td>{{ 'SINGLE-PRODUCT.windowMaterial' | translate}}</td>
-                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.window._stolarkaMaterial | translate}}</td>
+                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.flat.stolarkaMaterial | translate}}</td>
                   </tr>
                   <tr>
                     <th scope="row">11</th>
                     <td>{{ 'SINGLE-PRODUCT.windowMaterialColor' | translate}}</td>
-                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.window._stolarkaKolor | translate}}</td>
+                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.flat.stolarkaKolor | translate}}</td>
                   </tr>
                   <tr>
                     <th scope="row">12</th>
                     <td>{{ 'SINGLE-PRODUCT.windowMaterialFinish' | translate}}</td>
-                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.window._rodzina | translate}}</td>
+                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.flat.rodzina | translate}}</td>
                   </tr>
                   <tr>
                     <th scope="row">13</th>
                     <td>{{ 'SINGLE-PRODUCT.windowOuterMaterial' | translate}}</td>
-                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.window._oblachowanieMaterial | translate}}</td>
+                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.flat.oblachowanieMaterial | translate}}</td>
                   </tr>
                   <tr>
                     <th scope="row">14</th>
                     <td>{{ 'SINGLE-PRODUCT.windowOuterColor' | translate}}</td>
-                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.window._oblachowanieKolor | translate}}</td>
+                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.flat.oblachowanieKolor | translate}}</td>
                   </tr>
                   <tr>
                     <th scope="row">15</th>
                     <td>{{ 'SINGLE-PRODUCT.windowOuterFinish' | translate}}</td>
-                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.window._oblachowanieFinisz | translate}}</td>
+                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.flat.oblachowanieFinisz | translate}}</td>
                   </tr>
                   <tr>
                     <th scope="row">16</th>
                     <td>{{ 'SINGLE-PRODUCT.windowHandleType' | translate}}</td>
-                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.window._zamkniecieTyp | translate}}</td>
+                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.flat.zamkniecieTyp | translate}}</td>
                   </tr>
                   <tr>
                     <th scope="row">17</th>
                     <td>{{ 'SINGLE-PRODUCT.windowHandleColor' | translate}}</td>
-                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.window._zamkniecieKolor | translate}}</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">18</th>
-                    <td>{{ 'SINGLE-PRODUCT.innerAccessoryColor' | translate}}</td>
-                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.window._kolorTworzywWew | translate}}</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">19</th>
-                    <td>{{ 'SINGLE-PRODUCT.foamsNumber' | translate}}</td>
-                    <td>{{singleWindow.window._uszczelki}}</td>
+                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.flat.zamkniecieKolor | translate}}</td>
                   </tr>
                   <tr>
                     <th scope="row">20</th>
                     <td>{{ 'SINGLE-PRODUCT.detalPrice' | translate}}</td>
-                    <td>{{(singleWindow.window._CenaDetaliczna / (cart$ | async).cart.exchange) + ((singleWindow.window._CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</td>
+                    <td>{{(singleWindow.flat.CenaDetaliczna / (cart$ | async).cart.exchange) + ((singleWindow.flat.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</td>
                   </tr>
                   </tbody>
                 </table>
               </div>
 
               <div class="configuration-summary-container__single__buttons">
-                <a routerLink="../{{'LINK.roofWindows' | translate}}/{{configuration.globalId}}/{{singleWindow.windowFormName}}/{{singleWindow.window._kod}}"
+                <a routerLink="../{{'LINK.roofWindows' | translate}}/{{configuration.globalId}}/{{singleWindow.flatFormName}}/{{singleWindow.flat.kod}}"
+                   class="btn btn--black">{{'CONFIG-SUMMARY.correctConfig' | translate}}</a>
+                <div class="quantity-container">
+                  <p class="quantity-desc">{{ 'SINGLE-PRODUCT.quantity' | translate}}</p>
+                  <i
+                    (click)="decreaseQuantity(configuration, singleWindow, singleWindow.id, singleWindow.quantity)">-</i>
+                  <input type="number" class="quantity" [(ngModel)]="singleWindow.quantity">
+                  <i
+                    (click)="increaseQuantity(configuration, singleWindow, singleWindow.id, singleWindow.quantity)">+</i>
+                </div>
+                <a class="btn btn--black remove-config-button"
+                   (click)="removeProductConfiguration(configuration, singleWindow.id, singleWindow)">{{ 'CONFIG-SUMMARY.removeConfiguration' | translate}}</a>
+                <a href="" class="btn btn--green add-to-cart"
+                   (click)="addToCart(singleWindow.flat, singleWindow.quantity)">{{ 'SINGLE-PRODUCT.addToCart' | translate}}</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="configuration-summary-container__single--add-new">
+            <a (click)="addNewFlatWindow(configuration)"
+               class="btn btn--grey">{{'CONFIG-SUMMARY.addNewFlatRoofWindow' | translate}}</a>
+          </div>
+
+
+          <!--Roof window from single configuration-->
+          <h1
+            class="configuration-summary-container__single--product-title first-child"
+            *ngIf="configuration.products.windows">{{'CONFIG-SUMMARY.roofWindows' | translate}}</h1>
+          <div class="configuration-summary-container__single--roof-windows"
+               *ngFor="let singleWindow of configuration.products.windows let last = last" [ngClass]="{'last-child': last}">
+            <img *ngIf="singleWindow.window.linkiDoZdjec; else greyBlock" src="{{singleWindow.window.linkiDoZdjec[0]}}"
+                 class="configuration-summary-container__single--roof-windows--window-picture">
+            <ng-template #greyBlock><div class="configuration-summary-container__single--roof-windows--window-grey"></div></ng-template>
+            <div class="configuration-summary-container__single--roof-windows--detail">
+              <div class="configuration-summary-container__single--roof-windows--table">
+                <table class="table table-striped table-hover">
+                  <thead>
+                  <tr class="on-hover" (click)="onHoverClick($event)">
+                    <th scope="col">{{ 'SINGLE-PRODUCT.LP' | translate}} <span>({{'CONFIG-SUMMARY.expend' | translate}}&#8595;)</span>
+                    </th>
+                    <th scope="col">{{ 'CONFIG-SUMMARY.feature' | translate}}</th>
+                    <th scope="col">{{ 'CONFIG-SUMMARY.value' | translate}}</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowName' | translate}}</td>
+                    <td>{{singleWindow.window.productName}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowUW' | translate}}</td>
+                    <td>{{singleWindow.window.windowUW}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">3</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowUG' | translate}}</td>
+                    <td>{{singleWindow.window.windowUG}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">4</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowModel' | translate}}</td>
+                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.window.model | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">5</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowGlazing' | translate}}</td>
+                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.window.pakietSzybowy | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">6</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowDimensions' | translate}}</td>
+                    <td>{{singleWindow.window.szerokosc}} x {{singleWindow.window.wysokosc}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">7</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowGeometry' | translate}}</td>
+                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.window.geometria | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">8</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowOpeningType' | translate}}</td>
+                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.window.otwieranie | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">9</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowVentilation' | translate}}</td>
+                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.window.wentylacja | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">10</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowMaterial' | translate}}</td>
+                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.window.stolarkaMaterial | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">11</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowMaterialColor' | translate}}</td>
+                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.window.stolarkaKolor | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">12</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowMaterialFinish' | translate}}</td>
+                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.window.rodzina | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">13</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowOuterMaterial' | translate}}</td>
+                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.window.oblachowanieMaterial | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">14</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowOuterColor' | translate}}</td>
+                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.window.oblachowanieKolor | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">15</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowOuterFinish' | translate}}</td>
+                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.window.oblachowanieFinisz | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">16</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowHandleType' | translate}}</td>
+                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.window.zamkniecieTyp | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">17</th>
+                    <td>{{ 'SINGLE-PRODUCT.windowHandleColor' | translate}}</td>
+                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.window.zamkniecieKolor | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">18</th>
+                    <td>{{ 'SINGLE-PRODUCT.innerAccessoryColor' | translate}}</td>
+                    <td>{{ 'ROOF-WINDOWS-DATA.' + singleWindow.window.kolorTworzywWew | translate}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">19</th>
+                    <td>{{ 'SINGLE-PRODUCT.foamsNumber' | translate}}</td>
+                    <td>{{singleWindow.window.uszczelki}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">20</th>
+                    <td>{{ 'SINGLE-PRODUCT.detalPrice' | translate}}</td>
+                    <td>{{(singleWindow.window.CenaDetaliczna / (cart$ | async).cart.exchange) + ((singleWindow.window.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="configuration-summary-container__single__buttons">
+                <a routerLink="../{{'LINK.roofWindows' | translate}}/{{configuration.globalId}}/{{singleWindow.windowFormName}}/{{singleWindow.window.kod}}"
                    class="btn btn--black">{{'CONFIG-SUMMARY.correctConfig' | translate}}</a>
                 <div class="quantity-container">
                   <p class="quantity-desc">{{ 'SINGLE-PRODUCT.quantity' | translate}}</p>
@@ -200,8 +342,9 @@
             *ngIf="configuration.products.flashings">{{'CONFIG-SUMMARY.flashings' | translate}}</h1>
           <div class="configuration-summary-container__single--flashings"
                *ngFor="let singleFlashing of configuration.products.flashings let last = last" [ngClass]="{'last-child': last}">
-            <img src="{{singleFlashing.flashing._linkiDoZdjec[0]}}"
+            <img *ngIf="singleFlashing.flashing.linkiDoZdjec; else greyBlock" src="{{singleFlashing.flashing.linkiDoZdjec[0]}}"
                  class="configuration-summary-container__single--flashings--flashing-picture">
+            <ng-template #greyBlock><div class="configuration-summary-container__single--flashings--flashing-grey"></div></ng-template>
             <div class="configuration-summary-container__single--flashings--detail">
               <div class="configuration-summary-container__single--flashings--table">
                 <table class="table table-striped table-hover">
@@ -217,83 +360,83 @@
                   <tr>
                     <th scope="row">1</th>
                     <td>{{ 'SINGLE-PRODUCT.flashingName' | translate}}</td>
-                    <td>{{singleFlashing.flashing._productName}}</td>
+                    <td>{{singleFlashing.flashing.productName}}</td>
                   </tr>
                   <tr>
                     <th scope="row">2</th>
                     <td>{{ 'SINGLE-PRODUCT.flashingModel' | translate}}</td>
-                    <td>{{ 'FLASHINGS-DATA.' + singleFlashing.flashing._model | translate}}</td>
+                    <td>{{ 'FLASHINGS-DATA.' + singleFlashing.flashing.model | translate}}</td>
                   </tr>
                   <tr>
                     <th scope="row">3</th>
                     <td>{{ 'SINGLE-PRODUCT.flashingApron' | translate}}</td>
-                    <td>{{ 'FLASHINGS-DATA.' + singleFlashing.flashing._typFartucha | translate}}</td>
+                    <td>{{ 'FLASHINGS-DATA.' + singleFlashing.flashing.typFartucha | translate}}</td>
                   </tr>
                   <tr>
                     <th scope="row">4</th>
                     <td>{{ 'SINGLE-PRODUCT.flashingDimensions' | translate}}</td>
-                    <td>{{singleFlashing.flashing._szerokosc}} x {{singleFlashing.flashing._wysokosc}}</td>
+                    <td>{{singleFlashing.flashing.szerokosc}} x {{singleFlashing.flashing.wysokosc}}</td>
                   </tr>
                   <tr>
                     <th scope="row">5</th>
                     <td>{{ 'SINGLE-PRODUCT.flashingCategory' | translate}}</td>
-                    <td>{{ 'FLASHINGS-DATA.' + singleFlashing.flashing._grupaAsortymentowa | translate}}</td>
+                    <td>{{ 'FLASHINGS-DATA.' + singleFlashing.flashing.grupaAsortymentowa | translate}}</td>
                   </tr>
                   <tr>
                     <th scope="row">6</th>
                     <td>{{ 'SINGLE-PRODUCT.flashingSubCategory' | translate}}</td>
-                    <td>{{ 'FLASHINGS-DATA.' + singleFlashing.flashing._rodzaj | translate}}</td>
+                    <td>{{ 'FLASHINGS-DATA.' + singleFlashing.flashing.rodzaj | translate}}</td>
                   </tr>
                   <tr>
                     <th scope="row">7</th>
                     <td>{{ 'SINGLE-PRODUCT.flashingGeometry' | translate}}</td>
-                    <td>{{ 'FLASHINGS-DATA.' + singleFlashing.flashing._geometria | translate}}</td>
+                    <td>{{ 'FLASHINGS-DATA.' + singleFlashing.flashing.geometria | translate}}</td>
                   </tr>
                   <tr>
                     <th scope="row">8</th>
                     <td>{{ 'SINGLE-PRODUCT.flashingOuterMaterial' | translate}}</td>
-                    <td>{{ 'FLASHINGS-DATA.' + singleFlashing.flashing._oblachowanieMaterial | translate}}</td>
+                    <td>{{ 'FLASHINGS-DATA.' + singleFlashing.flashing.oblachowanieMaterial | translate}}</td>
                   </tr>
                   <tr>
                     <th scope="row">9</th>
                     <td>{{ 'SINGLE-PRODUCT.flashingOuterColor' | translate}}</td>
-                    <td>{{ 'FLASHINGS-DATA.' + singleFlashing.flashing._oblachowanieKolor | translate}}</td>
+                    <td>{{ 'FLASHINGS-DATA.' + singleFlashing.flashing.oblachowanieKolor | translate}}</td>
                   </tr>
                   <tr>
                     <th scope="row">10</th>
                     <td>{{ 'SINGLE-PRODUCT.flashingOuterFinish' | translate}}</td>
-                    <td>{{ 'FLASHINGS-DATA.' + singleFlashing.flashing._oblachowanieFinisz | translate}}</td>
+                    <td>{{ 'FLASHINGS-DATA.' + singleFlashing.flashing.oblachowanieFinisz | translate}}</td>
                   </tr>
                   <tr>
                     <th scope="row">11</th>
                     <td>{{ 'SINGLE-PRODUCT.flashingTileHeight' | translate}}</td>
-                    <td>{{singleFlashing.flashing._flashingTileHeight}}</td>
+                    <td>{{singleFlashing.flashing.flashingTileHeight}}</td>
                   </tr>
                   <tr>
                     <th scope="row">12</th>
                     <td>{{ 'SINGLE-PRODUCT.flashingNumberOfConnections' | translate}}</td>
-                    <td>{{singleFlashing.flashing._flashingNumberOfConnections}}</td>
+                    <td>{{singleFlashing.flashing.flashingNumberOfConnections}}</td>
                   </tr>
                   <tr>
                     <th scope="row">13</th>
                     <td>{{ 'SINGLE-PRODUCT.flashingVerticalDistance' | translate}}</td>
-                    <td>{{singleFlashing.flashing._rozstawPion}}</td>
+                    <td>{{singleFlashing.flashing.rozstawPion}}</td>
                   </tr>
                   <tr>
                     <th scope="row">14</th>
                     <td>{{ 'SINGLE-PRODUCT.flashingHorizontalDistance' | translate}}</td>
-                    <td>{{singleFlashing.flashing._rozstawPoziom}}</td>
+                    <td>{{singleFlashing.flashing.rozstawPoziom}}</td>
                   </tr>
                   <tr>
                     <th scope="row">15</th>
                     <td>{{ 'SINGLE-PRODUCT.detalPrice' | translate}}</td>
-                    <td>{{(singleFlashing.flashing._CenaDetaliczna / (cart$ | async).cart.exchange) + ((singleFlashing.flashing._CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</td>
+                    <td>{{(singleFlashing.flashing.CenaDetaliczna / (cart$ | async).cart.exchange) + ((singleFlashing.flashing.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</td>
                   </tr>
                   </tbody>
                 </table>
               </div>
               <div class="configuration-summary-container__single__buttons">
-                <a routerLink="../{{'LINK.flashings' | translate}}/{{configuration.globalId}}/{{singleFlashing.id}}/{{singleFlashing.flashing._kod}}"
+                <a routerLink="../{{'LINK.flashings' | translate}}/{{configuration.globalId}}/{{singleFlashing.id}}/{{singleFlashing.flashing.kod}}"
                    class="btn btn--black">{{'CONFIG-SUMMARY.correctConfig' | translate}}</a>
                 <div class="quantity-container quantity-counter">
                   <p class="quantity-desc">{{'SINGLE-PRODUCT.quantity' | translate}}</p>
@@ -325,7 +468,7 @@
                     <input *ngIf="windowConfiguration.window" value="{{windowConfiguration.id}}" [(ngModel)]="windowId" name="windowId"
                            class="choose-window-popup__content__form--select--input" type="radio" id="{{i}}">
                     <label *ngIf="windowConfiguration.window" for="{{i}}"
-                           class="choose-window-popup__content__form--select--label">{{windowConfiguration.id}} - {{windowConfiguration.window.productName}}</label>
+                           class="choose-window-popup__content__form--select--label">{{ 'CONFIG-SUMMARY.windowNr' | translate}} {{windowConfiguration.id}} - {{windowConfiguration.window.productName}}</label>
 
                     <input *ngIf="!windowConfiguration.window" value="{{windowConfiguration.id}}" [(ngModel)]="windowId" name="windowId"
                            class="choose-window-popup__content__form--select--input" type="radio" id="{{i}}" checked>
@@ -355,8 +498,9 @@
           <div class="configuration-summary-container__single--accessories"
                *ngFor="let singleAccessory of configuration.products.accessories let last = last"
                [ngClass]="{'last-child': last}">
-            <img src="{{singleAccessory.accessory._linkiDoZdjec[0]}}"
+            <img *ngIf="singleAccessory.accessory.linkiDoZdjec; else greyBlock" src="{{singleAccessory.accessory.linkiDoZdjec[0]}}"
                  class="configuration-summary-container__single--accessories--accessory-picture">
+            <ng-template #greyBlock><div class="configuration-summary-container__single--accessories--accessory-grey"></div></ng-template>
             <div class="configuration-summary-container__single--accessories--detail">
               <div class="configuration-summary-container__single--accessories--table">
                 <table class="table table-striped table-hover">
@@ -372,63 +516,63 @@
                   <tr>
                     <th scope="row">1</th>
                     <td>{{ 'SINGLE-PRODUCT.accessoryName' | translate}}</td>
-                    <td>{{singleAccessory.accessory._productName}}</td>
+                    <td>{{singleAccessory.accessory.productName}}</td>
                   </tr>
                   <tr>
                     <th scope="row">2</th>
                     <td>{{ 'SINGLE-PRODUCT.accessoryModel' | translate}}</td>
-                    <td>{{ 'ACCESSORIES-DATA.' + singleAccessory.accessory._model | translate}}</td>
+                    <td>{{ 'ACCESSORY-DATA.' + singleAccessory.accessory.model | translate}}</td>
                   </tr>
                   <tr>
                     <th scope="row">3</th>
                     <td>{{ 'SINGLE-PRODUCT.accessoryDimensions' | translate}}</td>
-                    <td>{{singleAccessory.accessory._szerokosc}} x {{singleAccessory.accessory._wysokosc}}</td>
+                    <td>{{singleAccessory.accessory.szerokosc}} x {{singleAccessory.accessory.wysokosc}}</td>
                   </tr>
                   <tr>
                     <th scope="row">4</th>
                     <td>{{ 'SINGLE-PRODUCT.materialTyp' | translate}}</td>
-                    <td>{{ 'ACCESSORIES-DATA.' + singleAccessory.accessory._typTkaniny | translate}}</td>
+                    <td>{{ 'ACCESSORY-DATA.' + singleAccessory.accessory.typTkaniny | translate}}</td>
                   </tr>
                   <tr>
                     <th scope="row">5</th>
                     <td>{{ 'SINGLE-PRODUCT.materialColor' | translate}}</td>
-                    <td>{{ 'ACCESSORIES-DATA.' + singleAccessory.accessory._kolorTkaniny | translate}}</td>
+                    <td>{{ 'ACCESSORY-DATA.' + singleAccessory.accessory.kolorTkaniny | translate}}</td>
                   </tr>
                   <tr>
                     <th scope="row">6</th>
                     <td>{{ 'SINGLE-PRODUCT.accessoryColor' | translate}}</td>
-                    <td>{{ 'ACCESSORIES-DATA.' + singleAccessory.accessory._roletyKolorOsprzetu | translate}}</td>
+                    <td>{{ 'ACCESSORY-DATA.' + singleAccessory.accessory.roletyKolorOsprzetu | translate}}</td>
                   </tr>
                   <tr>
                     <th scope="row">7</th>
                     <td>{{ 'SINGLE-PRODUCT.accessoryOpeningType' | translate}}</td>
-                    <td>{{ 'ACCESSORIES-DATA.' + singleAccessory.accessory._otwieranie | translate}}</td>
+                    <td>{{ 'ACCESSORY-DATA.' + singleAccessory.accessory.otwieranie | translate}}</td>
                   </tr>
                   <tr>
                     <th scope="row">8</th>
                     <td>{{ 'SINGLE-PRODUCT.accessoryCategory' | translate}}</td>
-                    <td>{{ 'ACCESSORIES-DATA.' + singleAccessory.accessory._grupaAsortymentowa | translate}}</td>
+                    <td>{{ 'ACCESSORY-DATA.' + singleAccessory.accessory.grupaAsortymentowa | translate}}</td>
                   </tr>
                   <tr>
                     <th scope="row">9</th>
                     <td>{{ 'SINGLE-PRODUCT.accessorySubCategory' | translate}}</td>
-                    <td>{{ 'ACCESSORIES-DATA.' + singleAccessory.accessory._rodzaj | translate}}</td>
+                    <td>{{ 'ACCESSORY-DATA.' + singleAccessory.accessory.rodzaj | translate}}</td>
                   </tr>
                   <tr>
                     <th scope="row">10</th>
                     <td>{{ 'SINGLE-PRODUCT.accessoryGeometry' | translate}}</td>
-                    <td>{{ 'ACCESSORIES-DATA.' + singleAccessory.accessory._geometria | translate}}</td>
+                    <td>{{ 'ACCESSORY-DATA.' + singleAccessory.accessory.geometria | translate}}</td>
                   </tr>
                   <tr>
                     <th scope="row">11</th>
                     <td>{{ 'SINGLE-PRODUCT.detalPrice' | translate}}</td>
-                    <td>{{(singleAccessory.accessory._CenaDetaliczna / (cart$ | async).cart.exchange) + ((singleAccessory.accessory._CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</td>
+                    <td>{{(singleAccessory.accessory.CenaDetaliczna / (cart$ | async).cart.exchange) + ((singleAccessory.accessory.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</td>
                   </tr>
                   </tbody>
                 </table>
               </div>
               <div class="configuration-summary-container__single__buttons">
-                <a routerLink="../{{'LINK.accessories' | translate}}/{{configuration.globalId}}/{{singleAccessory.id}}/{{singleAccessory.accessory._kod}}"
+                <a routerLink="../{{'LINK.accessories' | translate}}/{{configuration.globalId}}/{{singleAccessory.id}}/{{singleAccessory.accessory.kod}}"
                    class="btn btn--black">{{'CONFIG-SUMMARY.correctConfig' | translate}}</a>
                 <div class="quantity-container">
                   <p class="quantity-desc">{{ 'SINGLE-PRODUCT.quantity' | translate}}</p>
