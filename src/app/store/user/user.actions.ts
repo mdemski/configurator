@@ -28,6 +28,13 @@ export class ActivateUser {
   }
 }
 
+export class UpdatePreferredLanguage {
+  static type = '[User] Update Preferred Language';
+
+  constructor(public preferredLanguage: string) {
+  }
+}
+
 export class UpdateDiscountForUser {
   static type = '[User] Update User Discount';
 

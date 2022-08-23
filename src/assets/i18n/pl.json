@@ -785,6 +785,7 @@
     "currency": "zł",
     "actualCurrency": "Aktualna waluta",
     "actualVATRate": "Aktualna stawka VAT",
+    "actualLanguage": "Aktualny język",
     "changeCurrency": "Wybierz inną walutę",
     "addToCart": "Dodaj do koszyka",
     "logout": "Wyloguj"

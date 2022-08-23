@@ -34,7 +34,12 @@ import SwiperCore, {
   Zoom
 } from 'swiper';
 import {SwiperComponent} from 'swiper/angular';
-import {AddFavoriteProductsForUser, RemoveFavoriteProductsForUser} from '../store/user/user.actions';
+import {
+  AddFavoriteProductsForUser,
+  RemoveFavoriteProductsForUser,
+  UpdatePreferredLanguage
+} from '../store/user/user.actions';
+import {TranslateService} from '@ngx-translate/core';
 // install Swiper components
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay, Controller, Thumbs]);
 
@@ -79,10 +84,12 @@ export class MyAccountComponent implements OnInit, OnDestroy, AfterViewInit {
 
   currency$ = new BehaviorSubject('PLN');
   vatRate$ = new BehaviorSubject(0.23);
+  lang$ = new BehaviorSubject('pl');
   userOrders$: Observable<Order[]>;
   userTask$: Observable<Task[]>;
   currencies: string[] = [];
   rates: number[] = [];
+  languages: string[] = [];
   isDestroyed$ = new Subject();
   loading = true;
   updatedCurrency: string;
@@ -96,13 +103,16 @@ export class MyAccountComponent implements OnInit, OnDestroy, AfterViewInit {
   showDiscount = false;
 
   constructor(private authService: AuthService,
+              public translate: TranslateService,
               private store: Store,
               private taskService: TaskService,
               private orderService: OrderService,
               private db: DatabaseService,
               private crud: CrudService) {
+    translate.addLangs(['pl', 'en', 'fr', 'de']);
     this.currencies = Object.keys(exchange);
     this.rates = Object.values(vatRates);
+    this.languages = this.translate.getLangs();
     this.currentUser$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.currentUser = user.currentUser);
     this.userOrders$ = this.orderService.getUserOrders().pipe(takeUntil(this.isDestroyed$));
     this.userTask$ = this.taskService.getUserTasks().pipe(takeUntil(this.isDestroyed$), map((tasks: Task[]) => tasks.filter(task => task.status === 'Aktywne')));
@@ -125,6 +135,10 @@ export class MyAccountComponent implements OnInit, OnDestroy, AfterViewInit {
 
   logout() {
     this.authService.logout();
+  }
+
+  updatePreferredLanguage(lang: string) {
+    this.store.dispatch(new UpdatePreferredLanguage(lang));
   }
 
   updateCurrency(updatedCurrency) {

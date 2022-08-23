@@ -15,6 +15,32 @@
 
       <div class="header__foreign-exchange">
 
+        <div class="header__foreign-exchange__preferred-language">
+          <p class="header--title">{{ 'GENERAL.actualLanguage' | translate}}:</p>
+          <div class="select-box">
+            <div class="select-box__current header--radio" tabindex="1">
+              <div class="select-box__value" *ngFor="let lang of languages; let i = index">
+                <input class="select-box__input" type="radio" id="{{i}}"
+                       (change)="updatePreferredLanguage(lang)"
+                       value="{{lang}}" name="language">
+                <p class="select-box__input-text">{{(user$ | async).preferredLanguage}}</p>
+              </div>
+              <div class="select-box__value">
+                <input class="select-box__input" type="radio" id="-3" value="{{(user$ | async).preferredLanguage}}"
+                       name="language" checked>
+                <p class="select-box__input-text">{{(user$ | async).preferredLanguage}}</p>
+              </div>
+              <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg"
+                   alt="Arrow Icon" aria-hidden="true">
+            </div>
+            <ul class="select-box__list">
+              <li *ngFor="let lang of languages; let i = index"><label
+                class="select-box__option margin-bottom-0" for="{{i}}"
+                aria-hidden="aria-hidden">{{lang}}</label></li>
+            </ul>
+          </div>
+        </div>
+
         <div class="header__foreign-exchange__vat-rate">
           <p class="header--title">{{ 'GENERAL.actualVATRate' | translate}}:</p>
           <div class="select-box">

@@ -11,7 +11,7 @@ import {
   SetUserMainAddress,
   SetUserMainAndToSendSameAddress,
   SetUserToSendAddress,
-  UpdateDiscountForUser,
+  UpdateDiscountForUser, UpdatePreferredLanguage,
   UpdateUserData,
   UpdateUserMainAddress,
   UpdateUserToSendAddress
@@ -169,6 +169,19 @@ export class UserState {
           favoriteProducts: updatedUser.favoriteProducts,
           lastUpdate: new Date()
         }));
+    }));
+  }
+
+  @Action(UpdatePreferredLanguage)
+  updatePreferredLanguage(ctx: StateContext<UserStateModel>, {preferredLanguage}: UpdatePreferredLanguage) {
+    const state = ctx.getState();
+    const updateUser = cloneDeep(state);
+    updateUser.preferredLanguage = preferredLanguage;
+    return this.crud.updateUserByMongoId(updateUser).pipe(tap((result: User) => {
+      ctx.setState({
+        ...state,
+        preferredLanguage: result.preferredLanguage
+      });
     }));
   }
 
