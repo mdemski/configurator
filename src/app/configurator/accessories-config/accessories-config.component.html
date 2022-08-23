@@ -325,9 +325,11 @@
           </button>
           <div class="configure-form__validation-info">
             <p class="configure-form__validation-info--single-message"
-               *ngIf="form.get('material').hasError('empty material') ||
-                  form.get('materialColor').hasError('empty material color') ||
-                  form.get('equipmentColor').hasError('empty equipment color')">{{ 'ROOF-WINDOWS-CONFIG.validationInfo' | translate}}</p>
+               *ngIf="form.get('material').hasError('empty material')">{{ 'ROOF-WINDOWS-CONFIG.emptyMaterial' | translate}}</p>
+            <p class="configure-form__validation-info--single-message"
+               *ngIf="form.get('materialColor').hasError('empty material color')">{{ 'ROOF-WINDOWS-CONFIG.emptyMaterialColor' | translate}}</p>
+            <p class="configure-form__validation-info--single-message"
+               *ngIf="form.get('equipmentColor').hasError('empty equipment color')">{{ 'ROOF-WINDOWS-CONFIG.emptyEquipmentColor' | translate}}</p>
           </div>
           <a (click)="saveCopyLinkPopUp()"
              class="btn btn--grey configure-form__save-button">{{ 'ROOF-WINDOWS-CONFIG.saveCopyLinkPopUp' | translate}}</a>
