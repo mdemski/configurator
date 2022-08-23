@@ -366,10 +366,13 @@
           </button>
           <div class="configure-form__validation-info">
             <p class="configure-form__validation-info--single-message"
-               *ngIf="form.get('openingType').hasError('empty openingType') ||
-                  form.get('glazing').hasError('empty glazingType') ||
-                  form.get('outer').hasError('empty outerMaterial') ||
-                  form.get('closure').hasError('empty handle')">{{ 'ROOF-WINDOWS-CONFIG.validationInfo' | translate}}</p>
+               *ngIf="form.get('openingType').hasError('empty openingType')">{{ 'ROOF-WINDOWS-CONFIG.emptyOpeningType' | translate}}</p>
+            <p class="configure-form__validation-info--single-message"
+               *ngIf="form.get('glazing').hasError('empty glazingType')">{{ 'ROOF-WINDOWS-CONFIG.emptyGlazingType' | translate}}</p>
+            <p class="configure-form__validation-info--single-message"
+               *ngIf="form.get('outer').hasError('empty outerMaterial')">{{ 'ROOF-WINDOWS-CONFIG.emptyOuterMaterial' | translate}}</p>
+            <p class="configure-form__validation-info--single-message"
+               *ngIf="form.get('closure').hasError('empty handle')">{{ 'ROOF-WINDOWS-CONFIG.emptyHandle' | translate}}</p>
           </div>
           <a (click)="saveCopyLinkPopUp()"
              class="btn btn--grey configure-form__save-button">{{ 'ROOF-WINDOWS-CONFIG.saveCopyLinkPopUp' | translate}}</a>
