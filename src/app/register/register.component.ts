@@ -92,6 +92,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.registerUser.companyNip = this.registerForm.value.nip;
     this.registerUser.mainAddressId = '';
     this.registerUser.addressToSendId = '';
+    this.registerUser.preferredLanguage = this.translate.getBrowserLang();
     this.registerUser.activationLink = window.location.origin + '/#/confirmation/' + this.randomString.randomString(6) + '/' + this.registerUser.uuid;
     if (this.individualClient || this.companyClientType) {
       this.registerAddress.firstName = this.registerForm.value.firstName;
