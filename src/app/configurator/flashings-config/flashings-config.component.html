@@ -483,10 +483,13 @@
         </button>
         <div class="configure-form__validation-info">
           <p class="configure-form__validation-info--single-message"
-             *ngIf="form.get('flashingType').hasError('empty flashingType') ||
-                  form.get('apronType').hasError('empty apronType') ||
-                  form.get('dimensions').hasError('wrong dimensions') ||
-                  form.get('outer').hasError('empty outerMaterial')">{{ 'FLASHINGS-CONFIG.validationInfo' | translate}}</p>
+             *ngIf="form.get('flashingType').hasError('empty flashingType')">{{ 'FLASHINGS-CONFIG.emptyFlashingType' | translate}}</p>
+          <p class="configure-form__validation-info--single-message"
+             *ngIf="form.get('apronType').hasError('empty apronType')">{{ 'FLASHINGS-CONFIG.emptyApronType' | translate}}</p>
+          <p class="configure-form__validation-info--single-message"
+             *ngIf="form.get('dimensions').hasError('wrong dimensions')">{{ 'FLASHINGS-CONFIG.wrongDimensions' | translate}}</p>
+          <p class="configure-form__validation-info--single-message"
+             *ngIf="form.get('outer').hasError('empty outerMaterial')">{{ 'FLASHINGS-CONFIG.emptyOuterMaterial' | translate}}</p>
         </div>
         <a (click)="saveCopyLinkPopUp()"
            class="btn btn--grey configure-form__save-button">{{ 'ROOF-WINDOWS-CONFIG.saveCopyLinkPopUp' | translate}}</a>

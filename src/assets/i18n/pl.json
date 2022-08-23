@@ -551,7 +551,11 @@
     "loadDimensions": "Wczytaj wymiary",
     "validationInfo": "Skonfiguruj wszystkie opcje zanim przejdziesz do podsumowania",
     "disabledConfigName": "Wybierz konfigurację",
-    "submit": "Podsumowanie"
+    "submit": "Podsumowanie",
+    "emptyFlashingType": "Wybierz typ kołnierza",
+    "emptyApronType": "Wybierz typ fartucha",
+    "wrongDimensions": "Podaj poprawne wymiary",
+    "emptyOuterMaterial": "Wybierz materiał, kolor i wykończenie zewnętrzne"
   },
   "FLASHINGS-DATA": {
     "Kołnierz:U": "Kołnierz do pokryć profilowanych standardowych",
