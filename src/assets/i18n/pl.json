@@ -414,7 +414,14 @@
     "saveCopyLinkPopUp": "Zapisz link do konfiguracji",
     "resetConfigForm": "Resetuj konfigurację",
     "backButton": "Wróć",
-    "extraOption": "Dodatkowa opcja"
+    "extraOption": "Dodatkowa opcja",
+    "emptyMaterial": "Wybierz materiał",
+    "emptyOpeningType": "Wybierz sposób otwierania",
+    "emptyGlazingType": "Wybierz pakiet szybowy",
+    "emptyInnerColor": "Wybierz materiał i kolor wewnętrzny",
+    "emptyOuterMaterial": "Wybierz materiał, kolor i wykończenie zewnętrzne",
+    "emptyVentilation": "Wybierz sposób wentylacji",
+    "emptyHandle": "Wybierz rodzaj i kolor klamki"
   },
   "ROOF-WINDOWS-DATA": {
     "undefined": "nie określony",
