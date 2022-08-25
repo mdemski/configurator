@@ -2,11 +2,11 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {filter, takeUntil} from 'rxjs/operators';
-import {TranslateService} from '@ngx-translate/core';
 import {Observable, Subject} from 'rxjs';
 import {Select} from '@ngxs/store';
 import {UserState} from '../../../store/user/user.state';
 import {CrudService} from '../../../services/crud-service';
+import {MdTranslateService} from '../../../services/md-translate.service';
 
 @Component({
   selector: 'app-reset-password',
@@ -21,7 +21,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   myAccountLink = '';
   myProfileLink = '';
 
-  constructor(public translate: TranslateService,
+  constructor(private translate: MdTranslateService,
               private router: Router,
               private crud: CrudService) {
   }

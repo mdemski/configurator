@@ -1,11 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {TranslateService} from '@ngx-translate/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CrudService} from '../../services/crud-service';
 import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {Store} from '@ngxs/store';
 import {ActivateUser} from '../../store/user/user.actions';
+import {MdTranslateService} from '../../services/md-translate.service';
 
 @Component({
   selector: 'app-register-confirmation-page',
@@ -21,13 +21,12 @@ export class RegisterConfirmationPageComponent implements OnInit, OnDestroy {
   loginPage: string;
   isLoading = true;
 
-  constructor(public translate: TranslateService,
+  constructor(private translate: MdTranslateService,
               private crud: CrudService,
               private store: Store,
               private router: Router,
               private route: ActivatedRoute) {
-    translate.addLangs(['pl', 'en', 'fr', 'de']);
-    translate.setDefaultLang('pl');
+    translate.setLanguage();
     this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
       this.loginPage = text.login;
     });

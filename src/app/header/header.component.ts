@@ -1,5 +1,4 @@
 import {Component, ElementRef, HostListener, OnDestroy, OnInit, Renderer2} from '@angular/core';
-import {TranslateService} from '@ngx-translate/core';
 import {AuthService} from '../services/auth.service';
 import {Select, Store} from '@ngxs/store';
 import {SetCurrentUser, SetPreferredLanguage} from '../store/app/app.actions';
@@ -7,6 +6,7 @@ import {CartState} from '../store/cart/cart.state';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {skip, takeUntil} from 'rxjs/operators';
 import {AppState} from '../store/app/app.state';
+import {MdTranslateService} from '../services/md-translate.service';
 
 @Component({
   selector: 'app-header',
@@ -29,11 +29,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   constructor(private renderer: Renderer2,
               private el: ElementRef,
-              public translate: TranslateService,
+              private translate: MdTranslateService,
               private authService: AuthService,
               private store: Store) {
-    translate.addLangs(['pl', 'en', 'fr', 'de']);
-    translate.setDefaultLang('pl');
+    translate.setLanguage();
     this.currentUser$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.userEmail = user.currentUser.email);
   }
 

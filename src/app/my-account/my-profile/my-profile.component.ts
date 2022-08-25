@@ -9,7 +9,6 @@ import {CartState} from '../../store/cart/cart.state';
 import exchange from '../../../assets/json/echange.json';
 import vatRates from '../../../assets/json/vatRates.json';
 import {DatabaseService} from '../../services/database.service';
-import {TranslateService} from '@ngx-translate/core';
 import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {Invoice} from '../../models/invoice';
 import _ from 'lodash';
@@ -19,6 +18,7 @@ import {Address} from '../../models/address';
 import {UpdateUserData} from '../../store/user/user.actions';
 import {Company} from '../../models/company';
 import { Chart } from 'chart.js';
+import {MdTranslateService} from '../../services/md-translate.service';
 
 @Component({
   selector: 'app-my-profile',
@@ -57,7 +57,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   grossPriceToggler = true;
   statusToggler = true;
   correctingInvoiceToggler = true;
-  languages = ['pl', 'en', 'fr', 'de'];
+  languages;
   private filtersObject = {
     invoiceNumberSearch: '',
     dateSearch: '',
@@ -68,7 +68,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     statusSearch: ''
   };
 
-  constructor(public translate: TranslateService,
+  constructor(private translate: MdTranslateService,
               private fb: FormBuilder,
               private authService: AuthService,
               private store: Store,
@@ -78,10 +78,10 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     this.testCompany = this.db.getAllSellers()[0];
     this.company$.next(this.testCompany);
     this.invoices = this.db.getAllSellers()[0].invoices;
+    this.languages = this.translate.getLanguages();
     this.currencies = Object.keys(exchange);
     this.rates = Object.values(vatRates);
-    translate.addLangs(['pl', 'en', 'fr', 'de']);
-    translate.setDefaultLang('pl');
+    translate.setLanguage();
     this.translate.get('MY-PROFILE').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
       for (const label of this.labels) {
         this.translatedLabels.push(text[label]);

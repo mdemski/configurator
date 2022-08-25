@@ -11,7 +11,6 @@ import {HighestIdGetterService} from '../../services/highest-id-getter.service';
 import {RandomStringGeneratorService} from '../../services/random-string-generator.service';
 import {Router} from '@angular/router';
 import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
-import {TranslateService} from '@ngx-translate/core';
 import {filter, map, takeUntil, tap} from 'rxjs/operators';
 import {AccessoryState} from '../../store/accessory/accessory.state';
 import {Accessory} from '../../models/accessory';
@@ -23,6 +22,7 @@ import {
   AddAccessoryConfiguration, AddGlobalConfiguration,
   UpdateAccessoryConfiguration, UpdateAccessoryFormByFormName
 } from '../../store/configuration/configuration.actions';
+import {MdTranslateService} from '../../services/md-translate.service';
 
 @Component({
   selector: 'app-accessories-config',
@@ -48,10 +48,9 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
               private router: Router,
               private fb: FormBuilder,
               private modal: ModalService,
-              public translate: TranslateService) {
+              private translate: MdTranslateService) {
     this.loading = true;
-    translate.addLangs(['pl', 'en', 'fr', 'de']);
-    translate.setDefaultLang('pl');
+    translate.setLanguage();
     this.configOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(configOptions => this.configOptions = configOptions);
     this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.currentUser = user.currentUser.email);
     this.configurations$.pipe(takeUntil(this.isDestroyed$)).subscribe(configurations => this.configurations = configurations);

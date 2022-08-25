@@ -1,8 +1,8 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import {Flashing} from '../models/flashing';
-import {TranslateService} from '@ngx-translate/core';
 import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
+import {MdTranslateService} from './md-translate.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +11,8 @@ export class FlashingValueSetterService implements OnDestroy {
 
   isDestroyed$ = new Subject();
 
-  constructor(public translate: TranslateService) {
-    translate.addLangs(['pl', 'en', 'fr', 'de']);
-    translate.setDefaultLang('pl');
+  constructor(private translate: MdTranslateService) {
+    translate.setLanguage();
   }
 
   ngOnDestroy(): void {

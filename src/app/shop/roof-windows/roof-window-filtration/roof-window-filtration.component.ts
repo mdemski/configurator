@@ -5,7 +5,7 @@ import {RoofWindowState} from '../../../store/roof-window/roof-window.state';
 import {Observable, Subject} from 'rxjs';
 import {RoofWindowSkylight} from '../../../models/roof-window-skylight';
 import {map, takeUntil} from 'rxjs/operators';
-import {TranslateService} from '@ngx-translate/core';
+import {MdTranslateService} from '../../../services/md-translate.service';
 
 @Component({
   selector: 'app-roof-window-filtration',
@@ -15,9 +15,8 @@ import {TranslateService} from '@ngx-translate/core';
 export class RoofWindowFiltrationComponent implements OnInit, OnDestroy {
 
   constructor(private fb: FormBuilder,
-              public translate: TranslateService) {
-    translate.addLangs(['pl', 'en', 'fr', 'de']);
-    translate.setDefaultLang('pl');
+              private translate: MdTranslateService) {
+    translate.setLanguage();
   }
 
   @Output() filtersEmitter = new EventEmitter<any>();

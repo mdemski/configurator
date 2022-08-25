@@ -1,11 +1,11 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {TranslateService} from '@ngx-translate/core';
 import {Observable, Subject} from 'rxjs';
 import {Select} from '@ngxs/store';
 import {FlashingState} from '../../../store/flashing/flashing.state';
 import {Flashing} from '../../../models/flashing';
 import {map, takeUntil} from 'rxjs/operators';
+import {MdTranslateService} from '../../../services/md-translate.service';
 
 @Component({
   selector: 'app-flashing-filtration',
@@ -15,9 +15,8 @@ import {map, takeUntil} from 'rxjs/operators';
 export class FlashingFiltrationComponent implements OnInit, OnDestroy {
 
   constructor(private fb: FormBuilder,
-              public translate: TranslateService) {
-    translate.addLangs(['pl', 'en', 'fr', 'de']);
-    translate.setDefaultLang('pl');
+              private translate: MdTranslateService) {
+    translate.setLanguage();
   }
 
   private isDestroyed$ = new Subject();

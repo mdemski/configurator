@@ -2,10 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {AuthService} from '../services/auth.service';
 import {Router} from '@angular/router';
-import {TranslateService} from '@ngx-translate/core';
 import {map, takeUntil} from 'rxjs/operators';
 import {Observable, Subject} from 'rxjs';
 import {CrudService} from '../services/crud-service';
+import {MdTranslateService} from '../services/md-translate.service';
 
 @Component({
   selector: 'app-login',
@@ -23,9 +23,8 @@ export class LoginComponent implements OnInit {
   constructor(private authService: AuthService,
               private router: Router,
               private crud: CrudService,
-              public translate: TranslateService) {
-    translate.addLangs(['pl', 'en', 'fr', 'de']);
-    translate.setDefaultLang('pl');
+              private translate: MdTranslateService) {
+    translate.setLanguage();
   }
 
   ngOnInit(): void {

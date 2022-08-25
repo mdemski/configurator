@@ -14,7 +14,6 @@ import {HighestIdGetterService} from '../../services/highest-id-getter.service';
 import {RandomStringGeneratorService} from '../../services/random-string-generator.service';
 import {Router} from '@angular/router';
 import {FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors} from '@angular/forms';
-import {TranslateService} from '@ngx-translate/core';
 import {filter, map, pairwise, startWith, takeUntil, tap} from 'rxjs/operators';
 import {FlatConfig} from '../../models/flat-config';
 import {FlatValueSetterService} from '../../services/flat-value-setter.service';
@@ -22,6 +21,7 @@ import {
   AddFlatRoofConfiguration, AddGlobalConfiguration,
   UpdateFlatRoofConfiguration, UpdateFlatRoofFormByFormName,
 } from '../../store/configuration/configuration.actions';
+import {MdTranslateService} from '../../services/md-translate.service';
 
 @Component({
   selector: 'app-flat-roof-windows-config',
@@ -47,10 +47,9 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
               private randomString: RandomStringGeneratorService,
               private router: Router,
               private fb: FormBuilder,
-              public translate: TranslateService) {
+              private translate: MdTranslateService) {
     this.loading = true;
-    translate.addLangs(['pl', 'en', 'fr', 'de']);
-    translate.setDefaultLang('pl');
+    translate.setLanguage();
     this.configOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(configOptions => this.configOptions = configOptions);
     this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.currentUser = user.currentUser.email);
     this.configurations$.pipe(takeUntil(this.isDestroyed$)).subscribe(configurations => this.configurations = configurations);

@@ -253,7 +253,7 @@
           <div class="select-box sorting margin-bottom-2">
             <p class="form-control-field-title">{{'MY-PROFILE.preferredLanguage' | translate}}:</p>
             <div class="select-box__current" tabindex="1">  <!--Usunięcie tabindex rozwala selecta-->
-              <div class="select-box__value" *ngFor="let lang of this.languages">
+              <div class="select-box__value" *ngFor="let lang of languages">
                 <input class="select-box__input" type="radio" id="{{lang}}" value="{{lang}}"
                        formControlName="preferredLanguage"/>
                 <p class="select-box__input-text">{{'MY-PROFILE.' + lang | translate}}</p>

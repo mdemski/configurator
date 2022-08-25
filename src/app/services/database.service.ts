@@ -231,10 +231,6 @@ export class DatabaseService {
     return this.availableSellers;
   }
 
-  saveEmailToDatabase(newsletterEmail: string) {
-    // Wysłanie maila do bazy danych eNova
-  }
-
   order(product: any, quantity: number) {
     // TODO logika związana z wysłaniem całego koszyka jako zamówienie do eNova
   }

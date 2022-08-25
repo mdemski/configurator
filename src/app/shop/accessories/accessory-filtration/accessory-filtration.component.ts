@@ -1,11 +1,11 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {TranslateService} from '@ngx-translate/core';
 import {Observable, Subject} from 'rxjs';
 import {Select} from '@ngxs/store';
 import {AccessoryState} from '../../../store/accessory/accessory.state';
 import {Accessory} from '../../../models/accessory';
 import {map, takeUntil} from 'rxjs/operators';
+import {MdTranslateService} from '../../../services/md-translate.service';
 
 @Component({
   selector: 'app-accessory-filtration',
@@ -15,9 +15,8 @@ import {map, takeUntil} from 'rxjs/operators';
 export class AccessoryFiltrationComponent implements OnInit, OnDestroy {
 
   constructor(private fb: FormBuilder,
-              public translate: TranslateService) {
-    translate.addLangs(['pl', 'en', 'fr', 'de']);
-    translate.setDefaultLang('pl');
+              private translate: MdTranslateService) {
+    translate.setLanguage();
   }
 
   private isDestroyed$ = new Subject();

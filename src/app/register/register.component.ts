@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
-import {TranslateService} from '@ngx-translate/core';
 import {User} from '../models/user';
 import {Company} from '../models/company';
 import {UUID} from 'angular2-uuid';
@@ -10,6 +9,7 @@ import {CrudService} from '../services/crud-service';
 import {Observable, Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
 import {RandomStringGeneratorService} from '../services/random-string-generator.service';
+import {MdTranslateService} from '../services/md-translate.service';
 
 @Component({
   selector: 'app-register',
@@ -31,12 +31,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   // TODO sprawdzić czy ngDoCheck załaduje tłumaczenie
   // bez dodatkowego przeładowania strony
-  constructor(public translate: TranslateService,
+  constructor(private translate: MdTranslateService,
               private crud: CrudService,
               private randomString: RandomStringGeneratorService,
               private router: Router) {
-    translate.addLangs(['pl', 'en', 'fr', 'de']);
-    translate.setDefaultLang('pl');
+    translate.setLanguage();
     this.countries = this.crud.getCountryList();
   }
 

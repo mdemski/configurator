@@ -1,6 +1,5 @@
 import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {LoadConfigurationService} from '../../services/load-configuration.service';
-import {TranslateService} from '@ngx-translate/core';
 import {Observable, Observer, Subject} from 'rxjs';
 import {Router} from '@angular/router';
 import {filter, map, takeUntil} from 'rxjs/operators';
@@ -27,6 +26,7 @@ import {
 } from '../../store/configuration/configuration.actions';
 import {CartState} from '../../store/cart/cart.state';
 import {RandomStringGeneratorService} from '../../services/random-string-generator.service';
+import {MdTranslateService} from '../../services/md-translate.service';
 
 @Component({
   selector: 'app-flashings-config',
@@ -53,10 +53,9 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
               private randomString: RandomStringGeneratorService,
               private hd: HighestIdGetterService,
               private modal: ModalService,
-              public translate: TranslateService) {
+              private translate: MdTranslateService) {
     this.loading = true;
-    translate.addLangs(['pl', 'en', 'fr', 'de']);
-    translate.setDefaultLang('pl');
+    translate.setLanguage();
     this.configOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(configOptions => this.configOptions = configOptions);
     this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.currentUser = user.currentUser.email);
     this.configurations$.pipe(takeUntil(this.isDestroyed$)).subscribe(configurations => this.configurations = configurations);

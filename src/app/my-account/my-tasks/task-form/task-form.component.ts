@@ -3,12 +3,12 @@ import {Select} from '@ngxs/store';
 import {UserState} from '../../../store/user/user.state';
 import {Observable, Subject} from 'rxjs';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {TranslateService} from '@ngx-translate/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {skip, takeUntil} from 'rxjs/operators';
 import {TaskService} from '../../../services/task.service';
 import {Task} from '../../../models/task';
 import moment from 'moment';
+import {MdTranslateService} from '../../../services/md-translate.service';
 
 @Component({
   selector: 'app-task-form',
@@ -30,12 +30,11 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   taskMonth = '';
   taskID = '';
 
-  constructor(public translate: TranslateService,
+  constructor(public translate: MdTranslateService,
               private route: ActivatedRoute,
               private router: Router,
               public taskService: TaskService) {
-    translate.addLangs(['pl', 'en', 'fr', 'de']);
-    translate.setDefaultLang('pl');
+    translate.setLanguage();
     this.route.paramMap.pipe(
       takeUntil(this.isDestroyed$))
       .subscribe(params => {

@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormArray, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
-import {TranslateService} from '@ngx-translate/core';
 import {Select} from '@ngxs/store';
 import {UserState} from '../../store/user/user.state';
 import {Observable, Subject} from 'rxjs';
@@ -20,6 +19,7 @@ import moment from 'moment';
 import {Accessory} from '../../models/accessory';
 import {FlatRoofWindow} from '../../models/flat-roof-window';
 import {VerticalWindow} from '../../models/vertical-window';
+import {MdTranslateService} from '../../services/md-translate.service';
 
 @Component({
   selector: 'app-complaint-form',
@@ -45,14 +45,13 @@ export class ComplaintFormComponent implements OnInit, OnDestroy {
   complaintYear = '';
   complaintID = '';
 
-  constructor(public translate: TranslateService,
+  constructor(private translate: MdTranslateService,
               private route: ActivatedRoute,
               private router: Router,
               public complaintService: ComplaintService,
               private roofWindowSetter: RoofWindowValuesSetterService,
               private flashingSetter: FlashingValueSetterService) {
-    translate.addLangs(['pl', 'en', 'fr', 'de']);
-    translate.setDefaultLang('pl');
+    translate.setLanguage();
     this.user$.pipe(
       takeUntil(this.isDestroyed$),
       filter(user => !user))

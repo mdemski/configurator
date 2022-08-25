@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {TranslateService} from '@ngx-translate/core';
 import {DatabaseService} from '../services/database.service';
+import {MdTranslateService} from '../services/md-translate.service';
 
 @Component({
   selector: 'app-home',
@@ -20,10 +20,9 @@ export class HomeComponent implements OnInit {
   // TODO przygotować koszyk przetrzymujący dodawane z całej aplikacji produkty
   @Input() cart: any;
 
-  constructor(public translate: TranslateService,
+  constructor(private translate: MdTranslateService,
               private db: DatabaseService) {
-    translate.addLangs(['pl', 'en', 'fr', 'de']);
-    translate.setDefaultLang('pl');
+    translate.setLanguage();
   }
 
   ngOnInit(): void {

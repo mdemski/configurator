@@ -6,7 +6,6 @@ import {Flashing} from '../models/flashing';
 import {Accessory} from '../models/accessory';
 import {FlatRoofWindow} from '../models/flat-roof-window';
 import {VerticalWindow} from '../models/vertical-window';
-import {TranslateService} from '@ngx-translate/core';
 import {Select} from '@ngxs/store';
 import {AppState} from '../store/app/app.state';
 import {Observable} from 'rxjs';
@@ -15,6 +14,7 @@ import {User} from '../models/user';
 import {skip} from 'rxjs/operators';
 import exchange from '../../assets/json/echange.json';
 import vatRate from '../../assets/json/vatRates.json';
+import {MdTranslateService} from './md-translate.service';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +33,7 @@ export class ShoppingCartService {
   exchange: number;
   vatRate: number;
 
-  constructor(public translate: TranslateService, private crud: CrudService) {
+  constructor(private translate: MdTranslateService, private crud: CrudService) {
     this.user$.pipe(skip(2)).subscribe(user => {
       this.crud.readUserByEmail(user.currentUser.email).subscribe((fullUser: User) => {
         if (fullUser) {
@@ -55,8 +55,7 @@ export class ShoppingCartService {
         }
       });
     });
-    translate.addLangs(['pl', 'en', 'fr', 'de']);
-    translate.setDefaultLang('pl');
+    translate.setLanguage();
     switch (translate.getBrowserLang()) {
       case 'pl': {
         this.currency = 'PLN';

@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors} from '@angular/forms';
-import {TranslateService} from '@ngx-translate/core';
 import {Observable, Observer, Subject, Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 import {RoofWindowSkylight} from '../../models/roof-window-skylight';
@@ -24,6 +23,7 @@ import {
 import {AppState} from '../../store/app/app.state';
 import {CartState} from '../../store/cart/cart.state';
 import {RandomStringGeneratorService} from '../../services/random-string-generator.service';
+import {MdTranslateService} from '../../services/md-translate.service';
 
 @Component({
   selector: 'app-roof-windows-config',
@@ -48,10 +48,9 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
               private randomString: RandomStringGeneratorService,
               private router: Router,
               private fb: FormBuilder,
-              public translate: TranslateService) {
+              private translate: MdTranslateService) {
     this.loading = true;
-    translate.addLangs(['pl', 'en', 'fr', 'de']);
-    translate.setDefaultLang('pl');
+    translate.setLanguage();
     this.configOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(configOptions => this.configOptions = configOptions);
     this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.currentUser = user.currentUser.email);
     this.configurations$.pipe(takeUntil(this.isDestroyed$)).subscribe(configurations => this.configurations = configurations);

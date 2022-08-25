@@ -3,7 +3,7 @@ import {AuthService} from '../services/auth.service';
 import {Select, Store} from '@ngxs/store';
 import {CartState} from '../store/cart/cart.state';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
-import {filter, map, take, takeUntil} from 'rxjs/operators';
+import {filter, map, takeUntil} from 'rxjs/operators';
 import exchange from '../../assets/json/echange.json';
 import vatRates from '../../assets/json/vatRates.json';
 import {AddProductToCart, UpdateCartCurrency, UpdateCartVatRate} from '../store/cart/cart.actions';
@@ -18,7 +18,6 @@ import {Task} from '../models/task';
 import {TaskService} from '../services/task.service';
 import {SingleConfiguration} from '../models/single-configuration';
 import {DatabaseService} from '../services/database.service';
-import {User} from '../models/user';
 import {CrudService} from '../services/crud-service';
 // import Swiper core and required components
 import SwiperCore, {
@@ -35,11 +34,9 @@ import SwiperCore, {
 } from 'swiper';
 import {SwiperComponent} from 'swiper/angular';
 import {
-  AddFavoriteProductsForUser,
-  RemoveFavoriteProductsForUser,
   UpdatePreferredLanguage
 } from '../store/user/user.actions';
-import {TranslateService} from '@ngx-translate/core';
+import {MdTranslateService} from '../services/md-translate.service';
 // install Swiper components
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay, Controller, Thumbs]);
 
@@ -103,16 +100,16 @@ export class MyAccountComponent implements OnInit, OnDestroy, AfterViewInit {
   showDiscount = false;
 
   constructor(private authService: AuthService,
-              public translate: TranslateService,
+              private translate: MdTranslateService,
               private store: Store,
               private taskService: TaskService,
               private orderService: OrderService,
               private db: DatabaseService,
               private crud: CrudService) {
-    translate.addLangs(['pl', 'en', 'fr', 'de']);
+    this.translate.setLanguage();
     this.currencies = Object.keys(exchange);
     this.rates = Object.values(vatRates);
-    this.languages = this.translate.getLangs();
+    this.languages = this.translate.getLanguages();
     this.currentUser$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.currentUser = user.currentUser);
     this.userOrders$ = this.orderService.getUserOrders().pipe(takeUntil(this.isDestroyed$));
     this.userTask$ = this.taskService.getUserTasks().pipe(takeUntil(this.isDestroyed$), map((tasks: Task[]) => tasks.filter(task => task.status === 'Aktywne')));

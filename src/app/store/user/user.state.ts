@@ -21,7 +21,7 @@ import {User} from '../../models/user';
 import cloneDeep from 'lodash/cloneDeep';
 import isEqual from 'lodash/isEqual';
 import {of} from 'rxjs';
-import {append, insertItem, patch, removeItem} from '@ngxs/store/operators';
+import {patch} from '@ngxs/store/operators';
 import {Injectable} from '@angular/core';
 import {RoofWindowSkylight} from '../../models/roof-window-skylight';
 import {Flashing} from '../../models/flashing';

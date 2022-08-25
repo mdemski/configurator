@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {catchError, map, tap} from 'rxjs/operators';
 import {BehaviorSubject, throwError} from 'rxjs';
-import {TranslateService} from '@ngx-translate/core';
 import {LoginUser} from '../models/loginUser';
 import {Router} from '@angular/router';
 import {IpService} from './ip.service';
@@ -10,6 +9,7 @@ import moment from 'moment';
 import {Store} from '@ngxs/store';
 import {SetCurrentUser} from '../store/app/app.actions';
 import DurationConstructor = moment.unitOfTime.DurationConstructor;
+import {MdTranslateService} from './md-translate.service';
 
 interface AuthResponseData {
   success: boolean;
@@ -36,9 +36,8 @@ export class AuthService {
               private store: Store,
               private router: Router,
               private ipService: IpService,
-              public translate: TranslateService) {
-    translate.addLangs(['pl', 'en', 'fr', 'de']);
-    translate.setDefaultLang('pl');
+              private translate: MdTranslateService) {
+    this.translate.setLanguage();
   }
 
   returnUser() {

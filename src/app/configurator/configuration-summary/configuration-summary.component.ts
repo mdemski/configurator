@@ -3,7 +3,6 @@ import {from, Observable, Subject} from 'rxjs';
 import {SingleConfiguration} from '../../models/single-configuration';
 import {concatMap, filter, map, takeUntil} from 'rxjs/operators';
 import {Router} from '@angular/router';
-import {TranslateService} from '@ngx-translate/core';
 import {WindowConfig} from '../../models/window-config';
 import {FlashingConfig} from '../../models/flashing-config';
 import {Select, Store} from '@ngxs/store';
@@ -23,7 +22,7 @@ import {SetChosenFlashing} from '../../store/flashing/flashing.actions';
 import {SetChosenRoofWindow} from '../../store/roof-window/roof-window.actions';
 import {AddProductToCart} from '../../store/cart/cart.actions';
 import {CartState} from '../../store/cart/cart.state';
-import {SetChosenFlatRoofWindow} from '../../store/flat-roof-window/flat-roof-window.actions';
+import {MdTranslateService} from '../../services/md-translate.service';
 
 @Component({
   selector: 'app-configuration-summary',
@@ -57,10 +56,9 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
 
   constructor(private router: Router,
               private store: Store,
-              public translate: TranslateService) {
+              private translate: MdTranslateService) {
     this.loading = true;
-    translate.addLangs(['pl', 'en', 'fr', 'de']);
-    translate.setDefaultLang('pl');
+    translate.setLanguage();
     this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.currentUser = user.currentUser.email);
     this.userConfigurations$ = this.store.select(ConfigurationState.userConfigurations).pipe(
       takeUntil(this.isDestroyed$),

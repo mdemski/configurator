@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {DatabaseService} from '../services/database.service';
+import {MailSenderService} from '../services/mail-sender.service';
 
 @Component({
   selector: 'app-footer',
@@ -9,7 +9,7 @@ import {DatabaseService} from '../services/database.service';
 export class FooterComponent implements OnInit {
   newsletterEmail: string;
 
-  constructor(private db: DatabaseService) {
+  constructor(private mailService: MailSenderService) {
   }
 
   ngOnInit(): void {
@@ -17,7 +17,6 @@ export class FooterComponent implements OnInit {
 
   submitNewsletter(newsletterEmail: HTMLInputElement) {
     this.newsletterEmail = newsletterEmail.value;
-    console.log(this.newsletterEmail);
-    this.db.saveEmailToDatabase(this.newsletterEmail);
+    this.mailService.saveEmailToDatabase(this.newsletterEmail);
   }
 }

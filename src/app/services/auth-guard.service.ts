@@ -2,16 +2,15 @@ import {Injectable} from '@angular/core';
 import {AuthService} from './auth.service';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
-import {TranslateService} from '@ngx-translate/core';
 import {LoginUser} from '../models/loginUser';
+import {MdTranslateService} from './md-translate.service';
 
 @Injectable({providedIn: 'root'})
 export class AuthGuardService implements CanActivate {
   loginLink: string;
 
-  constructor(private authService: AuthService, private router: Router, public translate: TranslateService) {
-    translate.addLangs(['pl', 'en', 'fr', 'de']);
-    translate.setDefaultLang('pl');
+  constructor(private authService: AuthService, private router: Router, private translate: MdTranslateService) {
+    translate.setLanguage();
   }
 
   canActivate(
