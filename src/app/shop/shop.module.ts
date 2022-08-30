@@ -25,6 +25,7 @@ import {NgxPaginationModule} from 'ngx-pagination';
 import { AccessoryFiltrationComponent } from './accessories/accessory-filtration/accessory-filtration.component';
 import { FlashingFiltrationComponent } from './flashings/flashing-filtration/flashing-filtration.component';
 import { FlatRoofWindowFiltrationComponent } from './flat-roof-windows/flat-roof-window-filtration/flat-roof-window-filtration.component';
+import { SkylightFiltrationComponent } from './skylights/skylight-filtration/skylight-filtration.component';
 
 @NgModule({
     imports: [
@@ -51,6 +52,7 @@ import { FlatRoofWindowFiltrationComponent } from './flat-roof-windows/flat-roof
     AccessoryFiltrationComponent,
     FlashingFiltrationComponent,
     FlatRoofWindowFiltrationComponent,
+    SkylightFiltrationComponent,
   ]
 })
 export class ShopModule { }
