@@ -6,9 +6,14 @@ import {HttpClient} from '@angular/common/http';
 })
 export class IpService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   getIpAddress() {
     return this.http.get('http://ip-api.com/json/');
+  }
+
+  getIpApi() {
+    return this.http.get('https://ipapi.co/json/');
   }
 }

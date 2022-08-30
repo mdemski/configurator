@@ -45,13 +45,26 @@ export class AuthService {
         return user;
       }))
       : this.ipService.getIpAddress().pipe(map(userIp => userIp)).pipe(map(userIp => {
-        return {
-          // @ts-ignore
-          email: userIp.query,
-          // @ts-ignore
-          userName: userIp.query,
-          isLogged: false
-        };
+        // @ts-ignore
+        if (userIp.status === 'success') {
+          return {
+            // @ts-ignore
+            email: userIp.query,
+            // @ts-ignore
+            userName: userIp.query,
+            isLogged: false
+          };
+        } else {
+          this.ipService.getIpApi().subscribe(data => {
+            return {
+              // @ts-ignore
+              email: data.ip,
+              // @ts-ignore
+              userName: data.ip,
+              isLogged: false
+            };
+          });
+        }
       }));
   }
 

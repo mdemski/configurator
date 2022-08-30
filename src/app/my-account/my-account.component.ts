@@ -17,8 +17,6 @@ import {UserState} from '../store/user/user.state';
 import {Task} from '../models/task';
 import {TaskService} from '../services/task.service';
 import {SingleConfiguration} from '../models/single-configuration';
-import {DatabaseService} from '../services/database.service';
-import {CrudService} from '../services/crud-service';
 // import Swiper core and required components
 import SwiperCore, {
   A11y,
@@ -37,6 +35,7 @@ import {
   UpdatePreferredLanguage
 } from '../store/user/user.actions';
 import {MdTranslateService} from '../services/md-translate.service';
+import {HttpClient} from '@angular/common/http';
 // install Swiper components
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay, Controller, Thumbs]);
 
@@ -103,9 +102,7 @@ export class MyAccountComponent implements OnInit, OnDestroy, AfterViewInit {
               private translate: MdTranslateService,
               private store: Store,
               private taskService: TaskService,
-              private orderService: OrderService,
-              private db: DatabaseService,
-              private crud: CrudService) {
+              private orderService: OrderService) {
     this.translate.setLanguage();
     this.currencies = Object.keys(exchange);
     this.rates = Object.values(vatRates);
@@ -116,6 +113,7 @@ export class MyAccountComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit(): void {
+    // @ts-ignore
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe((data) => {
       this.currency$.next(data.cart.currency);
       this.vatRate$.next(data.cart.vatRate);

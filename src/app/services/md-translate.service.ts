@@ -9,11 +9,11 @@ import {UserState} from '../store/user/user.state';
 })
 export class MdTranslateService {
   private availableLang = ['pl', 'en', 'fr', 'de'];
-  private defaultLang = 'en';
+  private defaultLang = 'pl';
   private actualLang = '';
   user$ = new BehaviorSubject<any>(null);
 
-  constructor(private translate: TranslateService,
+  constructor(public translate: TranslateService,
               private store: Store) {
     this.store.select(UserState).subscribe(user => this.user$.next(user));
   }
