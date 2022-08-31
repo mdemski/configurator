@@ -26,6 +26,9 @@ import { AccessoryFiltrationComponent } from './accessories/accessory-filtration
 import { FlashingFiltrationComponent } from './flashings/flashing-filtration/flashing-filtration.component';
 import { FlatRoofWindowFiltrationComponent } from './flat-roof-windows/flat-roof-window-filtration/flat-roof-window-filtration.component';
 import { SkylightFiltrationComponent } from './skylights/skylight-filtration/skylight-filtration.component';
+import { ResetProductsComponent } from './reset-products/reset-products.component';
+import { ResetFiltrationComponent } from './reset-products/reset-filtration/reset-filtration.component';
+import { ResetProductDetailsComponent } from './reset-products/reset-product-details/reset-product-details.component';
 
 @NgModule({
     imports: [
@@ -53,6 +56,9 @@ import { SkylightFiltrationComponent } from './skylights/skylight-filtration/sky
     FlashingFiltrationComponent,
     FlatRoofWindowFiltrationComponent,
     SkylightFiltrationComponent,
+    ResetProductsComponent,
+    ResetFiltrationComponent,
+    ResetProductDetailsComponent,
   ]
 })
 export class ShopModule { }
