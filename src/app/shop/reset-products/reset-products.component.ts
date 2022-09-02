@@ -5,7 +5,7 @@ import {Observable, Subject} from 'rxjs';
 import {RoofWindowSkylight} from '../../models/roof-window-skylight';
 import {CartState} from '../../store/cart/cart.state';
 import {SkylightState} from '../../store/skylight/skylight.state';
-import {filter, takeUntil} from 'rxjs/operators';
+import {filter, map, takeUntil} from 'rxjs/operators';
 import {AddProductToCart} from '../../store/cart/cart.actions';
 import _ from 'lodash';
 
@@ -44,8 +44,10 @@ export class ResetProductsComponent implements OnInit {
   ngOnInit(): void {
     this.pageSize = this.getNumberInRow();
     this.isFiltering = true;
-    this.roofWindows$.pipe(takeUntil(this.isDestroyed$)).subscribe(roofWindows => this.productsList = roofWindows);
-    this.skylights$.pipe(takeUntil(this.isDestroyed$)).subscribe(skylights => this.productsList.concat(skylights));
+    this.roofWindows$.pipe(takeUntil(this.isDestroyed$),
+      map(products => products.filter(product => product.grupaAsortymentowa === 'OknoDachoweReset'))).subscribe(roofWindows => this.productsList = roofWindows);
+    this.skylights$.pipe(takeUntil(this.isDestroyed$),
+      map(products => products.filter(product => product.grupaAsortymentowa === 'WyłazReset'))).subscribe(skylights => this.productsList.concat(skylights));
     this.filteredProductsList = this.productsList;
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe(() => console.log);
     this.isFiltering = false;

@@ -112,6 +112,7 @@
     "roofWindows": "okna-dachowe",
     "flashings": "kolnierze",
     "accessories": "akcesoria",
+    "reset": "reset",
     "summaryLink": "/konfigurator/podsumowanie",
     "configuratorRoofWindow": "konfigurator/okna-dachowe",
     "configuratorFlatRoofWindow": "konfigurator/dach-plaski",

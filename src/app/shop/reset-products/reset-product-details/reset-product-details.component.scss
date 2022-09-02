@@ -1,0 +1,11 @@
+@import 'src/sass/base/variables';
+@import 'src/sass/buttons';
+@import 'src/sass/components';
+@import 'src/sass/product-page';
+
+.active-button {
+  background-color: $color-red;
+  border: 1px solid transparent;
+  color: $color-white;
+  box-shadow: 0 1rem 2rem rgba($color-dark-red, .2);
+}

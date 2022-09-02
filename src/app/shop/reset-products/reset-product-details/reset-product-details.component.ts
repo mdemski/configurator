@@ -42,10 +42,10 @@ export class ResetProductDetailsComponent implements OnInit, OnDestroy {
     this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.logInUser = user.currentUser);
     this.store.select(RouterState.state).pipe(takeUntil(this.isDestroyed$)).subscribe(state => {
       this.product$ = this.store.select(RoofWindowState.roofWindowByCode)
-        .pipe(map(filterFn => filterFn(state['params'].windowId.toString())));
+        .pipe(map(filterFn => filterFn(state['params'].resetId.toString())));
       if (this.product$ === undefined) {
         this.product$ = this.store.select(SkylightState.skylightByCode)
-          .pipe(map(filterFn => filterFn(state['params'].skylightId.toString())));
+          .pipe(map(filterFn => filterFn(state['params'].resetId.toString())));
       }
     });
   }

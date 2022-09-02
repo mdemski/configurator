@@ -16,6 +16,8 @@ import {SkylightsGuard} from '../store/skylight/skylights.guard';
 import {FlatRoofWindowsComponent} from './flat-roof-windows/flat-roof-windows.component';
 import {FlatRoofWindowDetailsComponent} from './flat-roof-windows/flat-roof-window-details/flat-roof-window-details.component';
 import {FlatRoofWindowsGuard} from '../store/flat-roof-window/flat-roof-windows.guard';
+import {ResetProductsComponent} from './reset-products/reset-products.component';
+import {ResetProductDetailsComponent} from './reset-products/reset-product-details/reset-product-details.component';
 
 const routes: Routes = [
   {path: '', component: ShopComponent},
@@ -29,6 +31,8 @@ const routes: Routes = [
   {path: 'akcesoria/:accessoryId', component: AccessoriesDetailsComponent, canActivate: [AccessoriesGuard]},
   {path: 'plaski-dach', component: FlatRoofWindowsComponent, canActivate: [FlatRoofWindowsGuard]},
   {path: 'plaski-dach/:flatId', component: FlatRoofWindowDetailsComponent, canActivate: [FlatRoofWindowsGuard]},
+  {path: 'reset', component: ResetProductsComponent, canActivate: [RoofWindowsGuard, SkylightsGuard]},
+  {path: 'reset/:resetId', component: ResetProductDetailsComponent, canActivate: [RoofWindowsGuard, SkylightsGuard]},
 ];
 
 @NgModule({
