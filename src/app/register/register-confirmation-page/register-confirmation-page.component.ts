@@ -1,11 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CrudService} from '../../services/crud-service';
-import {takeUntil} from 'rxjs/operators';
+import {filter, map, takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {Store} from '@ngxs/store';
 import {ActivateUser} from '../../store/user/user.actions';
 import {MdTranslateService} from '../../services/md-translate.service';
+import {IpService} from '../../services/ip.service';
+import {ConfigurationState} from '../../store/configuration/configuration.state';
+import {UpdateGlobalConfigurationNameByConfigId} from '../../store/configuration/configuration.actions';
 
 @Component({
   selector: 'app-register-confirmation-page',
@@ -25,7 +28,8 @@ export class RegisterConfirmationPageComponent implements OnInit, OnDestroy {
               private crud: CrudService,
               private store: Store,
               private router: Router,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private ip: IpService) {
     translate.setLanguage();
     this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
       this.loginPage = text.login;
@@ -50,6 +54,18 @@ export class RegisterConfirmationPageComponent implements OnInit, OnDestroy {
             }, 5000);
           }
         }
+        // Updated configurations owner from IP to registered user - BEFORE TESTS
+        this.ip.getIpApi().subscribe(data => {
+          this.store.select(ConfigurationState.userConfigurations).pipe(
+            takeUntil(this.isDestroyed$),
+            // @ts-ignore
+            map(filterFn => filterFn(data.ip)),
+            filter(configurations => configurations.length > 0),
+            map(configurations => configurations.map(config => {
+              config.user = user.email;
+              this.store.dispatch(new UpdateGlobalConfigurationNameByConfigId(config.globalId, config.name));
+            })));
+        });
       });
     }
     this.isLoading = false;
