@@ -81,6 +81,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   windowsConfigurator: string;
   showWidthMessage = false;
   showHeightMessage = false;
+  path: string;
   private roofWindowsFromDataBase: RoofWindowSkylight[];
   private glazingName = 'Okno:EXX';
   private routerParams = null;
@@ -390,6 +391,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.configuredWindow = JSON.parse(JSON.stringify(temporaryConfigObject));
     this.showWidthMessage = this.standardWidths.includes(form.width);
     this.showHeightMessage = this.standardHeights.includes(form.height);
+    this.setProductPath(this.configuredWindow);
     this.setDisabled(this.configuredWindow);
   }
 
@@ -811,6 +813,42 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   }
 
   // CSS STYLING
+  private setProductPath(configuredWindow: RoofWindowSkylight) {
+    if (configuredWindow) {
+      const modelPart = configuredWindow.model.split(':')[1];
+      let colorPart;
+      if (configuredWindow.zamkniecieKolor === null) {
+        if (configuredWindow.stolarkaMaterial === 'DrewnoSosna') {
+          colorPart = '7048';
+        } else {
+          colorPart = '9016';
+        }
+      } else {
+        colorPart = configuredWindow.zamkniecieKolor.split(':')[1];
+      }
+      let handlePart;
+      if (configuredWindow.zamkniecieTyp === null) {
+        handlePart = 'ES';
+      } else {
+        switch (configuredWindow.zamkniecieTyp.split(':')[1]) {
+          case 'ExtraSecure':
+            handlePart = 'ES';
+            break;
+          case 'Uno':
+            handlePart = 'UNO';
+            break;
+          case 'Solar':
+            handlePart = 'SOLAR';
+            break;
+          default: handlePart = 'ES';
+        }
+      }
+      this.path = String(modelPart + '-' + colorPart + '-' + handlePart + '.png');
+    } else {
+      this.path = 'IGOV-9016-ES.png';
+    }
+  }
+
   setBackgroundImage(value: string) {
     const twoParts = value.split(':');
     let fileName = '';

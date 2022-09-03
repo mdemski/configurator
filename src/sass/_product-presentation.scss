@@ -7,33 +7,26 @@
   z-index: -3;
 
   &__left-side {
+    position: relative;
     width: 50%;
     height: 100%;
     background-color: antiquewhite;
     //opacity: 20%;
 
     &__interior {
-      //position: relative;
-      width: 100%;
       height: 100%;
       opacity: 100%;
       z-index: -2;
-      background-image: url("../assets/img/configurator/window_configurator/WNĘTRZA - png/okna-tło.png");
+      background-image: url("../assets/img/configurator/window_configurator/WNĘTRZA/okna-tło.png");
       background-position-x: center;
-      background-position-y: top;
-      background-repeat: no-repeat;
 
       &__product {
-        width: 100%;
-        height: 100%;
+        display: flex;
+        justify-content: center;
         z-index: -1;
 
         &--img {
 
-          height: 100%;
-          background-position-x: center;
-          background-position-y: top;
-          background-repeat: no-repeat;
         }
       }
     }
