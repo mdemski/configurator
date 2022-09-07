@@ -11,7 +11,7 @@ import {HighestIdGetterService} from '../../services/highest-id-getter.service';
 import {RandomStringGeneratorService} from '../../services/random-string-generator.service';
 import {Router} from '@angular/router';
 import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
-import {filter, map, takeUntil, tap} from 'rxjs/operators';
+import {filter, map, takeUntil} from 'rxjs/operators';
 import {AccessoryState} from '../../store/accessory/accessory.state';
 import {Accessory} from '../../models/accessory';
 import {AccessoryConfig} from '../../models/accessory-config';
@@ -70,6 +70,8 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
   private routerParams = null;
   private configurations: SingleConfiguration[];
   configByName$: Observable<AccessoryConfig>;
+  path: string;
+  exteriorPath: string;
   private formName: string;
   private accessoryCode: string;
   private configId: string;
@@ -303,6 +305,8 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
     this.configuredAccessory = JSON.parse(JSON.stringify(temporaryConfigObject));
     this.showWidthMessage = this.standardWidths.includes(form.width);
     this.showHeightMessage = this.standardHeights.includes(form.height);
+    this.setProductPath(this.configuredAccessory);
+    this.setExteriorPath(this.configuredAccessory);
     this.setDisabled(this.configuredAccessory);
   }
 
@@ -715,6 +719,227 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
       return '€';
     } else {
       return 'zł';
+    }
+  }
+
+  private setProductPath(configuredAccessory: Accessory) {
+    if (configuredAccessory.rodzaj === '') {
+      this.path = 'D37-A311-SR.jpg';
+    } else {
+      switch (configuredAccessory.rodzaj.split(':')[0]) {
+        case 'AkcesoriumRoletaZ':
+          this.path = 'akcesorium-zewnętrzne.jpg';
+          break;
+        case 'AkcesoriumAKP':
+          this.path = 'akcesorium-zewnętrzne.jpg';
+          break;
+        case 'AkcesoriumUTB':
+          this.path = 'akcesorium-zewnętrzne.jpg';
+          break;
+        case 'AkcesoriumDetektor':
+          this.path = 'akcesorium-zewnętrzne.jpg';
+          break;
+        case 'AkcesoriumMarkiza':
+          this.path = 'akcesorium-zewnętrzne.jpg';
+          break;
+        case 'AkcesoriumRamaDyst':
+          this.path = 'rama-dystansowa.jpg';
+          break;
+        case 'DachPłaski':
+          this.path = 'rama-dystansowa.jpg';
+          break;
+        case 'AkcesoriumPilot':
+          switch (configuredAccessory.rodzaj.split(':')[1]) {
+            case 'R':
+              this.path = 'pilot-r.jpg';
+              break;
+            case 'APR':
+              this.path = 'pilot-apr.jpg';
+              break;
+            case 'AP':
+              this.path = 'pilot-ap.jpg';
+              break;
+            default: this.path = 'pilot-r.jpg';
+          }
+          break;
+        case 'AkcesoriumKorba':
+          this.path = 'korba.jpg';
+          break;
+        case 'AkcesoriumBlokada':
+          this.path = 'blokada.jpg';
+          break;
+        case 'AkcesoriumCentralka':
+          this.path = 'centralka.jpg';
+          break;
+        case 'AkcesoriumDrążek':
+          this.path = 'drążek.jpg';
+          break;
+        case 'AkcesoriumWłącznik':
+          this.path = 'włącznik.jpg';
+          break;
+        case 'AkcesoriumSiłownik':
+          this.path = 'siłownik.jpg';
+          break;
+        case 'AkcesoriumRoletaW':
+          switch (configuredAccessory.rodzaj.split(':')[1]) {
+            case 'AMO':
+              this.path = 'AMO.jpg';
+              break;
+            case 'D37':
+
+              break;
+
+            default: this.path = 'D37-A311-SR.jpg';
+          }
+          break;
+        default: this.path = 'D37-A311-SR.jpg';
+      }
+    }
+  }
+
+  private setExteriorPath(configuredAccessory: Accessory) {
+    if (configuredAccessory.rodzaj === '') {
+      this.exteriorPath = 'roleta-wewnętrzna.jpg';
+    } else {
+      switch (configuredAccessory.rodzaj.split(':')[0]) {
+        case 'AkcesoriumRoletaW':
+          if (configuredAccessory.rodzaj.split(':')[1] === 'P50') {
+            this.exteriorPath = 'roleta-wewnętrzna-PD.jpg';
+          } else {
+            this.exteriorPath = 'roleta-wewnętrzna.jpg';
+          }
+          break;
+        case 'AkcesoriumMoskitiera':
+          this.exteriorPath = 'roleta-wewnętrzna.jpg';
+          break;
+        case 'AkcesoriumPilot':
+          this.exteriorPath = 'roleta-wewnętrzna.jpg';
+          break;
+        case 'AkcesoriumKorba':
+          this.exteriorPath = 'roleta-wewnętrzna.jpg';
+          break;
+        case 'AkcesoriumBlokada':
+          this.exteriorPath = 'roleta-wewnętrzna.jpg';
+          break;
+        case 'AkcesoriumAKP':
+          this.exteriorPath = 'roleta-wewnętrzna.jpg';
+          break;
+        case 'AkcesoriumUTB':
+          this.exteriorPath = 'roleta-wewnętrzna.jpg';
+          break;
+        case 'AkcesoriumCentralka':
+          this.exteriorPath = 'roleta-wewnętrzna.jpg';
+          break;
+        case 'AkcesoriumDetektor':
+          this.exteriorPath = 'detektor.jpg';
+          break;
+        case 'AkcesoriumDrążek':
+          this.exteriorPath = 'roleta-wewnętrzna.jpg';
+          break;
+        case 'AkcesoriumWłącznik':
+          this.exteriorPath = 'roleta-wewnętrzna.jpg';
+          break;
+        case 'AkcesoriumSiłownik':
+          this.exteriorPath = 'roleta-wewnętrzna.jpg';
+          break;
+        case 'AkcesoriumMarkiza':
+          if (configuredAccessory.model.split(':')[1] === 'AMW') {
+            this.exteriorPath = 'markiza-amw.jpg';
+          } else {
+            this.exteriorPath = 'markiza-amz.jpg';
+          }
+          break;
+        case 'AkcesoriumRamaDyst':
+          switch (configuredAccessory.model.split(':')[1]) {
+            case 'PGD 150':
+              this.exteriorPath = 'pgd150.jpg';
+              break;
+            case 'PGD 300':
+              this.exteriorPath = 'pgd300.jpg';
+              break;
+            case 'PGD 450':
+              this.exteriorPath = 'pgd450.jpg';
+              break;
+            default:
+              this.exteriorPath = 'pgd150.jpg';
+          }
+          break;
+        case 'DachPłaski':
+          switch (configuredAccessory.model.split(':')[1]) {
+            case 'PGD 150':
+              this.exteriorPath = 'pgd150.jpg';
+              break;
+            case 'PGD 300':
+              this.exteriorPath = 'pgd300.jpg';
+              break;
+            case 'PGD 450':
+              this.exteriorPath = 'pgd450.jpg';
+              break;
+            default:
+              this.exteriorPath = 'pgd150.jpg';
+          }
+          break;
+        case 'AkcesoriumRoletaZ':
+          if (configuredAccessory.oblachowanieMaterial === '') {
+            this.exteriorPath = 'A7022P.jpg';
+          } else {
+            let outerMaterialCode = '';
+            switch (configuredAccessory.oblachowanieMaterial) {
+              case 'Aluminium':
+                outerMaterialCode = 'A';
+                break;
+              case 'Miedź':
+                outerMaterialCode = 'C';
+                break;
+              case 'TytanCynk':
+                outerMaterialCode = 'T';
+                break;
+              default:
+                outerMaterialCode = 'A';
+            }
+
+            let outerColorCode = '';
+            if (configuredAccessory.oblachowanieKolor !== null) {
+              if (configuredAccessory.oblachowanieKolor.split(':')[0] === 'Aluminium') {
+                outerColorCode = configuredAccessory.oblachowanieKolor.substring(configuredAccessory.oblachowanieKolor.length - 4);
+              }
+              if (configuredAccessory.oblachowanieKolor === 'Miedź:Natur') {
+                outerColorCode = '0000';
+              }
+              if (configuredAccessory.oblachowanieKolor === 'TytanCynk:Natur') {
+                outerColorCode = '0000';
+              }
+              if (configuredAccessory.oblachowanieKolor === '') {
+                outerColorCode = '7022';
+              }
+            } else {
+              outerColorCode = '7022';
+            }
+
+            let outerFinishCode = '';
+            switch (configuredAccessory.oblachowanieFinisz) {
+              case 'Aluminium:Półmat':
+                outerFinishCode = 'P';
+                break;
+              case 'Aluminium:Mat':
+                outerFinishCode = 'M';
+                break;
+              case 'Aluminium:Połysk':
+                outerFinishCode = 'B';
+                break;
+              case 'Aluminium:Natur':
+                outerFinishCode = '0';
+                break;
+              default:
+                outerFinishCode = 'P';
+            }
+            // Przykładowy wynik A7022P.jpg
+            this.exteriorPath = String(outerMaterialCode + outerColorCode + outerFinishCode + '.jpg');
+          }
+          break;
+        default:
+          this.exteriorPath = 'roleta-wewnętrzna.jpg';
+      }
     }
   }
 
