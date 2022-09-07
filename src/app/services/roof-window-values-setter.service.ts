@@ -327,7 +327,7 @@ export class RoofWindowValuesSetterService {
       case 'Aluminium':
         outerMaterialCode = 'A';
         break;
-      case 'Miedż':
+      case 'Miedź':
         outerMaterialCode = 'C';
         break;
       case 'TytanCynk':

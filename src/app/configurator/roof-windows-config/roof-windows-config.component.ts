@@ -82,6 +82,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   showWidthMessage = false;
   showHeightMessage = false;
   path: string;
+  exteriorPath: string;
   private roofWindowsFromDataBase: RoofWindowSkylight[];
   private glazingName = 'Okno:EXX';
   private routerParams = null;
@@ -392,6 +393,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.showWidthMessage = this.standardWidths.includes(form.width);
     this.showHeightMessage = this.standardHeights.includes(form.height);
     this.setProductPath(this.configuredWindow);
+    this.setExteriorPath(this.configuredWindow);
     this.setDisabled(this.configuredWindow);
   }
 
@@ -840,13 +842,77 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
           case 'Solar':
             handlePart = 'SOLAR';
             break;
-          default: handlePart = 'ES';
+          default:
+            handlePart = 'ES';
         }
       }
       this.path = String(modelPart + '-' + colorPart + '-' + handlePart + '.png');
     } else {
       this.path = 'IGOV-9016-ES.png';
     }
+  }
+
+  private setExteriorPath(configuredWindow: RoofWindowSkylight) {
+    if (configuredWindow) {
+      if (configuredWindow.oblachowanieMaterial === '') {
+        this.exteriorPath = 'A7022P.jpg';
+      } else {
+        let outerMaterialCode = '';
+        switch (configuredWindow.oblachowanieMaterial) {
+          case 'Aluminium':
+            outerMaterialCode = 'A';
+            break;
+          case 'Miedź':
+            outerMaterialCode = 'C';
+            break;
+          case 'TytanCynk':
+            outerMaterialCode = 'T';
+            break;
+          default:
+            outerMaterialCode = 'A';
+        }
+
+        let outerColorCode = '';
+        if (configuredWindow.oblachowanieKolor !== null) {
+          if (configuredWindow.oblachowanieKolor.split(':')[0] === 'Aluminium') {
+            outerColorCode = configuredWindow.oblachowanieKolor.substring(configuredWindow.oblachowanieKolor.length - 4);
+          }
+          if (configuredWindow.oblachowanieKolor === 'Miedź:Natur') {
+            outerColorCode = '0000';
+          }
+          if (configuredWindow.oblachowanieKolor === 'TytanCynk:Natur') {
+            outerColorCode = '0000';
+          }
+          if (configuredWindow.oblachowanieKolor === '') {
+            outerColorCode = '7022';
+          }
+        } else {
+          outerColorCode = '7022';
+        }
+
+        let outerFinishCode = '';
+        switch (configuredWindow.oblachowanieFinisz) {
+          case 'Aluminium:Półmat':
+            outerFinishCode = 'P';
+            break;
+          case 'Aluminium:Mat':
+            outerFinishCode = 'M';
+            break;
+          case 'Aluminium:Połysk':
+            outerFinishCode = 'B';
+            break;
+          case 'Aluminium:Natur':
+            outerFinishCode = '0';
+            break;
+          default:
+            outerFinishCode = 'P';
+        }
+        this.exteriorPath = String(outerMaterialCode + outerColorCode + outerFinishCode + '.jpg');
+      }
+    } else {
+      this.exteriorPath = 'A7022P.jpg';
+    }
+    console.log(this.exteriorPath);
   }
 
   setBackgroundImage(value: string) {
