@@ -912,7 +912,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     } else {
       this.exteriorPath = 'A7022P.jpg';
     }
-    console.log(this.exteriorPath);
   }
 
   setBackgroundImage(value: string) {
