@@ -679,12 +679,11 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
 
   private setProductPath(verticalNumber, horizontalNumber) {
     this.path = String(verticalNumber + 'x' + horizontalNumber + '.jpg');
-    console.log(this.path);
   }
 
   private setExteriorPath(configuredFlashing: Flashing, verticalNumber, horizontalNumber) {
     if (configuredFlashing) {
-      if (configuredFlashing.model === '' || configuredFlashing.model === null) {
+      if (configuredFlashing.model === '' || configuredFlashing.model === null || configuredFlashing.model === 'Kołnierz:') {
         this.exteriorPath = 'H9-A7022P-1x1.jpg';
       } else {
         const model = configuredFlashing.model.split(':')[1];
@@ -751,7 +750,6 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
     } else {
       this.exteriorPath = 'H9-A7022P-1x1.jpg';
     }
-    console.log(this.exteriorPath);
   }
 
   closeAllHovers(htmlDivElements: HTMLDivElement[]) {
