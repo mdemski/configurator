@@ -2,365 +2,430 @@
   <img src="assets/img/navbar_backgrounds/brown.jpg" alt="flashings">
 </div>
 
-<div class="md-container">
-  <div class="loader-container" *ngIf="loading; else elseBlock">
-    <app-okpol-loader></app-okpol-loader>
-  </div>
-  <ng-template #elseBlock>
-    <div class="configuration-summary">
-      <div class="configuration-summary__navigation">
-        <a class="configuration-summary__navigation--element
-              configuration-summary__navigation--flashing-type"
-           (click)="closeAllHovers([flashingTypeOptions, apronTypeOptions, outerMaterialOptions,
-         compositionOptions, dimensionsOptions]); onFlashingTypeHover(flashingTypeOptions)"
-           [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredFlashing.typKolnierza!==null}"></a>
-        <a class="configuration-summary__navigation--element
-              configuration-summary__navigation--apron-type"
-           (click)="closeAllHovers([flashingTypeOptions, apronTypeOptions, outerMaterialOptions,
-         compositionOptions, dimensionsOptions]); onApronTypeHover(apronTypeOptions)"
-           [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredFlashing.typFartucha!==null}"></a>
-        <a class="configuration-summary__navigation--element
-              configuration-summary__navigation--outer-material"
-           (click)="closeAllHovers([flashingTypeOptions, apronTypeOptions, outerMaterialOptions,
-         compositionOptions, dimensionsOptions]); onOuterMaterialHover(outerMaterialOptions)"
-           [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredFlashing.oblachowanieMaterial!==null}"></a>
-        <a class="configuration-summary__navigation--element
-              configuration-summary__navigation--combination"
-           (click)="closeAllHovers([flashingTypeOptions, apronTypeOptions, outerMaterialOptions,
-         compositionOptions, dimensionsOptions]); onCompositionHover(compositionOptions)"
-           [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredFlashing.flashingCombination!==null}"></a>
-        <a class="configuration-summary__navigation--element
-              configuration-summary__navigation--dimensions"
-           (click)="closeAllHovers([flashingTypeOptions, apronTypeOptions, outerMaterialOptions,
-         compositionOptions, dimensionsOptions]); onDimensionsHover(dimensionsOptions)"
-           [ngClass]="{'configuration-summary__navigation--element--chosen' : (form && !form.get('dimensions.widths').untouched && !form.get('dimensions.heights').untouched)}"></a>
+<div class="full-width-container">
+  <div class="product-presentation">
+    <div class="product-presentation__left-side">
+      <div class="product-presentation__left-side__interior">
+        <div class="product-presentation__left-side__interior__product">
+          <img class="product-presentation__left-side__interior__product--img"
+               src="assets/img/configurator/window_configurator/WEWNĄTRZ/{{path}}" alt="{{path}}">
+        </div>
       </div>
-
-      <div class="configuration-summary__scores">
-        <p
-          *ngIf="configuredFlashingArray.length === 0">{{(this.configuredFlashing.CenaDetaliczna / (cart$ | async).cart.exchange) + ((this.configuredFlashing.CenaDetaliczna / (cart$ | async).cart.exchange) * ((cart$ | async).cart.vaRate)) | currency :' ' : '' : undefined : undefined}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
-        <p
-          *ngIf="configuredFlashingArray.length !== 0">{{ 'FLASHINGS-CONFIG.summaryPrice' | translate}} {{(this.summaryFlashingsPrice / (cart$ | async).cart.exchange) + ((this.summaryFlashingsPrice / (cart$ | async).cart.exchange) * ((cart$ | async).cart.vatRate)) | currency :' ' : '' : undefined : undefined}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
-        <p
-          *ngIf="configuredFlashingArray.length !== 0">{{ 'FLASHINGS-CONFIG.averagePrice' | translate}} {{((this.summaryFlashingsPrice / this.configuredFlashingArray.length) / (cart$ | async).cart.exchange) + (((this.summaryFlashingsPrice / this.configuredFlashingArray.length) / (cart$ | async).cart.exchange) * ((cart$ | async).cart.vatRate)) | currency :' ' : '' : undefined : undefined}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
-      </div>
-
     </div>
-    <div class="configure-form">
-      <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <!--Flashing type-->
-        <div class="modal-window-relative-parent">
-          <div class="configure-form__group">
-            <label for="flashingType" (click)="onFlashingTypeHover(flashingTypeOptions)"
-                   class="configure-form__group__label">
-              {{'FLASHINGS-CONFIG.flashingType' | translate}}</label>
-            <div #flashingTypeOptions class="configure-form__group__options">
-              <div class="configure-form__group__options--option"
-                   *ngFor="let flashingType of flashingTypes">
-                <input type="radio"
-                       class="configure-form__group__options--option__input"
-                       id="{{flashingType.option}}"
-                       value='{{flashingType.option}}'
-                       formControlName="flashingType"
-                       [attr.disabled]="flashingType.disabled">
-                <label for="{{flashingType.option}}"
-                       (mouseover)="openModal(flashingType.option, $event)"
-                       (mouseleave)="closeModal(flashingType.option)"
-                       class="configure-form__group__options--option__label"
-                       [ngClass]="{'label--disabled' : flashingType.disabled}"
-                       [ngStyle]="setBackgroundImage(flashingType.option)"
-                >{{builtNameForTranslation(flashingType.option) | translate}}</label>
-                <app-modal name="{{flashingType.option}}"
-                           text="{{flashingType.option}}"
-                           optionName="{{flashingType.option}}"></app-modal>
-              </div>
+    <div class="product-presentation__right-side">
+      <div class="product-presentation__right-side__exterior">
+        <img class="product-presentation__right-side__exterior__product"
+             src="assets/img/configurator/window_configurator/ZEWNĄTRZ/{{exteriorPath}}" alt="{{exteriorPath}}">
+      </div>
+    </div>
+  </div>
 
-              <label
-                class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.kombiFlashing' | translate}}</label>
-              <div class="configure-form__group__options--option">
-                <div class="configure-form__group__options--option">
-                  <input type="checkbox"
+  <div class="md-container">
+    <div class="loader-container" *ngIf="loading; else elseBlock">
+      <app-okpol-loader></app-okpol-loader>
+    </div>
+    <ng-template #elseBlock>
+      <div class="configuration-summary">
+        <div class="configuration-summary__navigation">
+          <a class="configuration-summary__navigation--element
+              configuration-summary__navigation--flashing-type"
+             (click)="closeAllHovers([flashingTypeOptions, apronTypeOptions, outerMaterialOptions,
+         compositionOptions, dimensionsOptions]); onFlashingTypeHover(flashingTypeOptions)"
+             [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredFlashing.typKolnierza!==null}"></a>
+          <a class="configuration-summary__navigation--element
+              configuration-summary__navigation--apron-type"
+             (click)="closeAllHovers([flashingTypeOptions, apronTypeOptions, outerMaterialOptions,
+         compositionOptions, dimensionsOptions]); onApronTypeHover(apronTypeOptions)"
+             [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredFlashing.typFartucha!==null}"></a>
+          <a class="configuration-summary__navigation--element
+              configuration-summary__navigation--outer-material"
+             (click)="closeAllHovers([flashingTypeOptions, apronTypeOptions, outerMaterialOptions,
+         compositionOptions, dimensionsOptions]); onOuterMaterialHover(outerMaterialOptions)"
+             [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredFlashing.oblachowanieMaterial!==null}"></a>
+          <a class="configuration-summary__navigation--element
+              configuration-summary__navigation--combination"
+             (click)="closeAllHovers([flashingTypeOptions, apronTypeOptions, outerMaterialOptions,
+         compositionOptions, dimensionsOptions]); onCompositionHover(compositionOptions)"
+             [ngClass]="{'configuration-summary__navigation--element--chosen' : configuredFlashing.flashingCombination!==null}"></a>
+          <a class="configuration-summary__navigation--element
+              configuration-summary__navigation--dimensions"
+             (click)="closeAllHovers([flashingTypeOptions, apronTypeOptions, outerMaterialOptions,
+         compositionOptions, dimensionsOptions]); onDimensionsHover(dimensionsOptions)"
+             [ngClass]="{'configuration-summary__navigation--element--chosen' : (form && !form.get('dimensions.widths').untouched && !form.get('dimensions.heights').untouched)}"></a>
+        </div>
+
+        <div class="configuration-summary__scores">
+          <p
+            *ngIf="configuredFlashingArray.length === 0">{{(this.configuredFlashing.CenaDetaliczna / (cart$ | async).cart.exchange) + ((this.configuredFlashing.CenaDetaliczna / (cart$ | async).cart.exchange) * ((cart$ | async).cart.vaRate)) | currency :' ' : '' : undefined : undefined}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
+          <p
+            *ngIf="configuredFlashingArray.length !== 0">{{ 'FLASHINGS-CONFIG.summaryPrice' | translate}} {{(this.summaryFlashingsPrice / (cart$ | async).cart.exchange) + ((this.summaryFlashingsPrice / (cart$ | async).cart.exchange) * ((cart$ | async).cart.vatRate)) | currency :' ' : '' : undefined : undefined}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
+          <p
+            *ngIf="configuredFlashingArray.length !== 0">{{ 'FLASHINGS-CONFIG.averagePrice' | translate}} {{((this.summaryFlashingsPrice / this.configuredFlashingArray.length) / (cart$ | async).cart.exchange) + (((this.summaryFlashingsPrice / this.configuredFlashingArray.length) / (cart$ | async).cart.exchange) * ((cart$ | async).cart.vatRate)) | currency :' ' : '' : undefined : undefined}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
+        </div>
+
+      </div>
+      <div class="configure-form">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <!--Flashing type-->
+          <div class="modal-window-relative-parent">
+            <div class="configure-form__group">
+              <label for="flashingType" (click)="onFlashingTypeHover(flashingTypeOptions)"
+                     class="configure-form__group__label">
+                {{'FLASHINGS-CONFIG.flashingType' | translate}}</label>
+              <div #flashingTypeOptions class="configure-form__group__options">
+                <div class="configure-form__group__options--option"
+                     *ngFor="let flashingType of flashingTypes">
+                  <input type="radio"
                          class="configure-form__group__options--option__input"
-                         id="{{lShaped[0]}}"
-                         value="{{lShaped[0].option}}"
-                         formControlName="lShaped"
-                         [attr.disabled]="lShaped[0].disabled"
-                  >
-                  <label for="{{lShaped[0]}}"
-                         (mouseover)="openModal(lShaped[0].option, $event)"
-                         (mouseleave)="closeModal(lShaped[0].option)"
+                         id="{{flashingType.option}}"
+                         value='{{flashingType.option}}'
+                         formControlName="flashingType"
+                         [attr.disabled]="flashingType.disabled">
+                  <label for="{{flashingType.option}}"
+                         (mouseover)="openModal(flashingType.option, $event)"
+                         (mouseleave)="closeModal(flashingType.option)"
                          class="configure-form__group__options--option__label"
-                         [ngClass]="{'label--disabled' : lShaped[0].disabled}"
-                         [ngStyle]="setBackgroundImage(lShaped[0].option)"
-                  >{{builtNameForTranslation(lShaped[0].option) | translate}}</label>
-                  <app-modal name="{{lShaped[0].option}}"
-                             text="{{lShaped[0].option}}"
-                             optionName="{{lShaped[0].option}}"></app-modal>
+                         [ngClass]="{'label--disabled' : flashingType.disabled}"
+                         [ngStyle]="setBackgroundImage(flashingType.option)"
+                  >{{builtNameForTranslation(flashingType.option) | translate}}</label>
+                  <app-modal name="{{flashingType.option}}"
+                             text="{{flashingType.option}}"
+                             optionName="{{flashingType.option}}"></app-modal>
                 </div>
-                <div *ngIf="form.get('lShaped').value" class="vertical-horizontal-container">
-                  <label for="windchestLength"
-                         class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.windchestLength' | translate}}</label>
-                  <div class="configure-form__group__options--option-text windchest-length">
-                    <input class="configure-form__group__options--option__input-text"
-                           type="number"
-                           id="windchestLength"
-                           step="1"
-                           min="{{minWindchestLength}}"
-                           max="{{maxWindchestLength}}"
-                           formControlName="windchestLength">
+
+                <label
+                  class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.kombiFlashing' | translate}}</label>
+                <div class="configure-form__group__options--option">
+                  <div class="configure-form__group__options--option">
+                    <input type="checkbox"
+                           class="configure-form__group__options--option__input"
+                           id="{{lShaped[0]}}"
+                           value="{{lShaped[0].option}}"
+                           formControlName="lShaped"
+                           [attr.disabled]="lShaped[0].disabled"
+                    >
+                    <label for="{{lShaped[0]}}"
+                           (mouseover)="openModal(lShaped[0].option, $event)"
+                           (mouseleave)="closeModal(lShaped[0].option)"
+                           class="configure-form__group__options--option__label"
+                           [ngClass]="{'label--disabled' : lShaped[0].disabled}"
+                           [ngStyle]="setBackgroundImage(lShaped[0].option)"
+                    >{{builtNameForTranslation(lShaped[0].option) | translate}}</label>
+                    <app-modal name="{{lShaped[0].option}}"
+                               text="{{lShaped[0].option}}"
+                               optionName="{{lShaped[0].option}}"></app-modal>
+                  </div>
+                  <div *ngIf="form.get('lShaped').value" class="vertical-horizontal-container">
+                    <label for="windchestLength"
+                           class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.windchestLength' | translate}}</label>
+                    <div class="configure-form__group__options--option-text windchest-length">
+                      <input class="configure-form__group__options--option__input-text"
+                             type="number"
+                             id="windchestLength"
+                             step="1"
+                             min="{{minWindchestLength}}"
+                             max="{{maxWindchestLength}}"
+                             formControlName="windchestLength">
+                    </div>
                   </div>
                 </div>
-              </div>
 
+                <div class="configure-form__navigation-buttons">
+                  <div class="empty-div"></div>
+                  <a (click)="onFlashingTypeHover(flashingTypeOptions);onApronTypeHover(apronTypeOptions)"
+                     class="btn btn--blue configure-form__navigation-buttons__next-prev">
+                    {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--Apron type-->
+          <div class="configure-form__group">
+            <label for="apronType" (click)="onApronTypeHover(apronTypeOptions)"
+                   class="configure-form__group__label">
+              {{'FLASHINGS-CONFIG.apronType' | translate}}</label>
+            <div #apronTypeOptions class="configure-form__group__options">
+              <div class="configure-form__group__options--option"
+                   *ngFor="let apronType of apronTypes">
+                <input type="radio"
+                       class="configure-form__group__options--option__input"
+                       id="{{apronType.option}}"
+                       value='{{apronType.option}}'
+                       formControlName="apronType"
+                       [attr.disabled]="apronType.disabled">
+                <label for="{{apronType.option}}"
+                       class="configure-form__group__options--option__label"
+                       [ngClass]="{'label--disabled' : apronType.disabled}"
+                       [ngStyle]="setBackgroundImage(apronType.option)"
+                >{{builtNameForTranslation(apronType.option) | translate}}</label>
+              </div>
               <div class="configure-form__navigation-buttons">
-                <div class="empty-div"></div>
-                <a (click)="onFlashingTypeHover(flashingTypeOptions);onApronTypeHover(apronTypeOptions)"
+                <a (click)="onApronTypeHover(apronTypeOptions);onFlashingTypeHover(flashingTypeOptions)"
+                   class="btn btn--grey configure-form__navigation-buttons__next-prev">
+                  {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
+
+                <a (click)="onOuterMaterialHover(outerMaterialOptions);onApronTypeHover(apronTypeOptions)"
                    class="btn btn--blue configure-form__navigation-buttons__next-prev">
                   {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
               </div>
             </div>
           </div>
-        </div>
 
-        <!--Apron type-->
-        <div class="configure-form__group">
-          <label for="apronType" (click)="onApronTypeHover(apronTypeOptions)"
-                 class="configure-form__group__label">
-            {{'FLASHINGS-CONFIG.apronType' | translate}}</label>
-          <div #apronTypeOptions class="configure-form__group__options">
-            <div class="configure-form__group__options--option"
-                 *ngFor="let apronType of apronTypes">
-              <input type="radio"
-                     class="configure-form__group__options--option__input"
-                     id="{{apronType.option}}"
-                     value='{{apronType.option}}'
-                     formControlName="apronType"
-                     [attr.disabled]="apronType.disabled">
-              <label for="{{apronType.option}}"
-                     class="configure-form__group__options--option__label"
-                     [ngClass]="{'label--disabled' : apronType.disabled}"
-                     [ngStyle]="setBackgroundImage(apronType.option)"
-              >{{builtNameForTranslation(apronType.option) | translate}}</label>
-            </div>
-            <div class="configure-form__navigation-buttons">
-              <a (click)="onApronTypeHover(apronTypeOptions);onFlashingTypeHover(flashingTypeOptions)"
-                 class="btn btn--grey configure-form__navigation-buttons__next-prev">
-                {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
+          <!--Outer material and color-->
+          <div class="configure-form__group" formGroupName="outer">
+            <label for="outerMaterial" (click)="onOuterMaterialHover(outerMaterialOptions)"
+                   class="configure-form__group__label">{{ 'FLASHINGS-CONFIG.outerMaterial' | translate}}</label>
+            <div class="configure-form__group__options" #outerMaterialOptions>
+              <div class="configure-form__group__options--option" *ngFor="let outerMaterial of outerMaterials">
+                <input type="radio"
+                       class="configure-form__group__options--option__input"
+                       id="{{outerMaterial.option}}"
+                       value="{{outerMaterial.option}}"
+                       formControlName="outerMaterial"
+                       [attr.disabled]="outerMaterial.disabled">
+                <label for="{{outerMaterial.option}}"
+                       class="configure-form__group__options--option__label"
+                       [ngClass]="{'label--disabled' : outerMaterial.disabled}"
+                       [ngStyle]="setBackgroundImage(outerMaterial.option)">{{builtNameForTranslation(outerMaterial.option) | translate}}</label>
+              </div>
+              <label for="outerColor"
+                     class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.outerColor' | translate}}</label>
+              <div class="configure-form__group__options--option" *ngFor="let outerColor of outerColors">
+                <input type="radio"
+                       class="configure-form__group__options--option__input"
+                       id="{{outerColor.option}}"
+                       value="{{outerColor.option}}"
+                       formControlName="outerColor"
+                       [attr.disabled]="outerColor.disabled">
+                <label for="{{outerColor.option}}"
+                       [ngClass]="{'label--disabled' : outerColor.disabled}"
+                       [ngStyle]="setBackgroundImage(outerColor.option)"
+                       class="configure-form__group__options--option__label">{{builtNameForTranslation(outerColor.option) | translate}}</label>
+              </div>
+              <label for="outerColorFinish"
+                     class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.outerColorFinish' | translate}}</label>
+              <div class="configure-form__group__options--option" *ngFor="let outerColorFinish of outerColorFinishes">
+                <input type="radio"
+                       class="configure-form__group__options--option__input"
+                       id="{{outerColorFinish.option}}"
+                       value="{{outerColorFinish.option}}"
+                       formControlName="outerColorFinish"
+                       [attr.disabled]="outerColorFinish.disabled">
+                <label for="{{outerColorFinish.option}}"
+                       [ngClass]="{'label--disabled' : outerColorFinish.disabled}"
+                       class="configure-form__group__options--option__label"
+                       [ngStyle]="setBackgroundImage(outerColorFinish.option)">{{builtNameForTranslation(outerColorFinish.option) | translate}}</label>
+              </div>
+              <h2 class="configure-form__group--info-color">{{ 'ROOF-WINDOWS-CONFIG.RALVsRGB' | translate}}</h2>
+              <div class="configure-form__navigation-buttons">
+                <a (click)="onApronTypeHover(apronTypeOptions);onOuterMaterialHover(outerMaterialOptions)"
+                   class="btn btn--grey configure-form__navigation-buttons__next-prev">
+                  {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
 
-              <a (click)="onOuterMaterialHover(outerMaterialOptions);onApronTypeHover(apronTypeOptions)"
-                 class="btn btn--blue configure-form__navigation-buttons__next-prev">
-                {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
-            </div>
-          </div>
-        </div>
-
-        <!--Outer material and color-->
-        <div class="configure-form__group" formGroupName="outer">
-          <label for="outerMaterial" (click)="onOuterMaterialHover(outerMaterialOptions)"
-                 class="configure-form__group__label">{{ 'FLASHINGS-CONFIG.outerMaterial' | translate}}</label>
-          <div class="configure-form__group__options" #outerMaterialOptions>
-            <div class="configure-form__group__options--option" *ngFor="let outerMaterial of outerMaterials">
-              <input type="radio"
-                     class="configure-form__group__options--option__input"
-                     id="{{outerMaterial.option}}"
-                     value="{{outerMaterial.option}}"
-                     formControlName="outerMaterial"
-                     [attr.disabled]="outerMaterial.disabled">
-              <label for="{{outerMaterial.option}}"
-                     class="configure-form__group__options--option__label"
-                     [ngClass]="{'label--disabled' : outerMaterial.disabled}"
-                     [ngStyle]="setBackgroundImage(outerMaterial.option)">{{builtNameForTranslation(outerMaterial.option) | translate}}</label>
-            </div>
-            <label for="outerColor"
-                   class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.outerColor' | translate}}</label>
-            <div class="configure-form__group__options--option" *ngFor="let outerColor of outerColors">
-              <input type="radio"
-                     class="configure-form__group__options--option__input"
-                     id="{{outerColor.option}}"
-                     value="{{outerColor.option}}"
-                     formControlName="outerColor"
-                     [attr.disabled]="outerColor.disabled">
-              <label for="{{outerColor.option}}"
-                     [ngClass]="{'label--disabled' : outerColor.disabled}"
-                     [ngStyle]="setBackgroundImage(outerColor.option)"
-                     class="configure-form__group__options--option__label">{{builtNameForTranslation(outerColor.option) | translate}}</label>
-            </div>
-            <label for="outerColorFinish"
-                   class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.outerColorFinish' | translate}}</label>
-            <div class="configure-form__group__options--option" *ngFor="let outerColorFinish of outerColorFinishes">
-              <input type="radio"
-                     class="configure-form__group__options--option__input"
-                     id="{{outerColorFinish.option}}"
-                     value="{{outerColorFinish.option}}"
-                     formControlName="outerColorFinish"
-                     [attr.disabled]="outerColorFinish.disabled">
-              <label for="{{outerColorFinish.option}}"
-                     [ngClass]="{'label--disabled' : outerColorFinish.disabled}"
-                     class="configure-form__group__options--option__label"
-                     [ngStyle]="setBackgroundImage(outerColorFinish.option)">{{builtNameForTranslation(outerColorFinish.option) | translate}}</label>
-            </div>
-            <h2 class="configure-form__group--info-color">{{ 'ROOF-WINDOWS-CONFIG.RALVsRGB' | translate}}</h2>
-            <div class="configure-form__navigation-buttons">
-              <a (click)="onApronTypeHover(apronTypeOptions);onOuterMaterialHover(outerMaterialOptions)"
-                 class="btn btn--grey configure-form__navigation-buttons__next-prev">
-                {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
-
-              <a (click)="onOuterMaterialHover(outerMaterialOptions);onCompositionHover(compositionOptions)"
-                 class="btn btn--blue configure-form__navigation-buttons__next-prev">
-                {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
-            </div>
-          </div>
-        </div>
-
-        <!--Composition-->
-        <div class="configure-form__group" formGroupName="composition">
-          <label for="composition" (click)="onCompositionHover(compositionOptions)"
-                 class="configure-form__group__label">{{ 'FLASHINGS-CONFIG.composition' | translate}}</label>
-          <div class="configure-form__group__options" #compositionOptions>
-            <div class="vertical-horizontal-container">
-              <label for="verticalNumber"
-                     class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.verticalNumber' | translate}}</label>
-              <div class="configure-form__group__options--option-text">
-                <input class="configure-form__group__options--option__input-text"
-                       type="number"
-                       id="verticalNumber"
-                       step="1"
-                       min="{{minVerticalNumber}}"
-                       max="{{maxVerticalNumber}}"
-                       formControlName="verticalNumber"
-                       (change)="widthsControlsArrayMaker(); verticalSpacingControlsMaker()"
-                >
+                <a (click)="onOuterMaterialHover(outerMaterialOptions);onCompositionHover(compositionOptions)"
+                   class="btn btn--blue configure-form__navigation-buttons__next-prev">
+                  {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
               </div>
             </div>
-            <div class="vertical-horizontal-container">
-              <label for="horizontalNumber"
-                     class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.horizontalNumber' | translate}}</label>
-              <div class="configure-form__group__options--option-text">
-                <input class="configure-form__group__options--option__input-text"
-                       type="number"
-                       id="horizontalNumber"
-                       step="1"
-                       min="{{minHorizontalNumber}}"
-                       max="{{maxHorizontalNumber}}"
-                       formControlName="horizontalNumber"
-                       (change)="heightsControlsArrayMaker(); horizontalSpacingControlsMaker()"
-                >
+          </div>
+
+          <!--Composition-->
+          <div class="configure-form__group" formGroupName="composition">
+            <label for="composition" (click)="onCompositionHover(compositionOptions)"
+                   class="configure-form__group__label">{{ 'FLASHINGS-CONFIG.composition' | translate}}</label>
+            <div class="configure-form__group__options" #compositionOptions>
+              <div class="vertical-horizontal-container">
+                <label for="verticalNumber"
+                       class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.verticalNumber' | translate}}</label>
+                <div class="configure-form__group__options--option-text">
+                  <input class="configure-form__group__options--option__input-text"
+                         type="number"
+                         id="verticalNumber"
+                         step="1"
+                         min="{{minVerticalNumber}}"
+                         max="{{maxVerticalNumber}}"
+                         formControlName="verticalNumber"
+                         (change)="widthsControlsArrayMaker(); verticalSpacingControlsMaker()"
+                  >
+                </div>
+              </div>
+              <div class="vertical-horizontal-container">
+                <label for="horizontalNumber"
+                       class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.horizontalNumber' | translate}}</label>
+                <div class="configure-form__group__options--option-text">
+                  <input class="configure-form__group__options--option__input-text"
+                         type="number"
+                         id="horizontalNumber"
+                         step="1"
+                         min="{{minHorizontalNumber}}"
+                         max="{{maxHorizontalNumber}}"
+                         formControlName="horizontalNumber"
+                         (change)="heightsControlsArrayMaker(); horizontalSpacingControlsMaker()"
+                  >
+                </div>
+              </div>
+              <div class="configure-form__navigation-buttons">
+                <a (click)="onOuterMaterialHover(outerMaterialOptions);onCompositionHover(compositionOptions)"
+                   class="btn btn--grey configure-form__navigation-buttons__next-prev">
+                  {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
+
+                <a (click)="onCompositionHover(compositionOptions);onDimensionsHover(dimensionsOptions)"
+                   class="btn btn--blue configure-form__navigation-buttons__next-prev">
+                  {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
               </div>
             </div>
-            <div class="configure-form__navigation-buttons">
-              <a (click)="onOuterMaterialHover(outerMaterialOptions);onCompositionHover(compositionOptions)"
-                 class="btn btn--grey configure-form__navigation-buttons__next-prev">
-                {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
-
-              <a (click)="onCompositionHover(compositionOptions);onDimensionsHover(dimensionsOptions)"
-                 class="btn btn--blue configure-form__navigation-buttons__next-prev">
-                {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
-            </div>
           </div>
-        </div>
 
-        <!--Dimensions-->
-        <div class="configure-form__group"
-             [ngClass]="{'dimensions-popup' : dimensionsPopup}"
-             formGroupName="dimensions">
-          <label for="dimensions" (click)="onDimensionsHover(dimensionsOptions)"
-                 class="configure-form__group__label">{{ 'FLASHINGS-CONFIG.dimensions' | translate}}</label>
-          <div class="configure-form__group__options" #dimensionsOptions>
+          <!--Dimensions-->
+          <div class="configure-form__group"
+               [ngClass]="{'dimensions-popup' : dimensionsPopup}"
+               formGroupName="dimensions">
+            <label for="dimensions" (click)="onDimensionsHover(dimensionsOptions)"
+                   class="configure-form__group__label">{{ 'FLASHINGS-CONFIG.dimensions' | translate}}</label>
+            <div class="configure-form__group__options" #dimensionsOptions>
 
-            <div class="dimensions-popup__content" *ngIf="dimensionsPopup else singleFlashing">
-              <div class="all-flashing-dimensions-container">
-                <p
-                  class="all-flashing-dimensions-container--title">{{'FLASHINGS-CONFIG.allFlashingDimensions' | translate}}</p>
-                <div class="widths-container" formArrayName="widths">
-                  <div class="configure-form__group__options__widths-inputs-group"
-                       *ngFor="let width of widths.controls; let i = index">
-                    <label for="{{'width' + i}}"
-                           class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.width' | translate}}</label>
-                    <input class="configure-form__group__options--option__input-width"
-                           [style.width.rem]="widthsSize"
-                           type="number"
-                           id="{{'width' + i}}"
-                           step="{{stepWidth}}"
-                           min="{{dimensionsFromFile.minWidth}}"
-                           max="{{dimensionsFromFile.maxWidth}}"
-                           formControlName="{{i}}"
-                    >
+              <div class="dimensions-popup__content" *ngIf="dimensionsPopup else singleFlashing">
+                <div class="all-flashing-dimensions-container">
+                  <p
+                    class="all-flashing-dimensions-container--title">{{'FLASHINGS-CONFIG.allFlashingDimensions' | translate}}</p>
+                  <div class="widths-container" formArrayName="widths">
+                    <div class="configure-form__group__options__widths-inputs-group"
+                         *ngFor="let width of widths.controls; let i = index">
+                      <label for="{{'width' + i}}"
+                             class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.width' | translate}}</label>
+                      <input class="configure-form__group__options--option__input-width"
+                             [style.width.rem]="widthsSize"
+                             type="number"
+                             id="{{'width' + i}}"
+                             step="{{stepWidth}}"
+                             min="{{dimensionsFromFile.minWidth}}"
+                             max="{{dimensionsFromFile.maxWidth}}"
+                             formControlName="{{i}}"
+                      >
+                    </div>
+                  </div>
+
+                  <div class="heights-container" formArrayName="heights">
+                    <div class="configure-form__group__options__heights-inputs-group"
+                         *ngFor="let height of heights.controls; let i = index">
+                      <label for="{{'height' + i}}"
+                             class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.height' | translate}}</label>
+                      <input class="configure-form__group__options--option__input-height"
+                             type="number"
+                             id="{{'height' + i}}"
+                             step="{{stepHeight}}"
+                             min="{{dimensionsFromFile.minHeight}}"
+                             max="{{dimensionsFromFile.maxHeight}}"
+                             formControlName="{{i}}"
+                      >
+                    </div>
+                  </div>
+
+                  <div class="composition-and-dimensions-presentation-container">
+                    <table class="composition-and-dimensions-presentation-container__table">
+                      <tr class="composition-and-dimensions-presentation-container__table--row"
+                          *ngFor="let horizontalFlashing of heights.controls let i = index">
+                        <td #dimensionsPresentationTD
+                            class="composition-and-dimensions-presentation-container__table--column"
+                            *ngFor="let verticalFlashing of widths.controls; let j = index">
+                          <div #dimensionsPresentationDivs
+                               *ngIf="heights.length !== widths.length && widths.length !== 1 && heights.length !== 1">x
+                          </div>
+                          <div #dimensionsPresentationDivsEqual
+                               *ngIf="heights.length === widths.length">{{(-1 * (form.get('composition.horizontalNumber').value) * i) + (((form.get('composition.horizontalNumber').value) - 1) * (form.get('composition.verticalNumber').value) + j) + 1}}</div>
+                          <div #dimensionsPresentationDivsW1
+                               *ngIf="widths.length === 1">{{form.get('composition.horizontalNumber').value - i}}</div>
+                          <div #dimensionsPresentationDivsH1
+                               *ngIf="heights.length === 1">{{(form.get('composition.verticalNumber').value * i) + ((form.get('composition.horizontalNumber').value - (form.get('composition.horizontalNumber').value - 1)) * j) + 1}}</div>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+
+                  <div class="vertical-spacings-container" formArrayName="verticalSpacings">
+                    <div class="configure-form__group__options__vertical-inputs-group" [style.width.rem]="widthsSize"
+                         *ngFor="let verticalSpacing of verticalSpacings.controls; let i = index">
+                      <label for="{{'verticalSpacing' + i}}"
+                             class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.verticalSpacing' | translate}}</label>
+                      <select class="configure-form__group__options--option__select-vertical-spacing"
+                              id="{{'verticalSpacing' + i}}" formControlName="{{i}}">
+                        <option class="configure-form__group__options--option__select-vertical-spacing--option"
+                                value="null" disabled>{{ 'FLASHINGS-CONFIG.choice' | translate}}</option>
+                        <br>
+                        <option class="configure-form__group__options--option__select-vertical-spacing--option"
+                                value="null" disabled>{{ 'FLASHINGS-CONFIG.verticalSpacingChoice' | translate}}</option>
+                        <option class="configure-form__group__options--option__select-vertical-spacing--option"
+                                *ngFor="let vertical of verticalSpacingsFromFile"
+                                value="{{vertical}}">{{vertical}}</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="horizontal-spacings-container" formArrayName="horizontalSpacings">
+                    <div class="configure-form__group__options__horizontal-inputs-group"
+                         *ngFor="let horizontalSpacing of horizontalSpacings.controls; let i = index">
+                      <label for="{{'horizontalSpacing' + i}}"
+                             class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.horizontalSpacing' | translate}}</label>
+                      <select class="configure-form__group__options--option__select-horizontal-spacing"
+                              id="{{'horizontalSpacing' + i}}" formControlName="{{i}}">
+                        <option class="configure-form__group__options--option__select-horizontal-spacing--option"
+                                value="null" disabled>{{ 'FLASHINGS-CONFIG.choice' | translate}}</option>
+                        <br>
+                        <option class="configure-form__group__options--option__select-horizontal-spacing--option"
+                                value="null"
+                                disabled>{{ 'FLASHINGS-CONFIG.horizontalSpacingChoice' | translate}}</option>
+                        <option class="configure-form__group__options--option__select-horizontal-spacing--option"
+                                *ngFor="let horizontal of horizontalSpacingsFromFile"
+                                value="{{horizontal}}">{{horizontal}}</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <p *ngIf="showHeightMessage && showWidthMessage"
+                     class="configure-form__validation-info--single-message"
+                  >{{ 'ROOF-WINDOWS-CONFIG.standardDimensions' | translate}}
+                    <a class="configure-form__validation-info--single-message--link"
+                       (click)="navigateToShop()">{{ 'SHOP.flashings' | translate}}</a></p>
+                  <div class="configure-form__navigation-buttons">
+                    <a
+                      (click)="onDimensionsHover(dimensionsOptions);onCompositionHover(compositionOptions); hideDimensionsPopup()"
+                      class="btn btn--grey configure-form__navigation-buttons__next-prev">
+                      {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
+
+                    <a (click)="onDimensionsHover(dimensionsOptions); hideDimensionsPopup()"
+                       class="btn btn--blue configure-form__navigation-buttons__next-prev">
+                      {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
                   </div>
                 </div>
+              </div>
 
-                <div class="heights-container" formArrayName="heights">
-                  <div class="configure-form__group__options__heights-inputs-group"
-                       *ngFor="let height of heights.controls; let i = index">
-                    <label for="{{'height' + i}}"
-                           class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.height' | translate}}</label>
-                    <input class="configure-form__group__options--option__input-height"
-                           type="number"
-                           id="{{'height' + i}}"
-                           step="{{stepHeight}}"
-                           min="{{dimensionsFromFile.minHeight}}"
-                           max="{{dimensionsFromFile.maxHeight}}"
-                           formControlName="{{i}}"
-                    >
-                  </div>
+              <ng-template #singleFlashing>
+
+                <div class="width-container" formArrayName="widths">
+                  <label for="0"
+                         class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.width' | translate}}</label>
+                  <input class="configure-form__group__options--option__input-width"
+                         type="number"
+                         id="0"
+                         step="{{stepWidth}}"
+                         min="{{dimensionsFromFile.minWidth}}"
+                         max="{{dimensionsFromFile.maxWidth}}"
+                         [formControlName]="0"
+                  >
                 </div>
 
-                <div class="composition-and-dimensions-presentation-container">
-                  <table class="composition-and-dimensions-presentation-container__table">
-                    <tr class="composition-and-dimensions-presentation-container__table--row"
-                        *ngFor="let horizontalFlashing of heights.controls let i = index">
-                      <td #dimensionsPresentationTD
-                          class="composition-and-dimensions-presentation-container__table--column"
-                          *ngFor="let verticalFlashing of widths.controls; let j = index">
-                        <div #dimensionsPresentationDivs
-                             *ngIf="heights.length !== widths.length && widths.length !== 1 && heights.length !== 1">x
-                        </div>
-                        <div #dimensionsPresentationDivsEqual
-                             *ngIf="heights.length === widths.length">{{(-1 * (form.get('composition.horizontalNumber').value) * i) + (((form.get('composition.horizontalNumber').value) - 1) * (form.get('composition.verticalNumber').value) + j) + 1}}</div>
-                        <div #dimensionsPresentationDivsW1
-                             *ngIf="widths.length === 1">{{form.get('composition.horizontalNumber').value - i}}</div>
-                        <div #dimensionsPresentationDivsH1
-                             *ngIf="heights.length === 1">{{(form.get('composition.verticalNumber').value * i) + ((form.get('composition.horizontalNumber').value - (form.get('composition.horizontalNumber').value - 1)) * j) + 1}}</div>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-
-                <div class="vertical-spacings-container" formArrayName="verticalSpacings">
-                  <div class="configure-form__group__options__vertical-inputs-group" [style.width.rem]="widthsSize"
-                       *ngFor="let verticalSpacing of verticalSpacings.controls; let i = index">
-                    <label for="{{'verticalSpacing' + i}}"
-                           class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.verticalSpacing' | translate}}</label>
-                    <select class="configure-form__group__options--option__select-vertical-spacing"
-                            id="{{'verticalSpacing' + i}}" formControlName="{{i}}">
-                      <option class="configure-form__group__options--option__select-vertical-spacing--option"
-                              value="null" disabled>{{ 'FLASHINGS-CONFIG.choice' | translate}}</option>
-                      <br>
-                      <option class="configure-form__group__options--option__select-vertical-spacing--option"
-                              value="null" disabled>{{ 'FLASHINGS-CONFIG.verticalSpacingChoice' | translate}}</option>
-                      <option class="configure-form__group__options--option__select-vertical-spacing--option"
-                              *ngFor="let vertical of verticalSpacingsFromFile"
-                              value="{{vertical}}">{{vertical}}</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="horizontal-spacings-container" formArrayName="horizontalSpacings">
-                  <div class="configure-form__group__options__horizontal-inputs-group"
-                       *ngFor="let horizontalSpacing of horizontalSpacings.controls; let i = index">
-                    <label for="{{'horizontalSpacing' + i}}"
-                           class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.horizontalSpacing' | translate}}</label>
-                    <select class="configure-form__group__options--option__select-horizontal-spacing"
-                            id="{{'horizontalSpacing' + i}}" formControlName="{{i}}">
-                      <option class="configure-form__group__options--option__select-horizontal-spacing--option"
-                              value="null" disabled>{{ 'FLASHINGS-CONFIG.choice' | translate}}</option>
-                      <br>
-                      <option class="configure-form__group__options--option__select-horizontal-spacing--option"
-                              value="null" disabled>{{ 'FLASHINGS-CONFIG.horizontalSpacingChoice' | translate}}</option>
-                      <option class="configure-form__group__options--option__select-horizontal-spacing--option"
-                              *ngFor="let horizontal of horizontalSpacingsFromFile"
-                              value="{{horizontal}}">{{horizontal}}</option>
-                    </select>
-                  </div>
+                <div class="height-container" formArrayName="heights">
+                  <label for="0"
+                         class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.height' | translate}}</label>
+                  <input class="configure-form__group__options--option__input-height"
+                         type="number"
+                         id="0"
+                         step="{{stepHeight}}"
+                         min="{{dimensionsFromFile.minHeight}}"
+                         max="{{dimensionsFromFile.maxHeight}}"
+                         [formControlName]="0"
+                  >
                 </div>
 
                 <p *ngIf="showHeightMessage && showWidthMessage"
@@ -378,125 +443,83 @@
                      class="btn btn--blue configure-form__navigation-buttons__next-prev">
                     {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
                 </div>
-              </div>
+
+              </ng-template>
+
             </div>
-
-            <ng-template #singleFlashing>
-
-              <div class="width-container" formArrayName="widths">
-                <label for="0"
-                       class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.width' | translate}}</label>
-                <input class="configure-form__group__options--option__input-width"
-                       type="number"
-                       id="0"
-                       step="{{stepWidth}}"
-                       min="{{dimensionsFromFile.minWidth}}"
-                       max="{{dimensionsFromFile.maxWidth}}"
-                       [formControlName]="0"
-                >
-              </div>
-
-              <div class="height-container" formArrayName="heights">
-                <label for="0"
-                       class="configure-form__group__label--inner">{{ 'FLASHINGS-CONFIG.height' | translate}}</label>
-                <input class="configure-form__group__options--option__input-height"
-                       type="number"
-                       id="0"
-                       step="{{stepHeight}}"
-                       min="{{dimensionsFromFile.minHeight}}"
-                       max="{{dimensionsFromFile.maxHeight}}"
-                       [formControlName]="0"
-                >
-              </div>
-
-              <p *ngIf="showHeightMessage && showWidthMessage"
-                 class="configure-form__validation-info--single-message"
-              >{{ 'ROOF-WINDOWS-CONFIG.standardDimensions' | translate}}
-                <a class="configure-form__validation-info--single-message--link"
-                   (click)="navigateToShop()">{{ 'SHOP.flashings' | translate}}</a></p>
-              <div class="configure-form__navigation-buttons">
-                <a
-                  (click)="onDimensionsHover(dimensionsOptions);onCompositionHover(compositionOptions); hideDimensionsPopup()"
-                  class="btn btn--grey configure-form__navigation-buttons__next-prev">
-                  {{ 'ROOF-WINDOWS-CONFIG.prev' | translate}}</a>
-
-                <a (click)="onDimensionsHover(dimensionsOptions); hideDimensionsPopup()"
-                   class="btn btn--blue configure-form__navigation-buttons__next-prev">
-                  {{ 'ROOF-WINDOWS-CONFIG.next' | translate}}</a>
-              </div>
-
-            </ng-template>
-
           </div>
-        </div>
-        <!--Popup with number configuration choose-->
-        <div class="choose-config-popup" *ngIf="chooseConfigNamePopup">
-          <div class="choose-config-popup__content">
-            <div class="choose-config-popup__content__form">
-              <div class="select-box">
-                <div class="select-box__current" tabindex="1">
-                  <div class="select-box__value" *ngFor="let singleConfiguration of userConfigs; let z = index">
-                    <input class="select-box__input" type="radio" id="{{z}}" [(ngModel)]="configFormId" [ngModelOptions]="{standalone: true}"
-                           value="{{singleConfiguration.userId}}" name="configFormId">
-                    <p class="select-box__input-text">{{singleConfiguration.userId}} - {{singleConfiguration.name}}</p>
+          <!--Popup with number configuration choose-->
+          <div class="choose-config-popup" *ngIf="chooseConfigNamePopup">
+            <div class="choose-config-popup__content">
+              <div class="choose-config-popup__content__form">
+                <div class="select-box">
+                  <div class="select-box__current" tabindex="1">
+                    <div class="select-box__value" *ngFor="let singleConfiguration of userConfigs; let z = index">
+                      <input class="select-box__input" type="radio" id="{{z}}" [(ngModel)]="configFormId"
+                             [ngModelOptions]="{standalone: true}"
+                             value="{{singleConfiguration.userId}}" name="configFormId">
+                      <p class="select-box__input-text">{{singleConfiguration.userId}}
+                        - {{singleConfiguration.name}}</p>
+                    </div>
+                    <div class="select-box__value">
+                      <input class="select-box__input" type="radio" id="-1" value="{{userConfigs[0].userId}}"
+                             name="configFormId" checked>
+                      <p class="select-box__input-text">{{userConfigs[0].userId}} - {{userConfigs[0].name}}</p>
+                    </div>
+                    <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg"
+                         alt="Arrow Icon" aria-hidden="true">
                   </div>
-                  <div class="select-box__value">
-                    <input class="select-box__input" type="radio" id="-1" value="{{userConfigs[0].userId}}"
-                           name="configFormId" checked>
-                    <p class="select-box__input-text">{{userConfigs[0].userId}} - {{userConfigs[0].name}}</p>
-                  </div>
-                  <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg"
-                       alt="Arrow Icon" aria-hidden="true">
+                  <ul class="select-box__list overflow-scroll-Y">
+                    <li *ngFor="let singleConfiguration of userConfigs; let z = index"><label
+                      class="select-box__option margin-bottom-0" for="{{z}}"
+                      aria-hidden="aria-hidden">{{singleConfiguration.userId}} - {{singleConfiguration.name}}</label>
+                    </li>
+                  </ul>
                 </div>
-                <ul class="select-box__list overflow-scroll-Y">
-                  <li *ngFor="let singleConfiguration of userConfigs; let z = index"><label
-                    class="select-box__option margin-bottom-0" for="{{z}}"
-                    aria-hidden="aria-hidden">{{singleConfiguration.userId}} - {{singleConfiguration.name}}</label></li>
-                </ul>
-              </div>
-              <a (click)="chooseConfigId(); closeAllHovers([flashingTypeOptions, apronTypeOptions, outerMaterialOptions,
+                <a (click)="chooseConfigId(); closeAllHovers([flashingTypeOptions, apronTypeOptions, outerMaterialOptions,
          compositionOptions, dimensionsOptions])"
-                 class="btn btn--blue">{{ 'FLASHINGS-CONFIG.chooseConfigNameButton' | translate}}</a>
-            </div>
-            <div class="choose-config-popup__content__back-button-container">
-              <a class="btn btn--grey" (click)="hidePopup(); closeAllHovers([flashingTypeOptions, apronTypeOptions, outerMaterialOptions,
+                   class="btn btn--blue">{{ 'FLASHINGS-CONFIG.chooseConfigNameButton' | translate}}</a>
+              </div>
+              <div class="choose-config-popup__content__back-button-container">
+                <a class="btn btn--grey" (click)="hidePopup(); closeAllHovers([flashingTypeOptions, apronTypeOptions, outerMaterialOptions,
          compositionOptions, dimensionsOptions])">{{ 'ROOF-WINDOWS-CONFIG.backButton' | translate}}</a>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="copy-link-config-popup" *ngIf="copyLinkToConfigurationPopup">
-          <div class="copy-link-config-popup__content" tabindex="1">
-            <div class="copy-link-config-popup__content__info-box">
-              <label
-                class="copy-link-config-popup__content__info-box--label">{{ 'FLASHINGS-CONFIG.copyLinkText' | translate}}</label>
-              <input value="{{urlToSaveConfiguration}}" name="configLink"
-                     class="copy-link-config-popup__content__info-box--input"
-                     type="text" disabled id="configLink">
-              <a (click)="closeCopyLinkPopUp()"
-                 class="btn btn--grey copy-link-config-popup__content__info-box__button">{{ 'ROOF-WINDOWS-CONFIG.closeCopyLinkPopUp' | translate}}</a>
+          <div class="copy-link-config-popup" *ngIf="copyLinkToConfigurationPopup">
+            <div class="copy-link-config-popup__content" tabindex="1">
+              <div class="copy-link-config-popup__content__info-box">
+                <label
+                  class="copy-link-config-popup__content__info-box--label">{{ 'FLASHINGS-CONFIG.copyLinkText' | translate}}</label>
+                <input value="{{urlToSaveConfiguration}}" name="configLink"
+                       class="copy-link-config-popup__content__info-box--input"
+                       type="text" disabled id="configLink">
+                <a (click)="closeCopyLinkPopUp()"
+                   class="btn btn--grey copy-link-config-popup__content__info-box__button">{{ 'ROOF-WINDOWS-CONFIG.closeCopyLinkPopUp' | translate}}</a>
+              </div>
             </div>
           </div>
-        </div>
 
-        <button class="btn btn--red configure-form__submit" [disabled]="!form.valid"
-                type="submit">{{ 'FLASHINGS-CONFIG.submit' | translate}}
-        </button>
-        <div class="configure-form__validation-info">
-          <p class="configure-form__validation-info--single-message"
-             *ngIf="form.get('flashingType').hasError('empty flashingType')">{{ 'FLASHINGS-CONFIG.emptyFlashingType' | translate}}</p>
-          <p class="configure-form__validation-info--single-message"
-             *ngIf="form.get('apronType').hasError('empty apronType')">{{ 'FLASHINGS-CONFIG.emptyApronType' | translate}}</p>
-          <p class="configure-form__validation-info--single-message"
-             *ngIf="form.get('dimensions').hasError('wrong dimensions')">{{ 'FLASHINGS-CONFIG.wrongDimensions' | translate}}</p>
-          <p class="configure-form__validation-info--single-message"
-             *ngIf="form.get('outer').hasError('empty outerMaterial')">{{ 'FLASHINGS-CONFIG.emptyOuterMaterial' | translate}}</p>
-        </div>
-        <a (click)="saveCopyLinkPopUp()"
-           class="btn btn--grey configure-form__save-button">{{ 'ROOF-WINDOWS-CONFIG.saveCopyLinkPopUp' | translate}}</a>
-        <a (click)="resetConfigForm()"
-           class="btn btn--light-blue configure-form__reset-button">{{ 'ROOF-WINDOWS-CONFIG.resetConfigForm' | translate}}</a>
-      </form>
-    </div>
-  </ng-template>
+          <button class="btn btn--red configure-form__submit" [disabled]="!form.valid"
+                  type="submit">{{ 'FLASHINGS-CONFIG.submit' | translate}}
+          </button>
+          <div class="configure-form__validation-info">
+            <p class="configure-form__validation-info--single-message"
+               *ngIf="form.get('flashingType').hasError('empty flashingType')">{{ 'FLASHINGS-CONFIG.emptyFlashingType' | translate}}</p>
+            <p class="configure-form__validation-info--single-message"
+               *ngIf="form.get('apronType').hasError('empty apronType')">{{ 'FLASHINGS-CONFIG.emptyApronType' | translate}}</p>
+            <p class="configure-form__validation-info--single-message"
+               *ngIf="form.get('dimensions').hasError('wrong dimensions')">{{ 'FLASHINGS-CONFIG.wrongDimensions' | translate}}</p>
+            <p class="configure-form__validation-info--single-message"
+               *ngIf="form.get('outer').hasError('empty outerMaterial')">{{ 'FLASHINGS-CONFIG.emptyOuterMaterial' | translate}}</p>
+          </div>
+          <a (click)="saveCopyLinkPopUp()"
+             class="btn btn--grey configure-form__save-button">{{ 'ROOF-WINDOWS-CONFIG.saveCopyLinkPopUp' | translate}}</a>
+          <a (click)="resetConfigForm()"
+             class="btn btn--light-blue configure-form__reset-button">{{ 'ROOF-WINDOWS-CONFIG.resetConfigForm' | translate}}</a>
+        </form>
+      </div>
+    </ng-template>
 
+  </div>
 </div>

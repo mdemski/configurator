@@ -1,4 +1,13 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  QueryList,
+  ViewChildren
+} from '@angular/core';
 import {LoadConfigurationService} from '../../services/load-configuration.service';
 import {Observable, Observer, Subject} from 'rxjs';
 import {Router} from '@angular/router';
@@ -121,6 +130,8 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
   chooseConfigNamePopup = false;
   copyLinkToConfigurationPopup = false;
   urlToSaveConfiguration: string;
+  path: string;
+  exteriorPath: string;
   private standardWidths = [55, 66, 78, 94, 114, 134];
   private standardHeights = [78, 98, 118, 140, 160];
   private currentUser: string;
@@ -161,8 +172,8 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
   ngOnInit(): void {
     this.minVerticalNumber = 1;
     this.minHorizontalNumber = 1;
-    this.maxVerticalNumber = 10;
-    this.maxHorizontalNumber = 10;
+    this.maxVerticalNumber = 6;
+    this.maxHorizontalNumber = 6;
     this.minWindchestLength = 10;
     this.maxWindchestLength = 150;
     this.stepWidth = 1;
@@ -413,6 +424,8 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
             form.dimensions.widths[j], reverseHeightsArray[i]);
           this.configuredFlashing.CenaDetaliczna = this.setFlashingPrice(this.configuredFlashing);
           this.setDisabled(this.configuredFlashing);
+          this.setProductPath(form.composition.verticalNumber, form.composition.horizontalNumber);
+          this.setExteriorPath(this.configuredFlashing, form.composition.verticalNumber, form.composition.horizontalNumber);
           this.configuredFlashingArray.push(this.configuredFlashing);
         }
       }
@@ -455,11 +468,9 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
         form.outer.outerColorFinish, form.dimensions.widths[0], form.dimensions.heights[0]);
       this.configuredFlashing.CenaDetaliczna = this.setFlashingPrice(this.configuredFlashing);
       this.setDisabled(this.configuredFlashing);
+      this.setExteriorPath(this.configuredFlashing, form.composition.verticalNumber, form.composition.horizontalNumber);
+      this.setProductPath(form.composition.verticalNumber, form.composition.horizontalNumber);
     }
-    console.log(this.showHeightMessage);
-    console.log(this.showWidthMessage);
-    // console.log(this.configuredFlashingArray);
-    console.log(this.configuredFlashing);
   }
 
   verticalAndHorizontalSpacingSetter(i: number, j: number, form: any, reverseHorizontalSpacingsArray: number[]) {
@@ -664,6 +675,81 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
 
   getFlashingCircuit(configuredFlashing) {
     return 2 * configuredFlashing.szerokosc + 2 * configuredFlashing.wysokosc;
+  }
+
+  private setProductPath(verticalNumber, horizontalNumber) {
+    this.path = String(verticalNumber + 'x' + horizontalNumber + '.jpg');
+  }
+
+  private setExteriorPath(configuredFlashing: Flashing, verticalNumber, horizontalNumber) {
+    if (configuredFlashing) {
+      if (configuredFlashing.model === '' || configuredFlashing.model === null) {
+        this.exteriorPath = 'H9-A7022P-1x1.jpg';
+      } else {
+        const model = configuredFlashing.model.split(':')[1];
+        let outerMaterialCode = '';
+        if (configuredFlashing.oblachowanieMaterial === '' || configuredFlashing.oblachowanieMaterial === null) {
+          outerMaterialCode = 'A';
+        } else {
+          switch (configuredFlashing.oblachowanieMaterial) {
+            case 'Aluminium':
+              outerMaterialCode = 'A';
+              break;
+            case 'Miedź':
+              outerMaterialCode = 'C';
+              break;
+            case 'TytanCynk':
+              outerMaterialCode = 'T';
+              break;
+            default:
+              outerMaterialCode = 'A';
+          }
+        }
+
+        let outerColorCode = '';
+        if (configuredFlashing.oblachowanieKolor === '' || configuredFlashing.oblachowanieKolor === null) {
+          outerColorCode = '7022';
+        } else {
+          if (configuredFlashing.oblachowanieKolor.split(':')[0] === 'Aluminium') {
+            outerColorCode = configuredFlashing.oblachowanieKolor.substring(configuredFlashing.oblachowanieKolor.length - 4);
+          }
+          if (configuredFlashing.oblachowanieKolor === 'Miedź:Natur') {
+            outerColorCode = '0000';
+          }
+          if (configuredFlashing.oblachowanieKolor === 'TytanCynk:Natur') {
+            outerColorCode = '0000';
+          }
+          if (configuredFlashing.oblachowanieKolor === '') {
+            outerColorCode = '7022';
+          }
+        }
+
+        let outerFinishCode = '';
+        if (configuredFlashing.oblachowanieFinisz === '' || configuredFlashing.oblachowanieFinisz === null) {
+          outerFinishCode = 'P';
+        } else {
+          switch (configuredFlashing.oblachowanieFinisz) {
+            case 'Aluminium:Półmat':
+              outerFinishCode = 'P';
+              break;
+            case 'Aluminium:Mat':
+              outerFinishCode = 'M';
+              break;
+            case 'Aluminium:Połysk':
+              outerFinishCode = 'B';
+              break;
+            case 'Aluminium:Natur':
+              outerFinishCode = '0';
+              break;
+            default:
+              outerFinishCode = 'P';
+          }
+        }
+        this.exteriorPath = String(model + '-' + outerMaterialCode + outerColorCode + outerFinishCode + '-' + verticalNumber + 'x' + horizontalNumber + '.jpg');
+      }
+    } else {
+      this.exteriorPath = 'H9-A7022P-1x1.jpg';
+    }
   }
 
   closeAllHovers(htmlDivElements: HTMLDivElement[]) {
