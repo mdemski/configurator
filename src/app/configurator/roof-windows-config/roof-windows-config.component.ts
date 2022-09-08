@@ -819,7 +819,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     if (configuredWindow) {
       const modelPart = configuredWindow.model.split(':')[1];
       let colorPart;
-      if (configuredWindow.zamkniecieKolor === null) {
+      if (configuredWindow.zamkniecieKolor === null || configuredWindow.zamkniecieKolor === '') {
         if (configuredWindow.stolarkaMaterial === 'DrewnoSosna') {
           colorPart = '7048';
         } else {
@@ -829,7 +829,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         colorPart = configuredWindow.zamkniecieKolor.split(':')[1];
       }
       let handlePart;
-      if (configuredWindow.zamkniecieTyp === null) {
+      if (configuredWindow.zamkniecieTyp === null || configuredWindow.zamkniecieTyp === '') {
         handlePart = 'ES';
       } else {
         switch (configuredWindow.zamkniecieTyp.split(':')[1]) {
@@ -854,7 +854,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
 
   private setExteriorPath(configuredWindow: RoofWindowSkylight) {
     if (configuredWindow) {
-      if (configuredWindow.oblachowanieMaterial === '') {
+      if (configuredWindow.oblachowanieMaterial === '' || configuredWindow.oblachowanieMaterial === null) {
         this.exteriorPath = 'A7022P.jpg';
       } else {
         let outerMaterialCode = '';
@@ -873,7 +873,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         }
 
         let outerColorCode = '';
-        if (configuredWindow.oblachowanieKolor !== null) {
+        if (configuredWindow.oblachowanieKolor !== null || configuredWindow.oblachowanieKolor !== '') {
           if (configuredWindow.oblachowanieKolor.split(':')[0] === 'Aluminium') {
             outerColorCode = configuredWindow.oblachowanieKolor.substring(configuredWindow.oblachowanieKolor.length - 4);
           }
