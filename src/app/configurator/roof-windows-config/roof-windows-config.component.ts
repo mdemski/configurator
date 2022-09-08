@@ -817,7 +817,12 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   // CSS STYLING
   private setProductPath(configuredWindow: RoofWindowSkylight) {
     if (configuredWindow) {
-      const modelPart = configuredWindow.model.split(':')[1];
+      let modelPart = '';
+      if (configuredWindow.model === 'V' || configuredWindow.model === 'Okno:ISV' || configuredWindow.model === 'Okno:IGV') {
+        modelPart = 'IGOV';
+      } else {
+        modelPart = configuredWindow.model.split(':')[1];
+      }
       let colorPart;
       if (configuredWindow.zamkniecieKolor === null || configuredWindow.zamkniecieKolor === '') {
         if (configuredWindow.stolarkaMaterial === 'DrewnoSosna') {
