@@ -723,8 +723,8 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
   }
 
   private setProductPath(configuredAccessory: Accessory) {
-    if (configuredAccessory.rodzaj === '') {
-      this.path = 'D37-A311-SR.jpg';
+    if (configuredAccessory.rodzaj === '' || configuredAccessory.rodzaj === null) {
+      this.path = 'D37-A311-SR.png';
     } else {
       switch (configuredAccessory.rodzaj.split(':')[0]) {
         case 'AkcesoriumRoletaZ':
@@ -882,17 +882,17 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
               this.path = String('P50-' + materialCode50 + '-' + extrasColor50 + '.png');
               break;
             default:
-              this.path = 'D37-A311-SR.jpg';
+              this.path = 'D37-A311-SR.png';
           }
           break;
         default:
-          this.path = 'D37-A311-SR.jpg';
+          this.path = 'D37-A311-SR.png';
       }
     }
   }
 
   private setExteriorPath(configuredAccessory: Accessory) {
-    if (configuredAccessory.rodzaj === '') {
+    if (configuredAccessory.rodzaj === '' || configuredAccessory.rodzaj === null) {
       this.exteriorPath = 'roleta-wewnętrzna.jpg';
     } else {
       switch (configuredAccessory.rodzaj.split(':')[0]) {
