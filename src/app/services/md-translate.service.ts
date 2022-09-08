@@ -20,14 +20,20 @@ export class MdTranslateService {
 
   setLanguage() {
     this.translate.addLangs(this.availableLang);
-    if (this.translate.getBrowserLang() === null || this.translate.getBrowserLang() === undefined || this.translate.getBrowserLang() === ''){
+    if (this.translate.getBrowserLang() === null || this.translate.getBrowserLang() === undefined || this.translate.getBrowserLang() === '') {
       this.translate.setDefaultLang(this.defaultLang);
     } else {
       this.translate.setDefaultLang(this.translate.getBrowserLang());
     }
     const browserLang = this.translate.getBrowserLang();
     this.translate.use(browserLang.match(/en|pl|de|fr/) ? browserLang : this.defaultLang);
-    this.user$.subscribe(user => this.translate.use(user.preferredLanguage));
+    this.user$.subscribe(user => {
+      if (user === undefined || user.preferredLanguage === '') {
+        this.translate.use(this.defaultLang);
+      } else {
+        this.translate.use(user.preferredLanguage);
+      }
+    });
   }
 
   get(value: string) {
