@@ -77,6 +77,8 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
   flatRoofWindowsConfigurator: string;
   showWidthMessage = false;
   showHeightMessage = false;
+  path: string;
+  exteriorPath: string;
   private flatRoofWindowsFromDataBase: FlatRoofWindow[];
   private routerParams = null;
   private globalId = '';
@@ -323,8 +325,9 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.configuredFlatRoofWindow = JSON.parse(JSON.stringify(temporaryConfigObject));
     this.showWidthMessage = this.standardWidths.includes(form.width);
     this.showHeightMessage = this.standardHeights.includes(form.height);
+    this.setProductPath(this.configuredFlatRoofWindow);
+    this.setExteriorPath(this.configuredFlatRoofWindow);
     this.setDisabled(this.configuredFlatRoofWindow);
-    console.log(this.configuredFlatRoofWindow.kod);
   }
 
   priceCalculation(configuredFlatRoofWindow: FlatRoofWindow) {
@@ -666,6 +669,88 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
   }
 
   // CSS STYLING
+  private setProductPath(configuredFlatRoofWindow: FlatRoofWindow) {
+    if (configuredFlatRoofWindow) {
+      let modelPart = '';
+      if (configuredFlatRoofWindow.model === '' || configuredFlatRoofWindow.model === null || configuredFlatRoofWindow.model === 'DachPłaski:') {
+        modelPart = 'PGX';
+      } else {
+        modelPart = configuredFlatRoofWindow.model.split(':')[1];
+      }
+      let colorPart;
+      if (configuredFlatRoofWindow.stolarkaKolor === null || configuredFlatRoofWindow.stolarkaKolor === '') {
+        colorPart = '9016';
+      } else {
+        colorPart = configuredFlatRoofWindow.stolarkaKolor.substring(configuredFlatRoofWindow.stolarkaKolor.length - 4);
+      }
+      this.path = String(modelPart + '-' + colorPart + '-' + '.png');
+    } else {
+      this.path = 'PGX-9016.png';
+    }
+  }
+
+  private setExteriorPath(configuredFlatRoofWindow: FlatRoofWindow) {
+    if (configuredFlatRoofWindow) {
+      if (configuredFlatRoofWindow.oblachowanieMaterial === '' || configuredFlatRoofWindow.oblachowanieMaterial === null) {
+        this.exteriorPath = 'A7022P.jpg';
+      } else {
+        let outerMaterialCode = '';
+        switch (configuredFlatRoofWindow.oblachowanieMaterial) {
+          case 'Aluminium':
+            outerMaterialCode = 'A';
+            break;
+          case 'Miedź':
+            outerMaterialCode = 'C';
+            break;
+          case 'TytanCynk':
+            outerMaterialCode = 'T';
+            break;
+          default:
+            outerMaterialCode = 'A';
+        }
+
+        let outerColorCode = '';
+        if (configuredFlatRoofWindow.oblachowanieKolor !== undefined || true || configuredFlatRoofWindow.oblachowanieKolor !== '') {
+          if (configuredFlatRoofWindow.oblachowanieKolor.split(':')[0] === 'Aluminium') {
+            outerColorCode = configuredFlatRoofWindow.oblachowanieKolor.substring(configuredFlatRoofWindow.oblachowanieKolor.length - 4);
+          }
+          if (configuredFlatRoofWindow.oblachowanieKolor === 'Miedź:Natur') {
+            outerColorCode = '0000';
+          }
+          if (configuredFlatRoofWindow.oblachowanieKolor === 'TytanCynk:Natur') {
+            outerColorCode = '0000';
+          }
+          if (configuredFlatRoofWindow.oblachowanieKolor === '') {
+            outerColorCode = '7022';
+          }
+        } else {
+          outerColorCode = '7022';
+        }
+
+        let outerFinishCode = '';
+        switch (configuredFlatRoofWindow.oblachowanieFinisz) {
+          case 'Aluminium:Półmat':
+            outerFinishCode = 'P';
+            break;
+          case 'Aluminium:Mat':
+            outerFinishCode = 'M';
+            break;
+          case 'Aluminium:Połysk':
+            outerFinishCode = 'B';
+            break;
+          case 'Aluminium:Natur':
+            outerFinishCode = '0';
+            break;
+          default:
+            outerFinishCode = 'P';
+        }
+        this.exteriorPath = String(outerMaterialCode + outerColorCode + outerFinishCode + '.jpg');
+      }
+    } else {
+      this.exteriorPath = 'A7022P.jpg';
+    }
+  }
+
   setBackgroundImage(value: string) {
     let fileName = '';
     const twoParts = value.split(':');
