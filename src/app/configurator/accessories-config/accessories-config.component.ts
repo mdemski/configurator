@@ -751,34 +751,35 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
         case 'AkcesoriumPilot':
           switch (configuredAccessory.rodzaj.split(':')[1]) {
             case 'R':
-              this.path = 'pilot-r.jpg';
+              this.path = 'pilot-r.png';
               break;
             case 'APR':
-              this.path = 'pilot-apr.jpg';
+              this.path = 'pilot-apr.png';
               break;
             case 'AP':
-              this.path = 'pilot-ap.jpg';
+              this.path = 'pilot-ap.png';
               break;
-            default: this.path = 'pilot-r.jpg';
+            default:
+              this.path = 'pilot-r.png';
           }
           break;
         case 'AkcesoriumKorba':
-          this.path = 'korba.jpg';
+          this.path = 'korba.png';
           break;
         case 'AkcesoriumBlokada':
-          this.path = 'blokada.jpg';
+          this.path = 'blokada.png';
           break;
         case 'AkcesoriumCentralka':
-          this.path = 'centralka.jpg';
+          this.path = 'centralka.png';
           break;
         case 'AkcesoriumDrążek':
-          this.path = 'drążek.jpg';
+          this.path = 'drążek.png';
           break;
         case 'AkcesoriumWłącznik':
-          this.path = 'włącznik.jpg';
+          this.path = 'włącznik.png';
           break;
         case 'AkcesoriumSiłownik':
-          this.path = 'siłownik.jpg';
+          this.path = 'siłownik.png';
           break;
         case 'AkcesoriumRoletaW':
           switch (configuredAccessory.rodzaj.split(':')[1]) {
@@ -786,13 +787,106 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
               this.path = 'AMO.jpg';
               break;
             case 'D37':
-
+              let materialCode = 'A311';
+              let extrasColor = 'SR';
+              materialCode = configuredAccessory.kolorTkaniny.split(':')[1];
+              switch (configuredAccessory.roletyKolorOsprzetu) {
+                case 'Srebrny':
+                  extrasColor = 'SR';
+                  break;
+                case 'Biały':
+                  extrasColor = 'B';
+                  break;
+                case 'Beżowy':
+                  extrasColor = 'BY';
+                  break;
+                default:
+                  extrasColor = 'SR';
+              }
+              this.path = String('D37-' + materialCode + '-' + extrasColor + '.png');
               break;
-
-            default: this.path = 'D37-A311-SR.jpg';
+            case 'D33':
+              let materialCode33 = 'A311';
+              let extrasColor33 = 'SR';
+              materialCode33 = configuredAccessory.kolorTkaniny.split(':')[1];
+              switch (configuredAccessory.roletyKolorOsprzetu) {
+                case 'Srebrny':
+                  extrasColor33 = 'SR';
+                  break;
+                case 'Biały':
+                  extrasColor33 = 'B';
+                  break;
+                case 'Beżowy':
+                  extrasColor33 = 'BY';
+                  break;
+                default:
+                  extrasColor33 = 'SR';
+              }
+              this.path = String('D33-' + materialCode33 + '-' + extrasColor33 + '.png');
+              break;
+            case 'D12':
+              let materialCode12 = 'A311';
+              let extrasColor12 = 'SR';
+              materialCode12 = configuredAccessory.kolorTkaniny.split(':')[1];
+              switch (configuredAccessory.roletyKolorOsprzetu) {
+                case 'Srebrny':
+                  extrasColor12 = 'SR';
+                  break;
+                case 'Biały':
+                  extrasColor12 = 'B';
+                  break;
+                case 'Beżowy':
+                  extrasColor12 = 'BY';
+                  break;
+                default:
+                  extrasColor12 = 'SR';
+              }
+              this.path = String('D12-' + materialCode12 + '-' + extrasColor12 + '.png');
+              break;
+            case 'P40':
+              let materialCode40 = 'A311';
+              let extrasColor40 = 'SR';
+              materialCode40 = configuredAccessory.kolorTkaniny.split(':')[1];
+              switch (configuredAccessory.roletyKolorOsprzetu) {
+                case 'Srebrny':
+                  extrasColor40 = 'SR';
+                  break;
+                case 'Biały':
+                  extrasColor40 = 'B';
+                  break;
+                case 'Beżowy':
+                  extrasColor40 = 'BY';
+                  break;
+                default:
+                  extrasColor40 = 'SR';
+              }
+              this.path = String('P40-' + materialCode40 + '-' + extrasColor40 + '.png');
+              break;
+            case 'P50':
+              let materialCode50 = 'A311';
+              let extrasColor50 = 'SR';
+              materialCode50 = configuredAccessory.kolorTkaniny.split(':')[1];
+              switch (configuredAccessory.roletyKolorOsprzetu) {
+                case 'Srebrny':
+                  extrasColor50 = 'SR';
+                  break;
+                case 'Biały':
+                  extrasColor50 = 'B';
+                  break;
+                case 'Beżowy':
+                  extrasColor50 = 'BY';
+                  break;
+                default:
+                  extrasColor50 = 'SR';
+              }
+              this.path = String('P50-' + materialCode50 + '-' + extrasColor50 + '.png');
+              break;
+            default:
+              this.path = 'D37-A311-SR.jpg';
           }
           break;
-        default: this.path = 'D37-A311-SR.jpg';
+        default:
+          this.path = 'D37-A311-SR.jpg';
       }
     }
   }
