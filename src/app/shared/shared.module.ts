@@ -10,6 +10,7 @@ import {HttpLoaderFactory} from '../app.module';
 import {HttpClient} from '@angular/common/http';
 import {EmptyArrayPipe} from '../pipes/empty-array.pipe';
 import {OkpolLoaderComponent} from '../loaders/okpol-loader/okpol-loader.component';
+import { ScrollTopComponent } from './scroll-top/scroll-top.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import {OkpolLoaderComponent} from '../loaders/okpol-loader/okpol-loader.compone
     EmptyArrayPipe,
     ModalComponent,
     BouncingLoaderComponent,
-    OkpolLoaderComponent
+    OkpolLoaderComponent,
+    ScrollTopComponent
   ],
   imports: [
     CommonModule,
@@ -42,7 +44,8 @@ import {OkpolLoaderComponent} from '../loaders/okpol-loader/okpol-loader.compone
     BouncingLoaderComponent,
     TranslateModule,
     EmptyArrayPipe,
-    OkpolLoaderComponent
+    OkpolLoaderComponent,
+    ScrollTopComponent
   ]
 })
 export class SharedModule { }
