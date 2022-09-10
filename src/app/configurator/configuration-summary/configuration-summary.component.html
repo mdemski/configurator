@@ -10,15 +10,18 @@
   </div>
   <ng-template #elseBlock>
     <div class="configuration-summary-container">
-      <div class="configuration-summary-container__configurations" *ngIf="(userConfigurations$ | async); else noConfigurations">
+      <div class="configuration-summary-container__configurations"
+           *ngIf="(userConfigurations$ | async); else noConfigurations">
         <div class="configuration-summary-container__single"
              *ngFor="let configuration of (userConfigurations$ | async) let i = index;">
           <div class="configuration-summary-container__single--title">
             <h1
-              class="configuration-summary-container__single--configuration-number">{{'CONFIG-SUMMARY.configurationNumber' | translate}}:
+              class="configuration-summary-container__single--configuration-number">{{'CONFIG-SUMMARY.configurationNumber' | translate}}
+              :
               {{configuration.userId}} - <input type="text" placeholder="{{configuration.name}}" #newConfigurationName
-                                            [attr.disabled]="uneditable"
-                                            class="configuration-summary-container__single--configuration-name"></h1>
+                                                [attr.disabled]="uneditable"
+                                                class="configuration-summary-container__single--configuration-name">
+            </h1>
             <a (click)="configurationNameEdit()" *ngIf="uneditable"
                class="btn-invert btn-invert--grey edit-button">{{'CONFIG-SUMMARY.correctConfigName' | translate}}</a>
             <a (click)="configurationNameSave(configuration._id, newConfigurationName)" *ngIf="!uneditable"
@@ -30,10 +33,14 @@
             class="configuration-summary-container__single--product-title first-child"
             *ngIf="configuration.products.flats">{{'CONFIG-SUMMARY.flatRoofWindows' | translate}}</h1>
           <div class="configuration-summary-container__single--roof-windows"
-               *ngFor="let singleWindow of configuration.products.flats let last = last" [ngClass]="{'last-child': last}">
-            <img *ngIf="singleWindow.flat.linkiDoZdjec; else greyBlock" src="{{singleWindow.flat.linkiDoZdjec[0]}}"
+               *ngFor="let singleWindow of configuration.products.flats let last = last"
+               [ngClass]="{'last-child': last}">
+            <img *ngIf="singleWindow.flat.linkiDoZdjec || singleWindow.flat.linkiDoZdjec === []; else greyBlock"
+                 src="{{singleWindow.flat.linkiDoZdjec[0]}}"
                  class="configuration-summary-container__single--roof-windows--window-picture">
-            <ng-template #greyBlock><div class="configuration-summary-container__single--roof-windows--window-grey"></div></ng-template>
+            <ng-template #greyBlock>
+              <div class="configuration-summary-container__single--roof-windows--window-grey"></div>
+            </ng-template>
             <div class="configuration-summary-container__single--roof-windows--detail">
               <div class="configuration-summary-container__single--roof-windows--table">
                 <table class="table table-striped table-hover">
@@ -141,8 +148,9 @@
               </div>
 
               <div class="configuration-summary-container__single__buttons">
-                <a routerLink="../{{'LINK.roofWindows' | translate}}/{{configuration.globalId}}/{{singleWindow.flatFormName}}/{{singleWindow.flat.kod}}"
-                   class="btn btn--black">{{'CONFIG-SUMMARY.correctConfig' | translate}}</a>
+                <a
+                  routerLink="../{{'LINK.roofWindows' | translate}}/{{configuration.globalId}}/{{singleWindow.flatFormName}}/{{singleWindow.flat.kod}}"
+                  class="btn btn--black">{{'CONFIG-SUMMARY.correctConfig' | translate}}</a>
                 <div class="quantity-container">
                   <p class="quantity-desc">{{ 'SINGLE-PRODUCT.quantity' | translate}}</p>
                   <i
@@ -170,10 +178,15 @@
             class="configuration-summary-container__single--product-title first-child"
             *ngIf="configuration.products.windows">{{'CONFIG-SUMMARY.roofWindows' | translate}}</h1>
           <div class="configuration-summary-container__single--roof-windows"
-               *ngFor="let singleWindow of configuration.products.windows let last = last" [ngClass]="{'last-child': last}">
-            <img *ngIf="singleWindow.window.linkiDoZdjec; else greyBlock" src="{{singleWindow.window.linkiDoZdjec[0]}}"
+               *ngFor="let singleWindow of configuration.products.windows let last = last"
+               [ngClass]="{'last-child': last}">
+            <!--            TODO tu jest dobrze nie poprawiać _ bo wrzucone z ręki-->
+            <img *ngIf="singleWindow.window.linkiDoZdjec || singleWindow.window.linkiDoZdjec === []; else greyBlock"
+                 src="{{singleWindow.window.linkiDoZdjec[0]}}" alt="{{singleWindow.window.linkiDoZdjec[0]}}"
                  class="configuration-summary-container__single--roof-windows--window-picture">
-            <ng-template #greyBlock><div class="configuration-summary-container__single--roof-windows--window-grey"></div></ng-template>
+            <ng-template #greyBlock>
+              <div class="configuration-summary-container__single--roof-windows--window-grey"></div>
+            </ng-template>
             <div class="configuration-summary-container__single--roof-windows--detail">
               <div class="configuration-summary-container__single--roof-windows--table">
                 <table class="table table-striped table-hover">
@@ -291,8 +304,9 @@
               </div>
 
               <div class="configuration-summary-container__single__buttons">
-                <a routerLink="../{{'LINK.roofWindows' | translate}}/{{configuration.globalId}}/{{singleWindow.windowFormName}}/{{singleWindow.window.kod}}"
-                   class="btn btn--black">{{'CONFIG-SUMMARY.correctConfig' | translate}}</a>
+                <a
+                  routerLink="../{{'LINK.roofWindows' | translate}}/{{configuration.globalId}}/{{singleWindow.windowFormName}}/{{singleWindow.window.kod}}"
+                  class="btn btn--black">{{'CONFIG-SUMMARY.correctConfig' | translate}}</a>
                 <div class="quantity-container">
                   <p class="quantity-desc">{{ 'SINGLE-PRODUCT.quantity' | translate}}</p>
                   <i
@@ -320,12 +334,15 @@
                 <!--                <p class="choose-window-popup__content__form&#45;&#45;text">{{ 'CONFIG-SUMMARY.chooseList' | translate}}</p>-->
                 <div class="choose-window-popup__content__form--select" tabindex="1">
                   <ng-container *ngFor="let flashingConfiguration of flashingConfigs; let i = index">
-                    <input *ngIf="flashingConfiguration.flashing" value="{{flashingConfiguration.id}}" [(ngModel)]="flashingId" name="flashingId"
+                    <input *ngIf="flashingConfiguration.flashing" value="{{flashingConfiguration.id}}"
+                           [(ngModel)]="flashingId" name="flashingId"
                            class="choose-window-popup__content__form--select--input" type="radio" id="{{i}}">
                     <label *ngIf="flashingConfiguration.flashing" for="{{i}}"
-                           class="choose-window-popup__content__form--select--label">{{flashingConfiguration.id}} - {{flashingConfiguration.flashing.productName}}</label>
+                           class="choose-window-popup__content__form--select--label">{{flashingConfiguration.id}}
+                      - {{flashingConfiguration.flashing.productName}}</label>
 
-                    <input *ngIf="!flashingConfiguration.flashing" value="{{flashingConfiguration.id}}" [(ngModel)]="flashingId" name="flashingId"
+                    <input *ngIf="!flashingConfiguration.flashing" value="{{flashingConfiguration.id}}"
+                           [(ngModel)]="flashingId" name="flashingId"
                            class="choose-window-popup__content__form--select--input" type="radio" id="{{i}}" checked>
                     <label *ngIf="!flashingConfiguration.flashing" for="{{i}}"
                            class="choose-window-popup__content__form--select--label">{{ 'CONFIG-SUMMARY.newConfiguration' | translate}}</label>
@@ -343,10 +360,15 @@
             class="configuration-summary-container__single--product-title" #flashingsLength
             *ngIf="configuration.products.flashings">{{'CONFIG-SUMMARY.flashings' | translate}}</h1>
           <div class="configuration-summary-container__single--flashings"
-               *ngFor="let singleFlashing of configuration.products.flashings let last = last" [ngClass]="{'last-child': last}">
-            <img *ngIf="singleFlashing.flashing.linkiDoZdjec; else greyBlock" src="{{singleFlashing.flashing.linkiDoZdjec[0]}}"
-                 class="configuration-summary-container__single--flashings--flashing-picture">
-            <ng-template #greyBlock><div class="configuration-summary-container__single--flashings--flashing-grey"></div></ng-template>
+               *ngFor="let singleFlashing of configuration.products.flashings let last = last"
+               [ngClass]="{'last-child': last}">
+            <img
+              *ngIf="singleFlashing.flashing.linkiDoZdjec || singleFlashing.flashing.linkiDoZdjec === []; else greyBlock"
+              src="{{singleFlashing.flashing.linkiDoZdjec[0]}}"
+              class="configuration-summary-container__single--flashings--flashing-picture">
+            <ng-template #greyBlock>
+              <div class="configuration-summary-container__single--flashings--flashing-grey"></div>
+            </ng-template>
             <div class="configuration-summary-container__single--flashings--detail">
               <div class="configuration-summary-container__single--flashings--table">
                 <table class="table table-striped table-hover">
@@ -438,8 +460,9 @@
                 </table>
               </div>
               <div class="configuration-summary-container__single__buttons">
-                <a routerLink="../{{'LINK.flashings' | translate}}/{{configuration.globalId}}/{{singleFlashing.id}}/{{singleFlashing.flashing.kod}}"
-                   class="btn btn--black">{{'CONFIG-SUMMARY.correctConfig' | translate}}</a>
+                <a
+                  routerLink="../{{'LINK.flashings' | translate}}/{{configuration.globalId}}/{{singleFlashing.id}}/{{singleFlashing.flashing.kod}}"
+                  class="btn btn--black">{{'CONFIG-SUMMARY.correctConfig' | translate}}</a>
                 <div class="quantity-container quantity-counter">
                   <p class="quantity-desc">{{'SINGLE-PRODUCT.quantity' | translate}}</p>
                   <i
@@ -464,15 +487,18 @@
           <div class="choose-window-popup" *ngIf="chooseWindowPopup">
             <div class="choose-window-popup__content">
               <form #configForm="ngForm" class="choose-window-popup__content__form">
-<!--                <p class="choose-window-popup__content__form&#45;&#45;text">{{ 'CONFIG-SUMMARY.chooseList' | translate}}</p>-->
+                <!--                <p class="choose-window-popup__content__form&#45;&#45;text">{{ 'CONFIG-SUMMARY.chooseList' | translate}}</p>-->
                 <div class="choose-window-popup__content__form--select" tabindex="1">
                   <ng-container *ngFor="let windowConfiguration of windowConfigs; let i = index">
-                    <input *ngIf="windowConfiguration.window" value="{{windowConfiguration.id}}" [(ngModel)]="windowId" name="windowId"
+                    <input *ngIf="windowConfiguration.window" value="{{windowConfiguration.id}}" [(ngModel)]="windowId"
+                           name="windowId"
                            class="choose-window-popup__content__form--select--input" type="radio" id="{{i}}">
                     <label *ngIf="windowConfiguration.window" for="{{i}}"
-                           class="choose-window-popup__content__form--select--label">{{ 'CONFIG-SUMMARY.windowNr' | translate}} {{windowConfiguration.id}} - {{windowConfiguration.window.productName}}</label>
+                           class="choose-window-popup__content__form--select--label">{{ 'CONFIG-SUMMARY.windowNr' | translate}} {{windowConfiguration.id}}
+                      - {{windowConfiguration.window.productName}}</label>
 
-                    <input *ngIf="!windowConfiguration.window" value="{{windowConfiguration.id}}" [(ngModel)]="windowId" name="windowId"
+                    <input *ngIf="!windowConfiguration.window" value="{{windowConfiguration.id}}" [(ngModel)]="windowId"
+                           name="windowId"
                            class="choose-window-popup__content__form--select--input" type="radio" id="{{i}}" checked>
                     <label *ngIf="!windowConfiguration.window" for="{{i}}"
                            class="choose-window-popup__content__form--select--label">{{ 'CONFIG-SUMMARY.newConfiguration' | translate}}</label>
@@ -500,9 +526,13 @@
           <div class="configuration-summary-container__single--accessories"
                *ngFor="let singleAccessory of configuration.products.accessories let last = last"
                [ngClass]="{'last-child': last}">
-            <img *ngIf="singleAccessory.accessory.linkiDoZdjec; else greyBlock" src="{{singleAccessory.accessory.linkiDoZdjec[0]}}"
-                 class="configuration-summary-container__single--accessories--accessory-picture">
-            <ng-template #greyBlock><div class="configuration-summary-container__single--accessories--accessory-grey"></div></ng-template>
+            <img
+              *ngIf="singleAccessory.accessory.linkiDoZdjec || singleAccessory.accessory.linkiDoZdjec === []; else greyBlock"
+              src="{{singleAccessory.accessory.linkiDoZdjec[0]}}"
+              class="configuration-summary-container__single--accessories--accessory-picture">
+            <ng-template #greyBlock>
+              <div class="configuration-summary-container__single--accessories--accessory-grey"></div>
+            </ng-template>
             <div class="configuration-summary-container__single--accessories--detail">
               <div class="configuration-summary-container__single--accessories--table">
                 <table class="table table-striped table-hover">
@@ -574,8 +604,9 @@
                 </table>
               </div>
               <div class="configuration-summary-container__single__buttons">
-                <a routerLink="../{{'LINK.accessories' | translate}}/{{configuration.globalId}}/{{singleAccessory.id}}/{{singleAccessory.accessory.kod}}"
-                   class="btn btn--black">{{'CONFIG-SUMMARY.correctConfig' | translate}}</a>
+                <a
+                  routerLink="../{{'LINK.accessories' | translate}}/{{configuration.globalId}}/{{singleAccessory.id}}/{{singleAccessory.accessory.kod}}"
+                  class="btn btn--black">{{'CONFIG-SUMMARY.correctConfig' | translate}}</a>
                 <div class="quantity-container">
                   <p class="quantity-desc">{{ 'SINGLE-PRODUCT.quantity' | translate}}</p>
                   <i
