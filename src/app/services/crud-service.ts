@@ -804,9 +804,7 @@ export class CrudService {
   // 1 usuwanie całej konfiguracji
   deleteConfiguration(globalConfiguration: SingleConfiguration) {
     const url = this.urlToUpdateSetter(globalConfiguration);
-    globalConfiguration.lastUpdate = new Date();
-    globalConfiguration.active = false;
-    return this.http.put(url, globalConfiguration, {headers: this.headers}).pipe(catchError(err => err));
+    return this.http.put(url, {active: false, lastUpdate: new Date()}, {headers: this.headers}).pipe(catchError(err => err));
   }
 
   // 2 usuwanie okna z konfiguracji
