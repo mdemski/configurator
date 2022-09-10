@@ -29,9 +29,12 @@
           <div class="configuration-summary-container__single--roof-windows"
                *ngFor="let singleWindow of configuration.products.flats let last = last"
                [ngClass]="{'last-child': last}">
-            <img *ngIf="singleWindow.flat.linkiDoZdjec; else greyBlock" src="{{singleWindow.flat.linkiDoZdjec[0]}}"
+            <img *ngIf="singleWindow.flat.linkiDoZdjec || singleWindow.flat.linkiDoZdjec === []; else greyBlock"
+                 src="{{singleWindow.flat.linkiDoZdjec[0]}}" alt="{{singleWindow.flat.productName}}"
                  class="configuration-summary-container__single--roof-windows--window-picture">
-            <ng-template #greyBlock><div class="configuration-summary-container__single--roof-windows--window-grey"></div></ng-template>
+            <ng-template #greyBlock>
+              <div class="configuration-summary-container__single--roof-windows--window-grey"></div>
+            </ng-template>
             <div class="configuration-summary-container__single--roof-windows--detail">
               <div class="configuration-summary-container__single--roof-windows--table">
                 <table class="table table-striped table-hover">
@@ -147,9 +150,12 @@
           <div class="configuration-summary-container__single--roof-windows"
                *ngFor="let singleWindow of configuration.products.windows let last = last"
                [ngClass]="{'last-child': last}">
-            <img *ngIf="singleWindow.window.linkiDoZdjec; else greyBlock" src="{{singleWindow.window.linkiDoZdjec[0]}}"
+            <img *ngIf="singleWindow.window.linkiDoZdjec || singleWindow.window.linkiDoZdjec === []; else greyBlock"
+                 src="{{singleWindow.window.linkiDoZdjec[0]}}" alt="{{singleWindow.window.productName}}"
                  class="configuration-summary-container__single--roof-windows--window-picture">
-            <ng-template #greyBlock><div class="configuration-summary-container__single--roof-windows--window-grey"></div></ng-template>
+            <ng-template #greyBlock>
+              <div class="configuration-summary-container__single--roof-windows--window-grey"></div>
+            </ng-template>
             <div class="configuration-summary-container__single--roof-windows--detail">
               <div class="configuration-summary-container__single--roof-windows--table">
                 <table class="table table-striped table-hover">
@@ -273,9 +279,12 @@
           <div class="configuration-summary-container__single--flashings"
                *ngFor="let singleFlashing of configuration.products.flashings let last = last"
                [ngClass]="{'last-child': last}">
-            <img *ngIf="singleFlashing.flashing.linkiDoZdjec; else greyBlock" src="{{singleFlashing.flashing.linkiDoZdjec[0]}}"
+            <img *ngIf="singleFlashing.flashing.linkiDoZdjec || singleFlashing.flashing.linkiDoZdjec === []; else greyBlock"
+                 src="{{singleFlashing.flashing.linkiDoZdjec[0]}}" alt="{{singleFlashing.flashing.productName}}"
                  class="configuration-summary-container__single--flashings--flashing-picture">
-            <ng-template #greyBlock><div class="configuration-summary-container__single--flashings--flashing-grey"></div></ng-template>
+            <ng-template #greyBlock>
+              <div class="configuration-summary-container__single--flashings--flashing-grey"></div>
+            </ng-template>
             <div class="configuration-summary-container__single--flashings--detail">
               <div class="configuration-summary-container__single--flashings--table">
                 <table class="table table-striped table-hover">
@@ -382,9 +391,12 @@
           <div class="configuration-summary-container__single--accessories"
                *ngFor="let singleAccessory of configuration.products.accessories let last = last"
                [ngClass]="{'last-child': last}">
-            <img *ngIf="singleAccessory.accessory.linkiDoZdjec; else greyBlock" src="{{singleAccessory.accessory.linkiDoZdjec[0]}}"
+            <img *ngIf="singleAccessory.accessory.linkiDoZdjec || singleAccessory.accessory.linkiDoZdjec === []; else greyBlock"
+                 src="{{singleAccessory.accessory.linkiDoZdjec[0]}}" alt="{{singleAccessory.accessory.productName}}"
                  class="configuration-summary-container__single--accessories--accessory-picture">
-            <ng-template #greyBlock><div class="configuration-summary-container__single--accessories--accessory-grey"></div></ng-template>
+            <ng-template #greyBlock>
+              <div class="configuration-summary-container__single--accessories--accessory-grey"></div>
+            </ng-template>
             <div class="configuration-summary-container__single--accessories--detail">
               <div class="configuration-summary-container__single--accessories--table">
                 <table class="table table-striped table-hover">

@@ -36,7 +36,7 @@
                *ngFor="let singleWindow of configuration.products.flats let last = last"
                [ngClass]="{'last-child': last}">
             <img *ngIf="singleWindow.flat.linkiDoZdjec || singleWindow.flat.linkiDoZdjec === []; else greyBlock"
-                 src="{{singleWindow.flat.linkiDoZdjec[0]}}"
+                 src="{{singleWindow.flat.linkiDoZdjec[0]}}" alt="{{singleWindow.flat.productName}}"
                  class="configuration-summary-container__single--roof-windows--window-picture">
             <ng-template #greyBlock>
               <div class="configuration-summary-container__single--roof-windows--window-grey"></div>
@@ -182,7 +182,7 @@
                [ngClass]="{'last-child': last}">
             <!--            TODO tu jest dobrze nie poprawiać _ bo wrzucone z ręki-->
             <img *ngIf="singleWindow.window.linkiDoZdjec || singleWindow.window.linkiDoZdjec === []; else greyBlock"
-                 src="{{singleWindow.window.linkiDoZdjec[0]}}" alt="{{singleWindow.window.linkiDoZdjec[0]}}"
+                 src="{{singleWindow.window.linkiDoZdjec[0]}}" alt="{{singleWindow.window.productName}}"
                  class="configuration-summary-container__single--roof-windows--window-picture">
             <ng-template #greyBlock>
               <div class="configuration-summary-container__single--roof-windows--window-grey"></div>
@@ -364,7 +364,7 @@
                [ngClass]="{'last-child': last}">
             <img
               *ngIf="singleFlashing.flashing.linkiDoZdjec || singleFlashing.flashing.linkiDoZdjec === []; else greyBlock"
-              src="{{singleFlashing.flashing.linkiDoZdjec[0]}}"
+              src="{{singleFlashing.flashing.linkiDoZdjec[0]}}" alt="{{singleFlashing.flashing.productName}}"
               class="configuration-summary-container__single--flashings--flashing-picture">
             <ng-template #greyBlock>
               <div class="configuration-summary-container__single--flashings--flashing-grey"></div>
@@ -528,7 +528,7 @@
                [ngClass]="{'last-child': last}">
             <img
               *ngIf="singleAccessory.accessory.linkiDoZdjec || singleAccessory.accessory.linkiDoZdjec === []; else greyBlock"
-              src="{{singleAccessory.accessory.linkiDoZdjec[0]}}"
+              src="{{singleAccessory.accessory.linkiDoZdjec[0]}}" alt="{{singleAccessory.accessory.productName}}"
               class="configuration-summary-container__single--accessories--accessory-picture">
             <ng-template #greyBlock>
               <div class="configuration-summary-container__single--accessories--accessory-grey"></div>
