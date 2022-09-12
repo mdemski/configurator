@@ -1,6 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {DatabaseService} from '../services/database.service';
 import {MdTranslateService} from '../services/md-translate.service';
+import {Select, Store} from '@ngxs/store';
+import {CartState} from '../store/cart/cart.state';
+import {Observable} from 'rxjs';
+import {AddProductToCart} from '../store/cart/cart.actions';
 
 @Component({
   selector: 'app-home',
@@ -8,6 +12,7 @@ import {MdTranslateService} from '../services/md-translate.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  @Select(CartState) cart$: Observable<any>;
   // TODO przekazać tutaj id z zalogowanego użytkownika
   // TODO Sprawdzić wszystkie linki na stronie czy mają ścieżki
   id: any;
@@ -17,11 +22,10 @@ export class HomeComponent implements OnInit {
   activeClass2 = '';
   activeClass3 = '';
   activeClass4 = '';
-  // TODO przygotować koszyk przetrzymujący dodawane z całej aplikacji produkty
-  @Input() cart: any;
 
   constructor(private translate: MdTranslateService,
-              private db: DatabaseService) {
+              private db: DatabaseService,
+              private store: Store) {
     translate.setLanguage();
   }
 
@@ -32,7 +36,7 @@ export class HomeComponent implements OnInit {
   }
 
   addToCart(product: any) {
-    this.cart.add(product);
+    this.store.dispatch(new AddProductToCart(product, 1));
   }
 
   getAvailableSellers() {
