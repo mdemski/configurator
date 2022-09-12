@@ -32,7 +32,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
 
   constructor(public translate: MdTranslateService,
               private route: ActivatedRoute,
-              private router: Router,
+              public router: Router,
               public taskService: TaskService) {
     translate.setLanguage();
     this.route.paramMap.pipe(

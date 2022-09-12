@@ -46,7 +46,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
               private loadConfig: LoadConfigurationService,
               private hd: HighestIdGetterService,
               private randomString: RandomStringGeneratorService,
-              private router: Router,
+              public router: Router,
               private fb: FormBuilder,
               private translate: MdTranslateService) {
     this.loading = true;

@@ -11,6 +11,7 @@ import {RouterState} from '@ngxs/router-plugin';
 import {RoofWindowState} from '../../../store/roof-window/roof-window.state';
 import {SkylightState} from '../../../store/skylight/skylight.state';
 import {AddProductToCart} from '../../../store/cart/cart.actions';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-reset-product-details',
@@ -38,7 +39,7 @@ export class ResetProductDetailsComponent implements OnInit, OnDestroy {
   quantity = 1;
   availableExtras: Accessory[] = [];
 
-  constructor(private store: Store, private crud: CrudService) {
+  constructor(private store: Store, private crud: CrudService, public router: Router) {
     this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.logInUser = user.currentUser);
     this.store.select(RouterState.state).pipe(takeUntil(this.isDestroyed$)).subscribe(state => {
       this.product$ = this.store.select(RoofWindowState.roofWindowByCode)

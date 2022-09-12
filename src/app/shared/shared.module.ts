@@ -11,6 +11,8 @@ import {HttpClient} from '@angular/common/http';
 import {EmptyArrayPipe} from '../pipes/empty-array.pipe';
 import {OkpolLoaderComponent} from '../loaders/okpol-loader/okpol-loader.component';
 import { ScrollTopComponent } from './scroll-top/scroll-top.component';
+import { NavbarNavigatorComponent } from './navbar-navigator/navbar-navigator.component';
+import {RouterModule} from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,8 @@ import { ScrollTopComponent } from './scroll-top/scroll-top.component';
     ModalComponent,
     BouncingLoaderComponent,
     OkpolLoaderComponent,
-    ScrollTopComponent
+    ScrollTopComponent,
+    NavbarNavigatorComponent
   ],
   imports: [
     CommonModule,
@@ -33,6 +36,7 @@ import { ScrollTopComponent } from './scroll-top/scroll-top.component';
         deps: [HttpClient]
       }
     }),
+    RouterModule,
   ],
   exports: [
     CommonModule,
@@ -45,7 +49,8 @@ import { ScrollTopComponent } from './scroll-top/scroll-top.component';
     TranslateModule,
     EmptyArrayPipe,
     OkpolLoaderComponent,
-    ScrollTopComponent
+    ScrollTopComponent,
+    NavbarNavigatorComponent
   ]
 })
 export class SharedModule { }

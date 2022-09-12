@@ -7,6 +7,7 @@ import {CartState} from '../../store/cart/cart.state';
 import {filter, takeUntil} from 'rxjs/operators';
 import {AddProductToCart} from '../../store/cart/cart.actions';
 import _ from 'lodash';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-accessories',
@@ -37,7 +38,7 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
   pageSize = 10;
   sortBy = 'popularity';
 
-  constructor(private store: Store) {
+  constructor(private store: Store, public router: Router) {
   }
 
   ngOnInit(): void {

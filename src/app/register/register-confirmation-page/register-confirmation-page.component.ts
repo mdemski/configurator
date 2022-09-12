@@ -27,7 +27,7 @@ export class RegisterConfirmationPageComponent implements OnInit, OnDestroy {
   constructor(private translate: MdTranslateService,
               private crud: CrudService,
               private store: Store,
-              private router: Router,
+              public router: Router,
               private route: ActivatedRoute,
               private ip: IpService) {
     translate.setLanguage();

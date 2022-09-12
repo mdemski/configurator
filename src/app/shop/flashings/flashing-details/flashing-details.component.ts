@@ -8,6 +8,7 @@ import {filter, map, takeUntil} from 'rxjs/operators';
 import {RouterState} from '@ngxs/router-plugin';
 import {FlashingState} from '../../../store/flashing/flashing.state';
 import {AddProductToCart} from '../../../store/cart/cart.actions';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-flashing-details',
@@ -29,7 +30,7 @@ export class FlashingDetailsComponent implements OnInit, OnDestroy {
   availableSizes = ['55x78', '55x98', '66x98', '66x118', '66x140', '78x98', '78x118', '78x140', '78x160', '94x118', '94x140', '94x160', '114x118', '114x140', '134x98'];
   quantity = 1;
 
-  constructor(private store: Store) {
+  constructor(private store: Store, public router: Router) {
     this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.logInUser = user.currentUser);
     this.store.select(RouterState.state).pipe(takeUntil(this.isDestroyed$)).subscribe(state => {
       this.flashing$ = this.store.select(FlashingState.flashingByCode)

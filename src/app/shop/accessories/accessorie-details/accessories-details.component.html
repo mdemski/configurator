@@ -2,6 +2,7 @@
 
 <div class="navbar-background">
   <img src="assets/img/navbar_backgrounds/boxed-water-is-better-rZBmXd-oqW8-unsplash.jpg" alt="roof window">
+  <app-navbar-navigator [path]="this.router.url"></app-navbar-navigator>
 </div>
 
 <div class="md-container"  *ngIf="accessory$ | async as accessory">

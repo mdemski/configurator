@@ -34,7 +34,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   constructor(private translate: MdTranslateService,
               private crud: CrudService,
               private randomString: RandomStringGeneratorService,
-              private router: Router) {
+              public router: Router) {
     translate.setLanguage();
     this.countries = this.crud.getCountryList();
   }

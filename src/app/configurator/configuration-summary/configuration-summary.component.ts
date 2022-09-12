@@ -54,7 +54,7 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
   addingProduct: string;
   userConfigurations$;
 
-  constructor(private router: Router,
+  constructor(public router: Router,
               private store: Store,
               private translate: MdTranslateService) {
     this.loading = true;

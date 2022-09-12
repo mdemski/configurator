@@ -10,6 +10,7 @@ import {filter, map, takeUntil} from 'rxjs/operators';
 import {RouterState} from '@ngxs/router-plugin';
 import {SkylightState} from '../../../store/skylight/skylight.state';
 import {AddProductToCart} from '../../../store/cart/cart.actions';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-skylight-details',
@@ -35,7 +36,7 @@ export class SkylightDetailsComponent implements OnInit, OnDestroy {
   quantity = 1;
   availableExtras: Accessory[] = [];
 
-  constructor(private store: Store, private crud: CrudService) {
+  constructor(private store: Store, private crud: CrudService, public router: Router) {
     this.user$.pipe(takeUntil(this.isDestroy$)).subscribe(user => this.logInUser = user.currentUser);
     this.store.select(RouterState).pipe(takeUntil(this.isDestroy$)).subscribe(state => {
       this.skylight$ = this.store.select(SkylightState.skylightByCode).pipe(

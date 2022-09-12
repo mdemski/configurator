@@ -10,6 +10,7 @@ import {AppState} from '../../../store/app/app.state';
 import {CrudService} from '../../../services/crud-service';
 import {AddProductToCart} from '../../../store/cart/cart.actions';
 import {CartState} from '../../../store/cart/cart.state';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-roof-window-details',
@@ -37,7 +38,7 @@ export class RoofWindowDetailsComponent implements OnInit, OnDestroy {
   quantity = 1;
   availableExtras: Accessory[] = [];
 
-  constructor(private store: Store, private crud: CrudService) {
+  constructor(private store: Store, private crud: CrudService, public router: Router) {
     this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.logInUser = user.currentUser);
     this.store.select(RouterState.state).pipe(takeUntil(this.isDestroyed$)).subscribe(state => {
       this.window$ = this.store.select(RoofWindowState.roofWindowByCode)

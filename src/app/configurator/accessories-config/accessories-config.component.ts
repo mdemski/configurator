@@ -45,7 +45,7 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
               private randomString: RandomStringGeneratorService,
               private loadConfig: LoadConfigurationService,
               private accessoryValueSetter: AccessoryValuesSetterService,
-              private router: Router,
+              public router: Router,
               private fb: FormBuilder,
               private modal: ModalService,
               private translate: MdTranslateService) {

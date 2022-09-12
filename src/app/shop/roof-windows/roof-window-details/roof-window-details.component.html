@@ -4,6 +4,7 @@
 <!--{{ 'SINGLE-PRODUCT.description' | translate}}-->
 <div class="navbar-background">
   <img src="assets/img/navbar_backgrounds/alexander-ant-AnjGcUxk9ME-unsplash.jpg" alt="roof window">
+  <app-navbar-navigator [path]="this.router.url"></app-navbar-navigator>
 </div>
 
 <div class="md-container">
@@ -15,7 +16,8 @@
         src="assets/icons/single_product_page/wood.png" alt="wooden window"></div>
       <div *ngIf="windowMaterial === 'PVC'" class="specification-icons__element active-icon"><img
         src="assets/icons/single_product_page/pvc.png" alt="wooden window"></div>
-      <div class="specification-icons__element active-icon">{{'ROOF-WINDOWS-DATA.' + windowToShow.stolarkaKolor | translate}}</div>
+      <div
+        class="specification-icons__element active-icon">{{'ROOF-WINDOWS-DATA.' + windowToShow.stolarkaKolor | translate}}</div>
       <div *ngIf="windowVent === 'NEO-AIR' else windowNoVent" class="specification-icons__element active-icon"><img
         src="assets/icons/single_product_page/neo-vent.png" alt="wooden window"></div>
       <ng-template #windowNoVent>
@@ -25,14 +27,17 @@
       <div *ngIf="windowHandle === 'Extra Secure' else simpleHandle" class="specification-icons__element active-icon">
         <img src="assets/icons/single_product_page/extra-secure.png" alt="wooden window"></div>
       <ng-template #simpleHandle>
-        <div class="specification-icons__element inactive-icon"><img src="assets/icons/single_product_page/extra-secure.png"
-                                                                     alt="wooden window"></div>
+        <div class="specification-icons__element inactive-icon"><img
+          src="assets/icons/single_product_page/extra-secure.png"
+          alt="wooden window"></div>
       </ng-template>
       <div class="specification-icons__element active-icon">Uw {{windowToShow.windowUW}}</div>
       <div class="specification-icons__element active-icon">Ug {{windowToShow.windowUG}} </div>
-      <div class="specification-icons__element active-icon">{{'ROOF-WINDOWS-DATA.' + windowToShow.oblachowanieKolor | translate}}</div>
-      <div class="specification-icons__element active-icon"><img src="assets/icons/single_product_page/guarantee-window.png"
-                                                                 alt="guarantee for window"></div>
+      <div
+        class="specification-icons__element active-icon">{{'ROOF-WINDOWS-DATA.' + windowToShow.oblachowanieKolor | translate}}</div>
+      <div class="specification-icons__element active-icon"><img
+        src="assets/icons/single_product_page/guarantee-window.png"
+        alt="guarantee for window"></div>
     </div>
     <!--Icons with specification of product-->
 
@@ -45,14 +50,16 @@
 
   <div class="md-container--right-side">
     <p class="product-name">{{windowToShow.productName}}</p>
-    <p class="price">{{ 'SINGLE-PRODUCT.price' | translate}} {{(windowToShow.CenaDetaliczna / (cart$ | async).cart.exchange) | currency: ' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
+    <p
+      class="price">{{ 'SINGLE-PRODUCT.price' | translate}} {{(windowToShow.CenaDetaliczna / (cart$ | async).cart.exchange) | currency: ' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
     <p *ngIf="logInUser.isLogged"
        class="price--after-discount">{{ 'SINGLE-PRODUCT.priceAfterDisc' | translate}} {{((priceAfterDisc$ | async) / (cart$ | async).cart.exchange) | currency :' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
     <div class="line"></div>
     <div class="all-sizes-container">
       <p>{{ 'SINGLE-PRODUCT.availableSizes' | translate}}</p>
       <!--TODO przekierować na odpowiednią stronę z wymiarem okna-->
-      <a routerLink="../{{getLinkCode(windowToShow.kod, size)}}" class="icon-btn-light icon-btn-light--light-grey-red btn-big" [routerLinkActive]="['active-button']"
+      <a routerLink="../{{getLinkCode(windowToShow.kod, size)}}"
+         class="icon-btn-light icon-btn-light--light-grey-red btn-big" [routerLinkActive]="['active-button']"
          *ngFor="let size of availableSizes">{{size}}</a>
     </div>
     <div class="line"></div>

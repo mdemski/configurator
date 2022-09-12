@@ -7,6 +7,7 @@ import {FlatRoofWindow} from '../../models/flat-roof-window';
 import {filter, takeUntil} from 'rxjs/operators';
 import _ from 'lodash';
 import {AddProductToCart} from '../../store/cart/cart.actions';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-flat-roof-windows',
@@ -33,7 +34,7 @@ export class FlatRoofWindowsComponent implements OnInit, OnDestroy {
   pageSize = 10;
   sortBy = 'popularity';
 
-  constructor(private store: Store) { }
+  constructor(private store: Store, public router: Router) { }
 
   ngOnInit(): void {
     this.pageSize = this.getNumberInRow();

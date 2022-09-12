@@ -19,6 +19,7 @@ import {UpdateUserData} from '../../store/user/user.actions';
 import {Company} from '../../models/company';
 import { Chart } from 'chart.js';
 import {MdTranslateService} from '../../services/md-translate.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-my-profile',
@@ -73,7 +74,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
               private authService: AuthService,
               private store: Store,
               private crud: CrudService,
-              private db: DatabaseService) {
+              private db: DatabaseService, public router: Router) {
     // TODO poprawić na dane z api eNova
     this.testCompany = this.db.getAllSellers()[0];
     this.company$.next(this.testCompany);

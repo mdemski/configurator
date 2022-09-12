@@ -2,6 +2,7 @@
 
 <div class="navbar-background">
   <img src="assets/img/navbar_backgrounds/pawel-czerwinski-HvJbn9HIf6U-unsplash.jpg" alt="roof window">
+  <app-navbar-navigator [path]="this.router.url"></app-navbar-navigator>
 </div>
 
 <div class="md-container" *ngIf="flatRoofWindow$ | async as flatWindow">

@@ -8,6 +8,7 @@ import {SkylightState} from '../../store/skylight/skylight.state';
 import {filter, map, takeUntil} from 'rxjs/operators';
 import {AddProductToCart} from '../../store/cart/cart.actions';
 import _ from 'lodash';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reset-products',
@@ -38,7 +39,7 @@ export class ResetProductsComponent implements OnInit {
   pageSize = 10;
   sortBy = 'popularity';
 
-  constructor(private store: Store) {
+  constructor(private store: Store, public router: Router) {
   }
 
   ngOnInit(): void {

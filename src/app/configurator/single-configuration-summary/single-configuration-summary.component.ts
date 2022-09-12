@@ -9,6 +9,7 @@ import {AppState} from '../../store/app/app.state';
 import {ConfigurationState} from '../../store/configuration/configuration.state';
 import {RouterState} from '@ngxs/router-plugin';
 import {CartState} from '../../store/cart/cart.state';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-single-configuration-summary',
@@ -30,7 +31,7 @@ export class SingleConfigurationSummaryComponent implements OnInit, OnDestroy {
   loading;
   isDestroyed$ = new Subject();
 
-  constructor(private store: Store) {
+  constructor(private store: Store, public router: Router) {
     this.loading = true;
     this.params$.pipe(takeUntil(this.isDestroyed$)).subscribe(params => this.routerParams = params);
   }

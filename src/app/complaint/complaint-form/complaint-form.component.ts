@@ -47,7 +47,7 @@ export class ComplaintFormComponent implements OnInit, OnDestroy {
 
   constructor(private translate: MdTranslateService,
               private route: ActivatedRoute,
-              private router: Router,
+              public router: Router,
               public complaintService: ComplaintService,
               private roofWindowSetter: RoofWindowValuesSetterService,
               private flashingSetter: FlashingValueSetterService) {

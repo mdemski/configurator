@@ -2,6 +2,7 @@
 
 <div class="navbar-background">
   <img src="assets/img/navbar_backgrounds/joel-jasmin-forestbird-xzPMUMDDsfk-unsplash.jpg" alt="roof windows">
+  <app-navbar-navigator [path]="this.router.url"></app-navbar-navigator>
 </div>
 <div class="full-width-container" style="height: 100px; border: grey solid 2px; text-align: center">Baner</div>
 <app-roof-window-filtration (filtersEmitter)="filtersInput($event)"></app-roof-window-filtration>
@@ -110,7 +111,8 @@
          *ngFor="let window of filteredRoofWindowsList | paginate: {itemsPerPage: pageSize, currentPage: page}">
       <a routerLink="./{{window.kod}}">
         <div class="product-card__photo-container">
-          <img src="{{window.linkiDoZdjec[0]}}" alt="{{window.grupaAsortymentowa}}" class="product-card__photo-container__photo">
+          <img src="{{window.linkiDoZdjec[0]}}" alt="{{window.grupaAsortymentowa}}"
+               class="product-card__photo-container__photo">
         </div>
       </a>
       <h3 class="product-card__title">{{window.productName}}</h3>

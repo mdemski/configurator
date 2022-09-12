@@ -36,6 +36,7 @@ import {
 } from '../store/user/user.actions';
 import {MdTranslateService} from '../services/md-translate.service';
 import {HttpClient} from '@angular/common/http';
+import {Router} from '@angular/router';
 // install Swiper components
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Virtual, Zoom, Autoplay, Controller, Thumbs]);
 
@@ -102,7 +103,7 @@ export class MyAccountComponent implements OnInit, OnDestroy, AfterViewInit {
               private translate: MdTranslateService,
               private store: Store,
               private taskService: TaskService,
-              private orderService: OrderService) {
+              private orderService: OrderService, public router: Router) {
     this.translate.setLanguage();
     this.currencies = Object.keys(exchange);
     this.rates = Object.values(vatRates);

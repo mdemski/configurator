@@ -53,7 +53,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
   @Select(RouterState) params$: Observable<any>;
   @Select(CartState) cart$: Observable<any>;
 
-  constructor(private router: Router,
+  constructor(public router: Router,
               private fb: FormBuilder,
               private store: Store,
               private changeDetector: ChangeDetectorRef,

@@ -22,7 +22,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   myProfileLink = '';
 
   constructor(private translate: MdTranslateService,
-              private router: Router,
+              public router: Router,
               private crud: CrudService) {
   }
 

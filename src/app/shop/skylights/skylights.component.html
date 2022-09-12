@@ -2,6 +2,7 @@
 
 <div class="navbar-background">
   <img src="assets/img/navbar_backgrounds/sasha-pleshco-Nx-EO5w9-QQ-unsplash.jpg" alt="skylights">
+  <app-navbar-navigator [path]="this.router.url"></app-navbar-navigator>
 </div>
 <div class="full-width-container" style="height: 100px; border: grey solid 2px; text-align: center">Baner</div>
 <app-skylight-filtration (filtersEmitter)="filtersInput($event)"></app-skylight-filtration>

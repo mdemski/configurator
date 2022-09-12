@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
   myAccountLink: string;
 
   constructor(private authService: AuthService,
-              private router: Router,
+              public router: Router,
               private crud: CrudService,
               private translate: MdTranslateService) {
     translate.setLanguage();

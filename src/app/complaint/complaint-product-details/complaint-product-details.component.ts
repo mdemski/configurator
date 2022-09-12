@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import {map, switchMap, takeUntil, tap} from 'rxjs/operators';
 import {ComplaintService} from '../../services/complaint.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Select, Store} from '@ngxs/store';
 import {AppState} from '../../store/app/app.state';
 import {Complaint} from '../../models/complaint';
@@ -29,7 +29,7 @@ export class ComplaintProductDetailsComponent implements OnInit, OnDestroy {
 
   constructor(public complaintService: ComplaintService,
               private route: ActivatedRoute,
-              private store: Store) {
+              private store: Store, public router: Router) {
     this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.currentUser = user.currentUser);
     this.complaint$ = this.route.paramMap.pipe(
       takeUntil(this.isDestroyed$),

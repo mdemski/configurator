@@ -7,6 +7,7 @@ import {Observable, Subject} from 'rxjs';
 import _ from 'lodash';
 import {AddProductToCart} from '../../store/cart/cart.actions';
 import {CartState} from '../../store/cart/cart.state';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-roof-windows',
@@ -34,7 +35,7 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
   pageSize = 10;
   sortBy = 'popularity';
 
-  constructor(private store: Store) {
+  constructor(private store: Store, public router: Router) {
   }
 
   ngOnInit(): void {

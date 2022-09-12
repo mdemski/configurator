@@ -8,6 +8,7 @@ import {filter, map, takeUntil} from 'rxjs/operators';
 import {RouterState} from '@ngxs/router-plugin';
 import {FlatRoofWindowState} from '../../../store/flat-roof-window/flat-roof-window.state';
 import {AddProductToCart} from '../../../store/cart/cart.actions';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-flat-roof-window-details',
@@ -30,7 +31,7 @@ export class FlatRoofWindowDetailsComponent implements OnInit, OnDestroy {
   availableSizes = ['60x60', '90x60', '120x60', '70x70', '80x80', '90x90', '120x90', '100x100', '150x100', '120x120', '140x140', '220x120'];
   quantity = 1;
 
-  constructor(private store: Store) {
+  constructor(private store: Store, public router: Router) {
     this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.logInUser = user.currentUser);
     this.store.select(RouterState.state).pipe(takeUntil(this.isDestroyed$)).subscribe(state => {
       this.flatRoofWindow$ = this.store.select(FlatRoofWindowState.flatByCode)

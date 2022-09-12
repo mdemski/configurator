@@ -5,6 +5,7 @@ import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {filter, takeUntil} from 'rxjs/operators';
 import {Item} from '../models/item';
 import {AddProductToCart, DeleteProductFromCart} from '../store/cart/cart.actions';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -20,7 +21,7 @@ export class CartComponent implements OnInit, OnDestroy {
   shippingOptions = ['Odbiór własny', 'Wysyłka kurierem', 'Spedycja'];
   shipping: string;
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, public router: Router) {}
 
   ngOnInit(): void {
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe((data) => {
