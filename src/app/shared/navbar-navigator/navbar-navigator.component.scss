@@ -1,0 +1,19 @@
+@import 'src/sass/base/variables';
+
+.navbar-background {
+  &__links {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+    position: absolute;
+    bottom: 2rem;
+
+    &--link {
+      margin-right: 1rem;
+      color: $color-white;
+      text-decoration: none;
+      font-size: 1.2rem;
+    }
+  }
+}

@@ -1,0 +1,14 @@
+<div class="navbar-background__links">
+  <a *ngFor="let url of path.split('/', 3); let i = index"
+     routerLink="/{{path.split('/')[i - 1]}}"
+     class="navbar-background__links--link">
+    <p *ngIf="path.split('/')[i - 1] === ''">{{'LINK.homePage' | translate}}</p>
+    <p
+      *ngIf="path.split('/')[i - 1] !== '' && path.split('/')[i - 1] !== undefined">{{(path.split('/')[i - 1])[0].toUpperCase() + (path.split('/')[i - 1]).substring(1).toLowerCase()}}</p>
+  </a>
+  <a *ngIf="path.split('/').length > 3" routerLink="../"
+     class="navbar-background__links--link">
+    <p *ngIf="path.split('/')[path.split('/').length - 2] !== '' && path.split('/')[path.split('/').length - 2] !== undefined">
+      {{(path.split('/')[path.split('/').length - 2])[0].toUpperCase() + (path.split('/')[path.split('/').length - 2]).substring(1).toLowerCase()}}</p>
+  </a>
+</div>
