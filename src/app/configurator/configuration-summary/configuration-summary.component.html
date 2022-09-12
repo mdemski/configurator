@@ -150,7 +150,7 @@
 
               <div class="configuration-summary-container__single__buttons">
                 <a
-                  routerLink="../{{'LINK.roofWindows' | translate}}/{{configuration.globalId}}/{{singleWindow.flatFormName}}/{{singleWindow.flat.kod}}"
+                  routerLink="../roof-windows/{{configuration.globalId}}/{{singleWindow.flatFormName}}/{{singleWindow.flat.kod}}"
                   class="btn btn--black">{{'CONFIG-SUMMARY.correctConfig' | translate}}</a>
                 <div class="quantity-container">
                   <p class="quantity-desc">{{ 'SINGLE-PRODUCT.quantity' | translate}}</p>
@@ -306,7 +306,7 @@
 
               <div class="configuration-summary-container__single__buttons">
                 <a
-                  routerLink="../{{'LINK.roofWindows' | translate}}/{{configuration.globalId}}/{{singleWindow.windowFormName}}/{{singleWindow.window.kod}}"
+                  routerLink="../roof-windows/{{configuration.globalId}}/{{singleWindow.windowFormName}}/{{singleWindow.window.kod}}"
                   class="btn btn--black">{{'CONFIG-SUMMARY.correctConfig' | translate}}</a>
                 <div class="quantity-container">
                   <p class="quantity-desc">{{ 'SINGLE-PRODUCT.quantity' | translate}}</p>
@@ -462,7 +462,7 @@
               </div>
               <div class="configuration-summary-container__single__buttons">
                 <a
-                  routerLink="../{{'LINK.flashings' | translate}}/{{configuration.globalId}}/{{singleFlashing.id}}/{{singleFlashing.flashing.kod}}"
+                  routerLink="../flashings/{{configuration.globalId}}/{{singleFlashing.id}}/{{singleFlashing.flashing.kod}}"
                   class="btn btn--black">{{'CONFIG-SUMMARY.correctConfig' | translate}}</a>
                 <div class="quantity-container quantity-counter">
                   <p class="quantity-desc">{{'SINGLE-PRODUCT.quantity' | translate}}</p>
@@ -606,7 +606,7 @@
               </div>
               <div class="configuration-summary-container__single__buttons">
                 <a
-                  routerLink="../{{'LINK.accessories' | translate}}/{{configuration.globalId}}/{{singleAccessory.id}}/{{singleAccessory.accessory.kod}}"
+                  routerLink="../accessories/{{configuration.globalId}}/{{singleAccessory.id}}/{{singleAccessory.accessory.kod}}"
                   class="btn btn--black">{{'CONFIG-SUMMARY.correctConfig' | translate}}</a>
                 <div class="quantity-container">
                   <p class="quantity-desc">{{ 'SINGLE-PRODUCT.quantity' | translate}}</p>
@@ -643,7 +643,7 @@
         </div>
 
         <div class="configuration-summary-container__create-new">
-          <a routerLink="/{{'LINK.configurator' | translate}}"
+          <a routerLink="/configurator"
              class="btn btn--red">{{'CONFIG-SUMMARY.prepareNewConfiguration' | translate}}</a>
         </div>
 
@@ -652,7 +652,7 @@
         <div class="configuration-summary-container__no-configurations">
           <h1
             class="configuration-summary-container__no-configurations--text">{{'CONFIG-SUMMARY.noConfigurations' | translate}}</h1>
-          <a routerLink="../{{'LINK.configurator' | translate}}"
+          <a routerLink="../configurator"
              class="btn btn--yellow">{{'CONFIG-SUMMARY.prepareConfiguration' | translate}}</a>
         </div>
       </ng-template>

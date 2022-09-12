@@ -4,7 +4,7 @@ import {ComplaintProductDetailsComponent} from './complaint-product-details/comp
 import {ComplaintFormComponent} from './complaint-form/complaint-form.component';
 
 const routes: Routes = [
-  {path: 'zgloszenie', component: ComplaintFormComponent},
+  {path: 'new-complaint', component: ComplaintFormComponent},
   {path: 'update/:id/:year', component: ComplaintFormComponent},
   {path: ':id', component: ComplaintProductDetailsComponent}
 ];

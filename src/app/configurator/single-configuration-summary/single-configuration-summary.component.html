@@ -472,11 +472,11 @@
         </div>
 
         <div class="configuration-summary-container__create-new">
-          <a routerLink="/{{'CONFIG-SUMMARY.summaryWindowsLink' | translate}}"
+          <a routerLink="/summary"
              class="btn btn--grey summary-buttons">{{'CONFIG-SUMMARY.back' | translate}}</a>
           <a (click)="saveToPDF()"
              class="btn btn--yellow summary-buttons">{{'CONFIG-SUMMARY.saveToPDF' | translate}}</a>
-          <a routerLink="/{{'CONFIG-SUMMARY.correctConfigLink' | translate}}"
+          <a routerLink="/configurator"
              class="btn btn--red summary-buttons">{{'CONFIG-SUMMARY.prepareNewConfiguration' | translate}}</a>
         </div>
 
@@ -485,7 +485,7 @@
         <div class="configuration-summary-container__no-configurations">
           <h1
             class="configuration-summary-container__no-configurations--text">{{'CONFIG-SUMMARY.noConfigurations' | translate}}</h1>
-          <a routerLink="../{{'CONFIG-SUMMARY.correctConfigLink' | translate}}"
+          <a routerLink="../configurator"
              class="btn btn--yellow">{{'CONFIG-SUMMARY.prepareConfiguration' | translate}}</a>
         </div>
       </ng-template>

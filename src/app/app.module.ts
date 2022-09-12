@@ -34,6 +34,7 @@ import {CartGuard} from './store/cart/cart.guard';
 import {AuthService} from './services/auth.service';
 import {MyAccountModule} from './my-account/my-account.module';
 import {SwiperModule} from 'swiper/angular';
+import { NgxTranslateRoutesModule } from 'ngx-translate-routes';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -64,6 +65,9 @@ export function HttpLoaderFactory(http: HttpClient) {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
+    }),
+    NgxTranslateRoutesModule.forRoot({
+      enableRouteTranslate: true
     }),
     IonicModule.forRoot(),
     NgxsModule.forRoot([

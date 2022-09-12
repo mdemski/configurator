@@ -14,7 +14,7 @@
     <div class="form-container sign-in-container">
       <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
         <h1>{{'LOGIN.loginTitle' | translate}}</h1>
-        <a routerLink="../{{ 'LINK.registerLink' | translate}}"
+        <a routerLink="../register"
            class="navigation-link">{{ 'LINK.register' | translate}}</a>
         <input id="email" type="email" formControlName="email"
                placeholder="{{ 'LOGIN.email' | translate}}">
@@ -45,7 +45,7 @@
             {{'LOGIN.requiredField' | translate}}
           </div>
         </div>
-        <a routerLink="{{ 'LINK.newPassword' | translate}}"
+        <a routerLink="new-password"
            class="navigation-link">{{ 'LOGIN.forgotPassword' | translate}}</a>
         <button type="submit" [disabled]="authForm.invalid">{{ 'LOGIN.login' | translate}}</button>
         <div class="social-container">

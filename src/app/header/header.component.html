@@ -23,7 +23,7 @@
   <div class="md-navbar__user-area">
 
     <div class="md-navbar__user-area__icon-box">
-      <a class="nav-link" routerLink="{{ 'LINK.myAccount' | translate}}">
+      <a class="nav-link" routerLink="my-account">
         <i class="fas fa-user md-navbar__user-area__icon-box--icon"></i>
       </a>
     </div>
@@ -35,7 +35,7 @@
     </div>
 
     <div class="md-navbar__user-area__icon-box">
-      <a class="nav-link" routerLink="{{ 'LINK.linkToCart' | translate}}">
+      <a class="nav-link" routerLink="cart">
         <i class="fas fa-shopping-cart md-navbar__user-area__icon-box--icon"></i>
         <span class="md-navbar__user-area__icon-box--notification" *ngIf="(quantityInCart$ | async) > 0">{{quantityInCart$ | async}}</span>
       </a>
@@ -44,28 +44,28 @@
   <ul class="md-navbar__navigation">
     <li class="md-navbar__navigation--element">
       <a class="md-navbar__navigation--link" (mouseover)="showShopSubMenu()" (mouseleave)="hideShopSubMenu()"
-         routerLink="{{ 'LINK.shop' | translate}}" routerLinkActive="active-link">{{ 'HOME.shop' | translate}}
+         routerLink="shop" routerLinkActive="active-link">{{ 'HOME.shop' | translate}}
         <i class="fas fa-angle-down"></i></a>
     </li>
     <li class="md-navbar__navigation--element">
       <a class="md-navbar__navigation--link" (mouseover)="showConfigSubMenu()" (mouseleave)="hideConfigSubMenu()"
-         routerLink="{{ 'LINK.configurator' | translate}}"
+         routerLink="configurator"
          routerLinkActive="active-link">{{ 'HOME.configurator' | translate}}
         <i class="fas fa-angle-down"></i></a>
     </li>
     <li class="md-navbar__navigation--element">
       <a class="md-navbar__navigation--link" (mouseover)="showAdviceSubMenu()" (mouseleave)="hideAdviceSubMenu()"
-         routerLink="{{ 'LINK.advices' | translate}}" routerLinkActive="active-link">{{ 'HOME.advices' | translate}}
+         routerLink="advices" routerLinkActive="active-link">{{ 'HOME.advices' | translate}}
         <i class="fas fa-angle-down"></i>
       </a>
     </li>
     <li class="md-navbar__navigation--element">
       <a class="md-navbar__navigation--link"
-         routerLink="{{ 'LINK.sellers' | translate}}" routerLinkActive="active-link">{{ 'HOME.sellers' | translate}}</a>
+         routerLink="sellers" routerLinkActive="active-link">{{ 'HOME.sellers' | translate}}</a>
     </li>
     <li class="md-navbar__navigation--element">
       <a class="md-navbar__navigation--link"
-         routerLink="{{ 'LINK.contact' | translate}}" routerLinkActive="active-link">{{ 'HOME.contact' | translate}}</a>
+         routerLink="contact" routerLinkActive="active-link">{{ 'HOME.contact' | translate}}</a>
     </li>
   </ul>
 
@@ -73,24 +73,24 @@
   <ul class="md-navbar__navigation--element__shop" [ngStyle]="shopSubMenu" (mouseover)="showShopSubMenu()"
       (mouseleave)="hideShopSubMenu()">
     <li class="md-navbar__navigation--element__shop--element">
-      <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.roofWindowsLink' | translate}}"
+      <a routerLink="shop/roof-windows"
          class="md-navbar__navigation--element__shop--element--link" routerLinkActive="active-link">
         <p>{{ 'HOME.roofWindows' | translate}}</p></a>
       <ul class="md-navbar__navigation--element__shop--products">
         <li class="md-navbar__navigation--element__shop--products--product-element">
-          <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.roofWindowsLink' | translate}}/1O-ISO-V-I22-KL00-A7022P-078118-OKPO01" class="md-navbar__navigation--element__shop--products--product-element--link"
+          <a routerLink="shop/roof-windows/1O-ISO-V-I22-KL00-A7022P-078118-OKPO01" class="md-navbar__navigation--element__shop--products--product-element--link"
              routerLinkActive="active-link">
             <img src="assets/icons/products/ISO-I22.png" alt="{{ 'HOME.roofWindows' | translate}}">
             <p>ISO I22</p></a>
         </li>
         <li class="md-navbar__navigation--element__shop--products--product-element">
-          <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.roofWindowsLink' | translate}}/1O-IGO-V-N22-WSWS-A7022P-078118-OKPO01" class="md-navbar__navigation--element__shop--products--product-element--link">
+          <a routerLink="shop/roof-windows/1O-IGO-V-N22-WSWS-A7022P-078118-OKPO01" class="md-navbar__navigation--element__shop--products--product-element--link">
             <img src="assets/icons/products/IGOV-N22.png" alt="{{ 'HOME.roofWindows' | translate}}"
                  routerLinkActive="active-link">
             <p>IGOV N22</p></a>
         </li>
         <li class="md-navbar__navigation--element__shop--products--product-element">
-          <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.roofWindowsLink' | translate}}/1O-ISO-V-E02-KL00-A7022P-078118-OKPO01" class="md-navbar__navigation--element__shop--products--product-element--link"
+          <a routerLink="shop/roof-windows/1O-ISO-V-E02-KL00-A7022P-078118-OKPO01" class="md-navbar__navigation--element__shop--products--product-element--link"
              routerLinkActive="active-link">
             <img src="assets/icons/products/ISO-E2.png" alt="{{ 'HOME.roofWindows' | translate}}">
             <p>ISO E2</p></a>
@@ -99,24 +99,24 @@
     </li>
 
     <li class="md-navbar__navigation--element__shop--element">
-      <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.flatRoofWindowsLink' | translate}}"
+      <a routerLink="shop/flat-roof-windows"
          class="md-navbar__navigation--element__shop--element--link">
         <p>{{ 'HOME.flatRoofWindows' | translate}}</p></a>
       <ul class="md-navbar__navigation--element__shop--products">
         <li class="md-navbar__navigation--element__shop--products--product-element">
-          <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.flatRoofWindowsLink' | translate}}/1P-PGX---A01-WSWS-A7022P-120090-OKPP01" class="md-navbar__navigation--element__shop--products--product-element--link"
+          <a routerLink="shop/flat-roof-windows/1P-PGX---A01-WSWS-A7022P-120090-OKPP01" class="md-navbar__navigation--element__shop--products--product-element--link"
              routerLinkActive="active-link">
             <img src="assets/icons/products/PGX-A1.png" alt="{{ 'HOME.flatRoofWindows' | translate}}">
             <p>PGX A1</p></a>
         </li>
         <li class="md-navbar__navigation--element__shop--products--product-element">
-          <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.flatRoofWindowsLink' | translate}}/1P-PGC---A01-WSWS-A7022P-120090-OKPP01" class="md-navbar__navigation--element__shop--products--product-element--link"
+          <a routerLink="shop/flat-roof-windows/1P-PGC---A01-WSWS-A7022P-120090-OKPP01" class="md-navbar__navigation--element__shop--products--product-element--link"
              routerLinkActive="active-link">
             <img src="assets/icons/products/PGC-A1.png" alt="{{ 'HOME.flatRoofWindows' | translate}}">
             <p>PGC A1</p></a>
         </li>
         <li class="md-navbar__navigation--element__shop--products--product-element">
-          <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.flatRoofWindowsLink' | translate}}/1P-PGX---B06-WSWS-A7022P-120090-OKPP01" class="md-navbar__navigation--element__shop--products--product-element--link"
+          <a routerLink="shop/flat-roof-windows/1P-PGX---B06-WSWS-A7022P-120090-OKPP01" class="md-navbar__navigation--element__shop--products--product-element--link"
              routerLinkActive="active-link">
             <img src="assets/icons/products/PGX-B6.png" alt="{{ 'HOME.flatRoofWindows' | translate}}">
             <p>PGX B6</p></a>
@@ -125,24 +125,24 @@
     </li>
 
     <li class="md-navbar__navigation--element__shop--element">
-      <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.flashingsLink' | translate}}"
+      <a routerLink="shop/flashings"
          class="md-navbar__navigation--element__shop--element--link" routerLinkActive="active-link">
         <p>{{ 'HOME.flashings' | translate}}</p></a>
       <ul class="md-navbar__navigation--element__shop--products">
         <li class="md-navbar__navigation--element__shop--products--product-element">
-          <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.flashingsLink' | translate}}/1K-1-U-UE------A7022P-078118-OKPK01" class="md-navbar__navigation--element__shop--products--product-element--link"
+          <a routerLink="shop/flashings/1K-1-U-UE------A7022P-078118-OKPK01" class="md-navbar__navigation--element__shop--products--product-element--link"
              routerLinkActive="active-link">
             <img src="assets/icons/products/Kolnierz-U.png" alt="{{ 'HOME.flashings' | translate}}">
             <p>{{ 'HOME.flashingU' | translate}}</p></a>
         </li>
         <li class="md-navbar__navigation--element__shop--products--product-element">
-          <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.flashingsLink' | translate}}/1K-1-D---------A7022P-078118-OKPK01" class="md-navbar__navigation--element__shop--products--product-element--link"
+          <a routerLink="shop/flashings/1K-1-D---------A7022P-078118-OKPK01" class="md-navbar__navigation--element__shop--products--product-element--link"
              routerLinkActive="active-link">
             <img src="assets/icons/products/kołnierz-D.png" alt="{{ 'HOME.flashings' | translate}}">
             <p>{{ 'HOME.flashingD' | translate}}</p></a>
         </li>
         <li class="md-navbar__navigation--element__shop--products--product-element">
-          <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.flashingsLink' | translate}}/1K-1-P---------A7022P-078118-OKPK01" class="md-navbar__navigation--element__shop--products--product-element--link"
+          <a routerLink="shop/flashings/1K-1-P---------A7022P-078118-OKPK01" class="md-navbar__navigation--element__shop--products--product-element--link"
              routerLinkActive="active-link">
             <img src="assets/icons/products/Kołnierz-P.png" alt="{{ 'HOME.flashings' | translate}}">
             <p>{{ 'HOME.flashingP' | translate}}</p></a>
@@ -151,24 +151,24 @@
     </li>
 
     <li class="md-navbar__navigation--element__shop--element">
-      <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.skylightsLink' | translate}}"
+      <a routerLink="shop/skylights"
          class="md-navbar__navigation--element__shop--element--link" routerLinkActive="active-link">
         <p>{{ 'HOME.skylights' | translate}}</p></a>
       <ul class="md-navbar__navigation--element__shop--products">
         <li class="md-navbar__navigation--element__shop--products--product-element">
-          <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.skylightsLink' | translate}}/1W-V2-SDP-V04-KL00-A7016P-U-UE-047073-OKPW03" class="md-navbar__navigation--element__shop--products--product-element--link"
+          <a routerLink="shop/skylights/1W-V2-SDP-V04-KL00-A7016P-U-UE-047073-OKPW03" class="md-navbar__navigation--element__shop--products--product-element--link"
              routerLinkActive="active-link">
             <img src="assets/icons/products/WVD-47x73.png" alt="{{ 'HOME.skylights' | translate}}">
             <p>WVD+ 47x73</p></a>
         </li>
         <li class="md-navbar__navigation--element__shop--products--product-element">
-          <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.skylightsLink' | translate}}/1W-V2-SGP-V04-KL00-A7016P-U-UE-047057-OKPW03" class="md-navbar__navigation--element__shop--products--product-element--link"
+          <a routerLink="shop/skylights/1W-V2-SGP-V04-KL00-A7016P-U-UE-047057-OKPW03" class="md-navbar__navigation--element__shop--products--product-element--link"
              routerLinkActive="active-link">
             <img src="assets/icons/products/WVM-47x57.png" alt="{{ 'HOME.skylights' | translate}}">
             <p>WVM+ 47x57</p></a>
         </li>
         <li class="md-navbar__navigation--element__shop--products--product-element">
-          <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.skylightsLink' | translate}}/1W-V2RSD--V06-KL00-A7016P-R----7016-047073-OKPW04" class="md-navbar__navigation--element__shop--products--product-element--link"
+          <a routerLink="shop/skylights/1W-V2RSD--V06-KL00-A7016P-R----7016-047073-OKPW04" class="md-navbar__navigation--element__shop--products--product-element--link"
              routerLinkActive="active-link">
             <img src="assets/icons/products/WVR.png" alt="{{ 'HOME.skylights' | translate}}">
             <p>WVR 47x73</p></a>
@@ -177,24 +177,24 @@
     </li>
 
     <li class="md-navbar__navigation--element__shop--element">
-      <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.accessoriesLink' | translate}}"
+      <a routerLink="shop/accessories"
          class="md-navbar__navigation--element__shop--element--link" routerLinkActive="active-link">
         <p>{{ 'HOME.accessories' | translate}}</p></a>
       <ul class="md-navbar__navigation--element__shop--products">
         <li class="md-navbar__navigation--element__shop--products--product-element">
-          <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.accessoriesLink' | translate}}/1A-D37--T-A372-078118-EK-OKPA01" class="md-navbar__navigation--element__shop--products--product-element--link"
+          <a routerLink="shop/accessories/1A-D37--T-A372-078118-EK-OKPA01" class="md-navbar__navigation--element__shop--products--product-element--link"
              routerLinkActive="active-link">
             <img src="assets/icons/products/D37.png" alt="{{ 'HOME.accessories' | translate}}">
             <p>Multistop D37</p></a>
         </li>
         <li class="md-navbar__navigation--element__shop--products--product-element">
-          <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.accessoriesLink' | translate}}/1A-D33--T-A372-078----E-OKPA01" class="md-navbar__navigation--element__shop--products--product-element--link"
+          <a routerLink="shop/accessories/1A-D33--T-A372-078----E-OKPA01" class="md-navbar__navigation--element__shop--products--product-element--link"
              routerLinkActive="active-link">
             <img src="assets/icons/products/D33.png" alt="{{ 'HOME.accessories' | translate}}">
             <p>Decomatic D33</p></a>
         </li>
         <li class="md-navbar__navigation--element__shop--products--product-element">
-          <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.accessoriesLink' | translate}}/1A-D12--Z-S005-078----F-OKPA01" class="md-navbar__navigation--element__shop--products--product-element--link"
+          <a routerLink="shop/accessories/1A-D12--Z-S005-078----F-OKPA01" class="md-navbar__navigation--element__shop--products--product-element--link"
              routerLinkActive="active-link">
             <img src="assets/icons/products/D12.png" alt="{{ 'HOME.accessories' | translate}}">
             <p>Classic D12</p></a>
@@ -203,24 +203,24 @@
     </li>
 
     <li class="md-navbar__navigation--element__shop--element">
-      <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.resetLink' | translate}}"
+      <a routerLink="shop/reset"
          class="md-navbar__navigation--element__shop--element--link" routerLinkActive="active-link">
         <p>{{ 'HOME.resetProducts' | translate}}</p></a>
       <ul class="md-navbar__navigation--element__shop--products">
         <li class="md-navbar__navigation--element__shop--products--product-element">
-          <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.resetLink' | translate}}/1O-IGX-X-F01-WSWS-A7022P-078098-OKPO01" class="md-navbar__navigation--element__shop--products--product-element--link"
+          <a routerLink="shop/reset/1O-IGX-X-F01-WSWS-A7022P-078098-OKPO01" class="md-navbar__navigation--element__shop--products--product-element--link"
              routerLinkActive="active-link">
             <img src="assets/icons/products/IGX-F1-RESET.png" alt="{{ 'HOME.resetProducts' | translate}}">
             <p>IGX F1</p></a>
         </li>
         <li class="md-navbar__navigation--element__shop--products--product-element">
-          <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.resetLink' | translate}}/1W-V2RSD--V08-KL00-A7016P-R----7016-047073-OKPW04" class="md-navbar__navigation--element__shop--products--product-element--link"
+          <a routerLink="shop/reset/1W-V2RSD--V08-KL00-A7016P-R----7016-047073-OKPW04" class="md-navbar__navigation--element__shop--products--product-element--link"
              routerLinkActive="active-link">
             <img src="assets/icons/products/WVR.png" alt="{{ 'HOME.resetProducts' | translate}}">
             <p>WVR V8</p></a>
         </li>
         <li class="md-navbar__navigation--element__shop--products--product-element">
-          <a routerLink="{{ 'LINK.shop' | translate}}/{{ 'SHOP.resetLink' | translate}}/1W-V2RSD--V06-KL00-A7016P-R----7016-047073-OKPW04" class="md-navbar__navigation--element__shop--products--product-element--link"
+          <a routerLink="shop/reset/1W-V2RSD--V06-KL00-A7016P-R----7016-047073-OKPW04" class="md-navbar__navigation--element__shop--products--product-element--link"
              routerLinkActive="active-link">
             <img src="assets/icons/products/WVR.png" alt="{{ 'HOME.resetProducts' | translate}}">
             <p>WVR V6</p></a>
@@ -234,28 +234,28 @@
   <ul class="md-navbar__navigation--element__shop" [ngStyle]="configSubMenu" (mouseover)="showConfigSubMenu()"
       (mouseleave)="hideConfigSubMenu()">
     <li class="md-navbar__navigation--element__shop--element">
-      <a routerLink="{{ 'LINK.configurator' | translate}}/{{ 'CONFIGURATOR.roofWindowsLink' | translate}}"
+      <a routerLink="configurator/roof-windows"
          class="md-navbar__navigation--element__shop--element--link" routerLinkActive="active-link">
         <img src="assets/icons/products/ISO-E2.png" alt="{{ 'HOME.roofWindows' | translate}}">
         <p>{{ 'HOME.roofWindows' | translate}}</p></a>
     </li>
 
     <li class="md-navbar__navigation--element__shop--element">
-      <a routerLink="{{ 'LINK.configurator' | translate}}/{{ 'CONFIGURATOR.flashingsLink' | translate}}"
+      <a routerLink="configurator/flashings"
          class="md-navbar__navigation--element__shop--element--link" routerLinkActive="active-link">
         <img src="assets/icons/products/Kolnierz-U.png" alt="{{ 'HOME.flashings' | translate}}">
         <p>{{ 'HOME.flashings' | translate}}</p></a>
     </li>
 
     <li class="md-navbar__navigation--element__shop--element">
-      <a routerLink="{{ 'LINK.configurator' | translate}}/{{ 'CONFIGURATOR.flatRoofWindowsLink' | translate}}"
+      <a routerLink="configurator/flat-roof-windows"
          class="md-navbar__navigation--element__shop--element--link" routerLinkActive="active-link">
         <img src="assets/icons/products/PGC-A1.png" alt="{{ 'HOME.flatRoofWindows' | translate}}">
         <p>{{ 'HOME.flatRoofWindows' | translate}}</p></a>
     </li>
 
     <li class="md-navbar__navigation--element__shop--element">
-      <a routerLink="{{ 'LINK.configurator' | translate}}/{{ 'CONFIGURATOR.accessoriesLink' | translate}}"
+      <a routerLink="configurator/accessories"
          class="md-navbar__navigation--element__shop--element--link" routerLinkActive="active-link">
         <img src="assets/icons/products/D37.png" alt="{{ 'HOME.accessories' | translate}}">
         <p>{{ 'HOME.accessories' | translate}}</p></a>
@@ -274,21 +274,21 @@
   <ul class="md-navbar__navigation--element__shop" [ngStyle]="advicesSubMenu" (mouseover)="showAdviceSubMenu()"
       (mouseleave)="hideAdviceSubMenu()">
     <li class="md-navbar__navigation--element__shop--element">
-      <a routerLink="{{ 'LINK.advices' | translate}}/{{ 'LINK.windowSelectionLink' | translate}}"
+      <a routerLink="advices/window-selection"
          class="md-navbar__navigation--element__shop--element--link" routerLinkActive="active-link">
         <i class="fas fa-microscope"></i>
         <p>{{ 'ADVICES.windowSelection' | translate}}</p></a>
     </li>
 
     <li class="md-navbar__navigation--element__shop--element">
-      <a routerLink="{{ 'LINK.advices' | translate}}/{{ 'LINK.configurationOptionsLink' | translate}}"
+      <a routerLink="advices/configuration-options"
          class="md-navbar__navigation--element__shop--element--link" routerLinkActive="active-link">
         <i class="far fa-eye"></i>
         <p>{{ 'ADVICES.configurationOptions' | translate}}</p></a>
     </li>
 
     <li class="md-navbar__navigation--element__shop--element">
-      <a routerLink="{{ 'LINK.advices' | translate}}/{{ 'LINK.appFunctionsLink' | translate}}"
+      <a routerLink="advices/app-functions"
          class="md-navbar__navigation--element__shop--element--link" routerLinkActive="active-link">
         <i class="fas fa-info"></i>
         <p>{{ 'ADVICES.appFunctions' | translate}}</p></a>

@@ -18,8 +18,6 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   loading = false;
   resetPasswordForm: FormGroup;
   isDestroyed$ = new Subject();
-  myAccountLink = '';
-  myProfileLink = '';
 
   constructor(private translate: MdTranslateService,
               public router: Router,
@@ -38,12 +36,6 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
         id: user._id
       });
     });
-    this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
-      this.myAccountLink = text.myAccount;
-    });
-    this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
-      this.myProfileLink = text.myProfile;
-    });
   }
 
   ngOnDestroy(): void {
@@ -54,7 +46,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     this.crud.changePassword(this.resetPasswordForm.value.id, this.resetPasswordForm.value.oldPassword,
       this.resetPasswordForm.value.password, this.resetPasswordForm.value.rePassword).pipe(takeUntil(this.isDestroyed$)).subscribe();
     this.resetPasswordForm.reset();
-    this.router.navigate(['/' + this.myAccountLink + '/' + this.myProfileLink]);
+    this.router.navigate(['/my-account' + '/my-profile']);
   }
 
   comparePasswordAndRePassword(group: FormGroup) {

@@ -23,13 +23,13 @@ import {ComplaintsGuard} from './store/complaint/complaints.guard';
 import {ResetPasswordComponent} from './my-account/my-profile/reset-password/reset-password.component';
 
 const appRoutes: Routes = [
-  {path: 'sklep', loadChildren: () => import('./shop/shop.module').then(m => m.ShopModule)},
+  {path: 'shop', loadChildren: () => import('./shop/shop.module').then(m => m.ShopModule)},
 
-  {path: 'okna-pionowe', component: VerticalWindowsComponent},
-  {path: 'koszyk', component: CartComponent, canActivate: [CartGuard]},
+  {path: 'vertical-windows', component: VerticalWindowsComponent},
+  {path: 'cart', component: CartComponent, canActivate: [CartGuard]},
 
   {
-    path: 'konfigurator', loadChildren: () => import('./configurator/configurator.module').then(m => m.ConfiguratorModule),
+    path: 'configurator', loadChildren: () => import('./configurator/configurator.module').then(m => m.ConfiguratorModule),
     canActivate: [ConfigurationsGuard, AvailableConfigDataGuard]
   },
   {
@@ -37,14 +37,14 @@ const appRoutes: Routes = [
     canActivate: [UserGuard, ComplaintsGuard]
   },
   {
-    path: 'moje-konto', loadChildren: () => import('./my-account/my-account.module').then(m => m.MyAccountModule),
+    path: 'my-account', loadChildren: () => import('./my-account/my-account.module').then(m => m.MyAccountModule),
     canActivate: [AuthGuardService, CartGuard, ConfigurationsGuard, UserGuard, ComplaintsGuard]
   },
-  {path: 'rejestracja', component: RegisterComponent},
+  {path: 'register', component: RegisterComponent},
   {path: 'confirmation', component: RegisterConfirmationPageComponent},
   {path: 'confirmation/:random/:uuid', component: RegisterConfirmationPageComponent},
-  {path: 'kontakt', component: ContactComponent},
-  {path: 'logowanie', component: LoginComponent},
+  {path: 'contact', component: ContactComponent},
+  {path: 'login', component: LoginComponent},
   {path: 'reset', component: ResetPasswordComponent},
   {path: '', component: HomeComponent},
   {path: '**', component: HomeComponent}

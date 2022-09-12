@@ -13,7 +13,7 @@
 
   <div *ngIf="isVerifying && verifySuccess; else confirmationWithoutData">
     <h2 class="title">{{'REGISTER.confirmationSuccess' | translate}}</h2>
-    <a routerLink="{{ 'LINK.login' | translate}}"
+    <a routerLink="login"
        class="btn btn--red">{{ 'LINK.loginPage' | translate}}</a>
     <a routerLink="/"
        class="btn btn--grey">{{ 'LINK.homePage' | translate}}</a>
@@ -21,7 +21,7 @@
 
   <ng-template #confirmationWithoutData>
     <h2 class="title">{{'REGISTER.confirmation' | translate}}</h2>
-    <a routerLink="{{ 'LINK.login' | translate}}"
+    <a routerLink="login"
        class="btn btn--red">{{ 'LINK.loginPage' | translate}}</a>
     <a routerLink="/"
        class="btn btn--grey">{{ 'LINK.homePage' | translate}}</a>

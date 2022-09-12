@@ -80,7 +80,7 @@
           <tr class="configuration-container__configurations-table__item"
               *ngFor="let configuration of filteredConfigurations">
             <td class="configuration-container__configurations-table__item--info">
-              <a routerLink="../{{ 'LINK.summaryLink' | translate}}/{{configuration.globalId}}">{{configuration.globalId}}</a>
+              <a routerLink="../summary/{{configuration.globalId}}">{{configuration.globalId}}</a>
             </td>
             <td
               class="configuration-container__configurations-table__item--info">{{configuration.name}}</td>
@@ -94,7 +94,7 @@
               <ul class="configuration-container__configurations-table__item__products__list">
                 <li class="configuration-container__configurations-table__item__products__list__element"
                     *ngFor="let item of configuration.products.windows">
-                  <a routerLink="..{{ 'CONFIG-SUMMARY.correctConfigLink' | translate}}{{ 'CONFIG-SUMMARY.correctWindowConfigLink' | translate}}/{{configuration.globalId}}/{{item.windowFormName}}/{{item.window.kod}}">{{item.window.productName}}</a>
+                  <a routerLink="../configurator/roof-windows/{{configuration.globalId}}/{{item.windowFormName}}/{{item.window.kod}}">{{item.window.productName}}</a>
                 </li>
               </ul>
 
@@ -102,7 +102,7 @@
                   [ngClass]="{'no-display': configuration.products.flashings === null}">
                 <li class="configuration-container__configurations-table__item__products__list__element"
                     *ngFor="let item of configuration.products.flashings">
-                  <a routerLink="..{{ 'CONFIG-SUMMARY.correctConfigLink' | translate}}{{ 'CONFIG-SUMMARY.correctFlashingConfigLink' | translate}}/{{configuration.globalId}}/{{item.flashingFormName}}/{{item.flashing.kod}}">{{item.flashing.productName}}</a>
+                  <a routerLink="../configurator/flashings/{{configuration.globalId}}/{{item.flashingFormName}}/{{item.flashing.kod}}">{{item.flashing.productName}}</a>
                 </li>
               </ul>
 
@@ -111,7 +111,7 @@
                 <li class="configuration-container__configurations-table__item__products__list__element"
                     *ngFor="let item of configuration.products.accessories">
                   <a
-                    routerLink="..{{ 'CONFIG-SUMMARY.correctConfigLink' | translate}}{{ 'CONFIG-SUMMARY.correctAccessoryConfigLink' | translate}}/{{configuration.globalId}}/{{item.accessoryFormName}}/{{item.accessory.kod}}">{{item.accessory.productName}}</a>
+                    routerLink="../configurator/accessories/{{configuration.globalId}}/{{item.accessoryFormName}}/{{item.accessory.kod}}">{{item.accessory.productName}}</a>
                 </li>
               </ul>
 
@@ -119,7 +119,7 @@
                   [ngClass]="{'no-display': configuration.products.flats === null}">
                 <li class="configuration-container__configurations-table__item__products__list__element"
                     *ngFor="let item of configuration.products.flats">
-                  <a routerLink="..{{ 'CONFIG-SUMMARY.correctConfigLink' | translate}}{{ 'CONFIG-SUMMARY.correctFlatConfigLink' | translate}}/{{configuration.globalId}}/{{item.flatFormName}}/{{item.flat.kod}}">{{item.flat.productName}}</a>
+                  <a routerLink="../configurator/flat-roof-windows/{{configuration.globalId}}/{{item.flatFormName}}/{{item.flat.kod}}">{{item.flat.productName}}</a>
                 </li>
               </ul>
 
@@ -127,7 +127,7 @@
                   [ngClass]="{'no-display': configuration.products.verticals === null}">
                 <li class="configuration-container__configurations-table__item__products__list__element"
                     *ngFor="let item of configuration.products.verticals">
-                  <a routerLink="..{{ 'CONFIG-SUMMARY.correctConfigLink' | translate}}{{ 'CONFIG-SUMMARY.correctVerticalConfigLink' | translate}}/{{configuration.globalId}}/{{item.verticalFormName}}/{{item.vertical.kod}}">{{item.vertical.productName}}</a>
+                  <a routerLink="../configurator/vertical-windows/{{configuration.globalId}}/{{item.verticalFormName}}/{{item.vertical.kod}}">{{item.vertical.productName}}</a>
                 </li>
               </ul>
             </td>
@@ -190,6 +190,6 @@
     </ng-template>
   </div>
   <div class="margin-top-2">
-    <a routerLink="/{{ 'LINK.configurator' | translate}}" class="btn btn--dark-green">{{ 'CONFIGURATOR.addNewConfig' | translate}}</a>
+    <a routerLink="/configurator" class="btn btn--dark-green">{{ 'CONFIGURATOR.addNewConfig' | translate}}</a>
   </div>
 </div>
