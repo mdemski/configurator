@@ -7,7 +7,6 @@ import {MdTranslateService} from './md-translate.service';
 
 @Injectable({providedIn: 'root'})
 export class AuthGuardService implements CanActivate {
-  loginLink: string;
 
   constructor(private authService: AuthService, private router: Router, private translate: MdTranslateService) {
     translate.setLanguage();
@@ -16,9 +15,6 @@ export class AuthGuardService implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    this.translate.get('LINK').subscribe(text => {
-      this.loginLink = text.login;
-    });
     if (JSON.parse(localStorage.getItem('loginUser'))) {
       const loginUser = new LoginUser();
       loginUser.email = JSON.parse(localStorage.getItem('loginUser')).email;
@@ -27,7 +23,7 @@ export class AuthGuardService implements CanActivate {
       loginUser.expireDate = JSON.parse(localStorage.getItem('loginUser')).expireDate;
       return true;
     }
-    return this.router.createUrlTree(['/' + this.loginLink]);
+    return this.router.createUrlTree(['/my-account']);
   }
 
 }

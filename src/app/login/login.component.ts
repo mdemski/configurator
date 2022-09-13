@@ -18,7 +18,6 @@ export class LoginComponent implements OnInit {
   isLoading = false;
   error = '';
   id: number;
-  myAccountLink: string;
 
   constructor(private authService: AuthService,
               public router: Router,
@@ -31,9 +30,6 @@ export class LoginComponent implements OnInit {
     this.authForm = new FormGroup({
       email: new FormControl(null, [Validators.required], [this.emailNotExists.bind(this)]),
       password: new FormControl(null, [Validators.minLength(8)])
-    });
-    this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
-      this.myAccountLink = text.myAccount;
     });
   }
 
@@ -50,11 +46,10 @@ export class LoginComponent implements OnInit {
       if (resData.success) {
         this.authForm.reset();
         // TODO znaleźć użytkownika z bazy używając email żeby zwrócić ID do routingu www.moja-aplikacja.pl/moje-konto/id
-        this.router.navigate(['/' + this.myAccountLink]);
+        this.router.navigate(['/my-account']);
         this.isLoading = false;
       }
     }, error1 => {
-      console.log(error1);
       this.error = error1;
       this.isLoading = false;
     });
