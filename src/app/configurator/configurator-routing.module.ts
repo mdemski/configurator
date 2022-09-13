@@ -38,6 +38,29 @@ const routes: Routes = [
     canActivate: [ConfigurationsGuard]},
   {path: 'summary/:configId', component: SingleConfigurationSummaryComponent,
     canActivate: [ConfigurationsGuard]},
+  // PL
+  {path: 'okna-dachowe', component: RoofWindowsConfigComponent,
+    canActivate: [RoofWindowsGuard, ConfigurationsGuard, AvailableConfigDataGuard]},
+  {path: 'okna-dachowe/:configId/:formName/:productCode', component: RoofWindowsConfigComponent,
+    canActivate: [RoofWindowsGuard, ConfigurationsGuard, AvailableConfigDataGuard]},
+  {path: 'kolnierze', component: FlashingsConfigComponent,
+    canActivate: [FlashingsGuard, ConfigurationsGuard, AvailableConfigDataGuard]},
+  {path: 'kolnierze/:configId/:formName/:productCode', component: FlashingsConfigComponent,
+    canActivate: [FlashingsGuard, ConfigurationsGuard, AvailableConfigDataGuard]},
+  {path: 'akcesoria', component: AccessoriesConfigComponent,
+    canActivate: [AccessoriesGuard, ConfigurationsGuard, AvailableConfigDataGuard]},
+  {path: 'akcesoria/:configId/:formName/:productCode', component: AccessoriesConfigComponent,
+    canActivate: [AccessoriesGuard, ConfigurationsGuard, AvailableConfigDataGuard]},
+  {path: 'okna-pionowe', component: VerticalWindowsConfigComponent},
+  {path: 'okna-na-dach-plaski', component: FlatRoofWindowsConfigComponent,
+    canActivate: [FlatRoofWindowsGuard, ConfigurationsGuard, AvailableConfigDataGuard]},
+  {path: 'okna-na-dach-plaski/:configId/:formName/:productCode', component: FlatRoofWindowsConfigComponent,
+    canActivate: [FlatRoofWindowsGuard, ConfigurationsGuard, AvailableConfigDataGuard]},
+  {path: 'podsumowanie', component: ConfigurationSummaryComponent,
+    canActivate: [ConfigurationsGuard]},
+  {path: 'podsumowanie/:configId', component: SingleConfigurationSummaryComponent,
+    canActivate: [ConfigurationsGuard]}
+  // DE... FR... IT...
 ];
 
 @NgModule({

@@ -23,6 +23,7 @@ import {ComplaintsGuard} from './store/complaint/complaints.guard';
 import {ResetPasswordComponent} from './my-account/my-profile/reset-password/reset-password.component';
 
 const appRoutes: Routes = [
+  // Default
   {path: 'shop', loadChildren: () => import('./shop/shop.module').then(m => m.ShopModule)},
 
   {path: 'vertical-windows', component: VerticalWindowsComponent},
@@ -46,6 +47,31 @@ const appRoutes: Routes = [
   {path: 'contact', component: ContactComponent},
   {path: 'login', component: LoginComponent},
   {path: 'reset', component: ResetPasswordComponent},
+  // PL
+  {path: 'sklep', loadChildren: () => import('./shop/shop.module').then(m => m.ShopModule)},
+
+  {path: 'okna-pionowe', component: VerticalWindowsComponent},
+  {path: 'koszyk', component: CartComponent, canActivate: [CartGuard]},
+
+  {
+    path: 'konfigurator', loadChildren: () => import('./configurator/configurator.module').then(m => m.ConfiguratorModule),
+    canActivate: [ConfigurationsGuard, AvailableConfigDataGuard]
+  },
+  {
+    path: 'reklamacje', loadChildren: () => import('./complaint/complaint.module').then(m => m.ComplaintModule),
+    canActivate: [UserGuard, ComplaintsGuard]
+  },
+  {
+    path: 'moje-konto', loadChildren: () => import('./my-account/my-account.module').then(m => m.MyAccountModule),
+    canActivate: [AuthGuardService, CartGuard, ConfigurationsGuard, UserGuard, ComplaintsGuard]
+  },
+  {path: 'rejestracja', component: RegisterComponent},
+  {path: 'potwierdzenie', component: RegisterConfirmationPageComponent},
+  {path: 'potwierdzenie/:random/:uuid', component: RegisterConfirmationPageComponent},
+  {path: 'kontakt', component: ContactComponent},
+  {path: 'logowanie', component: LoginComponent},
+  {path: 'reset', component: ResetPasswordComponent},
+  // FR... IT... DE...
   {path: '', component: HomeComponent},
   {path: '**', component: HomeComponent}
 ];

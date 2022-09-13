@@ -33,6 +33,20 @@ const routes: Routes = [
   {path: 'flat-roof-windows/:flatId', component: FlatRoofWindowDetailsComponent, canActivate: [FlatRoofWindowsGuard]},
   {path: 'reset', component: ResetProductsComponent, canActivate: [RoofWindowsGuard, SkylightsGuard]},
   {path: 'reset/:resetId', component: ResetProductDetailsComponent, canActivate: [RoofWindowsGuard, SkylightsGuard]},
+  // PL
+  {path: 'okna-dachowe', component: RoofWindowsComponent, canActivate: [RoofWindowsGuard]},
+  {path: 'okna-dachowe/:windowId', component: RoofWindowDetailsComponent, canActivate: [RoofWindowsGuard]},
+  {path: 'kolnierze', component: FlashingsComponent, canActivate: [FlashingsGuard]},
+  {path: 'kolnierze/:flashingId', component: FlashingDetailsComponent, canActivate: [FlashingsGuard]},
+  {path: 'wylazy-dachowe', component: SkylightsComponent, canActivate: [SkylightsGuard]},
+  {path: 'wylazy-dachowe/:skylightId', component: SkylightDetailsComponent, canActivate: [SkylightsGuard]},
+  {path: 'akcesoria', component: AccessoriesComponent, canActivate: [AccessoriesGuard]},
+  {path: 'akcesoria/:accessoryId', component: AccessoriesDetailsComponent, canActivate: [AccessoriesGuard]},
+  {path: 'okna-na-dach-plaski', component: FlatRoofWindowsComponent, canActivate: [FlatRoofWindowsGuard]},
+  {path: 'okna-na-dach-plaski/:flatId', component: FlatRoofWindowDetailsComponent, canActivate: [FlatRoofWindowsGuard]},
+  {path: 'reset', component: ResetProductsComponent, canActivate: [RoofWindowsGuard, SkylightsGuard]},
+  {path: 'reset/:resetId', component: ResetProductDetailsComponent, canActivate: [RoofWindowsGuard, SkylightsGuard]}
+  // DE... IT... FR...
 ];
 
 @NgModule({

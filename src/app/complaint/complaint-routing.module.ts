@@ -6,7 +6,11 @@ import {ComplaintFormComponent} from './complaint-form/complaint-form.component'
 const routes: Routes = [
   {path: 'new-complaint', component: ComplaintFormComponent},
   {path: 'update/:id/:year', component: ComplaintFormComponent},
-  {path: ':id', component: ComplaintProductDetailsComponent}
+  {path: ':id', component: ComplaintProductDetailsComponent},
+  // PL
+  {path: 'zgloszenie', component: ComplaintFormComponent},
+  {path: 'aktualizuj/:id/:year', component: ComplaintFormComponent},
+  // FR... IT... DE...
 ];
 
 @NgModule({
