@@ -23,7 +23,7 @@ export class AuthGuardService implements CanActivate {
       loginUser.expireDate = JSON.parse(localStorage.getItem('loginUser')).expireDate;
       return true;
     }
-    return this.router.createUrlTree(['/my-account']);
+    return this.router.createUrlTree(['/login']);
   }
 
 }
