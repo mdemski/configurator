@@ -33,6 +33,7 @@ export class CrudService {
   // Object.defineProperty(data, key, withValue(value));
   // where data is your object, key is the variable to store the key name and value is the variable to store the value.
 
+  enovaUri = 'link do połączenia z eNova';
   baseUri = 'http://localhost:4100/api';
   usersBaseUri = 'http://localhost:4100/api/users';
   addressesBaseUri = 'http://localhost:4100/api/addresses';
@@ -65,6 +66,10 @@ export class CrudService {
     return this.http.get('URL do zapytania do eNova').pipe(map(rate => {
       return rate;
     }));
+  }
+
+  getProductNames(param: (items: [{ productName: string; grupaAsortymentowa: string; kod: string }]) => void) {
+    return this.http.get(this.enovaUri);
   }
 
   // COMPANIES

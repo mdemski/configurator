@@ -1,14 +1,20 @@
 <div class="md-navbar" [ngClass]="{ mdNavbarScrolled: onScroll }">
   <div class="md-navbar__search">
-    <form>
+    <div>
       <i class="fas fa-search md-navbar__search--icon"></i>
       <input class="md-navbar__search--input"
-             type="text" #searchText
+             type="text"
              placeholder="{{ 'HOME.search' | translate}}"
-             (keyup)="onKeyup(searchText)"
+             [(ngModel)]="searchInApp" autofocus
       >
       <span class="md-navbar__search--border"></span>
-    </form>
+      <ul class="searching-result-list">
+        <li class="searching-result-list__item" *ngFor="let element of items$ | async | filter: searchInApp"
+        appHighlight [searchedWord]="searchInApp" [content]="element.productName" [classToApply]="'font-weight-bold'" [setTitle]="true">
+          <a routerLink="/shop/roof-windows/{{element.kod}}" class="searching-result-list__item--link">{{element.productName}}</a>
+        </li>
+      </ul>
+    </div>
   </div>
   <div class="md-navbar__mini-logo" [ngClass]="{ mdNavbarScrolled: onScroll }">
     <a routerLink="/">
