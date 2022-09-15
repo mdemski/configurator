@@ -242,6 +242,16 @@
   left: 55px;
   top: 52px;
 
+  &__empty-item {
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    padding: .75rem 1.25rem;
+    background-color: $color-white;
+    border: 1px solid rgba(0, 0, 0, .125);
+  }
+
   &__item {
     position: relative;
     display: flex;

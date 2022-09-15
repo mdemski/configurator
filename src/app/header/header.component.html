@@ -3,12 +3,13 @@
     <div>
       <i class="fas fa-search md-navbar__search--icon"></i>
       <input class="md-navbar__search--input"
-             type="text"
+             type="text" (click)="this.loadData()"
              placeholder="{{ 'HOME.search' | translate}}"
              [(ngModel)]="searchInApp" autofocus
       >
       <span class="md-navbar__search--border"></span>
       <ul class="searching-result-list">
+        <li class="searching-result-list__empty-item" *ngIf="(items$ | async) === null && searchInApp.length > 0">{{ 'HOME.working' | translate}}</li>
         <li class="searching-result-list__item" *ngFor="let element of items$ | async | filter: searchInApp">
           <a routerLink="/shop/{{'LINK.' + element.grupaAsortymentowa | translate}}/{{element.kod}}" class="searching-result-list__item--link"
              appHighlight [searchedWord]="searchInApp" [content]="element.productName"

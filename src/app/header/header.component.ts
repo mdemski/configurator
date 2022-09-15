@@ -20,8 +20,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @Select(AppState) currentUser$: Observable<{ currentUser }>;
   isDestroyed$ = new Subject();
   items$ = new BehaviorSubject(null);
+  loaded = false;
   userId: string;
-  searchInApp: string;
+  searchInApp = '';
   shopSubMenu = {display: 'none'};
   configSubMenu = {display: 'none'};
   advicesSubMenu = {display: 'none'};
@@ -67,9 +68,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ];
 
   ngOnInit() {
-    // TODO odkomentować poniższą linię i usunąć kolejną po dodaniu komunikacji z eNova
-    // this.crud.getProductNames((items: [{ productName: string, grupaAsortymentowa: string, kod: string }]) => this.items$.next(items));
-    this.items$.next(this.itemsTempList);
     this.cart$.pipe(takeUntil(this.isDestroyed$), skip(1)).subscribe((data: { cart }) => {
       let quantityInCart = 0;
       if (data.cart.cartItems !== null) {
@@ -85,6 +83,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.isDestroyed$.next(null);
+  }
+
+  loadData() {
+    if (!this.loaded) {
+      this.items$.next(this.itemsTempList);
+      this.loaded = true;
+    }
+    // TODO odkomentować poniższą linię i usunąć kolejną po dodaniu komunikacji z eNova
+    // this.crud.getProductNames((items: [{ productName: string, grupaAsortymentowa: string, kod: string }]) => this.items$.next(items));
   }
 
   logout() {
