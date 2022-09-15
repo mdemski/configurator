@@ -141,7 +141,17 @@
     "aboutResetWebsite": "https://www.okpol.pl/linia-produktow-reset/",
     "backButton": "Wróć",
     "close": "Zamknij",
-    "back": "Wróć"
+    "back": "Wróć",
+    "OknoDachowe": "roof-windows",
+    "KołnierzUszczelniający": "flashings",
+    "Akcesorium": "accessories",
+    "OknoZintegrowane": "roof-windows",
+    "OknoKolankowe": "roof-windows",
+    "DachPłaski": "flat-roof-windows",
+    "WyłazDachowy": "skylights",
+    "Fasadowe": "vertical-windows",
+    "WyłazReset": "skylights",
+    "OknoDachoweReset": "roof-windows"
   },
   "CONTACT": {
     "contactUs": "Skontaktuj się z nami",

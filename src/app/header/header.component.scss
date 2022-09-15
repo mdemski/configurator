@@ -244,8 +244,9 @@
 
   &__item {
     position: relative;
-    display: block;
-    padding: .75rem 1.25rem;
+    display: flex;
+    flex-wrap: nowrap;
+    white-space: nowrap;
     background-color: $color-white;
     border: 1px solid rgba(0, 0, 0, .125);
 
@@ -255,13 +256,10 @@
     }
 
     &--link {
+      color: $color-black;
+      padding: .75rem 1.25rem;
+      flex-grow: 1;
       text-decoration: none;
-      height: 100%;
-      width: 100%;
-
-      &:hover {
-        background-color: #00FF1E;
-      }
     }
   }
 }
