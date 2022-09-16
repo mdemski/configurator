@@ -2,8 +2,6 @@ import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core
 import {SingleConfiguration} from '../../models/single-configuration';
 import {Observable, Subject} from 'rxjs';
 import {filter, map, takeUntil} from 'rxjs/operators';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 import {Select, Store} from '@ngxs/store';
 import {AppState} from '../../store/app/app.state';
 import {ConfigurationState} from '../../store/configuration/configuration.state';
@@ -49,25 +47,6 @@ export class SingleConfigurationSummaryComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.isDestroyed$.next(null);
-  }
-
-  saveToPDF() {
-    this.configuration$.pipe(takeUntil(this.isDestroyed$)).subscribe(configuration => {
-      const configurationData = document.getElementById('configurationData');
-      html2canvas(configurationData).then(canvas => {
-
-        console.log(canvas);
-        const fileWidth = 208;
-        const fileHeight = canvas.height * fileWidth / canvas.width;
-        console.log(fileHeight);
-        const FILEURI = canvas.toDataURL('image/png');
-        const PDF = new jsPDF('p', 'mm', 'a4');
-        const position = 0;
-        PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
-
-        PDF.save(configuration.name + '.pdf');
-      });
-    });
   }
 
   returnCurrencyName(currency: string) {
