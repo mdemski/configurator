@@ -56,7 +56,7 @@ export class PdfDataFormatterService {
         // Początek sekcji z uwagami
         {
           text: 'Uwagi:',
-          style: 'header'
+          style: 'header2'
         },
         {
           text: 'Tekst uwag do konfiguracji ...',
@@ -99,13 +99,18 @@ export class PdfDataFormatterService {
           bold: true,
           margin: [0, 50, 0, 10]
         },
+        header2: {
+          fontSize: 16,
+          bold: true,
+          margin: [0, 20, 0, 10]
+        },
         name: {
           fontSize: 16,
           bold: true
         },
         marginBottom: {
           // lewa, góra, prawa, dół
-          margin: [0, 0, 0, 50]
+          margin: [0, 0, 0, 70]
         },
         sign: {
           margin: [0, 50, 0, 10],
