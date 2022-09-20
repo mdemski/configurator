@@ -8,6 +8,10 @@ import {ConfigurationState} from '../../store/configuration/configuration.state'
 import {RouterState} from '@ngxs/router-plugin';
 import {CartState} from '../../store/cart/cart.state';
 import {Router} from '@angular/router';
+import {PdfDataFormatterService} from '../../services/pdf-data-formatter.service';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-single-configuration-summary',
@@ -29,7 +33,7 @@ export class SingleConfigurationSummaryComponent implements OnInit, OnDestroy {
   loading;
   isDestroyed$ = new Subject();
 
-  constructor(private store: Store, public router: Router) {
+  constructor(private store: Store, public router: Router, private pdfFormatter: PdfDataFormatterService) {
     this.loading = true;
     this.params$.pipe(takeUntil(this.isDestroyed$)).subscribe(params => this.routerParams = params);
   }
@@ -55,5 +59,10 @@ export class SingleConfigurationSummaryComponent implements OnInit, OnDestroy {
     } else {
       return 'zł';
     }
+  }
+
+  saveToPDF(configuration: SingleConfiguration) {
+    const doc = this.pdfFormatter.getDocumentDefinition(configuration);
+    pdfMake.createPdf(doc).open();
   }
 }

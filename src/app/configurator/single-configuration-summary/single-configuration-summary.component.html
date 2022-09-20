@@ -469,15 +469,16 @@
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="configuration-summary-container__create-new">
-          <a routerLink="/summary"
-             class="btn btn--grey summary-buttons">{{'CONFIG-SUMMARY.back' | translate}}</a>
-          <a (click)="saveToPDF()"
-             class="btn btn--yellow summary-buttons">{{'CONFIG-SUMMARY.saveToPDF' | translate}}</a>
-          <a routerLink="/configurator"
-             class="btn btn--red summary-buttons">{{'CONFIG-SUMMARY.prepareNewConfiguration' | translate}}</a>
+          <div class="configuration-summary-container__create-new">
+            <a routerLink="/summary"
+               class="btn btn--grey summary-buttons">{{'CONFIG-SUMMARY.back' | translate}}</a>
+            <a (click)="saveToPDF(configuration)"
+               class="btn btn--yellow summary-buttons">{{'CONFIG-SUMMARY.saveToPDF' | translate}}</a>
+            <a routerLink="/configurator"
+               class="btn btn--red summary-buttons">{{'CONFIG-SUMMARY.prepareNewConfiguration' | translate}}</a>
+          </div>
+
         </div>
 
       </div>
