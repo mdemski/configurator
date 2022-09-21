@@ -1,0 +1,45 @@
+﻿propertyValue;propertyGroup;propertyName;DachPłaski:PGX;DachPłaski:PGX LED;DachPłaski:PGC;DachPłaski:PGC LED;DachPłaski:PGM;DachPłaski:DGP;DachPłaski:EGX
+NieotwieraneFIX;openingType;otwieranie;0;0;null;null;null;0;0
+ElektryczneUchył;openingType;otwieranie;null;null;0;0;null;null;null
+Manualne;openingType;otwieranie;null;null;null;null;0;null;null
+maxSzerokosc;dimensions;szerokosc;220;220;220;220;220;220;220
+minSzerokosc;dimensions;szerokosc;24;24;24;24;24;24;24
+maxWysokosc;dimensions;wysokosc;140;140;140;140;140;140;140
+minWysokosc;dimensions;wysokosc;24;24;24;24;24;24;24
+stalaWysokosc;dimensions;wysokosc;FALSE;FALSE;FALSE;FALSE;FALSE;FALSE;FALSE
+Aluminium;outerMaterial;oblachowanieMaterial;0;0;0;0;0;0;0
+Miedź;outerMaterial;oblachowanieMaterial;8;8;8;8;8;8;8
+TytanCynk;outerMaterial;oblachowanieMaterial;15;15;15;15;15;15;15
+Aluminium:Półmat;outerColorFinish;oblachowanieFinisz;0;0;0;0;0;0;0
+Aluminium:Mat;outerColorFinish;oblachowanieFinisz;25;25;25;25;25;25;25
+Aluminium:Połysk;outerColorFinish;oblachowanieFinisz;35;35;35;35;35;35;35
+MiedźITytanCynk:Natur;outerColorFinish;oblachowanieFinisz;1;1;1;1;1;1;1
+Aluminium:RAL7022;outerColor;oblachowanieKolor;0;0;0;0;0;0;0
+Aluminium:RAL7024;outerColor;oblachowanieFinisz;6;6;6;6;6;6;6
+Aluminium:RAL7016;outerColor;oblachowanieFinisz;6;6;6;6;6;6;6
+Aluminium:RAL9005;outerColor;oblachowanieFinisz;6;6;6;6;6;6;6
+Aluminium:RAL8016;outerColor;oblachowanieFinisz;6;6;6;6;6;6;6
+Miedź:Natur;outerColor;oblachowanieKolor;6;6;6;6;6;6;6
+TytanCynk:Natur;outerColor;oblachowanieKolor;6;6;6;6;6;6;6
+DachPłaski:A01;glazing;pakietSzybowy;0;0;0;0;0;0;0
+DachPłaski:A11;glazing;pakietSzybowy;50;50;50;50;50;50;50
+DachPłaski:A10;glazing;pakietSzybowy;55;55;55;55;55;55;55
+DachPłaski:A03;glazing;pakietSzybowy;45;45;45;45;45;45;45
+DachPłaski:A04;glazing;pakietSzybowy;120;120;120;120;120;120;120
+DachPłaski:A05;glazing;pakietSzybowy;100;100;100;100;100;100;100
+DachPłaski:A07;glazing;pakietSzybowy;45;45;45;45;45;45;45
+DachPłaski:A09;glazing;pakietSzybowy;35;35;35;35;35;35;35
+DachPłaski:A14;glazing;pakietSzybowy;30;30;30;30;30;30;30
+DachPłaski:B01;glazing;pakietSzybowy;60;60;60;60;60;60;60
+DachPłaski:B02;glazing;pakietSzybowy;65;65;65;65;65;65;65
+DachPłaski:B06;glazing;pakietSzybowy;70;70;70;70;70;70;70
+DachPłaski:B07;glazing;pakietSzybowy;75;75;75;75;75;75;75
+DachPłaski:B09;glazing;pakietSzybowy;80;80;80;80;80;80;80
+Siłownik;handle;zamkniecieTyp;null;null;0;0;null;null;null
+Drążek;handle;zamkniecieTyp;null;null;null;null;0;null;null
+Brak;handle;zamkniecieTyp;0;0;null;null;null;0;0
+Czerwony;handleColor;zamkniecieKolor;null;null;null;null;0;null;null
+DachPłaski:PGD 150;extras;dodatki;100;100;100;100;100;100;100
+DachPłaski:PGD 300;extras;dodatki;150;150;150;150;150;150;150
+DachPłaski:PGD 450;extras;dodatki;200;200;200;200;200;200;200
+maxSurface;technical;szerokoscxwysokosc;4;4;4;4;4;4;4

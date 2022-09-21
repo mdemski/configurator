@@ -35,25 +35,27 @@ export class ShoppingCartService {
 
   constructor(private translate: MdTranslateService, private crud: CrudService) {
     this.user$.pipe(skip(2)).subscribe(user => {
-      this.crud.readUserByEmail(user.currentUser.email).subscribe((fullUser: User) => {
-        if (fullUser) {
-          this.basicDiscount = fullUser.basicDiscount;
-          this.roofWindowsDiscount = fullUser.roofWindowsDiscount;
-          this.skylightsDiscount = fullUser.skylightsDiscount;
-          this.flashingsDiscount = fullUser.flashingsDiscount;
-          this.accessoriesDiscount = fullUser.accessoriesDiscount;
-          this.flatRoofWindowsDiscount = fullUser.flatRoofWindowsDiscount;
-          this.verticalWindowsDiscount = fullUser.verticalWindowsDiscount;
-        } else {
-          this.basicDiscount = 0;
-          this.roofWindowsDiscount = 0;
-          this.skylightsDiscount = 0;
-          this.flashingsDiscount = 0;
-          this.accessoriesDiscount = 0;
-          this.flatRoofWindowsDiscount = 0;
-          this.verticalWindowsDiscount = 0;
-        }
-      });
+      if (user.currentUser.email !== '') {
+        this.crud.readUserByEmail(user.currentUser.email).subscribe((fullUser: User) => {
+          if (fullUser) {
+            this.basicDiscount = fullUser.basicDiscount;
+            this.roofWindowsDiscount = fullUser.roofWindowsDiscount;
+            this.skylightsDiscount = fullUser.skylightsDiscount;
+            this.flashingsDiscount = fullUser.flashingsDiscount;
+            this.accessoriesDiscount = fullUser.accessoriesDiscount;
+            this.flatRoofWindowsDiscount = fullUser.flatRoofWindowsDiscount;
+            this.verticalWindowsDiscount = fullUser.verticalWindowsDiscount;
+          } else {
+            this.basicDiscount = 0;
+            this.roofWindowsDiscount = 0;
+            this.skylightsDiscount = 0;
+            this.flashingsDiscount = 0;
+            this.accessoriesDiscount = 0;
+            this.flatRoofWindowsDiscount = 0;
+            this.verticalWindowsDiscount = 0;
+          }
+        });
+      }
     });
     translate.setLanguage();
     switch (translate.getBrowserLang()) {

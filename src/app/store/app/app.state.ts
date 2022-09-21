@@ -4,6 +4,7 @@ import {AuthService} from '../../services/auth.service';
 import {tap} from 'rxjs/operators';
 import {CrudService} from '../../services/crud-service';
 import {Injectable} from '@angular/core';
+import {MdTranslateService} from '../../services/md-translate.service';
 
 export interface AppStateModel {
   currentUser: {
@@ -29,7 +30,8 @@ export interface AppStateModel {
 export class AppState {
 
   constructor(private authService: AuthService,
-              private crud: CrudService) {
+              private crud: CrudService,
+              private translate: MdTranslateService) {
   }
 
   @Selector([AppState])
@@ -40,7 +42,7 @@ export class AppState {
   @Action(SetCurrentUser)
   setCurrentUser(ctx: StateContext<AppStateModel>) {
     return this.authService.returnUser().pipe(
-      tap((result: {email: string, userName: string, isLogged: boolean}) => {
+      tap((result: { email: string, userName: string, isLogged: boolean }) => {
         const state = ctx.getState();
         ctx.setState({
           ...state,
@@ -55,13 +57,21 @@ export class AppState {
 
   @Action(SetPreferredLanguage)
   setPreferredLanguage(ctx: StateContext<AppStateModel>, {email}: SetPreferredLanguage) {
-    return this.crud.readUserByEmail(email).pipe(
-      tap(result => {
-        const state = ctx.getState();
-        ctx.setState({
-          ...state,
-          preferredLanguage: result.preferredLanguage
-        });
-      }));
+    if (email === '' || email === undefined) {
+      const state = ctx.getState();
+      ctx.setState({
+        ...state,
+        preferredLanguage: this.translate.getBrowserLang()
+      });
+    } else {
+      return this.crud.readUserByEmail(email).pipe(
+        tap(result => {
+          const state = ctx.getState();
+          ctx.setState({
+            ...state,
+            preferredLanguage: result.preferredLanguage
+          });
+        }));
+    }
   }
 }
