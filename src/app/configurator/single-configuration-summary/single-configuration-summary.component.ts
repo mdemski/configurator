@@ -62,7 +62,7 @@ export class SingleConfigurationSummaryComponent implements OnInit, OnDestroy {
   }
 
   saveToPDF(configuration: SingleConfiguration) {
-    const doc = this.pdfFormatter.getDocumentDefinition(configuration);
+    const doc = this.pdfFormatter.getConfigurationDefinition(configuration);
     pdfMake.createPdf(doc).open();
   }
 }

@@ -68,7 +68,7 @@ export class PdfDataFormatterService {
   private amountConfigText: string;
   private company: Company;
 
-  getDocumentDefinition(configuration: SingleConfiguration) {
+  getConfigurationDefinition(configuration: SingleConfiguration) {
     return {
       content: [
         this.getLogoPicture(),
@@ -198,6 +198,21 @@ export class PdfDataFormatterService {
   private getProductList(configuration: SingleConfiguration) {
     const products = [];
 
+    if (configuration.products.windows) {
+      configuration.products.windows.forEach(window => products.push(window));
+    }
+    if (configuration.products.flashings) {
+      configuration.products.flashings.forEach(flashing => products.push(flashing));
+    }
+    if (configuration.products.accessories) {
+      configuration.products.accessories.forEach(accessory => products.push(accessory));
+    }
+    if (configuration.products.flats) {
+      configuration.products.flats.forEach(flat => products.push(flat));
+    }
+    if (configuration.products.verticals) {
+      configuration.products.verticals.forEach(vertical => products.push(vertical));
+    }
     products.push(
       {
         name: 'IGOV N22 78x118',
@@ -279,7 +294,7 @@ export class PdfDataFormatterService {
                 style: 'center'
               },
               {
-                text: product.materialColor || product.stolarkaMaterial || product.oblachowanieMaterial,
+                text: (product.typTkaniny + ' ' + product.kolorTkaniny) || (product.stolarkaMaterial + ' ' + product.stolarkaKolor) || (product.oblachowanieMaterial + ' ' + product.oblachowanieKolor),
                 style: 'center'
               },
               {

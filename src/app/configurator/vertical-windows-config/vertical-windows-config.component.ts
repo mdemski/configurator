@@ -17,7 +17,7 @@ export class VerticalWindowsConfigComponent implements OnInit {
   }
 
   saveToPDF(configuration) {
-    const doc = this.pdfFormatter.getDocumentDefinition(configuration);
+    const doc = this.pdfFormatter.getConfigurationDefinition(configuration);
     pdfMake.createPdf(doc).open();
   }
 }
