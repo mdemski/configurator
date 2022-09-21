@@ -1,8 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {PdfDataFormatterService} from '../../services/pdf-data-formatter.service';
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-vertical-windows-config',
@@ -11,13 +7,8 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 })
 export class VerticalWindowsConfigComponent implements OnInit {
 
-  constructor(private pdfFormatter: PdfDataFormatterService) { }
+  constructor() { }
 
   ngOnInit(): void {
-  }
-
-  saveToPDF(configuration) {
-    const doc = this.pdfFormatter.getConfigurationDefinition(configuration);
-    pdfMake.createPdf(doc).open();
   }
 }
