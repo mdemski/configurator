@@ -3,6 +3,7 @@ import {FlashingConfig} from './flashing-config';
 import {AccessoryConfig} from './accessory-config';
 import {VerticalConfig} from './vertical-config';
 import {FlatConfig} from './flat-config';
+import {Address} from './address';
 
 export interface SingleConfiguration {
   _id?: string;
@@ -12,6 +13,8 @@ export interface SingleConfiguration {
   user: string;
   userId: number;
   name: string;
+  installationAddress?: Address;
+  emailToSend?: string;
   active: boolean;
   products: {
     windows: Array<WindowConfig> | null,
@@ -20,4 +23,5 @@ export interface SingleConfiguration {
     verticals: Array<VerticalConfig> | null,
     flats: Array<FlatConfig> | null
   };
+  comments?: string;
 }

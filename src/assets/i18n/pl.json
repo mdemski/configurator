@@ -787,6 +787,26 @@
     "addToCart": "Dodaj do koszyka",
     "logout": "Wyloguj"
   },
+  "PDF": {
+    "addressText": "Adres Klienta - montażu:",
+    "emailText": "Email: ",
+    "phoneText": "Numer telefonu: ",
+    "productsText": "Produkty",
+    "commentsText": "Uwagi",
+    "dealerHeaderText": "Dane firmowe",
+    "dealerNameText": "Nazwa firmy:",
+    "dealerAddressText": "Adres firmy:",
+    "dealerEmailText": "Adres mailowy: ",
+    "dealerPhoneText": "Numer telefonu: ",
+    "nameProductText": "Nazwa produktu",
+    "widthProductText": "Szerokość",
+    "heightProductText": "Wysokość",
+    "materialProductText": "Materiał wew./zew.",
+    "glazingProductText": "Pakiet szybowy",
+    "quantityProductText": "Ilość",
+    "priceProductText": "Cena detal.",
+    "amountConfigText": "Wartość"
+  },
   "MY-ACCOUNT": {
     "orders": "Zamówienia",
     "configurations": "Konfiguracje",
