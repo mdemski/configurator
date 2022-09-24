@@ -25,6 +25,13 @@ export class UpdateGlobalConfigurationNameByConfigId {
   }
 }
 
+export class UpdateGlobalConfigurationInfoByConfigId {
+  static readonly type = '[Configuration] Update Global Configuration Info By Config Id';
+
+  constructor(public configuration: SingleConfiguration) {
+  }
+}
+
 export class DeleteGlobalConfiguration {
   static readonly type = '[Configuration] Delete Global Configuration';
 

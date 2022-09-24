@@ -1,7 +1,7 @@
 <app-scroll-top></app-scroll-top>
 
 <div class="navbar-background">
-  <img src="assets/img/navbar_backgrounds/city-4991094_1920.jpg" alt="roof windows">
+  <img src="assets/img/navbar_backgrounds/luis-gherasim-Ow0FAhC1RvM-unsplash.jpg" alt="roof windows">
   <app-navbar-navigator [path]="this.router.url"></app-navbar-navigator>
 </div>
 
@@ -12,7 +12,7 @@
   <ng-template #elseBlock>
     <div class="configuration-summary-container">
       <div class="configuration-summary-container__configurations">
-        <div class="configuration-summary-container__single" #configurationData
+        <div class="configuration-summary-container__single"
              *ngIf="configuration$ | async as configuration" id="configurationData">
           <div class="configuration-summary-container__single--title">
             <h1
@@ -23,6 +23,133 @@
                                                 class="configuration-summary-container__single--configuration-name">
             </h1>
           </div>
+
+          <div class="configuration-summary-container__single__address">
+
+            <div class="configuration-summary-container__single__address--loading" *ngIf="loadingForm" [style.height]="'574px'">
+              <app-okpol-loader></app-okpol-loader>
+            </div>
+
+            <div class="configuration-summary-container__single__address__form" *ngIf="!loadingForm">
+              <h2 class="mt-3">{{'GENERAL.contactData' | translate}}</h2>
+              <form [formGroup]="localizationForm" (ngSubmit)="onSubmit(configuration)">
+                <div class="md-form mt-3">
+                  <p class="form-control-field-title">{{'REGISTER.email' | translate}}:</p>
+                  <input type="email"
+                         id="email"
+                         formControlName="email"
+                         class="form-control--input"
+                         placeholder="{{'REGISTER.email' | translate}}">
+                </div>
+                <div *ngIf="localizationForm.get('email').dirty || localizationForm.get('email').touched">
+                  <div
+                    class="invalid-contact-data" *ngIf="localizationForm.get('email').hasError('email')">
+                    {{'REGISTER.wrongEmail' | translate}}
+                  </div>
+                </div>
+
+                <div class="md-form-half-width">
+                  <p class="form-control-field-title">{{'REGISTER.firstName' | translate}}:</p>
+                  <input type="text"
+                         id="firstName"
+                         formControlName="firstName"
+                         class="form-control--input"
+                         placeholder="{{'REGISTER.firstName' | translate}}">
+                </div>
+
+                <div class="md-form-quarter-width ml-5">
+                  <p class="form-control-field-title">{{'REGISTER.street' | translate}}:</p>
+                  <input type="text"
+                         id="street"
+                         formControlName="street"
+                         class="form-control--input"
+                         placeholder="{{'REGISTER.street' | translate}}">
+                </div>
+
+                <div class="md-form-quarter-width ml-5">
+                  <p class="form-control-field-title">{{'REGISTER.number' | translate}}:</p>
+                  <input type="text"
+                         id="localNumber"
+                         formControlName="localNumber"
+                         class="form-control--input"
+                         placeholder="{{'REGISTER.number' | translate}}">
+                </div>
+
+                <div class="md-form-half-width">
+                  <p class="form-control-field-title">{{'REGISTER.lastName' | translate}}:</p>
+                  <input type="text"
+                         id="lastName"
+                         formControlName="lastName"
+                         class="form-control--input"
+                         placeholder="{{'REGISTER.lastName' | translate}}">
+                </div>
+
+                <div class="md-form-quarter-width  ml-5">
+                  <p class="form-control-field-title">{{'REGISTER.zipCode' | translate}}:</p>
+                  <input type="text"
+                         id="zipCode"
+                         formControlName="zipCode"
+                         class="form-control--input"
+                         placeholder="{{'REGISTER.zipCode' | translate}}">
+                  <div *ngIf="localizationForm.get('zipCode').dirty || localizationForm.get('zipCode').touched">
+                    <div class="invalid-contact-data" *ngIf="localizationForm.get('zipCode').invalid">
+                      {{'REGISTER.wrongZipCode' | translate}}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="md-form-quarter-width ml-5">
+                  <p class="form-control-field-title">{{'REGISTER.city' | translate}}:</p>
+                  <input type="text"
+                         id="city"
+                         formControlName="city"
+                         class="form-control--input"
+                         placeholder="{{'REGISTER.city' | translate}}">
+                </div>
+
+                <div class="md-form-half-width">
+                  <p class="form-control-field-title">{{'REGISTER.phoneNumber' | translate}}:</p>
+                  <input type="text"
+                         id="phoneNumber"
+                         formControlName="phoneNumber"
+                         class="form-control--input"
+                         placeholder="{{'REGISTER.phoneNumber' | translate}}">
+                  <div *ngIf="localizationForm.get('phoneNumber').dirty || localizationForm.get('phoneNumber').touched">
+                    <div class="invalid-contact-data" *ngIf="localizationForm.get('phoneNumber').invalid">
+                      {{'REGISTER.wrongPhoneNumber' | translate}}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="md-form-half-width ml-5">
+                  <p class="form-control-field-title">{{'REGISTER.country' | translate}}:</p>
+                  <input type="text"
+                         id="country"
+                         formControlName="country"
+                         class="form-control--input"
+                         placeholder="{{'REGISTER.country' | translate}}">
+                </div>
+
+                <div class="md-form mt-3">
+                  <p class="form-control-field-title">{{'GENERAL.comments' | translate}}:</p>
+                  <textarea id="comments"
+                            class="md-textarea form-control--input"
+                            rows="3"
+                            formControlName="comments"
+                            minlength="10"
+                            maxlength="500"
+                            placeholder="{{'GENERAL.comments' | translate}}"></textarea>
+                </div>
+
+                <div class="configuration-summary-container__single__address__button">
+                  <button type="submit">{{ 'GENERAL.save' | translate}}</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <h2 class="mt-5">{{'GENERAL.products' | translate}}</h2>
+
           <!--Flat roof window from single configuration-->
           <h1
             class="configuration-summary-container__single--product-title first-child"
@@ -280,9 +407,10 @@
           <div class="configuration-summary-container__single--flashings"
                *ngFor="let singleFlashing of configuration.products.flashings let last = last"
                [ngClass]="{'last-child': last}">
-            <img *ngIf="singleFlashing.flashing.linkiDoZdjec || singleFlashing.flashing.linkiDoZdjec === []; else greyBlock"
-                 src="{{singleFlashing.flashing.linkiDoZdjec[0]}}" alt="{{singleFlashing.flashing.productName}}"
-                 class="configuration-summary-container__single--flashings--flashing-picture">
+            <img
+              *ngIf="singleFlashing.flashing.linkiDoZdjec || singleFlashing.flashing.linkiDoZdjec === []; else greyBlock"
+              src="{{singleFlashing.flashing.linkiDoZdjec[0]}}" alt="{{singleFlashing.flashing.productName}}"
+              class="configuration-summary-container__single--flashings--flashing-picture">
             <ng-template #greyBlock>
               <div class="configuration-summary-container__single--flashings--flashing-grey"></div>
             </ng-template>
@@ -392,9 +520,10 @@
           <div class="configuration-summary-container__single--accessories"
                *ngFor="let singleAccessory of configuration.products.accessories let last = last"
                [ngClass]="{'last-child': last}">
-            <img *ngIf="singleAccessory.accessory.linkiDoZdjec || singleAccessory.accessory.linkiDoZdjec === []; else greyBlock"
-                 src="{{singleAccessory.accessory.linkiDoZdjec[0]}}" alt="{{singleAccessory.accessory.productName}}"
-                 class="configuration-summary-container__single--accessories--accessory-picture">
+            <img
+              *ngIf="singleAccessory.accessory.linkiDoZdjec || singleAccessory.accessory.linkiDoZdjec === []; else greyBlock"
+              src="{{singleAccessory.accessory.linkiDoZdjec[0]}}" alt="{{singleAccessory.accessory.productName}}"
+              class="configuration-summary-container__single--accessories--accessory-picture">
             <ng-template #greyBlock>
               <div class="configuration-summary-container__single--accessories--accessory-grey"></div>
             </ng-template>

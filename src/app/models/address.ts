@@ -14,7 +14,7 @@ export class Address {
   // };
 
   // tslint:disable-next-line:max-line-length
-  constructor(firstName: string, lastName: string, phoneNumber: string, street: string, localNumber: string, zipCode: string, city: string, country: string) {
+  constructor(firstName?: string, lastName?: string, phoneNumber?: string, street?: string, localNumber?: string, zipCode?: string, city?: string, country?: string) {
     this._firstName = firstName;
     this._lastName = lastName;
     this._phoneNumber = phoneNumber;

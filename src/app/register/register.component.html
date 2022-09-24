@@ -156,7 +156,7 @@
             </div>
             <div *ngIf="registerForm.get('individualPhoneNumber').dirty || registerForm.get('individualPhoneNumber').touched">
               <div
-                class="invalid-contact-data" *ngIf="registerForm.get('lastName').hasError('individualRequired')">
+                class="invalid-contact-data" *ngIf="registerForm.get('individualPhoneNumber').hasError('individualRequired')">
                 {{'REGISTER.requiredField' | translate}}
               </div>
               <div class="invalid-contact-data" *ngIf="registerForm.get('individualPhoneNumber').invalid">
@@ -329,7 +329,7 @@
               <p class="form-control-field-title">{{'REGISTER.number' | translate}}:</p>
               <input type="text"
                      id="number"
-                     formControlName="localNumber"
+                     formControlName="number"
                      class="form-control--input"
                      placeholder="{{'REGISTER.number' | translate}}">
             </div>

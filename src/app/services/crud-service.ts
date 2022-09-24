@@ -586,6 +586,13 @@ export class CrudService {
     return this.http.put(url, {name: configName, lastUpdate: new Date()}, {headers: this.headers});
   }
 
+  updateAddressEmailCommentsConfigurationByMongoId(configuration) {
+    const url = `${this.baseUri}/update/${configuration._id}`;
+    console.log(configuration);
+    return this.http.put(url, {emailToSend: configuration.emailToSend, installationAddress: configuration.installationAddress,
+      comments: configuration.comments, lastUpdate: new Date()}, {headers: this.headers});
+  }
+
   updateWindowQuantity(globalConfiguration: SingleConfiguration, windowId: number, quantity: number) {
     const url = this.urlToUpdateSetter(globalConfiguration);
     if (globalConfiguration.products.windows) {

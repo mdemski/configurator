@@ -772,6 +772,18 @@ table {
   outline: none;
 }
 
+.md-form-half-width {
+  display: inline-block;
+  margin: 1rem 0 0 0;
+  width: 48.5%;
+}
+
+.md-form-quarter-width {
+  display: inline-block;
+  margin: 1rem 0 0 0;
+  width: 23%;
+}
+
 .footer {
   width: 100%;
   display: flex;

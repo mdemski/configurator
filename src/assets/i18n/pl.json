@@ -785,7 +785,11 @@
     "actualLanguage": "Aktualny język",
     "changeCurrency": "Wybierz inną walutę",
     "addToCart": "Dodaj do koszyka",
-    "logout": "Wyloguj"
+    "logout": "Wyloguj",
+    "products": "Produkty",
+    "contactData": "Dane kontaktowe/montażowe",
+    "comments": "Uwagi",
+    "save": "Zapisz"
   },
   "PDF": {
     "addressText": "Adres Klienta - montażu:",

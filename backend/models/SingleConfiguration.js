@@ -21,6 +21,13 @@ let SingleConfiguration = new Schema({
   name: {
     type: String
   },
+  installationAddress: {
+    type: mongoose.Schema.Types.Mixed,
+    ref: "Address"
+  },
+  emailToSend: {
+    type: String
+  },
   active: {
     type: Boolean
   },
@@ -45,6 +52,9 @@ let SingleConfiguration = new Schema({
       type: mongoose.Schema.Types.Array,
       ref: "FlatConfig"
     },
+  },
+  comments: {
+    type: String
   }
 }, {
   collection: 'configurations'

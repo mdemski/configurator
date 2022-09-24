@@ -25,7 +25,7 @@ import {
   UpdateFlashingQuantityByConfigAndFlashingId,
   UpdateFlatRoofConfiguration,
   UpdateFlatRoofFormByFormName,
-  UpdateFlatRoofQuantityByConfigAndFlatId,
+  UpdateFlatRoofQuantityByConfigAndFlatId, UpdateGlobalConfigurationInfoByConfigId,
   UpdateGlobalConfigurationNameByConfigId,
   UpdateRoofWindowConfiguration,
   UpdateRoofWindowFormByFormName,
@@ -314,6 +314,18 @@ export class ConfigurationState {
           patch({
             // @ts-ignore
             configurations: updateItem((updatedConfiguration: SingleConfiguration) => !!updatedConfiguration && updatedConfiguration._id === mongoId, patch({...result}))
+          }));
+      }));
+  }
+
+  @Action(UpdateGlobalConfigurationInfoByConfigId)
+  updateGlobalConfigurationInfoByConfigId(ctx: StateContext<ConfigurationStateModel>, {configuration}: UpdateGlobalConfigurationInfoByConfigId) {
+    return this.crud.updateAddressEmailCommentsConfigurationByMongoId(configuration).pipe(
+      tap((result: SingleConfiguration) => {
+        ctx.setState(
+          patch({
+            // @ts-ignore
+            configurations: updateItem((updatedConfiguration: SingleConfiguration) => !!updatedConfiguration && updatedConfiguration._id === configuration._id, patch({...result}))
           }));
       }));
   }
