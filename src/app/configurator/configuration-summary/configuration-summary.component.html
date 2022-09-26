@@ -629,6 +629,130 @@
                class="btn btn--grey">{{'CONFIG-SUMMARY.addNewAccessory' | translate}}</a>
           </div>
 
+          <div class="configuration-summary-container__single__address">
+
+            <div class="configuration-summary-container__single__address--loading" *ngIf="loadingForm" [style.height]="'574px'">
+              <app-okpol-loader></app-okpol-loader>
+            </div>
+
+            <div class="configuration-summary-container__single__address__form" *ngIf="!loadingForm">
+              <h2 class="mt-3 pt-3 pb-3 pl-2 on-hover" (click)="onHover2Click($event)">{{'GENERAL.contactData' | translate}} <span>({{'CONFIG-SUMMARY.expend' | translate}}&#8595;)</span></h2>
+              <form [formGroup]="localizationForm" (ngSubmit)="onSubmit(configuration, i)">
+                <div class="md-form mt-3">
+                  <p class="form-control-field-title">{{'REGISTER.email' | translate}}:</p>
+                  <input type="email"
+                         id="email{{i}}"
+                         formControlName="email{{i}}"
+                         class="form-control--input"
+                         placeholder="{{'REGISTER.email' | translate}}">
+                </div>
+                <div *ngIf="localizationForm.get('email' + i).dirty || localizationForm.get('email' + i).touched">
+                  <div
+                    class="invalid-contact-data" *ngIf="localizationForm.get('email' + i).hasError('email' + i)">
+                    {{'REGISTER.wrongEmail' | translate}}
+                  </div>
+                </div>
+
+                <div class="md-form-half-width">
+                  <p class="form-control-field-title">{{'REGISTER.firstName' | translate}}:</p>
+                  <input type="text"
+                         id="firstName{{i}}"
+                         formControlName="firstName{{i}}"
+                         class="form-control--input"
+                         placeholder="{{'REGISTER.firstName' | translate}}">
+                </div>
+
+                <div class="md-form-quarter-width ml-5">
+                  <p class="form-control-field-title">{{'REGISTER.street' | translate}}:</p>
+                  <input type="text"
+                         id="street{{i}}"
+                         formControlName="street{{i}}"
+                         class="form-control--input"
+                         placeholder="{{'REGISTER.street' | translate}}">
+                </div>
+
+                <div class="md-form-quarter-width ml-5">
+                  <p class="form-control-field-title">{{'REGISTER.number' | translate}}:</p>
+                  <input type="text"
+                         id="localNumber{{i}}"
+                         formControlName="localNumber{{i}}"
+                         class="form-control--input"
+                         placeholder="{{'REGISTER.number' | translate}}">
+                </div>
+
+                <div class="md-form-half-width">
+                  <p class="form-control-field-title">{{'REGISTER.lastName' | translate}}:</p>
+                  <input type="text"
+                         id="lastName{{i}}"
+                         formControlName="lastName{{i}}"
+                         class="form-control--input"
+                         placeholder="{{'REGISTER.lastName' | translate}}">
+                </div>
+
+                <div class="md-form-quarter-width  ml-5">
+                  <p class="form-control-field-title">{{'REGISTER.zipCode' | translate}}:</p>
+                  <input type="text"
+                         id="zipCode{{i}}"
+                         formControlName="zipCode{{i}}"
+                         class="form-control--input"
+                         placeholder="{{'REGISTER.zipCode' | translate}}">
+                  <div *ngIf="localizationForm.get('zipCode' + i).dirty || localizationForm.get('zipCode' + i).touched">
+                    <div class="invalid-contact-data" *ngIf="localizationForm.get('zipCode' + i).invalid">
+                      {{'REGISTER.wrongZipCode' | translate}}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="md-form-quarter-width ml-5">
+                  <p class="form-control-field-title">{{'REGISTER.city' | translate}}:</p>
+                  <input type="text"
+                         id="city{{i}}"
+                         formControlName="city{{i}}"
+                         class="form-control--input"
+                         placeholder="{{'REGISTER.city' | translate}}">
+                </div>
+
+                <div class="md-form-half-width">
+                  <p class="form-control-field-title">{{'REGISTER.phoneNumber' | translate}}:</p>
+                  <input type="text"
+                         id="phoneNumber{{i}}"
+                         formControlName="phoneNumber{{i}}"
+                         class="form-control--input"
+                         placeholder="{{'REGISTER.phoneNumber' | translate}}">
+                  <div *ngIf="localizationForm.get('phoneNumber' + i).dirty || localizationForm.get('phoneNumber' + i).touched">
+                    <div class="invalid-contact-data" *ngIf="localizationForm.get('phoneNumber' + i).invalid">
+                      {{'REGISTER.wrongPhoneNumber' | translate}}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="md-form-half-width ml-5">
+                  <p class="form-control-field-title">{{'REGISTER.country' | translate}}:</p>
+                  <input type="text"
+                         id="country{{i}}"
+                         formControlName="country{{i}}"
+                         class="form-control--input"
+                         placeholder="{{'REGISTER.country' | translate}}">
+                </div>
+
+                <div class="md-form mt-3">
+                  <p class="form-control-field-title">{{'GENERAL.comments' | translate}}:</p>
+                  <textarea id="comments{{i}}"
+                            class="md-textarea form-control--input"
+                            rows="3"
+                            formControlName="comments{{i}}"
+                            minlength="10"
+                            maxlength="500"
+                            placeholder="{{'GENERAL.comments' | translate}}"></textarea>
+                </div>
+
+                <div class="configuration-summary-container__single__address__button">
+                  <button type="submit">{{ 'GENERAL.save' | translate}}</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
           <div class="configuration-summary-container__single--hole-buttons">
             <a routerLink="./{{configuration.globalId}}"
                class="btn btn--black">{{'CONFIG-SUMMARY.details' | translate}}</a>

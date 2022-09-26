@@ -77,7 +77,6 @@ export class SingleConfigurationSummaryComponent implements OnInit, OnDestroy {
 
   loadFormData() {
     this.configuration$.pipe(skip(1), takeUntil(this.isDestroyed$)).subscribe(config => {
-      console.log(config.comments);
       this.localizationForm.patchValue({email: config.emailToSend});
       this.localizationForm.patchValue({firstName: config.installationAddress.firstName});
       this.localizationForm.patchValue({lastName: config.installationAddress.lastName});

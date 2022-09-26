@@ -7,6 +7,7 @@ th, td {
 }
 
 .on-hover:hover {
+  cursor: pointer;
   transition: all .7s;
   background-color: $color-light-orange;
 }
@@ -25,6 +26,36 @@ th, td {
       margin-top: 3rem;
       display: flex;
       align-items: center;
+    }
+
+    &__address {
+      max-height: 65px;
+      overflow: hidden;
+      margin: 3rem 0 1rem 0;
+
+      &__form {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+
+        h2 {
+          width: 100%;
+        }
+      }
+
+      &--loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+      }
+
+      &__button {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+      }
     }
 
     &--configuration-number {
@@ -102,6 +133,7 @@ th, td {
       }
 
       &--warning {
+        margin-top: 1rem;
         color: $color-red;
         font-size: 1.6rem;
       }

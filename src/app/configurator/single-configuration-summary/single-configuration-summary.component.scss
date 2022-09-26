@@ -31,7 +31,7 @@ th, td {
         width: 100%;
 
         h2 {
-          width: 100%;
+          width: 100%
         }
       }
 
@@ -120,6 +120,7 @@ th, td {
       }
 
       &--warning {
+        margin-top: 1rem;
         color: $color-red;
         font-size: 1.6rem;
       }

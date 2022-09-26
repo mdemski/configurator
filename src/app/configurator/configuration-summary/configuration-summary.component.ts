@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {from, Observable, Subject} from 'rxjs';
 import {SingleConfiguration} from '../../models/single-configuration';
-import {concatMap, filter, map, takeUntil} from 'rxjs/operators';
+import {concatMap, filter, map, skip, takeUntil} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {WindowConfig} from '../../models/window-config';
 import {FlashingConfig} from '../../models/flashing-config';
@@ -12,7 +12,7 @@ import {
   DeleteGlobalConfiguration,
   DeleteRoofWindowConfigurationByConfigAndWindowId,
   UpdateAccessoryQuantityByConfigAndAccessoryId,
-  UpdateFlashingQuantityByConfigAndFlashingId,
+  UpdateFlashingQuantityByConfigAndFlashingId, UpdateGlobalConfigurationInfoByConfigId,
   UpdateGlobalConfigurationNameByConfigId,
   UpdateRoofWindowQuantityByConfigAndWindowId
 } from '../../store/configuration/configuration.actions';
@@ -23,6 +23,9 @@ import {SetChosenRoofWindow} from '../../store/roof-window/roof-window.actions';
 import {AddProductToCart} from '../../store/cart/cart.actions';
 import {CartState} from '../../store/cart/cart.state';
 import {MdTranslateService} from '../../services/md-translate.service';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Address} from '../../models/address';
+import _ from 'lodash';
 
 @Component({
   selector: 'app-configuration-summary',
@@ -53,6 +56,8 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
   emptyAccessoryConfiguration: string;
   addingProduct: string;
   userConfigurations$;
+  localizationForm: FormGroup;
+  loadingForm;
 
   constructor(public router: Router,
               private store: Store,
@@ -68,40 +73,9 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe(() => console.log);
+    this.localizationForm = new FormGroup({});
+    this.loadFormData();
     this.loading = false;
-    // TODO do wywalenia - kod testowy
-    // this.db.fetchRoofWindows().pipe(takeUntil(this.isDestroyed$)).subscribe(windows => {
-    //   this.tempSingleConfig = {
-    //     globalId: 'configuration-1',
-    //     created: new Date(),
-    //     lastUpdate: new Date(),
-    //     user: '178.73.35.150',
-    //     userId: 1,
-    //     name: 'Pierwsza testowa w MongoDB',
-    //     active: true,
-    //     products: {
-    //       windows: [{
-    //         id: 1,
-    //         window: Object.assign({}, windows[0]),
-    //         quantity: 1,
-    //         windowFormName: 'asdfgahafhga',
-    //         windowFormData: null
-    //       },
-    //         {
-    //           id: 2,
-    //           window: Object.assign({}, windows[1]),
-    //           quantity: 2,
-    //           windowFormName: 'aaasdfsdfsf',
-    //           windowFormData: null
-    //         }],
-    //       flashings: null,
-    //       accessories: null,
-    //       verticals: null,
-    //       flats: null
-    //     }
-    //   };
-    //   // this.crud.createConfigurationForUser('178.73.35.150', this.tempSingleConfig).subscribe(() => console.log('Success'));
-    // });
     this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
       this.emptyFlashingConfiguration = text.configuratorFlashing;
     });
@@ -118,6 +92,36 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.isDestroyed$.next(null);
+  }
+
+  loadFormData() {
+    this.userConfigurations$.pipe(takeUntil(this.isDestroyed$)).subscribe(userConfigurations => {
+      if (userConfigurations.length === 0) {
+        this.localizationForm.addControl('email' + 0, new FormControl(null, [Validators.email]));
+        this.localizationForm.addControl('firstName' + 0, new FormControl(null));
+        this.localizationForm.addControl('lastName' + 0, new FormControl(null));
+        this.localizationForm.addControl('phoneNumber' + 0, new FormControl(null, [Validators.pattern('^\\+?[0-9]{3}-?[0-9]{6,12}$')]));
+        this.localizationForm.addControl('street' + 0, new FormControl(null));
+        this.localizationForm.addControl('localNumber' + 0, new FormControl(null));
+        this.localizationForm.addControl('zipCode' + 0, new FormControl(null, [Validators.pattern('[0-9]{2}-[0-9]{3}')]));
+        this.localizationForm.addControl('city' + 0, new FormControl(null));
+        this.localizationForm.addControl('country' + 0, new FormControl(null));
+        this.localizationForm.addControl('comments' + 0, new FormControl(null));
+      } else {
+        userConfigurations.forEach((config, index) => {
+          this.localizationForm.addControl('email' + index, new FormControl(config.emailToSend, [Validators.email]));
+          this.localizationForm.addControl('firstName' + index, new FormControl(config.installationAddress.firstName));
+          this.localizationForm.addControl('lastName' + index, new FormControl(config.installationAddress.lastName));
+          this.localizationForm.addControl('phoneNumber' + index, new FormControl(config.installationAddress.phoneNumber, [Validators.pattern('^\\+?[0-9]{3}-?[0-9]{6,12}$')]));
+          this.localizationForm.addControl('street' + index, new FormControl(config.installationAddress.street));
+          this.localizationForm.addControl('localNumber' + index, new FormControl(config.installationAddress.localNumber));
+          this.localizationForm.addControl('zipCode' + index, new FormControl(config.installationAddress.zipCode, [Validators.pattern('[0-9]{2}-[0-9]{3}')]));
+          this.localizationForm.addControl('city' + index, new FormControl(config.installationAddress.city));
+          this.localizationForm.addControl('country' + index, new FormControl(config.installationAddress.country));
+          this.localizationForm.addControl('comments' + index, new FormControl(config.comments));
+        });
+      }
+    });
   }
 
   resize(delta: number, quantity: number, globalConfiguration: SingleConfiguration, product, productId) {
@@ -249,11 +253,21 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
   onHoverClick($event: MouseEvent) {
     // @ts-ignore
     const divsTable = $event.target.parentElement.parentElement.parentElement.parentElement;
-    if (divsTable.style.maxHeight === '126.3px' || divsTable.style.maxHeight === '') {
-      divsTable.style.maxHeight = '875px';
+    this.eventMoving(divsTable, '126.3px', '875px');
+  }
+
+  onHover2Click($event: MouseEvent) {
+    // @ts-ignore
+    const divsTable = $event.target.parentElement.parentElement;
+    this.eventMoving(divsTable, '65px', '595px');
+  }
+
+  eventMoving(divsTable: any, rolledUp: string, spreadOut: string) {
+    if (divsTable.style.maxHeight === rolledUp || divsTable.style.maxHeight === '') {
+      divsTable.style.maxHeight = spreadOut;
       divsTable.style.transition = 'all .7s ease-in-out';
     } else {
-      divsTable.style.maxHeight = '126.3px';
+      divsTable.style.maxHeight = rolledUp;
       divsTable.style.transition = 'all .7s ease-in-out';
     }
   }
@@ -357,5 +371,26 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
     // 'konfigurator/kolnierze/:configId/:formName/:productCode'
     this.router.navigate(['/' + this.emptyFlatWindowConfiguration +
     '/' + configuration.globalId + '/' + 'no-name' + '/' + '-1']);
+  }
+
+  onSubmit(configuration: SingleConfiguration, i: number) {
+    this.loadingForm = true;
+    const newConfiguration = _.cloneDeep(configuration);
+    newConfiguration.installationAddress = new Address();
+    const address = {
+      firstName: this.localizationForm.get('firstName' + i).value,
+      lastName: this.localizationForm.get('lastName' + i).value,
+      phoneNumber: this.localizationForm.get('phoneNumber' + i).value,
+      street: this.localizationForm.get('street' + i).value,
+      localNumber: this.localizationForm.get('localNumber' + i).value,
+      zipCode: this.localizationForm.get('zipCode' + i).value,
+      city: this.localizationForm.get('city' + i).value,
+      country: this.localizationForm.get('country' + i).value
+    };
+    newConfiguration.emailToSend = this.localizationForm.get('email' + i).value;
+    newConfiguration.installationAddress = address;
+    newConfiguration.comments = this.localizationForm.get('comments' + i).value;
+    console.log(newConfiguration);
+    this.store.dispatch(new UpdateGlobalConfigurationInfoByConfigId(newConfiguration)).pipe(takeUntil(this.isDestroyed$)).subscribe(() => this.loadingForm = false);
   }
 }
