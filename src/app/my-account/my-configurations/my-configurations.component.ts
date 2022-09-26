@@ -9,6 +9,7 @@ import {SingleConfiguration} from '../../models/single-configuration';
 import _ from 'lodash';
 import moment from 'moment';
 import {DeleteGlobalConfiguration} from '../../store/configuration/configuration.actions';
+import {PdfDataFormatterService} from '../../services/pdf-data-formatter.service';
 
 @Component({
   selector: 'app-my-configurations' +
@@ -42,7 +43,8 @@ export class MyConfigurationsComponent implements OnInit, OnDestroy {
   };
 
   constructor(private store: Store,
-              private fb: FormBuilder) {
+              private fb: FormBuilder,
+              private pdfService: PdfDataFormatterService) {
     this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.currentUser = user.currentUser.email);
     this.userConfigurations$ = this.store.select(ConfigurationState.userConfigurations).pipe(
       takeUntil(this.isDestroyed$),
@@ -146,5 +148,10 @@ export class MyConfigurationsComponent implements OnInit, OnDestroy {
 
   deleteConfiguration(configuration: SingleConfiguration) {
     this.store.dispatch(new DeleteGlobalConfiguration(configuration));
+  }
+
+  saveToPDF(configuration: SingleConfiguration) {
+    const doc = this.pdfService.getConfigurationDefinition(configuration);
+    this.pdfService.open(doc);
   }
 }
