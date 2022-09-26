@@ -8,6 +8,9 @@ import {Observable} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {GetUserData} from '../store/user/user.actions';
 import {HttpClient} from '@angular/common/http';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Injectable({
   providedIn: 'root'
@@ -346,5 +349,9 @@ export class PdfDataFormatterService {
     } else {
       return [];
     }
+  }
+
+  open(doc: any) {
+    pdfMake.createPdf(doc).open();
   }
 }
