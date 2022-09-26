@@ -13,7 +13,6 @@ export class NavbarNavigatorComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.path);
   }
 
 }
