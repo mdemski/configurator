@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {SingleConfiguration} from '../../models/single-configuration';
 import {Observable, Subject} from 'rxjs';
-import {filter, map, skip, takeUntil} from 'rxjs/operators';
+import {filter, map, skipWhile, takeUntil} from 'rxjs/operators';
 import {Select, Store} from '@ngxs/store';
 import {AppState} from '../../store/app/app.state';
 import {ConfigurationState} from '../../store/configuration/configuration.state';
@@ -9,14 +9,10 @@ import {RouterState} from '@ngxs/router-plugin';
 import {CartState} from '../../store/cart/cart.state';
 import {Router} from '@angular/router';
 import {PdfDataFormatterService} from '../../services/pdf-data-formatter.service';
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import _ from 'lodash';
 import {UpdateGlobalConfigurationInfoByConfigId} from '../../store/configuration/configuration.actions';
 import {Address} from '../../models/address';
-
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-single-configuration-summary',
@@ -42,14 +38,14 @@ export class SingleConfigurationSummaryComponent implements OnInit, OnDestroy {
 
   constructor(private store: Store, public router: Router, private pdfFormatter: PdfDataFormatterService) {
     this.loading = true;
-    this.configuration$ = this.store.select(ConfigurationState.configurationByGlobalID)
-      .pipe(map(filterFn => filterFn(this.routerParams.state.params.configId)));
     this.params$.pipe(takeUntil(this.isDestroyed$)).subscribe(params => this.routerParams = params);
     this.state = this.routerParams.state;
     this.loadingForm = false;
   }
 
   ngOnInit() {
+    this.configuration$ = this.store.select(ConfigurationState.configurationByGlobalID)
+      .pipe(map(filterFn => filterFn(this.routerParams.state.params.configId)));
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe(() => console.log);
     this.loading = false;
     this.localizationForm = new FormGroup({
@@ -76,7 +72,7 @@ export class SingleConfigurationSummaryComponent implements OnInit, OnDestroy {
   }
 
   loadFormData() {
-    this.configuration$.pipe(skip(1), takeUntil(this.isDestroyed$)).subscribe(config => {
+    this.configuration$.pipe(skipWhile(config => config === undefined), takeUntil(this.isDestroyed$)).subscribe(config => {
       this.localizationForm.patchValue({email: config.emailToSend});
       this.localizationForm.patchValue({firstName: config.installationAddress.firstName});
       this.localizationForm.patchValue({lastName: config.installationAddress.lastName});
@@ -100,7 +96,7 @@ export class SingleConfigurationSummaryComponent implements OnInit, OnDestroy {
 
   saveToPDF(configuration: SingleConfiguration) {
     const doc = this.pdfFormatter.getConfigurationDefinition(configuration);
-    pdfMake.createPdf(doc).open();
+    this.pdfFormatter.open(doc);
   }
 
   onSubmit(configuration: SingleConfiguration) {
