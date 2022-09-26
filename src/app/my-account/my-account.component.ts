@@ -3,7 +3,7 @@ import {AuthService} from '../services/auth.service';
 import {Select, Store} from '@ngxs/store';
 import {CartState} from '../store/cart/cart.state';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
-import {filter, map, takeUntil} from 'rxjs/operators';
+import {filter, map, skipUntil, skipWhile, takeUntil} from 'rxjs/operators';
 import exchange from '../../assets/json/echange.json';
 import vatRates from '../../assets/json/vatRates.json';
 import {AddProductToCart, UpdateCartCurrency, UpdateCartVatRate} from '../store/cart/cart.actions';
@@ -52,6 +52,7 @@ export class MyAccountComponent implements OnInit, OnDestroy, AfterViewInit {
   config: SwiperOptions = {
     loop: true,
     spaceBetween: 25,
+    slidesPerView: 6,
     breakpoints: {
       1400: {
         spaceBetween: 25,
@@ -204,11 +205,9 @@ export class MyAccountComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.user$.pipe(filter(user => user._id !== ''), takeUntil(this.isDestroyed$)).subscribe(user => {
+    this.user$.pipe(skipWhile(user => user._id === ''), takeUntil(this.isDestroyed$)).subscribe(user => {
       if (user.favoriteProducts.length < 7) {
         this.config.slidesPerView = user.favoriteProducts.length;
-      } else {
-        this.config.slidesPerView = 6;
       }
     });
   }
