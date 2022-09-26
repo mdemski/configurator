@@ -775,7 +775,6 @@
     "updated": "Zaktualizowana",
     "userID": "Numer własny",
     "productList": "Lista produktów",
-    "saveToPDF": "Zapisz do PDF",
     "delete": "Usuń"
   },
   "GENERAL": {
@@ -926,6 +925,8 @@
     "glazing": "Pakiet szybowy",
     "width": "Szerokość",
     "height": "Wysokość",
+    "color": "Kolor",
+    "material": "Materiał",
     "dataPlateNumber": "Number tabliczki znamionowej",
     "minlength": "Opisz nam wadę nieco dokładniej, ułatwi rozpatrzenie reklamacji (minimum 60 znaków)",
     "addProduct": "Dodaj kolejny produkt",

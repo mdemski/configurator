@@ -20,6 +20,8 @@ import {Accessory} from '../../models/accessory';
 import {FlatRoofWindow} from '../../models/flat-roof-window';
 import {VerticalWindow} from '../../models/vertical-window';
 import {MdTranslateService} from '../../services/md-translate.service';
+import {AccessoryValuesSetterService} from '../../services/accessory-values-setter.service';
+import {FlatValueSetterService} from '../../services/flat-value-setter.service';
 
 @Component({
   selector: 'app-complaint-form',
@@ -50,7 +52,9 @@ export class ComplaintFormComponent implements OnInit, OnDestroy {
               public router: Router,
               public complaintService: ComplaintService,
               private roofWindowSetter: RoofWindowValuesSetterService,
-              private flashingSetter: FlashingValueSetterService) {
+              private flashingSetter: FlashingValueSetterService,
+              private accessorySetter: AccessoryValuesSetterService,
+              private flatSetter: FlatValueSetterService) {
     translate.setLanguage();
     this.user$.pipe(
       takeUntil(this.isDestroyed$),
@@ -112,6 +116,8 @@ export class ComplaintFormComponent implements OnInit, OnDestroy {
         glazing: new FormControl(null, Validators.required),
         width: new FormControl(null, Validators.required),
         height: new FormControl(null, Validators.required),
+        material: new FormControl(null),
+        color: new FormControl(null),
         quantity: new FormControl(null, Validators.required),
         dataPlateNumber: new FormControl(null, Validators.required),
         description: new FormControl(null, [Validators.required, Validators.minLength(60)])
@@ -194,6 +200,8 @@ export class ComplaintFormComponent implements OnInit, OnDestroy {
           glazing: new FormControl(complaintItem.product.pakietSzybowy.split(':')[1], Validators.required),
           width: new FormControl(complaintItem.product.szerokosc, Validators.required),
           height: new FormControl(complaintItem.product.wysokosc, Validators.required),
+          material: new FormControl(complaintItem.product.typTkaniny),
+          color: new FormControl(complaintItem.product.kolorTkaniny),
           quantity: new FormControl(complaintItem.quantity, Validators.required),
           description: new FormControl(complaintItem.description, Validators.required),
           dataPlateNumber: new FormControl(complaintItem.dataPlateNumber, Validators.required)
@@ -244,6 +252,8 @@ export class ComplaintFormComponent implements OnInit, OnDestroy {
       glazing: new FormControl(null, Validators.required),
       width: new FormControl(null, Validators.required),
       height: new FormControl(null, Validators.required),
+      material: new FormControl(null),
+      color: new FormControl(null),
       quantity: new FormControl(null, Validators.required),
       description: new FormControl(null, Validators.required),
       dataPlateNumber: new FormControl(null, Validators.required)
@@ -336,7 +346,6 @@ export class ComplaintFormComponent implements OnInit, OnDestroy {
       const width = Number(this.products.controls[i].get('width').value);
       const height = Number(this.products.controls[i].get('height').value);
       const quantity = Number(this.products.controls[i].get('quantity').value);
-      // TODO uzupełnić switcha o settery dla akcesoriów, płaskich dachów i okien pionowych
       switch (this.products.controls[i].get('type').value) {
         case 'roofWindow': {
           productName = this.roofWindowSetter.buildWindowModel('Okno:' + this.products.controls[i].get('model').value,
@@ -344,7 +353,7 @@ export class ComplaintFormComponent implements OnInit, OnDestroy {
           product = new RoofWindowSkylight('', '', productName, '', '', '',
             'Okno:' + this.products.controls[i].get('model').value, 'Okno:' + this.products.controls[i].get('glazing').value,
             this.products.controls[i].get('glazing').value, width, height, 'OknoDachowe', '', '', '', '',
-            '', '', '', '', '', '', '', '', '',
+            '', this.products.controls[i].get('material').value, '', '', '', this.products.controls[i].get('color').value, '', '', '',
             false, 0, [], [], [], [],
             0, 0, 0, 0, '', '', '', 0, '');
           break;
@@ -355,7 +364,7 @@ export class ComplaintFormComponent implements OnInit, OnDestroy {
           product = new RoofWindowSkylight('', '', productName, '', '', '1. Nowy',
             'Wyłaz:' + this.products.controls[i].get('model').value, 'Wyłaz:' + this.products.controls[i].get('glazing').value,
             this.products.controls[i].get('glazing').value, width, height, 'WyłazDachowy', '', '', '', '',
-            '', '', '', '', '', '', '', '', '',
+            '', this.products.controls[i].get('material').value, '', '', '', this.products.controls[i].get('color').value, '', '', '',
             false, 0, [], [], [], [],
             0, 0, 0, 0, '', '', '', 0, '');
           break;
@@ -364,14 +373,24 @@ export class ComplaintFormComponent implements OnInit, OnDestroy {
           productName = this.flashingSetter.buildFlashingName('Kołnierz:' + this.products.controls[i].get('model').value, width, height);
           product = new Flashing('', '', productName, '', '', '1. Nowy',
             this.products.controls[i].get('model').value, width, height, 'KołnierzUszczelniający', '', '', '', '',
-            '', '', '', '', 0, '', 0, 0, 0,
+            this.products.controls[i].get('material').value, this.products.controls[i].get('color').value, '', '', 0, '', 0, 0, 0,
             0, [], [], '', false, null, []);
           break;
         }
         case 'accessory': {
+          productName = this.accessorySetter.getAccessoryName('Akcesorium:' + this.products.controls[i].get('model').value, width, height,
+            this.products.controls[i].get('material').value, this.products.controls[i].get('color').value, 'Srebrny');
+          product = new Accessory('', '', productName, '', '', '1. Nowy', this.products.controls[i].get('model').value, width, height, 'Akcesorium', '', '', '', '',
+            '', '', this.products.controls[i].get('material').value, this.products.controls[i].get('color').value, '', this.products.controls[i].get('material').value, this.products.controls[i].get('color').value,
+            '', 'Srebrny', 0, '', this.products.controls[i].get('dataPlateNumber').value, 0, [], [], '', '');
           break;
         }
         case 'flatRoofWindow': {
+          productName = this.flatSetter.buildWindowModel('DachPłaski:' + this.products.controls[i].get('model').value, 'DachPłaski:' + this.products.controls[i].get('glazing').value, width, height);
+          product = new FlatRoofWindow('', '', productName, '', '', '1. Nowy', 'DachPłaski:' + this.products.controls[i].get('model').value, 'DachPłaski:'
+            + this.products.controls[i].get('glazing').value, this.products.controls[i].get('glazing').value, width, height, 'DachPłaski', '', 'DachPłaski:PG', '', '',
+            'PVC', 'PVC;Biały', '', '', this.products.controls[i].get('color').value, '', '', '', 2,
+            [], [], [], [], 0, 0, 0, 0, '', '', 0, '');
           break;
         }
         case 'verticalWindow': {

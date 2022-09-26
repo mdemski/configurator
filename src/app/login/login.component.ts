@@ -45,7 +45,6 @@ export class LoginComponent implements OnInit {
     this.authService.login(email, password).subscribe((resData) => {
       if (resData.success) {
         this.authForm.reset();
-        // TODO znaleźć użytkownika z bazy używając email żeby zwrócić ID do routingu www.moja-aplikacja.pl/moje-konto/id
         this.router.navigate(['/my-account']);
         this.isLoading = false;
       }

@@ -42,11 +42,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.registerForm = new FormGroup({
       email: new FormControl(null, [Validators.required, Validators.email], [this.emailExists.bind(this)]),
-      // TODO dodać warunek sprawdzający długość hasła: Validators.min(8)
       password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
       rePassword: new FormControl(null, [Validators.required, Validators.minLength(8)]),
       username: new FormControl(null, [], [this.usernameExists.bind(this)]),
-      // TODO zweryfikować czy ten pattern zadziała dla klientów zagranicznych? Jak to chce otrzymać eNova?
       nip: new FormControl(null, [Validators.pattern('[0-9]{10}'), this.requiredIfCompanyClient.bind(this)]),
       companyName: new FormControl(null, [this.requiredIfCompanyClient.bind(this)]),
       firstName: new FormControl(null, [this.requiredIf.bind(this)]),
