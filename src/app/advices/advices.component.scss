@@ -1,0 +1,30 @@
+@import 'src/sass/base/base';
+@import 'src/sass/base/variables';
+@import 'src/sass/buttons';
+@import 'src/sass/radio-input';
+@import 'src/sass/components';
+@import 'src/sass/blog-card';
+
+
+.searching-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 10rem;
+
+  input {
+    width: 75%;
+    border: 1px transparent;
+    border-bottom: 1px $color-light-grey solid;
+
+    &::placeholder {
+      font-size: 1.6rem;
+    }
+
+    &:focus {
+      outline: none;
+      border-bottom: 1px $color-red solid;
+    }
+  }
+}

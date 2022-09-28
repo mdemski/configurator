@@ -13,6 +13,8 @@ import {OkpolLoaderComponent} from '../loaders/okpol-loader/okpol-loader.compone
 import { ScrollTopComponent } from './scroll-top/scroll-top.component';
 import { NavbarNavigatorComponent } from './navbar-navigator/navbar-navigator.component';
 import {RouterModule} from '@angular/router';
+import {FilterPipe} from '../pipes/filter.pipe';
+import {HighlightDirective} from '../directives/highlight.directive';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import {RouterModule} from '@angular/router';
     BouncingLoaderComponent,
     OkpolLoaderComponent,
     ScrollTopComponent,
-    NavbarNavigatorComponent
+    NavbarNavigatorComponent,
+    FilterPipe,
+    HighlightDirective
   ],
   imports: [
     CommonModule,
@@ -50,7 +54,9 @@ import {RouterModule} from '@angular/router';
     EmptyArrayPipe,
     OkpolLoaderComponent,
     ScrollTopComponent,
-    NavbarNavigatorComponent
+    NavbarNavigatorComponent,
+    FilterPipe,
+    HighlightDirective
   ]
 })
 export class SharedModule { }

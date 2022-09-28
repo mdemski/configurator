@@ -38,6 +38,9 @@ const appRoutes: Routes = [
     canActivate: [UserGuard, ComplaintsGuard]
   },
   {
+    path: 'advices', loadChildren: () => import('./advices/advices.module').then(m => m.AdvicesModule)
+  },
+  {
     path: 'my-account', loadChildren: () => import('./my-account/my-account.module').then(m => m.MyAccountModule),
     canActivate: [AuthGuardService, CartGuard, ConfigurationsGuard, UserGuard, ComplaintsGuard]
   },
@@ -60,6 +63,9 @@ const appRoutes: Routes = [
   {
     path: 'reklamacje', loadChildren: () => import('./complaint/complaint.module').then(m => m.ComplaintModule),
     canActivate: [UserGuard, ComplaintsGuard]
+  },
+  {
+    path: 'porady', loadChildren: () => import('./advices/advices.module').then(m => m.AdvicesModule)
   },
   {
     path: 'moje-konto', loadChildren: () => import('./my-account/my-account.module').then(m => m.MyAccountModule),

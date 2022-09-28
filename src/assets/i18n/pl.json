@@ -780,6 +780,7 @@
   "GENERAL": {
     "myProfile": "Mój profil",
     "currency": "zł",
+    "search": "Wyszukaj poradę",
     "actualCurrency": "Aktualna waluta",
     "actualVATRate": "Aktualna stawka VAT",
     "actualLanguage": "Aktualny język",

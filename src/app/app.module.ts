@@ -35,8 +35,6 @@ import {AuthService} from './services/auth.service';
 import {MyAccountModule} from './my-account/my-account.module';
 import {SwiperModule} from 'swiper/angular';
 import { NgxTranslateRoutesModule } from 'ngx-translate-routes';
-import { FilterPipe } from './pipes/filter.pipe';
-import { HighlightDirective } from './directives/highlight.directive';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -54,9 +52,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ContactComponent,
     HomeComponent,
     RegisterConfirmationPageComponent,
-    CartComponent,
-    FilterPipe,
-    HighlightDirective
+    CartComponent
   ],
   imports: [
     SharedModule,

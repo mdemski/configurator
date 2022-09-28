@@ -30,6 +30,7 @@
     "@ngxs/router-plugin": "^3.7.2",
     "@ngxs/store": "^3.7.2",
     "@types/chart.js": "^2.9.35",
+    "@videogular/ngx-videogular": "^6.0.0",
     "angular2-uuid": "^1.1.1",
     "animate.css": "^4.1.0",
     "bootstrap": "^4.6.1",
