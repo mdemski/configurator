@@ -781,6 +781,8 @@
     "myProfile": "Mój profil",
     "currency": "zł",
     "search": "Wyszukaj poradę",
+    "days": "dni",
+    "ago": "temu",
     "actualCurrency": "Aktualna waluta",
     "actualVATRate": "Aktualna stawka VAT",
     "actualLanguage": "Aktualny język",
