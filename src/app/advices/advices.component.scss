@@ -5,6 +5,10 @@
 @import 'src/sass/components';
 @import 'src/sass/blog-card';
 
+.md-container {
+  width: 140rem;
+  justify-content: flex-start;
+}
 
 .searching-container {
   display: flex;
