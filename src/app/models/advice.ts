@@ -2,7 +2,7 @@ export class Advice {
   private _id: string;
   private _title: string;
   private _type: string;
-  private _content: string;
+  private _content: { sectionHeader: string, sectionText: string }[];
   private _category: string;
   private _picture: string;
   private _link: string;
@@ -12,8 +12,9 @@ export class Advice {
   private _active: boolean;
   private _language: string;
 
-  constructor(id: string, title: string, type: string, content: string, category: string, picture: string, link: string, added: Date,
-              short: string, recipients: string, active: boolean, language: string) {
+
+  constructor(id: string, title: string, type: string, content: { sectionHeader: string; sectionText: string }[], category: string,
+              picture: string, link: string, added: Date, short: string, recipients: string, active: boolean, language: string) {
     this._id = id;
     this._title = title;
     this._type = type;
@@ -52,11 +53,11 @@ export class Advice {
     this._type = value;
   }
 
-  get content(): string {
+  get content(): { sectionHeader: string; sectionText: string }[] {
     return this._content;
   }
 
-  set content(value: string) {
+  set content(value: { sectionHeader: string; sectionText: string }[]) {
     this._content = value;
   }
 

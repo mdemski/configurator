@@ -15,6 +15,9 @@ import { NavbarNavigatorComponent } from './navbar-navigator/navbar-navigator.co
 import {RouterModule} from '@angular/router';
 import {FilterPipe} from '../pipes/filter.pipe';
 import {HighlightDirective} from '../directives/highlight.directive';
+import {VgCoreModule} from '@videogular/ngx-videogular/core';
+import {VgControlsModule} from '@videogular/ngx-videogular/controls';
+import {YouTubePlayerModule} from '@angular/youtube-player';
 
 @NgModule({
   declarations: [
@@ -41,6 +44,9 @@ import {HighlightDirective} from '../directives/highlight.directive';
       }
     }),
     RouterModule,
+    VgCoreModule,
+    VgControlsModule,
+    YouTubePlayerModule
   ],
   exports: [
     CommonModule,
@@ -56,7 +62,10 @@ import {HighlightDirective} from '../directives/highlight.directive';
     ScrollTopComponent,
     NavbarNavigatorComponent,
     FilterPipe,
-    HighlightDirective
+    HighlightDirective,
+    VgCoreModule,
+    VgControlsModule,
+    YouTubePlayerModule
   ]
 })
 export class SharedModule { }

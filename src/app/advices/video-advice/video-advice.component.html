@@ -1,1 +1,36 @@
-<p>video-advice works!</p>
+<app-scroll-top></app-scroll-top>
+
+<div class="navbar-background">
+  <img src="assets/img/navbar_backgrounds/alexander-ant-r7xdS9hjYYE-unsplash-3.png" alt="roof windows">
+  <app-navbar-navigator [path]="this.router.url"></app-navbar-navigator>
+</div>
+
+<div class="d-flex justify-content-center">
+  <div *ngIf="isLoading" class="d-flex justify-content-center">
+    <app-okpol-loader></app-okpol-loader>
+  </div>
+
+  <div class="md-container" *ngIf="!isLoading">
+    <div class="advice-back-container">
+      <a routerLink="/advices"
+         class="btn btn--blue">{{ 'LINK.back' | translate}}</a>
+    </div>
+
+    <div class="advice-container">
+      <div class="advice-container__section">
+        <div class="advice-container__section__header">
+          <h1 class="advice-container__section__header--h1">{{advice.content[0].sectionHeader}}</h1>
+        </div>
+      </div>
+      <div class="advice-container__section">
+        <div class="advice-container__section__video">
+          <youtube-player width="100%" height="920" videoId="{{videoId}}"></youtube-player>
+        </div>
+        <div class="advice-container__section__text">
+          <p class="advice-container__section__text--p">{{advice.content[0].sectionText}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

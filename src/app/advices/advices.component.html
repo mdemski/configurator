@@ -19,8 +19,8 @@
 
     <div class="card" *ngFor="let advice of filteredAdvices">
       <div class="card__header">
-        <a routerLink="{{advice.id}}">
-          <img src="https://source.unsplash.com/600x400/?computer" alt="card__image" class="card__image" width="600">
+        <a routerLink="{{advice.type}}/{{advice.id}}">
+          <img src="{{advice.picture}}" alt="card__image" class="card__image" width="600">
         </a>
       </div>
       <div class="card__body">

@@ -1,1 +1,35 @@
-<p>text-advice works!</p>
+<app-scroll-top></app-scroll-top>
+
+<div class="navbar-background">
+  <img src="assets/img/navbar_backgrounds/alexander-ant-r7xdS9hjYYE-unsplash-3.png" alt="roof windows">
+  <app-navbar-navigator [path]="this.router.url"></app-navbar-navigator>
+</div>
+
+<div class="d-flex justify-content-center">
+  <div *ngIf="isLoading" class="d-flex justify-content-center">
+    <app-okpol-loader></app-okpol-loader>
+  </div>
+
+  <div class="md-container" *ngIf="!isLoading">
+    <div class="advice-back-container">
+      <a routerLink="/advices"
+         class="btn btn--blue">{{ 'LINK.back' | translate}}</a>
+    </div>
+
+    <div class="advice-container">
+      <div class="advice-container__picture">
+        <img src="{{advice.picture}}" alt="{{advice.category}}">
+      </div>
+      <div class="advice-container__section" *ngFor="let section of advice.content; let i = index">
+        <div class="advice-container__section__header">
+          <h1 class="advice-container__section__header--h1">{{section.sectionHeader}}</h1>
+        </div>
+        <div class="advice-container__section__text" *ngFor="let paragraph of section.sectionText.split('•'); let j = index">
+          <p class="advice-container__section__text--p" *ngIf="j === 0">{{paragraph}}</p>
+          <p class="advice-container__section__text--p list" *ngIf="j > 0">• {{paragraph}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -4,6 +4,7 @@ import {Advice} from '../models/advice';
 import advices from '../../assets/json/advices.json';
 import moment from 'moment';
 import {MdTranslateService} from '../services/md-translate.service';
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-advices',
@@ -12,7 +13,7 @@ import {MdTranslateService} from '../services/md-translate.service';
 })
 export class AdvicesComponent implements OnInit, OnDestroy {
 
-  private isDestroyed$;
+  private isDestroyed$ = new Subject();
   isLoading = true;
   searchAdvice: string;
   advices: Advice[];
@@ -22,8 +23,16 @@ export class AdvicesComponent implements OnInit, OnDestroy {
   constructor(public router: Router, private translate: MdTranslateService) {
     this.advices = [];
     for (const advice of advices) {
-      if (this.translate.getBrowserLang() === advice.language) {
-        this.advices.push(new Advice(advice.id, advice.title, advice.type, advice.content, advice.category, advice.picture, advice.link,
+      if (this.translate.getBrowserLang() === advice.language && advice.active === 'true') {
+        const chapters: {sectionHeader: string, sectionText: string}[] = [];
+        for (const chapter of advice.content) {
+          const newChapter = {
+            sectionHeader: chapter.sectionHeader,
+            sectionText: chapter.sectionText
+          };
+          chapters.push(newChapter);
+        }
+        this.advices.push(new Advice(advice.id, advice.title, advice.type, chapters, advice.category, advice.picture, advice.link,
           new Date(advice.added), advice.short, advice.recipients, Boolean(advice.active), advice.language));
       }
     }
@@ -35,7 +44,7 @@ export class AdvicesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.isDestroyed$.next();
+    this.isDestroyed$.next(null);
   }
 
   filtering() {
