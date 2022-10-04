@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Advice} from '../models/advice';
 import advices from '../../assets/json/advices.json';
 import moment from 'moment';
@@ -20,8 +20,9 @@ export class AdvicesComponent implements OnInit, OnDestroy {
   filteredAdvices: Advice[];
   currentDate = moment(new Date());
 
-  constructor(public router: Router, private translate: MdTranslateService) {
+  constructor(public router: Router, private translate: MdTranslateService, private route: ActivatedRoute) {
     this.advices = [];
+    this.searchAdvice = '';
     for (const advice of advices) {
       if (this.translate.getBrowserLang() === advice.language && advice.active === 'true') {
         const chapters: {sectionHeader: string, sectionText: string}[] = [];
@@ -37,6 +38,10 @@ export class AdvicesComponent implements OnInit, OnDestroy {
       }
     }
     this.filteredAdvices = this.advices;
+    if (this.route.snapshot.paramMap.get('searchInput') !== null) {
+      this.searchAdvice = this.route.snapshot.paramMap.get('searchInput');
+      this.filtering();
+    }
   }
 
   ngOnInit(): void {

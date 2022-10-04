@@ -17,6 +17,10 @@
              placeholder="{{'GENERAL.search' | translate}}">
     </div>
 
+    <div class="empty-advice-container" *ngIf="filteredAdvices.length === 0">
+      <p class="empty-advice-container--text">{{'ADVICES.lackOfAdvices' | translate}}</p>
+    </div>
+
     <div class="card" *ngFor="let advice of filteredAdvices">
       <div class="card__header">
         <a routerLink="{{advice.type}}/{{advice.id}}">
@@ -24,7 +28,9 @@
         </a>
       </div>
       <div class="card__body">
-        <span class="tag tag-blue">{{advice.category}}</span>
+        <span *ngIf="advice.category === 'Poradnik'" class="tag tag-blue">{{advice.category}}</span>
+        <span *ngIf="advice.category === 'Aplikacja'" class="tag tag-red">{{advice.category}}</span>
+        <span *ngIf="advice.category === 'Instrukcje'" class="tag tag-brown">{{advice.category}}</span>
         <h4>{{advice.title}}</h4>
         <p>{{advice.short}}</p>
       </div>

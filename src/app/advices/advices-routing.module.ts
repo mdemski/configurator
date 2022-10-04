@@ -6,6 +6,7 @@ import {TextAdviceComponent} from './text-advice/text-advice.component';
 
 const routes: Routes = [
   {path: '', component: AdvicesComponent},
+  {path: ':searchInput', component: AdvicesComponent},
   {path: 'video/:adviceId', component: VideoAdviceComponent},
   {path: 'text/:adviceId', component: TextAdviceComponent}
 ];

@@ -366,9 +366,10 @@
     "FlatRoofPVCDESC": "Okno z tworzywa sztucznego PVC to najlepsze rozwiązanie dla pomieszczeń o podwyższonej wilgotności, takich jak: łazienka, kuchnia czy pralnia. Materiał, z którego został wykonany sprawia, że jest niezwykle praktyczne – nie wymaga żadnej konserwacji po zamontowaniu. Dzięki dodatkowemu wypełnieniu pianką poliuretanową, zapewnia komfort i ciepło na poddaszu. Okno jest odporne na działanie czynników zewnętrznych, więc można się nimi cieszyć przez długi czas.\nOkno z pakietem dwuszybowym OKPOL to jakość za stosunkowo niską cenę.\n\nCharakteryzuje się dobrymi parametrami izolacyjnymi, które dają możliwość zaoszczędzenia energii potrzebnej do ogrzania poddasza, a lekka konstrukcja szyby pozwala na łatwy i szybki montaż."
   },
   "ADVICES": {
-    "windowSelection": "Wybór okien",
-    "configurationOptions": "Dostępne w konfiguratorze opcje",
-    "appFunctions": "Dostępne funkcje w aplikacji"
+    "hints": "Poradniki",
+    "configurationOptions": "Opcje aplikacji",
+    "instructions": "Porady Instruktażowe",
+    "lackOfAdvices": "Aktualnie brak porad o tej tematyce"
   },
   "ROOF-WINDOWS-CONFIG": {
     "Uw": "Uw",
