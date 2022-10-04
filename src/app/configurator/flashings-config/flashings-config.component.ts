@@ -606,12 +606,11 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
               errors = null;
             }
           }
-          // TODO odkomentować kod po wprowadzeniu listy zewnętrznych kolorów
-          // for (const option of this.configOptions.outerColors) {
-          //   if (group.controls.outerMaterial.value === option) {
-          //     errors = null;
-          //   }
-          // }
+          for (const option of this.configOptions.outerColors) {
+            if (group.controls.outerMaterial.value === option) {
+              errors = null;
+            }
+          }
           for (const option of this.configOptions.outerColorFinishes) {
             if (group.controls.outerMaterial.value === option) {
               errors = null;
@@ -905,7 +904,6 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   onSubmit() {
-    // TODO napisać funkcję do zapisu konfiguracji kołnierzy
     if (this.configuredFlashingArray.length === 0) {
       this.newFlashingConfig = {
         products: {

@@ -188,7 +188,6 @@ export class ConfigurationSummaryComponent implements OnInit, OnDestroy {
     this.store.dispatch(new DeleteGlobalConfiguration(globalConfiguration)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
   }
 
-  // TODO sprawdzić co dokładnie wrzuca się do koszyka i odpowiednio to obsługiwać
   addToCart(product, quantity) {
     this.store.dispatch(new AddProductToCart(product, quantity)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
   }

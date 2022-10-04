@@ -181,7 +181,6 @@
           <div class="configuration-summary-container__single--roof-windows"
                *ngFor="let singleWindow of configuration.products.windows let last = last"
                [ngClass]="{'last-child': last}">
-            <!--            TODO tu jest dobrze nie poprawiać _ bo wrzucone z ręki-->
             <img *ngIf="singleWindow.window.linkiDoZdjec || singleWindow.window.linkiDoZdjec === []; else greyBlock"
                  src="{{singleWindow.window.linkiDoZdjec[0]}}" alt="{{singleWindow.window.productName}}"
                  class="configuration-summary-container__single--roof-windows--window-picture">

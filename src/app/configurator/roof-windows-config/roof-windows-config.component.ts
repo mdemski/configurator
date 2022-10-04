@@ -563,12 +563,11 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
               errors = null;
             }
           }
-          // TODO odkomentować kod po wprowadzeniu listy zewnętrznych kolorów
-          // for (const option of this.configOptions.outerColors) {
-          //   if (group.controls.outerMaterial.value === option) {
-          //     errors = null;
-          //   }
-          // }
+          for (const option of this.configOptions.outerColors) {
+            if (group.controls.outerMaterial.value === option) {
+              errors = null;
+            }
+          }
           for (const option of this.configOptions.outerColorFinishes) {
             if (group.controls.outerMaterial.value === option) {
               errors = null;

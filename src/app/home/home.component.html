@@ -162,7 +162,7 @@
 
 <!--Section most recent products-->
 <section class="most-recent">
-  <div class="most-recent__product" *ngFor="let product of mostRecentProducts; let i = index">
+  <div class="most-recent__product" *ngFor="let product of (recentProducts$ | async); let i = index">
     <h2 class="most-recent__product--title">Produkt 1</h2>
     <figure class="most-recent__product--background">
       <p class="most-recent__product--desc">To jest opis tego produktu zachęcający do zakupu. Zapraszamy do

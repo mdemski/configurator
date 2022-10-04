@@ -5,6 +5,9 @@ import {Select, Store} from '@ngxs/store';
 import {CartState} from '../store/cart/cart.state';
 import {Observable} from 'rxjs';
 import {AddProductToCart} from '../store/cart/cart.actions';
+import {SetAvailableSellers, SetMostRecentProducts} from '../store/app/app.actions';
+import {take} from 'rxjs/operators';
+import {AppState} from '../store/app/app.state';
 
 @Component({
   selector: 'app-home',
@@ -13,34 +16,25 @@ import {AddProductToCart} from '../store/cart/cart.actions';
 })
 export class HomeComponent implements OnInit {
   @Select(CartState) cart$: Observable<any>;
-  // TODO przekazać tutaj id z zalogowanego użytkownika
-  // TODO Sprawdzić wszystkie linki na stronie czy mają ścieżki
-  id: any;
-  mostRecentProducts: any = [];
-  availableSellers: any = [];
+  @Select(AppState.mostRecentProducts) recentProducts$: Observable<any[]>;
+  @Select(AppState.availableSellers) availableSellers$: Observable<any[]>;
   activeClass1 = '';
   activeClass2 = '';
   activeClass3 = '';
   activeClass4 = '';
 
   constructor(private translate: MdTranslateService,
-              private db: DatabaseService,
               private store: Store) {
     translate.setLanguage();
+    this.store.dispatch(new SetMostRecentProducts()).pipe(take(1)).subscribe(console.log);
+    this.store.dispatch(new SetAvailableSellers()).pipe(take(1)).subscribe(console.log);
   }
 
   ngOnInit(): void {
-    // TODO dodać do stanu i wczytywać z niego obie poniższe
-    this.mostRecentProducts = this.db.getMostRecentProductsHomePage();
-    this.availableSellers = this.db.getAllSellers();
   }
 
   addToCart(product: any) {
     this.store.dispatch(new AddProductToCart(product, 1));
-  }
-
-  getAvailableSellers() {
-
   }
 
   setActive1() {

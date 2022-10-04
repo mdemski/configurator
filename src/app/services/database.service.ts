@@ -22,8 +22,7 @@ export class DatabaseService {
               private flashingValueSetter: FlashingValueSetterService,
               private accessoryValueSetter: AccessoryValuesSetterService,
               private flatValueSetter: FlatValueSetterService,
-              private randomString: RandomStringGeneratorService,
-              private http: HttpClient) {
+              private randomString: RandomStringGeneratorService) {
     // this.accessories = this.getAllAccessoriesToShopList();
   }
 
@@ -104,6 +103,7 @@ export class DatabaseService {
       new FlatRoofWindow('1P-PGX-L-A01-WSWS-A7022P-120120-OKPP01', 'PGX LED A1 120x120 Okno do dachu płaskiego nieotwierane z oświetleniem RGB LED /PVCbiały/aluRAL7022półmat/OKPP01', '', 'I-PŁASKI', 'NPL-OKNO', '1. Nowy', 'DachPłaski:PGX LED', 'DachPłaski:A01', 'A01', 120, 120, 'DachPłaski', 'DachPłaski:Okno', 'PG', 'DachPłaski:PGX', 'NieotwieraneFIX', 'PVC',
         'PVC:Biały9016', 'DachPłaski:PG', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', '', '', 0, [], [], ['assets/img/products/PGX_LED.png'], [], 3901, null, null, 2, '', '', null, 'PL'),
       new FlatRoofWindow('1P-PGC---A01-WSWS-A7022P-120090-OKPP01', 'PGC A1 120x90 Okno do dachu płaskiego sterowane elektrycznie /PVCbiały/aluRAL7022półmat/OKPP01', '', 'I-PŁASKI', 'NPL-OKNO', '1. Nowy', 'DachPłaski:PGC', 'DachPłaski:A01', 'A01', 120, 90, 'DachPłaski', 'DachPłaski:Okno', 'PG', 'DachPłaski:PGC', 'ElektryczneUchył', 'PVC',
+        // tslint:disable-next-line:max-line-length
         'PVC:Biały9016', 'DachPłaski:PG', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'Siłownik', '', 0, [], [], ['assets/img/products/PGC.png'], [], 4401, null, null, 4, '', '', null, 'PL'),
       new FlatRoofWindow('1P-PGM---A07-WSWS-A7022P-060060-OKPP01', 'PGM A7 60x60 Okno do dachu płaskiego otwierane manualnie /PVCbiały/aluRAL7022półmat/OKPP01', '', 'I-PŁASKI', 'NPL-OKNO', '1. Nowy', 'DachPłaski:PGM', 'DachPłaski:A07', 'A07', 60, 60, 'DachPłaski', 'DachPłaski:Okno', 'PG', 'DachPłaski:PGM', 'Manualne', 'PVC',
         'PVC:Biały9016', 'DachPłaski:PG', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'Drążek', 'Czerwony', 0, [], [], ['assets/img/products/PGM.png'], [], 5401, null, null, 1, '', '', null, 'PL')
@@ -210,9 +210,9 @@ export class DatabaseService {
   // Musi zwracać listę 3 produktów, z których 1 jest oknem, 2 to kołnierz, 3 akcesorium
   getMostRecentProductsHomePage() {
     this.mostRecentProducts = [];
-    this.mostRecentProducts.push(this.windows[0]);
-    this.mostRecentProducts.push(this.windows[1]);
-    this.mostRecentProducts.push(this.accessories[2]);
+    this.mostRecentProducts.push(this.getAllRoofWindowsToShopList()[0]);
+    this.mostRecentProducts.push(this.getAllRoofWindowsToShopList()[1]);
+    this.mostRecentProducts.push(this.getAllAccessoriesToShopList()[1]);
     return this.mostRecentProducts;
   }
 
