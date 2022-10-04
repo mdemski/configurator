@@ -103,7 +103,8 @@
         <div class="main__favorite-products__slider">
           <h4 class="main__favorite-products__slider--heading">{{ 'MY-ACCOUNT.favoriteProducts' | translate}}</h4>
 
-          <div #swiperContainer class="main__favorite-products__slider__container" [ngStyle]="setWidth(swiperContainer, arrayLength)">
+          <div #swiperContainer class="main__favorite-products__slider__container"
+               [ngStyle]="setWidth(swiperContainer, arrayLength)">
             <div class="swiper-button-prev-unique"><i class="fas fa-angle-left angle--icon"></i></div>
             <div class="swiper">
               <div class="swiper-wrapper">
@@ -112,7 +113,8 @@
                 <swiper class="my-swiper" #swiper [config]="config">
 
                   <!--box----------------------->
-                  <ng-template swiperSlide class="product-box" *ngFor="let product of ((user$ | async).favoriteProducts)">
+                  <ng-template swiperSlide class="product-box"
+                               *ngFor="let product of ((user$ | async).favoriteProducts)">
                     <div class="product-box">
                       <!--==offer==-->
                       <span class="product-box-offer" *ngIf="showDiscount"></span>
@@ -172,13 +174,15 @@
                                     product._grupaAsortymentowa === 'OknoKolankowe' || product._grupaAsortymentowa === 'OknoZintegrowane'"
                            routerLink="../{{ 'LINK.shopRoofWindows' | translate}}/{{product._kod}}"
                            class="product-title">
-                          {{product._model.split(':')[1]}} {{product._pakietSzybowy.split(':')[1]}} {{product._szerokosc}}x{{product._wysokosc}}
+                          {{product._model.split(':')[1]}} {{product._pakietSzybowy.split(':')[1]}} {{product._szerokosc}}
+                          x{{product._wysokosc}}
                         </a>
 
                         <a *ngIf="product._grupaAsortymentowa === 'DachPłaski'"
                            routerLink="../{{ 'LINK.shopFlatRoofWindows' | translate}}/{{product._kod}}"
                            class="product-title">
-                          {{product._model.split(':')[1]}} {{product._pakietSzybowy.split(':')[1]}} {{product._szerokosc}}x{{product._wysokosc}}
+                          {{product._model.split(':')[1]}} {{product._pakietSzybowy.split(':')[1]}} {{product._szerokosc}}
+                          x{{product._wysokosc}}
                         </a>
 
                         <a *ngIf="product._grupaAsortymentowa === 'WyłazDachowy'"
@@ -260,20 +264,17 @@
           <span *ngIf="!(userConfigurations$ | async)">(0)</span>
           <span *ngIf="userConfigurations$ | async">({{(userConfigurations$ | async)?.length}})</span>
         </label>
-        <!--     TODO odkomentować    <input *ngIf="currentUser.isLogged && (user$ | async)?.company" class="main__tabs&#45;&#45;input" type="radio" name="tabset" id="tasks"-->
-        <input *ngIf="currentUser.isLogged" class="main__tabs--input" type="radio" name="tabset" id="tasks"
-               aria-controls="tasks"
+        <input *ngIf="currentUser.isLogged && (user$ | async)?.company" class="main__tabs--input" type="radio"
+               name="tabset" id="tasks" aria-controls="tasks"
                [(ngModel)]="activeTab" [ngModelOptions]="{standalone: true}" value="activeTasks">
-        <!--       TODO odkomentować  <label *ngIf="currentUser.isLogged  && (user$ | async)?.company" class="main__tabs&#45;&#45;label" for="tasks">{{'MY-ACCOUNT.tasks' | translate}}-->
-        <label *ngIf="currentUser.isLogged" class="main__tabs--label" for="tasks">{{'MY-ACCOUNT.tasks' | translate}}
+        <label *ngIf="currentUser.isLogged  && (user$ | async)?.company" class="main__tabs--label"
+               for="tasks">{{'MY-ACCOUNT.tasks' | translate}}
           ({{(userTask$ | async)?.length}})</label>
 
-        <!--     TODO odkomentować   <input *ngIf="currentUser.isLogged && (user$ | async)?.company" class="main__tabs&#45;&#45;input" type="radio" name="tabset" id="news"-->
-        <input *ngIf="currentUser.isLogged" class="main__tabs--input" type="radio" name="tabset" id="news"
-               aria-controls="news"
+        <input *ngIf="currentUser.isLogged && (user$ | async)?.company" class="main__tabs--input" type="radio"
+               name="tabset" id="news" aria-controls="news"
                [(ngModel)]="activeTab" [ngModelOptions]="{standalone: true}" value="activeNews">
-        <!--       TODO odkomentować  <label *ngIf="currentUser.isLogged && (user$ | async)?.company" class="main__tabs&#45;&#45;label" for="news">{{'MY-ACCOUNT.news' | translate}}-->
-        <label *ngIf="currentUser.isLogged" class="main__tabs--label" for="news">{{'MY-ACCOUNT.news' | translate}}
+        <label *ngIf="currentUser.isLogged && (user$ | async)?.company" class="main__tabs--label" for="news">{{'MY-ACCOUNT.news' | translate}}
           (0)</label>
 
         <input *ngIf="currentUser.isLogged" class="main__tabs--input" type="radio" name="tabset" id="complaints"

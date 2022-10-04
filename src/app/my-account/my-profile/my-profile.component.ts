@@ -4,7 +4,7 @@ import {UserState} from '../../store/user/user.state';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {UpdateCartCurrency, UpdateCartVatRate} from '../../store/cart/cart.actions';
 import {AuthService} from '../../services/auth.service';
-import {filter, map, take, takeUntil} from 'rxjs/operators';
+import {filter, map, skipWhile, take, takeUntil} from 'rxjs/operators';
 import {CartState} from '../../store/cart/cart.state';
 import exchange from '../../../assets/json/echange.json';
 import vatRates from '../../../assets/json/vatRates.json';
@@ -44,7 +44,7 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   rates: number[] = [];
   pieChart: any;
   countries$ = new BehaviorSubject(null);
-  testCompany;
+  loggedCompany;
   filteredInvoices: Invoice[] = [];
   invoices: Invoice[] = [];
   labels = ['roofWindows', 'skylights', 'accessories', 'flashings', 'flatRoofWindows', 'verticalWindows'];
@@ -75,10 +75,13 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
               private store: Store,
               private crud: CrudService,
               private db: DatabaseService, public router: Router) {
-    // TODO poprawić na dane z api eNova
-    this.testCompany = this.db.getAllSellers()[0];
-    this.company$.next(this.testCompany);
-    this.invoices = this.db.getAllSellers()[0].invoices;
+    this.user$.pipe(takeUntil(this.isDestroyed$), skipWhile(user => user !== undefined)).subscribe(user => {
+      this.crud.readCompanyByNIP(user.companyNip).pipe(takeUntil(this.isDestroyed$), skipWhile(company => company !== undefined)).subscribe(company => {
+        this.loggedCompany = company;
+        this.company$.next(company);
+        this.invoices = company.invoices;
+      });
+    });
     this.languages = this.translate.getLanguages();
     this.currencies = Object.keys(exchange);
     this.rates = Object.values(vatRates);
@@ -200,12 +203,12 @@ export class MyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         labels: this.translatedLabels,
         datasets: [{
           label: 'Sales doughnut',
-          data: [this.testCompany.roofWindowsSalesVolume,
-            this.testCompany.skylightsSalesVolume,
-            this.testCompany.accessoriesSalesVolume,
-            this.testCompany.flashingsSalesVolume,
-            this.testCompany.flatRoofWindowsSalesVolume,
-            this.testCompany.verticalWindowsSalesVolume],
+          data: [this.loggedCompany.roofWindowsSalesVolume,
+            this.loggedCompany.skylightsSalesVolume,
+            this.loggedCompany.accessoriesSalesVolume,
+            this.loggedCompany.flashingsSalesVolume,
+            this.loggedCompany.flatRoofWindowsSalesVolume,
+            this.loggedCompany.verticalWindowsSalesVolume],
           backgroundColor: [
             'rgb(252, 3, 3)',
             'rgb(252, 186, 3)',
