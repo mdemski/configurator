@@ -26,7 +26,6 @@ export class ConfigurationDataService {
         const lines = [];
         const linesArray = data.split('\n');
         linesArray.forEach((e: any) => {
-          // TODO jak usunąć puste linie???
           const row = e.replace(/[\s]+[;]+|[;]+[\s]+/g, ';').trim();
           lines.push(row);
         });
@@ -135,7 +134,6 @@ export class ConfigurationDataService {
         const lines = [];
         const linesArray = data.split('\n');
         linesArray.forEach((e: any) => {
-          // TODO jak usunąć puste linie???
           const row = e.replace(/[\s]+[;]+|[;]+[\s]+/g, ';').trim();
           lines.push(row);
         });
@@ -173,7 +171,6 @@ export class ConfigurationDataService {
         const lines = [];
         const linesArray = data.split('\n');
         linesArray.forEach((e: any) => {
-          // TODO jak usunąć puste linie???
           const row = e.replace(/[\s]+[;]+|[;]+[\s]+/g, ';').trim();
           lines.push(row);
         });
@@ -198,7 +195,6 @@ export class ConfigurationDataService {
         const lines = [];
         const linesArray = data.split('\n');
         linesArray.forEach((e: any) => {
-          // TODO jak usunąć puste linie???
           const row = e.replace(/[\s]+[;]+|[;]+[\s]+/g, ';').trim();
           lines.push(row);
         });
@@ -285,7 +281,6 @@ export class ConfigurationDataService {
         const lines = [];
         const linesArray = data.split('\n');
         linesArray.forEach((e: any) => {
-          // TODO jak usunąć puste linie???
           const row = e.replace(/[\s]+[;]+|[;]+[\s]+/g, ';').trim();
           lines.push(row);
         });
@@ -310,7 +305,6 @@ export class ConfigurationDataService {
         const lines = [];
         const linesArray = data.split('\n');
         linesArray.forEach((e: any) => {
-          // TODO jak usunąć puste linie???
           const row = e.replace(/[\s]+[;]+|[;]+[\s]+/g, ';').trim();
           lines.push(row);
         });
@@ -379,7 +373,6 @@ export class ConfigurationDataService {
         const lines = [];
         const linesArray = data.split('\n');
         linesArray.forEach((e: any) => {
-          // TODO jak usunąć puste linie???
           const row = e.replace(/[\s]+[;]+|[;]+[\s]+/g, ';').trim();
           lines.push(row);
         });
@@ -404,7 +397,6 @@ export class ConfigurationDataService {
         const lines = [];
         const linesArray = data.split('\n');
         linesArray.forEach((e: any) => {
-          // TODO jak usunąć puste linie???
           const row = e.replace(/[\s]+[;]+|[;]+[\s]+/g, ';').trim();
           lines.push(row);
         });
@@ -487,7 +479,6 @@ export class ConfigurationDataService {
         const lines = [];
         const linesArray = data.split('\n');
         linesArray.forEach((e: any) => {
-          // TODO jak usunąć puste linie???
           const row = e.replace(/[\s]+[;]+|[;]+[\s]+/g, ';').trim();
           lines.push(row);
         });

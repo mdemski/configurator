@@ -7,7 +7,6 @@ export class MailSenderService {
 
   constructor() { }
 
-  // TODO Wysłanie maila do bazy danych eNova
   saveEmailToDatabase(newsletterEmail: string) {
   }
 }

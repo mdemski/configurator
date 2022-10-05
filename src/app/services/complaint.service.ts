@@ -80,7 +80,7 @@ export class ComplaintService {
       new Complaint('13123547/2021', new Date(), 'Przeciek w czapce ISO', 'Otwarta', '1323154-1315',
         'test@test.pl', new Date(), 'UlaZak', [new ComplaintItem('1234sfgzzz', this.windowToTests, this.windowToTests.productName, 2, 'PRZECIEK', 'KORYTKO', 'BOK', 'OKNO PRZECIEKA PD BOKU', '31351321 BO 123', [])], this.companyToTests, 'Jan Kowalski', null, new Date(), new Date(), new Date(), new Date())
     ];
-    // TODO poprawić ten fragment z dogrywaniem zdjęć do reklamacji
+    // TODO poprawić ten fragment z dogrywaniem zdjęć do reklamacji z eNova
     for (const complaint of complaintArray) {
       complaint.items.forEach(complaintItem => this.complaintItemPicturesSetter(complaintItem));
     }

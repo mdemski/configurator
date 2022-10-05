@@ -125,9 +125,8 @@ export class MyOrdersComponent implements OnInit, OnDestroy {
   }
 
   deleteOrder(order: Order) {
-    // TODO sprawdzić nazewnictwo statusów w eNova
-    if (order.status !== '1. W realizacji') {
-      this.orderService.updateOrderStatus(order, '5. Anulowane').subscribe(() => {
+    if (order.status !== '4. Zamknięte') {
+      this.orderService.updateOrderStatus(order, '4. Zamknięte').subscribe(() => {
         this.reloadOrders();
       });
     }

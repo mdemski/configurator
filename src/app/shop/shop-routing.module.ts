@@ -50,7 +50,6 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  // TODO czy definicja scrollowania na root działa również na dzieciach? {scrollPositionRestoration: 'enabled'}
   imports: [
     RouterModule.forChild(routes),
     ],

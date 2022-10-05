@@ -151,7 +151,6 @@ export class CrudService {
     return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));
   }
 
-  // TODO czy to zadziała?
   setDiscountForIndividualUser(user: User, discount: number, adminPassword: string | null, code: string | null) {
     const url = `${this.usersBaseUri}/update/${user._id}`;
     return this.http.put(url, user, {headers: this.headers}).pipe(catchError(err => err));

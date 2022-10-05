@@ -52,7 +52,6 @@
     <div class="line"></div>
     <div class="all-sizes-container">
       <p>{{ 'SINGLE-PRODUCT.availableSizes' | translate}}</p>
-      <!--TODO przekierować na odpowiednią stronę z wymiarem okna-->
       <a routerLink="../{{getLinkCode(productToShow.kod, size)}}" class="icon-btn-light icon-btn-light--light-grey-red btn-big" [routerLinkActive]="['active-button']"
          *ngFor="let size of availableSizes">{{size}}</a>
     </div>
