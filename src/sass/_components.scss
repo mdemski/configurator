@@ -952,6 +952,10 @@ button:disabled {
   }
 }
 
+.disabled {
+  color: rgb(0,0,0,0);
+}
+
 .paginator {
   ::ng-deep {
     li.current {
