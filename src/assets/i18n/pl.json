@@ -255,7 +255,9 @@
     "previousPageLabel": "Poprzednia",
     "flashingType": "Typ kołnierza",
     "flashingApronType": "Typ fartucha",
-    "flashingModel": "Model"
+    "flashingModel": "Model",
+    "cardPresentation": "Prezentacja w kartach",
+    "tablePresentation": "Prezentacja w tabeli"
   },
   "SINGLE-PRODUCT": {
     "n/a": "nie dotyczy",

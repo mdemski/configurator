@@ -3,3 +3,15 @@
 @import 'src/sass/buttons';
 @import 'src/sass/components';
 @import 'src/sass/radio-input';
+
+.card-presentation {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.table-presentation {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}

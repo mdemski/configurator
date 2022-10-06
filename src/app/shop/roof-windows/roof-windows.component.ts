@@ -34,6 +34,9 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
   page = 1;
   pageSize = 10;
   sortBy = 'popularity';
+  cardPresentation = true;
+  sortTableBy = 'popularityInTable';
+  pageTableSize = 20;
 
   constructor(private store: Store, public router: Router) {
   }
@@ -143,6 +146,37 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
   }
 
   sortArray() {
+    switch (this.sortTableBy) {
+      case 'popularityInTable':
+        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['iloscSprzedanychRok'], ['asc']);
+        break;
+      case 'priceAscInTable':
+        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['CenaDetaliczna'], ['asc']);
+        break;
+      case 'priceDescInTable':
+        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['CenaDetaliczna'], ['desc']);
+        break;
+      case 'nameAscInTable':
+        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['windowName'], ['asc']);
+        break;
+      case 'nameDescInTable':
+        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['windowName'], ['desc']);
+        break;
+      default:
+        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['iloscSprzedanychRok'], ['asc']);
+        break;
+    }
+  }
+
+  addToCart(product) {
+    this.store.dispatch(new AddProductToCart(product, 1)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+  }
+
+  changePresentation() {
+    this.cardPresentation = !this.cardPresentation;
+  }
+
+  sortTableArray() {
     switch (this.sortBy) {
       case 'popularity':
         this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['iloscSprzedanychRok'], ['asc']);
@@ -165,7 +199,7 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
     }
   }
 
-  addToCart(product) {
-    this.store.dispatch(new AddProductToCart(product, 1)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+  getTableRows() {
+    return 20;
   }
 }

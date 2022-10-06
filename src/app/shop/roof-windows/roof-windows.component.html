@@ -13,157 +13,403 @@
     <app-okpol-loader></app-okpol-loader>
   </div>
   <ng-template #elseBlock>
-    <div class="pagination-container">
-      <!--Sorting way selection-->
-      <div class="select-box sorting">
-        <div class="select-box__current" tabindex="1" (change)="sortArray()">
-          <div class="select-box__value">
-            <input class="select-box__input" type="radio" id="popularity" [(ngModel)]="sortBy" value="popularity"
-                   name="sort"
-                   checked>
-            <p class="select-box__input-text">{{'SHOP.popularity' | translate}}</p>
-          </div>
-
-          <div class="select-box__value">
-            <input class="select-box__input" type="radio" id="priceAsc" [(ngModel)]="sortBy" value="priceAsc"
-                   name="sort">
-            <p class="select-box__input-text">{{'SHOP.priceAsc' | translate}}</p>
-          </div>
-
-          <div class="select-box__value">
-            <input class="select-box__input" type="radio" id="priceDesc" [(ngModel)]="sortBy" value="priceDesc"
-                   name="sort">
-            <p class="select-box__input-text">{{'SHOP.priceDesc' | translate}}</p>
-          </div>
-
-          <div class="select-box__value">
-            <input class="select-box__input" type="radio" id="nameDesc" [(ngModel)]="sortBy" value="nameDesc"
-                   name="sort">
-            <p class="select-box__input-text">{{'SHOP.nameDesc' | translate}}</p>
-          </div>
-
-          <div class="select-box__value">
-            <input class="select-box__input" type="radio" id="nameAsc" [(ngModel)]="sortBy" value="nameAsc"
-                   name="sort">
-            <p class="select-box__input-text">{{'SHOP.nameAsc' | translate}}</p>
-          </div>
-
-          <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon"
-               aria-hidden="true">
+    <div class="card-presentation" *ngIf="cardPresentation">
+      <div class="pagination-container">
+        <div class="change-presentation-button-container mr-4">
+          <a class="btn-invert btn-invert--dark-blue" (click)="changePresentation()">{{'SHOP.tablePresentation' | translate}}</a>
         </div>
-        <ul class="select-box__list">
-          <li><label class="select-box__option" for="popularity"
-                     aria-hidden="aria-hidden">{{'SHOP.popularity' | translate}}</label></li>
-          <li><label class="select-box__option" for="priceAsc"
-                     aria-hidden="aria-hidden">{{'SHOP.priceAsc' | translate}}</label></li>
-          <li><label class="select-box__option" for="priceDesc"
-                     aria-hidden="aria-hidden">{{'SHOP.priceDesc' | translate}}</label></li>
-          <li><label class="select-box__option" for="nameDesc"
-                     aria-hidden="aria-hidden">{{'SHOP.nameDesc' | translate}}</label></li>
-          <li><label class="select-box__option" for="nameAsc"
-                     aria-hidden="aria-hidden">{{'SHOP.nameAsc' | translate}}</label></li>
-        </ul>
+        <!--Sorting way selection-->
+        <div class="select-box sorting">
+          <div class="select-box__current" tabindex="1" (change)="sortArray()">
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="popularity" [(ngModel)]="sortBy" value="popularity"
+                     name="sort"
+                     checked>
+              <p class="select-box__input-text">{{'SHOP.popularity' | translate}}</p>
+            </div>
+
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="priceAsc" [(ngModel)]="sortBy" value="priceAsc"
+                     name="sort">
+              <p class="select-box__input-text">{{'SHOP.priceAsc' | translate}}</p>
+            </div>
+
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="priceDesc" [(ngModel)]="sortBy" value="priceDesc"
+                     name="sort">
+              <p class="select-box__input-text">{{'SHOP.priceDesc' | translate}}</p>
+            </div>
+
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="nameDesc" [(ngModel)]="sortBy" value="nameDesc"
+                     name="sort">
+              <p class="select-box__input-text">{{'SHOP.nameDesc' | translate}}</p>
+            </div>
+
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="nameAsc" [(ngModel)]="sortBy" value="nameAsc"
+                     name="sort">
+              <p class="select-box__input-text">{{'SHOP.nameAsc' | translate}}</p>
+            </div>
+
+            <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon"
+                 aria-hidden="true">
+          </div>
+          <ul class="select-box__list">
+            <li><label class="select-box__option" for="popularity"
+                       aria-hidden="aria-hidden">{{'SHOP.popularity' | translate}}</label></li>
+            <li><label class="select-box__option" for="priceAsc"
+                       aria-hidden="aria-hidden">{{'SHOP.priceAsc' | translate}}</label></li>
+            <li><label class="select-box__option" for="priceDesc"
+                       aria-hidden="aria-hidden">{{'SHOP.priceDesc' | translate}}</label></li>
+            <li><label class="select-box__option" for="nameDesc"
+                       aria-hidden="aria-hidden">{{'SHOP.nameDesc' | translate}}</label></li>
+            <li><label class="select-box__option" for="nameAsc"
+                       aria-hidden="aria-hidden">{{'SHOP.nameAsc' | translate}}</label></li>
+          </ul>
+        </div>
+
+
+        <pagination-controls
+          class="paginator"
+          (pageChange)="page = $event"
+          previousLabel="{{'SHOP.previousPageLabel' | translate}}"
+          nextLabel="{{'SHOP.nextPageLabel' | translate}}">
+          <!--        autoHide-->
+        </pagination-controls>
+        <!--Number on page selection-->
+        <div class="select-box paginating">
+          <div class="select-box__current" tabindex="1">
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="0" [(ngModel)]="pageSize" [value]="getNumberInRow()"
+                     name="pageSize"
+                     [checked]="true">
+              <p class="select-box__input-text">{{getNumberInRow()}}</p>
+            </div>
+
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="1" [(ngModel)]="pageSize" [value]="getNumberInRow()*5"
+                     name="pageSize"
+                     checked="checked">
+              <p class="select-box__input-text">{{getNumberInRow() * 5}}</p>
+            </div>
+
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="2" [(ngModel)]="pageSize" [value]="getNumberInRow()*12"
+                     name="pageSize"
+                     checked="checked">
+              <p class="select-box__input-text">{{getNumberInRow() * 12}}</p>
+            </div>
+
+            <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon"
+                 aria-hidden="true">
+          </div>
+          <ul class="select-box__list">
+            <li><label class="select-box__option" for="0" aria-hidden="aria-hidden">{{getNumberInRow()}}</label></li>
+            <li><label class="select-box__option" for="1" aria-hidden="aria-hidden">{{getNumberInRow() * 5}}</label>
+            </li>
+            <li><label class="select-box__option" for="2" aria-hidden="aria-hidden">{{getNumberInRow() * 12}}</label>
+            </li>
+          </ul>
+        </div>
       </div>
-
-
-      <pagination-controls
-        class="paginator"
-        (pageChange)="page = $event"
-        previousLabel="{{'SHOP.previousPageLabel' | translate}}"
-        nextLabel="{{'SHOP.nextPageLabel' | translate}}">
-        <!--        autoHide-->
-      </pagination-controls>
-      <!--Number on page selection-->
-      <div class="select-box paginating">
-        <div class="select-box__current" tabindex="1">
-          <div class="select-box__value">
-            <input class="select-box__input" type="radio" id="0" [(ngModel)]="pageSize" [value]="getNumberInRow()"
-                   name="pageSize"
-                   [checked]="true">
-            <p class="select-box__input-text">{{getNumberInRow()}}</p>
+      <div class="product-card"
+           *ngFor="let window of filteredRoofWindowsList | paginate: {itemsPerPage: pageSize, currentPage: page}">
+        <a routerLink="./{{window.kod}}">
+          <div class="product-card__photo-container">
+            <img src="{{window.linkiDoZdjec[0]}}" alt="{{window.grupaAsortymentowa}}"
+                 class="product-card__photo-container__photo">
           </div>
+        </a>
+        <h3 class="product-card__title">{{window.productName}}</h3>
 
-          <div class="select-box__value">
-            <input class="select-box__input" type="radio" id="1" [(ngModel)]="pageSize" [value]="getNumberInRow()*5"
-                   name="pageSize"
-                   checked="checked">
-            <p class="select-box__input-text">{{getNumberInRow() * 5}}</p>
-          </div>
-
-          <div class="select-box__value">
-            <input class="select-box__input" type="radio" id="2" [(ngModel)]="pageSize" [value]="getNumberInRow()*12"
-                   name="pageSize"
-                   checked="checked">
-            <p class="select-box__input-text">{{getNumberInRow() * 12}}</p>
-          </div>
-
-          <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon"
-               aria-hidden="true">
-        </div>
-        <ul class="select-box__list">
-          <li><label class="select-box__option" for="0" aria-hidden="aria-hidden">{{getNumberInRow()}}</label></li>
-          <li><label class="select-box__option" for="1" aria-hidden="aria-hidden">{{getNumberInRow() * 5}}</label></li>
-          <li><label class="select-box__option" for="2" aria-hidden="aria-hidden">{{getNumberInRow() * 12}}</label></li>
+        <ul class="product-card__details">
+          <li class="product-card__details--info">{{'SINGLE-PRODUCT.category' | translate}}:
+            {{'ROOF-WINDOWS-DATA.' + window.rodzina | translate}} </li>
+          <li class="product-card__details--info">{{'SINGLE-PRODUCT.opening' | translate}}:
+            {{'ROOF-WINDOWS-DATA.' + window.otwieranie | translate}} </li>
+          <li class="product-card__details--info">{{'SINGLE-PRODUCT.innerColor' | translate}}:
+            {{'ROOF-WINDOWS-DATA.' + window.stolarkaKolor | translate}} </li>
+          <li class="product-card__details--info">{{'SINGLE-PRODUCT.handleType' | translate}}:
+            {{'ROOF-WINDOWS-DATA.' + window.zamkniecieTyp | translate}}
+            - {{'ROOF-WINDOWS-DATA.' + window.zamkniecieKolor | translate}} </li>
+          <li class="product-card__details--info">{{'SINGLE-PRODUCT.outerColor' | translate}}:
+            {{'ROOF-WINDOWS-DATA.' + window.oblachowanieKolor | translate}} </li>
+          <li class="product-card__details--info">{{'SINGLE-PRODUCT.ventilation' | translate}}:
+            {{'ROOF-WINDOWS-DATA.' + window.wentylacja | translate}}</li>
         </ul>
+
+        <div class="product-card__icons-section">
+          <div class="product-card__icons-section--info">
+            <h4 class="product-card__icons-section--info--title">{{ 'SINGLE-PRODUCT.numberOfGlass' | translate}}</h4>
+            <p class="product-card__icons-section--info--detail">{{window.numberOfGlasses}}</p>
+            <!--        <img src="assets/icons/glazing.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{window.windowGlazing}}">-->
+          </div>
+          <div class="product-card__icons-section--info">
+            <h4 class="product-card__icons-section--info--title">{{ 'SINGLE-PRODUCT.material' | translate}}</h4>
+            <p
+              class="product-card__icons-section--info--detail">{{'ROOF-WINDOWS-DATA.' + window.stolarkaMaterial | translate}}</p>
+            <!--        <img src="assets/icons/material.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{ 'SINGLE-PRODUCT.material' | translate}}">-->
+          </div>
+          <div class="product-card__icons-section--info">
+            <h4 class="product-card__icons-section--info--title">{{ 'SINGLE-PRODUCT.price' | translate}}</h4>
+            <p
+              class="product-card__icons-section--info--detail">{{(window.CenaDetaliczna / (cart$ | async).cart.exchange) + ((window.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}}</p>
+            <!--        <img src="assets/icons/price.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{ 'SINGLE-PRODUCT.price' | translate}}">-->
+          </div>
+        </div>
+        <div class="product-card__buttons-section">
+          <a class="product-card__buttons-section--link icon-btn icon-btn--red" (click)="addToCart(window)">
+            <i class="fas fa-cart-plus product-card__buttons-section--icon"></i>
+          </a>
+          <a routerLink="./{{window.kod}}" class="product-card__buttons-section--link icon-btn icon-btn--blue">
+            <i class="fas fa-info-circle product-card__buttons-section--icon"></i>
+          </a>
+          <a routerLink="/{{ 'LINK.configuratorRoofWindow' | translate}}/-1/no-name/{{window.kod}}"
+             class="product-card__buttons-section--link icon-btn icon-btn--grey">
+            <i class="fas fa-cogs product-card__buttons-section--icon"></i>
+          </a>
+        </div>
       </div>
     </div>
-    <div class="product-card"
-         *ngFor="let window of filteredRoofWindowsList | paginate: {itemsPerPage: pageSize, currentPage: page}">
-      <a routerLink="./{{window.kod}}">
-        <div class="product-card__photo-container">
-          <img src="{{window.linkiDoZdjec[0]}}" alt="{{window.grupaAsortymentowa}}"
-               class="product-card__photo-container__photo">
-        </div>
-      </a>
-      <h3 class="product-card__title">{{window.productName}}</h3>
 
-      <ul class="product-card__details">
-        <li class="product-card__details--info">{{'SINGLE-PRODUCT.category' | translate}}:
-          {{'ROOF-WINDOWS-DATA.' + window.rodzina | translate}} </li>
-        <li class="product-card__details--info">{{'SINGLE-PRODUCT.opening' | translate}}:
-          {{'ROOF-WINDOWS-DATA.' + window.otwieranie | translate}} </li>
-        <li class="product-card__details--info">{{'SINGLE-PRODUCT.innerColor' | translate}}:
-          {{'ROOF-WINDOWS-DATA.' + window.stolarkaKolor | translate}} </li>
-        <li class="product-card__details--info">{{'SINGLE-PRODUCT.handleType' | translate}}:
-          {{'ROOF-WINDOWS-DATA.' + window.zamkniecieTyp | translate}}
-          - {{'ROOF-WINDOWS-DATA.' + window.zamkniecieKolor | translate}} </li>
-        <li class="product-card__details--info">{{'SINGLE-PRODUCT.outerColor' | translate}}:
-          {{'ROOF-WINDOWS-DATA.' + window.oblachowanieKolor | translate}} </li>
-        <li class="product-card__details--info">{{'SINGLE-PRODUCT.ventilation' | translate}}:
-          {{'ROOF-WINDOWS-DATA.' + window.wentylacja | translate}}</li>
-      </ul>
+    <div class="table-presentation" *ngIf="!cardPresentation">
+      <div class="pagination-container">
+        <div class="change-presentation-button-container mr-4">
+          <a class="btn-invert btn-invert--dark-blue" (click)="changePresentation()">{{'SHOP.cardPresentation' | translate}}</a>
+        </div>
+        <!--Sorting way selection-->
+        <div class="select-box sorting">
+          <div class="select-box__current" tabindex="1" (change)="sortTableArray()">
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="popularityInTable" [(ngModel)]="sortTableBy"
+                     value="popularityInTable"
+                     name="sortTable"
+                     checked>
+              <p class="select-box__input-text">{{'SHOP.popularity' | translate}}</p>
+            </div>
 
-      <div class="product-card__icons-section">
-        <div class="product-card__icons-section--info">
-          <h4 class="product-card__icons-section--info--title">{{ 'SINGLE-PRODUCT.numberOfGlass' | translate}}</h4>
-          <p class="product-card__icons-section--info--detail">{{window.numberOfGlasses}}</p>
-          <!--        <img src="assets/icons/glazing.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{window.windowGlazing}}">-->
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="priceAscInTable" [(ngModel)]="sortTableBy"
+                     value="priceAscInTable"
+                     name="sortTable">
+              <p class="select-box__input-text">{{'SHOP.priceAsc' | translate}}</p>
+            </div>
+
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="priceDescInTable" [(ngModel)]="sortTableBy"
+                     value="priceDescInTable"
+                     name="sortTable">
+              <p class="select-box__input-text">{{'SHOP.priceDesc' | translate}}</p>
+            </div>
+
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="nameDescInTable" [(ngModel)]="sortTableBy"
+                     value="nameDescInTable"
+                     name="sortTable">
+              <p class="select-box__input-text">{{'SHOP.nameDesc' | translate}}</p>
+            </div>
+
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="nameAscInTable" [(ngModel)]="sortTableBy"
+                     value="nameAscInTable"
+                     name="sortTable">
+              <p class="select-box__input-text">{{'SHOP.nameAsc' | translate}}</p>
+            </div>
+
+            <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon"
+                 aria-hidden="true">
+          </div>
+          <ul class="select-box__list">
+            <li><label class="select-box__option" for="popularity"
+                       aria-hidden="aria-hidden">{{'SHOP.popularity' | translate}}</label></li>
+            <li><label class="select-box__option" for="priceAsc"
+                       aria-hidden="aria-hidden">{{'SHOP.priceAsc' | translate}}</label></li>
+            <li><label class="select-box__option" for="priceDesc"
+                       aria-hidden="aria-hidden">{{'SHOP.priceDesc' | translate}}</label></li>
+            <li><label class="select-box__option" for="nameDesc"
+                       aria-hidden="aria-hidden">{{'SHOP.nameDesc' | translate}}</label></li>
+            <li><label class="select-box__option" for="nameAsc"
+                       aria-hidden="aria-hidden">{{'SHOP.nameAsc' | translate}}</label></li>
+          </ul>
         </div>
-        <div class="product-card__icons-section--info">
-          <h4 class="product-card__icons-section--info--title">{{ 'SINGLE-PRODUCT.material' | translate}}</h4>
-          <p
-            class="product-card__icons-section--info--detail">{{'ROOF-WINDOWS-DATA.' + window.stolarkaMaterial | translate}}</p>
-          <!--        <img src="assets/icons/material.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{ 'SINGLE-PRODUCT.material' | translate}}">-->
-        </div>
-        <div class="product-card__icons-section--info">
-          <h4 class="product-card__icons-section--info--title">{{ 'SINGLE-PRODUCT.price' | translate}}</h4>
-          <p
-            class="product-card__icons-section--info--detail">{{(window.CenaDetaliczna / (cart$ | async).cart.exchange) + ((window.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}}</p>
-          <!--        <img src="assets/icons/price.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{ 'SINGLE-PRODUCT.price' | translate}}">-->
+
+
+        <pagination-controls
+          class="paginator"
+          (pageChange)="page = $event"
+          previousLabel="{{'SHOP.previousPageLabel' | translate}}"
+          nextLabel="{{'SHOP.nextPageLabel' | translate}}">
+          <!--        autoHide-->
+        </pagination-controls>
+        <!--Number on page selection-->
+        <div class="select-box paginating">
+          <div class="select-box__current" tabindex="1">
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="10" [(ngModel)]="pageTableSize" [value]="getTableRows()"
+                     name="pageTableSize"
+                     [checked]="true">
+              <p class="select-box__input-text">{{getTableRows()}}</p>
+            </div>
+
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="11" [(ngModel)]="pageTableSize"
+                     [value]="getTableRows()*2.5"
+                     name="pageTableSize"
+                     checked="checked">
+              <p class="select-box__input-text">{{getNumberInRow() * 5}}</p>
+            </div>
+
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="12" [(ngModel)]="pageTableSize"
+                     [value]="getTableRows()*5"
+                     name="pageTableSize"
+                     checked="checked">
+              <p class="select-box__input-text">{{getTableRows() * 12}}</p>
+            </div>
+
+            <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon"
+                 aria-hidden="true">
+          </div>
+          <ul class="select-box__list">
+            <li><label class="select-box__option" for="0" aria-hidden="aria-hidden">{{getTableRows()}}</label></li>
+            <li><label class="select-box__option" for="1" aria-hidden="aria-hidden">{{getTableRows() * 2.5}}</label>
+            </li>
+            <li><label class="select-box__option" for="2" aria-hidden="aria-hidden">{{getTableRows() * 50}}</label>
+            </li>
+          </ul>
         </div>
       </div>
-      <div class="product-card__buttons-section">
-        <a class="product-card__buttons-section--link icon-btn icon-btn--red" (click)="addToCart(window)">
-          <i class="fas fa-cart-plus product-card__buttons-section--icon"></i>
-        </a>
-        <a routerLink="./{{window.kod}}" class="product-card__buttons-section--link icon-btn icon-btn--blue">
-          <i class="fas fa-info-circle product-card__buttons-section--icon"></i>
-        </a>
-        <a routerLink="/{{ 'LINK.configuratorRoofWindow' | translate}}/-1/no-name/{{window.kod}}"
-           class="product-card__buttons-section--link icon-btn icon-btn--grey">
-          <i class="fas fa-cogs product-card__buttons-section--icon"></i>
-        </a>
-      </div>
+
+            <form [formGroup]="filtrationForm" class="search-form">
+              <table class="order-container__orders-table">
+                <!--Table header-->
+                <tr class="order-container__orders-table__header">
+                  <th class="order-container__orders-table__header--text">
+                    <label class="sort__input--label" (click)="sortByNumber()">
+                      {{ 'ORDER.number' | translate}}
+                      <span *ngIf="!numberToggler">&#8595;</span>
+                      <span *ngIf="numberToggler">&#8593;</span>
+                    </label>
+                  </th>
+                  <th class="order-container__orders-table__header--text">
+                    <label class="sort__input--label" (click)="sortByInnerNumber()">
+                      {{ 'ORDER.innerNumber' | translate}}
+                      <span *ngIf="!innerNumberToggler">&#8595;</span>
+                      <span *ngIf="innerNumberToggler">&#8593;</span>
+                    </label>
+                  </th>
+                  <th class="order-container__orders-table__header--text">
+                    <label class="sort__input--label" (click)="sortByStatus()">
+                      {{ 'ORDER.status' | translate}}
+                      <span *ngIf="!statusToggler">&#8595;</span>
+                      <span *ngIf="statusToggler">&#8593;</span>
+                    </label>
+                  </th>
+                  <th class="order-container__orders-table__header--text">
+                    <label class="sort__input--label" (click)="sortByCreatedDate()">
+                      {{ 'ORDER.created' | translate}}
+                      <span *ngIf="!createdToggler">&#8595;</span>
+                      <span *ngIf="createdToggler">&#8593;</span>
+                    </label>
+                  </th>
+                  <th class="order-container__orders-table__header--text">
+                    <label class="sort__input--label" (click)="sortByUpdatedDate()">
+                      {{ 'ORDER.updated' | translate}}
+                      <span *ngIf="!updatedToggler">&#8595;</span>
+                      <span *ngIf="updatedToggler">&#8593;</span>
+                    </label>
+                  </th>
+                  <th class="order-container__orders-table__header--text">
+                    <label class="sort__input--label" (click)="sortByUser()">
+                      {{ 'ORDER.user' | translate}}
+                      <span *ngIf="!userToggler">&#8595;</span>
+                      <span *ngIf="userToggler">&#8593;</span>
+                    </label>
+                  </th>
+                  <th class="order-container__orders-table__header--text">
+                    <label class="sort__input--label" (click)="sortByComment()">
+                      {{ 'ORDER.comment' | translate}}
+                      <span *ngIf="!commentToggler">&#8595;</span>
+                      <span *ngIf="commentToggler">&#8593;</span>
+                    </label>
+                  </th>
+                  <th
+                    class="order-container__orders-table__header--text">{{ 'ORDER.productList' | translate}}</th>
+                  <th
+                    class="order-container__orders-table__header--text">{{ 'ORDER.quantity' | translate}}</th>
+                  <th
+                    class="order-container__orders-table__header--text">{{ 'ORDER.delete' | translate}}</th>
+                </tr>
+
+                <tr class="order-container__orders-table__search-header">
+                  <td class="order-container__orders-table__search-header--td">
+                    <input type="text" formControlName="numberSearch"
+                           class="form-control" placeholder="{{ 'ORDER.number' | translate}}"></td>
+                  <td class="order-container__orders-table__search-header--td">
+                    <input type="text" formControlName="innerNumberSearch"
+                           class="form-control" placeholder="{{ 'ORDER.innerNumber' | translate}}"></td>
+                  <td class="order-container__orders-table__search-header--td">
+                    <input type="text" formControlName="statusSearch"
+                           class="form-control" placeholder="{{ 'ORDER.status' | translate}}"></td>
+                  <td class="order-container__orders-table__search-header--td">
+                    <input type="date" formControlName="createdSearch"
+                           class="form-control" placeholder="{{ 'ORDER.created' | translate}}"></td>
+                  <td class="order-container__orders-table__search-header--td">
+                    <input type="date" formControlName="updatedSearch"
+                           class="form-control" placeholder="{{ 'ORDER.updated' | translate}}"></td>
+                  <td class="order-container__orders-table__search-header--td">
+                    <input type="text" formControlName="userSearch"
+                           class="form-control" placeholder="{{ 'ORDER.user' | translate}}"></td>
+                  <td class="order-container__orders-table__search-header--td">
+                    <input type="text" formControlName="commentSearch"
+                           class="form-control" placeholder="{{ 'ORDER.comment' | translate}}"></td>
+                </tr>
+
+                <tr class="order-container__orders-table__item"
+                    *ngFor="let order of filteredOrders">
+                  <td class="order-container__orders-table__item--info">{{order.orderNumber}}</td>
+                  <td
+                    class="order-container__orders-table__item--info">{{order.erpId}}</td>
+                  <td class="order-container__orders-table__item--info">{{order.status}}</td>
+                  <td
+                    class="order-container__orders-table__item--info">{{order.createdAt | date: 'dd-MM-yyyy'}}</td>
+                  <td
+                    class="order-container__orders-table__item--info">{{order.updatedAt | date: 'dd-MM-yyyy'}}</td>
+                  <td class="order-container__orders-table__item--info">{{order.user.name}}</td>
+                  <td class="order-container__orders-table__item--info">{{order.comments}}</td>
+                  <td class="order-container__orders-table__item__products"
+                      [ngClass]="{'no-display': order.cart.cartItems === null}">
+                    <ul class="order-container__orders-table__item__products__list">
+                      <li class="order-container__orders-table__item__products__list__element"
+                          *ngFor="let item of order.cart.cartItems">
+                        <p
+                          class="order-container__orders-table__item__products__list__element--paragraph">{{item.product.productName}}</p>
+                      </li>
+                    </ul>
+                  </td>
+
+                  <td class="order-container__orders-table__item__products">
+                    <ul class="order-container__orders-table__item__products__list"
+                        [ngClass]="{'no-display': order.cart.cartItems === null}">
+                      <li class="order-container__orders-table__item__products__list__element"
+                          *ngFor="let item of order.cart.cartItems">
+                        <p
+                          class="order-container__orders-table__item__products__list__element--paragraph">{{item.quantity}}</p>
+                      </li>
+                    </ul>
+                  </td>
+
+                  <td class="order-container__orders-table__item--info"><i
+                    class="far fa-trash-alt order-container__orders-table__item--trash"
+                    (click)="deleteOrder(order)"></i></td>
+                </tr>
+
+              </table>
+            </form>
+
     </div>
+
+
   </ng-template>
 </div>
