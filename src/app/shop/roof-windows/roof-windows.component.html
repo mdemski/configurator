@@ -5,7 +5,8 @@
   <app-navbar-navigator [path]="this.router.url"></app-navbar-navigator>
 </div>
 <div class="full-width-container" style="height: 100px; border: grey solid 2px; text-align: center">Baner</div>
-<app-roof-window-filtration *ngIf="cardPresentation" (filtersEmitter)="filtersInput($event)"></app-roof-window-filtration>
+<app-roof-window-filtration *ngIf="cardPresentation"
+                            (filtersEmitter)="filtersInput($event)"></app-roof-window-filtration>
 <!--TODO Menu boczne do filtrowania okien do zakupu-->
 
 <div class="md-container">
@@ -160,7 +161,7 @@
           </div>
         </div>
         <div class="product-card__buttons-section">
-          <a class="product-card__buttons-section--link icon-btn icon-btn--red" (click)="addToCart(window)">
+          <a class="product-card__buttons-section--link icon-btn icon-btn--red" (click)="addToCart(window, 1)">
             <i class="fas fa-cart-plus product-card__buttons-section--icon"></i>
           </a>
           <a routerLink="./{{window.kod}}" class="product-card__buttons-section--link icon-btn icon-btn--blue">
@@ -336,6 +337,16 @@
                 <span *ngIf="priceToggler">&#8593;</span>
               </label>
             </th>
+            <th class="products-table__header--text">
+              <label class="sort__input--label">
+                {{ 'SINGLE-PRODUCT.addToCart' | translate}}
+              </label>
+            </th>
+            <th class="products-table__header--text">
+              <label class="sort__input--label">
+                {{ 'SINGLE-PRODUCT.reconfigure' | translate}}
+              </label>
+            </th>
           </tr>
 
           <tr class="products-table__search-header">
@@ -363,15 +374,35 @@
           </tr>
 
           <tr class="products-table__item"
-              *ngFor="let product of filteredRoofWindowsList">
+              *ngFor="let product of filteredRoofWindowsList let i = index">
             <td class="products-table__item--info">{{product.productName}}</td>
             <td class="products-table__item--info">{{product.szerokosc}}</td>
             <td class="products-table__item--info">{{product.wysokosc}}</td>
-            <td class="products-table__item--info">{{product.stolarkaMaterial}}</td>
-            <td class="products-table__item--info">{{product.pakietSzybowy}}</td>
-            <td class="products-table__item--info">{{product.wentylacja}}</td>
+            <td class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.stolarkaMaterial | translate}}</td>
+            <td class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.pakietSzybowy | translate}}</td>
+            <td class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.wentylacja | translate}}</td>
             <td class="products-table__item--info">{{(product.CenaDetaliczna / (cart$ | async).cart.exchange) +
             ((product.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}}</td>
+            <td class="products-table__item--info text-align">
+              <form [formGroup]="quantityForm" class="display-flex">
+                <div class="quantity-container-in-table">
+                  <p class="quantity-desc">{{ 'SINGLE-PRODUCT.quantity' | translate}}</p>
+                  <i (click)="decreaseQuantity(i)">-</i>
+                  <input id="quantity{{i}}"
+                         formControlName="quantity{{i}}"
+                         type="number" class="quantity-in-table">
+                  <i (click)="increaseQuantity(i)">+</i>
+                </div>
+              <a class="product-card__buttons-section--link small-icon-btn small-icon-btn--red"
+                 (click)="addToCart(product, quantityForm.get('quantity' + i).value)">
+                <i class="fas fa-cart-plus product-card__buttons-section--small-icon"></i>
+              </a>
+              </form>
+            </td>
+            <td class="products-table__item--info text-align">
+              <a routerLink="/{{ 'LINK.configuratorRoofWindow' | translate}}/-1/no-name/{{product.kod}}"
+                 class="product-card__buttons-section--link small-icon-btn small-icon-btn--grey">
+                <i class="fas fa-cogs product-card__buttons-section--small-icon"></i></a></td>
           </tr>
 
         </table>

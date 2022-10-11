@@ -38,6 +38,7 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
   cardPresentation = true;
   sortTableBy = 'popularityInTable';
   pageTableSize = 20;
+  quantityForm: FormGroup;
   filtrationForm: FormGroup;
   nameToggler = true;
   widthToggler = true;
@@ -66,6 +67,7 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
     this.roofWindows$.pipe(takeUntil(this.isDestroyed$)).subscribe(roofWindows => this.roofWindowsList = roofWindows);
     this.filteredRoofWindowsList = this.roofWindowsList;
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe(() => console.log);
+    this.quantityForm = new FormGroup({});
     this.filtrationForm = this.fb.group({
       name: new FormControl(),
       width: new FormControl(),
@@ -207,23 +209,48 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
     }
   }
 
-  addToCart(product) {
-    this.store.dispatch(new AddProductToCart(product, 1)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+  resize(i, delta: number) {
+    this.quantityForm.get('quantity' + i).setValue(this.quantityForm.get('quantity' + i).value + delta);
+  }
+
+  decreaseQuantity(i) {
+    if (this.quantityForm.get('quantity' + i).value === 1) {
+      this.quantityForm.get('quantity' + i).setValue(1);
+    } else {
+      this.resize(i, -1);
+    }
+  }
+
+  increaseQuantity(i) {
+    this.resize(i, +1);
+  }
+
+  addToCart(product, quantity) {
+    this.store.dispatch(new AddProductToCart(product, quantity)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
   }
 
   changePresentation() {
     this.cardPresentation = !this.cardPresentation;
-    if (this.cardPresentation) {
-      this.filters.windowName = '';
-      this.filters.windowGlazings = [];
-      this.filters.windowMaterials = [];
-      this.filters.windowOpeningTypes = [];
-      this.filters.windowHeightFrom = 0;
-      this.filters.windowHeightTo = 999;
-      this.filters.windowWidthFrom = 0;
-      this.filters.windowWidthTo = 0;
-      this.filtersInput(this.filters);
+    if (!this.cardPresentation) {
+      this.loadQuantityData();
+      if (this.filters) {
+        this.filters.windowName = '';
+        this.filters.windowGlazings = [];
+        this.filters.windowMaterials = [];
+        this.filters.windowOpeningTypes = [];
+        this.filters.windowHeightFrom = 0;
+        this.filters.windowHeightTo = 999;
+        this.filters.windowWidthFrom = 0;
+        this.filters.windowWidthTo = 0;
+        this.filtersInput(this.filters);
+      }
     }
+  }
+
+  private loadQuantityData() {
+    this.filteredRoofWindowsList.forEach((window, index) => {
+      this.quantityForm.addControl('quantity' + index, new FormControl(1));
+    });
   }
 
   sortTableArray() {
