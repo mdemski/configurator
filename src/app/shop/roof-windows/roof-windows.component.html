@@ -5,7 +5,7 @@
   <app-navbar-navigator [path]="this.router.url"></app-navbar-navigator>
 </div>
 <div class="full-width-container" style="height: 100px; border: grey solid 2px; text-align: center">Baner</div>
-<app-roof-window-filtration (filtersEmitter)="filtersInput($event)"></app-roof-window-filtration>
+<app-roof-window-filtration *ngIf="cardPresentation" (filtersEmitter)="filtersInput($event)"></app-roof-window-filtration>
 <!--TODO Menu boczne do filtrowania okien do zakupu-->
 
 <div class="md-container">
@@ -16,7 +16,8 @@
     <div class="card-presentation" *ngIf="cardPresentation">
       <div class="pagination-container">
         <div class="change-presentation-button-container mr-4">
-          <a class="btn-invert btn-invert--dark-blue" (click)="changePresentation()">{{'SHOP.tablePresentation' | translate}}</a>
+          <a class="btn-invert btn-invert--dark-blue"
+             (click)="changePresentation()">{{'SHOP.tablePresentation' | translate}}</a>
         </div>
         <!--Sorting way selection-->
         <div class="select-box sorting">
@@ -176,7 +177,8 @@
     <div class="table-presentation" *ngIf="!cardPresentation">
       <div class="pagination-container">
         <div class="change-presentation-button-container mr-4">
-          <a class="btn-invert btn-invert--dark-blue" (click)="changePresentation()">{{'SHOP.cardPresentation' | translate}}</a>
+          <a class="btn-invert btn-invert--dark-blue"
+             (click)="changePresentation()">{{'SHOP.cardPresentation' | translate}}</a>
         </div>
         <!--Sorting way selection-->
         <div class="select-box sorting">
@@ -281,132 +283,99 @@
         </div>
       </div>
 
-            <form [formGroup]="filtrationForm" class="search-form">
-              <table class="order-container__orders-table">
-                <!--Table header-->
-                <tr class="order-container__orders-table__header">
-                  <th class="order-container__orders-table__header--text">
-                    <label class="sort__input--label" (click)="sortByNumber()">
-                      {{ 'ORDER.number' | translate}}
-                      <span *ngIf="!numberToggler">&#8595;</span>
-                      <span *ngIf="numberToggler">&#8593;</span>
-                    </label>
-                  </th>
-                  <th class="order-container__orders-table__header--text">
-                    <label class="sort__input--label" (click)="sortByInnerNumber()">
-                      {{ 'ORDER.innerNumber' | translate}}
-                      <span *ngIf="!innerNumberToggler">&#8595;</span>
-                      <span *ngIf="innerNumberToggler">&#8593;</span>
-                    </label>
-                  </th>
-                  <th class="order-container__orders-table__header--text">
-                    <label class="sort__input--label" (click)="sortByStatus()">
-                      {{ 'ORDER.status' | translate}}
-                      <span *ngIf="!statusToggler">&#8595;</span>
-                      <span *ngIf="statusToggler">&#8593;</span>
-                    </label>
-                  </th>
-                  <th class="order-container__orders-table__header--text">
-                    <label class="sort__input--label" (click)="sortByCreatedDate()">
-                      {{ 'ORDER.created' | translate}}
-                      <span *ngIf="!createdToggler">&#8595;</span>
-                      <span *ngIf="createdToggler">&#8593;</span>
-                    </label>
-                  </th>
-                  <th class="order-container__orders-table__header--text">
-                    <label class="sort__input--label" (click)="sortByUpdatedDate()">
-                      {{ 'ORDER.updated' | translate}}
-                      <span *ngIf="!updatedToggler">&#8595;</span>
-                      <span *ngIf="updatedToggler">&#8593;</span>
-                    </label>
-                  </th>
-                  <th class="order-container__orders-table__header--text">
-                    <label class="sort__input--label" (click)="sortByUser()">
-                      {{ 'ORDER.user' | translate}}
-                      <span *ngIf="!userToggler">&#8595;</span>
-                      <span *ngIf="userToggler">&#8593;</span>
-                    </label>
-                  </th>
-                  <th class="order-container__orders-table__header--text">
-                    <label class="sort__input--label" (click)="sortByComment()">
-                      {{ 'ORDER.comment' | translate}}
-                      <span *ngIf="!commentToggler">&#8595;</span>
-                      <span *ngIf="commentToggler">&#8593;</span>
-                    </label>
-                  </th>
-                  <th
-                    class="order-container__orders-table__header--text">{{ 'ORDER.productList' | translate}}</th>
-                  <th
-                    class="order-container__orders-table__header--text">{{ 'ORDER.quantity' | translate}}</th>
-                  <th
-                    class="order-container__orders-table__header--text">{{ 'ORDER.delete' | translate}}</th>
-                </tr>
+      <form [formGroup]="filtrationForm" class="search-form">
+        <table class="products-table">
+          <!--Table header-->
+          <tr class="products-table__header">
+            <th class="products-table__header--text">
+              <label class="sort__input--label" (click)="sortByName()">
+                {{ 'SINGLE-PRODUCT.name' | translate}}
+                <span *ngIf="!nameToggler">&#8595;</span>
+                <span *ngIf="nameToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="products-table__header--text">
+              <label class="sort__input--label" (click)="sortByWidth()">
+                {{ 'SINGLE-PRODUCT.width' | translate}}
+                <span *ngIf="!widthToggler">&#8595;</span>
+                <span *ngIf="widthToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="products-table__header--text">
+              <label class="sort__input--label" (click)="sortByHeight()">
+                {{ 'SINGLE-PRODUCT.height' | translate}}
+                <span *ngIf="!heightToggler">&#8595;</span>
+                <span *ngIf="heightToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="products-table__header--text">
+              <label class="sort__input--label" (click)="sortByMaterial()">
+                {{ 'SINGLE-PRODUCT.material' | translate}}
+                <span *ngIf="!materialToggler">&#8595;</span>
+                <span *ngIf="materialToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="products-table__header--text">
+              <label class="sort__input--label" (click)="sortByGlazing()">
+                {{ 'SINGLE-PRODUCT.glazing' | translate}}
+                <span *ngIf="!glazingToggler">&#8595;</span>
+                <span *ngIf="glazingToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="products-table__header--text">
+              <label class="sort__input--label" (click)="sortByVentilation()">
+                {{ 'SINGLE-PRODUCT.ventilation' | translate}}
+                <span *ngIf="!ventilationToggler">&#8595;</span>
+                <span *ngIf="ventilationToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="products-table__header--text">
+              <label class="sort__input--label" (click)="sortByPrice()">
+                {{ 'SINGLE-PRODUCT.price' | translate}}
+                <span *ngIf="!priceToggler">&#8595;</span>
+                <span *ngIf="priceToggler">&#8593;</span>
+              </label>
+            </th>
+          </tr>
 
-                <tr class="order-container__orders-table__search-header">
-                  <td class="order-container__orders-table__search-header--td">
-                    <input type="text" formControlName="numberSearch"
-                           class="form-control" placeholder="{{ 'ORDER.number' | translate}}"></td>
-                  <td class="order-container__orders-table__search-header--td">
-                    <input type="text" formControlName="innerNumberSearch"
-                           class="form-control" placeholder="{{ 'ORDER.innerNumber' | translate}}"></td>
-                  <td class="order-container__orders-table__search-header--td">
-                    <input type="text" formControlName="statusSearch"
-                           class="form-control" placeholder="{{ 'ORDER.status' | translate}}"></td>
-                  <td class="order-container__orders-table__search-header--td">
-                    <input type="date" formControlName="createdSearch"
-                           class="form-control" placeholder="{{ 'ORDER.created' | translate}}"></td>
-                  <td class="order-container__orders-table__search-header--td">
-                    <input type="date" formControlName="updatedSearch"
-                           class="form-control" placeholder="{{ 'ORDER.updated' | translate}}"></td>
-                  <td class="order-container__orders-table__search-header--td">
-                    <input type="text" formControlName="userSearch"
-                           class="form-control" placeholder="{{ 'ORDER.user' | translate}}"></td>
-                  <td class="order-container__orders-table__search-header--td">
-                    <input type="text" formControlName="commentSearch"
-                           class="form-control" placeholder="{{ 'ORDER.comment' | translate}}"></td>
-                </tr>
+          <tr class="products-table__search-header">
+            <td class="products-table__search-header--td">
+              <input type="text" formControlName="name"
+                     class="form-control" placeholder="{{ 'SINGLE-PRODUCT.name' | translate}}"></td>
+            <td class="products-table__search-header--td">
+              <input type="text" formControlName="width"
+                     class="form-control" placeholder="{{ 'SINGLE-PRODUCT.width' | translate}}"></td>
+            <td class="products-table__search-header--td">
+              <input type="text" formControlName="height"
+                     class="form-control" placeholder="{{ 'SINGLE-PRODUCT.height' | translate}}"></td>
+            <td class="products-table__search-header--td">
+              <input type="text" formControlName="material"
+                     class="form-control" placeholder="{{ 'SINGLE-PRODUCT.material' | translate}}"></td>
+            <td class="products-table__search-header--td">
+              <input type="text" formControlName="glazing"
+                     class="form-control" placeholder="{{ 'SINGLE-PRODUCT.glazing' | translate}}"></td>
+            <td class="products-table__search-header--td">
+              <input type="text" formControlName="ventilation"
+                     class="form-control" placeholder="{{ 'SINGLE-PRODUCT.ventilation' | translate}}"></td>
+            <td class="products-table__search-header--td">
+              <input type="text" formControlName="price"
+                     class="form-control" placeholder="{{ 'SINGLE-PRODUCT.price' | translate}}"></td>
+          </tr>
 
-                <tr class="order-container__orders-table__item"
-                    *ngFor="let order of filteredOrders">
-                  <td class="order-container__orders-table__item--info">{{order.orderNumber}}</td>
-                  <td
-                    class="order-container__orders-table__item--info">{{order.erpId}}</td>
-                  <td class="order-container__orders-table__item--info">{{order.status}}</td>
-                  <td
-                    class="order-container__orders-table__item--info">{{order.createdAt | date: 'dd-MM-yyyy'}}</td>
-                  <td
-                    class="order-container__orders-table__item--info">{{order.updatedAt | date: 'dd-MM-yyyy'}}</td>
-                  <td class="order-container__orders-table__item--info">{{order.user.name}}</td>
-                  <td class="order-container__orders-table__item--info">{{order.comments}}</td>
-                  <td class="order-container__orders-table__item__products"
-                      [ngClass]="{'no-display': order.cart.cartItems === null}">
-                    <ul class="order-container__orders-table__item__products__list">
-                      <li class="order-container__orders-table__item__products__list__element"
-                          *ngFor="let item of order.cart.cartItems">
-                        <p
-                          class="order-container__orders-table__item__products__list__element--paragraph">{{item.product.productName}}</p>
-                      </li>
-                    </ul>
-                  </td>
+          <tr class="products-table__item"
+              *ngFor="let product of filteredRoofWindowsList">
+            <td class="products-table__item--info">{{product.productName}}</td>
+            <td class="products-table__item--info">{{product.szerokosc}}</td>
+            <td class="products-table__item--info">{{product.wysokosc}}</td>
+            <td class="products-table__item--info">{{product.stolarkaMaterial}}</td>
+            <td class="products-table__item--info">{{product.pakietSzybowy}}</td>
+            <td class="products-table__item--info">{{product.wentylacja}}</td>
+            <td class="products-table__item--info">{{(product.CenaDetaliczna / (cart$ | async).cart.exchange) +
+            ((product.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}}</td>
+          </tr>
 
-                  <td class="order-container__orders-table__item__products">
-                    <ul class="order-container__orders-table__item__products__list"
-                        [ngClass]="{'no-display': order.cart.cartItems === null}">
-                      <li class="order-container__orders-table__item__products__list__element"
-                          *ngFor="let item of order.cart.cartItems">
-                        <p
-                          class="order-container__orders-table__item__products__list__element--paragraph">{{item.quantity}}</p>
-                      </li>
-                    </ul>
-                  </td>
-
-                  <td class="order-container__orders-table__item--info"><i
-                    class="far fa-trash-alt order-container__orders-table__item--trash"
-                    (click)="deleteOrder(order)"></i></td>
-                </tr>
-
-              </table>
-            </form>
+        </table>
+      </form>
 
     </div>
 

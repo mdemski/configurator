@@ -953,7 +953,7 @@ button:disabled {
 }
 
 .disabled {
-  color: rgb(0,0,0,0);
+  color: rgb(0, 0, 0, 0);
 }
 
 .paginator {
@@ -1148,5 +1148,70 @@ button:disabled {
   }
   100% {
     opacity: 1;
+  }
+}
+
+//PRODUCTS TABLE PRESENTATION
+.search-form {
+  width: 100%;
+}
+
+*:focus {
+  outline: 0;
+}
+
+input:focus {
+  outline: 0;
+}
+
+.products-table {
+  width: 100%;
+  margin: 5rem 0;
+
+  &__header {
+    text-align: center;
+    background-color: $color-light-grey;
+    border-radius: 50%;
+
+    &--text {
+      padding: 1.5rem 1rem;
+      margin-left: 1rem;
+      margin-right: 1rem;
+
+    }
+  }
+
+  &__search-header {
+    line-height: 3rem;
+
+    &--td {
+      padding: 1rem .5rem;
+
+      .form-control {
+        padding: .5rem 1rem;
+        border: none;
+        border-bottom: 1px solid $color-light-grey;
+
+        &:focus {
+          border-bottom: 1px solid $color-red;
+          -webkit-appearance: none;
+          outline: 0;
+        }
+      }
+    }
+  }
+
+  &__item {
+    border-bottom: 1px solid $color-light-grey;
+
+    &:nth-child(even) {
+      background-color: $color-dark-white;
+    }
+
+    &--info {
+      border-spacing: 1rem;
+      padding: 1rem 1rem;
+
+    }
   }
 }

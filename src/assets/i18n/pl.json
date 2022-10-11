@@ -256,7 +256,7 @@
     "flashingType": "Typ kołnierza",
     "flashingApronType": "Typ fartucha",
     "flashingModel": "Model",
-    "cardPresentation": "Prezentacja w kartach",
+    "cardPresentation": "Prezentacja na kartach",
     "tablePresentation": "Prezentacja w tabeli"
   },
   "SINGLE-PRODUCT": {
@@ -279,6 +279,9 @@
     "equipmentColor": "Kolor wyposażenia",
     "colorFinish": "Kolor - wykończenie",
     "handleType": "Typ klamki",
+    "name": "Nazwa",
+    "width": "Szerokość",
+    "height": "Wysokość",
     "ventilation": "Nawiewnik",
     "glazing": "Pakiet szybowy",
     "numberOfGlass": "Ilość szyb",
