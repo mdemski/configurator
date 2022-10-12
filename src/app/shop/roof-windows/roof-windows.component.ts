@@ -255,19 +255,19 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
 
   sortTableArray() {
     switch (this.sortBy) {
-      case 'popularity':
+      case 'popularityInTable':
         this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['iloscSprzedanychRok'], ['asc']);
         break;
-      case 'priceAsc':
+      case 'priceAscInTable':
         this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['CenaDetaliczna'], ['asc']);
         break;
-      case 'priceDesc':
+      case 'priceDescInTable':
         this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['CenaDetaliczna'], ['desc']);
         break;
-      case 'nameAsc':
+      case 'nameAscInTable':
         this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['windowName'], ['asc']);
         break;
-      case 'nameDesc':
+      case 'nameDescInTable':
         this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['windowName'], ['desc']);
         break;
       default:

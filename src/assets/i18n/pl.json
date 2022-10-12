@@ -337,6 +337,7 @@
     "accessoryEquipmentColor": "Kolor dodatków",
     "accessoryColor": "Kolor akcesoriów",
     "accessoryType": "Typ akcesorium",
+    "accessoryKind": "Rodzaj akcesorium",
     "accessoryMatchingType": "Typ dopasowania",
     "accessoryCategory": "Kategoria produktu",
     "accessorySubCategory": "Kategoria akcesorium",
@@ -710,8 +711,12 @@
     "Aluminium:RAL7022": "Ciemnoszary",
     "ElektrycznePilot": "Sterowanie pilotem",
     "Aluminium:Półmat": "Półmat",
-    "RoletaD_Z:S005": "Zaciemniający S005",
-    "undefined": "Nie dotyczy"
+    "RoletaD_Z:S005": "S005",
+    "RoletaD_Z:S003": "S003",
+    "RoletaD_T:A372": "A372",
+    "undefined": "Nie dotyczy",
+    "null": "Nie dotyczy",
+    "Rolety:A": "A"
   },
   "ACCESSORY-CONFIG": {
     "type": "Typ akcesorium",

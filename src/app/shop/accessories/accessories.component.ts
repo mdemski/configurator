@@ -4,10 +4,11 @@ import {AccessoryState} from '../../store/accessory/accessory.state';
 import {Observable, Subject} from 'rxjs';
 import {Accessory} from '../../models/accessory';
 import {CartState} from '../../store/cart/cart.state';
-import {filter, takeUntil} from 'rxjs/operators';
+import {filter, map, takeUntil} from 'rxjs/operators';
 import {AddProductToCart} from '../../store/cart/cart.actions';
 import _ from 'lodash';
 import {Router} from '@angular/router';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-accessories',
@@ -36,9 +37,32 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
   isFiltering = false;
   page = 1;
   pageSize = 10;
+  pageTableSize = 20;
+  quantityForm: FormGroup;
+  filtrationForm: FormGroup;
+  nameToggler = true;
+  typeToggler = true;
+  colorToggler = true;
+  widthToggler = true;
+  heightToggler = true;
+  materialToggler = true;
+  frameMatchingToggler = true;
+  priceToggler = true;
   sortBy = 'popularity';
+  sortTableBy = 'popularityInTable';
+  cardPresentation = true;
+  filterObject = {
+    name: '',
+    type: '',
+    color: '',
+    width: '',
+    height: '',
+    material: '',
+    frameMatching: '',
+    price: ''
+  };
 
-  constructor(private store: Store, public router: Router) {
+  constructor(private store: Store, public router: Router, private fb: FormBuilder) {
   }
 
   ngOnInit(): void {
@@ -47,6 +71,29 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
     this.accessories$.pipe(takeUntil(this.isDestroyed$)).subscribe(accessories => this.accessoriesList = accessories);
     this.filteredAccessoriesList = this.accessoriesList;
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe(() => console.log);
+    this.quantityForm = new FormGroup({});
+    this.filtrationForm = this.fb.group({
+      name: new FormControl(),
+      type: new FormControl(),
+      color: new FormControl(),
+      width: new FormControl(),
+      height: new FormControl(),
+      material: new FormControl(),
+      frameMatching: new FormControl(),
+      price: new FormControl()
+    });
+    this.filtrationForm.valueChanges.pipe(
+      takeUntil(this.isDestroyed$),
+      map(data => {
+        this.filterObject.name = data.name;
+        this.filterObject.type = data.type;
+        this.filterObject.color = data.color;
+        this.filterObject.width = data.width;
+        this.filterObject.height = data.height;
+        this.filterObject.material = data.material;
+        this.filterObject.frameMatching = data.frameMatching;
+        this.filterObject.price = data.price;
+      })).subscribe(() => this.filterTable(this.filterObject));
     this.isFiltering = false;
     this.sortArray();
   }
@@ -198,8 +245,166 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
     }
   }
 
-  addToCart(product) {
-    this.store.dispatch(new AddProductToCart(product, 1)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+  resize(i, delta: number) {
+    this.quantityForm.get('quantity' + i).setValue(this.quantityForm.get('quantity' + i).value + delta);
   }
 
+  decreaseQuantity(i) {
+    if (this.quantityForm.get('quantity' + i).value === 1) {
+      this.quantityForm.get('quantity' + i).setValue(1);
+    } else {
+      this.resize(i, -1);
+    }
+  }
+
+  increaseQuantity(i) {
+    this.resize(i, +1);
+  }
+
+  addToCart(product, quantity) {
+    this.store.dispatch(new AddProductToCart(product, quantity)).pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
+  }
+
+  changePresentation() {
+    this.cardPresentation = !this.cardPresentation;
+    if (!this.cardPresentation) {
+      this.loadQuantityData();
+      if (this.filters) {
+        this.filters.accessoryName = '';
+        this.filters.accessoryType = [];
+        this.filters.accessoryKind = [];
+        this.filters.accessoryMaterialType = [];
+        this.filters.accessoryFrameMatching = [];
+        this.filters.accessoryMaterialColor = [];
+        this.filters.accessoryWidthFrom = 0;
+        this.filters.accessoryWidthTo = 999;
+        this.filters.accessoryHeightFrom = 0;
+        this.filters.accessoryHeightTo = 999;
+        this.filterInput(this.filters);
+      }
+    }
+  }
+
+  private loadQuantityData() {
+    this.filteredAccessoriesList.forEach((accessory, index) => {
+      this.quantityForm.addControl('quantity' + index, new FormControl(1));
+    });
+  }
+
+  getTableRows() {
+    return 20;
+  }
+
+  sortByName() {
+    this.nameToggler = !this.nameToggler;
+    const product = this.nameToggler ? 'asc' : 'desc';
+    this.filteredAccessoriesList = _.orderBy(this.filteredAccessoriesList, ['productName'], product);
+  }
+
+  sortByType() {
+    this.typeToggler = !this.typeToggler;
+    const product = this.typeToggler ? 'asc' : 'desc';
+    this.filteredAccessoriesList = _.orderBy(this.filteredAccessoriesList, ['typ'], product);
+  }
+
+  sortByColor() {
+    this.colorToggler = !this.colorToggler;
+    const product = this.colorToggler ? 'asc' : 'desc';
+    this.filteredAccessoriesList = _.orderBy(this.filteredAccessoriesList, ['kolorTkaniny'], product);
+  }
+
+  sortByWidth() {
+    this.widthToggler = !this.widthToggler;
+    const product = this.widthToggler ? 'asc' : 'desc';
+    this.filteredAccessoriesList = _.orderBy(this.filteredAccessoriesList, ['szerokosc'], product);
+  }
+
+  sortByHeight() {
+    this.heightToggler = !this.heightToggler;
+    const product = this.heightToggler ? 'asc' : 'desc';
+    this.filteredAccessoriesList = _.orderBy(this.filteredAccessoriesList, ['wysokosc'], product);
+  }
+
+  sortByMaterial() {
+    this.materialToggler = !this.materialToggler;
+    const product = this.materialToggler ? 'asc' : 'desc';
+    this.filteredAccessoriesList = _.orderBy(this.filteredAccessoriesList, ['typTkaniny'], product);
+  }
+
+  sortByFrameMatching() {
+    this.materialToggler = !this.materialToggler;
+    const product = this.materialToggler ? 'asc' : 'desc';
+    this.filteredAccessoriesList = _.orderBy(this.filteredAccessoriesList, ['typTkaniny'], product);
+  }
+
+  sortByPrice() {
+    this.priceToggler = !this.priceToggler;
+    const product = this.priceToggler ? 'asc' : 'desc';
+    this.filteredAccessoriesList = _.orderBy(this.filteredAccessoriesList, ['CenaDetaliczna'], product);
+  }
+
+  sortTableArray() {
+    switch (this.sortBy) {
+      case 'popularityInTable':
+        this.filteredAccessoriesList = _.orderBy(this.filteredAccessoriesList, ['iloscSprzedanychRok'], ['asc']);
+        break;
+      case 'priceAscInTable':
+        this.filteredAccessoriesList = _.orderBy(this.filteredAccessoriesList, ['CenaDetaliczna'], ['asc']);
+        break;
+      case 'priceDescInTable':
+        this.filteredAccessoriesList = _.orderBy(this.filteredAccessoriesList, ['CenaDetaliczna'], ['desc']);
+        break;
+      case 'nameAscInTable':
+        this.filteredAccessoriesList = _.orderBy(this.filteredAccessoriesList, ['productName'], ['asc']);
+        break;
+      case 'nameDescInTable':
+        this.filteredAccessoriesList = _.orderBy(this.filteredAccessoriesList, ['productName'], ['desc']);
+        break;
+      default:
+        this.filteredAccessoriesList = _.orderBy(this.filteredAccessoriesList, ['iloscSprzedanychRok'], ['asc']);
+        break;
+    }
+  }
+
+  private filterTable(filterObject: { frameMatching: string; color: string; material: string; price: string; name: string; width: string; type: string; height: string }) {
+    this.isFiltering = true;
+    this.filteredAccessoriesList = this.accessoriesList;
+    this.filteredAccessoriesList = this.filteredAccessoriesList.filter(accessory => {
+      let nameFound = true;
+      let typeFound = true;
+      let colorFound = true;
+      let widthFound = true;
+      let heightFound = true;
+      let materialFound = true;
+      let frameMatchingFound = true;
+      let priceFound = true;
+      if (filterObject.name) {
+        nameFound = accessory.productName.toString().trim().toLowerCase().indexOf(filterObject.name.toLowerCase()) !== -1;
+      }
+      if (filterObject.type) {
+        typeFound = accessory.typ.toString().trim().toLowerCase().indexOf(filterObject.type.toLowerCase()) !== -1;
+      }
+      if (filterObject.width) {
+        widthFound = accessory.szerokosc.toString().trim().toLowerCase().indexOf(filterObject.width.toLowerCase()) !== -1;
+      }
+      if (filterObject.height) {
+        heightFound = accessory.wysokosc.toString().trim().toLowerCase().indexOf(filterObject.height.toLowerCase()) !== -1;
+      }
+      if (filterObject.material) {
+        materialFound = accessory.typTkaniny.toString().trim().toLowerCase().indexOf(filterObject.material.toLowerCase()) !== -1;
+      }
+      if (filterObject.color) {
+        colorFound = accessory.kolorTkaniny.toString().trim().toLowerCase().indexOf(filterObject.color.toLowerCase()) !== -1;
+      }
+      if (filterObject.frameMatching) {
+        frameMatchingFound = accessory.dopasowanieRoletySzerokosc.toString().trim().toLowerCase().indexOf(filterObject.frameMatching.toLowerCase()) !== -1 ||
+          accessory.dopasowanieRoletyDlugosc.toString().trim().toLowerCase().indexOf(filterObject.frameMatching.toLowerCase()) !== -1;
+      }
+      if (filterObject.price) {
+        priceFound = accessory.CenaDetaliczna.toString().trim().toLowerCase().indexOf(filterObject.price.toLowerCase()) !== -1;
+      }
+      return nameFound && typeFound && colorFound && widthFound && heightFound && materialFound && frameMatchingFound && priceFound;
+    });
+    this.isFiltering = false;
+  }
 }

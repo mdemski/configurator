@@ -312,6 +312,19 @@
   flex: 0 0 100%;
 }
 
+//PRODUCT LIST PRESENTATION
+.card-presentation {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.table-presentation {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
 //QUANTITY COUNTER
 .quantity-container {
   font-size: 2rem;
