@@ -1225,14 +1225,6 @@ button:disabled {
   width: 100%;
 }
 
-*:focus {
-  outline: 0;
-}
-
-input:focus {
-  outline: 0;
-}
-
 .products-table {
   width: 100%;
   margin: 5rem 0;
@@ -1263,8 +1255,8 @@ input:focus {
 
         &:focus {
           border-bottom: 1px solid $color-red;
-          -webkit-appearance: none;
-          outline: 0;
+          outline: none;
+          box-shadow: none;
         }
       }
     }

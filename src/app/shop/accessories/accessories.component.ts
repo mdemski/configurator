@@ -397,8 +397,19 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
         colorFound = accessory.kolorTkaniny.toString().trim().toLowerCase().indexOf(filterObject.color.toLowerCase()) !== -1;
       }
       if (filterObject.frameMatching) {
-        frameMatchingFound = accessory.dopasowanieRoletySzerokosc.toString().trim().toLowerCase().indexOf(filterObject.frameMatching.toLowerCase()) !== -1 ||
-          accessory.dopasowanieRoletyDlugosc.toString().trim().toLowerCase().indexOf(filterObject.frameMatching.toLowerCase()) !== -1;
+        if (accessory.dopasowanieRoletySzerokosc === null && accessory.dopasowanieRoletyDlugosc !== null) {
+          frameMatchingFound = accessory.dopasowanieRoletyDlugosc.toString().trim().toLowerCase().indexOf(filterObject.frameMatching.toLowerCase()) !== -1;
+        }
+        if (accessory.dopasowanieRoletyDlugosc === null && accessory.dopasowanieRoletySzerokosc !== null) {
+          frameMatchingFound = accessory.dopasowanieRoletySzerokosc.toString().trim().toLowerCase().indexOf(filterObject.frameMatching.toLowerCase()) !== -1
+        }
+        if (accessory.dopasowanieRoletyDlugosc !== null && accessory.dopasowanieRoletySzerokosc !== null) {
+          frameMatchingFound = accessory.dopasowanieRoletySzerokosc.toString().trim().toLowerCase().indexOf(filterObject.frameMatching.toLowerCase()) !== -1 ||
+            accessory.dopasowanieRoletyDlugosc.toString().trim().toLowerCase().indexOf(filterObject.frameMatching.toLowerCase()) !== -1;
+        }
+        if (accessory.dopasowanieRoletyDlugosc === null && accessory.dopasowanieRoletySzerokosc === null) {
+          frameMatchingFound = true;
+        }
       }
       if (filterObject.price) {
         priceFound = accessory.CenaDetaliczna.toString().trim().toLowerCase().indexOf(filterObject.price.toLowerCase()) !== -1;
