@@ -152,7 +152,11 @@
     "WyłazDachowy": "skylights",
     "Fasadowe": "vertical-windows",
     "WyłazReset": "skylights",
-    "OknoDachoweReset": "roof-windows"
+    "OknoDachoweReset": "roof-windows",
+    "configuratorRoofWindows": "konfigutor/okna-dachowe",
+    "configuratorAccessory": "konfigutor/akcesoria",
+    "configuratorFlashing": "konfigutor/kolnierze",
+    "configuratorFlatRoofWindow": "konfigutor/okna-na-dach-plaski"
   },
   "CONTACT": {
     "contactUs": "Skontaktuj się z nami",
@@ -277,6 +281,9 @@
     "materialType": "Typ materiału",
     "materialColor": "Kolor materiału",
     "outerColor": "Kolor zewnętrzny",
+    "flashingApronType": "Typ fartucha",
+    "flashingColor": "Kolor kołnierza",
+    "flashingCombination": "Typ łączenia",
     "equipmentColor": "Kolor wyposażenia",
     "colorFinish": "Kolor - wykończenie",
     "handleType": "Typ klamki",
@@ -600,6 +607,7 @@
     "UE": "Fartuch EPDM uniwersalny",
     "HE": "Fartuch EPDM wysoki (do 12 cm)",
     "KE": "Fartuch EPDM niski (do 5 cm)",
+    "false": "Nie dotyczy",
     "Kołnierz": "Kołnierz",
     "KołnierzUszczelniający:K-1": "Kołnierz pojedynczy",
     "Aluminium": "Aluminium",
