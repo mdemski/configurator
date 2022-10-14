@@ -5,7 +5,7 @@
   <app-navbar-navigator [path]="this.router.url"></app-navbar-navigator>
 </div>
 <div class="full-width-container" style="height: 100px; border: grey solid 2px; text-align: center">Baner</div>
-<app-reset-filtration (filtersEmitter)="filtersInput($event)"></app-reset-filtration>
+<app-reset-filtration *ngIf="cardPresentation" (filtersEmitter)="filtersInput($event)"></app-reset-filtration>
 <!--TODO Menu boczne do filtrowania okien do zakupu-->
 
 <div class="md-container">
@@ -13,157 +13,413 @@
     <app-okpol-loader></app-okpol-loader>
   </div>
   <ng-template #elseBlock>
-    <div class="pagination-container">
-      <!--Sorting way selection-->
-      <div class="select-box sorting">
-        <div class="select-box__current" tabindex="1" (change)="sortArray()">
-          <div class="select-box__value">
-            <input class="select-box__input" type="radio" id="popularity" [(ngModel)]="sortBy" value="popularity"
-                   name="sort"
-                   checked>
-            <p class="select-box__input-text">{{'SHOP.popularity' | translate}}</p>
-          </div>
-
-          <div class="select-box__value">
-            <input class="select-box__input" type="radio" id="priceAsc" [(ngModel)]="sortBy" value="priceAsc"
-                   name="sort">
-            <p class="select-box__input-text">{{'SHOP.priceAsc' | translate}}</p>
-          </div>
-
-          <div class="select-box__value">
-            <input class="select-box__input" type="radio" id="priceDesc" [(ngModel)]="sortBy" value="priceDesc"
-                   name="sort">
-            <p class="select-box__input-text">{{'SHOP.priceDesc' | translate}}</p>
-          </div>
-
-          <div class="select-box__value">
-            <input class="select-box__input" type="radio" id="nameDesc" [(ngModel)]="sortBy" value="nameDesc"
-                   name="sort">
-            <p class="select-box__input-text">{{'SHOP.nameDesc' | translate}}</p>
-          </div>
-
-          <div class="select-box__value">
-            <input class="select-box__input" type="radio" id="nameAsc" [(ngModel)]="sortBy" value="nameAsc"
-                   name="sort">
-            <p class="select-box__input-text">{{'SHOP.nameAsc' | translate}}</p>
-          </div>
-
-          <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon"
-               aria-hidden="true">
+    <div class="card-presentation" *ngIf="cardPresentation">
+      <div class="pagination-container">
+        <div class="change-presentation-button-container mr-4">
+          <a class="btn-invert btn-invert--dark-blue"
+             (click)="changePresentation()">{{'SHOP.tablePresentation' | translate}}</a>
         </div>
-        <ul class="select-box__list">
-          <li><label class="select-box__option" for="popularity"
-                     aria-hidden="aria-hidden">{{'SHOP.popularity' | translate}}</label></li>
-          <li><label class="select-box__option" for="priceAsc"
-                     aria-hidden="aria-hidden">{{'SHOP.priceAsc' | translate}}</label></li>
-          <li><label class="select-box__option" for="priceDesc"
-                     aria-hidden="aria-hidden">{{'SHOP.priceDesc' | translate}}</label></li>
-          <li><label class="select-box__option" for="nameDesc"
-                     aria-hidden="aria-hidden">{{'SHOP.nameDesc' | translate}}</label></li>
-          <li><label class="select-box__option" for="nameAsc"
-                     aria-hidden="aria-hidden">{{'SHOP.nameAsc' | translate}}</label></li>
-        </ul>
+        <!--Sorting way selection-->
+        <div class="select-box sorting">
+          <div class="select-box__current" tabindex="1" (change)="sortArray()">
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="popularity" [(ngModel)]="sortBy" value="popularity"
+                     name="sort"
+                     checked>
+              <p class="select-box__input-text">{{'SHOP.popularity' | translate}}</p>
+            </div>
+
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="priceAsc" [(ngModel)]="sortBy" value="priceAsc"
+                     name="sort">
+              <p class="select-box__input-text">{{'SHOP.priceAsc' | translate}}</p>
+            </div>
+
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="priceDesc" [(ngModel)]="sortBy" value="priceDesc"
+                     name="sort">
+              <p class="select-box__input-text">{{'SHOP.priceDesc' | translate}}</p>
+            </div>
+
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="nameDesc" [(ngModel)]="sortBy" value="nameDesc"
+                     name="sort">
+              <p class="select-box__input-text">{{'SHOP.nameDesc' | translate}}</p>
+            </div>
+
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="nameAsc" [(ngModel)]="sortBy" value="nameAsc"
+                     name="sort">
+              <p class="select-box__input-text">{{'SHOP.nameAsc' | translate}}</p>
+            </div>
+
+            <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon"
+                 aria-hidden="true">
+          </div>
+          <ul class="select-box__list">
+            <li><label class="select-box__option" for="popularity"
+                       aria-hidden="aria-hidden">{{'SHOP.popularity' | translate}}</label></li>
+            <li><label class="select-box__option" for="priceAsc"
+                       aria-hidden="aria-hidden">{{'SHOP.priceAsc' | translate}}</label></li>
+            <li><label class="select-box__option" for="priceDesc"
+                       aria-hidden="aria-hidden">{{'SHOP.priceDesc' | translate}}</label></li>
+            <li><label class="select-box__option" for="nameDesc"
+                       aria-hidden="aria-hidden">{{'SHOP.nameDesc' | translate}}</label></li>
+            <li><label class="select-box__option" for="nameAsc"
+                       aria-hidden="aria-hidden">{{'SHOP.nameAsc' | translate}}</label></li>
+          </ul>
+        </div>
+
+
+        <pagination-controls
+          class="paginator"
+          (pageChange)="page = $event"
+          previousLabel="{{'SHOP.previousPageLabel' | translate}}"
+          nextLabel="{{'SHOP.nextPageLabel' | translate}}">
+          <!--        autoHide-->
+        </pagination-controls>
+        <!--Number on page selection-->
+        <div class="select-box paginating">
+          <div class="select-box__current" tabindex="1">
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="0" [(ngModel)]="pageSize" [value]="getNumberInRow()"
+                     name="pageSize"
+                     [checked]="true">
+              <p class="select-box__input-text">{{getNumberInRow()}}</p>
+            </div>
+
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="1" [(ngModel)]="pageSize" [value]="getNumberInRow()*5"
+                     name="pageSize"
+                     checked="checked">
+              <p class="select-box__input-text">{{getNumberInRow() * 5}}</p>
+            </div>
+
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="2" [(ngModel)]="pageSize" [value]="getNumberInRow()*12"
+                     name="pageSize"
+                     checked="checked">
+              <p class="select-box__input-text">{{getNumberInRow() * 12}}</p>
+            </div>
+
+            <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon"
+                 aria-hidden="true">
+          </div>
+          <ul class="select-box__list">
+            <li><label class="select-box__option" for="0" aria-hidden="aria-hidden">{{getNumberInRow()}}</label></li>
+            <li><label class="select-box__option" for="1" aria-hidden="aria-hidden">{{getNumberInRow() * 5}}</label>
+            </li>
+            <li><label class="select-box__option" for="2" aria-hidden="aria-hidden">{{getNumberInRow() * 12}}</label>
+            </li>
+          </ul>
+        </div>
       </div>
-
-
-      <pagination-controls
-        class="paginator"
-        (pageChange)="page = $event"
-        previousLabel="{{'SHOP.previousPageLabel' | translate}}"
-        nextLabel="{{'SHOP.nextPageLabel' | translate}}">
-        <!--        autoHide-->
-      </pagination-controls>
-      <!--Number on page selection-->
-      <div class="select-box paginating">
-        <div class="select-box__current" tabindex="1">
-          <div class="select-box__value">
-            <input class="select-box__input" type="radio" id="0" [(ngModel)]="pageSize" [value]="getNumberInRow()"
-                   name="pageSize"
-                   [checked]="true">
-            <p class="select-box__input-text">{{getNumberInRow()}}</p>
+      <div class="product-card"
+           *ngFor="let product of filteredProductsList | paginate: {itemsPerPage: pageSize, currentPage: page}">
+        <a routerLink="./{{product.kod}}">
+          <div class="product-card__photo-container">
+            <img src="{{product.linkiDoZdjec[0]}}" alt="{{product.grupaAsortymentowa}}"
+                 class="product-card__photo-container__photo">
           </div>
+        </a>
+        <h3 class="product-card__title">{{product.productName}}</h3>
 
-          <div class="select-box__value">
-            <input class="select-box__input" type="radio" id="1" [(ngModel)]="pageSize" [value]="getNumberInRow()*5"
-                   name="pageSize"
-                   checked="checked">
-            <p class="select-box__input-text">{{getNumberInRow() * 5}}</p>
-          </div>
-
-          <div class="select-box__value">
-            <input class="select-box__input" type="radio" id="2" [(ngModel)]="pageSize" [value]="getNumberInRow()*12"
-                   name="pageSize"
-                   checked="checked">
-            <p class="select-box__input-text">{{getNumberInRow() * 12}}</p>
-          </div>
-
-          <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon"
-               aria-hidden="true">
-        </div>
-        <ul class="select-box__list">
-          <li><label class="select-box__option" for="0" aria-hidden="aria-hidden">{{getNumberInRow()}}</label></li>
-          <li><label class="select-box__option" for="1" aria-hidden="aria-hidden">{{getNumberInRow() * 5}}</label></li>
-          <li><label class="select-box__option" for="2" aria-hidden="aria-hidden">{{getNumberInRow() * 12}}</label></li>
+        <ul class="product-card__details">
+          <li class="product-card__details--info">{{'SINGLE-PRODUCT.category' | translate}}:
+            {{'ROOF-WINDOWS-DATA.' + product.rodzina | translate}} </li>
+          <li class="product-card__details--info">{{'SINGLE-PRODUCT.opening' | translate}}:
+            {{'ROOF-WINDOWS-DATA.' + product.otwieranie | translate}} </li>
+          <li class="product-card__details--info">{{'SINGLE-PRODUCT.innerColor' | translate}}:
+            {{'ROOF-WINDOWS-DATA.' + product.stolarkaKolor | translate}} </li>
+          <li class="product-card__details--info">{{'SINGLE-PRODUCT.handleType' | translate}}:
+            {{'ROOF-WINDOWS-DATA.' + product.zamkniecieTyp | translate}}
+            - {{'ROOF-WINDOWS-DATA.' + product.zamkniecieKolor | translate}} </li>
+          <li class="product-card__details--info">{{'SINGLE-PRODUCT.outerColor' | translate}}:
+            {{'ROOF-WINDOWS-DATA.' + product.oblachowanieKolor | translate}} </li>
+          <li class="product-card__details--info">{{'SINGLE-PRODUCT.ventilation' | translate}}:
+            {{'ROOF-WINDOWS-DATA.' + product.wentylacja | translate}}</li>
         </ul>
+
+        <div class="product-card__icons-section">
+          <div class="product-card__icons-section--info">
+            <h4 class="product-card__icons-section--info--title">{{ 'SINGLE-PRODUCT.numberOfGlass' | translate}}</h4>
+            <p class="product-card__icons-section--info--detail">{{product.numberOfGlasses}}</p>
+            <!--        <img src="assets/icons/glazing.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{window.windowGlazing}}">-->
+          </div>
+          <div class="product-card__icons-section--info">
+            <h4 class="product-card__icons-section--info--title">{{ 'SINGLE-PRODUCT.material' | translate}}</h4>
+            <p
+              class="product-card__icons-section--info--detail">{{'ROOF-WINDOWS-DATA.' + product.stolarkaMaterial | translate}}</p>
+            <!--        <img src="assets/icons/material.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{ 'SINGLE-PRODUCT.material' | translate}}">-->
+          </div>
+          <div class="product-card__icons-section--info">
+            <h4 class="product-card__icons-section--info--title">{{ 'SINGLE-PRODUCT.price' | translate}}</h4>
+            <p
+              class="product-card__icons-section--info--detail">{{(product.CenaDetaliczna / (cart$ | async).cart.exchange) + ((product.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}}</p>
+            <!--        <img src="assets/icons/price.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{ 'SINGLE-PRODUCT.price' | translate}}">-->
+          </div>
+        </div>
+        <div class="product-card__buttons-section">
+          <!--      TODO dodać linki do odpowiednich podstron-->
+          <a class="product-card__buttons-section--link icon-btn icon-btn--red" (click)="addToCart(product, 1)">
+            <i class="fas fa-cart-plus product-card__buttons-section--icon"></i>
+          </a>
+          <a routerLink="./{{product.kod}}" class="product-card__buttons-section--link icon-btn icon-btn--blue">
+            <i class="fas fa-info-circle product-card__buttons-section--icon"></i>
+          </a>
+          <a routerLink="/{{ 'LINK.configuratorRoofWindow' | translate}}/-1/no-name/{{product.kod}}"
+             class="product-card__buttons-section--link icon-btn icon-btn--grey">
+            <i class="fas fa-cogs product-card__buttons-section--icon"></i>
+          </a>
+        </div>
       </div>
     </div>
-    <div class="product-card"
-         *ngFor="let product of filteredProductsList | paginate: {itemsPerPage: pageSize, currentPage: page}">
-      <a routerLink="./{{product.kod}}">
-        <div class="product-card__photo-container">
-          <img src="{{product.linkiDoZdjec[0]}}" alt="{{product.grupaAsortymentowa}}" class="product-card__photo-container__photo">
-        </div>
-      </a>
-      <h3 class="product-card__title">{{product.productName}}</h3>
 
-      <ul class="product-card__details">
-        <li class="product-card__details--info">{{'SINGLE-PRODUCT.category' | translate}}:
-          {{'ROOF-WINDOWS-DATA.' + product.rodzina | translate}} </li>
-        <li class="product-card__details--info">{{'SINGLE-PRODUCT.opening' | translate}}:
-          {{'ROOF-WINDOWS-DATA.' + product.otwieranie | translate}} </li>
-        <li class="product-card__details--info">{{'SINGLE-PRODUCT.innerColor' | translate}}:
-          {{'ROOF-WINDOWS-DATA.' + product.stolarkaKolor | translate}} </li>
-        <li class="product-card__details--info">{{'SINGLE-PRODUCT.handleType' | translate}}:
-          {{'ROOF-WINDOWS-DATA.' + product.zamkniecieTyp | translate}}
-          - {{'ROOF-WINDOWS-DATA.' + product.zamkniecieKolor | translate}} </li>
-        <li class="product-card__details--info">{{'SINGLE-PRODUCT.outerColor' | translate}}:
-          {{'ROOF-WINDOWS-DATA.' + product.oblachowanieKolor | translate}} </li>
-        <li class="product-card__details--info">{{'SINGLE-PRODUCT.ventilation' | translate}}:
-          {{'ROOF-WINDOWS-DATA.' + product.wentylacja | translate}}</li>
-      </ul>
+    <div class="table-presentation" *ngIf="!cardPresentation">
+      <div class="pagination-container">
+        <div class="change-presentation-button-container mr-4">
+          <a class="btn-invert btn-invert--dark-blue"
+             (click)="changePresentation()">{{'SHOP.cardPresentation' | translate}}</a>
+        </div>
+        <!--Sorting way selection-->
+        <div class="select-box sorting">
+          <div class="select-box__current" tabindex="1" (change)="sortTableArray()">
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="popularityInTable" [(ngModel)]="sortTableBy"
+                     value="popularityInTable"
+                     name="sortTable"
+                     checked>
+              <p class="select-box__input-text">{{'SHOP.popularity' | translate}}</p>
+            </div>
 
-      <div class="product-card__icons-section">
-        <div class="product-card__icons-section--info">
-          <h4 class="product-card__icons-section--info--title">{{ 'SINGLE-PRODUCT.numberOfGlass' | translate}}</h4>
-          <p class="product-card__icons-section--info--detail">{{product.numberOfGlasses}}</p>
-          <!--        <img src="assets/icons/glazing.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{window.windowGlazing}}">-->
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="priceAscInTable" [(ngModel)]="sortTableBy"
+                     value="priceAscInTable"
+                     name="sortTable">
+              <p class="select-box__input-text">{{'SHOP.priceAsc' | translate}}</p>
+            </div>
+
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="priceDescInTable" [(ngModel)]="sortTableBy"
+                     value="priceDescInTable"
+                     name="sortTable">
+              <p class="select-box__input-text">{{'SHOP.priceDesc' | translate}}</p>
+            </div>
+
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="nameDescInTable" [(ngModel)]="sortTableBy"
+                     value="nameDescInTable"
+                     name="sortTable">
+              <p class="select-box__input-text">{{'SHOP.nameDesc' | translate}}</p>
+            </div>
+
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="nameAscInTable" [(ngModel)]="sortTableBy"
+                     value="nameAscInTable"
+                     name="sortTable">
+              <p class="select-box__input-text">{{'SHOP.nameAsc' | translate}}</p>
+            </div>
+
+            <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon"
+                 aria-hidden="true">
+          </div>
+          <ul class="select-box__list">
+            <li><label class="select-box__option" for="popularity"
+                       aria-hidden="aria-hidden">{{'SHOP.popularity' | translate}}</label></li>
+            <li><label class="select-box__option" for="priceAsc"
+                       aria-hidden="aria-hidden">{{'SHOP.priceAsc' | translate}}</label></li>
+            <li><label class="select-box__option" for="priceDesc"
+                       aria-hidden="aria-hidden">{{'SHOP.priceDesc' | translate}}</label></li>
+            <li><label class="select-box__option" for="nameDesc"
+                       aria-hidden="aria-hidden">{{'SHOP.nameDesc' | translate}}</label></li>
+            <li><label class="select-box__option" for="nameAsc"
+                       aria-hidden="aria-hidden">{{'SHOP.nameAsc' | translate}}</label></li>
+          </ul>
         </div>
-        <div class="product-card__icons-section--info">
-          <h4 class="product-card__icons-section--info--title">{{ 'SINGLE-PRODUCT.material' | translate}}</h4>
-          <p
-            class="product-card__icons-section--info--detail">{{'ROOF-WINDOWS-DATA.' + product.stolarkaMaterial | translate}}</p>
-          <!--        <img src="assets/icons/material.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{ 'SINGLE-PRODUCT.material' | translate}}">-->
-        </div>
-        <div class="product-card__icons-section--info">
-          <h4 class="product-card__icons-section--info--title">{{ 'SINGLE-PRODUCT.price' | translate}}</h4>
-          <p
-            class="product-card__icons-section--info--detail">{{(product.CenaDetaliczna / (cart$ | async).cart.exchange) + ((product.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}}</p>
-          <!--        <img src="assets/icons/price.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{ 'SINGLE-PRODUCT.price' | translate}}">-->
+
+
+        <pagination-controls
+          class="paginator"
+          (pageChange)="page = $event"
+          previousLabel="{{'SHOP.previousPageLabel' | translate}}"
+          nextLabel="{{'SHOP.nextPageLabel' | translate}}">
+          <!--        autoHide-->
+        </pagination-controls>
+        <!--Number on page selection-->
+        <div class="select-box paginating">
+          <div class="select-box__current" tabindex="1">
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="10" [(ngModel)]="pageTableSize" [value]="getTableRows()"
+                     name="pageTableSize"
+                     [checked]="true">
+              <p class="select-box__input-text">{{getTableRows()}}</p>
+            </div>
+
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="11" [(ngModel)]="pageTableSize"
+                     [value]="getTableRows()*2.5"
+                     name="pageTableSize"
+                     checked="checked">
+              <p class="select-box__input-text">{{getNumberInRow() * 5}}</p>
+            </div>
+
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="12" [(ngModel)]="pageTableSize"
+                     [value]="getTableRows()*5"
+                     name="pageTableSize"
+                     checked="checked">
+              <p class="select-box__input-text">{{getTableRows() * 12}}</p>
+            </div>
+
+            <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon"
+                 aria-hidden="true">
+          </div>
+          <ul class="select-box__list">
+            <li><label class="select-box__option" for="0" aria-hidden="aria-hidden">{{getTableRows()}}</label></li>
+            <li><label class="select-box__option" for="1" aria-hidden="aria-hidden">{{getTableRows() * 2.5}}</label>
+            </li>
+            <li><label class="select-box__option" for="2" aria-hidden="aria-hidden">{{getTableRows() * 50}}</label>
+            </li>
+          </ul>
         </div>
       </div>
-      <div class="product-card__buttons-section">
-        <!--      TODO dodać linki do odpowiednich podstron-->
-        <a class="product-card__buttons-section--link icon-btn icon-btn--red" (click)="addToCart(product)">
-          <i class="fas fa-cart-plus product-card__buttons-section--icon"></i>
-        </a>
-        <a routerLink="./{{product.kod}}" class="product-card__buttons-section--link icon-btn icon-btn--blue">
-          <i class="fas fa-info-circle product-card__buttons-section--icon"></i>
-        </a>
-        <a routerLink="/{{ 'LINK.configuratorRoofWindow' | translate}}/-1/no-name/{{product.kod}}"
-           class="product-card__buttons-section--link icon-btn icon-btn--grey">
-          <i class="fas fa-cogs product-card__buttons-section--icon"></i>
-        </a>
-      </div>
+
+      <form [formGroup]="filtrationForm" class="search-form">
+        <table class="products-table">
+          <!--Table header-->
+          <tr class="products-table__header">
+            <th class="products-table__header--text">
+              <label class="sort__input--label" (click)="sortByName()">
+                {{ 'SINGLE-PRODUCT.name' | translate}}
+                <span *ngIf="!nameToggler">&#8595;</span>
+                <span *ngIf="nameToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="products-table__header--text">
+              <label class="sort__input--label" (click)="sortByType()">
+                {{ 'SINGLE-PRODUCT.type' | translate}}
+                <span *ngIf="!typeToggler">&#8595;</span>
+                <span *ngIf="typeToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="products-table__header--text">
+              <label class="sort__input--label" (click)="sortByGlazing()">
+                {{ 'SINGLE-PRODUCT.glazing' | translate}}
+                <span *ngIf="!glazingToggler">&#8595;</span>
+                <span *ngIf="glazingToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="products-table__header--text">
+              <label class="sort__input--label" (click)="sortByOpening()">
+                {{ 'SINGLE-PRODUCT.opening' | translate}}
+                <span *ngIf="!openingToggler">&#8595;</span>
+                <span *ngIf="openingToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="products-table__header--text">
+              <label class="sort__input--label" (click)="sortByMaterial()">
+                {{ 'SINGLE-PRODUCT.material' | translate}}
+                <span *ngIf="!materialToggler">&#8595;</span>
+                <span *ngIf="materialToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="products-table__header--text">
+              <label class="sort__input--label" (click)="sortByWidth()">
+                {{ 'SINGLE-PRODUCT.width' | translate}}
+                <span *ngIf="!widthToggler">&#8595;</span>
+                <span *ngIf="widthToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="products-table__header--text">
+              <label class="sort__input--label" (click)="sortByHeight()">
+                {{ 'SINGLE-PRODUCT.height' | translate}}
+                <span *ngIf="!heightToggler">&#8595;</span>
+                <span *ngIf="heightToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="products-table__header--text">
+              <label class="sort__input--label" (click)="sortByPrice()">
+                {{ 'SINGLE-PRODUCT.price' | translate}}
+                <span *ngIf="!priceToggler">&#8595;</span>
+                <span *ngIf="priceToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="products-table__header--text">
+              <label class="sort__input--label">
+                {{ 'SINGLE-PRODUCT.addToCart' | translate}}
+              </label>
+            </th>
+            <th class="products-table__header--text">
+              <label class="sort__input--label">
+                {{ 'SINGLE-PRODUCT.reconfigure' | translate}}
+              </label>
+            </th>
+          </tr>
+
+          <tr class="products-table__search-header">
+            <td class="products-table__search-header--td">
+              <input type="text" formControlName="name"
+                     class="form-control" placeholder="{{ 'SINGLE-PRODUCT.name' | translate}}"></td>
+            <td class="products-table__search-header--td">
+              <input type="text" formControlName="type"
+                     class="form-control" placeholder="{{ 'SINGLE-PRODUCT.type' | translate}}"></td>
+            <td class="products-table__search-header--td">
+              <input type="text" formControlName="glazing"
+                     class="form-control" placeholder="{{ 'SINGLE-PRODUCT.glazing' | translate}}"></td>
+            <td class="products-table__search-header--td">
+              <input type="text" formControlName="opening"
+                     class="form-control" placeholder="{{ 'SINGLE-PRODUCT.opening' | translate}}"></td>
+            <td class="products-table__search-header--td">
+              <input type="text" formControlName="material"
+                     class="form-control" placeholder="{{ 'SINGLE-PRODUCT.material' | translate}}"></td>
+            <td class="products-table__search-header--td">
+              <input type="text" formControlName="width"
+                     class="form-control" placeholder="{{ 'SINGLE-PRODUCT.width' | translate}}"></td>
+            <td class="products-table__search-header--td">
+              <input type="text" formControlName="height"
+                     class="form-control" placeholder="{{ 'SINGLE-PRODUCT.height' | translate}}"></td>
+            <td class="products-table__search-header--td">
+              <input type="text" formControlName="price"
+                     class="form-control" placeholder="{{ 'SINGLE-PRODUCT.price' | translate}}"></td>
+          </tr>
+
+          <tr class="products-table__item"
+              *ngFor="let product of filteredProductsList let i = index">
+            <td class="products-table__item--info">{{product.productName}}</td>
+            <td class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.grupaAsortymentowa | translate}}</td>
+            <td class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.pakietSzybowy | translate}}</td>
+            <td class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.otwieranie | translate}}</td>
+            <td class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.stolarkaMaterial | translate}}</td>
+            <td class="products-table__item--info">{{product.szerokosc}}</td>
+            <td class="products-table__item--info">{{product.wysokosc}}</td>
+            <td class="products-table__item--info">{{(product.CenaDetaliczna / (cart$ | async).cart.exchange) +
+            ((product.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}}</td>
+            <td class="products-table__item--info text-align">
+              <form [formGroup]="quantityForm" class="display-flex">
+                <div class="quantity-container-in-table">
+                  <p class="quantity-desc">{{ 'SINGLE-PRODUCT.quantity' | translate}}</p>
+                  <i (click)="decreaseQuantity(i)">-</i>
+                  <input id="quantity{{i}}"
+                         formControlName="quantity{{i}}"
+                         type="number" class="quantity-in-table">
+                  <i (click)="increaseQuantity(i)">+</i>
+                </div>
+                <a class="product-card__buttons-section--link small-icon-btn small-icon-btn--red"
+                   (click)="addToCart(product, quantityForm.get('quantity' + i).value)">
+                  <i class="fas fa-cart-plus product-card__buttons-section--small-icon"></i>
+                </a>
+              </form>
+            </td>
+            <td class="products-table__item--info text-align">
+              <a routerLink="/{{ 'LINK.configuratorRoofWindow' | translate}}/-1/no-name/{{product.kod}}"
+                 class="product-card__buttons-section--link small-icon-btn small-icon-btn--grey">
+                <i class="fas fa-cogs product-card__buttons-section--small-icon"></i></a></td>
+          </tr>
+
+        </table>
+      </form>
+
     </div>
+
   </ng-template>
 </div>

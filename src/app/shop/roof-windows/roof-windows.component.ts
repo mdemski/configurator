@@ -187,7 +187,7 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
   }
 
   sortArray() {
-    switch (this.sortTableBy) {
+    switch (this.sortBy) {
       case 'popularityInTable':
         this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['iloscSprzedanychRok'], ['asc']);
         break;
@@ -254,7 +254,7 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
   }
 
   sortTableArray() {
-    switch (this.sortBy) {
+    switch (this.sortTableBy) {
       case 'popularityInTable':
         this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['iloscSprzedanychRok'], ['asc']);
         break;

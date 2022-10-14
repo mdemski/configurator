@@ -340,7 +340,7 @@ export class FlashingsComponent implements OnInit, OnDestroy {
   }
 
   sortTableArray() {
-    switch (this.sortBy) {
+    switch (this.sortTableBy) {
       case 'popularityInTable':
         this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['iloscSprzedanychRok'], ['asc']);
         break;

@@ -344,7 +344,7 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
   }
 
   sortTableArray() {
-    switch (this.sortBy) {
+    switch (this.sortTableBy) {
       case 'popularityInTable':
         this.filteredAccessoriesList = _.orderBy(this.filteredAccessoriesList, ['iloscSprzedanychRok'], ['asc']);
         break;

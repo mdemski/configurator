@@ -274,7 +274,7 @@ export class FlatRoofWindowsComponent implements OnInit, OnDestroy {
   }
 
   sortTableArray() {
-    switch (this.sortBy) {
+    switch (this.sortTableBy) {
       case 'popularityInTable':
         this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['iloscSprzedanychRok'], ['asc']);
         break;
