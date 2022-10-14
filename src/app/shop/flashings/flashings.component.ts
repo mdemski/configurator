@@ -300,19 +300,19 @@ export class FlashingsComponent implements OnInit, OnDestroy {
   sortByType() {
     this.typeToggler = !this.typeToggler;
     const product = this.typeToggler ? 'asc' : 'desc';
-    this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['typ'], product);
+    this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['typKolnierza'], product);
   }
 
   sortByApronType() {
     this.apronTypeToggler = !this.apronTypeToggler;
     const product = this.apronTypeToggler ? 'asc' : 'desc';
-    this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['typTkaniny'], product);
+    this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['typFartucha'], product);
   }
 
   sortByCombination() {
     this.combinationToggler = !this.combinationToggler;
     const product = this.combinationToggler ? 'asc' : 'desc';
-    this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['typTkaniny'], product);
+    this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['flashingCombination'], product);
   }
 
   sortByWidth() {
@@ -330,7 +330,7 @@ export class FlashingsComponent implements OnInit, OnDestroy {
   sortByColor() {
     this.colorToggler = !this.colorToggler;
     const product = this.colorToggler ? 'asc' : 'desc';
-    this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['kolorTkaniny'], product);
+    this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['oblachowanieKolor'], product);
   }
 
   sortByPrice() {

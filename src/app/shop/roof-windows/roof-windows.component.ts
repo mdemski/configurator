@@ -198,10 +198,10 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
         this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['CenaDetaliczna'], ['desc']);
         break;
       case 'nameAscInTable':
-        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['windowName'], ['asc']);
+        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['productName'], ['asc']);
         break;
       case 'nameDescInTable':
-        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['windowName'], ['desc']);
+        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['productName'], ['desc']);
         break;
       default:
         this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['iloscSprzedanychRok'], ['asc']);
@@ -265,10 +265,10 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
         this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['CenaDetaliczna'], ['desc']);
         break;
       case 'nameAscInTable':
-        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['windowName'], ['asc']);
+        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['productName'], ['asc']);
         break;
       case 'nameDescInTable':
-        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['windowName'], ['desc']);
+        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['productName'], ['desc']);
         break;
       default:
         this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['iloscSprzedanychRok'], ['asc']);
@@ -346,7 +346,50 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
         materialFound = window.stolarkaMaterial.toString().trim().toLowerCase().indexOf(filterObject.material.toLowerCase()) !== -1;
       }
       if (filterObject.glazing) {
-        glazingFound = window.pakietSzybowy.toString().trim().toLowerCase().indexOf(filterObject.glazing.toLowerCase()) !== -1;
+        let searchGlazingValue;
+        if (filterObject.glazing.length < 3) {
+          if (filterObject.glazing.includes('1')) {
+            searchGlazingValue = filterObject.glazing.replace('1', '01');
+          }
+          if (filterObject.glazing.includes('2')) {
+            searchGlazingValue = filterObject.glazing.replace('2', '02');
+          }
+          if (filterObject.glazing.includes('3')) {
+            searchGlazingValue = filterObject.glazing.replace('3', '03');
+          }
+          if (filterObject.glazing.includes('4')) {
+            searchGlazingValue = filterObject.glazing.replace('4', '04');
+          }
+          if (filterObject.glazing.includes('5')) {
+            searchGlazingValue = filterObject.glazing.replace('5', '05');
+          }
+          if (filterObject.glazing.includes('6')) {
+            searchGlazingValue = filterObject.glazing.replace('6', '06');
+          }
+          if (filterObject.glazing.includes('7')) {
+            searchGlazingValue = filterObject.glazing.replace('7', '07');
+          }
+          if (filterObject.glazing.includes('8')) {
+            searchGlazingValue = filterObject.glazing.replace('8', '08');
+          }
+          if (filterObject.glazing.includes('9')) {
+            searchGlazingValue = filterObject.glazing.replace('9', '09');
+          }
+          if (!filterObject.glazing.includes('1') &&
+            !filterObject.glazing.includes('2') &&
+            !filterObject.glazing.includes('3') &&
+            !filterObject.glazing.includes('4') &&
+            !filterObject.glazing.includes('5') &&
+            !filterObject.glazing.includes('6') &&
+            !filterObject.glazing.includes('7') &&
+            !filterObject.glazing.includes('8') &&
+            !filterObject.glazing.includes('9')) {
+            searchGlazingValue = filterObject.glazing;
+          }
+        } else {
+          searchGlazingValue = filterObject.glazing;
+        }
+        glazingFound = window.pakietSzybowy.toString().trim().toLowerCase().indexOf(searchGlazingValue.toLowerCase()) !== -1;
       }
       if (filterObject.ventilation) {
         ventilationFound = window.wentylacja.toString().trim().toLowerCase().indexOf(filterObject.ventilation.toLowerCase()) !== -1;
