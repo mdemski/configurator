@@ -1,0 +1,282 @@
+<app-scroll-top></app-scroll-top>
+
+<div class="navbar-background">
+  <img src="assets/img/navbar_backgrounds/hans-ripa-O0eQin7WxA0-unsplash.jpg" alt="okpol">
+  <app-navbar-navigator [path]="this.router.url"></app-navbar-navigator>
+</div>
+<div class="full-width-container" style="height: 100px; border: grey solid 2px; text-align: center">Baner</div>
+
+<div class="md-container">
+  <div class="loader-container" *ngIf="isFiltering; else elseBlock">
+    <app-okpol-loader></app-okpol-loader>
+  </div>
+  <ng-template #elseBlock>
+    <div class="table-presentation">
+      <div class="pagination-container">
+        <!--Sorting way selection-->
+        <div class="select-box sorting">
+          <div class="select-box__current" tabindex="1" (change)="sortTableArray()">
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="popularityInTable" [(ngModel)]="sortTableBy"
+                     value="popularityInTable"
+                     name="sortTable"
+                     checked>
+              <p class="select-box__input-text">{{'SHOP.popularity' | translate}}</p>
+            </div>
+
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="priceAscInTable" [(ngModel)]="sortTableBy"
+                     value="priceAscInTable"
+                     name="sortTable">
+              <p class="select-box__input-text">{{'SHOP.priceAsc' | translate}}</p>
+            </div>
+
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="priceDescInTable" [(ngModel)]="sortTableBy"
+                     value="priceDescInTable"
+                     name="sortTable">
+              <p class="select-box__input-text">{{'SHOP.priceDesc' | translate}}</p>
+            </div>
+
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="nameDescInTable" [(ngModel)]="sortTableBy"
+                     value="nameDescInTable"
+                     name="sortTable">
+              <p class="select-box__input-text">{{'SHOP.nameDesc' | translate}}</p>
+            </div>
+
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="nameAscInTable" [(ngModel)]="sortTableBy"
+                     value="nameAscInTable"
+                     name="sortTable">
+              <p class="select-box__input-text">{{'SHOP.nameAsc' | translate}}</p>
+            </div>
+
+            <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon"
+                 aria-hidden="true">
+          </div>
+          <ul class="select-box__list">
+            <li><label class="select-box__option" for="popularityInTable"
+                       aria-hidden="aria-hidden">{{'SHOP.popularity' | translate}}</label></li>
+            <li><label class="select-box__option" for="priceAscInTable"
+                       aria-hidden="aria-hidden">{{'SHOP.priceAsc' | translate}}</label></li>
+            <li><label class="select-box__option" for="priceDescInTable"
+                       aria-hidden="aria-hidden">{{'SHOP.priceDesc' | translate}}</label></li>
+            <li><label class="select-box__option" for="nameDescInTable"
+                       aria-hidden="aria-hidden">{{'SHOP.nameDesc' | translate}}</label></li>
+            <li><label class="select-box__option" for="nameAscInTable"
+                       aria-hidden="aria-hidden">{{'SHOP.nameAsc' | translate}}</label></li>
+          </ul>
+        </div>
+
+
+        <pagination-controls
+          class="paginator"
+          (pageChange)="page = $event"
+          previousLabel="{{'SHOP.previousPageLabel' | translate}}"
+          nextLabel="{{'SHOP.nextPageLabel' | translate}}">
+          <!--        autoHide-->
+        </pagination-controls>
+        <!--Number on page selection-->
+        <div class="select-box paginating">
+          <div class="select-box__current" tabindex="1">
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="0" [(ngModel)]="pageTableSize" [value]="getTableRows()"
+                     name="pageTableSize"
+                     [checked]="true">
+              <p class="select-box__input-text">{{getTableRows()}}</p>
+            </div>
+
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="1" [(ngModel)]="pageTableSize"
+                     [value]="getTableRows()*2.5"
+                     name="pageTableSize"
+                     checked="checked">
+              <p class="select-box__input-text">{{getTableRows() * 2.5}}</p>
+            </div>
+
+            <div class="select-box__value">
+              <input class="select-box__input" type="radio" id="2" [(ngModel)]="pageTableSize"
+                     [value]="getTableRows()*5"
+                     name="pageTableSize"
+                     checked="checked">
+              <p class="select-box__input-text">{{getTableRows() * 5}}</p>
+            </div>
+
+            <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg" alt="Arrow Icon"
+                 aria-hidden="true">
+          </div>
+          <ul class="select-box__list">
+            <li><label class="select-box__option" for="0" aria-hidden="aria-hidden">{{getTableRows()}}</label></li>
+            <li><label class="select-box__option" for="1" aria-hidden="aria-hidden">{{getTableRows() * 2.5}}</label>
+            </li>
+            <li><label class="select-box__option" for="2" aria-hidden="aria-hidden">{{getTableRows() * 5}}</label>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <form [formGroup]="filtrationForm" class="search-form">
+        <table class="products-table">
+          <!--Table header-->
+          <tr class="products-table__header">
+            <th class="products-table__header--text">
+              <label class="sort__input--label" (click)="sortByName()">
+                {{ 'SINGLE-PRODUCT.name' | translate}}
+                <span *ngIf="!nameToggler">&#8595;</span>
+                <span *ngIf="nameToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="products-table__header--text">
+              <label class="sort__input--label" (click)="sortByType()">
+                {{ 'SINGLE-PRODUCT.type' | translate}}
+                <span *ngIf="!typeToggler">&#8595;</span>
+                <span *ngIf="typeToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="products-table__header--text">
+              <label class="sort__input--label" (click)="sortByGlazing()">
+                {{ 'SINGLE-PRODUCT.glazing' | translate}}
+                <span *ngIf="!glazingToggler">&#8595;</span>
+                <span *ngIf="glazingToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="products-table__header--text">
+              <label class="sort__input--label" (click)="sortByOpening()">
+                {{ 'SINGLE-PRODUCT.opening' | translate}}
+                <span *ngIf="!openingToggler">&#8595;</span>
+                <span *ngIf="openingToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="products-table__header--text">
+              <label class="sort__input--label" (click)="sortByMaterial()">
+                {{ 'SINGLE-PRODUCT.productMaterial' | translate}}
+                <span *ngIf="!materialToggler">&#8595;</span>
+                <span *ngIf="materialToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="products-table__header--text">
+              <label class="sort__input--label" (click)="sortByColor()">
+                {{ 'SINGLE-PRODUCT.color' | translate}}
+                <span *ngIf="!colorToggler">&#8595;</span>
+                <span *ngIf="colorToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="products-table__header--text">
+              <label class="sort__input--label" (click)="sortByWidth()">
+                {{ 'SINGLE-PRODUCT.width' | translate}}
+                <span *ngIf="!widthToggler">&#8595;</span>
+                <span *ngIf="widthToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="products-table__header--text">
+              <label class="sort__input--label" (click)="sortByHeight()">
+                {{ 'SINGLE-PRODUCT.height' | translate}}
+                <span *ngIf="!heightToggler">&#8595;</span>
+                <span *ngIf="heightToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="products-table__header--text">
+              <label class="sort__input--label" (click)="sortByPrice()">
+                {{ 'SINGLE-PRODUCT.price' | translate}}
+                <span *ngIf="!priceToggler">&#8595;</span>
+                <span *ngIf="priceToggler">&#8593;</span>
+              </label>
+            </th>
+            <th class="products-table__header--text">
+              <label class="sort__input--label">
+                {{ 'SINGLE-PRODUCT.addToCart' | translate}}
+              </label>
+            </th>
+          </tr>
+
+          <tr class="products-table__search-header">
+            <td class="products-table__search-header--td">
+              <input type="text" formControlName="name"
+                     class="form-control" placeholder="{{ 'SINGLE-PRODUCT.name' | translate}}"></td>
+            <td class="products-table__search-header--td">
+              <input type="text" formControlName="type"
+                     class="form-control" placeholder="{{ 'SINGLE-PRODUCT.type' | translate}}"></td>
+            <td class="products-table__search-header--td">
+              <input type="text" formControlName="glazing"
+                     class="form-control" placeholder="{{ 'SINGLE-PRODUCT.glazing' | translate}}"></td>
+            <td class="products-table__search-header--td">
+              <input type="text" formControlName="opening"
+                     class="form-control" placeholder="{{ 'SINGLE-PRODUCT.opening' | translate}}"></td>
+            <td class="products-table__search-header--td">
+              <input type="text" formControlName="material"
+                     class="form-control" placeholder="{{ 'SINGLE-PRODUCT.productMaterial' | translate}}"></td>
+            <td class="products-table__search-header--td">
+              <input type="text" formControlName="color"
+                     class="form-control" placeholder="{{ 'SINGLE-PRODUCT.color' | translate}}"></td>
+            <td class="products-table__search-header--td">
+              <input type="text" formControlName="width"
+                     class="form-control" placeholder="{{ 'SINGLE-PRODUCT.width' | translate}}"></td>
+            <td class="products-table__search-header--td">
+              <input type="text" formControlName="height"
+                     class="form-control" placeholder="{{ 'SINGLE-PRODUCT.height' | translate}}"></td>
+            <td class="products-table__search-header--td">
+              <input type="text" formControlName="price"
+                     class="form-control" placeholder="{{ 'SINGLE-PRODUCT.price' | translate}}"></td>
+          </tr>
+
+          <tr class="products-table__item"
+              *ngFor="let product of filteredProductList | paginate: {itemsPerPage: pageTableSize, currentPage: page} let i = index">
+            <td class="products-table__item--info">{{product.productName}}</td>
+            <td *ngIf="this.generalData.getProductConfig(product) === 'standardType'"
+                class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.grupaAsortymentowa | translate}}</td>
+            <td *ngIf="this.generalData.getProductConfig(product) === 'aluminiumType'"
+                class="products-table__item--info">{{'FLASHINGS-DATA.' + product.grupaAsortymentowa | translate}}</td>
+            <td *ngIf="this.generalData.getProductConfig(product) === 'accessoryType'"
+                class="products-table__item--info">{{'ACCESSORY-DATA.' + product.grupaAsortymentowa | translate}}</td>
+            <td class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.pakietSzybowy | translate}}</td>
+            <td *ngIf="this.generalData.getProductConfig(product) === 'standardType'"
+                class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.otwieranie | translate}}</td>
+            <td *ngIf="this.generalData.getProductConfig(product) === 'aluminiumType'"
+                class="products-table__item--info">{{'FLASHINGS-DATA.' + product.otwieranie | translate}}</td>
+            <td *ngIf="this.generalData.getProductConfig(product) === 'accessoryType'"
+                class="products-table__item--info">{{'ACCESSORY-DATA.' + product.otwieranie | translate}}</td>
+            <td *ngIf="this.generalData.getProductConfig(product) === 'standardType'"
+              class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.stolarkaMaterial | translate}}</td>
+            <td *ngIf="this.generalData.getProductConfig(product) === 'aluminiumType'"
+                class="products-table__item--info">{{'FLASHINGS-DATA.' + product.oblachowanieMaterial | translate}}</td>
+            <td *ngIf="this.generalData.getProductConfig(product) === 'accessoryType'"
+                class="products-table__item--info">{{'ACCESSORY-DATA.' + product.typTkaniny | translate}}</td>
+            <td *ngIf="this.generalData.getProductConfig(product) === 'standardType'"
+                class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.stolarkaKolor | translate}}</td>
+            <td *ngIf="this.generalData.getProductConfig(product) === 'aluminiumType'"
+                class="products-table__item--info">{{'FLASHINGS-DATA.' + product.oblachowanieKolor | translate}}</td>
+            <td *ngIf="this.generalData.getProductConfig(product) === 'accessoryType'"
+                class="products-table__item--info">{{'ACCESSORY-DATA.' + product.kolorTkaniny | translate}}</td>
+            <td *ngIf="this.generalData.isEmpty(product.szerokosc)" class="products-table__item--info text-center">{{'GENERAL.emptyValue'}}</td>
+            <td *ngIf="!this.generalData.isEmpty(product.szerokosc)" class="products-table__item--info text-center">{{product.szerokosc}}</td>
+            <td *ngIf="this.generalData.isEmpty(product.wysokosc)" class="products-table__item--info text-center">{{'GENERAL.emptyValue'}}</td>
+            <td *ngIf="!this.generalData.isEmpty(product.wysokosc)" class="products-table__item--info text-center">{{product.wysokosc}}</td>
+            <td class="products-table__item--info">{{(product.CenaDetaliczna / (cart$ | async).cart.exchange) +
+            ((product.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}}</td>
+            <td class="products-table__item--info text-align">
+              <form [formGroup]="quantityForm" class="display-flex">
+                <div class="quantity-container-in-table">
+                  <p class="quantity-desc">{{ 'SINGLE-PRODUCT.quantity' | translate}}</p>
+                  <i (click)="decreaseQuantity(i)">-</i>
+                  <input id="quantity{{i}}"
+                         formControlName="quantity{{i}}"
+                         type="number" class="quantity-in-table">
+                  <i (click)="increaseQuantity(i)">+</i>
+                </div>
+                <a class="product-card__buttons-section--link small-icon-btn small-icon-btn--red"
+                   (click)="addToCart(product, quantityForm.get('quantity' + i).value)">
+                  <i class="fas fa-cart-plus product-card__buttons-section--small-icon"></i>
+                </a>
+              </form>
+            </td>
+          </tr>
+
+        </table>
+      </form>
+
+    </div>
+
+  </ng-template>
+</div>
+

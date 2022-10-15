@@ -18,6 +18,7 @@ import {FlatRoofWindowDetailsComponent} from './flat-roof-windows/flat-roof-wind
 import {FlatRoofWindowsGuard} from '../store/flat-roof-window/flat-roof-windows.guard';
 import {ResetProductsComponent} from './reset-products/reset-products.component';
 import {ResetProductDetailsComponent} from './reset-products/reset-product-details/reset-product-details.component';
+import {AllProductsComponent} from './all-products/all-products.component';
 
 const routes: Routes = [
   {path: '', component: ShopComponent},
@@ -33,6 +34,7 @@ const routes: Routes = [
   {path: 'flat-roof-windows/:flatId', component: FlatRoofWindowDetailsComponent, canActivate: [FlatRoofWindowsGuard]},
   {path: 'reset', component: ResetProductsComponent, canActivate: [RoofWindowsGuard, SkylightsGuard]},
   {path: 'reset/:resetId', component: ResetProductDetailsComponent, canActivate: [RoofWindowsGuard, SkylightsGuard]},
+  {path: 'all-products', component: AllProductsComponent, canActivate: [RoofWindowsGuard, SkylightsGuard, FlashingsGuard, AccessoriesGuard, FlatRoofWindowsGuard]},
   // PL
   {path: 'okna-dachowe', component: RoofWindowsComponent, canActivate: [RoofWindowsGuard]},
   {path: 'okna-dachowe/:windowId', component: RoofWindowDetailsComponent, canActivate: [RoofWindowsGuard]},
@@ -45,7 +47,8 @@ const routes: Routes = [
   {path: 'okna-na-dach-plaski', component: FlatRoofWindowsComponent, canActivate: [FlatRoofWindowsGuard]},
   {path: 'okna-na-dach-plaski/:flatId', component: FlatRoofWindowDetailsComponent, canActivate: [FlatRoofWindowsGuard]},
   {path: 'reset', component: ResetProductsComponent, canActivate: [RoofWindowsGuard, SkylightsGuard]},
-  {path: 'reset/:resetId', component: ResetProductDetailsComponent, canActivate: [RoofWindowsGuard, SkylightsGuard]}
+  {path: 'reset/:resetId', component: ResetProductDetailsComponent, canActivate: [RoofWindowsGuard, SkylightsGuard]},
+  {path: 'wszystkie-produkty', component: AllProductsComponent, canActivate: [RoofWindowsGuard, SkylightsGuard, FlashingsGuard, AccessoriesGuard, FlatRoofWindowsGuard]},
   // DE... IT... FR...
 ];
 

@@ -275,6 +275,8 @@
     "addToCart": "Dodaj do koszyka",
     "orderNow": "Kup teraz",
     "material": "Stolarka",
+    "productMaterial": "Materiał",
+    "color": "Kolor",
     "category": "Kategoria",
     "opening": "Typ otwierania",
     "innerColor": "Kolor wewnętrzny",
@@ -438,12 +440,13 @@
     "emptyHandle": "Wybierz rodzaj i kolor klamki"
   },
   "ROOF-WINDOWS-DATA": {
-    "undefined": "nie określony",
+    "undefined": "nie dotyczy",
     "null": "nie dotyczy",
     "Okno:IS1": "IS",
     "Okno:IS": "IS",
     "Okno:IG2": "IG",
     "PG": "Płaski dach",
+    "DachPłaski": "Płaski dach",
     "OknoDachowe:IS": "grupa IS",
     "OknoDachowe:IG": "grupa IG",
     "OknoDachowe": "Okno Dachowe",
@@ -656,7 +659,8 @@
     "łupek": "łupek",
     "dachówka karpiówka": "dachówka karpiówka",
     "blacha panelowa": "blacha panelowa",
-    "dachówka płaska": "dachówka płaska"
+    "dachówka płaska": "dachówka płaska",
+    "undefined": "nie dotyczy"
   },
   "ACCESSORY-DATA": {
     "model": "Model",
@@ -815,7 +819,8 @@
     "products": "Produkty",
     "contactData": "Dane kontaktowe/montażowe",
     "comments": "Uwagi",
-    "save": "Zapisz"
+    "save": "Zapisz",
+    "emptyValue": "nd"
   },
   "PDF": {
     "addressText": "Adres Klienta - montażu:",
