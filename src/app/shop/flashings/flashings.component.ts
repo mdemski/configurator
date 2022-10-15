@@ -67,6 +67,7 @@ export class FlashingsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.pageSize = this.getNumberInRow();
+    this.pageTableSize = this.getTableRows();
     this.isFiltering = true;
     this.flashings$.pipe(takeUntil(this.isDestroyed$)).subscribe(flashings => this.flashingsList = flashings);
     this.filteredFlashingsList = this.flashingsList;

@@ -68,6 +68,7 @@ export class ResetProductsComponent implements OnInit {
 
   ngOnInit(): void {
     this.pageSize = this.getNumberInRow();
+    this.pageTableSize = this.getTableRows();
     this.isFiltering = true;
     this.roofWindows$.pipe(takeUntil(this.isDestroyed$),
       map(products => products.filter(product => product.grupaAsortymentowa === 'OknoDachoweReset'))).subscribe(roofWindows => this.productsList = roofWindows);

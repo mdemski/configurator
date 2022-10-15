@@ -59,6 +59,7 @@ export class FlatRoofWindowsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.pageSize = this.getNumberInRow();
+    this.pageTableSize = this.getTableRows();
     this.isFiltering = true;
     this.flatRoofWindows$.pipe(takeUntil(this.isDestroyed$)).subscribe(flatRoofWindows => this.flatRoofWindowList = flatRoofWindows);
     this.filteredFlatRoofWindowList = this.flatRoofWindowList;

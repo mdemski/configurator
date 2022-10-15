@@ -64,6 +64,7 @@ export class SkylightsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.pageSize = this.getNumberInRow();
+    this.pageTableSize = this.getTableRows();
     this.isFiltering = true;
     this.skylights$.pipe(takeUntil(this.isDestroyed$)).subscribe(skylights => this.skylights = skylights);
     this.filteredSkylightList = this.skylights;

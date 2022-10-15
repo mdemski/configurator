@@ -63,6 +63,7 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.pageSize = this.getNumberInRow();
+    this.pageTableSize = this.getTableRows();
     this.isFiltering = true;
     this.roofWindows$.pipe(takeUntil(this.isDestroyed$)).subscribe(roofWindows => this.roofWindowsList = roofWindows);
     this.filteredRoofWindowsList = this.roofWindowsList;

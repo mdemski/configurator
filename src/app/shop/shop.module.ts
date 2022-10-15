@@ -29,6 +29,7 @@ import { SkylightFiltrationComponent } from './skylights/skylight-filtration/sky
 import { ResetProductsComponent } from './reset-products/reset-products.component';
 import { ResetFiltrationComponent } from './reset-products/reset-filtration/reset-filtration.component';
 import { ResetProductDetailsComponent } from './reset-products/reset-product-details/reset-product-details.component';
+import { AllProductsComponent } from './all-products/all-products.component';
 
 @NgModule({
     imports: [
@@ -59,6 +60,7 @@ import { ResetProductDetailsComponent } from './reset-products/reset-product-det
     ResetProductsComponent,
     ResetFiltrationComponent,
     ResetProductDetailsComponent,
+    AllProductsComponent,
   ]
 })
 export class ShopModule { }
