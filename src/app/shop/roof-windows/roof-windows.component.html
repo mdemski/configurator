@@ -374,7 +374,7 @@
           </tr>
 
           <tr class="products-table__item"
-              *ngFor="let product of filteredRoofWindowsList let i = index">
+              *ngFor="let product of filteredRoofWindowsList | paginate: {itemsPerPage: pageTableSize, currentPage: page} let i = index">
             <td class="products-table__item--info">{{product.productName}}</td>
             <td class="products-table__item--info">{{product.szerokosc}}</td>
             <td class="products-table__item--info">{{product.wysokosc}}</td>

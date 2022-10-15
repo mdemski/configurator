@@ -384,7 +384,7 @@
           </tr>
 
           <tr class="products-table__item"
-              *ngFor="let product of filteredProductsList let i = index">
+              *ngFor="let product of filteredProductsList | paginate: {itemsPerPage: pageTableSize, currentPage: page} let i = index">
             <td class="products-table__item--info">{{product.productName}}</td>
             <td class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.grupaAsortymentowa | translate}}</td>
             <td class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.pakietSzybowy | translate}}</td>

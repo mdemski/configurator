@@ -386,7 +386,7 @@
           </tr>
 
           <tr class="products-table__item"
-              *ngFor="let product of filteredFlashingsList let i = index">
+              *ngFor="let product of filteredFlashingsList | paginate: {itemsPerPage: pageTableSize, currentPage: page} let i = index">
             <td class="products-table__item--info">{{product.productName}}</td>
             <td class="products-table__item--info">{{'FLASHINGS-DATA.' + product.typKolnierza | translate}}</td>
             <td class="products-table__item--info">{{'FLASHINGS-DATA.' + product.typFartucha | translate}}</td>

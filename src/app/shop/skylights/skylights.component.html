@@ -382,7 +382,7 @@
           </tr>
 
           <tr class="products-table__item"
-              *ngFor="let product of filteredSkylightList let i = index">
+              *ngFor="let product of filteredSkylightList | paginate: {itemsPerPage: pageTableSize, currentPage: page} let i = index">
             <td class="products-table__item--info">{{product.productName}}</td>
             <td class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.grupaAsortymentowa | translate}}</td>
             <td class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.pakietSzybowy | translate}}</td>
