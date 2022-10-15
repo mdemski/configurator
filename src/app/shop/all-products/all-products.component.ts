@@ -60,6 +60,7 @@ export class AllProductsComponent implements OnInit, OnDestroy {
     height: '',
     price: ''
   };
+  paginate: any;
 
   constructor(private store: Store, public router: Router, private fb: FormBuilder, public generalData: GeneralDataService) {
 
@@ -81,6 +82,7 @@ export class AllProductsComponent implements OnInit, OnDestroy {
       }
     });
     this.filteredProductList = this.productList;
+    this.setIds(this.filteredProductList);
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe(() => console.log);
     this.quantityForm = new FormGroup({});
     this.loadQuantityData();
@@ -149,80 +151,80 @@ export class AllProductsComponent implements OnInit, OnDestroy {
   sortByName() {
     this.nameToggler = !this.nameToggler;
     const product = this.nameToggler ? 'asc' : 'desc';
-    this.filteredProductList = _.orderBy(this.filteredProductList, ['productName'], product);
+    this.filteredProductList = _.orderBy(this.filteredProductList, ['product.productName'], product);
   }
 
   sortByType() {
     this.typeToggler = !this.typeToggler;
     const product = this.typeToggler ? 'asc' : 'desc';
-    this.filteredProductList = _.orderBy(this.filteredProductList, ['grupaAsortymentowa'], product);
+    this.filteredProductList = _.orderBy(this.filteredProductList, ['product.grupaAsortymentowa'], product);
   }
 
   sortByGlazing() {
     this.glazingToggler = !this.glazingToggler;
     const product = this.glazingToggler ? 'asc' : 'desc';
-    this.filteredProductList = _.orderBy(this.filteredProductList, ['pakietSzybowy'], product);
+    this.filteredProductList = _.orderBy(this.filteredProductList, ['product.pakietSzybowy'], product);
   }
 
   sortByOpening() {
     this.openingToggler = !this.openingToggler;
     const product = this.openingToggler ? 'asc' : 'desc';
-    this.filteredProductList = _.orderBy(this.filteredProductList, ['otwieranie'], product);
+    this.filteredProductList = _.orderBy(this.filteredProductList, ['product.otwieranie'], product);
   }
 
   sortByMaterial() {
     this.materialToggler = !this.materialToggler;
     const product = this.materialToggler ? 'asc' : 'desc';
-    this.filteredProductList = _.orderBy(this.filteredProductList, ['stolarkaMaterial'], product);
-    this.filteredProductList = _.orderBy(this.filteredProductList, ['oblachowanieMaterial'], product);
-    this.filteredProductList = _.orderBy(this.filteredProductList, ['typTkaniny'], product);
+    this.filteredProductList = _.orderBy(this.filteredProductList, ['product.stolarkaMaterial'], product);
+    this.filteredProductList = _.orderBy(this.filteredProductList, ['product.oblachowanieMaterial'], product);
+    this.filteredProductList = _.orderBy(this.filteredProductList, ['product.typTkaniny'], product);
   }
 
   sortByColor() {
     this.colorToggler = !this.colorToggler;
     const product = this.colorToggler ? 'asc' : 'desc';
-    this.filteredProductList = _.orderBy(this.filteredProductList, ['stolarkaKolor'], product);
-    this.filteredProductList = _.orderBy(this.filteredProductList, ['oblachowanieKolor'], product);
-    this.filteredProductList = _.orderBy(this.filteredProductList, ['kolorTkaniny'], product);
+    this.filteredProductList = _.orderBy(this.filteredProductList, ['product.stolarkaKolor'], product);
+    this.filteredProductList = _.orderBy(this.filteredProductList, ['product.oblachowanieKolor'], product);
+    this.filteredProductList = _.orderBy(this.filteredProductList, ['product.kolorTkaniny'], product);
   }
 
   sortByWidth() {
     this.widthToggler = !this.widthToggler;
     const product = this.widthToggler ? 'asc' : 'desc';
-    this.filteredProductList = _.orderBy(this.filteredProductList, ['szerokosc'], product);
+    this.filteredProductList = _.orderBy(this.filteredProductList, ['product.szerokosc'], product);
   }
 
   sortByHeight() {
     this.heightToggler = !this.heightToggler;
     const product = this.heightToggler ? 'asc' : 'desc';
-    this.filteredProductList = _.orderBy(this.filteredProductList, ['wysokosc'], product);
+    this.filteredProductList = _.orderBy(this.filteredProductList, ['product.wysokosc'], product);
   }
 
   sortByPrice() {
     this.priceToggler = !this.priceToggler;
     const product = this.priceToggler ? 'asc' : 'desc';
-    this.filteredProductList = _.orderBy(this.filteredProductList, ['CenaDetaliczna'], product);
+    this.filteredProductList = _.orderBy(this.filteredProductList, ['product.CenaDetaliczna'], product);
   }
 
   sortTableArray() {
     switch (this.sortTableBy) {
       case 'popularityInTable':
-        this.filteredProductList = _.orderBy(this.filteredProductList, ['iloscSprzedanychRok'], ['asc']);
+        this.filteredProductList = _.orderBy(this.filteredProductList, ['product.iloscSprzedanychRok'], ['asc']);
         break;
       case 'priceAscInTable':
-        this.filteredProductList = _.orderBy(this.filteredProductList, ['CenaDetaliczna'], ['asc']);
+        this.filteredProductList = _.orderBy(this.filteredProductList, ['product.CenaDetaliczna'], ['asc']);
         break;
       case 'priceDescInTable':
-        this.filteredProductList = _.orderBy(this.filteredProductList, ['CenaDetaliczna'], ['desc']);
+        this.filteredProductList = _.orderBy(this.filteredProductList, ['product.CenaDetaliczna'], ['desc']);
         break;
       case 'nameAscInTable':
-        this.filteredProductList = _.orderBy(this.filteredProductList, ['productName'], ['asc']);
+        this.filteredProductList = _.orderBy(this.filteredProductList, ['product.productName'], ['asc']);
         break;
       case 'nameDescInTable':
-        this.filteredProductList = _.orderBy(this.filteredProductList, ['productName'], ['desc']);
+        this.filteredProductList = _.orderBy(this.filteredProductList, ['product.productName'], ['desc']);
         break;
       default:
-        this.filteredProductList = _.orderBy(this.filteredProductList, ['iloscSprzedanychRok'], ['asc']);
+        this.filteredProductList = _.orderBy(this.filteredProductList, ['product.iloscSprzedanychRok'], ['asc']);
         break;
     }
   }
@@ -230,7 +232,9 @@ export class AllProductsComponent implements OnInit, OnDestroy {
   private filterTable(filterObject: { material: string; color: string; price: string; name: string; width: string; glazing: string; type: string; opening: string; height: string }) {
     this.isFiltering = true;
     this.filteredProductList = this.productList;
-    this.filteredProductList = this.filteredProductList.filter(product => {
+    this.setIds(this.filteredProductList);
+    this.filteredProductList = this.filteredProductList.filter(data => {
+      const product = data.product;
       let nameFound = true;
       let typeFound = true;
       let glazingFound = true;
@@ -388,6 +392,15 @@ export class AllProductsComponent implements OnInit, OnDestroy {
       return nameFound && typeFound && glazingFound && openingFound && materialFound && colorFound && widthFound && heightFound && priceFound;
     });
     this.isFiltering = false;
+  }
+
+  private setIds(filteredProductList: any[]) {
+    const tempArray = [];
+    filteredProductList.forEach((product, index) => {
+      tempArray.push({product, id: index});
+    });
+    this.filteredProductList = [];
+    this.filteredProductList = tempArray;
   }
 }
 

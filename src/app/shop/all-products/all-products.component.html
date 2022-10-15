@@ -221,51 +221,51 @@
           </tr>
 
           <tr class="products-table__item"
-              *ngFor="let product of filteredProductList | paginate: {itemsPerPage: pageTableSize, currentPage: page} let i = index">
-            <td class="products-table__item--info">{{product.productName}}</td>
-            <td *ngIf="this.generalData.getProductConfig(product) === 'standardType'"
-                class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.grupaAsortymentowa | translate}}</td>
-            <td *ngIf="this.generalData.getProductConfig(product) === 'aluminiumType'"
-                class="products-table__item--info">{{'FLASHINGS-DATA.' + product.grupaAsortymentowa | translate}}</td>
-            <td *ngIf="this.generalData.getProductConfig(product) === 'accessoryType'"
-                class="products-table__item--info">{{'ACCESSORY-DATA.' + product.grupaAsortymentowa | translate}}</td>
-            <td class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.pakietSzybowy | translate}}</td>
-            <td *ngIf="this.generalData.getProductConfig(product) === 'standardType'"
-                class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.otwieranie | translate}}</td>
-            <td *ngIf="this.generalData.getProductConfig(product) === 'aluminiumType'"
-                class="products-table__item--info">{{'FLASHINGS-DATA.' + product.otwieranie | translate}}</td>
-            <td *ngIf="this.generalData.getProductConfig(product) === 'accessoryType'"
-                class="products-table__item--info">{{'ACCESSORY-DATA.' + product.otwieranie | translate}}</td>
-            <td *ngIf="this.generalData.getProductConfig(product) === 'standardType'"
-              class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.stolarkaMaterial | translate}}</td>
-            <td *ngIf="this.generalData.getProductConfig(product) === 'aluminiumType'"
+              *ngFor="let product of filteredProductList | paginate: {itemsPerPage: pageTableSize, currentPage: page}">
+            <td class="products-table__item--info">{{product.product.productName}}</td>
+            <td *ngIf="this.generalData.getProductConfig(product.product) === 'standardType'"
+                class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.product.grupaAsortymentowa | translate}}</td>
+            <td *ngIf="this.generalData.getProductConfig(product.product) === 'aluminiumType'"
+                class="products-table__item--info">{{'FLASHINGS-DATA.' + product.product.grupaAsortymentowa | translate}}</td>
+            <td *ngIf="this.generalData.getProductConfig(product.product) === 'accessoryType'"
+                class="products-table__item--info">{{'ACCESSORY-DATA.' + product.product.grupaAsortymentowa | translate}}</td>
+            <td class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.product.pakietSzybowy | translate}}</td>
+            <td *ngIf="this.generalData.getProductConfig(product.product) === 'standardType'"
+                class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.product.otwieranie | translate}}</td>
+            <td *ngIf="this.generalData.getProductConfig(product.product) === 'aluminiumType'"
+                class="products-table__item--info">{{'FLASHINGS-DATA.' + product.product.otwieranie | translate}}</td>
+            <td *ngIf="this.generalData.getProductConfig(product.product) === 'accessoryType'"
+                class="products-table__item--info">{{'ACCESSORY-DATA.' + product.product.otwieranie | translate}}</td>
+            <td *ngIf="this.generalData.getProductConfig(product.product) === 'standardType'"
+              class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.product.stolarkaMaterial | translate}}</td>
+            <td *ngIf="this.generalData.getProductConfig(product.product) === 'aluminiumType'"
                 class="products-table__item--info">{{'FLASHINGS-DATA.' + product.oblachowanieMaterial | translate}}</td>
-            <td *ngIf="this.generalData.getProductConfig(product) === 'accessoryType'"
-                class="products-table__item--info">{{'ACCESSORY-DATA.' + product.typTkaniny | translate}}</td>
-            <td *ngIf="this.generalData.getProductConfig(product) === 'standardType'"
-                class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.stolarkaKolor | translate}}</td>
-            <td *ngIf="this.generalData.getProductConfig(product) === 'aluminiumType'"
-                class="products-table__item--info">{{'FLASHINGS-DATA.' + product.oblachowanieKolor | translate}}</td>
-            <td *ngIf="this.generalData.getProductConfig(product) === 'accessoryType'"
-                class="products-table__item--info">{{'ACCESSORY-DATA.' + product.kolorTkaniny | translate}}</td>
-            <td *ngIf="this.generalData.isEmpty(product.szerokosc)" class="products-table__item--info text-center">{{'GENERAL.emptyValue'}}</td>
-            <td *ngIf="!this.generalData.isEmpty(product.szerokosc)" class="products-table__item--info text-center">{{product.szerokosc}}</td>
-            <td *ngIf="this.generalData.isEmpty(product.wysokosc)" class="products-table__item--info text-center">{{'GENERAL.emptyValue'}}</td>
-            <td *ngIf="!this.generalData.isEmpty(product.wysokosc)" class="products-table__item--info text-center">{{product.wysokosc}}</td>
-            <td class="products-table__item--info">{{(product.CenaDetaliczna / (cart$ | async).cart.exchange) +
-            ((product.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}}</td>
+            <td *ngIf="this.generalData.getProductConfig(product.product) === 'accessoryType'"
+                class="products-table__item--info">{{'ACCESSORY-DATA.' + product.product.typTkaniny | translate}}</td>
+            <td *ngIf="this.generalData.getProductConfig(product.product) === 'standardType'"
+                class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.product.stolarkaKolor | translate}}</td>
+            <td *ngIf="this.generalData.getProductConfig(product.product) === 'aluminiumType'"
+                class="products-table__item--info">{{'FLASHINGS-DATA.' + product.product.oblachowanieKolor | translate}}</td>
+            <td *ngIf="this.generalData.getProductConfig(product.product) === 'accessoryType'"
+                class="products-table__item--info">{{'ACCESSORY-DATA.' + product.product.kolorTkaniny | translate}}</td>
+            <td *ngIf="this.generalData.isEmpty(product.product.szerokosc)" class="products-table__item--info text-center">{{'GENERAL.emptyValue'}}</td>
+            <td *ngIf="!this.generalData.isEmpty(product.product.szerokosc)" class="products-table__item--info text-center">{{product.product.szerokosc}}</td>
+            <td *ngIf="this.generalData.isEmpty(product.product.wysokosc)" class="products-table__item--info text-center">{{'GENERAL.emptyValue'}}</td>
+            <td *ngIf="!this.generalData.isEmpty(product.product.wysokosc)" class="products-table__item--info text-center">{{product.product.wysokosc}}</td>
+            <td class="products-table__item--info">{{(product.product.CenaDetaliczna / (cart$ | async).cart.exchange) +
+            ((product.product.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}}</td>
             <td class="products-table__item--info text-align">
               <form [formGroup]="quantityForm" class="display-flex">
                 <div class="quantity-container-in-table">
                   <p class="quantity-desc">{{ 'SINGLE-PRODUCT.quantity' | translate}}</p>
-                  <i (click)="decreaseQuantity(i)">-</i>
-                  <input id="quantity{{i}}"
-                         formControlName="quantity{{i}}"
+                  <i (click)="decreaseQuantity(product.id)">-</i>
+                  <input id="quantity{{product.id}}"
+                         formControlName="quantity{{product.id}}"
                          type="number" class="quantity-in-table">
-                  <i (click)="increaseQuantity(i)">+</i>
+                  <i (click)="increaseQuantity(product.id)">+</i>
                 </div>
                 <a class="product-card__buttons-section--link small-icon-btn small-icon-btn--red"
-                   (click)="addToCart(product, quantityForm.get('quantity' + i).value)">
+                   (click)="addToCart(product, quantityForm.get('quantity' + product.id).value)">
                   <i class="fas fa-cart-plus product-card__buttons-section--small-icon"></i>
                 </a>
               </form>
