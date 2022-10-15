@@ -100,7 +100,6 @@ export class ResetFiltrationComponent implements OnInit, OnDestroy {
         map(data => data[0].concat(data[1])),
         map(products => products.filter(product => product.grupaAsortymentowa === 'WyłazReset' || product.grupaAsortymentowa === 'OknoDachoweReset')))
       .subscribe(products => {
-      console.log(products);
       const productsTemp = [];
       const glassesTemp = [];
       const openingTemp = [];

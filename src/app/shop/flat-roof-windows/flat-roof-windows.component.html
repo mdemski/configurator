@@ -114,55 +114,55 @@
     </div>
     <div class="product-card"
          *ngFor="let flat of filteredFlatRoofWindowList | paginate: {itemsPerPage: pageSize, currentPage: page}">
-      <a routerLink="./{{flat.kod}}">
+      <a routerLink="./{{flat.product.kod}}">
         <div class="product-card__photo-container">
-          <img src="{{flat.linkiDoZdjec[0]}}" alt="{{flat.grupaAsortymentowa}}" class="product-card__photo-container__photo">
+          <img src="{{flat.product.linkiDoZdjec[0]}}" alt="{{flat.product.grupaAsortymentowa}}" class="product-card__photo-container__photo">
         </div>
       </a>
-      <h3 class="product-card__title">{{flat.productName}}</h3>
+      <h3 class="product-card__title">{{flat.product.productName}}</h3>
 
       <ul class="product-card__details">
         <li class="product-card__details--info">{{'SINGLE-PRODUCT.category' | translate}}:
-          {{'ROOF-WINDOWS-DATA.' + flat.rodzina | translate}} </li>
+          {{'ROOF-WINDOWS-DATA.' + flat.product.rodzina | translate}} </li>
         <li class="product-card__details--info">{{'SINGLE-PRODUCT.opening' | translate}}:
-          {{'ROOF-WINDOWS-DATA.' + flat.otwieranie | translate}} </li>
+          {{'ROOF-WINDOWS-DATA.' + flat.product.otwieranie | translate}} </li>
         <li class="product-card__details--info">{{'SINGLE-PRODUCT.innerColor' | translate}}:
-          {{'ROOF-WINDOWS-DATA.' + flat.stolarkaKolor | translate}} </li>
+          {{'ROOF-WINDOWS-DATA.' + flat.product.stolarkaKolor | translate}} </li>
         <li class="product-card__details--info">{{'SINGLE-PRODUCT.windowDimensions' | translate}}:
-          {{flat.szerokosc}} x {{flat.wysokosc}} </li>
+          {{flat.product.szerokosc}} x {{flat.product.wysokosc}} </li>
         <li class="product-card__details--info">{{'SINGLE-PRODUCT.outerColor' | translate}}:
-          {{'ROOF-WINDOWS-DATA.' + flat.oblachowanieKolor | translate}} </li>
+          {{'ROOF-WINDOWS-DATA.' + flat.product.oblachowanieKolor | translate}} </li>
         <li class="product-card__details--info">{{'SINGLE-PRODUCT.glazing' | translate}}:
-          {{'ROOF-WINDOWS-DATA.' + flat.pakietSzybowy | translate}}</li>
+          {{'ROOF-WINDOWS-DATA.' + flat.product.pakietSzybowy | translate}}</li>
       </ul>
 
       <div class="product-card__icons-section">
         <div class="product-card__icons-section--info">
           <h4 class="product-card__icons-section--info--title">{{ 'SINGLE-PRODUCT.numberOfGlass' | translate}}</h4>
-          <p class="product-card__icons-section--info--detail">{{flat.numberOfGlasses}}</p>
+          <p class="product-card__icons-section--info--detail">{{flat.product.numberOfGlasses}}</p>
           <!--        <img src="assets/icons/glazing.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{window.windowGlazing}}">-->
         </div>
         <div class="product-card__icons-section--info">
           <h4 class="product-card__icons-section--info--title">{{ 'SINGLE-PRODUCT.material' | translate}}</h4>
           <p
-            class="product-card__icons-section--info--detail">{{'ROOF-WINDOWS-DATA.' + flat.stolarkaMaterial | translate}}</p>
+            class="product-card__icons-section--info--detail">{{'ROOF-WINDOWS-DATA.' + flat.product.stolarkaMaterial | translate}}</p>
           <!--        <img src="assets/icons/material.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{ 'SINGLE-PRODUCT.material' | translate}}">-->
         </div>
         <div class="product-card__icons-section--info">
           <h4 class="product-card__icons-section--info--title">{{ 'SINGLE-PRODUCT.price' | translate}}</h4>
           <p
-            class="product-card__icons-section--info--detail">{{(flat.CenaDetaliczna / (cart$ | async).cart.exchange) + ((flat.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}}</p>
+            class="product-card__icons-section--info--detail">{{(flat.product.CenaDetaliczna / (cart$ | async).cart.exchange) + ((flat.product.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}}</p>
           <!--        <img src="assets/icons/price.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{ 'SINGLE-PRODUCT.price' | translate}}">-->
         </div>
       </div>
       <div class="product-card__buttons-section">
-        <a class="product-card__buttons-section--link icon-btn icon-btn--red" (click)="addToCart(flat, 1)">
+        <a class="product-card__buttons-section--link icon-btn icon-btn--red" (click)="addToCart(flat.product, 1)">
           <i class="fas fa-cart-plus product-card__buttons-section--icon"></i>
         </a>
-        <a routerLink="./{{flat.kod}}" class="product-card__buttons-section--link icon-btn icon-btn--blue">
+        <a routerLink="./{{flat.product.kod}}" class="product-card__buttons-section--link icon-btn icon-btn--blue">
           <i class="fas fa-info-circle product-card__buttons-section--icon"></i>
         </a>
-        <a routerLink="/{{ 'LINK.configuratorFlatRoofWindow' | translate}}/-1/no-name/{{flat.kod}}"
+        <a routerLink="/{{ 'LINK.configuratorFlatRoofWindow' | translate}}/-1/no-name/{{flat.product.kod}}"
            class="product-card__buttons-section--link icon-btn icon-btn--grey">
           <i class="fas fa-cogs product-card__buttons-section--icon"></i>
         </a>
@@ -359,32 +359,32 @@
           </tr>
 
           <tr class="products-table__item"
-              *ngFor="let product of filteredFlatRoofWindowList | paginate: {itemsPerPage: pageTableSize, currentPage: page} let i = index">
-            <td class="products-table__item--info">{{product.productName}}</td>
-            <td class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.pakietSzybowy | translate}}</td>
-            <td class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.otwieranie | translate}}</td>
-            <td class="products-table__item--info">{{product.szerokosc}}</td>
-            <td class="products-table__item--info">{{product.wysokosc}}</td>
-            <td class="products-table__item--info">{{(product.CenaDetaliczna / (cart$ | async).cart.exchange) +
-            ((product.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}}</td>
+              *ngFor="let product of filteredFlatRoofWindowList | paginate: {itemsPerPage: pageTableSize, currentPage: page}">
+            <td class="products-table__item--info">{{product.product.productName}}</td>
+            <td class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.product.pakietSzybowy | translate}}</td>
+            <td class="products-table__item--info">{{'ROOF-WINDOWS-DATA.' + product.product.otwieranie | translate}}</td>
+            <td class="products-table__item--info">{{product.product.szerokosc}}</td>
+            <td class="products-table__item--info">{{product.product.wysokosc}}</td>
+            <td class="products-table__item--info">{{(product.product.CenaDetaliczna / (cart$ | async).cart.exchange) +
+            ((product.product.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}}</td>
             <td class="products-table__item--info text-align">
               <form [formGroup]="quantityForm" class="display-flex">
                 <div class="quantity-container-in-table">
                   <p class="quantity-desc">{{ 'SINGLE-PRODUCT.quantity' | translate}}</p>
-                  <i (click)="decreaseQuantity(i)">-</i>
-                  <input id="quantity{{i}}"
-                         formControlName="quantity{{i}}"
+                  <i (click)="decreaseQuantity(product.id)">-</i>
+                  <input id="quantity{{product.id}}"
+                         formControlName="quantity{{product.id}}"
                          type="number" class="quantity-in-table">
-                  <i (click)="increaseQuantity(i)">+</i>
+                  <i (click)="increaseQuantity(product.id)">+</i>
                 </div>
                 <a class="product-card__buttons-section--link small-icon-btn small-icon-btn--red"
-                   (click)="addToCart(product, quantityForm.get('quantity' + i).value)">
+                   (click)="addToCart(product.product, quantityForm.get('quantity' + product.id).value)">
                   <i class="fas fa-cart-plus product-card__buttons-section--small-icon"></i>
                 </a>
               </form>
             </td>
             <td class="products-table__item--info text-align">
-              <a routerLink="/{{ 'LINK.configuratorFlatRoofWindow' | translate}}/-1/no-name/{{product.kod}}"
+              <a routerLink="/{{ 'LINK.configuratorFlatRoofWindow' | translate}}/-1/no-name/{{product.product.kod}}"
                  class="product-card__buttons-section--link small-icon-btn small-icon-btn--grey">
                 <i class="fas fa-cogs product-card__buttons-section--small-icon"></i></a></td>
           </tr>

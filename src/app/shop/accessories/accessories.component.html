@@ -116,81 +116,81 @@
       </div>
       <div class="product-card"
            *ngFor="let accessory of filteredAccessoriesList | paginate: {itemsPerPage: pageSize, currentPage: page}">
-        <a routerLink="./{{accessory.kod}}">
+        <a routerLink="./{{accessory.product.kod}}">
           <div class="product-card__photo-container">
-            <img src="{{accessory.linkiDoZdjec[0]}}" alt="{{accessory.grupaAsortymentowa}}"
+            <img src="{{accessory.product.linkiDoZdjec[0]}}" alt="{{accessory.product.grupaAsortymentowa}}"
                  class="product-card__photo-container__photo">
-            <img *ngIf="accessory.kolorTkaniny !== null"
-                 src="assets/img/configurator/accessory_configurator/central_options_pictures/{{accessory.kolorTkaniny.split(':')[1]}}.png"
-                 alt="{{accessory.kolorTkaniny}}" class="product-card__photo-container__colorPhoto">
+            <img *ngIf="accessory.product.kolorTkaniny !== null"
+                 src="assets/img/configurator/accessory_configurator/central_options_pictures/{{accessory.product.kolorTkaniny.split(':')[1]}}.png"
+                 alt="{{accessory.product.kolorTkaniny}}" class="product-card__photo-container__colorPhoto">
           </div>
         </a>
-        <h3 class="product-card__title">{{accessory.productName}}</h3>
+        <h3 class="product-card__title">{{accessory.product.productName}}</h3>
 
         <ul class="product-card__details">
           <li class="product-card__details--info">{{'SINGLE-PRODUCT.category' | translate}}:
-            {{'ACCESSORY-DATA.' + accessory.rodzina | translate}} </li>
-          <li *ngIf="accessory.typTkaniny !== null"
+            {{'ACCESSORY-DATA.' + accessory.product.rodzina | translate}} </li>
+          <li *ngIf="accessory.product.typTkaniny !== null"
               class="product-card__details--info">{{'SINGLE-PRODUCT.materialType' | translate}}:
-            {{'ACCESSORY-DATA.' + accessory.typTkaniny | translate}} </li>
-          <li *ngIf="accessory.oblachowanieMaterial !== null"
+            {{'ACCESSORY-DATA.' + accessory.product.typTkaniny | translate}} </li>
+          <li *ngIf="accessory.product.oblachowanieMaterial !== null"
               class="product-card__details--info">{{'SINGLE-PRODUCT.materialType' | translate}}:
-            {{'ACCESSORY-DATA.' + accessory.oblachowanieMaterial | translate}} </li>
-          <li *ngIf="accessory.kolorTkaniny !== null"
+            {{'ACCESSORY-DATA.' + accessory.product.oblachowanieMaterial | translate}} </li>
+          <li *ngIf="accessory.product.kolorTkaniny !== null"
               class="product-card__details--info">{{'SINGLE-PRODUCT.materialColor' | translate}}:
-            {{accessory.kolorTkaniny.split(':')[1]}} </li>
-          <li *ngIf="accessory.oblachowanieKolor !== null"
+            {{accessory.product.kolorTkaniny.split(':')[1]}} </li>
+          <li *ngIf="accessory.product.oblachowanieKolor !== null"
               class="product-card__details--info">{{'SINGLE-PRODUCT.materialColor' | translate}}:
-            {{'ACCESSORY-DATA.' + accessory.oblachowanieKolor | translate}} </li>
-          <li *ngIf="accessory.otwieranie !== null"
+            {{'ACCESSORY-DATA.' + accessory.product.oblachowanieKolor | translate}} </li>
+          <li *ngIf="accessory.product.otwieranie !== null"
               class="product-card__details--info">{{'SINGLE-PRODUCT.opening' | translate}}:
-            {{'ACCESSORY-DATA.' + accessory.otwieranie | translate}} </li>
+            {{'ACCESSORY-DATA.' + accessory.product.otwieranie | translate}} </li>
 
-          <li *ngIf="accessory.wysokosc > 0"
+          <li *ngIf="accessory.product.wysokosc > 0"
               class="product-card__details--info">{{'SINGLE-PRODUCT.accessoryDimensions' | translate}}:
-            {{accessory.szerokosc}} x {{accessory.wysokosc}}</li>
-          <li *ngIf="accessory.wysokosc === 0 || accessory.wysokosc === null"
+            {{accessory.product.szerokosc}} x {{accessory.product.wysokosc}}</li>
+          <li *ngIf="accessory.product.wysokosc === 0 || accessory.product.wysokosc === null"
               class="product-card__details--info">{{'SINGLE-PRODUCT.accessoryDimensions' | translate}}:
-            {{accessory.szerokosc}}</li>
-          <li *ngIf="(accessory.szerokosc === 0 && accessory.wysokosc === 0) ||
-                    (accessory.szerokosc === null && accessory.wysokosc === null)"
+            {{accessory.product.szerokosc}}</li>
+          <li *ngIf="(accessory.product.szerokosc === 0 && accessory.product.wysokosc === 0) ||
+                    (accessory.product.szerokosc === null && accessory.product.wysokosc === null)"
               class="product-card__details--info">{{'SINGLE-PRODUCT.accessoryDimensions' | translate}}:
             {{'ACCESSORY-DATA.n/a' | translate}}</li>
 
-          <li *ngIf="accessory.roletyKolorOsprzetu !== null"
+          <li *ngIf="accessory.product.roletyKolorOsprzetu !== null"
               class="product-card__details--info">{{'SINGLE-PRODUCT.equipmentColor' | translate}}:
-            {{'ACCESSORY-DATA.' + accessory.roletyKolorOsprzetu | translate}}</li>
-          <li *ngIf="accessory.roletyKolorOsprzetu === null"
+            {{'ACCESSORY-DATA.' + accessory.product.roletyKolorOsprzetu | translate}}</li>
+          <li *ngIf="accessory.product.roletyKolorOsprzetu === null"
               class="product-card__details--info">{{'SINGLE-PRODUCT.colorFinish' | translate}}:
-            {{'ACCESSORY-DATA.' + accessory.oblachowanieFinisz | translate}}</li>
+            {{'ACCESSORY-DATA.' + accessory.product.oblachowanieFinisz | translate}}</li>
         </ul>
 
         <div class="product-card__icons-section">
           <div class="product-card__icons-section--info">
             <h4 class="product-card__icons-section--info--title">{{ 'ACCESSORY-DATA.model' | translate}}</h4>
-            <p class="product-card__icons-section--info--detail">{{accessory.model.split(':')[1]}}</p>
+            <p class="product-card__icons-section--info--detail">{{accessory.product.model.split(':')[1]}}</p>
             <!--        <img src="assets/icons/glazing.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{window.windowGlazing}}">-->
           </div>
           <div class="product-card__icons-section--info">
             <h4 class="product-card__icons-section--info--title">{{ 'ACCESSORY-DATA.type' | translate}}</h4>
-            <p class="product-card__icons-section--info--detail">{{'ACCESSORY-DATA.' + accessory.typ | translate}}</p>
+            <p class="product-card__icons-section--info--detail">{{'ACCESSORY-DATA.' + accessory.product.typ | translate}}</p>
             <!--        <img src="assets/icons/material.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{ 'SINGLE-PRODUCT.material' | translate}}">-->
           </div>
           <div class="product-card__icons-section--info">
             <h4 class="product-card__icons-section--info--title">{{ 'SINGLE-PRODUCT.price' | translate}}</h4>
             <p
-              class="product-card__icons-section--info--detail">{{(accessory.CenaDetaliczna / (cart$ | async).cart.exchange) + ((accessory.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}}</p>
+              class="product-card__icons-section--info--detail">{{(accessory.product.CenaDetaliczna / (cart$ | async).cart.exchange) + ((accessory.product.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}}</p>
             <!--        <img src="assets/icons/price.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{ 'SINGLE-PRODUCT.price' | translate}}">-->
           </div>
         </div>
         <div class="product-card__buttons-section">
-          <a class="product-card__buttons-section--link icon-btn icon-btn--red" (click)="addToCart(accessory, 1)">
+          <a class="product-card__buttons-section--link icon-btn icon-btn--red" (click)="addToCart(accessory.product, 1)">
             <i class="fas fa-cart-plus product-card__buttons-section--icon"></i>
           </a>
-          <a routerLink="./{{accessory.kod}}" class="product-card__buttons-section--link icon-btn icon-btn--blue">
+          <a routerLink="./{{accessory.product.kod}}" class="product-card__buttons-section--link icon-btn icon-btn--blue">
             <i class="fas fa-info-circle product-card__buttons-section--icon"></i>
           </a>
-          <a routerLink="/{{ 'LINK.configuratorAccessory' | translate}}/-1/no-name/{{accessory.kod}}"
+          <a routerLink="/{{ 'LINK.configuratorAccessory' | translate}}/-1/no-name/{{accessory.product.kod}}"
              class="product-card__buttons-section--link icon-btn icon-btn--grey">
             <i class="fas fa-cogs product-card__buttons-section--icon"></i>
           </a>
@@ -408,33 +408,33 @@
 
           <tr class="products-table__item"
               *ngFor="let product of filteredAccessoriesList | paginate: {itemsPerPage: pageTableSize, currentPage: page} let i = index">
-            <td class="products-table__item--info">{{product.productName}}</td>
-            <td class="products-table__item--info">{{'ACCESSORY-DATA.' + product.typ | translate}}</td>
-            <td class="products-table__item--info">{{'ACCESSORY-DATA.' + product.typTkaniny | translate}}</td>
-            <td class="products-table__item--info">{{'ACCESSORY-DATA.' + product.kolorTkaniny | translate}}</td>
-            <td class="products-table__item--info">{{product.szerokosc}}</td>
-            <td class="products-table__item--info">{{product.wysokosc}}</td>
-            <td class="products-table__item--info">{{'ACCESSORY-DATA.' + product.dopasowanieRoletySzerokosc | translate}} {{'ACCESSORY-DATA.' + product.dopasowanieRoletyDlugosc | translate}}</td>
-            <td class="products-table__item--info">{{(product.CenaDetaliczna / (cart$ | async).cart.exchange) +
-            ((product.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}}</td>
+            <td class="products-table__item--info">{{product.product.productName}}</td>
+            <td class="products-table__item--info">{{'ACCESSORY-DATA.' + product.product.typ | translate}}</td>
+            <td class="products-table__item--info">{{'ACCESSORY-DATA.' + product.product.typTkaniny | translate}}</td>
+            <td class="products-table__item--info">{{'ACCESSORY-DATA.' + product.product.kolorTkaniny | translate}}</td>
+            <td class="products-table__item--info">{{product.product.szerokosc}}</td>
+            <td class="products-table__item--info">{{product.product.wysokosc}}</td>
+            <td class="products-table__item--info">{{'ACCESSORY-DATA.' + product.product.dopasowanieRoletySzerokosc | translate}} {{'ACCESSORY-DATA.' + product.product.dopasowanieRoletyDlugosc | translate}}</td>
+            <td class="products-table__item--info">{{(product.product.CenaDetaliczna / (cart$ | async).cart.exchange) +
+            ((product.product.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}}</td>
             <td class="products-table__item--info text-align">
               <form [formGroup]="quantityForm" class="display-flex">
                 <div class="quantity-container-in-table">
                   <p class="quantity-desc">{{ 'SINGLE-PRODUCT.quantity' | translate}}</p>
-                  <i (click)="decreaseQuantity(i)">-</i>
-                  <input id="quantity{{i}}"
-                         formControlName="quantity{{i}}"
+                  <i (click)="decreaseQuantity(product.id)">-</i>
+                  <input id="quantity{{product.id}}"
+                         formControlName="quantity{{product.id}}"
                          type="number" class="quantity-in-table">
-                  <i (click)="increaseQuantity(i)">+</i>
+                  <i (click)="increaseQuantity(product.id)">+</i>
                 </div>
                 <a class="product-card__buttons-section--link small-icon-btn small-icon-btn--red"
-                   (click)="addToCart(product, quantityForm.get('quantity' + i).value)">
+                   (click)="addToCart(product.product, quantityForm.get('quantity' + product.id).value)">
                   <i class="fas fa-cart-plus product-card__buttons-section--small-icon"></i>
                 </a>
               </form>
             </td>
             <td class="products-table__item--info text-align">
-              <a routerLink="/{{ 'LINK.configuratorAccessory' | translate}}/-1/no-name/{{product.kod}}"
+              <a routerLink="/{{ 'LINK.configuratorAccessory' | translate}}/-1/no-name/{{product.product.kod}}"
                  class="product-card__buttons-section--link small-icon-btn small-icon-btn--grey">
                 <i class="fas fa-cogs product-card__buttons-section--small-icon"></i></a></td>
           </tr>

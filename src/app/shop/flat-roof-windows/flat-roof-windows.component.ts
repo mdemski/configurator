@@ -28,8 +28,8 @@ export class FlatRoofWindowsComponent implements OnInit, OnDestroy {
   isFiltering = false;
   @Select(FlatRoofWindowState.flats) flatRoofWindows$: Observable<FlatRoofWindow[]>;
   @Select(CartState) cart$: Observable<any>;
-  flatRoofWindowList: FlatRoofWindow[];
-  filteredFlatRoofWindowList: FlatRoofWindow[];
+  flatRoofWindowList: { product: FlatRoofWindow, id: number }[] = [];
+  filteredFlatRoofWindowList: { product: FlatRoofWindow, id: number }[] = [];
   private isDestroyed$ = new Subject();
   page = 1;
   pageSize = 10;
@@ -61,7 +61,11 @@ export class FlatRoofWindowsComponent implements OnInit, OnDestroy {
     this.pageSize = this.getNumberInRow();
     this.pageTableSize = this.getTableRows();
     this.isFiltering = true;
-    this.flatRoofWindows$.pipe(takeUntil(this.isDestroyed$)).subscribe(flatRoofWindows => this.flatRoofWindowList = flatRoofWindows);
+    this.flatRoofWindows$.pipe(takeUntil(this.isDestroyed$)).subscribe(flatRoofWindows => {
+      flatRoofWindows.forEach((product, index) => {
+        this.flatRoofWindowList.push({product, id: index});
+      });
+    });
     this.filteredFlatRoofWindowList = this.flatRoofWindowList;
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe(() => console.log);
     this.quantityForm = new FormGroup({});
@@ -95,9 +99,9 @@ export class FlatRoofWindowsComponent implements OnInit, OnDestroy {
     this.isFiltering = true;
     this.filters = filtersObject;
     let numberOfGlazingNull = 0;
-    let filteredByGlazing: FlatRoofWindow[];
+    let filteredByGlazing: { product: FlatRoofWindow, id: number }[];
     let numberOfOpeningNull = 0;
-    let filteredByOpening: FlatRoofWindow[];
+    let filteredByOpening: { product: FlatRoofWindow, id: number }[];
     this.filters.flatGlazings.forEach(glazing => {
       if (glazing === null) {
         numberOfGlazingNull++;
@@ -112,31 +116,31 @@ export class FlatRoofWindowsComponent implements OnInit, OnDestroy {
       filteredByGlazing = this.flatRoofWindowList;
     } else {
       filteredByGlazing = this.flatRoofWindowList
-        .filter(flatRoofWindow => this.filters.flatGlazings.includes(flatRoofWindow.glazingToCalculation));
+        .filter(flatRoofWindow => this.filters.flatGlazings.includes(flatRoofWindow.product.glazingToCalculation));
     }
     if (numberOfOpeningNull === this.filters.flatOpeningTypes.length) {
       filteredByOpening = filteredByGlazing;
     } else {
       filteredByOpening = filteredByGlazing
-        .filter(flatRoofWindow => this.filters.flatOpeningTypes.includes(flatRoofWindow.otwieranie));
+        .filter(flatRoofWindow => this.filters.flatOpeningTypes.includes(flatRoofWindow.product.otwieranie));
     }
     this.filteredFlatRoofWindowList = filteredByOpening.filter(flatRoofWindow => {
       let nameFound = true;
       let widthFound = true;
       let heightFound = true;
       if (this.filters.flatName) {
-        nameFound = flatRoofWindow.productName.toString().trim().toLowerCase().indexOf(this.filters.flatName.toLowerCase()) !== -1;
+        nameFound = flatRoofWindow.product.productName.toString().trim().toLowerCase().indexOf(this.filters.flatName.toLowerCase()) !== -1;
       }
       if (this.filters.flatWidthFrom !== undefined && this.filters.flatWidthTo !== undefined) {
         // widths
         if (this.filters.flatWidthFrom <= this.filters.flatWidthTo) {
-          widthFound = flatRoofWindow.szerokosc >= this.filters.flatWidthFrom && flatRoofWindow.szerokosc <= this.filters.flatWidthTo;
+          widthFound = flatRoofWindow.product.szerokosc >= this.filters.flatWidthFrom && flatRoofWindow.product.szerokosc <= this.filters.flatWidthTo;
         }
         if (this.filters.flatWidthTo < 20 && this.filters.flatWidthFrom > 10) {
-          widthFound = flatRoofWindow.szerokosc >= this.filters.flatWidthFrom;
+          widthFound = flatRoofWindow.product.szerokosc >= this.filters.flatWidthFrom;
         }
         if (this.filters.flatWidthFrom < 10 && this.filters.flatWidthTo > 20) {
-          widthFound = flatRoofWindow.szerokosc <= this.filters.flatWidthTo;
+          widthFound = flatRoofWindow.product.szerokosc <= this.filters.flatWidthTo;
         }
         if (this.filters.flatWidthFrom < 10 && this.filters.flatWidthTo < 20) {
           widthFound = true;
@@ -145,13 +149,13 @@ export class FlatRoofWindowsComponent implements OnInit, OnDestroy {
       if (this.filters.flatHeightFrom !== undefined && this.filters.flatHeightTo !== undefined) {
         // heights
         if (this.filters.flatHeightFrom <= this.filters.flatHeightTo) {
-          heightFound = flatRoofWindow.wysokosc >= this.filters.flatHeightFrom && flatRoofWindow.wysokosc <= this.filters.flatHeightTo;
+          heightFound = flatRoofWindow.product.wysokosc >= this.filters.flatHeightFrom && flatRoofWindow.product.wysokosc <= this.filters.flatHeightTo;
         }
         if (this.filters.flatHeightTo < 20 && this.filters.flatHeightFrom > 10) {
-          heightFound = flatRoofWindow.wysokosc >= this.filters.flatHeightFrom;
+          heightFound = flatRoofWindow.product.wysokosc >= this.filters.flatHeightFrom;
         }
         if (this.filters.flatHeightFrom < 10 && this.filters.flatHeightTo > 20) {
-          heightFound = flatRoofWindow.wysokosc <= this.filters.flatHeightTo;
+          heightFound = flatRoofWindow.product.wysokosc <= this.filters.flatHeightTo;
         }
         if (this.filters.flatHeightFrom < 10 && this.filters.flatHeightTo < 20) {
           heightFound = true;
@@ -166,22 +170,22 @@ export class FlatRoofWindowsComponent implements OnInit, OnDestroy {
   sortArray() {
     switch (this.sortBy) {
       case 'popularity':
-        this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['iloscSprzedanychRok'], ['asc']);
+        this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['product.iloscSprzedanychRok'], ['asc']);
         break;
       case 'priceAsc':
-        this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['CenaDetaliczna'], ['asc']);
+        this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['product.CenaDetaliczna'], ['asc']);
         break;
       case 'priceDesc':
-        this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['CenaDetaliczna'], ['desc']);
+        this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['product.CenaDetaliczna'], ['desc']);
         break;
       case 'nameAsc':
-        this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['productName'], ['asc']);
+        this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['product.productName'], ['asc']);
         break;
       case 'nameDesc':
-        this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['productName'], ['desc']);
+        this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['product.productName'], ['desc']);
         break;
       default:
-        this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['iloscSprzedanychRok'], ['asc']);
+        this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['product.iloscSprzedanychRok'], ['asc']);
         break;
     }
   }
@@ -241,58 +245,58 @@ export class FlatRoofWindowsComponent implements OnInit, OnDestroy {
   sortByName() {
     this.nameToggler = !this.nameToggler;
     const product = this.nameToggler ? 'asc' : 'desc';
-    this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['productName'], product);
+    this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['product.productName'], product);
   }
 
   sortByGlazing() {
     this.glazingToggler = !this.glazingToggler;
     const product = this.glazingToggler ? 'asc' : 'desc';
-    this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['pakietSzybowy'], product);
+    this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['product.pakietSzybowy'], product);
   }
 
   sortByOpening() {
     this.openingToggler = !this.openingToggler;
     const product = this.openingToggler ? 'asc' : 'desc';
-    this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['otwieranie'], product);
+    this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['product.otwieranie'], product);
   }
 
   sortByWidth() {
     this.widthToggler = !this.widthToggler;
     const product = this.widthToggler ? 'asc' : 'desc';
-    this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['szerokosc'], product);
+    this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['product.szerokosc'], product);
   }
 
   sortByHeight() {
     this.heightToggler = !this.heightToggler;
     const product = this.heightToggler ? 'asc' : 'desc';
-    this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['wysokosc'], product);
+    this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['product.wysokosc'], product);
   }
 
   sortByPrice() {
     this.priceToggler = !this.priceToggler;
     const product = this.priceToggler ? 'asc' : 'desc';
-    this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['CenaDetaliczna'], product);
+    this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['product.CenaDetaliczna'], product);
   }
 
   sortTableArray() {
     switch (this.sortTableBy) {
       case 'popularityInTable':
-        this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['iloscSprzedanychRok'], ['asc']);
+        this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['product.iloscSprzedanychRok'], ['asc']);
         break;
       case 'priceAscInTable':
-        this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['CenaDetaliczna'], ['asc']);
+        this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['product.CenaDetaliczna'], ['asc']);
         break;
       case 'priceDescInTable':
-        this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['CenaDetaliczna'], ['desc']);
+        this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['product.CenaDetaliczna'], ['desc']);
         break;
       case 'nameAscInTable':
-        this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['productName'], ['asc']);
+        this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['product.productName'], ['asc']);
         break;
       case 'nameDescInTable':
-        this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['productName'], ['desc']);
+        this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['product.productName'], ['desc']);
         break;
       default:
-        this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['iloscSprzedanychRok'], ['asc']);
+        this.filteredFlatRoofWindowList = _.orderBy(this.filteredFlatRoofWindowList, ['product.iloscSprzedanychRok'], ['asc']);
         break;
     }
   }
@@ -300,7 +304,8 @@ export class FlatRoofWindowsComponent implements OnInit, OnDestroy {
   private filterTable(filterObject: { price: string; name: string; width: string; glazing: string; opening: string; height: string }) {
     this.isFiltering = true;
     this.filteredFlatRoofWindowList = this.flatRoofWindowList;
-    this.filteredFlatRoofWindowList = this.filteredFlatRoofWindowList.filter(flat => {
+    this.filteredFlatRoofWindowList = this.filteredFlatRoofWindowList.filter(data => {
+      const flat = data.product;
       let nameFound = true;
       let glazingFound = true;
       let openingFound = true;

@@ -30,8 +30,8 @@ export class SkylightsComponent implements OnInit, OnDestroy {
   isFiltering = false;
   @Select(SkylightState.skylights) skylights$: Observable<RoofWindowSkylight[]>;
   @Select(CartState) cart$: Observable<any>;
-  skylights: RoofWindowSkylight[] = [];
-  filteredSkylightList: RoofWindowSkylight[] = [];
+  skylights: { product: RoofWindowSkylight, id: number }[] = [];
+  filteredSkylightList: { product: RoofWindowSkylight, id: number }[] = [];
   isDestroyed$ = new Subject();
   page = 1;
   pageSize = 10;
@@ -66,7 +66,11 @@ export class SkylightsComponent implements OnInit, OnDestroy {
     this.pageSize = this.getNumberInRow();
     this.pageTableSize = this.getTableRows();
     this.isFiltering = true;
-    this.skylights$.pipe(takeUntil(this.isDestroyed$)).subscribe(skylights => this.skylights = skylights);
+    this.skylights$.pipe(takeUntil(this.isDestroyed$)).subscribe(skylights => {
+      skylights.forEach((product, index) => {
+        this.skylights.push({product, id: index});
+      });
+    });
     this.filteredSkylightList = this.skylights;
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe(() => console.log);
     this.quantityForm = new FormGroup({});
@@ -104,11 +108,11 @@ export class SkylightsComponent implements OnInit, OnDestroy {
     this.isFiltering = true;
     this.filters = filtersObject;
     let numberOfGlazingNull = 0;
-    let filteredByGlazing: RoofWindowSkylight[];
+    let filteredByGlazing: { product: RoofWindowSkylight, id: number }[];
     let numberOfOpeningNull = 0;
-    let filteredByOpening: RoofWindowSkylight[];
+    let filteredByOpening: { product: RoofWindowSkylight, id: number }[];
     let numberOfMaterialNull = 0;
-    let filteredByMaterial: RoofWindowSkylight[];
+    let filteredByMaterial: { product: RoofWindowSkylight, id: number }[];
     this.filters.skylightGlazings.forEach(glazing => {
       if (glazing === null) {
         numberOfGlazingNull++;
@@ -128,37 +132,37 @@ export class SkylightsComponent implements OnInit, OnDestroy {
       filteredByGlazing = this.skylights;
     } else {
       filteredByGlazing = this.skylights
-        .filter(skylight => this.filters.skylightGlazings.includes(skylight.glazingToCalculation));
+        .filter(skylight => this.filters.skylightGlazings.includes(skylight.product.glazingToCalculation));
     }
     if (numberOfOpeningNull === this.filters.skylightOpeningTypes.length) {
       filteredByOpening = filteredByGlazing;
     } else {
       filteredByOpening = filteredByGlazing
-        .filter(skylight => this.filters.skylightOpeningTypes.includes(skylight.otwieranie));
+        .filter(skylight => this.filters.skylightOpeningTypes.includes(skylight.product.otwieranie));
     }
     if (numberOfMaterialNull === this.filters.skylightMaterials.length) {
       filteredByMaterial = filteredByOpening;
     } else {
       filteredByMaterial = filteredByOpening
-        .filter(skylight => this.filters.skylightMaterials.includes(skylight.stolarkaMaterial));
+        .filter(skylight => this.filters.skylightMaterials.includes(skylight.product.stolarkaMaterial));
     }
     this.filteredSkylightList = filteredByMaterial.filter(skylight => {
       let nameFound = true;
       let widthFound = true;
       let heightFound = true;
       if (this.filters.skylightName) {
-        nameFound = skylight.productName.toString().trim().toLowerCase().indexOf(this.filters.skylightName.toLowerCase()) !== -1;
+        nameFound = skylight.product.productName.toString().trim().toLowerCase().indexOf(this.filters.skylightName.toLowerCase()) !== -1;
       }
       if (this.filters.skylightWidthFrom !== undefined && this.filters.skylightWidthTo !== undefined) {
         // widths
         if (this.filters.skylightWidthFrom <= this.filters.skylightWidthTo) {
-          widthFound = skylight.szerokosc >= this.filters.skylightWidthFrom && skylight.szerokosc <= this.filters.skylightWidthTo;
+          widthFound = skylight.product.szerokosc >= this.filters.skylightWidthFrom && skylight.product.szerokosc <= this.filters.skylightWidthTo;
         }
         if (this.filters.skylightWidthTo < 20 && this.filters.skylightWidthFrom > 10) {
-          widthFound = skylight.szerokosc >= this.filters.skylightWidthFrom;
+          widthFound = skylight.product.szerokosc >= this.filters.skylightWidthFrom;
         }
         if (this.filters.skylightWidthFrom < 10 && this.filters.skylightWidthTo > 20) {
-          widthFound = skylight.szerokosc <= this.filters.skylightWidthTo;
+          widthFound = skylight.product.szerokosc <= this.filters.skylightWidthTo;
         }
         if (this.filters.skylightWidthFrom < 10 && this.filters.skylightWidthTo < 20) {
           widthFound = true;
@@ -167,13 +171,13 @@ export class SkylightsComponent implements OnInit, OnDestroy {
       if (this.filters.skylightHeightFrom !== undefined && this.filters.skylightHeightTo !== undefined) {
         // heights
         if (this.filters.skylightHeightFrom <= this.filters.skylightHeightTo) {
-          heightFound = skylight.wysokosc >= this.filters.skylightHeightFrom && skylight.wysokosc <= this.filters.skylightHeightTo;
+          heightFound = skylight.product.wysokosc >= this.filters.skylightHeightFrom && skylight.product.wysokosc <= this.filters.skylightHeightTo;
         }
         if (this.filters.skylightHeightTo < 20 && this.filters.skylightHeightFrom > 10) {
-          heightFound = skylight.wysokosc >= this.filters.skylightHeightFrom;
+          heightFound = skylight.product.wysokosc >= this.filters.skylightHeightFrom;
         }
         if (this.filters.skylightHeightFrom < 10 && this.filters.skylightHeightTo > 20) {
-          heightFound = skylight.wysokosc <= this.filters.skylightHeightTo;
+          heightFound = skylight.product.wysokosc <= this.filters.skylightHeightTo;
         }
         if (this.filters.skylightHeightFrom < 10 && this.filters.skylightHeightTo < 20) {
           heightFound = true;
@@ -188,22 +192,22 @@ export class SkylightsComponent implements OnInit, OnDestroy {
   sortArray() {
     switch (this.sortBy) {
       case 'popularity':
-        this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['iloscSprzedanychRok'], ['asc']);
+        this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['product.iloscSprzedanychRok'], ['asc']);
         break;
       case 'priceAsc':
-        this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['CenaDetaliczna'], ['asc']);
+        this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['product.CenaDetaliczna'], ['asc']);
         break;
       case 'priceDesc':
-        this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['CenaDetaliczna'], ['desc']);
+        this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['product.CenaDetaliczna'], ['desc']);
         break;
       case 'nameAsc':
-        this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['productName'], ['asc']);
+        this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['product.productName'], ['asc']);
         break;
       case 'nameDesc':
-        this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['productName'], ['desc']);
+        this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['product.productName'], ['desc']);
         break;
       default:
-        this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['iloscSprzedanychRok'], ['asc']);
+        this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['product.iloscSprzedanychRok'], ['asc']);
         break;
     }
   }
@@ -264,70 +268,70 @@ export class SkylightsComponent implements OnInit, OnDestroy {
   sortByName() {
     this.nameToggler = !this.nameToggler;
     const product = this.nameToggler ? 'asc' : 'desc';
-    this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['productName'], product);
+    this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['product.productName'], product);
   }
 
   sortByType() {
     this.typeToggler = !this.typeToggler;
     const product = this.typeToggler ? 'asc' : 'desc';
-    this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['typ'], product);
+    this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['product.typ'], product);
   }
 
   sortByGlazing() {
     this.glazingToggler = !this.glazingToggler;
     const product = this.glazingToggler ? 'asc' : 'desc';
-    this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['pakietSzybowy'], product);
+    this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['product.pakietSzybowy'], product);
   }
 
   sortByOpening() {
     this.openingToggler = !this.openingToggler;
     const product = this.openingToggler ? 'asc' : 'desc';
-    this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['otwieranie'], product);
+    this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['product.otwieranie'], product);
   }
 
   sortByMaterial() {
     this.materialToggler = !this.materialToggler;
     const product = this.materialToggler ? 'asc' : 'desc';
-    this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['stolarkaMaterial'], product);
+    this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['product.stolarkaMaterial'], product);
   }
 
   sortByWidth() {
     this.widthToggler = !this.widthToggler;
     const product = this.widthToggler ? 'asc' : 'desc';
-    this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['szerokosc'], product);
+    this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['product.szerokosc'], product);
   }
 
   sortByHeight() {
     this.heightToggler = !this.heightToggler;
     const product = this.heightToggler ? 'asc' : 'desc';
-    this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['wysokosc'], product);
+    this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['product.wysokosc'], product);
   }
 
   sortByPrice() {
     this.priceToggler = !this.priceToggler;
     const product = this.priceToggler ? 'asc' : 'desc';
-    this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['CenaDetaliczna'], product);
+    this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['product.CenaDetaliczna'], product);
   }
 
   sortTableArray() {
     switch (this.sortTableBy) {
       case 'popularityInTable':
-        this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['iloscSprzedanychRok'], ['asc']);
+        this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['product.iloscSprzedanychRok'], ['asc']);
         break;
       case 'priceAscInTable':
-        this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['CenaDetaliczna'], ['asc']);
+        this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['product.CenaDetaliczna'], ['asc']);
         break;
       case 'priceDescInTable':
-        this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['CenaDetaliczna'], ['desc']);
+        this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['product.CenaDetaliczna'], ['desc']);
         break;
       case 'nameAscInTable':
-        this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['productName'], ['asc']);
+        this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['product.productName'], ['asc']);
         break;
       case 'nameDescInTable':
-        this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['productName'], ['desc']);
+        this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['product.productName'], ['desc']);
         break;
       default:
-        this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['iloscSprzedanychRok'], ['asc']);
+        this.filteredSkylightList = _.orderBy(this.filteredSkylightList, ['product.iloscSprzedanychRok'], ['asc']);
         break;
     }
   }
@@ -335,7 +339,8 @@ export class SkylightsComponent implements OnInit, OnDestroy {
   private filterTable(filterObject: { material: string; price: string; name: string; width: string; glazing: string; type: string; opening: string; height: string }) {
     this.isFiltering = true;
     this.filteredSkylightList = this.skylights;
-    this.filteredSkylightList = this.filteredSkylightList.filter(skylight => {
+    this.filteredSkylightList = this.filteredSkylightList.filter(data => {
+      const skylight = data.product;
       let nameFound = true;
       let typeFound = true;
       let glazingFound = true;

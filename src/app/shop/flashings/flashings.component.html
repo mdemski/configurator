@@ -116,60 +116,60 @@
       </div>
       <div class="product-card"
            *ngFor="let flashing of filteredFlashingsList | paginate: {itemsPerPage: pageSize, currentPage: page}">
-        <a routerLink="./{{flashing.kod}}">
+        <a routerLink="./{{flashing.product.kod}}">
           <div class="product-card__photo-container">
-            <img src="{{flashing.linkiDoZdjec[0]}}" alt="{{flashing.grupaAsortymentowa}}"
+            <img src="{{flashing.product.linkiDoZdjec[0]}}" alt="{{flashing.product.grupaAsortymentowa}}"
                  class="product-card__photo-container__photo">
           </div>
         </a>
-        <h3 class="product-card__title">{{flashing.productName}}</h3>
+        <h3 class="product-card__title">{{flashing.product.productName}}</h3>
 
         <ul class="product-card__details">
           <li class="product-card__details--info">{{'SINGLE-PRODUCT.category' | translate}}:
-            {{'FLASHINGS-DATA.' + flashing.rodzina | translate}} </li>
-          <li *ngIf="flashing.oblachowanieMaterial !== null"
+            {{'FLASHINGS-DATA.' + flashing.product.rodzina | translate}} </li>
+          <li *ngIf="flashing.product.oblachowanieMaterial !== null"
               class="product-card__details--info">{{'SINGLE-PRODUCT.materialType' | translate}}:
-            {{'FLASHINGS-DATA.' + flashing.oblachowanieMaterial | translate}} </li>
-          <li *ngIf="flashing.oblachowanieKolor !== null"
+            {{'FLASHINGS-DATA.' + flashing.product.oblachowanieMaterial | translate}} </li>
+          <li *ngIf="flashing.product.oblachowanieKolor !== null"
               class="product-card__details--info">{{'SINGLE-PRODUCT.materialColor' | translate}}:
-            {{'FLASHINGS-DATA.' + flashing.oblachowanieKolor | translate}} </li>
-          <li *ngIf="flashing.typFartucha !== null"
+            {{'FLASHINGS-DATA.' + flashing.product.oblachowanieKolor | translate}} </li>
+          <li *ngIf="flashing.product.typFartucha !== null"
               class="product-card__details--info">{{'SINGLE-PRODUCT.flashingApron' | translate}}:
-            {{'FLASHINGS-DATA.' + flashing.typFartucha | translate}} </li>
-          <li *ngIf="flashing.wysokosc > 0"
+            {{'FLASHINGS-DATA.' + flashing.product.typFartucha | translate}} </li>
+          <li *ngIf="flashing.product.wysokosc > 0"
               class="product-card__details--info">{{'SINGLE-PRODUCT.flashingDimensions' | translate}}:
-            {{flashing.szerokosc}} x {{flashing.wysokosc}}</li>
-          <li *ngIf="flashing.oblachowanieFinisz === null"
+            {{flashing.product.szerokosc}} x {{flashing.product.wysokosc}}</li>
+          <li *ngIf="flashing.product.oblachowanieFinisz === null"
               class="product-card__details--info">{{'SINGLE-PRODUCT.colorFinish' | translate}}:
-            {{'FLASHINGS-DATA.' + flashing.oblachowanieFinisz | translate}}</li>
+            {{'FLASHINGS-DATA.' + flashing.product.oblachowanieFinisz | translate}}</li>
         </ul>
 
         <div class="product-card__icons-section">
           <div class="product-card__icons-section--info">
             <h4 class="product-card__icons-section--info--title">{{ 'SHOP.flashingModel' | translate}}</h4>
-            <p class="product-card__icons-section--info--detail">{{flashing.model.split(':')[1]}}</p>
+            <p class="product-card__icons-section--info--detail">{{flashing.product.model.split(':')[1]}}</p>
             <!--        <img src="assets/icons/glazing.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{window.windowGlazing}}">-->
           </div>
           <div class="product-card__icons-section--info">
             <h4 class="product-card__icons-section--info--title">{{ 'SHOP.flashingApronType' | translate}}</h4>
-            <p class="product-card__icons-section--info--detail">{{flashing.typFartucha}}</p>
+            <p class="product-card__icons-section--info--detail">{{flashing.product.typFartucha}}</p>
             <!--        <img src="assets/icons/material.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{ 'SINGLE-PRODUCT.material' | translate}}">-->
           </div>
           <div class="product-card__icons-section--info">
             <h4 class="product-card__icons-section--info--title">{{ 'SINGLE-PRODUCT.price' | translate}}</h4>
             <p
-              class="product-card__icons-section--info--detail">{{(flashing.CenaDetaliczna / (cart$ | async).cart.exchange) + ((flashing.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}}</p>
+              class="product-card__icons-section--info--detail">{{(flashing.product.CenaDetaliczna / (cart$ | async).cart.exchange) + ((flashing.product.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}}</p>
             <!--        <img src="assets/icons/price.png" class="product-card__icons-section&#45;&#45;info&#45;&#45;icon" alt="{{ 'SINGLE-PRODUCT.price' | translate}}">-->
           </div>
         </div>
         <div class="product-card__buttons-section">
-          <a class="product-card__buttons-section--link icon-btn icon-btn--red" (click)="addToCart(flashing, 1)">
+          <a class="product-card__buttons-section--link icon-btn icon-btn--red" (click)="addToCart(flashing.product, 1)">
             <i class="fas fa-cart-plus product-card__buttons-section--icon"></i>
           </a>
-          <a routerLink="./{{flashing.kod}}" class="product-card__buttons-section--link icon-btn icon-btn--blue">
+          <a routerLink="./{{flashing.product.kod}}" class="product-card__buttons-section--link icon-btn icon-btn--blue">
             <i class="fas fa-info-circle product-card__buttons-section--icon"></i>
           </a>
-          <a routerLink="/{{ 'LINK.configuratorFlashing' | translate}}/-1/no-name/{{flashing.kod}}"
+          <a routerLink="/{{ 'LINK.configuratorFlashing' | translate}}/-1/no-name/{{flashing.product.kod}}"
              class="product-card__buttons-section--link icon-btn icon-btn--grey">
             <i class="fas fa-cogs product-card__buttons-section--icon"></i>
           </a>
@@ -386,34 +386,34 @@
           </tr>
 
           <tr class="products-table__item"
-              *ngFor="let product of filteredFlashingsList | paginate: {itemsPerPage: pageTableSize, currentPage: page} let i = index">
-            <td class="products-table__item--info">{{product.productName}}</td>
-            <td class="products-table__item--info">{{'FLASHINGS-DATA.' + product.typKolnierza | translate}}</td>
-            <td class="products-table__item--info">{{'FLASHINGS-DATA.' + product.typFartucha | translate}}</td>
-            <td class="products-table__item--info">{{'FLASHINGS-DATA.' + product.flashingCombination | translate}}</td>
-            <td class="products-table__item--info">{{product.szerokosc}}</td>
-            <td class="products-table__item--info">{{product.wysokosc}}</td>
-            <td class="products-table__item--info">{{'FLASHINGS-DATA.' + product.oblachowanieKolor | translate}}</td>
-            <td class="products-table__item--info">{{(product.CenaDetaliczna / (cart$ | async).cart.exchange) +
-            ((product.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}}</td>
+              *ngFor="let product of filteredFlashingsList | paginate: {itemsPerPage: pageTableSize, currentPage: page}">
+            <td class="products-table__item--info">{{product.product.productName}}</td>
+            <td class="products-table__item--info">{{'FLASHINGS-DATA.' + product.product.typKolnierza | translate}}</td>
+            <td class="products-table__item--info">{{'FLASHINGS-DATA.' + product.product.typFartucha | translate}}</td>
+            <td class="products-table__item--info">{{'FLASHINGS-DATA.' + product.product.flashingCombination | translate}}</td>
+            <td class="products-table__item--info">{{product.product.szerokosc}}</td>
+            <td class="products-table__item--info">{{product.product.wysokosc}}</td>
+            <td class="products-table__item--info">{{'FLASHINGS-DATA.' + product.product.oblachowanieKolor | translate}}</td>
+            <td class="products-table__item--info">{{(product.product.CenaDetaliczna / (cart$ | async).cart.exchange) +
+            ((product.product.CenaDetaliczna / (cart$ | async).cart.exchange) * (cart$ | async).cart.vatRate) | currency: ' '}}</td>
             <td class="products-table__item--info text-align">
               <form [formGroup]="quantityForm" class="display-flex">
                 <div class="quantity-container-in-table">
                   <p class="quantity-desc">{{ 'SINGLE-PRODUCT.quantity' | translate}}</p>
-                  <i (click)="decreaseQuantity(i)">-</i>
-                  <input id="quantity{{i}}"
-                         formControlName="quantity{{i}}"
+                  <i (click)="decreaseQuantity(product.id)">-</i>
+                  <input id="quantity{{product.id}}"
+                         formControlName="quantity{{product.id}}"
                          type="number" class="quantity-in-table">
-                  <i (click)="increaseQuantity(i)">+</i>
+                  <i (click)="increaseQuantity(product.id)">+</i>
                 </div>
                 <a class="product-card__buttons-section--link small-icon-btn small-icon-btn--red"
-                   (click)="addToCart(product, quantityForm.get('quantity' + i).value)">
+                   (click)="addToCart(product.product, quantityForm.get('quantity' + product.id).value)">
                   <i class="fas fa-cart-plus product-card__buttons-section--small-icon"></i>
                 </a>
               </form>
             </td>
             <td class="products-table__item--info text-align">
-              <a routerLink="/{{ 'LINK.configuratorFlashing' | translate}}/-1/no-name/{{product.kod}}"
+              <a routerLink="/{{ 'LINK.configuratorFlashing' | translate}}/-1/no-name/{{product.product.kod}}"
                  class="product-card__buttons-section--link small-icon-btn small-icon-btn--grey">
                 <i class="fas fa-cogs product-card__buttons-section--small-icon"></i></a></td>
           </tr>

@@ -32,8 +32,8 @@ export class FlashingsComponent implements OnInit, OnDestroy {
     flashingHeightFrom: number,
     flashingHeightTo: number
   };
-  flashingsList: Flashing[] = [];
-  filteredFlashingsList: Flashing[] = [];
+  flashingsList: { product: Flashing, id: number }[] = [];
+  filteredFlashingsList: { product: Flashing, id: number }[] = [];
   searchText: string;
   page = 1;
   pageSize = 10;
@@ -69,7 +69,11 @@ export class FlashingsComponent implements OnInit, OnDestroy {
     this.pageSize = this.getNumberInRow();
     this.pageTableSize = this.getTableRows();
     this.isFiltering = true;
-    this.flashings$.pipe(takeUntil(this.isDestroyed$)).subscribe(flashings => this.flashingsList = flashings);
+    this.flashings$.pipe(takeUntil(this.isDestroyed$)).subscribe(flashings => {
+      flashings.forEach((product, index) => {
+        this.flashingsList.push({product, id: index});
+      });
+    });
     this.filteredFlashingsList = this.flashingsList;
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe(() => console.log);
     this.quantityForm = new FormGroup({});
@@ -107,15 +111,15 @@ export class FlashingsComponent implements OnInit, OnDestroy {
     this.isFiltering = true;
     this.filters = filtersObject;
     let numberOfTypeNull = 0;
-    let filteredByType: Flashing[];
+    let filteredByType: { product: Flashing, id: number }[];
     let numberOfRoofingNull = 0;
-    let filteredByRoofing: Flashing[];
+    let filteredByRoofing: { product: Flashing, id: number }[];
     let numberOfCombinationNull = 0;
-    let filteredByCombination: Flashing[];
+    let filteredByCombination: { product: Flashing, id: number }[];
     let numberOfMaterialTypeNull = 0;
-    let filteredByMaterialType: Flashing[];
+    let filteredByMaterialType: { product: Flashing, id: number }[];
     let numberOfMaterialColorNull = 0;
-    let filteredByMaterialColor: Flashing[];
+    let filteredByMaterialColor: { product: Flashing, id: number }[];
     this.filters.flashingType.forEach(type => {
       if (type === null) {
         numberOfTypeNull++;
@@ -145,49 +149,49 @@ export class FlashingsComponent implements OnInit, OnDestroy {
       filteredByType = this.flashingsList;
     } else {
       filteredByType = this.flashingsList
-        .filter(flashing => this.filters.flashingType.includes(flashing.geometria));
+        .filter(flashing => this.filters.flashingType.includes(flashing.product.geometria));
     }
     if (numberOfRoofingNull === this.filters.flashingRoofing.length) {
       filteredByRoofing = filteredByType;
     } else {
       filteredByRoofing = filteredByType
-        .filter(flashing => flashing.roofing.filter(roofing => this.filters.flashingRoofing.includes(roofing)));
+        .filter(flashing => flashing.product.roofing.filter(roofing => this.filters.flashingRoofing.includes(roofing)));
     }
     if (numberOfCombinationNull === this.filters.flashingCombination.length) {
       filteredByCombination = filteredByRoofing;
     } else {
       filteredByCombination = filteredByRoofing
-        .filter(flashing => this.filters.flashingCombination.includes(flashing.flashingCombinationCode));
+        .filter(flashing => this.filters.flashingCombination.includes(flashing.product.flashingCombinationCode));
     }
     if (numberOfMaterialTypeNull === this.filters.flashingMaterialType.length) {
       filteredByMaterialType = filteredByCombination;
     } else {
       filteredByMaterialType = filteredByCombination
-        .filter(flashing => this.filters.flashingMaterialType.includes(flashing.oblachowanieMaterial));
+        .filter(flashing => this.filters.flashingMaterialType.includes(flashing.product.oblachowanieMaterial));
     }
     if (numberOfMaterialColorNull === this.filters.flashingMaterialColor.length) {
       filteredByMaterialColor = filteredByMaterialType;
     } else {
       filteredByMaterialColor = filteredByMaterialType
-        .filter(flashing => this.filters.flashingMaterialColor.includes(flashing.oblachowanieKolor));
+        .filter(flashing => this.filters.flashingMaterialColor.includes(flashing.product.oblachowanieKolor));
     }
     this.filteredFlashingsList = filteredByMaterialColor.filter(flashing => {
       let nameFound = true;
       let widthFound = true;
       let heightFound = true;
       if (this.filters.flashingName) {
-        nameFound = flashing.productName.toString().trim().toLowerCase().indexOf(this.filters.flashingName.toLowerCase()) !== -1;
+        nameFound = flashing.product.productName.toString().trim().toLowerCase().indexOf(this.filters.flashingName.toLowerCase()) !== -1;
       }
       if (this.filters.flashingWidthFrom !== undefined && this.filters.flashingWidthTo !== undefined) {
         // widths
         if (this.filters.flashingWidthFrom <= this.filters.flashingWidthTo) {
-          widthFound = flashing.szerokosc >= this.filters.flashingWidthFrom && flashing.szerokosc <= this.filters.flashingWidthTo;
+          widthFound = flashing.product.szerokosc >= this.filters.flashingWidthFrom && flashing.product.szerokosc <= this.filters.flashingWidthTo;
         }
         if (this.filters.flashingWidthTo < 20 && this.filters.flashingWidthFrom > 10) {
-          widthFound = flashing.szerokosc >= this.filters.flashingWidthFrom;
+          widthFound = flashing.product.szerokosc >= this.filters.flashingWidthFrom;
         }
         if (this.filters.flashingWidthFrom < 10 && this.filters.flashingWidthTo > 20) {
-          widthFound = flashing.szerokosc <= this.filters.flashingWidthTo;
+          widthFound = flashing.product.szerokosc <= this.filters.flashingWidthTo;
         }
         if (this.filters.flashingWidthFrom < 10 && this.filters.flashingWidthTo < 20) {
           widthFound = true;
@@ -196,13 +200,13 @@ export class FlashingsComponent implements OnInit, OnDestroy {
       if (this.filters.flashingHeightFrom !== undefined && this.filters.flashingHeightTo !== undefined) {
         // heights
         if (this.filters.flashingHeightFrom <= this.filters.flashingHeightTo) {
-          heightFound = flashing.wysokosc >= this.filters.flashingHeightFrom && flashing.wysokosc <= this.filters.flashingHeightTo;
+          heightFound = flashing.product.wysokosc >= this.filters.flashingHeightFrom && flashing.product.wysokosc <= this.filters.flashingHeightTo;
         }
         if (this.filters.flashingHeightTo < 20 && this.filters.flashingHeightFrom > 10) {
-          heightFound = flashing.wysokosc >= this.filters.flashingHeightFrom;
+          heightFound = flashing.product.wysokosc >= this.filters.flashingHeightFrom;
         }
         if (this.filters.flashingHeightFrom < 10 && this.filters.flashingHeightTo > 20) {
-          heightFound = flashing.wysokosc <= this.filters.flashingHeightTo;
+          heightFound = flashing.product.wysokosc <= this.filters.flashingHeightTo;
         }
         if (this.filters.flashingHeightFrom < 10 && this.filters.flashingHeightTo < 20) {
           heightFound = true;
@@ -222,22 +226,22 @@ export class FlashingsComponent implements OnInit, OnDestroy {
   sortArray() {
     switch (this.sortBy) {
       case 'popularity':
-        this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['iloscSprzedanychRok'], ['asc']);
+        this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['product.iloscSprzedanychRok'], ['asc']);
         break;
       case 'priceAsc':
-        this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['CenaDetaliczna'], ['asc']);
+        this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['product.CenaDetaliczna'], ['asc']);
         break;
       case 'priceDesc':
-        this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['CenaDetaliczna'], ['desc']);
+        this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['product.CenaDetaliczna'], ['desc']);
         break;
       case 'nameAsc':
-        this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['accessoryName'], ['asc']);
+        this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['product.productName'], ['asc']);
         break;
       case 'nameDesc':
-        this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['accessoryName'], ['desc']);
+        this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['product.productName'], ['desc']);
         break;
       default:
-        this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['iloscSprzedanychRok'], ['asc']);
+        this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['product.iloscSprzedanychRok'], ['asc']);
         break;
     }
   }
@@ -295,70 +299,70 @@ export class FlashingsComponent implements OnInit, OnDestroy {
   sortByName() {
     this.nameToggler = !this.nameToggler;
     const product = this.nameToggler ? 'asc' : 'desc';
-    this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['productName'], product);
+    this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['product.productName'], product);
   }
 
   sortByType() {
     this.typeToggler = !this.typeToggler;
     const product = this.typeToggler ? 'asc' : 'desc';
-    this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['typKolnierza'], product);
+    this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['product.typKolnierza'], product);
   }
 
   sortByApronType() {
     this.apronTypeToggler = !this.apronTypeToggler;
     const product = this.apronTypeToggler ? 'asc' : 'desc';
-    this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['typFartucha'], product);
+    this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['product.typFartucha'], product);
   }
 
   sortByCombination() {
     this.combinationToggler = !this.combinationToggler;
     const product = this.combinationToggler ? 'asc' : 'desc';
-    this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['flashingCombination'], product);
+    this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['product.flashingCombination'], product);
   }
 
   sortByWidth() {
     this.widthToggler = !this.widthToggler;
     const product = this.widthToggler ? 'asc' : 'desc';
-    this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['szerokosc'], product);
+    this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['product.szerokosc'], product);
   }
 
   sortByHeight() {
     this.heightToggler = !this.heightToggler;
     const product = this.heightToggler ? 'asc' : 'desc';
-    this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['wysokosc'], product);
+    this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['product.wysokosc'], product);
   }
 
   sortByColor() {
     this.colorToggler = !this.colorToggler;
     const product = this.colorToggler ? 'asc' : 'desc';
-    this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['oblachowanieKolor'], product);
+    this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['product.oblachowanieKolor'], product);
   }
 
   sortByPrice() {
     this.priceToggler = !this.priceToggler;
     const product = this.priceToggler ? 'asc' : 'desc';
-    this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['CenaDetaliczna'], product);
+    this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['product.CenaDetaliczna'], product);
   }
 
   sortTableArray() {
     switch (this.sortTableBy) {
       case 'popularityInTable':
-        this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['iloscSprzedanychRok'], ['asc']);
+        this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['product.iloscSprzedanychRok'], ['asc']);
         break;
       case 'priceAscInTable':
-        this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['CenaDetaliczna'], ['asc']);
+        this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['product.CenaDetaliczna'], ['asc']);
         break;
       case 'priceDescInTable':
-        this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['CenaDetaliczna'], ['desc']);
+        this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['product.CenaDetaliczna'], ['desc']);
         break;
       case 'nameAscInTable':
-        this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['productName'], ['asc']);
+        this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['product.productName'], ['asc']);
         break;
       case 'nameDescInTable':
-        this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['productName'], ['desc']);
+        this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['product.productName'], ['desc']);
         break;
       default:
-        this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['iloscSprzedanychRok'], ['asc']);
+        this.filteredFlashingsList = _.orderBy(this.filteredFlashingsList, ['product.iloscSprzedanychRok'], ['asc']);
         break;
     }
   }
@@ -366,7 +370,8 @@ export class FlashingsComponent implements OnInit, OnDestroy {
   private filterTable(filterObject: { color: string; price: string; name: string; width: string; apronType: string; type: string; combination: string; height: string }) {
     this.isFiltering = true;
     this.filteredFlashingsList = this.flashingsList;
-    this.filteredFlashingsList = this.filteredFlashingsList.filter(flashing => {
+    this.filteredFlashingsList = this.filteredFlashingsList.filter(data => {
+      const flashing = data.product;
       let nameFound = true;
       let typeFound = true;
       let apronTypFound = true;

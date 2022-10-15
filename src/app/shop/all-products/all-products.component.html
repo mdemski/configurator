@@ -265,7 +265,7 @@
                   <i (click)="increaseQuantity(product.id)">+</i>
                 </div>
                 <a class="product-card__buttons-section--link small-icon-btn small-icon-btn--red"
-                   (click)="addToCart(product, quantityForm.get('quantity' + product.id).value)">
+                   (click)="addToCart(product.product, quantityForm.get('quantity' + product.id).value)">
                   <i class="fas fa-cart-plus product-card__buttons-section--small-icon"></i>
                 </a>
               </form>

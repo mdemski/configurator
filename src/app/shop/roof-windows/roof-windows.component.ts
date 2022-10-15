@@ -29,8 +29,8 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
   isFiltering = false;
   @Select(RoofWindowState.roofWindows) roofWindows$: Observable<RoofWindowSkylight[]>;
   @Select(CartState) cart$: Observable<any>;
-  roofWindowsList: RoofWindowSkylight[] = [];
-  filteredRoofWindowsList: RoofWindowSkylight[] = [];
+  roofWindowsList: { product: RoofWindowSkylight, id: number }[] = [];
+  filteredRoofWindowsList: { product: RoofWindowSkylight, id: number }[] = [];
   private isDestroyed$ = new Subject();
   page = 1;
   pageSize = 10;
@@ -65,7 +65,11 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
     this.pageSize = this.getNumberInRow();
     this.pageTableSize = this.getTableRows();
     this.isFiltering = true;
-    this.roofWindows$.pipe(takeUntil(this.isDestroyed$)).subscribe(roofWindows => this.roofWindowsList = roofWindows);
+    this.roofWindows$.pipe(takeUntil(this.isDestroyed$)).subscribe(roofWindows => {
+      roofWindows.forEach((product, index) => {
+        this.roofWindowsList.push({product, id: index});
+      });
+    });
     this.filteredRoofWindowsList = this.roofWindowsList;
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe(() => console.log);
     this.quantityForm = new FormGroup({});
@@ -97,11 +101,11 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
     this.isFiltering = true;
     this.filters = filtersObject;
     let numberOfGlazingNull = 0;
-    let filteredByGlazing: RoofWindowSkylight[];
+    let filteredByGlazing: { product: RoofWindowSkylight, id: number }[];
     let numberOfOpeningNull = 0;
-    let filteredByOpening: RoofWindowSkylight[];
+    let filteredByOpening: { product: RoofWindowSkylight, id: number }[];
     let numberOfMaterialNull = 0;
-    let filteredByMaterial: RoofWindowSkylight[];
+    let filteredByMaterial: { product: RoofWindowSkylight, id: number }[];
     this.filters.windowGlazings.forEach(glazing => {
       if (glazing === null) {
         numberOfGlazingNull++;
@@ -121,37 +125,37 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
       filteredByGlazing = this.roofWindowsList;
     } else {
       filteredByGlazing = this.roofWindowsList
-        .filter(window => this.filters.windowGlazings.includes(window.glazingToCalculation));
+        .filter(window => this.filters.windowGlazings.includes(window.product.glazingToCalculation));
     }
     if (numberOfOpeningNull === this.filters.windowOpeningTypes.length) {
       filteredByOpening = filteredByGlazing;
     } else {
       filteredByOpening = filteredByGlazing
-        .filter(window => this.filters.windowOpeningTypes.includes(window.otwieranie));
+        .filter(window => this.filters.windowOpeningTypes.includes(window.product.otwieranie));
     }
     if (numberOfMaterialNull === this.filters.windowMaterials.length) {
       filteredByMaterial = filteredByOpening;
     } else {
       filteredByMaterial = filteredByOpening
-        .filter(window => this.filters.windowMaterials.includes(window.stolarkaMaterial));
+        .filter(window => this.filters.windowMaterials.includes(window.product.stolarkaMaterial));
     }
     this.filteredRoofWindowsList = filteredByMaterial.filter(window => {
       let nameFound = true;
       let widthFound = true;
       let heightFound = true;
       if (this.filters.windowName) {
-        nameFound = window.productName.toString().trim().toLowerCase().indexOf(this.filters.windowName.toLowerCase()) !== -1;
+        nameFound = window.product.productName.toString().trim().toLowerCase().indexOf(this.filters.windowName.toLowerCase()) !== -1;
       }
       if (this.filters.windowWidthFrom !== undefined && this.filters.windowWidthTo !== undefined) {
         // widths
         if (this.filters.windowWidthFrom <= this.filters.windowWidthTo) {
-          widthFound = window.szerokosc >= this.filters.windowWidthFrom && window.szerokosc <= this.filters.windowWidthTo;
+          widthFound = window.product.szerokosc >= this.filters.windowWidthFrom && window.product.szerokosc <= this.filters.windowWidthTo;
         }
         if (this.filters.windowWidthTo < 20 && this.filters.windowWidthFrom > 10) {
-          widthFound = window.szerokosc >= this.filters.windowWidthFrom;
+          widthFound = window.product.szerokosc >= this.filters.windowWidthFrom;
         }
         if (this.filters.windowWidthFrom < 10 && this.filters.windowWidthTo > 20) {
-          widthFound = window.szerokosc <= this.filters.windowWidthTo;
+          widthFound = window.product.szerokosc <= this.filters.windowWidthTo;
         }
         if (this.filters.windowWidthFrom < 10 && this.filters.windowWidthTo < 20) {
           widthFound = true;
@@ -160,13 +164,13 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
       if (this.filters.windowHeightFrom !== undefined && this.filters.windowHeightTo !== undefined) {
         // heights
         if (this.filters.windowHeightFrom <= this.filters.windowHeightTo) {
-          heightFound = window.wysokosc >= this.filters.windowHeightFrom && window.wysokosc <= this.filters.windowHeightTo;
+          heightFound = window.product.wysokosc >= this.filters.windowHeightFrom && window.product.wysokosc <= this.filters.windowHeightTo;
         }
         if (this.filters.windowHeightTo < 20 && this.filters.windowHeightFrom > 10) {
-          heightFound = window.wysokosc >= this.filters.windowHeightFrom;
+          heightFound = window.product.wysokosc >= this.filters.windowHeightFrom;
         }
         if (this.filters.windowHeightFrom < 10 && this.filters.windowHeightTo > 20) {
-          heightFound = window.wysokosc <= this.filters.windowHeightTo;
+          heightFound = window.product.wysokosc <= this.filters.windowHeightTo;
         }
         if (this.filters.windowHeightFrom < 10 && this.filters.windowHeightTo < 20) {
           heightFound = true;
@@ -189,23 +193,23 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
 
   sortArray() {
     switch (this.sortBy) {
-      case 'popularityInTable':
-        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['iloscSprzedanychRok'], ['asc']);
+      case 'popularity':
+        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['product.iloscSprzedanychRok'], ['asc']);
         break;
-      case 'priceAscInTable':
-        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['CenaDetaliczna'], ['asc']);
+      case 'priceAsc':
+        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['product.CenaDetaliczna'], ['asc']);
         break;
-      case 'priceDescInTable':
-        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['CenaDetaliczna'], ['desc']);
+      case 'priceDesc':
+        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['product.CenaDetaliczna'], ['desc']);
         break;
-      case 'nameAscInTable':
-        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['productName'], ['asc']);
+      case 'nameAsc':
+        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['product.productName'], ['asc']);
         break;
-      case 'nameDescInTable':
-        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['productName'], ['desc']);
+      case 'nameDesc':
+        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['product.productName'], ['desc']);
         break;
       default:
-        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['iloscSprzedanychRok'], ['asc']);
+        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['product.iloscSprzedanychRok'], ['asc']);
         break;
     }
   }
@@ -257,22 +261,22 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
   sortTableArray() {
     switch (this.sortTableBy) {
       case 'popularityInTable':
-        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['iloscSprzedanychRok'], ['asc']);
+        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['product.iloscSprzedanychRok'], ['asc']);
         break;
       case 'priceAscInTable':
-        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['CenaDetaliczna'], ['asc']);
+        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['product.CenaDetaliczna'], ['asc']);
         break;
       case 'priceDescInTable':
-        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['CenaDetaliczna'], ['desc']);
+        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['product.CenaDetaliczna'], ['desc']);
         break;
       case 'nameAscInTable':
-        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['productName'], ['asc']);
+        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['product.productName'], ['asc']);
         break;
       case 'nameDescInTable':
-        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['productName'], ['desc']);
+        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['product.productName'], ['desc']);
         break;
       default:
-        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['iloscSprzedanychRok'], ['asc']);
+        this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['product.iloscSprzedanychRok'], ['asc']);
         break;
     }
   }
@@ -284,49 +288,50 @@ export class RoofWindowsComponent implements OnInit, OnDestroy {
   sortByName() {
     this.nameToggler = !this.nameToggler;
     const product = this.nameToggler ? 'asc' : 'desc';
-    this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['productName'], product);
+    this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['product.productName'], product);
   }
 
   sortByWidth() {
     this.widthToggler = !this.widthToggler;
     const product = this.widthToggler ? 'asc' : 'desc';
-    this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['szerokosc'], product);
+    this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['product.szerokosc'], product);
   }
 
   sortByHeight() {
     this.heightToggler = !this.heightToggler;
     const product = this.heightToggler ? 'asc' : 'desc';
-    this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['wysokosc'], product);
+    this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['product.wysokosc'], product);
   }
 
   sortByMaterial() {
     this.materialToggler = !this.materialToggler;
     const product = this.materialToggler ? 'asc' : 'desc';
-    this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['stolarkaMaterial'], product);
+    this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['product.stolarkaMaterial'], product);
   }
 
   sortByGlazing() {
     this.glazingToggler = !this.glazingToggler;
     const product = this.glazingToggler ? 'asc' : 'desc';
-    this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['pakietSzybowy'], product);
+    this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['product.pakietSzybowy'], product);
   }
 
   sortByVentilation() {
     this.ventilationToggler = !this.ventilationToggler;
     const product = this.ventilationToggler ? 'asc' : 'desc';
-    this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['wentylacja'], product);
+    this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['product.wentylacja'], product);
   }
 
   sortByPrice() {
     this.priceToggler = !this.priceToggler;
     const product = this.priceToggler ? 'asc' : 'desc';
-    this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['CenaDetaliczna'], product);
+    this.filteredRoofWindowsList = _.orderBy(this.filteredRoofWindowsList, ['product.CenaDetaliczna'], product);
   }
 
   private filterTable(filterObject: { material: string; price: string; ventilation: string; name: string; width: string; glazing: string; height: string }) {
     this.isFiltering = true;
     this.filteredRoofWindowsList = this.roofWindowsList;
-    this.filteredRoofWindowsList = this.filteredRoofWindowsList.filter(window => {
+    this.filteredRoofWindowsList = this.filteredRoofWindowsList.filter(data => {
+      const window = data.product;
       let nameFound = true;
       let widthFound = true;
       let heightFound = true;
