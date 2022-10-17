@@ -84,7 +84,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
   private isDestroyed$ = new Subject();
   private tempConfigFlashing: Flashing;
   private flashingId: number;
-  private configuredFlashingIDsArray: number[];
+  private configuredFlashingIDsArray: number[] = [];
   private columns: ElementRef[] = [];
   private divs: ElementRef[] = [];
   private routerParams = null;
@@ -112,7 +112,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
   outerColors: { option: string, disabled: boolean }[];
   outerColorFinishes: { option: string, disabled: boolean }[];
   userConfigs = [];
-  configFormId: number;
+  flashingConfigFormId: number;
   minVerticalNumber: number;
   minHorizontalNumber: number;
   maxVerticalNumber: number;
@@ -904,6 +904,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   onSubmit() {
+    // generowanie konfiguracji do zapisu
     if (this.configuredFlashingArray.length === 0) {
       this.newFlashingConfig = {
         products: {
@@ -969,7 +970,9 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
         active: true
       };
     }
+    // !koniec generowania konfiguracji do zapisu
     this.loading = true;
+    // nie mam konfiguracji do uaktualnienia, będę ją musiał wybrać lub stworzyć nową
     if (this.configId === '-1' || this.configId === '') {
       this.userConfigurations$.pipe(
         takeUntil(this.isDestroyed$),
@@ -978,12 +981,11 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
         })).subscribe(userConfigurations => {
         this.userConfigs = userConfigurations;
         // this.configFormId = this.userConfigs[0].userId;
-        this.configFormId = 1;
+        this.flashingConfigFormId = 1;
         this.highestUserId = this.hd.getHighestIdForUser(userConfigurations);
         this.newFlashingConfig.userId = this.highestUserId;
         // wersja 1 lub 2
         if (this.userConfigs.length !== 0) {
-          this.userConfigs.push(this.newFlashingConfig);
           this.loading = false;
           this.chooseConfigNamePopup = true;
           // wersja 1
@@ -999,6 +1001,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
           this.loading = false;
         }
       });
+      // else, czyli mam określoną konfigurację do uaktualnienia
     } else {
       // wersja 2
       const temporaryLink = String(
@@ -1035,7 +1038,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
 
   chooseConfigId() {
     // wersja 1
-    if (this.configFormId === undefined) {
+    if (Number(this.flashingConfigFormId) === -2 || this.flashingConfigFormId === undefined) {
       this.store.dispatch(new AddGlobalConfiguration(this.currentUser, this.newFlashingConfig))
         .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
       // wersja 2
@@ -1045,8 +1048,8 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
         + '/' + this.newFlashingConfig.globalId
         + '/' + this.formName
         + '/' + this.configuredFlashing.kod);
-      this.configId = String('configuration-' + this.configFormId);
-      this.globalConfiguration = this.configurations.find(config => config.userId === this.configFormId && config.user === this.currentUser);
+      this.configId = String('configuration-' + this.flashingConfigFormId);
+      this.globalConfiguration = this.configurations.find(config => config.userId === this.flashingConfigFormId && config.user === this.currentUser);
       if (this.configuredFlashingArray.length === 0) {
         // tslint:disable-next-line:max-line-length
         this.store.dispatch(new AddFlashingConfiguration(this.globalConfiguration, this.configuredFlashing,
@@ -1289,9 +1292,5 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
         }
       }
     }
-  }
-
-  chosenConfigID() {
-    console.log(this.configFormId);
   }
 }

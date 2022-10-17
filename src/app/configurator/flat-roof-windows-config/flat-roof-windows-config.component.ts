@@ -534,7 +534,6 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
         this.newWindowConfig.userId = this.highestUserId;
         // wersja 2 lub 1
         if (this.userConfigs.length !== 0) {
-          this.userConfigs.push(this.newWindowConfig);
           this.loading = false;
           this.chooseConfigNamePopup = true;
           // wersja 1
@@ -578,7 +577,7 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
 
   chooseConfigId() {
     // wersja 1
-    if (this.configFormId === undefined) {
+    if (Number(this.configFormId) === -2 || this.configFormId === undefined) {
       this.newWindowConfig.products.flats.forEach(element => element.configLink = String(
         this.router['location']._platformLocation.location.origin + this.router.url
         + '/' + this.globalId

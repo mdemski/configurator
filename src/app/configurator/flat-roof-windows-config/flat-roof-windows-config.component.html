@@ -322,6 +322,13 @@
                       <p class="select-box__input-text">{{singleConfiguration.userId}}
                         - {{singleConfiguration.name}}</p>
                     </div>
+
+                    <div class="select-box__value">
+                      <input class="select-box__input" type="radio" id="{{userConfigs[userConfigs.length - 1].userId + 1}}" [(ngModel)]="configFormId"
+                             [ngModelOptions]="{standalone: true}" value="-2" name="configFormId"/>
+                      <p class="select-box__input-text">{{userConfigs[userConfigs.length - 1].userId + 1}} - {{'CONFIGURATOR.newConfiguration' | translate}}</p>
+                    </div>
+
                     <div class="select-box__value">
                       <input class="select-box__input" type="radio" id="-1" value="{{userConfigs[0].userId}}"
                              name="configFormId" checked/>
@@ -334,6 +341,9 @@
                     <li *ngFor="let singleConfiguration of userConfigs; let i = index"><label
                       class="select-box__option margin-bottom-0" for="{{i}}"
                       aria-hidden="aria-hidden">{{singleConfiguration.userId}} - {{singleConfiguration.name}}</label>
+                    </li>
+                    <li><label class="select-box__option margin-bottom-0" for="{{userConfigs[userConfigs.length - 1].userId + 1}}"
+                               aria-hidden="aria-hidden">{{userConfigs[userConfigs.length - 1].userId + 1}} - {{'CONFIGURATOR.newConfiguration' | translate}}</label>
                     </li>
                   </ul>
                 </div>

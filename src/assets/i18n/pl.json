@@ -211,7 +211,8 @@
     "flatRoofWindowsDesc": "Nie znalazłeś okna na dach płaski w naszej standardowej ofercie? Spróbuj zaprojektować go samodzielnie",
     "shop": "Standardowa oferta OKPOL",
     "addNewConfig": "Dodaj nową konfigurację",
-    "shopDesc": "Znajdź produkty w naszym sklepie, czy konfiguracje produktów jakich szukasz, nie ma w naszej stnadardowej ofercie?"
+    "shopDesc": "Znajdź produkty w naszym sklepie, czy konfiguracje produktów jakich szukasz, nie ma w naszej stnadardowej ofercie?",
+    "newConfiguration": "Nowa konfiguracja"
   },
   "SHOP": {
     "description": "To jest główny opis dotyczący głównej podstrony sklepu - w tej zakładce możesz dokonać zakupu naszych standardowych produktów",
