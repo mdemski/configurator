@@ -82,7 +82,7 @@
           <tr class="configuration-container__configurations-table__item"
               *ngFor="let configuration of filteredConfigurations">
             <td class="configuration-container__configurations-table__item--info">
-              <a routerLink="../summary/{{configuration.globalId}}">{{configuration.globalId}}</a>
+              <a routerLink="../configurator/summary/{{configuration.globalId}}">{{configuration.globalId}}</a>
             </td>
             <td
               class="configuration-container__configurations-table__item--info">{{configuration.name}}</td>
