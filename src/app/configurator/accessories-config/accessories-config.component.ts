@@ -69,7 +69,7 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
   private currentUser: string;
   private routerParams = null;
   private configurations: SingleConfiguration[];
-  configByName$: Observable<AccessoryConfig>;
+  configByName$: Observable<{ chosenAccessoryConfig: AccessoryConfig, loaded: boolean }>;
   path: string;
   exteriorPath: string;
   private formName: string;
@@ -229,22 +229,24 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
         });
     } else {
       this.configByName$.pipe(takeUntil(this.isDestroyed$))
-        .subscribe((accessoryConfig: AccessoryConfig) => {
-          this.form = this.fb.group({
-            type: new FormControl(accessoryConfig.accessoryFormData.type, [Validators.required], []),
-            kind: new FormControl(accessoryConfig.accessoryFormData.kind, [Validators.required], []),
-            framesMatching: new FormControl(accessoryConfig.accessoryFormData.framesMatching),
-            material: new FormControl(accessoryConfig.accessoryFormData.material, [], [this.validateMaterial.bind(this)]),
-            materialColor: new FormControl(accessoryConfig.accessoryFormData.materialColor, [], [this.validateMaterialColor.bind(this)]),
-            equipmentColor: new FormControl(accessoryConfig.accessoryFormData.equipmentColor, [], [this.validateEquipmentColor.bind(this)]),
-            width: new FormControl(accessoryConfig.accessoryFormData.width),
-            height: new FormControl(accessoryConfig.accessoryFormData.height)
-          });
-          this.configuredAccessory = accessoryConfig.accessory;
-          this.accessoryId = accessoryConfig.id;
-          this.setConfiguredValues(this.form.value); // Potrzebne do wywołania przy pierwszym wczytaniu, ustawia blokady
-          this.formChanges();
-          this.loading = false;
+        .subscribe(({chosenAccessoryConfig, loaded}) => {
+          if (loaded) {
+            this.form = this.fb.group({
+              type: new FormControl(chosenAccessoryConfig.accessoryFormData.type, [Validators.required], []),
+              kind: new FormControl(chosenAccessoryConfig.accessoryFormData.kind, [Validators.required], []),
+              framesMatching: new FormControl(chosenAccessoryConfig.accessoryFormData.framesMatching),
+              material: new FormControl(chosenAccessoryConfig.accessoryFormData.material, [], [this.validateMaterial.bind(this)]),
+              materialColor: new FormControl(chosenAccessoryConfig.accessoryFormData.materialColor, [], [this.validateMaterialColor.bind(this)]),
+              equipmentColor: new FormControl(chosenAccessoryConfig.accessoryFormData.equipmentColor, [], [this.validateEquipmentColor.bind(this)]),
+              width: new FormControl(chosenAccessoryConfig.accessoryFormData.width),
+              height: new FormControl(chosenAccessoryConfig.accessoryFormData.height)
+            });
+            this.configuredAccessory = chosenAccessoryConfig.accessory;
+            this.accessoryId = chosenAccessoryConfig.id;
+            this.setConfiguredValues(this.form.value); // Potrzebne do wywołania przy pierwszym wczytaniu, ustawia blokady
+            this.formChanges();
+            this.loading = false;
+          }
         });
     }
   }

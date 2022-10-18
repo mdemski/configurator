@@ -114,14 +114,18 @@ export class ConfigurationState {
       // @ts-ignore
       state.configurations.forEach(configuration => {
         if (configuration.products.windows) {
-          configuration.products.windows.filter(windowConfig => {
+          configuration.products.windows.map(windowConfig => {
             if (windowConfig.windowFormName === formName) {
               chosenWindowConfig = windowConfig;
             }
           });
         }
       });
-      return chosenWindowConfig;
+      let loaded = false;
+      if (chosenWindowConfig !== null) {
+        loaded = true;
+      }
+      return {chosenWindowConfig, loaded};
     };
   }
 
@@ -132,14 +136,18 @@ export class ConfigurationState {
       // @ts-ignore
       state.configurations.forEach(configuration => {
         if (configuration.products.flashings) {
-          configuration.products.flashings.filter(flashingConfig => {
+          configuration.products.flashings.map(flashingConfig => {
             if (flashingConfig.flashingFormName === formName) {
               productConfigs.push(flashingConfig);
             }
           });
         }
       });
-      return productConfigs;
+      let loaded = false;
+      if (productConfigs.length > 0) {
+        loaded = true;
+      }
+      return {productConfigs, loaded};
     };
   }
 
@@ -150,14 +158,18 @@ export class ConfigurationState {
       // @ts-ignore
       state.configurations.forEach(configuration => {
         if (configuration.products.accessories) {
-          configuration.products.accessories.filter(accessoryConfig => {
+          configuration.products.accessories.map(accessoryConfig => {
             if (accessoryConfig.accessoryFormName === formName) {
               chosenAccessoryConfig = accessoryConfig;
             }
           });
         }
       });
-      return chosenAccessoryConfig;
+      let loaded = false;
+      if (chosenAccessoryConfig !== null) {
+        loaded = true;
+      }
+      return {chosenAccessoryConfig, loaded};
     };
   }
 
@@ -168,14 +180,18 @@ export class ConfigurationState {
       // @ts-ignore
       state.configurations.forEach(configuration => {
         if (configuration.products.flats) {
-          configuration.products.flats.filter(flatConfig => {
+          configuration.products.flats.map(flatConfig => {
             if (flatConfig.flatFormName === formName) {
               chosenFlatRoofConfig = flatConfig;
             }
           });
         }
       });
-      return chosenFlatRoofConfig;
+      let loaded = false;
+      if (chosenFlatRoofConfig !== null) {
+        loaded = true;
+      }
+      return {chosenFlatRoofConfig, loaded};
     };
   }
 
@@ -186,14 +202,18 @@ export class ConfigurationState {
       // @ts-ignore
       state.configurations.forEach(configuration => {
         if (configuration.products.verticals) {
-          configuration.products.verticals.filter(verticalConfig => {
+          configuration.products.verticals.map(verticalConfig => {
             if (verticalConfig.verticalFormName === formName) {
               chosenVerticalWindowConfig = verticalConfig;
             }
           });
         }
       });
-      return chosenVerticalWindowConfig;
+      let loaded = false;
+      if (chosenVerticalWindowConfig !== null) {
+        loaded = true;
+      }
+      return {chosenVerticalWindowConfig, loaded};
     };
   }
 
@@ -307,7 +327,10 @@ export class ConfigurationState {
   }
 
   @Action(UpdateGlobalConfigurationNameByConfigId)
-  updateGlobalConfiguration(ctx: StateContext<ConfigurationStateModel>, {mongoId, configName}: UpdateGlobalConfigurationNameByConfigId) {
+  updateGlobalConfiguration(ctx: StateContext<ConfigurationStateModel>, {
+    mongoId,
+    configName
+  }: UpdateGlobalConfigurationNameByConfigId) {
     return this.crud.updateNameConfigurationByMongoId(mongoId, configName).pipe(
       tap((result: SingleConfiguration) => {
         ctx.setState(
@@ -347,7 +370,13 @@ export class ConfigurationState {
   // Roof window configurations Actions
   @Action(AddRoofWindowConfiguration)
   addNewRoofWindowConfiguration(ctx: StateContext<ConfigurationStateModel>,
-                                {globalConfiguration, payload, formName, formData, configLink}: AddRoofWindowConfiguration) {
+                                {
+                                  globalConfiguration,
+                                  payload,
+                                  formName,
+                                  formData,
+                                  configLink
+                                }: AddRoofWindowConfiguration) {
     const configuration = cloneDeep(globalConfiguration);
     return this.crud.createWindowConfigurationIntoGlobalConfiguration(configuration, payload, formName, formData, configLink).pipe(
       tap((result: SingleConfiguration) => {
@@ -377,7 +406,11 @@ export class ConfigurationState {
 
   @Action(UpdateRoofWindowQuantityByConfigAndWindowId)
   updateRoofWindowQuantityConfiguration(ctx: StateContext<ConfigurationStateModel>,
-                                        {globalConfiguration, windowId, payload}: UpdateRoofWindowQuantityByConfigAndWindowId) {
+                                        {
+                                          globalConfiguration,
+                                          windowId,
+                                          payload
+                                        }: UpdateRoofWindowQuantityByConfigAndWindowId) {
     const configuration: SingleConfiguration = cloneDeep(globalConfiguration);
     const windowIndex = configuration.products.windows.findIndex(item => item.id === windowId);
     configuration.products.windows[windowIndex].quantity = payload;
@@ -435,7 +468,13 @@ export class ConfigurationState {
   // Flashing configurations Actions
   @Action(AddFlashingConfiguration)
   addNewFlashingConfiguration(ctx: StateContext<ConfigurationStateModel>,
-                              {globalConfiguration, payload, formName, formData, configLink}: AddFlashingConfiguration) {
+                              {
+                                globalConfiguration,
+                                payload,
+                                formName,
+                                formData,
+                                configLink
+                              }: AddFlashingConfiguration) {
     const configuration = cloneDeep(globalConfiguration);
     return this.crud.createFlashingConfigurationIntoGlobalConfiguration(configuration, payload, formName, formData, configLink).pipe(
       tap((result: SingleConfiguration) => {
@@ -495,7 +534,11 @@ export class ConfigurationState {
 
   @Action(UpdateFlashingQuantityByConfigAndFlashingId)
   updateFlashingQuantityConfiguration(ctx: StateContext<ConfigurationStateModel>,
-                                      {globalConfiguration, flashingId, payload}: UpdateFlashingQuantityByConfigAndFlashingId) {
+                                      {
+                                        globalConfiguration,
+                                        flashingId,
+                                        payload
+                                      }: UpdateFlashingQuantityByConfigAndFlashingId) {
     const configuration = cloneDeep(globalConfiguration);
     const flashingIndex = configuration.products.flashings.findIndex(item => item.id === flashingId);
     configuration.products.flashings[flashingIndex].quantity = payload;
@@ -551,7 +594,13 @@ export class ConfigurationState {
   // Accessory configurations Actions
   @Action(AddAccessoryConfiguration)
   addNewAccessoryConfiguration(ctx: StateContext<ConfigurationStateModel>,
-                               {globalConfiguration, payload, formName, formData, configLink}: AddAccessoryConfiguration) {
+                               {
+                                 globalConfiguration,
+                                 payload,
+                                 formName,
+                                 formData,
+                                 configLink
+                               }: AddAccessoryConfiguration) {
     const configuration = cloneDeep(globalConfiguration);
     return this.crud.createAccessoryConfigurationIntoGlobalConfiguration(configuration, payload, formName, formData, configLink).pipe(
       tap((result: SingleConfiguration) => {
@@ -581,7 +630,11 @@ export class ConfigurationState {
 
   @Action(UpdateAccessoryQuantityByConfigAndAccessoryId)
   updateAccessoryQuantityConfiguration(ctx: StateContext<ConfigurationStateModel>,
-                                       {globalConfiguration, accessoryId, payload}: UpdateAccessoryQuantityByConfigAndAccessoryId) {
+                                       {
+                                         globalConfiguration,
+                                         accessoryId,
+                                         payload
+                                       }: UpdateAccessoryQuantityByConfigAndAccessoryId) {
     const configuration = cloneDeep(globalConfiguration);
     const accessoryIndex = configuration.products.accessories.findIndex(item => item.id === accessoryId);
     configuration.products.accessories[accessoryIndex].quantity = payload;
@@ -637,7 +690,13 @@ export class ConfigurationState {
   // Flat roof window configurations Actions
   @Action(AddFlatRoofConfiguration)
   addNewFlatRoofConfiguration(ctx: StateContext<ConfigurationStateModel>,
-                              {globalConfiguration, payload, formName, formData, configLink}: AddFlatRoofConfiguration) {
+                              {
+                                globalConfiguration,
+                                payload,
+                                formName,
+                                formData,
+                                configLink
+                              }: AddFlatRoofConfiguration) {
     const configuration = cloneDeep(globalConfiguration);
     return this.crud.createFlatConfigurationIntoGlobalConfiguration(configuration, payload, formName, formData, configLink).pipe(
       tap((result: SingleConfiguration) => {
@@ -723,7 +782,13 @@ export class ConfigurationState {
   // Vertical window configurations Actions
   @Action(AddVerticalWindowConfiguration)
   addNewVerticalWindowConfiguration(ctx: StateContext<ConfigurationStateModel>,
-                                    {globalConfiguration, payload, formName, formData, configLink}: AddVerticalWindowConfiguration) {
+                                    {
+                                      globalConfiguration,
+                                      payload,
+                                      formName,
+                                      formData,
+                                      configLink
+                                    }: AddVerticalWindowConfiguration) {
     const configuration = cloneDeep(globalConfiguration);
     return this.crud.createVerticalConfigurationIntoGlobalConfiguration(configuration, payload, formName, formData, configLink).pipe(
       tap((result: SingleConfiguration) => {
@@ -753,7 +818,11 @@ export class ConfigurationState {
 
   @Action(UpdateVerticalWindowQuantityByConfigAndWindowId)
   updateVerticalWindowQuantityConfiguration(ctx: StateContext<ConfigurationStateModel>,
-                                            {globalConfiguration, verticalId, payload}: UpdateVerticalWindowQuantityByConfigAndWindowId) {
+                                            {
+                                              globalConfiguration,
+                                              verticalId,
+                                              payload
+                                            }: UpdateVerticalWindowQuantityByConfigAndWindowId) {
     const configuration = cloneDeep(globalConfiguration);
     const verticalIndex = configuration.products.verticals.findIndex(item => item.id === verticalId);
     configuration.products.verticals[verticalIndex].quantity = payload;
@@ -769,7 +838,11 @@ export class ConfigurationState {
 
   @Action(UpdateVerticalWindowFormByFormName)
   updateVerticalWindowFormByFromName(ctx: StateContext<ConfigurationStateModel>,
-                                     {globalConfiguration, verticalFormName, payload}: UpdateVerticalWindowFormByFormName) {
+                                     {
+                                       globalConfiguration,
+                                       verticalFormName,
+                                       payload
+                                     }: UpdateVerticalWindowFormByFormName) {
     const configuration = cloneDeep(globalConfiguration);
     configuration.products.verticals.map(vertical => ({
       ...vertical,
@@ -787,7 +860,10 @@ export class ConfigurationState {
 
   @Action(DeleteVerticalWindowConfigurationByConfigAndWindowId)
   deleteVerticalWindowConfiguration(ctx: StateContext<ConfigurationStateModel>,
-                                    {globalConfiguration, verticalId}: DeleteVerticalWindowConfigurationByConfigAndWindowId) {
+                                    {
+                                      globalConfiguration,
+                                      verticalId
+                                    }: DeleteVerticalWindowConfigurationByConfigAndWindowId) {
     const configuration = cloneDeep(globalConfiguration);
     const productList = configuration.products;
     configuration.products.verticals.map(() => ({

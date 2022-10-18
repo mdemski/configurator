@@ -10,8 +10,8 @@ import {
 } from '@angular/core';
 import {LoadConfigurationService} from '../../services/load-configuration.service';
 import {Observable, Observer, Subject} from 'rxjs';
-import {Router} from '@angular/router';
-import {filter, map, takeUntil} from 'rxjs/operators';
+import {ActivatedRoute, Router} from '@angular/router';
+import {filter, map, takeUntil, takeWhile} from 'rxjs/operators';
 import {SingleConfiguration} from '../../models/single-configuration';
 import {Flashing} from '../../models/flashing';
 import {FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors} from '@angular/forms';
@@ -53,7 +53,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
   @Select(RouterState) params$: Observable<any>;
   @Select(CartState) cart$: Observable<any>;
 
-  constructor(public router: Router,
+  constructor(public router: Router, private route: ActivatedRoute,
               private fb: FormBuilder,
               private store: Store,
               private changeDetector: ChangeDetectorRef,
@@ -64,6 +64,9 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
               private modal: ModalService,
               private translate: MdTranslateService) {
     this.loading = true;
+    this.configByName$ = this.store.select(ConfigurationState.configurationByFlashingFormName).pipe(
+      takeUntil(this.isDestroyed$),
+      map(filterFn => filterFn(this.route.snapshot.paramMap.get('formName'))));
     translate.setLanguage();
     this.configOptions$.pipe(takeUntil(this.isDestroyed$)).subscribe(configOptions => this.configOptions = configOptions);
     this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.currentUser = user.currentUser.email);
@@ -91,7 +94,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
   private configOptions;
   private configurations: SingleConfiguration[];
   userConfigurations$: Observable<SingleConfiguration[]> = new Subject() as Observable<SingleConfiguration[]>;
-  configByName$: Observable<FlashingConfig[]>;
+  configByName$: Observable<{productConfigs: FlashingConfig[], loaded: boolean}>;
   reverseModelsArrayIndex: number[];
   summaryFlashingsPrice: number;
   globalId = '';
@@ -188,9 +191,6 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
     this.tempConfigFlashing = new Flashing('1K-1-U-UO------A7022P-055098-OKPK01', 'UN/O 055x098 Kołnierz uniwersalny /A7022P/UO/OKPK01', 'Kołnierz U 55x98 UO', 'I-KOLNIERZ', 'NPL-KOLNIERZ', 'Nowy', 'U', 55, 98, 'KołnierzUszczelniający',
       'KolnierzUszczelniający', 'Kołnierz:U', 'KołnierzUszczelniający:K-1', 'KołnierzUszczelniający', 'Aluminium', 'Aluminium:RAL7022', 'Aluminium:Półmat', 'U', 0, 'UO', 5, 0, 0,
       270, ['78x118', '78x140'], ['assets/img/products/flashings.jpg'], 'PL', false, null, []);
-    this.configByName$ = this.store.select(ConfigurationState.configurationByFlashingFormName).pipe(
-      takeUntil(this.isDestroyed$),
-      map(filterFn => filterFn(this.routerParams.state.params.formName)));
     this.configOptionsLoaded$.pipe(takeUntil(this.isDestroyed$)).subscribe(loaded => {
       if (loaded) {
         this.flashingModels = this.configOptions.models;
@@ -293,35 +293,39 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
     } else {
       this.configByName$
         .pipe(takeUntil(this.isDestroyed$))
-        .subscribe((flashingConfigurations: FlashingConfig[]) => {
-          this.configuredFlashing = flashingConfigurations[0].flashing;
-          flashingConfigurations.forEach(flashingConfig => this.configuredFlashingIDsArray.push(flashingConfig.id));
-          flashingConfigurations.forEach(flashingConfig => this.configuredFlashingArray.push(flashingConfig.flashing));
-          this.flashingId = flashingConfigurations[0].id; // w tym zwraca pierwszy id gdy znajdzie pasujący formName
-          const flashingFormData = flashingConfigurations[0].flashingFormData;
-          this.form = this.fb.group({
-            flashingType: new FormControl(flashingFormData.flashingType, [], [this.validateFlashingType.bind(this)]),
-            apronType: new FormControl(flashingFormData.apronType, [], [this.validateApronType.bind(this)]),
-            outer: new FormGroup({
-              outerMaterial: new FormControl(flashingFormData.outer.outerMaterial),
-              outerColor: new FormControl(flashingFormData.outer.outerColor),
-              outerColorFinish: new FormControl(flashingFormData.outer.outerColorFinish),
-            }),
-            composition: new FormGroup({
-              verticalNumber: new FormControl(flashingFormData.composition.verticalNumber),
-              horizontalNumber: new FormControl(flashingFormData.composition.horizontalNumber),
-            }),
-            dimensions: new FormGroup({
-              widths: this.fb.array(flashingFormData.dimensions.widths),
-              heights: this.fb.array(flashingFormData.dimensions.heights),
-              verticalSpacings: this.fb.array(flashingFormData.dimensions.verticalSpacings),
-              horizontalSpacings: this.fb.array(flashingFormData.dimensions.horizontalSpacings),
-            }),
-            lShaped: new FormControl(flashingFormData.lShaped),
-            windchestLenght: new FormControl(flashingFormData.windchestLenght)
-          });
-          this.formChanges();
-          this.loading = false;
+        .subscribe(({productConfigs, loaded}) => {
+          console.log(productConfigs);
+          console.log(loaded);
+          if (loaded) {
+            this.configuredFlashing = productConfigs[0].flashing;
+            productConfigs.forEach(flashingConfig => this.configuredFlashingIDsArray.push(flashingConfig.id));
+            productConfigs.forEach(flashingConfig => this.configuredFlashingArray.push(flashingConfig.flashing));
+            this.flashingId = productConfigs[0].id; // w tym zwraca pierwszy id gdy znajdzie pasujący formName
+            const flashingFormData = productConfigs[0].flashingFormData;
+            this.form = this.fb.group({
+              flashingType: new FormControl(flashingFormData.flashingType, [], [this.validateFlashingType.bind(this)]),
+              apronType: new FormControl(flashingFormData.apronType, [], [this.validateApronType.bind(this)]),
+              outer: new FormGroup({
+                outerMaterial: new FormControl(flashingFormData.outer.outerMaterial),
+                outerColor: new FormControl(flashingFormData.outer.outerColor),
+                outerColorFinish: new FormControl(flashingFormData.outer.outerColorFinish),
+              }),
+              composition: new FormGroup({
+                verticalNumber: new FormControl(flashingFormData.composition.verticalNumber),
+                horizontalNumber: new FormControl(flashingFormData.composition.horizontalNumber),
+              }),
+              dimensions: new FormGroup({
+                widths: this.fb.array(flashingFormData.dimensions.widths),
+                heights: this.fb.array(flashingFormData.dimensions.heights),
+                verticalSpacings: this.fb.array(flashingFormData.dimensions.verticalSpacings),
+                horizontalSpacings: this.fb.array(flashingFormData.dimensions.horizontalSpacings),
+              }),
+              lShaped: new FormControl(flashingFormData.lShaped),
+              windchestLenght: new FormControl(flashingFormData.windchestLenght)
+            });
+            this.formChanges();
+            this.loading = false;
+          }
         });
     }
   }

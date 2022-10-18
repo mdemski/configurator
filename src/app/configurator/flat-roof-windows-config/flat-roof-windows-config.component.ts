@@ -62,7 +62,7 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
   private globalConfiguration: SingleConfiguration = null;
   private newWindowConfig: SingleConfiguration;
   private configId: string;
-  configByName$: Observable<FlatConfig>;
+  configByName$: Observable<{ chosenFlatRoofConfig: FlatConfig, loaded: boolean }>;
   configOptions;
   configurationSummary: string;
   configuredFlatRoofWindow: FlatRoofWindow;
@@ -208,34 +208,36 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
         });
     } else {
       this.configByName$.pipe(takeUntil(this.isDestroyed$))
-        .subscribe((flatRoofWindowConfig: FlatConfig) => {
-          this.form = this.fb.group({
-            openingType: new FormControl(flatRoofWindowConfig.flatFormData.openingType, [], [this.validateOpenings.bind(this)]),
-            option: new FormControl(flatRoofWindowConfig.flatFormData.option),
-            glazing: new FormControl(flatRoofWindowConfig.flatFormData.glazing, [], [this.validateGlazing.bind(this)]),
-            width: new FormControl(flatRoofWindowConfig.flatFormData.width),
-            height: new FormControl(flatRoofWindowConfig.flatFormData.height),
-            outer: new FormGroup({
-              outerMaterial: new FormControl(flatRoofWindowConfig.flatFormData.outer
-              === undefined ? null : flatRoofWindowConfig.flatFormData.outer.outerMaterial),
-              outerColor: new FormControl(flatRoofWindowConfig.flatFormData.outer
-              === undefined ? null : flatRoofWindowConfig.flatFormData.outer.outerColor),
-              outerColorFinish: new FormControl(flatRoofWindowConfig.flatFormData.outer
-              === undefined ? null : flatRoofWindowConfig.flatFormData.outer.outerColorFinish)
-            }, [], [this.validateOuterMaterial.bind(this)]),
-            closure: new FormGroup({
-              handle: new FormControl(flatRoofWindowConfig.flatFormData.closure
-              === undefined ? null : flatRoofWindowConfig.flatFormData.closure.handle, [], [this.validateHandle.bind(this)]),
-              handleColor: new FormControl(flatRoofWindowConfig.flatFormData.closure
-              === undefined ? null : flatRoofWindowConfig.flatFormData.closure.handleColor)
-            }),
-            extras: this.fb.array(flatRoofWindowConfig.flatFormData.extras)
-          });
-          this.configuredFlatRoofWindow = flatRoofWindowConfig.flat;
-          this.flatId = flatRoofWindowConfig.id;
-          this.setConfiguredValues(this.form.value);
-          this.formChanges();
-          this.loading = false;
+        .subscribe(({chosenFlatRoofConfig, loaded}) => {
+          if (loaded) {
+            this.form = this.fb.group({
+              openingType: new FormControl(chosenFlatRoofConfig.flatFormData.openingType, [], [this.validateOpenings.bind(this)]),
+              option: new FormControl(chosenFlatRoofConfig.flatFormData.option),
+              glazing: new FormControl(chosenFlatRoofConfig.flatFormData.glazing, [], [this.validateGlazing.bind(this)]),
+              width: new FormControl(chosenFlatRoofConfig.flatFormData.width),
+              height: new FormControl(chosenFlatRoofConfig.flatFormData.height),
+              outer: new FormGroup({
+                outerMaterial: new FormControl(chosenFlatRoofConfig.flatFormData.outer
+                === undefined ? null : chosenFlatRoofConfig.flatFormData.outer.outerMaterial),
+                outerColor: new FormControl(chosenFlatRoofConfig.flatFormData.outer
+                === undefined ? null : chosenFlatRoofConfig.flatFormData.outer.outerColor),
+                outerColorFinish: new FormControl(chosenFlatRoofConfig.flatFormData.outer
+                === undefined ? null : chosenFlatRoofConfig.flatFormData.outer.outerColorFinish)
+              }, [], [this.validateOuterMaterial.bind(this)]),
+              closure: new FormGroup({
+                handle: new FormControl(chosenFlatRoofConfig.flatFormData.closure
+                === undefined ? null : chosenFlatRoofConfig.flatFormData.closure.handle, [], [this.validateHandle.bind(this)]),
+                handleColor: new FormControl(chosenFlatRoofConfig.flatFormData.closure
+                === undefined ? null : chosenFlatRoofConfig.flatFormData.closure.handleColor)
+              }),
+              extras: this.fb.array(chosenFlatRoofConfig.flatFormData.extras)
+            });
+            this.configuredFlatRoofWindow = chosenFlatRoofConfig.flat;
+            this.flatId = chosenFlatRoofConfig.id;
+            this.setConfiguredValues(this.form.value);
+            this.formChanges();
+            this.loading = false;
+          }
         });
     }
   }

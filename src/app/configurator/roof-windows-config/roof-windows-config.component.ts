@@ -64,7 +64,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   private globalConfiguration: SingleConfiguration = null;
   private newWindowConfig: SingleConfiguration;
   private configId: string;
-  configByName$: Observable<WindowConfig>;
+  configByName$: Observable<{ chosenWindowConfig: WindowConfig, loaded: boolean }>;
   configOptions;
   configurationSummary: string;
   configuredWindow: RoofWindowSkylight;
@@ -229,38 +229,40 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
         });
     } else {
       this.configByName$.pipe(takeUntil(this.isDestroyed$))
-        .subscribe((windowConfiguration: WindowConfig) => {
-          this.form = this.fb.group({
-            material: new FormControl(windowConfiguration.windowFormData.material, [], [this.validateMaterials.bind(this)]),
-            openingType: new FormControl(windowConfiguration.windowFormData.openingType, [], [this.validateOpenings.bind(this)]),
-            control: new FormControl(RoofWindowsConfigComponent.getControlType(windowConfiguration.windowFormData.otwieranie)),
-            glazing: new FormControl(windowConfiguration.windowFormData.glazing, [], [this.validateGlazing.bind(this)]),
-            width: new FormControl(windowConfiguration.windowFormData.width),
-            height: new FormControl(windowConfiguration.windowFormData.height),
-            coats: this.fb.array(windowConfiguration.windowFormData.coats),
-            innerColor: new FormControl(windowConfiguration.windowFormData.innerColor, [], [this.validateInnerColor.bind(this)]),
-            outer: new FormGroup({
-              outerMaterial: new FormControl(windowConfiguration.windowFormData.outer
-              === undefined ? null : windowConfiguration.windowFormData.outer.outerMaterial),
-              outerColor: new FormControl(windowConfiguration.windowFormData.outer
-              === undefined ? null : windowConfiguration.windowFormData.outer.outerColor),
-              outerColorFinish: new FormControl(windowConfiguration.windowFormData.outer
-              === undefined ? null : windowConfiguration.windowFormData.outer.outerColorFinish)
-            }, [], [this.validateOuterMaterial.bind(this)]),
-            ventilation: new FormControl(windowConfiguration.windowFormData.ventilation, [], [this.validateVentilation.bind(this)]),
-            closure: new FormGroup({
-              handle: new FormControl(windowConfiguration.windowFormData.closure
-              === undefined ? null : windowConfiguration.windowFormData.closure.handle, [], [this.validateHandle.bind(this)]),
-              handleColor: new FormControl(windowConfiguration.windowFormData.closure
-              === undefined ? null : windowConfiguration.windowFormData.closure.handleColor)
-            }),
-            extras: this.fb.array(windowConfiguration.windowFormData.extras)
-          });
-          this.configuredWindow = windowConfiguration.window;
-          this.windowId = windowConfiguration.id;
-          this.setConfiguredValues(this.form.value);
-          this.formChanges();
-          this.loading = false;
+        .subscribe(({chosenWindowConfig, loaded}) => {
+          if (loaded) {
+            this.form = this.fb.group({
+              material: new FormControl(chosenWindowConfig.windowFormData.material, [], [this.validateMaterials.bind(this)]),
+              openingType: new FormControl(chosenWindowConfig.windowFormData.openingType, [], [this.validateOpenings.bind(this)]),
+              control: new FormControl(RoofWindowsConfigComponent.getControlType(chosenWindowConfig.windowFormData.otwieranie)),
+              glazing: new FormControl(chosenWindowConfig.windowFormData.glazing, [], [this.validateGlazing.bind(this)]),
+              width: new FormControl(chosenWindowConfig.windowFormData.width),
+              height: new FormControl(chosenWindowConfig.windowFormData.height),
+              coats: this.fb.array(chosenWindowConfig.windowFormData.coats),
+              innerColor: new FormControl(chosenWindowConfig.windowFormData.innerColor, [], [this.validateInnerColor.bind(this)]),
+              outer: new FormGroup({
+                outerMaterial: new FormControl(chosenWindowConfig.windowFormData.outer
+                === undefined ? null : chosenWindowConfig.windowFormData.outer.outerMaterial),
+                outerColor: new FormControl(chosenWindowConfig.windowFormData.outer
+                === undefined ? null : chosenWindowConfig.windowFormData.outer.outerColor),
+                outerColorFinish: new FormControl(chosenWindowConfig.windowFormData.outer
+                === undefined ? null : chosenWindowConfig.windowFormData.outer.outerColorFinish)
+              }, [], [this.validateOuterMaterial.bind(this)]),
+              ventilation: new FormControl(chosenWindowConfig.windowFormData.ventilation, [], [this.validateVentilation.bind(this)]),
+              closure: new FormGroup({
+                handle: new FormControl(chosenWindowConfig.windowFormData.closure
+                === undefined ? null : chosenWindowConfig.windowFormData.closure.handle, [], [this.validateHandle.bind(this)]),
+                handleColor: new FormControl(chosenWindowConfig.windowFormData.closure
+                === undefined ? null : chosenWindowConfig.windowFormData.closure.handleColor)
+              }),
+              extras: this.fb.array(chosenWindowConfig.windowFormData.extras)
+            });
+            this.configuredWindow = chosenWindowConfig.window;
+            this.windowId = chosenWindowConfig.id;
+            this.setConfiguredValues(this.form.value);
+            this.formChanges();
+            this.loading = false;
+          }
         });
     }
   }
