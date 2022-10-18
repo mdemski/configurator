@@ -827,6 +827,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
         this.verticalSpacings.length + 2;
       this.onHoverClick(dimension, rows, this.dimensionsVisible);
     }
+    this.setConfiguredValues(this.form.value);
   }
 
   calcWidthInputSize() {
