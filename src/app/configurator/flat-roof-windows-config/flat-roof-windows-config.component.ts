@@ -508,7 +508,7 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
           flat: this.configuredFlatRoofWindow,
           flatFormName: this.formName,
           flatFormData: this.form.value,
-          configLink: String(this.router['location']._platformLocation.location.origin
+          configLink: String(this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
             + '/' + this.globalId
             + '/' + this.formName
             + '/' + this.configuredFlatRoofWindow.kod)
@@ -541,7 +541,7 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
           // wersja 1
         } else {
           this.newWindowConfig.products.flats.forEach(element => element.configLink = String(
-            this.router['location']._platformLocation.location.origin + this.router.url
+            this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
             + '/' + this.globalId
             + '/' + this.formName
             + '/' + this.configuredFlatRoofWindow.kod));
@@ -554,7 +554,7 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
       // wersja 2
       if (this.flatId === 1) {
         const temporaryLink = String(
-          this.router['location']._platformLocation.location.origin + this.router.url
+          this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
           + '/' + this.globalId
           + '/' + this.formName
           + '/' + this.configuredFlatRoofWindow.kod);
@@ -581,7 +581,7 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
     // wersja 1
     if (Number(this.configFormId) === -2 || this.configFormId === undefined) {
       this.newWindowConfig.products.flats.forEach(element => element.configLink = String(
-        this.router['location']._platformLocation.location.origin + this.router.url
+        this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
         + '/' + this.globalId
         + '/' + this.formName
         + '/' + this.configuredFlatRoofWindow.kod));
@@ -590,7 +590,7 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
       // wersja 2
     } else {
       const temporaryLink = String(
-        this.router['location']._platformLocation.location.origin
+        this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
         + '/' + this.globalId
         + '/' + this.formName
         + '/' + this.configuredFlatRoofWindow.kod);
@@ -620,7 +620,7 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
           flat: this.configuredFlatRoofWindow,
           flatFormName: this.formName,
           flatFormData: this.form.value,
-          configLink: String(this.router['location']._platformLocation.location.origin
+          configLink: String(this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
             + '/' + this.globalId
             + '/' + this.formName
             + '/' + this.configuredFlatRoofWindow.kod)
@@ -636,7 +636,7 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
     };
     // wersja 2 lub 3
     if (this.configId === this.globalId) {
-      temporaryUrl = this.router['location']._platformLocation.location.origin
+      temporaryUrl = this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
         + '/' + this.globalId
         + '/' + this.formName
         + '/' + this.configuredFlatRoofWindow.kod;
@@ -653,13 +653,13 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
       // wersja 1
     } else {
       this.newWindowConfig.products.flats.forEach(element => element.configLink = String(
-        this.router['location']._platformLocation.location.origin + this.router.url
+        this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
         + '/' + this.globalId
         + '/' + this.formName
         + '/' + this.configuredFlatRoofWindow.kod));
       this.store.dispatch(new AddGlobalConfiguration('anonym', this.newWindowConfig))
         .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
-      temporaryUrl = this.router['location']._platformLocation.location.origin + this.router.url
+      temporaryUrl = this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
         + '/' + this.newWindowConfig.globalId
         + '/' + this.newWindowConfig.products.flats[0].flatFormName
         + '/' + this.newWindowConfig.products.flats[0].flat.kod;

@@ -11,7 +11,7 @@ import {
 import {LoadConfigurationService} from '../../services/load-configuration.service';
 import {Observable, Observer, Subject} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
-import {filter, map, takeUntil, takeWhile} from 'rxjs/operators';
+import {filter, map, takeUntil} from 'rxjs/operators';
 import {SingleConfiguration} from '../../models/single-configuration';
 import {Flashing} from '../../models/flashing';
 import {FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors} from '@angular/forms';
@@ -294,13 +294,11 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
       this.configByName$
         .pipe(takeUntil(this.isDestroyed$))
         .subscribe(({productConfigs, loaded}) => {
-          console.log(productConfigs);
-          console.log(loaded);
           if (loaded) {
             this.configuredFlashing = productConfigs[0].flashing;
             productConfigs.forEach(flashingConfig => this.configuredFlashingIDsArray.push(flashingConfig.id));
             productConfigs.forEach(flashingConfig => this.configuredFlashingArray.push(flashingConfig.flashing));
-            this.flashingId = productConfigs[0].id; // w tym zwraca pierwszy id gdy znajdzie pasujący formName
+            this.flashingId = productConfigs[0].id; // w tym zwraca pierwszy id, gdy znajdzie pasujący formName
             const flashingFormData = productConfigs[0].flashingFormData;
             this.form = this.fb.group({
               flashingType: new FormControl(flashingFormData.flashingType, [], [this.validateFlashingType.bind(this)]),
@@ -919,7 +917,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
             flashing: this.configuredFlashing,
             flashingFormName: this.formName,
             flashingFormData: this.form.value,
-            configLink: String(this.router['location']._platformLocation.location.origin
+            configLink: String(this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
               + '/' + this.globalId
               + '/' + this.formName
               + '/' + this.configuredFlashing.kod)
@@ -950,7 +948,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
             flashing,
             flashingFormName: this.formName,
             flashingFormData: this.form.value,
-            configLink: String(this.router['location']._platformLocation.location.origin
+            configLink: String(this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
               + '/' + this.globalId
               + '/' + this.formName
               + '/' + this.configuredFlashing.kod)
@@ -995,7 +993,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
           // wersja 1
         } else {
           this.newFlashingConfig.products.flashings.forEach(element2 => element2.configLink = String(
-            this.router['location']._platformLocation.location.origin + this.router.url
+            this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
             + '/' + this.newFlashingConfig.globalId
             + '/' + element2.flashingFormName
             + '/' + element2.flashing.kod));
@@ -1009,7 +1007,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
     } else {
       // wersja 2
       const temporaryLink = String(
-        this.router['location']._platformLocation.location.origin
+        this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
         + '/' + this.newFlashingConfig.globalId
         + '/' + this.formName
         + '/' + this.configuredFlashing.kod);
@@ -1048,7 +1046,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
       // wersja 2
     } else {
       const temporaryLink = String(
-        this.router['location']._platformLocation.location.origin
+        this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
         + '/' + this.newFlashingConfig.globalId
         + '/' + this.formName
         + '/' + this.configuredFlashing.kod);
@@ -1086,7 +1084,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
             flashing: this.configuredFlashing,
             flashingFormName: this.formName,
             flashingFormData: this.form.value,
-            configLink: String(this.router['location']._platformLocation.location.origin
+            configLink: String(this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
               + '/' + this.globalId
               + '/' + this.formName
               + '/' + this.configuredFlashing.kod)
@@ -1106,7 +1104,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
       // wersja 2 lub 3
       if (this.configId === this.globalId) {
         // wersja 2
-        temporaryUrl = this.router['location']._platformLocation.location.origin
+        temporaryUrl = this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
           + '/' + this.globalId
           + '/' + this.formName
           + '/' + this.configuredFlashing.kod;
@@ -1121,13 +1119,13 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
         // wersja 1
       } else {
         this.newFlashingConfig.products.flashings.forEach(element2 => element2.configLink = String(
-          this.router['location']._platformLocation.location.origin + this.router.url
+          this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
           + '/' + this.newFlashingConfig.globalId
           + '/' + element2.flashingFormName
           + '/' + element2.flashing.kod));
         this.store.dispatch(new AddGlobalConfiguration('anonym', this.newFlashingConfig))
           .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
-        temporaryUrl = this.router['location']._platformLocation.location.origin + this.router.url
+        temporaryUrl = this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
           + '/' + this.newFlashingConfig.globalId
           + '/' + this.newFlashingConfig.products.flashings[0].flashingFormName
           + '/' + this.newFlashingConfig.products.flashings[0].flashing.kod;
@@ -1149,7 +1147,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
             flashing,
             flashingFormName: this.formName,
             flashingFormData: this.form.value,
-            configLink: String(this.router['location']._platformLocation.location.origin
+            configLink: String(this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
               + '/' + this.globalId
               + '/' + this.formName
               + '/' + this.configuredFlashing.kod)
@@ -1182,20 +1180,20 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
           this.store.dispatch(new UpdateFlashingConfigurations(this.globalConfiguration, temporaryFlashingConfigsArray))
             .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
         }
-        temporaryUrl = this.router['location']._platformLocation.location.origin
+        temporaryUrl = this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
           + '/' + this.globalId
           + '/' + this.formName
           + '/' + this.configuredFlashing.kod;
         // wersja 1
       } else {
         this.newFlashingConfig.products.flashings.forEach(element2 => element2.configLink = String(
-          this.router['location']._platformLocation.location.origin + this.router.url
+          this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
           + '/' + this.newFlashingConfig.globalId
           + '/' + element2.flashingFormName
           + '/' + element2.flashing.kod));
         this.store.dispatch(new AddGlobalConfiguration('anonym', this.newFlashingConfig))
           .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
-        temporaryUrl = this.router['location']._platformLocation.location.origin + this.router.url
+        temporaryUrl = this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
           + '/' + this.newFlashingConfig.globalId
           + '/' + this.newFlashingConfig.products.flashings[0].flashingFormName
           + '/' + this.newFlashingConfig.products.flashings[0].flashing.kod;

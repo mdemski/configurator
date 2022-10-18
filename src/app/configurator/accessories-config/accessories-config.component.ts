@@ -354,7 +354,7 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
           accessory: this.configuredAccessory,
           accessoryFormName: this.formName,
           accessoryFormData: this.form.value,
-          configLink: String(this.router['location']._platformLocation.location.origin
+          configLink: String(this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
             + '/' + this.globalId
             + '/' + this.formName
             + '/' + this.configuredAccessory.kod)
@@ -389,7 +389,7 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
           // wersja 1
         } else {
           this.newAccessoryConfig.products.accessories.forEach(element => element.configLink = String(
-            this.router['location']._platformLocation.location.origin + this.router.url
+            this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
             + '/' + this.globalId
             + '/' + this.formName
             + '/' + this.configuredAccessory.kod));
@@ -402,7 +402,7 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
       // wersja 2
       if (this.accessoryId === 1) {
         const temporaryLink = String(
-          this.router['location']._platformLocation.location.origin + this.router.url
+          this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
           + '/' + this.globalId
           + '/' + this.formName
           + '/' + this.configuredAccessory.kod);
@@ -425,7 +425,7 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
     // wersja 1
     if (Number(this.configFormId) === -2 || this.configFormId === undefined) {
       this.newAccessoryConfig.products.accessories.forEach(element => element.configLink = String(
-        this.router['location']._platformLocation.location.origin + this.router.url
+        this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
         + '/' + this.globalId
         + '/' + this.formName
         + '/' + this.configuredAccessory.kod));
@@ -434,7 +434,7 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
       // wersja 2
     } else {
       const temporaryLink = String(
-        this.router['location']._platformLocation.location.origin
+        this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
         + '/' + this.globalId
         + '/' + this.formName
         + '/' + this.configuredAccessory.kod);
@@ -462,7 +462,7 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
           accessory: this.configuredAccessory,
           accessoryFormName: this.formName,
           accessoryFormData: this.form.value,
-          configLink: String(this.router['location']._platformLocation.location.origin
+          configLink: String(this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
             + '/' + this.globalId
             + '/' + this.formName
             + '/' + this.configuredAccessory.kod)
@@ -480,7 +480,7 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
     };
     // wersja 2 lub 3
     if (this.configId === this.globalId) {
-      temporaryUrl = this.router['location']._platformLocation.location.origin
+      temporaryUrl = this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
         + '/' + this.globalId
         + '/' + this.formName
         + '/' + this.configuredAccessory.kod;
@@ -497,13 +497,13 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
       // wersja 1
     } else {
       this.newAccessoryConfig.products.accessories.forEach(element => element.configLink = String(
-        this.router['location']._platformLocation.location.origin + this.router.url
+        this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
         + '/' + this.globalId
         + '/' + this.formName
         + '/' + this.configuredAccessory.kod));
       this.store.dispatch(new AddGlobalConfiguration('anonym', this.newAccessoryConfig))
         .pipe(takeUntil(this.isDestroyed$)).subscribe(console.log);
-      temporaryUrl = this.router['location']._platformLocation.location.origin + this.router.url
+      temporaryUrl = this.router['location']._platformLocation.location.origin + '/' + this.router.url.split('/')[1] + '/' + this.router.url.split('/')[2]
         + '/' + this.newAccessoryConfig.globalId
         + '/' + this.newAccessoryConfig.products.accessories[0].accessoryFormName
         + '/' + this.newAccessoryConfig.products.accessories[0].accessory.kod;
