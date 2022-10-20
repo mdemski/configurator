@@ -79,6 +79,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   @ViewChildren('dimensionsPresentationDivs') dimPresentDivs: QueryList<ElementRef>;
+  @ViewChildren('dimensionsPresentationDivs2') dimPresentDivs2: QueryList<ElementRef>;
   @ViewChildren('dimensionsPresentationDivsEqual') dimPresentDivsEqual: QueryList<ElementRef>;
   @ViewChildren('dimensionsPresentationDivsH1') dimPresentDivsH1: QueryList<ElementRef>;
   @ViewChildren('dimensionsPresentationDivsW1') dimPresentDivsW1: QueryList<ElementRef>;

@@ -332,15 +332,19 @@
                         <td #dimensionsPresentationTD
                             class="composition-and-dimensions-presentation-container__table--column"
                             *ngFor="let verticalFlashing of widths.controls; let j = index">
-                          <div #dimensionsPresentationDivs
-                               *ngIf="heights.length !== widths.length && widths.length !== 1 && heights.length !== 1">x
+                          <div #dimensionsPresentationDivs>
+                            {{
+                            (form.get('composition.horizontalNumber').value * form.get('composition.verticalNumber').value) +
+                            ((form.get('composition.verticalNumber').value - j) * j) - (form.get('composition.verticalNumber').value * i) -
+                            ((form.get('composition.verticalNumber').value - 1)) - (j * ((form.get('composition.verticalNumber').value - 1) - j))
+                            }}
                           </div>
-                          <div #dimensionsPresentationDivsEqual
-                               *ngIf="heights.length === widths.length">{{(-1 * (form.get('composition.horizontalNumber').value) * i) + (((form.get('composition.horizontalNumber').value) - 1) * (form.get('composition.verticalNumber').value) + j) + 1}}</div>
-                          <div #dimensionsPresentationDivsW1
-                               *ngIf="widths.length === 1">{{form.get('composition.horizontalNumber').value - i}}</div>
-                          <div #dimensionsPresentationDivsH1
-                               *ngIf="heights.length === 1">{{(form.get('composition.verticalNumber').value * i) + ((form.get('composition.horizontalNumber').value - (form.get('composition.horizontalNumber').value - 1)) * j) + 1}}</div>
+<!--                          <div #dimensionsPresentationDivsEqual-->
+<!--                               *ngIf="heights.length === widths.length">{{(-1 * (form.get('composition.horizontalNumber').value) * i) + (((form.get('composition.horizontalNumber').value) - 1) * (form.get('composition.verticalNumber').value) + j) + 1}}</div>-->
+<!--                          <div #dimensionsPresentationDivsW1-->
+<!--                               *ngIf="widths.length === 1">{{form.get('composition.horizontalNumber').value - i}}</div>-->
+<!--                          <div #dimensionsPresentationDivsH1-->
+<!--                               *ngIf="heights.length === 1">{{(form.get('composition.verticalNumber').value * i) + ((form.get('composition.horizontalNumber').value - (form.get('composition.horizontalNumber').value - 1)) * j) + 1}}</div>-->
                         </td>
                       </tr>
                     </table>
@@ -466,9 +470,11 @@
                     </div>
 
                     <div class="select-box__value">
-                      <input class="select-box__input" type="radio" id="{{userConfigs[userConfigs.length - 1].userId + 1}}" [(ngModel)]="flashingConfigFormId"
+                      <input class="select-box__input" type="radio"
+                             id="{{userConfigs[userConfigs.length - 1].userId + 1}}" [(ngModel)]="flashingConfigFormId"
                              [ngModelOptions]="{standalone: true}" value="-2" name="flashingConfigFormId">
-                      <p class="select-box__input-text">{{userConfigs[userConfigs.length - 1].userId + 1}} - {{'CONFIGURATOR.newConfiguration' | translate}}</p>
+                      <p class="select-box__input-text">{{userConfigs[userConfigs.length - 1].userId + 1}}
+                        - {{'CONFIGURATOR.newConfiguration' | translate}}</p>
                     </div>
 
                     <div class="select-box__value">
@@ -484,8 +490,10 @@
                       class="select-box__option margin-bottom-0" for="{{z}}"
                       aria-hidden="aria-hidden">{{singleConfiguration.userId}} - {{singleConfiguration.name}}</label>
                     </li>
-                    <li> <label class="select-box__option margin-bottom-0" for="{{userConfigs[userConfigs.length - 1].userId + 1}}"
-                                aria-hidden="aria-hidden">{{userConfigs[userConfigs.length - 1].userId + 1}} - {{'CONFIGURATOR.newConfiguration' | translate}}</label></li>
+                    <li><label class="select-box__option margin-bottom-0"
+                               for="{{userConfigs[userConfigs.length - 1].userId + 1}}"
+                               aria-hidden="aria-hidden">{{userConfigs[userConfigs.length - 1].userId + 1}}
+                      - {{'CONFIGURATOR.newConfiguration' | translate}}</label></li>
                   </ul>
                 </div>
                 <a (click)="chooseConfigId(); closeAllHovers([flashingTypeOptions, apronTypeOptions, outerMaterialOptions,
