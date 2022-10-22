@@ -307,19 +307,22 @@ export class FlashingValueSetterService implements OnDestroy {
     }
 
     let outerColorCode = '';
-    switch (outerColor) {
-      case 'Aluminium:RAL7022':
-        outerColorCode = '7022';
-        break;
-      case 'Aluminium:RAL7016':
-        outerColorCode = '7016';
-        break;
-      case 'Miedź:Natur':
-        outerColorCode = '0000';
-        break;
-      case 'TytanCynk:Natur':
-        outerColorCode = '0000';
-        break;
+    if (outerColor === '' || outerColor === undefined) {
+      outerColorCode = '0000';
+    } else {
+      switch (outerColor.split(':')[0]) {
+        case 'Aluminium':
+          outerColorCode = outerColor.substring(outerColor.length - 4);
+          break;
+        case 'Miedź':
+          outerColorCode = '0000';
+          break;
+        case 'TytanCynk':
+          outerColorCode = '0000';
+          break;
+        default:
+          outerColorCode = '0000';
+      }
     }
 
     let outerFinishCode = '';
