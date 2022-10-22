@@ -1049,7 +1049,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy {
         + '/' + this.formName
         + '/' + this.configuredFlashing.kod);
       this.configId = String('configuration-' + this.flashingConfigFormId);
-      this.globalConfiguration = this.configurations.find(config => config.userId === this.flashingConfigFormId && config.user === this.currentUser);
+      this.globalConfiguration = this.configurations.find(config => (config.userId === Number(this.flashingConfigFormId) && config.user === this.currentUser));
       if (this.configuredFlashingArray.length === 0) {
         // tslint:disable-next-line:max-line-length
         this.store.dispatch(new AddFlashingConfiguration(this.globalConfiguration, this.configuredFlashing,
@@ -1292,11 +1292,5 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy {
         }
       }
     }
-  }
-
-
-  changeSelection(z: number, event: Event) {
-    console.log(z);
-    console.log(event.target);
   }
 }

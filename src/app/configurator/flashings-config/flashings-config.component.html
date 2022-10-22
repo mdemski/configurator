@@ -461,7 +461,7 @@
               <div class="choose-config-popup__content__form">
                 <div class="select-box">
                   <div class="select-box__current" tabindex="1">
-                    <div class="select-box__value" (change)="changeSelection(z, $event)" *ngFor="let singleConfiguration of userConfigs; let z = index">
+                    <div class="select-box__value" *ngFor="let singleConfiguration of userConfigs; let z = index">
                       <input class="select-box__input" type="radio" id="config{{z}}" [(ngModel)]="flashingConfigFormId"
                              value="{{singleConfiguration.userId}}" name="flashingConfigFormId" [ngModelOptions]="{standalone: true}">
                       <p class="select-box__input-text">{{singleConfiguration.userId}} - {{singleConfiguration.name}}</p>
