@@ -6,12 +6,14 @@ import {CartState} from '../../../store/cart/cart.state';
 import {RoofWindowSkylight} from '../../../models/roof-window-skylight';
 import {Accessory} from '../../../models/accessory';
 import {CrudService} from '../../../services/crud-service';
-import {filter, map, takeUntil} from 'rxjs/operators';
+import {filter, map, takeUntil, tap} from 'rxjs/operators';
 import {RouterState} from '@ngxs/router-plugin';
 import {RoofWindowState} from '../../../store/roof-window/roof-window.state';
 import {SkylightState} from '../../../store/skylight/skylight.state';
 import {AddProductToCart} from '../../../store/cart/cart.actions';
 import {Router} from '@angular/router';
+import {UserState, UserStateModel} from '../../../store/user/user.state';
+import {GetUserData} from '../../../store/user/user.actions';
 
 @Component({
   selector: 'app-reset-product-details',
@@ -21,6 +23,7 @@ import {Router} from '@angular/router';
 export class ResetProductDetailsComponent implements OnInit, OnDestroy {
   @Select(AppState) user$: Observable<{ currentUser }>;
   @Select(CartState) cart$: Observable<any>;
+  @Select(UserState) userState$: Observable<UserStateModel>;
   product$: Observable<RoofWindowSkylight>;
   logInUser: {
     email: string;
@@ -33,7 +36,6 @@ export class ResetProductDetailsComponent implements OnInit, OnDestroy {
   productMaterial: string;
   productVent: string;
   productHandle: string;
-  priceAfterDisc$ = new Subject<number>();
   glazing: string;
   availableSizes = ['55x78', '55x98', '66x98', '66x118', '66x140', '78x98', '78x118', '78x140', '78x160', '94x118', '94x140', '94x160', '114x118', '114x140', '134x98'];
   quantity = 1;
@@ -61,12 +63,11 @@ export class ResetProductDetailsComponent implements OnInit, OnDestroy {
       // this.glazing = window.pakietSzybowy.split(':')[1];
       this.glazing = product.pakietSzybowy;
     });
+    this.loadUserState();
     // TODO wczytać zdjęcia z bazy przypisane do danego indeksu
     this.picturesOfProduct.push('assets/img/products/ISO-I22.png');
     this.picturesOfProduct.push('assets/img/products/ISO-arrangement-1.png');
     this.picturesOfProduct.push('assets/img/products/ISO-arrangement-2.png');
-    this.getDiscountPrice();
-    // TODO napisać obsługę tej metody z wykorzystaniem store'a
     // this.availableExtras.push(this.db.getAccessoryById(1), this.db.getAccessoryById(2));
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe(() => console.log);
     // TODO wczytywać to z produktu po uzupełnieniu w eNova
@@ -80,11 +81,14 @@ export class ResetProductDetailsComponent implements OnInit, OnDestroy {
     this.isDestroyed$.next(null);
   }
 
-  getDiscountPrice() {
+  loadUserState() {
     if (this.logInUser.isLogged) {
-      return this.crud.readUserByEmail(this.logInUser.email).pipe(takeUntil(this.isDestroyed$)).subscribe(user => {
-        this.priceAfterDisc$.next(this.productToShow.CenaDetaliczna / (1 + user.basicDiscount + user.roofWindowsDiscount));
-      });
+      this.userState$.pipe(takeUntil(this.isDestroyed$),
+        tap(user => {
+          if (user._id === '') {
+            this.store.dispatch(new GetUserData(this.logInUser.email, this.logInUser.isLogged));
+          }
+        })).subscribe();
     }
   }
 

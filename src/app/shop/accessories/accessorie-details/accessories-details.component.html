@@ -39,7 +39,7 @@
     <p
       class="price">{{ 'SINGLE-PRODUCT.price' | translate}} {{(accessory.CenaDetaliczna / (cart$ | async).cart.exchange) | currency: ' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
     <p *ngIf="logInUser.isLogged"
-       class="price--after-discount">{{ 'SINGLE-PRODUCT.priceAfterDisc' | translate}} {{(accessory.CenaDetaliczna / (1 + (user$ | async).currentUser.basicDiscount + (user$ | async).currentUser.accessoriesDiscount) / (cart$ | async).cart.exchange) | currency :' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
+       class="price--after-discount">{{ 'SINGLE-PRODUCT.priceAfterDisc' | translate}} {{(accessory.CenaDetaliczna / (1 + (userState$ | async).basicDiscount + (userState$ | async).accessoriesDiscount) / (cart$ | async).cart.exchange) | currency :' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
     <div class="line"></div>
     <div class="all-sizes-container">
       <p>{{ 'SINGLE-PRODUCT.availableSizes' | translate}}</p>

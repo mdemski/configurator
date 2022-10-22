@@ -48,7 +48,7 @@
     <p class="product-name">{{skylightToShow.productName}}</p>
     <p class="price">{{ 'SINGLE-PRODUCT.price' | translate}} {{(skylightToShow.CenaDetaliczna / (cart$ | async).cart.exchange) | currency: ' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
     <p *ngIf="logInUser.isLogged"
-       class="price--after-discount">{{ 'SINGLE-PRODUCT.priceAfterDisc' | translate}} {{((priceAfterDisc$ | async) / (cart$ | async).cart.exchange) | currency :' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
+       class="price--after-discount">{{ 'SINGLE-PRODUCT.priceAfterDisc' | translate}} {{(skylightToShow.CenaDetaliczna / (1 + (userState$ | async).basicDiscount + (userState$ | async).skylightsDiscount) / (cart$ | async).cart.exchange) | currency :' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
     <div class="line"></div>
     <div class="all-sizes-container">
       <p>{{ 'SINGLE-PRODUCT.availableSizes' | translate}}</p>

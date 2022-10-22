@@ -16,7 +16,8 @@
         src="assets/icons/single_product_page/wood.png" alt="wooden window"></div>
       <div *ngIf="productMaterial === 'PVC'" class="specification-icons__element active-icon"><img
         src="assets/icons/single_product_page/pvc.png" alt="wooden window"></div>
-      <div class="specification-icons__element active-icon">{{'ROOF-WINDOWS-DATA.' + productToShow.stolarkaKolor | translate}}</div>
+      <div
+        class="specification-icons__element active-icon">{{'ROOF-WINDOWS-DATA.' + productToShow.stolarkaKolor | translate}}</div>
       <div *ngIf="productVent === 'NEO-AIR' else productNoVent" class="specification-icons__element active-icon"><img
         src="assets/icons/single_product_page/neo-vent.png" alt="wooden window"></div>
       <ng-template #productNoVent>
@@ -26,14 +27,17 @@
       <div *ngIf="productHandle === 'Extra Secure' else simpleHandle" class="specification-icons__element active-icon">
         <img src="assets/icons/single_product_page/extra-secure.png" alt="wooden window"></div>
       <ng-template #simpleHandle>
-        <div class="specification-icons__element inactive-icon"><img src="assets/icons/single_product_page/extra-secure.png"
-                                                                     alt="wooden window"></div>
+        <div class="specification-icons__element inactive-icon"><img
+          src="assets/icons/single_product_page/extra-secure.png"
+          alt="wooden window"></div>
       </ng-template>
       <div class="specification-icons__element active-icon">Uw {{productToShow.windowUW}}</div>
       <div class="specification-icons__element active-icon">Ug {{productToShow.windowUG}} </div>
-      <div class="specification-icons__element active-icon">{{'ROOF-WINDOWS-DATA.' + productToShow.oblachowanieKolor | translate}}</div>
-      <div class="specification-icons__element active-icon"><img src="assets/icons/single_product_page/guarantee-window.png"
-                                                                 alt="guarantee for window"></div>
+      <div
+        class="specification-icons__element active-icon">{{'ROOF-WINDOWS-DATA.' + productToShow.oblachowanieKolor | translate}}</div>
+      <div class="specification-icons__element active-icon"><img
+        src="assets/icons/single_product_page/guarantee-window.png"
+        alt="guarantee for window"></div>
     </div>
     <!--Icons with specification of product-->
 
@@ -46,13 +50,15 @@
 
   <div class="md-container--right-side">
     <p class="product-name">{{productToShow.productName}}</p>
-    <p class="price">{{ 'SINGLE-PRODUCT.price' | translate}} {{(productToShow.CenaDetaliczna / (cart$ | async).cart.exchange) | currency: ' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
+    <p
+      class="price">{{ 'SINGLE-PRODUCT.price' | translate}} {{(productToShow.CenaDetaliczna / (cart$ | async).cart.exchange) | currency: ' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
     <p *ngIf="logInUser.isLogged"
-       class="price--after-discount">{{ 'SINGLE-PRODUCT.priceAfterDisc' | translate}} {{((priceAfterDisc$ | async) / (cart$ | async).cart.exchange) | currency :' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
+       class="price--after-discount">{{ 'SINGLE-PRODUCT.priceAfterDisc' | translate}} {{(productToShow.CenaDetaliczna / (1 + (userState$ | async).basicDiscount + (userState$ | async).roofWindowsDiscount) / (cart$ | async).cart.exchange) | currency :' '}} {{returnCurrencyName((cart$ | async).cart.currency)}}</p>
     <div class="line"></div>
     <div class="all-sizes-container">
       <p>{{ 'SINGLE-PRODUCT.availableSizes' | translate}}</p>
-      <a routerLink="../{{getLinkCode(productToShow.kod, size)}}" class="icon-btn-light icon-btn-light--light-grey-red btn-big" [routerLinkActive]="['active-button']"
+      <a routerLink="../{{getLinkCode(productToShow.kod, size)}}"
+         class="icon-btn-light icon-btn-light--light-grey-red btn-big" [routerLinkActive]="['active-button']"
          *ngFor="let size of availableSizes">{{size}}</a>
     </div>
     <div class="line"></div>

@@ -6,11 +6,13 @@ import {CartState} from '../../../store/cart/cart.state';
 import {RoofWindowSkylight} from '../../../models/roof-window-skylight';
 import {Accessory} from '../../../models/accessory';
 import {CrudService} from '../../../services/crud-service';
-import {filter, map, takeUntil} from 'rxjs/operators';
+import {filter, map, takeUntil, tap} from 'rxjs/operators';
 import {RouterState} from '@ngxs/router-plugin';
 import {SkylightState} from '../../../store/skylight/skylight.state';
 import {AddProductToCart} from '../../../store/cart/cart.actions';
 import {Router} from '@angular/router';
+import {GetUserData} from '../../../store/user/user.actions';
+import {UserState, UserStateModel} from '../../../store/user/user.state';
 
 @Component({
   selector: 'app-skylight-details',
@@ -20,6 +22,7 @@ import {Router} from '@angular/router';
 export class SkylightDetailsComponent implements OnInit, OnDestroy {
   @Select(AppState) user$: Observable<{ currentUser }>;
   @Select(CartState) cart$: Observable<any>;
+  @Select(UserState) userState$: Observable<UserStateModel>;
   skylight$: Observable<RoofWindowSkylight>;
   logInUser: {
     email: string;
@@ -56,7 +59,7 @@ export class SkylightDetailsComponent implements OnInit, OnDestroy {
     this.picturesOfSkylight.push('assets/img/products/WVD+47x73');
     this.picturesOfSkylight.push('assets/img/products/WVD+-arrangement-1.png');
     this.picturesOfSkylight.push('assets/img/products/WVD+-arrangement-2.png');
-    this.getDiscountPrice();
+    this.loadUserState();
     // TODO napisać obsługę tej metody z wykorzystaniem store'a
     // this.availableExtras.push(this.db.getAccessoryById(1), this.db.getAccessoryById(2));
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroy$)).subscribe(() => console.log);
@@ -71,11 +74,14 @@ export class SkylightDetailsComponent implements OnInit, OnDestroy {
     this.isDestroy$.next(null);
   }
 
-  getDiscountPrice() {
+  loadUserState() {
     if (this.logInUser.isLogged) {
-      return this.crud.readUserByEmail(this.logInUser.email).pipe(takeUntil(this.isDestroy$)).subscribe(user => {
-        this.priceAfterDisc$.next(this.skylightToShow.CenaDetaliczna / (1 + user.basicDiscount + user.skylightsDiscount));
-      });
+      this.userState$.pipe(takeUntil(this.isDestroy$),
+        tap(user => {
+          if (user._id === '') {
+            this.store.dispatch(new GetUserData(this.logInUser.email, this.logInUser.isLogged));
+          }
+        })).subscribe();
     }
   }
 

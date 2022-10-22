@@ -4,11 +4,13 @@ import {AppState} from '../../../store/app/app.state';
 import {Observable, Subject} from 'rxjs';
 import {CartState} from '../../../store/cart/cart.state';
 import {Accessory} from '../../../models/accessory';
-import {filter, map, takeUntil} from 'rxjs/operators';
+import {filter, map, takeUntil, tap} from 'rxjs/operators';
 import {RouterState} from '@ngxs/router-plugin';
 import {AccessoryState} from '../../../store/accessory/accessory.state';
 import {AddProductToCart} from '../../../store/cart/cart.actions';
 import {Router} from '@angular/router';
+import {UserState, UserStateModel} from '../../../store/user/user.state';
+import {GetUserData} from '../../../store/user/user.actions';
 
 @Component({
   selector: 'app-accessories-details',
@@ -18,6 +20,7 @@ import {Router} from '@angular/router';
 export class AccessoriesDetailsComponent implements OnInit, OnDestroy {
   @Select(AppState) user$: Observable<{ currentUser }>;
   @Select(CartState) cart$: Observable<any>;
+  @Select(UserState) userState$: Observable<UserStateModel>;
   accessory$: Observable<Accessory>;
   logInUser: {
     email: string,
@@ -42,6 +45,7 @@ export class AccessoriesDetailsComponent implements OnInit, OnDestroy {
     // TODO wczytać zdjęcia z bazy przypisane do danego indeksu
     this.picturesOfAccessory.push('assets/img/products/ISO-arrangement-1.png');
     this.picturesOfAccessory.push('assets/img/products/ISO-V-D37.png');
+    this.loadUserState();
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe();
   }
 
@@ -49,14 +53,16 @@ export class AccessoriesDetailsComponent implements OnInit, OnDestroy {
     this.isDestroyed$.next(null);
   }
 
-  // private getDiscountPrice() {
-  //   if (this.logInUser.isLogged) {
-  //     return this.store.dispatch(new GetUserData(this.logInUser.email, this.logInUser.isLogged)).pipe(takeUntil(this.isDestroyed$))
-  //       .subscribe(({user}) => {
-  //         this.priceAfterDisc$.next(); // To trzeba zrobić w template przy wyświetlaniu
-  //       });
-  //   }
-  // }
+  loadUserState() {
+    if (this.logInUser.isLogged) {
+      this.userState$.pipe(takeUntil(this.isDestroyed$),
+        tap(user => {
+          if (user._id === '') {
+            this.store.dispatch(new GetUserData(this.logInUser.email, this.logInUser.isLogged));
+          }
+        })).subscribe();
+    }
+  }
 
   resize(delta: number) {
     this.quantity = this.quantity + delta;

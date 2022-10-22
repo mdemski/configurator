@@ -4,11 +4,13 @@ import {Select, Store} from '@ngxs/store';
 import {AppState} from '../../../store/app/app.state';
 import {CartState} from '../../../store/cart/cart.state';
 import {Flashing} from '../../../models/flashing';
-import {filter, map, takeUntil} from 'rxjs/operators';
+import {filter, map, takeUntil, tap} from 'rxjs/operators';
 import {RouterState} from '@ngxs/router-plugin';
 import {FlashingState} from '../../../store/flashing/flashing.state';
 import {AddProductToCart} from '../../../store/cart/cart.actions';
 import {Router} from '@angular/router';
+import {GetUserData} from '../../../store/user/user.actions';
+import {UserState, UserStateModel} from '../../../store/user/user.state';
 
 @Component({
   selector: 'app-flashing-details',
@@ -18,6 +20,7 @@ import {Router} from '@angular/router';
 export class FlashingDetailsComponent implements OnInit, OnDestroy {
   @Select(AppState) user$: Observable<{ currentUser }>;
   @Select(CartState) cart$: Observable<any>;
+  @Select(UserState) userState$: Observable<UserStateModel>;
   flashing$: Observable<Flashing>;
   isDestroyed$ = new Subject();
   logInUser: {
@@ -41,11 +44,23 @@ export class FlashingDetailsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // TODO wczytać zdjęcia z bazy przypisane do danego indeksu
     this.picturesOfFlashing.push('assets/img/products/U.png');
+    this.loadUserState();
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe();
   }
 
   ngOnDestroy() {
     this.isDestroyed$.next(null);
+  }
+
+  loadUserState() {
+    if (this.logInUser.isLogged) {
+      this.userState$.pipe(takeUntil(this.isDestroyed$),
+        tap(user => {
+          if (user._id === '') {
+            this.store.dispatch(new GetUserData(this.logInUser.email, this.logInUser.isLogged));
+          }
+        })).subscribe();
+    }
   }
 
   resize(delta: number) {

@@ -4,11 +4,13 @@ import {AppState} from '../../../store/app/app.state';
 import {Observable, Subject} from 'rxjs';
 import {CartState} from '../../../store/cart/cart.state';
 import {FlatRoofWindow} from '../../../models/flat-roof-window';
-import {filter, map, takeUntil} from 'rxjs/operators';
+import {filter, map, takeUntil, tap} from 'rxjs/operators';
 import {RouterState} from '@ngxs/router-plugin';
 import {FlatRoofWindowState} from '../../../store/flat-roof-window/flat-roof-window.state';
 import {AddProductToCart} from '../../../store/cart/cart.actions';
 import {Router} from '@angular/router';
+import {GetUserData} from '../../../store/user/user.actions';
+import {UserState, UserStateModel} from '../../../store/user/user.state';
 
 @Component({
   selector: 'app-flat-roof-window-details',
@@ -20,6 +22,7 @@ export class FlatRoofWindowDetailsComponent implements OnInit, OnDestroy {
   isDestroyed$ = new Subject();
   @Select(AppState) user$: Observable<{ currentUser }>;
   @Select(CartState) cart$: Observable<any>;
+  @Select(UserState) userState$: Observable<UserStateModel>;
   flatRoofWindow$: Observable<FlatRoofWindow>;
   logInUser: {
     email: string;
@@ -44,11 +47,23 @@ export class FlatRoofWindowDetailsComponent implements OnInit, OnDestroy {
     this.picturesOfWindow.push('assets/img/products/PGX_LED.png');
     this.picturesOfWindow.push('assets/img/products/PG-arrangement-1.png');
     this.picturesOfWindow.push('assets/img/products/PG-arrangement-2.png');
+    this.loadUserState();
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe();
   }
 
   ngOnDestroy() {
     this.isDestroyed$.next(null);
+  }
+
+  loadUserState() {
+    if (this.logInUser.isLogged) {
+      this.userState$.pipe(takeUntil(this.isDestroyed$),
+        tap(user => {
+          if (user._id === '') {
+            this.store.dispatch(new GetUserData(this.logInUser.email, this.logInUser.isLogged));
+          }
+        })).subscribe();
+    }
   }
 
   resize(delta: number) {
