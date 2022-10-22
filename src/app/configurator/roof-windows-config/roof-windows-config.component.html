@@ -110,7 +110,7 @@
                      [ngClass]="popupConfig===false ? 'md-popup__content--group__label' : 'configure-form__group__label'">
                 {{'ROOF-WINDOWS-CONFIG.material' | translate}}</label>
               <div #materialOptions
-                   [ngClass]="popupConfig===false ? 'md-popup__content--group__options' : 'configure-form__group__options materials'">
+                   [ngClass]="popupConfig===false ? 'md-popup__content--group__options' : 'configure-form__group__options'">
                 <div
                   [ngClass]="popupConfig===false ? 'md-popup__content--group__options--option' : 'configure-form__group__options--option'"
                   *ngFor="let material of materials">

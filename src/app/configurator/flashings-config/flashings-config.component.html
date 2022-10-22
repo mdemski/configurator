@@ -461,9 +461,9 @@
               <div class="choose-config-popup__content__form">
                 <div class="select-box">
                   <div class="select-box__current" tabindex="1">
-                    <div class="select-box__value" *ngFor="let singleConfiguration of userConfigs; let z = index">
+                    <div class="select-box__value" (change)="changeSelection(z, singleConfiguration, $event)" *ngFor="let singleConfiguration of userConfigs; let z = index">
                       <input class="select-box__input" type="radio" id="{{z}}" [(ngModel)]="flashingConfigFormId"
-                             [ngModelOptions]="{standalone: true}"
+                             [ngModelOptions]="{standalone: true}" [checked]="z === 0"
                              value="{{singleConfiguration.userId}}" name="flashingConfigFormId">
                       <p class="select-box__input-text">{{singleConfiguration.userId}}
                         - {{singleConfiguration.name}}</p>
@@ -477,11 +477,6 @@
                         - {{'CONFIGURATOR.newConfiguration' | translate}}</p>
                     </div>
 
-                    <div class="select-box__value">
-                      <input class="select-box__input" type="radio" id="-1" value="{{userConfigs[0].userId}}"
-                             name="flashingConfigFormId" checked>
-                      <p class="select-box__input-text">{{userConfigs[0].userId}} - {{userConfigs[0].name}}</p>
-                    </div>
                     <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg"
                          alt="Arrow Icon" aria-hidden="true">
                   </div>

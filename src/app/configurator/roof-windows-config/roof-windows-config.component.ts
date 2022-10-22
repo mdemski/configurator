@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors} from '@angular/forms';
 import {Observable, Observer, Subject, Subscription} from 'rxjs';
 import {Router} from '@angular/router';
@@ -40,6 +40,7 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   @Select(AvailableConfigDataState.roofWindowsExclusions) excludeOptions$: Observable<any>;
   @Select(RouterState) params$: Observable<any>;
   @Select(CartState) cart$: Observable<any>;
+  @ViewChild('glazingOptions') glazingOptions: ElementRef<HTMLDivElement>;
 
   constructor(private store: Store,
               private windowValuesSetter: RoofWindowValuesSetterService,
@@ -95,11 +96,11 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
   private windowModelsToCalculatePrice = [];
   private standardWidths = [55, 66, 78, 94, 114, 134];
   private standardHeights = [78, 98, 118, 140, 160];
-  private materialVisible = true;
+  private materialVisible = false;
   private openingVisible = false;
+  private glazingVisible = false;
   private coatsVisible = false;
   private dimensionsVisible = false;
-  private glazingVisible = false;
   private innerColorVisible = false;
   private outerMaterialVisible = false;
   private ventilationVisible = false;
@@ -390,6 +391,8 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
     if (form.material &&
       form.openingType) {
       this.popupConfig = true;
+      this.materialVisible = false;
+      this.onGlazingHover(this.glazingOptions.nativeElement);
     }
     this.configuredWindow = JSON.parse(JSON.stringify(temporaryConfigObject));
     this.showWidthMessage = this.standardWidths.includes(form.width);

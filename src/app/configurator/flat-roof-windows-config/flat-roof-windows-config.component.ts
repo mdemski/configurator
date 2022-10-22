@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Observable, Observer, Subject, Subscription} from 'rxjs';
 import {Select, Store} from '@ngxs/store';
 import {RouterState} from '@ngxs/router-plugin';
@@ -39,6 +39,7 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
   @Select(AvailableConfigDataState.configFlatRoofWindows) configOptions$: Observable<any>;
   @Select(AvailableConfigDataState.flatRoofWindowsConfigLoaded) configOptionsLoaded$: Observable<boolean>;
   @Select(AvailableConfigDataState.flatRoofWindowsExclusions) excludeOptions$: Observable<any>;
+  @ViewChild('openingOptions') openingOptions: ElementRef<HTMLDivElement>;
 
   constructor(private store: Store,
               private flatRoofWindowValueSetter: FlatValueSetterService,
@@ -90,7 +91,7 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
   private flatRoofWindowModelsToCalculatePrice = [];
   private standardWidths = [60, 70, 80, 90, 100, 120, 140, 150, 220];
   private standardHeights = [60, 70, 80, 90, 100, 120, 140];
-  private materialVisible = true;
+  private materialVisible = false;
   private openingVisible = false;
   private dimensionsVisible = false;
   private glazingVisible = false;
@@ -160,6 +161,7 @@ export class FlatRoofWindowsConfigComponent implements OnInit, OnDestroy {
     this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
       this.flatRoofWindowsConfigurator = text.configuratorFlatRoofWindow;
     });
+    setTimeout(() => this.onOpeningHover(this.openingOptions.nativeElement), 1000);
   }
 
   ngOnDestroy() {

@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {AppState} from '../../store/app/app.state';
 import {Observable, Observer, Subject} from 'rxjs';
 import {Select, Store} from '@ngxs/store';
@@ -39,6 +39,7 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
   @Select(AvailableConfigDataState.accessoriesExclusions) excludeOptions$: Observable<any>;
   @Select(RouterState) params$: Observable<any>;
   @Select(CartState) cart$: Observable<any>;
+  @ViewChild('typeOptions') typeOptions: ElementRef<HTMLDivElement>;
 
   constructor(private store: Store,
               private hd: HighestIdGetterService,
@@ -160,6 +161,7 @@ export class AccessoriesConfigComponent implements OnInit, OnDestroy {
         this.accessoriesConfigurator = text.configuratorAccessory;
       });
     });
+    setTimeout(() => this.onTypeHover(this.typeOptions.nativeElement), 1000);
   }
 
   ngOnDestroy() {

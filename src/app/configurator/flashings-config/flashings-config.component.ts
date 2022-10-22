@@ -1,11 +1,10 @@
 import {
-  AfterViewInit,
   ChangeDetectorRef,
   Component,
   ElementRef,
   OnDestroy,
   OnInit,
-  QueryList,
+  QueryList, ViewChild,
   ViewChildren
 } from '@angular/core';
 import {LoadConfigurationService} from '../../services/load-configuration.service';
@@ -42,7 +41,7 @@ import {MdTranslateService} from '../../services/md-translate.service';
   templateUrl: './flashings-config.component.html',
   styleUrls: ['./flashings-config.component.scss']
 })
-export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewInit {
+export class FlashingsConfigComponent implements OnInit, OnDestroy {
 
   @Select(AppState) user$: Observable<{ currentUser }>;
   @Select(ConfigurationState.configurations) configurations$: Observable<SingleConfiguration[]>;
@@ -84,6 +83,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
   @ViewChildren('dimensionsPresentationDivsH1') dimPresentDivsH1: QueryList<ElementRef>;
   @ViewChildren('dimensionsPresentationDivsW1') dimPresentDivsW1: QueryList<ElementRef>;
   @ViewChildren('dimensionsPresentationTD') dimPresentTDS: QueryList<ElementRef>;
+  @ViewChild('flashingTypeOptions', {static: false}) flashingTypeOptions: ElementRef<HTMLDivElement>;
 
   private isDestroyed$ = new Subject();
   private tempConfigFlashing: Flashing;
@@ -95,7 +95,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
   private configOptions;
   private configurations: SingleConfiguration[];
   userConfigurations$: Observable<SingleConfiguration[]> = new Subject() as Observable<SingleConfiguration[]>;
-  configByName$: Observable<{productConfigs: FlashingConfig[], loaded: boolean}>;
+  configByName$: Observable<{ productConfigs: FlashingConfig[], loaded: boolean }>;
   reverseModelsArrayIndex: number[];
   summaryFlashingsPrice: number;
   globalId = '';
@@ -145,7 +145,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
   private shopFlashingLink: string;
   private configurationSummary: string;
   private flashingsConfigurator: string;
-  private flashingTypeVisible = true;
+  private flashingTypeVisible = false;
   private apronTypeVisible = false;
   private outerMaterialVisible = false;
   private compositionVisible = false;
@@ -228,11 +228,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
     this.translate.get('LINK').pipe(takeUntil(this.isDestroyed$)).subscribe(text => {
       this.flashingsConfigurator = text.configuratorFlashings;
     });
-  }
-
-  ngAfterViewInit() {
-    // tslint:disable-next-line:no-shadowed-variable
-    // this.dimPresentTDS.forEach(element => element.nativeElement.setAttribute('background: green'));
+    setTimeout(() => this.onFlashingTypeHover(this.flashingTypeOptions.nativeElement), 1000);
   }
 
   initialTemplateArrays() {
@@ -780,7 +776,7 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
 
   onFlashingTypeHover(flashingType: HTMLDivElement) {
     this.flashingTypeVisible = !this.flashingTypeVisible;
-    this.onHoverClick(flashingType, this.apronTypes.length, this.flashingTypeVisible);
+    this.onHoverClick(flashingType, this.flashingTypes.length, this.flashingTypeVisible);
   }
 
   onApronTypeHover(apronType: HTMLDivElement) {
@@ -1296,5 +1292,12 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy, AfterViewIni
         }
       }
     }
+  }
+
+
+  changeSelection(z: number, singleConfiguration: any, event: Event) {
+    console.log(z);
+    console.log(singleConfiguration);
+    console.log(event.target);
   }
 }
