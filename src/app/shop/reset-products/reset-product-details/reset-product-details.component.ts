@@ -14,6 +14,8 @@ import {AddProductToCart} from '../../../store/cart/cart.actions';
 import {Router} from '@angular/router';
 import {UserState, UserStateModel} from '../../../store/user/user.state';
 import {GetUserData} from '../../../store/user/user.actions';
+import {GetAccessories} from '../../../store/accessory/accessory.actions';
+import {AccessoryState} from '../../../store/accessory/accessory.state';
 
 @Component({
   selector: 'app-reset-product-details',
@@ -24,6 +26,7 @@ export class ResetProductDetailsComponent implements OnInit, OnDestroy {
   @Select(AppState) user$: Observable<{ currentUser }>;
   @Select(CartState) cart$: Observable<any>;
   @Select(UserState) userState$: Observable<UserStateModel>;
+  @Select(AccessoryState) accessories$: Observable<any>;
   product$: Observable<RoofWindowSkylight>;
   logInUser: {
     email: string;
@@ -68,13 +71,16 @@ export class ResetProductDetailsComponent implements OnInit, OnDestroy {
     this.picturesOfProduct.push('assets/img/products/ISO-I22.png');
     this.picturesOfProduct.push('assets/img/products/ISO-arrangement-1.png');
     this.picturesOfProduct.push('assets/img/products/ISO-arrangement-2.png');
-    // this.availableExtras.push(this.db.getAccessoryById(1), this.db.getAccessoryById(2));
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe(() => console.log);
-    // TODO wczytywać to z produktu po uzupełnieniu w eNova
-    this.availableExtras.push(new Accessory('1234', 'Roletka', 'Roletka', 'NPL-ROLETAW', 'NEN-ROLETAW', '3. Dopuszczony',
-      'D37', 78, 118, 'Akcesorium', 'RoletaWewnetrzna', 'D', 'D37', 'Wewnetrzne', 'A', 'B', 'Zaciemniająca',
-      'A347', 'Srebeny', null, null, null, 'Srebrny', 0, 'manualne', '1234',
-      123, ['a'], ['78x118'], 'PL', ''));
+    this.accessories$.pipe(takeUntil(this.isDestroyed$),
+      tap(accessoryState => {
+        if (accessoryState.accessories.length === 0) {
+          this.store.dispatch(new GetAccessories());
+        }
+      }),
+      map(accessoryState => accessoryState.accessories.map(accessory => {
+        this.getExtras(accessory);
+      }))).subscribe();
   }
 
   ngOnDestroy() {
@@ -89,6 +95,14 @@ export class ResetProductDetailsComponent implements OnInit, OnDestroy {
             this.store.dispatch(new GetUserData(this.logInUser.email, this.logInUser.isLogged));
           }
         })).subscribe();
+    }
+  }
+
+  getExtras(accessory) {
+    for (const windowAccessory of this.productToShow.listaDodatkow) {
+      if (windowAccessory === accessory.kod) {
+        this.availableExtras.push(accessory);
+      }
     }
   }
 

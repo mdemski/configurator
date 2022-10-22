@@ -11,6 +11,7 @@ import {AddProductToCart} from '../../../store/cart/cart.actions';
 import {Router} from '@angular/router';
 import {UserState, UserStateModel} from '../../../store/user/user.state';
 import {GetUserData} from '../../../store/user/user.actions';
+import {GetAccessories} from '../../../store/accessory/accessory.actions';
 
 @Component({
   selector: 'app-accessories-details',
@@ -21,6 +22,7 @@ export class AccessoriesDetailsComponent implements OnInit, OnDestroy {
   @Select(AppState) user$: Observable<{ currentUser }>;
   @Select(CartState) cart$: Observable<any>;
   @Select(UserState) userState$: Observable<UserStateModel>;
+  @Select(AccessoryState) accessories$: Observable<any>;
   accessory$: Observable<Accessory>;
   logInUser: {
     email: string,
@@ -29,9 +31,9 @@ export class AccessoriesDetailsComponent implements OnInit, OnDestroy {
   };
   isDestroyed$ = new Subject();
   picturesOfAccessory = [];
-  priceAfterDisc$ = new Subject<number>();
   availableSizes = ['55x78', '55x98', '66x98', '66x118', '66x140', '78x98', '78x118', '78x140', '78x160', '94x118', '94x140', '94x160', '114x118', '114x140', '134x98'];
   quantity = 1;
+  availableExtras: Accessory[] = [];
 
   constructor(private store: Store, public router: Router) {
     this.user$.pipe(takeUntil(this.isDestroyed$)).subscribe(user => this.logInUser = user.currentUser);

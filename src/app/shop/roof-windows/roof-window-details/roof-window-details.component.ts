@@ -13,6 +13,7 @@ import {Router} from '@angular/router';
 import {AccessoryState} from '../../../store/accessory/accessory.state';
 import {UserState, UserStateModel} from '../../../store/user/user.state';
 import {GetUserData} from '../../../store/user/user.actions';
+import {GetAccessories} from '../../../store/accessory/accessory.actions';
 
 @Component({
   selector: 'app-roof-window-details',
@@ -23,7 +24,7 @@ export class RoofWindowDetailsComponent implements OnInit, OnDestroy {
   @Select(AppState) user$: Observable<{ currentUser }>;
   @Select(UserState) userState$: Observable<UserStateModel>;
   @Select(CartState) cart$: Observable<any>;
-  @Select(AccessoryState) accessories$: Observable<Accessory[]>;
+  @Select(AccessoryState) accessories$: Observable<any>;
   window$: Observable<RoofWindowSkylight>;
   logInUser: {
     email: string;
@@ -64,25 +65,29 @@ export class RoofWindowDetailsComponent implements OnInit, OnDestroy {
     this.picturesOfWindow.push('assets/img/products/ISO-arrangement-1.png');
     this.picturesOfWindow.push('assets/img/products/ISO-arrangement-2.png');
     this.loadUserState();
-    // TODO napisać obsługę tej metody z wykorzystaniem store'a
-    // this.availableExtras.push(this.db.getAccessoryById(1), this.db.getAccessoryById(2));
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe(() => console.log);
-    // TODO wczytywać to z produktu po uzupełnieniu w eNova
-    // this.accessories$.pipe(takeUntil(this.isDestroyed$),
-    //   map(accessories => {
-    //     if (accessories.length === 0) {
-    //       console.log('tutaj');
-    //       this.store.dispatch(new GetAccessories());
-    //     }
-    //   })).subscribe();
-    this.availableExtras.push(new Accessory('1234', 'Roletka', 'Roletka', 'NPL-ROLETAW', 'NEN-ROLETAW', '3. Dopuszczony',
-      'D37', 78, 118, 'Akcesorium', 'RoletaWewnetrzna', 'D', 'D37', 'Wewnetrzne', 'A', 'B', 'Zaciemniająca',
-      'A347', 'Srebeny', null, null, null, 'Srebrny', 0, 'manualne', '1234',
-      123, ['a'], ['78x118'], 'PL', ''));
+    this.availableExtras = [];
+    this.accessories$.pipe(takeUntil(this.isDestroyed$),
+      tap(accessoryState => {
+        if (accessoryState.accessories.length === 0) {
+          this.store.dispatch(new GetAccessories());
+        }
+      }),
+      map(accessoryState => accessoryState.accessories.map(accessory => {
+        this.getExtras(accessory);
+      }))).subscribe();
   }
 
   ngOnDestroy() {
     this.isDestroyed$.next(null);
+  }
+
+  getExtras(accessory) {
+    for (const windowAccessory of this.windowToShow.listaDodatkow) {
+      if (windowAccessory === accessory.kod) {
+        this.availableExtras.push(accessory);
+      }
+    }
   }
 
   loadUserState() {

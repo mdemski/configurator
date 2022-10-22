@@ -13,6 +13,8 @@ import {AddProductToCart} from '../../../store/cart/cart.actions';
 import {Router} from '@angular/router';
 import {GetUserData} from '../../../store/user/user.actions';
 import {UserState, UserStateModel} from '../../../store/user/user.state';
+import {AccessoryState} from '../../../store/accessory/accessory.state';
+import {GetAccessories} from '../../../store/accessory/accessory.actions';
 
 @Component({
   selector: 'app-skylight-details',
@@ -23,6 +25,7 @@ export class SkylightDetailsComponent implements OnInit, OnDestroy {
   @Select(AppState) user$: Observable<{ currentUser }>;
   @Select(CartState) cart$: Observable<any>;
   @Select(UserState) userState$: Observable<UserStateModel>;
+  @Select(AccessoryState) accessories$: Observable<any>;
   skylight$: Observable<RoofWindowSkylight>;
   logInUser: {
     email: string;
@@ -60,18 +63,28 @@ export class SkylightDetailsComponent implements OnInit, OnDestroy {
     this.picturesOfSkylight.push('assets/img/products/WVD+-arrangement-1.png');
     this.picturesOfSkylight.push('assets/img/products/WVD+-arrangement-2.png');
     this.loadUserState();
-    // TODO napisać obsługę tej metody z wykorzystaniem store'a
-    // this.availableExtras.push(this.db.getAccessoryById(1), this.db.getAccessoryById(2));
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroy$)).subscribe(() => console.log);
-    // TODO wczytywać to z produktu po uzupełnieniu w eNova
-    this.availableExtras.push(new Accessory('1234', 'Roletka', 'Roletka', 'NPL-ROLETAW', 'NEN-ROLETAW', '3. Dopuszczony',
-      'D37', 78, 118, 'Akcesorium', 'RoletaWewnetrzna', 'D', 'D37', 'Wewnetrzne', 'A', 'B', 'Zaciemniająca',
-      'A347', 'Srebeny', null, null, null, 'Srebrny', 0, 'manualne', '1234',
-      123, ['a'], ['78x118'], 'PL', ''));
+    this.accessories$.pipe(takeUntil(this.isDestroy$),
+      tap(accessoryState => {
+        if (accessoryState.accessories.length === 0) {
+          this.store.dispatch(new GetAccessories());
+        }
+      }),
+      map(accessoryState => accessoryState.accessories.map(accessory => {
+        this.getExtras(accessory);
+      }))).subscribe();
   }
 
   ngOnDestroy(): void {
     this.isDestroy$.next(null);
+  }
+
+  getExtras(accessory) {
+    for (const windowAccessory of this.skylightToShow.listaDodatkow) {
+      if (windowAccessory === accessory.kod) {
+        this.availableExtras.push(accessory);
+      }
+    }
   }
 
   loadUserState() {

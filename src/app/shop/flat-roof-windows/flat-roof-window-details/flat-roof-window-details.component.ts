@@ -11,6 +11,8 @@ import {AddProductToCart} from '../../../store/cart/cart.actions';
 import {Router} from '@angular/router';
 import {GetUserData} from '../../../store/user/user.actions';
 import {UserState, UserStateModel} from '../../../store/user/user.state';
+import {AccessoryState} from '../../../store/accessory/accessory.state';
+import {GetAccessories} from '../../../store/accessory/accessory.actions';
 
 @Component({
   selector: 'app-flat-roof-window-details',
@@ -23,6 +25,7 @@ export class FlatRoofWindowDetailsComponent implements OnInit, OnDestroy {
   @Select(AppState) user$: Observable<{ currentUser }>;
   @Select(CartState) cart$: Observable<any>;
   @Select(UserState) userState$: Observable<UserStateModel>;
+  @Select(AccessoryState) accessories$: Observable<any>;
   flatRoofWindow$: Observable<FlatRoofWindow>;
   logInUser: {
     email: string;
@@ -30,7 +33,6 @@ export class FlatRoofWindowDetailsComponent implements OnInit, OnDestroy {
     isLogged: boolean
   };
   picturesOfWindow = [];
-  priceAfterDisc$ = new Subject<number>();
   availableSizes = ['60x60', '90x60', '120x60', '70x70', '80x80', '90x90', '120x90', '100x100', '150x100', '120x120', '140x140', '220x120'];
   quantity = 1;
 
@@ -49,6 +51,12 @@ export class FlatRoofWindowDetailsComponent implements OnInit, OnDestroy {
     this.picturesOfWindow.push('assets/img/products/PG-arrangement-2.png');
     this.loadUserState();
     this.cart$.pipe(filter(cart => cart.cart !== null), takeUntil(this.isDestroyed$)).subscribe();
+    this.accessories$.pipe(takeUntil(this.isDestroyed$),
+      tap(accessoryState => {
+        if (accessoryState.accessories.length === 0) {
+          this.store.dispatch(new GetAccessories());
+        }
+      })).subscribe();
   }
 
   ngOnDestroy() {
@@ -64,6 +72,20 @@ export class FlatRoofWindowDetailsComponent implements OnInit, OnDestroy {
           }
         })).subscribe();
     }
+  }
+
+  getExtras(flat: FlatRoofWindow) {
+    const extras = [];
+    this.accessories$.pipe(takeUntil(this.isDestroyed$)).subscribe(accessoryState => {
+      for (const windowAccessory of flat.listaDodatkow) {
+        for (const accessory of accessoryState.accessories) {
+          if (windowAccessory === accessory.kod) {
+            extras.push(accessory);
+          }
+        }
+      }
+    });
+    return extras;
   }
 
   resize(delta: number) {
