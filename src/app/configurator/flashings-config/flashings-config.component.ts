@@ -1295,9 +1295,8 @@ export class FlashingsConfigComponent implements OnInit, OnDestroy {
   }
 
 
-  changeSelection(z: number, singleConfiguration: any, event: Event) {
+  changeSelection(z: number, event: Event) {
     console.log(z);
-    console.log(singleConfiguration);
     console.log(event.target);
   }
 }

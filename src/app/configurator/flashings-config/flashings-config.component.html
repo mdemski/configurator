@@ -461,20 +461,22 @@
               <div class="choose-config-popup__content__form">
                 <div class="select-box">
                   <div class="select-box__current" tabindex="1">
-                    <div class="select-box__value" (change)="changeSelection(z, singleConfiguration, $event)" *ngFor="let singleConfiguration of userConfigs; let z = index">
-                      <input class="select-box__input" type="radio" id="{{z}}" [(ngModel)]="flashingConfigFormId"
-                             [ngModelOptions]="{standalone: true}" [checked]="z === 0"
-                             value="{{singleConfiguration.userId}}" name="flashingConfigFormId">
-                      <p class="select-box__input-text">{{singleConfiguration.userId}}
-                        - {{singleConfiguration.name}}</p>
+                    <div class="select-box__value" (change)="changeSelection(z, $event)" *ngFor="let singleConfiguration of userConfigs; let z = index">
+                      <input class="select-box__input" type="radio" id="config{{z}}" [(ngModel)]="flashingConfigFormId"
+                             value="{{singleConfiguration.userId}}" name="flashingConfigFormId" [ngModelOptions]="{standalone: true}">
+                      <p class="select-box__input-text">{{singleConfiguration.userId}} - {{singleConfiguration.name}}</p>
                     </div>
 
                     <div class="select-box__value">
-                      <input class="select-box__input" type="radio"
-                             id="{{userConfigs[userConfigs.length - 1].userId + 1}}" [(ngModel)]="flashingConfigFormId"
-                             [ngModelOptions]="{standalone: true}" value="-2" name="flashingConfigFormId">
-                      <p class="select-box__input-text">{{userConfigs[userConfigs.length - 1].userId + 1}}
-                        - {{'CONFIGURATOR.newConfiguration' | translate}}</p>
+                      <input class="select-box__input" type="radio" [ngModelOptions]="{standalone: true}"
+                             id="config{{userConfigs[userConfigs.length - 1].userId + 1}}" [(ngModel)]="flashingConfigFormId" value="-2" name="flashingConfigFormId">
+                      <p class="select-box__input-text">{{userConfigs[userConfigs.length - 1].userId + 1}} - {{'CONFIGURATOR.newConfiguration' | translate}}</p>
+                    </div>
+
+                    <div class="select-box__value">
+                      <input class="select-box__input" type="radio" id="config0" value="{{userConfigs[0].userId}}"
+                             name="flashingConfigFormId" checked/>
+                      <p class="select-box__input-text">{{userConfigs[0].userId}} - {{userConfigs[0].name}}</p>
                     </div>
 
                     <img class="select-box__icon" src="http://cdn.onlinewebfonts.com/svg/img_295694.svg"
@@ -482,13 +484,11 @@
                   </div>
                   <ul class="select-box__list overflow-scroll-Y">
                     <li *ngFor="let singleConfiguration of userConfigs; let z = index"><label
-                      class="select-box__option margin-bottom-0" for="{{z}}"
+                      class="select-box__option margin-bottom-0" for="config{{z}}"
                       aria-hidden="aria-hidden">{{singleConfiguration.userId}} - {{singleConfiguration.name}}</label>
                     </li>
-                    <li><label class="select-box__option margin-bottom-0"
-                               for="{{userConfigs[userConfigs.length - 1].userId + 1}}"
-                               aria-hidden="aria-hidden">{{userConfigs[userConfigs.length - 1].userId + 1}}
-                      - {{'CONFIGURATOR.newConfiguration' | translate}}</label></li>
+                    <li><label class="select-box__option margin-bottom-0" for="config{{userConfigs[userConfigs.length - 1].userId + 1}}"
+                               aria-hidden="aria-hidden">{{userConfigs[userConfigs.length - 1].userId + 1}} - {{'CONFIGURATOR.newConfiguration' | translate}}</label></li>
                   </ul>
                 </div>
                 <a (click)="chooseConfigId(); closeAllHovers([flashingTypeOptions, apronTypeOptions, outerMaterialOptions,
