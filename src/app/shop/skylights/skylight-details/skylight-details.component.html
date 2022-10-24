@@ -73,10 +73,10 @@
         <a routerLink="/shop/accessories/{{extra.kod}}">
           <img src="{{extra.linkiDoZdjec[0]}}" alt="{{extra.productName}}" class="extra-product-card__photo">
         </a>
-        <h3 class="extra-product-card__title">{{extra.model.split(':')[1]}}</h3>
-        <h3 class="extra-product-card__title" *ngIf="extra.typ === 'Akcesorium:Wewnętrzne'">{{extra.kolorTkaniny.split(':')[1]}}</h3>
-        <h3 class="extra-product-card__title" *ngIf="extra.typ === 'Akcesorium:Zewnętrzne'">{{extra.otwieranie}}</h3>
+        <h3 class="extra-product-card__title" *ngIf="extra.typ === 'Akcesorium:Wewnętrzne'">{{extra.model.split(':')[1]}} {{extra.kolorTkaniny.split(':')[1]}}</h3>
+        <h3 class="extra-product-card__title" *ngIf="extra.typ === 'Akcesorium:Zewnętrzne'">{{extra.model.split(':')[1]}} {{extra.otwieranie}}</h3>
         <h3 class="extra-product-card__title">{{extra.szerokosc}} x {{extra.wysokosc}}</h3>
+        <h3 class="extra-product-card__title">{{extra.CenaDetaliczna}} {{returnCurrencyName((cart$ | async).cart.currency)}}</h3>
 
         <div class="extra-product-card__buttons-section">
           <a class="extra-product-card__buttons-section--link icon-btn icon-btn--red" (click)="addToCart(extra, 1)">
