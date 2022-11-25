@@ -392,7 +392,6 @@ export class RoofWindowsConfigComponent implements OnInit, OnDestroy {
       form.openingType) {
       this.popupConfig = true;
       this.materialVisible = false;
-      this.onGlazingHover(this.glazingOptions.nativeElement);
     }
     this.configuredWindow = JSON.parse(JSON.stringify(temporaryConfigObject));
     this.showWidthMessage = this.standardWidths.includes(form.width);

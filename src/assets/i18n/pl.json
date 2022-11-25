@@ -153,10 +153,11 @@
     "Fasadowe": "vertical-windows",
     "WyłazReset": "skylights",
     "OknoDachoweReset": "roof-windows",
-    "configuratorRoofWindows": "konfigutor/okna-dachowe",
-    "configuratorAccessory": "konfigutor/akcesoria",
-    "configuratorFlashing": "konfigutor/kolnierze",
-    "configuratorFlatRoofWindow": "konfigutor/okna-na-dach-plaski"
+    "configuratorRoofWindows": "konfigurator/okna-dachowe",
+    "configuratorAccessory": "konfigurator/akcesoria",
+    "configuratorFlashing": "konfigurator/kolnierze",
+    "configuratorFlatRoofWindow": "konfigurator/okna-na-dach-plaski",
+    "configurationSummary": "konfigurator/podsumowanie"
   },
   "CONTACT": {
     "contactUs": "Skontaktuj się z nami",
