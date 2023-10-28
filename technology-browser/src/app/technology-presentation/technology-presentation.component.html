@@ -1,0 +1,27 @@
+
+
+<div class="main-container">
+  <div class="complaint-container">
+    <input type="text" class="searching-input margin-bottom" placeholder="Podaj szukany indeks (kod)"
+           (keyup)="search($event.target)">
+    <table class="complaint-container__complaints-table" *ngIf="!(loading$ | async)">
+      <tr class="complaint-container__complaints-table__header">
+        <th class="complaint-container__complaints-table__header--text">Nadrzędny</th>
+        <th class="complaint-container__complaints-table__header--text">LLC</th>
+        <th class="complaint-container__complaints-table__header--text">Produkt</th>
+        <th class="complaint-container__complaints-table__header--text">BOM_Final_Idn</th>
+        <th class="complaint-container__complaints-table__header--text">Normatyw</th>
+      </tr>
+      <tr class="complaint-container__complaints-table__item" *ngFor="let row of (this.filteredData$ | async)">
+        <td class="complaint-container__complaints-table__item--info">{{row.nadrzedny}}</td>
+        <td class="complaint-container__complaints-table__item--info">{{row.llc}}</td>
+        <td class="complaint-container__complaints-table__item--info">{{row.produkt}}</td>
+        <td class="complaint-container__complaints-table__item--info">{{row.BOM_Final_Idn}}</td>
+        <td class="complaint-container__complaints-table__item--info">{{row.normatyw}}</td>
+      </tr>
+    </table>
+  </div>
+  <div class="d-flex justify-content-center" *ngIf="loading$ | async">
+    <app-bouncing-loader></app-bouncing-loader>
+  </div>
+</div>
